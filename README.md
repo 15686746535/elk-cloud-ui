@@ -1,18 +1,16 @@
-## Build Setup
-
-# Install dependencies
+# 安装项目
 npm install
 
 # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
 npm install --registry=https://registry.npm.taobao.org
 
-# serve with hot reload at localhost:9528
+# 启动  访问 [http://localhost:9528](http://localhost:9528)
 npm run dev
 
-# build for production with minification
+# 构建项目
 npm run build
 
-# build for production and view the bundle analyzer report
+# 构建项目分析日志
 npm run build --report
 ```
 

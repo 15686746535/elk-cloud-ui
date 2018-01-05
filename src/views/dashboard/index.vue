@@ -8,19 +8,16 @@
     <br/>
     <span>字典标签,自定义标签</span>
     <dict type="dict_leng"></dict>
-    <myComponents></myComponents>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Dict from '@/components/Dict'
-import Test from '@/components/Test'
 
 export default {
   components: {
-    Dict,
-    Test
+    Dict
   },
   name: 'dashboard',
   computed: {

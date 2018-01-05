@@ -16,7 +16,7 @@
     data() {
       return {
         dict: undefined,
-        dicts : []
+        dicts: []
       }
     },
     created() {

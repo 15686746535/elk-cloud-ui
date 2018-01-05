@@ -3,13 +3,22 @@
     <div class="dashboard-text">欢迎登陆</div>
     <div class="dashboard-text">用户名：{{name}}</div>
     <div class="dashboard-text">角色名：<span v-for='role in roles' :key='role'>{{role}}</span></div>
+    <br/>
+    <br/>
+    <br/>
+    <span>字典标签,自定义标签</span>
+    <dict type="dict_leng"></dict>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Dict from '@/components/Dict'
 
 export default {
+  components: {
+    Dict
+  },
   name: 'dashboard',
   computed: {
     ...mapGetters([

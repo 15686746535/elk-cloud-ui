@@ -1,27 +1,29 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function login(username, password, randomStr, code) {
+  var grant_type = 'password'
+  var scope = 'server'
   return request({
-    url: '/user/login',
+    url: '/auth/oauth/token',
+    headers: {
+      'Authorization': 'Basic cGlnOnBpZw=='
+    },
     method: 'post',
-    data: {
-      username,
-      password
-    }
+    params: { username, password, randomStr, code, grant_type, scope }
   })
 }
 
 export function getInfo(token) {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/upms/user/info',
+    method: 'get'
   })
 }
 
-export function logout() {
+export function logout(accesstoken, refreshToken) {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/auth/removeToken',
+    method: 'post',
+    params: { accesstoken, refreshToken }
   })
 }

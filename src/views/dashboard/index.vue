@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name:{{name}}</div>
-    <div class="dashboard-text">role:<span v-for='role in roles' :key='role'>{{role}}</span></div>
+    <div class="dashboard-text">欢迎登陆</div>
+    <div class="dashboard-text">用户名：{{name}}</div>
+    <div class="dashboard-text">角色名：<span v-for='role in roles' :key='role'>{{role}}</span></div>
   </div>
 </template>
 

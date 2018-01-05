@@ -19,62 +19,43 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: _import('login/index'), hidden: true },
-  { path: '/404', component: _import('404'), hidden: true },
-
+  { path: '/login', name: '登陆', component: _import('login/index'), hidden: true },
+  { path: '/404', name: '404', component: _import('404'), hidden: true },
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
     hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: _import('dashboard/index')
-    }]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: '来访登记',
-    meta: { title: '来访登记', icon: 'example' },
     children: [
-      {
-        path: 'table',
-        name: '来访登记',
-        component: _import('table/index'),
-        meta: { title: '来访登记', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: '树形',
-        component: _import('tree/index'),
-        meta: { title: '树形', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '表单',
-        component: _import('form/index'),
-        meta: { title: '表单', icon: 'form' }
-      }
-    ]
-  },
-
-  { path: '*', redirect: '/404', hidden: true }
+      { path: 'dashboard', component: _import('dashboard/index'), name: '首页', meta: { title: '首页', icon: 'dashboard', noCache: true }}]
+  }
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({ y: 0 }),
+  // mode: 'history', // 后端支持可开
+  // scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+
+export const asyncRouterMap = [
+  {
+    menuId: 1,
+    path: '/upms',
+    component: Layout,
+    name: '系统管理',
+    hidden: false,
+    // icon: 'table',
+    meta: {
+      title: '系统管理',
+      icon: 'table'
+    },
+    children: [
+      { menuId: 2, path: 'user', component: _import('upms/user/index'), name: '用户管理', meta: { title: '用户管理', icon: 'user' }},
+      { menuId: 3, path: 'role', component: _import('upms/role/index'), name: '角色管理', meta: { title: '角色管理', icon: 'role' }},
+      { menuId: 4, path: 'menu', component: _import('upms/menu/index'), name: '菜单管理', meta: { title: '菜单管理', icon: 'tree' }},
+      { menuId: 5, path: 'dict', component: _import('upms/dict/index'), name: '字典管理', meta: { title: '字典管理', icon: 'dict' }},
+      { menuId: 6, path: 'log', component: _import('upms/log/index'), name: '日志管理', meta: { title: '日志管理', icon: 'log' }}
+    ]
+  }
+]
 

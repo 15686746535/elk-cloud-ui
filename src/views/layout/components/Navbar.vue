@@ -1,23 +1,31 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <breadcrumb></breadcrumb>
-    <el-dropdown class="avatar-container" trigger="click">
-      <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
-        <i class="el-icon-caret-bottom"></i>
-      </div>
-      <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            首页
+    <breadcrumb class="breadcrumb-container"></breadcrumb>
+    <div class="right-menu">
+      <el-tooltip effect="dark" content="全屏" placement="bottom">
+        <screenfull class="screenfull right-menu-item"></screenfull>
+      </el-tooltip>
+
+      <el-dropdown class="avatar-container" trigger="click">
+        <el-tooltip effect="dark" content="点击查看更多功能" placement="bottom">
+          <div class="avatar-wrapper">
+            <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+            <!--<i class="el-icon-caret-bottom"></i>-->
+          </div>
+        </el-tooltip>
+        <el-dropdown-menu class="user-dropdown" slot="dropdown">
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              主页
+            </el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided>
+            <span @click="logout" style="display:block;">退出登陆</span>
           </el-dropdown-item>
-        </router-link>
-        <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出登录</span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
   </el-menu>
 </template>
 
@@ -25,14 +33,17 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import Screenfull from '@/components/Screenfull'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    Screenfull
   },
   computed: {
     ...mapGetters([
+      'name',
       'sidebar',
       'avatar'
     ])
@@ -61,6 +72,9 @@ export default {
     float: left;
     padding: 0 10px;
   }
+  .breadcrumb-container{
+    float: left;
+  }
   .screenfull {
     position: absolute;
     right: 90px;
@@ -79,7 +93,7 @@ export default {
       .user-avatar {
         width: 40px;
         height: 40px;
-        border-radius: 10px;
+        border-radius: 50%;
       }
       .el-icon-caret-bottom {
         position: absolute;
@@ -87,6 +101,20 @@ export default {
         top: 25px;
         font-size: 12px;
       }
+    }
+  }
+  .right-menu {
+    float: right;
+    height: 100%;
+    &:focus{
+      outline: none;
+    }
+    .right-menu-item {
+      display: inline-block;
+      margin: 0 8px;
+    }
+    .screenfull {
+      height: 20px;
     }
   }
 }

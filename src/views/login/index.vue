@@ -2,24 +2,40 @@
   <div class="login-container">
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px"
       class="card-box login-form">
-      <h3 class="title">驾校云平台</h3>
+      <h3 class="title">系统登录</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
         <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="password"></el-input>
+          placeholder="密码"></el-input>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
+
+      <input name="randomStr" type="hidden" v-model="loginForm.randomStr" />
+      <el-form-item>
+        <el-col :span="2">
+          <span class="svg-container">
+          <!--<icon-svg icon-class="form"/>-->
+        </span>
+        </el-col>
+        <el-col :span="11">
+          <el-input name="code" type="text" v-model="loginForm.code" autoComplete="on" placeholder="验证码"/>
+        </el-col>
+        <el-col :span="10" align="right">
+          <img :src="src" style="padding-bottom: 1px" @click="refreshCode"/>
+        </el-col>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-          登录
+          登陆
         </el-button>
       </el-form-item>
     </el-form>
@@ -27,39 +43,40 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+// import { isvalidUsername } from '@/utils/validate'
 
 export default {
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
+      if (value.length < 6) {
+        callback(new Error('密码不能小于6位'))
       } else {
         callback()
       }
     }
     return {
+      src: '',
       loginForm: {
         username: 'admin',
-        password: 'admin'
+        password: '123456',
+        code: 'FFFF',
+        randomStr: Math.ceil(Math.random() * 100000) + '_' + Date.now()
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        username: [{ required: true, trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur', validator: validatePass }],
+        code: [{ required: true, trigger: 'blur' }]
       },
       loading: false,
       pwdType: 'password'
     }
   },
   methods: {
+    refreshCode: function() {
+      this.loginForm.randomStr = Math.ceil(Math.random() * 100000) + Date.now()
+      // this.src = '/upms/code/' + this.loginForm.randomStr
+    },
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''
@@ -76,13 +93,17 @@ export default {
             this.$router.push({ path: '/' })
           }).catch(() => {
             this.loading = false
+            this.refreshCode()
           })
         } else {
-          console.log('error submit!!')
+          console.log('想搞事情？？')
           return false
         }
       })
     }
+  },
+  created() {
+    // this.src = '/upms/code/' + this.loginForm.randomStr
   }
 }
 </script>
@@ -114,6 +135,11 @@ export default {
       display: inline-block;
       height: 47px;
       width: 85%;
+    }
+    .tips {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
     }
     .svg-container {
       padding: 6px 5px 6px 15px;

@@ -42,8 +42,6 @@ const user = {
         login(username, userInfo.password, userInfo.randomStr, userInfo.code).then(response => {
           const data = response.data
           setToken(data.access_token)
-          console.log('获取token ------store/modules/user.js ：45')
-          console.log(data)
           commit('SET_TOKEN', data.access_token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)
           resolve()
@@ -56,10 +54,9 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
+        console.log(123)
         getInfo(state.token).then(response => {
           const data = response.data.data
-          console.log('获取用户信息 ------store/modules/user.js ：61')
-          console.log(data)
           commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.userVo.username)
           commit('SET_AVATAR', data.userVo.avatar)
@@ -97,24 +94,22 @@ const user = {
         removeToken()
         resolve()
       })
-    },
-
-    // 动态修改权限
-    ChangeRole({ commit }, role) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', role)
-        setToken(role)
-        getUserInfo(role).then(response => {
-          const data = response.data.data
-          commit('SET_ROLES', data.role)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          resolve()
-        })
-      })
     }
-
+    // // 动态修改权限
+    // ChangeRole({ commit }, role) {
+    //   return new Promise(resolve => {
+    //     commit('SET_TOKEN', role)
+    //     setToken(role)
+    //     getUserInfo(role).then(response => {
+    //       const data = response.data.data
+    //       commit('SET_ROLES', data.role)
+    //       commit('SET_NAME', data.name)
+    //       commit('SET_AVATAR', data.avatar)
+    //       commit('SET_INTRODUCTION', data.introduction)
+    //       resolve()
+    //     })
+    //   })
+    // }
 
   }
 }

@@ -21,7 +21,7 @@
     },
     created() {
       fetch({
-        url: '/upms/dict/type/' + this.type,
+        url: '/basis/dict/type/' + this.type,
         method: 'get'
       }).then(response => {
         this.dicts = response.data.data

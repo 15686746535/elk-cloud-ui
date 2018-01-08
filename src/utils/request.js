@@ -24,7 +24,6 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     const res = response.data
-    console.log('123')
     console.log(res)
     if (res.code == 500) {
       message(res.msg, 'error')
@@ -34,12 +33,13 @@ service.interceptors.response.use(
   },
   error => {
     const res = error.response
-    console.log(res.status)
+    console.log(res)
     if (res.status == 478 || res.status == 403) {
       message(res.status + ': ' + res.data.msg, 'error')
     } else if (res.status == 400) {
       message(res.status + ': ' + res.data.error_description, 'error')
     } else {
+      console.log(res.status)
       message(res.status + ': ' + res.data.message, 'error')
     }
     return Promise.reject(error)

@@ -7,7 +7,9 @@
     <br/>
     <br/>
     <span>字典标签,自定义标签</span>
-    <dict type="dict_leng"></dict>
+    <dict type="dict_sex" v-model="dict" ></dict>
+    <el-button style="width: 174px;" @click="getDict">取值</el-button>
+
   </div>
 </template>
 
@@ -25,6 +27,18 @@ export default {
       'name',
       'roles'
     ])
+  },
+  data() {
+    return {
+      dict: null,
+      disabled: true,
+      hidden: true
+    }
+  },
+  methods: {
+    getDict() {
+      console.log(this.dict)
+    }
   }
 }
 </script>

@@ -15,7 +15,7 @@
 
       <el-table-column align="center" label="序号">
         <template slot-scope="scope">
-          <span>{{scope.row.id}}</span>
+          <span>{{scope.row.logId}}</span>
         </template>
       </el-table-column>
 
@@ -60,17 +60,31 @@
 
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
-          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+          <span>{{scope.row.createTime}}</span>
+          <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>-->
         </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+     <!-- <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="danger" v-if="sys_dict_del"
                      @click="handleDelete(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
+      这个要报错 v-if="sys_dict_del"
+      -->
+
+
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" type="danger" v-if="sys_log_del"
+                     @click="handleDelete(scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+
+
     </el-table>
     <div v-show="!listLoading" class="pagination-container">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -136,8 +150,8 @@
         this.listQuery.orderByField = 'create_time'
         this.listQuery.isAsc = false
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.records
-          this.total = response.data.total
+          this.list = response.data.page.list
+          this.total = response.data.page.totalCount
           this.listLoading = false
         })
       },

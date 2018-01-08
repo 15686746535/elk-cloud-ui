@@ -1,12 +1,16 @@
 <template>
   <div class="app-container calendar-list-container">
+
+
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加
-      </el-button>
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名" v-model="listQuery.roleName"></el-input>
+      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
               highlight-current-row style="width: 100%">
+      <el-table-column type="selection" class="selection" prop='uuid'></el-table-column>
 
       <el-table-column align="center" label="序号">
         <template slot-scope="scope">
@@ -14,19 +18,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="角色名称">
+      <el-table-column label="职位名称">
         <template slot-scope="scope">
           <span>{{scope.row.roleName}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="角色标识">
+      <el-table-column align="center" label="职位标识">
         <template slot-scope="scope">
-          <span>{{scope.row.roleCode}}</span>
+          <span>{{scope.row.roleKey}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="角色描述">
+      <el-table-column align="center" label="职位描述">
         <template slot-scope="scope">
           <span>{{scope.row.roleDesc }}</span>
         </template>
@@ -66,8 +70,8 @@
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="角色名称"></el-input>
         </el-form-item>
-        <el-form-item label="角色标识" prop="roleCode">
-          <el-input v-model="form.roleCode" placeholder="角色标识"></el-input>
+        <el-form-item label="角色标识" prop="roleKey">
+          <el-input v-model="form.roleKey" placeholder="角色标识"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="roleDesc">
           <el-input v-model="form.roleDesc" placeholder="描述"></el-input>
@@ -95,7 +99,7 @@
       >
       </el-tree>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="updatePermession(roleId, roleCode)">更 新</el-button>
+        <el-button type="primary" @click="updatePermession(roleId, roleKey)">更 新</el-button>
       </div>
     </el-dialog>
   </div>
@@ -128,11 +132,11 @@
         },
         form: {
           roleName: undefined,
-          roleCode: undefined,
+          roleKey: undefined,
           roleDesc: undefined
         },
         roleId: undefined,
-        roleCode: undefined,
+        roleKey: undefined,
         rules: {
           roleName: [
             {
@@ -147,7 +151,7 @@
               trigger: 'blur'
             }
           ],
-          roleCode: [
+          roleKey: [
             {
               required: true,
               message: '角色标识',
@@ -194,8 +198,8 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.records
-          this.total = response.data.total
+          this.list = response.data.page.list
+          this.total = response.data.page.totalCount
           this.listLoading = false
         })
       },
@@ -220,18 +224,22 @@
             this.dialogStatus = 'update'
           })
       },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getList()
+      },
       handlePermission(row) {
-        fetchRoleTree(row.roleCode).then(response => {
-          this.checkedKeys = response.data
+        fetchRoleTree(row.roleKey).then(response => {
+          this.checkedKeys = response.data.data
         })
 
         fetchTree()
           .then(response => {
-            this.treeData = response.data
+            this.treeData = response.data.data
             this.dialogStatus = 'permission'
             this.dialogPermissionVisible = true
             this.roleId = row.roleId
-            this.roleCode = row.roleCode
+            this.roleKey = row.roleKey
           })
       },
       filterNode(value, data) {
@@ -298,7 +306,7 @@
           }
         })
       },
-      updatePermession(roleId, roleCode) {
+      updatePermession(roleId, roleKey) {
         permissionUpd(roleId, this.$refs.menuTree.getCheckedKeys())
           .then(() => {
             this.dialogPermissionVisible = false
@@ -306,7 +314,7 @@
               .then(response => {
                 this.treeData = response.data
               })
-            fetchRoleTree(roleCode).then(response => {
+            fetchRoleTree(roleKey).then(response => {
               this.checkedKeys = response.data
             })
             this.$notify({
@@ -321,7 +329,7 @@
         this.form = {
           id: undefined,
           roleName: undefined,
-          roleCode: undefined,
+          roleKey: undefined,
           roleDesc: undefined
         }
       }

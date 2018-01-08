@@ -136,7 +136,7 @@
     methods: {
       getList() {
         fetchTree(this.listQuery).then(response => {
-          this.treeData = response.data
+          this.treeData = response.data.data
         })
       },
       filterNode(value, data) {

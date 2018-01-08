@@ -1,335 +1,314 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div class="filter-container">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名"
-                v-model="listQuery.username">
-      </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-      <el-button v-if="sys_user_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
-      <!--<el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>-->
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      |&nbsp;<span style="font-weight: 600">员工信息</span>
+      <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
     </div>
 
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-              highlight-current-row style="width: 100%">
+    <!--<div v-for="o in 4" :key="o" class="text item">-->
+      <!--{{'列表内容 ' + o }}-->
+    <!--</div>-->
 
-      <el-table-column align="center" label="序号">
-        <template slot-scope="scope">
-          <span>{{scope.row.userId}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="用户名">
-        <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{scope.row.title}}</span>
-          <span>{{scope.row.username}}</span>
-        </template>
-      </el-table-column>
-
-      <!--<el-table-column align="center" label="密码" show-overflow-tooltip>-->
-      <!--<template slot-scope="scope">-->
-      <!--<span>{{scope.row.password}}</span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
-
-      <el-table-column align="center" label="角色">
-        <template slot-scope="scope">
-          <span>{{scope.row.roleList[0].roleDesc}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="创建时间">
-        <template slot-scope="scope">
-          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" class-name="status-col" label="状态">
-        <template slot-scope="scope">
-          <el-tag>{{scope.row.delFlag | statusFilter}}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="sys_user_upd" size="small" type="success"
-                     @click="handleUpdate(scope.row)">编辑
-          </el-button>
-          <el-button v-if="sys_user_del" size="small" type="danger"
-                     @click="deletes(scope.row)">删除
-          </el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
-
-    <div v-show="!listLoading" class="pagination-container">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                     :current-page.sync="listQuery.page"
-                     :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                     layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
+    <div style="width: 200px; height: 500px;float: left;">
+      <img :src="userInfo.user.avatar" class="image">
+        <el-button type="primary" style="width: 174px;" @click="flag">修改头像</el-button>
     </div>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输用户名"></el-input>
-        </el-form-item>
+    <!--<div style="margin-left:220px; width: 1400px;height: 120px;">-->
+        <el-form :inline="true"  size="mini" :model="userInfo" :rules="rules" label-width="82px" label-position="left" class="demo-form-inline">
 
-        <el-form-item v-if="dialogStatus == 'create'" label="密码" placeholder="请输入密码" prop="password">
-          <el-input type="password" v-model="form.password"></el-input>
-        </el-form-item>
 
-        <el-form-item label="角色" prop="role">
-          <el-select class="filter-item" v-model="role" placeholder="请选择">
-            <el-option v-for="item in rolesOptions" :key="item.roleId" :label="item.roleDesc" :value="item.roleId" :disabled="isDisabled[item.delFlag]">
-              <span style="float: left">{{ item.roleDesc }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.roleCode }}</span>
-            </el-option>
-          </el-select>
-          <!--<el-radio-group v-model="form.role" placeholder="请选择">-->
-            <!--<el-radio v-for="item in rolesOptions" :key="item.roleId" :label="item.roleDesc" :value="item.roleId"></el-radio>-->
-          <!--</el-radio-group>-->
-        </el-form-item>
+          <el-col :span="5">
+          <el-form-item label="员工姓名:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.username}}</span>
+            <el-input v-else :disabled="disabled" v-model="userInfo.user.username" style="width: 180px" placeholder="员工姓名"></el-input>
+          </el-form-item>
+          </el-col>
 
-        <el-form-item label="状态" v-if="dialogStatus == 'update' && sys_user_del " prop="delFlag" >
-          <el-select class="filter-item" v-model="form.delFlag" placeholder="请选择">
-            <el-option v-for="item in statusOptions" :key="item" :label="item | statusFilter" :value="item"> </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel('form')">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('form')">修 改</el-button>
-      </div>
-    </el-dialog>
-  </div>
+          <el-col :span="5">
+            <el-form-item label="工号:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.jobNumber}}</span>
+              <el-input v-else :disabled="disabled" v-model="userInfo.user.jobNumber" style="width: 180px" placeholder="工号"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+          <el-form-item label="身份证号:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.idNumber}}</span>
+            <el-input v-else :disabled="disabled" v-model="userInfo.user.idNumber" style="width: 180px" placeholder="身份证号"></el-input>
+          </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+          <el-form-item label="出生日期:" required>
+              <span class="" style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.birthday}}</span>
+              <el-date-picker v-else  :disabled="disabled" type="date" placeholder="出生日期"  style="width: 180px;" v-model="userInfo.user.birthday"></el-date-picker>
+          </el-form-item>
+          </el-col>
+
+          <!--<div style="border-bottom:1px solid #001528;margin-left:220px; width: 1010px;"></div>-->
+
+
+          <el-col :span="5">
+          <el-form-item label="性别:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.sex==1?'男':'女'}}</span>
+            <span v-else >
+            <el-radio :disabled="disabled" v-model="userInfo.user.sex" label="1">男</el-radio>
+            <el-radio :disabled="disabled" v-model="userInfo.user.sex" label="2">女</el-radio>
+            </span>
+          </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="联系电话:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
+              <el-input v-else :disabled="disabled" v-model="userInfo.user.mobile" placeholder="联系电话"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="联系地址:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.contactAddress}}</span>
+              <el-input v-else :disabled="disabled" v-model="userInfo.user.contactAddress" placeholder="联系地址"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="家庭地址:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.homeAddress}}</span>
+              <el-input v-else :disabled="disabled" v-model="userInfo.user.homeAddress" placeholder="家庭地址"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="学历:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.education}}</span>
+              <el-input v-else :disabled="disabled" v-model="userInfo.user.education" placeholder="学历"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="专业:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.major}}</span>
+              <el-input v-else :disabled="disabled" v-model="userInfo.user.major" placeholder="专业"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="家庭地址:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.homeAddress}}</span>
+              <el-input v-else :disabled="disabled" v-model="userInfo.user.homeAddress" placeholder="家庭地址"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!--<hr style="padding-top: 120px; margin-left:200px;margin-bottom: 30px; width: 1110px; border: none; border-bottom:1px solid #99a9bf;"/>-->
+
+          <!--<el-col :span="6">-->
+          <!--<el-form-item label="活动区域" required>-->
+            <!--<el-select v-model="userInfo.region" placeholder="活动区域">-->
+              <!--<el-option label="区域一" value="shanghai"></el-option>-->
+              <!--<el-option label="区域二" value="beijing"></el-option>-->
+            <!--</el-select>-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
+
+          <el-col :span="5">
+            <el-form-item label="档案号:" required>
+
+              <el-input :disabled="disabled" v-model="userInfo.user" style="width: 180px" placeholder="档案号"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="职位:" required>
+              <el-input :disabled="disabled" v-model="userInfo.idCard" style="width: 180px" placeholder="职位"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="入职日期:" required>
+              <el-date-picker :disabled="disabled" type="date" placeholder="入职日期"  style="width: 180px" v-model="userInfo.date"></el-date-picker>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="所属部门:" required>
+              <el-input :disabled="disabled" v-model="userInfo.idCard" style="width: 180px" placeholder="所属部门"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!--<el-col :span="5">-->
+            <!--<el-form-item label="场训教练:" required>-->
+              <!--<el-select v-model="userInfo.region" style="width: 180px" placeholder="场训教练">-->
+                <!--<el-option label="教练一" value="shanghai"></el-option>-->
+                <!--<el-option label="教练二" value="beijing"></el-option>-->
+              <!--</el-select>-->
+            <!--</el-form-item>-->
+          <!--</el-col>-->
+
+          <!--<hr style="padding-top: 120px; margin-left:200px;margin-bottom: 30px; width: 980px; border: none; border-bottom:1px solid #99a9bf;"/>-->
+
+          <el-col :span="5">
+            <el-form-item label="来源渠道:" required>
+              <el-input :disabled="disabled" v-model="userInfo.user" style="width: 180px" placeholder="来源渠道"></el-input>
+            </el-form-item>
+          </el-col>
+
+
+          <el-col :span="5">
+            <el-form-item label="报名点:" required>
+              <el-input :disabled="disabled" v-model="userInfo.user" style="width: 180px" placeholder="报名点"></el-input>
+            </el-form-item>
+          </el-col>
+
+
+
+          <!--<hr style="padding-top: 60px; margin-left:200px;margin-bottom: 30px; width: 980px; border: none; border-bottom:1px solid #99a9bf;"/>-->
+
+          <el-col :span="17">
+            <el-form-item  style="float: right">
+              <el-button type="primary" :hidden="hidden" style="width: 174px;">确认</el-button>
+              <el-button style="width: 174px;" @click="flag">编辑信息</el-button>
+            </el-form-item>
+          </el-col>
+
+
+        </el-form>
+
+    <!--</div>-->
+
+
+  </el-card>
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj, delObj } from '@/api/user'
-  import { roleList } from '@/api/role'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
-  // import { parseTime } from '@/utils'
-  import { mapGetters } from 'vuex'
-  import ElRadioGroup from 'element-ui/packages/radio/src/radio-group';
-  import ElOption from "element-ui/packages/select/src/option";
-
   export default {
-    components: {
-      ElOption,
-      ElRadioGroup },
-    name: 'table_user',
-    directives: {
-      waves
-    },
+    name: 'index',
     data() {
       return {
-        list: null,
-        total: null,
-        listLoading: true,
-        listQuery: {
-          page: 1,
-          limit: 20
+        edit: false,
+        userInfo: {
+          user: {
+            // 所属组织
+            orgId: '1',
+            // 用户名
+            username: '123',
+            // 密码
+            password: '132',
+            // 头像
+            avatar: 'http://c.hiphotos.baidu.com/image/pic/item/267f9e2f07082838adcbb409b299a9014d08f1ed.jpg',
+            // 姓名
+            name: '',
+            // 性别1男
+            sex: '男',
+            // 工号
+            jobNumber: '123541263545',
+            // 身份证号码
+            idNumber: '123123123',
+            // 生日
+            birthday: '2018-01-04',
+            // 电话号码
+            mobile: '123456789101315171',
+            // 联系地址
+            contactAddress: '123456789101315171',
+            // 家庭地址
+            homeAddress: '123456789101315171',
+            // 学历
+            education: '123456789101315171',
+            // 专业
+            major: '123456789101315171',
+            // 入职日期
+            joinedTime: '123456789101315171',
+            // 转正日
+            positiveTime: '123456789101315171',
+            // 离职日期
+            leaveTime: '123456789101315171',
+            // 公积金购买日期
+            providentFundTime: '123456789101315171',
+            // 五险购买日期
+            fiveInsuranceTime: '123456789101315171',
+            // 离职标记  0正常 1离职
+            quit: '123456789101315171',
+            // 删除标记
+            delFlag: '123456789101315171',
+            // 备注
+            remark: '123456789101315171',
+            // 操作
+            operator: '123456789101315171',
+            // 创建时间
+            createTime: '123456789101315171',
+            // 修改时间
+            updateTime: '123456789101315171',
+            // QQ
+            qq: '123456789101315171',
+            // 邮箱
+            email: '123456789101315171',
+            // 工作电话
+            workMobile: '123456789101315171',
+            // 纬度
+            latitude: '123456789101315171',
+            // 经度
+            longitude: '123456789101315171',
+            // 微信
+            wechat: '123456789101315171',
+            // 紧急联系人
+            emergencyContact: '123456789101315171',
+            // 紧急联系人电话
+            emergencyMobile: '123456789101315171'
+          },
+          date: '',
+          sex: '',
+          phone: ''
         },
-        role: undefined,
-        form: {
-          username: undefined,
-          password: undefined,
-          delFlag: undefined
-        },
-        rules: {
-          username: [
-            {
-              required: true,
-              message: '请输入账户',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
-              trigger: 'blur'
-            }
-          ],
-          password: [
-            {
-              required: true,
-              message: '请输入密码',
-              trigger: 'blur'
-            },
-            {
-              min: 5,
-              max: 20,
-              message: '长度在 5 到 20 个字符',
-              trigger: 'blur'
-            }
-          ]
-        },
-        statusOptions: ['0', '1'],
-        rolesOptions: [],
-        dialogFormVisible: false,
-        userAdd: false,
-        userUpd: false,
-        userDel: false,
-        dialogStatus: '',
-        textMap: {
-          update: '编辑',
-          create: '创建'
-        },
-        isDisabled: {
-          0: false,
-          1: true
-        },
-        tableKey: 0
+        disabled: true,
+        hidden: true
       }
-    },
-    computed: {
-      ...mapGetters([
-        'permissions'
-      ])
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          0: '有效',
-          1: '无效',
-          9: '锁定'
-        }
-        return statusMap[status]
-      }
-    },
-    created() {
-      this.getList()
-      this.sys_user_add = this.permissions['sys_user_add']
-      this.sys_user_upd = this.permissions['sys_user_upd']
-      this.sys_user_del = this.permissions['sys_user_del']
     },
     methods: {
-      getList() {
-        this.listLoading = true
-        this.listQuery.orderByField = '`user`.create_time'
-        this.listQuery.isAsc = false
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data.records
-          this.total = response.data.total
-          this.listLoading = false
-        })
-      },
-      handleFilter() {
-        this.listQuery.page = 1
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.listQuery.limit = val
-        this.getList()
-      },
-      handleCurrentChange(val) {
-        this.listQuery.page = val
-        this.getList()
-      },
-      handleCreate() {
-        this.resetTemp()
-        this.dialogStatus = 'create'
-        this.dialogFormVisible = true
-        roleList()
-          .then(response => {
-            this.rolesOptions = response.data
-          })
-      },
-      handleUpdate(row) {
-        getObj(row.userId)
-          .then(response => {
-            this.form = response.data
-            this.role = row.roleList[0].roleId
-            this.dialogFormVisible = true
-            this.dialogStatus = 'update'
-          })
-        roleList()
-          .then(response => {
-            this.rolesOptions = response.data
-          })
-      },
-      create(formName) {
-        const set = this.$refs
-        set[formName].validate(valid => {
-          if (valid) {
-            this.form.role = this.role
-            addObj(this.form)
-              .then(() => {
-                this.dialogFormVisible = false
-                this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
-              })
-          } else {
-            return false
-          }
-        })
-      },
-      cancel(formName) {
-        this.dialogFormVisible = false
-        this.$refs[formName].resetFields()
-      },
-      update(formName) {
-        const set = this.$refs
-        set[formName].validate(valid => {
-          if (valid) {
-            this.dialogFormVisible = false
-            this.form.password = undefined
-            this.form.role = this.role
-            putObj(this.form).then(() => {
-              this.dialogFormVisible = false
-              this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
-            })
-          } else {
-            return false
-          }
-        })
-      },
-      deletes(row) {
-        this.$confirm('此操作将永久删除该用户(用户名:' + row.username + '), 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          delObj(row.userId).then(() => {
-            this.getList()
-            this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
-              duration: 2000
-            })
-          }).cache(() => {
-            this.$notify({
-              title: '失败',
-              message: '删除失败',
-              type: 'error',
-              duration: 2000
-            })
-          })
-        })
-      },
-      resetTemp() {
-        this.form = {
-          id: undefined,
-          username: '',
-          password: '',
-          role: undefined
+      flag() {
+        if (this.disabled) {
+          this.edit = true
+          this.disabled = false
+          this.hidden = false
+        } else {
+          this.edit = false
+          this.disabled = true
+          this.hidden = true
         }
       }
     }
   }
 </script>
+
+<style scoped>
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+
+  .box-card {
+    width: 1400px;
+    height: 600px;
+    margin: 50px 0 0 50px;
+  }
+  .image {
+    margin-bottom: 20px;
+    margin-right: 50px;
+    width: 174px;
+    height: 174px;
+    display: block;
+    float: left;
+  }
+</style>

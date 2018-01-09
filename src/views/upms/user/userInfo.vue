@@ -177,9 +177,7 @@
 </template>
 
 <script>
-  import echarts from 'echarts'
   import Bar from '@/components/Bar'
-  require('echarts/theme/macarons') // echarts 主题
 
   export default {
     components: {
@@ -273,40 +271,10 @@
       }
     }
   }
-  // var myChart = echarts.init(document.getElementById('main'))
-  // console.log(myChart)
-  // console.log(123)
-  // // 绘制图表
-  // myChart.setOption({
-  //   title: { text: 'ECharts 入门示例' },
-  //   tooltip: {},
-  //   xAxis: {
-  //     data: [
-  //       '衬衫',
-  //       '羊毛衫',
-  //       '雪纺衫',
-  //       '裤子',
-  //       '高跟鞋',
-  //       '袜子']
-  //   },
-  //   yAxis: {},
-  //   series: [{
-  //     name: '销量',
-  //     type: 'bar',
-  //     data: [5, 20, 36, 10, 10, 20]
-  //   }]
-  // })
+
 </script>
 
 <style scoped>
-  .text {
-    font-size: 14px;
-  }
-
-  .item {
-    margin-bottom: 18px;
-  }
-
   .clearfix:before,
   .clearfix:after {
     display: table;

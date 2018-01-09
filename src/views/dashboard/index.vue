@@ -8,6 +8,7 @@
     <br/>
     <span>字典标签,自定义标签</span>
     <dict type="dict_sex" v-model="dict" ></dict>
+    <org></org>
     <el-button style="width: 174px;" @click="getDict">取值</el-button>
 
     <span>值为：{{dict}}</span>
@@ -17,10 +18,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import Dict from '@/components/Dict'
+import Org from '@/components/OrgTree'
 
 export default {
   components: {
-    Dict
+    Dict,
+    Org
   },
   name: 'dashboard',
   computed: {

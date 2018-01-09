@@ -19,7 +19,6 @@ export function getMenuTree(menuList, pid) {
         meta: { title: item.name, icon: item.icon },
         children: null
       }
-      console.log(item.name)
       if (item.component == 'Layout') {
         menu.component = Layout
       } else {

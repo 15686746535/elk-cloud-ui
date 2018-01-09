@@ -1,7 +1,7 @@
 <template>
   <div>
       <el-select class="filter-item" placeholder="请选择" v-model="dict" @change="emitChange(dict)">
-        <el-option v-for="item in  dictList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+        <el-option v-for="item in  dictList" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
   </div>
 </template>

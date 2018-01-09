@@ -55,6 +55,7 @@
 </template>
 
 <script>
+  import { fetchTree, getObj } from '@/api/menu'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   export default {
     name: 'index',
@@ -82,6 +83,27 @@
           limit: 20
         },
         total: null
+      }
+    },
+    methods: {
+      getList() {
+        fetchTree(this.listQuery).then(response => {
+          this.treeData = response.data.data
+        })
+      },
+      filterNode(value, data) {
+        if (!value) return true
+        return data.label.indexOf(value) !== -1
+      },
+      getNodeData(data) {
+        if (!this.formEdit) {
+          this.formStatus = 'update'
+        }
+        getObj(data.id).then(response => {
+          this.form = response.data
+        })
+        this.currentId = data.id
+        this.showElement = true
       }
     }
   }

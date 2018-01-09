@@ -10,6 +10,7 @@
     <dict type="dict_sex" v-model="dict" ></dict>
     <el-button style="width: 174px;" @click="getDict">取值</el-button>
 
+    <span>值为：{{dict}}</span>
   </div>
 </template>
 

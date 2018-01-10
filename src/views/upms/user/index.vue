@@ -11,8 +11,8 @@
     </div>
 
     <el-row>
-      <el-col :span="5" style='margin-top:15px;'>
-        <div style="height: 700px; width: 300px; box-shadow: #99a9bf 5px 5px 5px;text-align: center">
+      <el-col :span="5" style='margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
+        <!--<div style="">-->
           <span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
           <hr>
           <el-tree
@@ -22,25 +22,37 @@
             highlight-current
             :props="defaultProps"
             :filter-node-method="filterNode"
-            @node-click="getNodeData"
+            @node-click="getList"
             default-expand-all
           >
           </el-tree>
-        </div>
+          <!--<el-tree-->
+            <!--:data="treeData"-->
+            <!--:props="defaultProps"-->
+            <!--show-checkbox-->
+            <!--node-key="id"-->
+            <!--default-expand-all-->
+            <!--:expand-on-click-node="true"-->
+            <!--:render-content="renderContent">-->
+          <!--</el-tree>-->
+
+        <!--</div>-->
       </el-col>
       <el-col :span="16" style='margin-top:15px;'>
-
+        <!-- 身份卡循环 -->
         <div class="user_table" v-for="list in list">
-
           <div class="user_info">
-            <img :src="list.user.avatar" class="img">
+            <img :src="list.user.avatar" class="img">  <!-- 头像 -->
+            <!-- 员工信息 -->
             <div class="user">
               姓名：{{list.user.name}}
             </div>
           </div>
+          <!-- 招生记录 -->
           <div class="user_recruit">
             <bar></bar>
           </div>
+          <!-- 来访信息 -->
           <div class="user_visit">
             <bar></bar>
           </div>
@@ -60,7 +72,7 @@
 <script>
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import Bar from '@/components/Bar'
-
+  import { fetchTree } from '@/api/org'
   export default {
     components: {
       Bar
@@ -133,40 +145,145 @@
           page: 1,
           limit: 20
         },
-        treeData: [
-          {
-            a: 1,
-            b: 2
-          },
-          {
-            a: 1,
-            b: 2
-          },
-          {
-            a: 1,
-            b: 2
-          },
-          {
-            a: 1,
-            b: 2
-          },
-          {
-            a: 1,
-            b: 2
-          },
-          {
-            a: 1,
-            b: 2
-          },
-          {
-            a: 1,
-            b: 2
-          }
-        ],
+        treeData: [{
+          id: 1,
+          label: '驾校系统',
+          children: [
+            {
+              id: 2,
+              label: '壹鹿驾校',
+              children: [{
+                id: 3,
+                label: '办公室'
+              }, {
+                id: 4,
+                label: '市场部',
+                children: [{
+                  id: 8,
+                  label: '市场一部'
+                },
+                {
+                  id: 9,
+                  label: '市场二部'
+                }]
+              }, {
+                id: 5,
+                label: '财务部'
+              }, {
+                id: 6,
+                label: '培训部',
+                children: [{
+                  id: 10,
+                  label: '场训部',
+                  children: [{
+                    id: 12,
+                    label: '场训一部'
+                  },
+                  {
+                    id: 13,
+                    label: '场训二部'
+                  }]
+                },
+                {
+                  id: 11,
+                  label: '路训部',
+                  children: [{
+                    id: 12,
+                    label: '路训一部'
+                  },
+                  {
+                    id: 13,
+                    label: '路训二部'
+                  }]
+                }]
+              }]
+            },
+            {
+              id: 2,
+              label: '华通驾校',
+              children: [{
+                id: 3,
+                label: '办公室'
+              }, {
+                id: 4,
+                label: '市场部',
+                children: [{
+                  id: 8,
+                  label: '市场一部'
+                },
+                {
+                  id: 9,
+                  label: '市场二部'
+                }]
+              }, {
+                id: 5,
+                label: '财务部'
+              }, {
+                id: 6,
+                label: '培训部',
+                children: [{
+                  id: 10,
+                  label: '场训部',
+                  children: [{
+                    id: 12,
+                    label: '场训一部'
+                  },
+                  {
+                    id: 13,
+                    label: '场训二部'
+                  }]
+                },
+                {
+                  id: 11,
+                  label: '路训部',
+                  children: [{
+                    id: 12,
+                    label: '路训一部'
+                  },
+                  {
+                    id: 13,
+                    label: '路训二部'
+                  }]
+                }]
+              }]
+            }]
+        }],
         defaultProps: {
           children: 'children',
-          label: 'name'
+          label: 'label'
         }
+      }
+    },
+    created() {
+      this.getList()
+    },
+    methods: {
+      append: function(store, data) {
+        store.append({ id: this.id++, label: 'testtest', children: [] }, data)
+      },
+      remove: function(store, data) {
+        store.remove(data)
+      },
+      renderContent: function(createElement, { node }) {
+        return createElement('span', [
+          createElement('span', node.label),
+          createElement('span', {
+            attrs: {
+              style: 'float: right; margin-right: 20px'
+            }
+          })
+        ])
+      },
+      getList() {
+        fetchTree().then(response => {
+          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+          console.log(response.data)
+          this.treeData = response.data.data
+        })
+      },
+      filterNode(value, data) {
+        if (!value) return true
+        return data.label.indexOf(value) !== -1
       }
     }
   }

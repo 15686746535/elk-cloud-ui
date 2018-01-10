@@ -92,7 +92,9 @@
         listQuery: {
           name: undefined
         },
+        // 树形图数据
         treeData: [],
+        // 树形图结构
         defaultProps: {
           children: 'children',
           label: 'name'

@@ -6,7 +6,7 @@ export function login(username, password, randomStr, code) {
   return request({
     url: '/auth/oauth/token',
     headers: {
-      'Authorization': 'Basic cGlnOnBpZw=='
+      'Authorization': 'Basic ZWxrOmVsazEyMw=='
     },
     method: 'post',
     params: { username, password, randomStr, code, grant_type, scope }

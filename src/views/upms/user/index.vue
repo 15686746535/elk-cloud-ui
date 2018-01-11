@@ -22,7 +22,7 @@
             highlight-current
             :props="defaultProps"
             :filter-node-method="filterNode"
-            @node-click="getList"
+            @node-click="getNodeData"
             default-expand-all
           >
           </el-tree>
@@ -39,6 +39,11 @@
         <!--</div>-->
       </el-col>
       <el-col :span="16" style='margin-top:15px;'>
+        <!--<div>-->
+          <div class="tab_title" style="width: 400px;">基本信息</div>
+          <div class="tab_title">招生图表</div>
+          <div class="tab_title">来访登记表</div>
+        <!--</div>-->
         <!-- 身份卡循环 -->
         <div class="user_table" v-for="list in list">
           <div class="user_info">
@@ -145,109 +150,7 @@
           page: 1,
           limit: 20
         },
-        treeData: [{
-          id: 1,
-          label: '驾校系统',
-          children: [
-            {
-              id: 2,
-              label: '壹鹿驾校',
-              children: [{
-                id: 3,
-                label: '办公室'
-              }, {
-                id: 4,
-                label: '市场部',
-                children: [{
-                  id: 8,
-                  label: '市场一部'
-                },
-                {
-                  id: 9,
-                  label: '市场二部'
-                }]
-              }, {
-                id: 5,
-                label: '财务部'
-              }, {
-                id: 6,
-                label: '培训部',
-                children: [{
-                  id: 10,
-                  label: '场训部',
-                  children: [{
-                    id: 12,
-                    label: '场训一部'
-                  },
-                  {
-                    id: 13,
-                    label: '场训二部'
-                  }]
-                },
-                {
-                  id: 11,
-                  label: '路训部',
-                  children: [{
-                    id: 12,
-                    label: '路训一部'
-                  },
-                  {
-                    id: 13,
-                    label: '路训二部'
-                  }]
-                }]
-              }]
-            },
-            {
-              id: 2,
-              label: '华通驾校',
-              children: [{
-                id: 3,
-                label: '办公室'
-              }, {
-                id: 4,
-                label: '市场部',
-                children: [{
-                  id: 8,
-                  label: '市场一部'
-                },
-                {
-                  id: 9,
-                  label: '市场二部'
-                }]
-              }, {
-                id: 5,
-                label: '财务部'
-              }, {
-                id: 6,
-                label: '培训部',
-                children: [{
-                  id: 10,
-                  label: '场训部',
-                  children: [{
-                    id: 12,
-                    label: '场训一部'
-                  },
-                  {
-                    id: 13,
-                    label: '场训二部'
-                  }]
-                },
-                {
-                  id: 11,
-                  label: '路训部',
-                  children: [{
-                    id: 12,
-                    label: '路训一部'
-                  },
-                  {
-                    id: 13,
-                    label: '路训二部'
-                  }]
-                }]
-              }]
-            }]
-        }],
+        treeData: [],
         defaultProps: {
           children: 'children',
           label: 'label'
@@ -295,6 +198,7 @@
   .user_table{
     width: 1200px;
     height: 170px;
+    clear: both;
     background-color: #f7f7f7;
     margin: 10px 0 0 10px;
   }
@@ -326,6 +230,13 @@
     float: left;
     width: 300px;
     height: 150px;
+    margin: 10px 0 0 10px;
+  }
+  .tab_title{
+    float: left;
+    text-align: center;
+    width: 300px;
+    height: 30px;
     margin: 10px 0 0 10px;
   }
 </style>

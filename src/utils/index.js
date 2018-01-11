@@ -6,6 +6,8 @@ export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
+  console.log('---------------')
+  console.log(time)
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
   let date
   if (typeof time === 'object') {

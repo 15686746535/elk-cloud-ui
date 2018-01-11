@@ -19,7 +19,7 @@
     </div>
 
     <!--<div style="margin-left:220px; width: 1400px;height: 120px;">-->
-        <el-form :inline="true"  size="mini" :model="userInfo" :rules="rules" label-width="82px" label-position="left" class="demo-form-inline">
+        <el-form :inline="true"  size="mini" :model="userInfo"  label-width="82px" label-position="left" class="demo-form-inline">
 
 
           <el-col :span="5">
@@ -141,7 +141,7 @@
 
           <el-col :span="5">
             <el-form-item label="入职日期:" required>
-              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.joinedTime | parseTime('{y}-{m}-{d}')}}</span>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.joinedTime }}</span>
               <el-date-picker  v-else type="date" placeholder="入职日期"  style="width: 180px" v-model="userInfo.user.joinedTime"></el-date-picker>
             </el-form-item>
           </el-col>
@@ -160,14 +160,14 @@
 
           <!--<hr style="padding-top: 120px; margin-left:200px;margin-bottom: 30px; width: 980px; border: none; border-bottom:1px solid #99a9bf;"/>-->
 
-          <el-col :span="17">
+          <el-col :span="20">
             <el-form-item  style="float: right">
               <el-button type="primary" v-if="edit" style="width: 174px;" @click="saveInfo">确认</el-button>
               <el-button style="width: 174px;" @click="editInfo">编辑信息</el-button>
             </el-form-item>
           </el-col>
 
-          <el-col :span="10"><bar></bar></el-col>
+
         </el-form>
 
     <!--</div>-->
@@ -178,6 +178,7 @@
 
 <script>
   import Bar from '@/components/Bar'
+  import { getObj } from '@/api/user'
 
   export default {
     components: {
@@ -187,82 +188,27 @@
     data() {
       return {
         edit: false,
+        listQuery: {
+          page: 1,
+          limit: 20
+        },
         userInfo: {
-          user: {
-            // 所属组织
-            orgId: '1',
-            // 用户名
-            username: '123',
-            // 密码
-            password: '132',
-            // 头像
-            avatar: 'http://g.hiphotos.baidu.com/image/pic/item/c83d70cf3bc79f3d86eee82db0a1cd11728b299b.jpg',
-            // 姓名
-            name: '张三',
-            // 性别1男
-            sex: '1',
-            // 工号
-            jobNumber: '123541263545',
-            // 身份证号码
-            idNumber: '123123123',
-            // 生日
-            birthday: '2118-01-08T16:00:00.000Z',
-            // 电话号码
-            mobile: '123456789101315171',
-            // 联系地址
-            contactAddress: '123456789101315171',
-            // 家庭地址
-            homeAddress: '123456789101315171',
-            // 学历
-            education: '123456789101315171',
-            // 专业
-            major: '123456789101315171',
-            // 入职日期
-            joinedTime: '2018-01-08T16:00:00.000Z',
-            // 转正日
-            positiveTime: '2018-01-08T16:00:00.000Z',
-            // 离职日期
-            leaveTime: '2018-01-08T16:00:00.000Z',
-            // 公积金购买日期
-            providentFundTime: '2018-01-08T16:00:00.000Z',
-            // 五险购买日期
-            fiveInsuranceTime: '2118-01-08T16:00:00.000Z',
-            // 离职标记  0正常 1离职
-            quit: '123456789101315171',
-            // 删除标记
-            delFlag: '123456789101315171',
-            // 备注
-            remark: '123456789101315171',
-            // 操作
-            operator: '123456789101315171',
-            // 创建时间
-            createTime: '123456789101315171',
-            // 修改时间
-            updateTime: '123456789101315171',
-            // QQ
-            qq: '123456789101315171',
-            // 邮箱
-            email: '123456789101315171',
-            // 工作电话
-            workMobile: '123456789101315171',
-            // 纬度
-            latitude: '123456789101315171',
-            // 经度
-            longitude: '123456789101315171',
-            // 微信
-            wechat: '123456789101315171',
-            // 紧急联系人
-            emergencyContact: '123456789101315171',
-            // 紧急联系人电话
-            emergencyMobile: '123456789101315171'
-          },
+          user: {},
           date: '',
           sex: '',
           phone: ''
         }
       }
     },
+    created() {
+      this.getList()
+    },
     methods: {
+      getList() {
+        getObj('1').then(response => {
+          this.userInfo.user = response.data.data
+        })
+      },
       editInfo() {
         this.edit = true
       },

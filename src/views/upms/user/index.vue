@@ -22,7 +22,7 @@
             highlight-current
             :props="defaultProps"
             :filter-node-method="filterNode"
-            @node-click="getNodeData"
+            @node-click="getUserList"
             default-expand-all
           >
           </el-tree>
@@ -45,12 +45,12 @@
           <div class="tab_title">来访登记表</div>
         <!--</div>-->
         <!-- 身份卡循环 -->
-        <div class="user_table" v-for="list in list">
+        <div class="user_table" v-for="list in userList">
           <div class="user_info">
-            <img :src="list.user.avatar" class="img">  <!-- 头像 -->
+            <img :src="list.avatar" class="img">  <!-- 头像 -->
             <!-- 员工信息 -->
             <div class="user">
-              姓名：{{list.user.name}}
+              姓名：{{list.name}}
             </div>
           </div>
           <!-- 招生记录 -->
@@ -78,6 +78,7 @@
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import Bar from '@/components/Bar'
   import { fetchTree } from '@/api/org'
+  import { fetchList } from '@/api/user'
   export default {
     components: {
       Bar
@@ -88,67 +89,13 @@
     },
     data() {
       return {
-        list: [
-          {
-            user: {
-              name: '张三',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '李四',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '王麻子',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '李四',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '王麻子',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '李四',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '王麻子',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '李四',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          },
-          {
-            user: {
-              name: '王麻子',
-              avatar: 'https://ps.ssl.qhimg.com/dmfd/299_417_/t01c186aa68a9bf0701.jpg'
-            }
-          }
-        ],
+        userList: [],
         total: 1,
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          orgId: null
         },
         treeData: [],
         defaultProps: {
@@ -158,7 +105,8 @@
       }
     },
     created() {
-      this.getList()
+      this.getOrgList()
+      this.getUserList()
     },
     methods: {
       append: function(store, data) {
@@ -177,11 +125,15 @@
           })
         ])
       },
-      getList() {
+      getOrgList() {
         fetchTree().then(response => {
-          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-          console.log(response.data)
           this.treeData = response.data.data
+        })
+      },
+      getUserList(data) {
+        this.listQuery.orgId = data.id
+        fetchList(this.listQuery).then(response => {
+          this.userList = response.data.data.list
         })
       },
       filterNode(value, data) {

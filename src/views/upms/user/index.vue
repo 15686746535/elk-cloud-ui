@@ -1,18 +1,18 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
+      |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
       <!--<el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名"-->
                 <!--v-model="listQuery.username">-->
       <!--</el-input>-->
       <!--<el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>-->
       <!--<el-button v-if="sys_user_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>-->
       <!--<el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>-->
-      |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
     </div>
-
     <el-row>
-      <el-col  :xs="8" :sm="6" :md="5" :lg="4" :xl="3" style='margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
+      <el-col style='width: 15%;margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
         <!--<div style="">-->
+        <el-card>
           <span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
           <hr>
           <el-tree
@@ -37,10 +37,12 @@
           <!--</el-tree>-->
 
         <!--</div>-->
+        </el-card>
       </el-col>
-      <el-col :span="16" style='margin-top:15px;'>
+      <el-col :span="16" style='margin-left: 10px; margin-top:15px;width: 75%'>
+        <el-card>
         <!--<div>-->
-          <div class="tab_title" style="width: 400px;">基本信息</div>
+          <div class="tab_title" style="width: 35%;">基本信息</div>
           <div class="tab_title">招生图表</div>
           <div class="tab_title">来访登记表</div>
         <!--</div>-->
@@ -63,13 +65,13 @@
           </div>
 
         </div>
-
+        </el-card>
       </el-col>
-      <el-col :span="16" style='margin-top:15px;'>
-        <el-button @click="cancel('form')">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('form')">修 改</el-button>
-      </el-col>
+      <!--<el-col :span="16" style='margin-top:15px;'>-->
+        <!--<el-button @click="cancel('form')">取 消</el-button>-->
+        <!--<el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>-->
+        <!--<el-button v-else type="primary" @click="update('form')">修 改</el-button>-->
+      <!--</el-col>-->
     </el-row>
   </div>
 </template>
@@ -106,7 +108,7 @@
     },
     created() {
       this.getOrgList()
-      this.getUserList()
+      this.getUserList(null)
     },
     methods: {
       append: function(store, data) {
@@ -131,10 +133,16 @@
         })
       },
       getUserList(data) {
-        this.listQuery.orgId = data.id
-        fetchList(this.listQuery).then(response => {
-          this.userList = response.data.data.list
-        })
+        if (data != null) {
+          this.listQuery.orgId = data.id
+          fetchList(this.listQuery).then(response => {
+            this.userList = response.data.data.list
+          })
+        } else {
+          fetchList(this.listQuery).then(response => {
+            this.userList = response.data.data.list
+          })
+        }
       },
       filterNode(value, data) {
         if (!value) return true
@@ -148,7 +156,7 @@
 <style scoped>
 
   .user_table{
-    width: 1200px;
+    width: 98%;
     height: 170px;
     clear: both;
     background-color: #f7f7f7;
@@ -156,7 +164,7 @@
   }
   .user_info{
     float: left;
-    width: 400px;
+    width: 35%;
     height: 150px;
     margin: 10px 0 0 10px;
   }
@@ -173,21 +181,21 @@
   }
   .user_visit {
     float: left;
-    width: 300px;
+    width: 30%;
     height: 150px;
     margin: 10px 0 0 10px;
   }
 
   .user_recruit {
     float: left;
-    width: 300px;
+    width: 30%;
     height: 150px;
     margin: 10px 0 0 10px;
   }
   .tab_title{
     float: left;
     text-align: center;
-    width: 300px;
+    width: 30%;
     height: 30px;
     margin: 10px 0 0 10px;
   }

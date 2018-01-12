@@ -9,7 +9,7 @@
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-              highlight-current-row style="width: 100%">
+              highlight-current-row style="width: 100%" >
       <el-table-column type="selection" class="selection" prop='uuid'></el-table-column>
 
       <el-table-column align="center" label="序号">
@@ -65,6 +65,9 @@
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+
+
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="角色名称" prop="roleName">
@@ -83,6 +86,10 @@
         <el-button v-else type="primary" @click="update('form')">修 改</el-button>
       </div>
     </el-dialog>
+
+
+
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible">
       <el-tree
         class="filter-tree"
@@ -219,7 +226,7 @@
       handleUpdate(row) {
         getObj(row.roleId)
           .then(response => {
-            this.form = response.data
+            this.form = response.data.data
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
           })

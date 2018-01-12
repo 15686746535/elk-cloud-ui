@@ -42,6 +42,7 @@
           </el-form-item>
         </el-col>
 
+        <!-- 出生日期 -->
         <el-col :span="5">
           <el-form-item label="出生日期:" required>
             <span class="" style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.birthday | parseTime('{y}-{m}-{d}')}}</span>
@@ -51,7 +52,7 @@
 
         <!--<div style="border-bottom:1px solid #001528;margin-left:220px; width: 1010px;"></div>   | parseTime('{y}-{m}-{d}')-->
 
-
+        <!-- 性别 -->
         <el-col :span="5">
           <el-form-item label="性别:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.sex==1?'男':'女'}}</span>
@@ -62,6 +63,7 @@
           </el-form-item>
         </el-col>
 
+        <!-- 所属部门 -->
         <el-col :span="5">
           <el-form-item label="所属部门:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>
@@ -69,7 +71,7 @@
           </el-form-item>
         </el-col>
 
-
+        <!-- 联系电话 -->
         <el-col :span="5">
           <el-form-item label="联系电话:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
@@ -77,6 +79,7 @@
           </el-form-item>
         </el-col>
 
+        <!-- 联系地址 -->
         <el-col :span="5">
           <el-form-item label="联系地址:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.contactAddress}}</span>
@@ -84,6 +87,7 @@
           </el-form-item>
         </el-col>
 
+        <!-- 家庭住址 -->
         <el-col :span="5">
           <el-form-item label="家庭地址:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.homeAddress}}</span>
@@ -91,6 +95,7 @@
           </el-form-item>
         </el-col>
 
+        <!-- 学历 -->
         <el-col :span="5">
           <el-form-item label="学历:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.education}}</span>
@@ -98,6 +103,7 @@
           </el-form-item>
         </el-col>
 
+        <!-- 专业 -->
         <el-col :span="5">
           <el-form-item label="专业:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.major}}</span>
@@ -105,6 +111,7 @@
           </el-form-item>
         </el-col>
 
+        <!-- QQ -->
         <el-col :span="5">
           <el-form-item label="QQ:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>
@@ -138,6 +145,7 @@
         <!--</el-form-item>-->
         <!--</el-col>-->
 
+        <!-- 入职日期 -->
         <el-col :span="5">
           <el-form-item label="入职日期:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.joinedTime }}</span>
@@ -175,10 +183,11 @@
     <el-card class="box-card2">
 
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+        <el-tab-pane label="团队情况" name="first">
+          <bar style="width: 300px"></bar>
+        </el-tab-pane>
+        <el-tab-pane label="跟进情况" name="second">配置管理</el-tab-pane>
+        <el-tab-pane label="招生情况" name="third">角色管理</el-tab-pane>
       </el-tabs>
     </el-card>
 
@@ -244,13 +253,11 @@
   }
 
   .box-card1 {
-    width: 1400px;
-    height: 400px;
+    width: 80%;
     margin: 50px 0 0 50px;
   }
   .box-card2 {
-    width: 1400px;
-    height: 300px;
+    width: 80%;
     margin: 25px 0 0 50px;
   }
   .image {

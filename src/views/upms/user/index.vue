@@ -11,7 +11,7 @@
     </div>
 
     <el-row>
-      <el-col :span="5" style='margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
+      <el-col  :xs="8" :sm="6" :md="5" :lg="4" :xl="3" style='margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
         <!--<div style="">-->
           <span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
           <hr>

@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/shuttlestudent'
+  import { fetchList, getObj } from '@/api/bespeak/shuttlestudent'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {

@@ -122,8 +122,8 @@
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/role'
-  import { fetchTree } from '@/api/menu'
+  import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/upms/role'
+  import { fetchTree } from '@/api/upms/menu'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {

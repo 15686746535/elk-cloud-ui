@@ -1,4 +1,4 @@
-import { findMenuByRole } from '@/api/menu'
+import { findMenuByRole } from '@/api/upms/menu'
 import { getMenuTree } from '@/utils/tree'
 
 const menu = {

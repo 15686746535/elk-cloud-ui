@@ -1,12 +1,15 @@
 <template>
   <div class="app-container calendar-list-container">
 
+    <div v-if="change==1">
 
     <div class="filter-container">
       <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名" v-model="listQuery.roleName"></el-input>
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
     </div>
+
+
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
               highlight-current-row style="width: 100%" >
@@ -58,6 +61,9 @@
 
     </el-table>
 
+
+
+
     <div v-show="!listLoading" class="pagination-container">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page.sync="listQuery.page"
@@ -68,7 +74,10 @@
 
 
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    </div>
+
+
+    <div v-if="change==2" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="角色名称"></el-input>
@@ -85,7 +94,7 @@
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
         <el-button v-else type="primary" @click="update('form')">修 改</el-button>
       </div>
-    </el-dialog>
+    </div>
 
 
 
@@ -124,6 +133,7 @@
     },
     data() {
       return {
+        change: 1,
         treeData: [],
         checkedKeys: [],
         defaultProps: {
@@ -220,6 +230,7 @@
       },
       handleCreate() {
         this.resetTemp()
+        this.change = 2
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
       },
@@ -227,6 +238,7 @@
         getObj(row.roleId)
           .then(response => {
             this.form = response.data.data
+            this.change = 2
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
           })
@@ -289,6 +301,7 @@
         })
       },
       cancel(formName) {
+        this.change = 1
         this.dialogFormVisible = false
         this.$refs[formName].resetFields()
       },

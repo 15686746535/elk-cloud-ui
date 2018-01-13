@@ -110,7 +110,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/contactnote'
+  import { fetchList, getObj } from '@/api/basis/contactnote'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {

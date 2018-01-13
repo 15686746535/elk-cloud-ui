@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import { fetchTree } from '@/api/org'
+  import { fetchTree } from '@/api/upms/org'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   export default {
     name: 'index',

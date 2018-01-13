@@ -100,7 +100,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/batch'
+  import { fetchList, getObj } from '@/api/student/batch'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {

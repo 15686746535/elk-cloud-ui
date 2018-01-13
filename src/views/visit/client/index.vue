@@ -135,7 +135,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/client'
+  import { fetchList, getObj } from '@/api/visit/client'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {

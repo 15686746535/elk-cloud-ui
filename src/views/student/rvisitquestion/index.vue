@@ -145,7 +145,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/rvisitquestion'
+  import { fetchList, getObj } from '@/api/student/rvisitquestion'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {

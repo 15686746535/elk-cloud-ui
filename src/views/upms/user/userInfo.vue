@@ -196,7 +196,7 @@
 
 <script>
   import Bar from '@/components/Bar'
-  import { getObj } from '@/api/user'
+  import { getObj } from '@/api/upms/user'
 
   export default {
     components: {

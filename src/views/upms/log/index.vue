@@ -97,8 +97,8 @@
 </template>
 
 <script>
-  import { delObj, fetchList } from '@/api/log'
-  import { remote } from '@/api/dict'
+  import { delObj, fetchList } from '@/api/upms/log'
+  import { remote } from '@/api/basis/dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { mapGetters } from 'vuex'
 

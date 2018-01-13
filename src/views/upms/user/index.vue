@@ -80,8 +80,8 @@
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import Bar from '@/components/Bar'
   import LineChart from '@/components/LineChart'
-  import { fetchTree } from '@/api/org'
-  import { fetchList } from '@/api/user'
+  import { fetchTree } from '@/api/upms/org'
+  import { fetchList } from '@/api/upms/user'
 
   const lineChartData = {
     newVisitis: {

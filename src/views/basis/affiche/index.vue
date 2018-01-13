@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { fetchList, getObj } from '@/api/affiche'
+import { fetchList, getObj } from '@/api/basis/affiche'
 import waves from '@/directive/waves/index.js' // 水波纹指令
 
 export default {

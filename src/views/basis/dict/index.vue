@@ -101,7 +101,7 @@
 </template>
 
 <script>
-  import { fetchList, addObj, putObj, delObj } from '@/api/dict'
+  import { fetchList, addObj, putObj, delObj } from '@/api/basis/dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { mapGetters } from 'vuex'
 

@@ -57,7 +57,7 @@
           </div>
           <!-- 招生记录 -->
           <div class="user_recruit">
-            <bar></bar>
+            <LineChart :chart-data="lineChartData"></LineChart>
           </div>
           <!-- 来访信息 -->
           <div class="user_visit">
@@ -79,11 +79,33 @@
 <script>
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import Bar from '@/components/Bar'
+  import LineChart from '@/components/LineChart'
   import { fetchTree } from '@/api/org'
   import { fetchList } from '@/api/user'
+
+  const lineChartData = {
+    newVisitis: {
+      expectedData: [100, 120, 161, 134, 105, 160, 165],
+      actualData: [120, 82, 91, 154, 162, 140, 145]
+    },
+    messages: {
+      expectedData: [200, 192, 120, 144, 160, 130, 140],
+      actualData: [180, 160, 151, 106, 145, 150, 130]
+    },
+    purchases: {
+      expectedData: [80, 100, 121, 104, 105, 90, 100],
+      actualData: [120, 90, 100, 138, 142, 130, 130]
+    },
+    shoppings: {
+      expectedData: [130, 140, 141, 142, 145, 150, 160],
+      actualData: [120, 82, 91, 154, 162, 140, 130]
+    }
+  }
+
   export default {
     components: {
-      Bar
+      Bar,
+      LineChart
     },
     name: 'index',
     directives: {
@@ -91,6 +113,7 @@
     },
     data() {
       return {
+        lineChartData: lineChartData.newVisitis,
         userList: [],
         total: 1,
         listLoading: true,

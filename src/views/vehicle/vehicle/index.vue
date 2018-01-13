@@ -154,7 +154,7 @@
       <el-card>
         <!-- 这里手写 -->
 
-        <div slot="footer" class="dialog-footer">
+        <div class="dialog-footer">
           <el-button @click="cancel">取 消</el-button>
           <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>
           <el-button v-else type="primary" @click="update">修 改</el-button>
@@ -191,7 +191,7 @@
     },
     methods: {
       getList() {
-        this.listLoading = true
+        this.listLoading = false
         fetchList(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount

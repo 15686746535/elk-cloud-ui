@@ -38,29 +38,82 @@
           |&nbsp;<span style="font-weight: 600">车辆信息</span>
         </div>
         <div style="width: 100%">
-          <div class="tab_title" style="width: 5%;">编号</div>
+          <div class="tab_title" style="width: 3%;">编号</div>
           <div class="tab_title" style="width: 25%;">基本信息</div>
-          <div class="tab_title" style="width: 15%;">招生图表</div>
-          <div class="tab_title" style="width: 20%;">来访登记表</div>
-          <div class="tab_title" style="width: 20%;">来访登记表</div>
+          <div class="tab_title" style="width: 15%;">证件信息</div>
+          <div class="tab_title" style="width: 20%;">技术信息</div>
+          <div class="tab_title" style="width: 20%;">安全信息</div>
         </div>
         <!-- 身份卡循环 -->
-        <div class="car_table" v-for="list in lista"  v-loading="listLoading" element-loading-text="给我一点时间" >
+        <div class="car_table" v-for="list in list"  v-loading="listLoading" element-loading-text="给我一点时间" >
           <div class="user_info">
-            <img :src="list.userId" class="img">  <!-- 头像 -->
-            <!-- 员工信息 -->
-            <div class="user">
-              姓名：{{list.motorcycleType}}
+            <!-- 编号 -->
+            <div  class="user" style="width: 3%; padding: 0;line-height: 150px;text-align: center">
+              {{list.motorcycleType}}
+            </div>
+
+            <!-- 基本信息 -->
+            <div class="user" style="width: 25%;">
+              <img :src="list.photo" class="img">  <!-- 头像 -->
+              <div style="float: left;width: 200px;height: 20px ">
+                <p style="color: #99a9bf;width: 100px;float: left;margin-top: 10px">车辆牌照：</p><p style="float: left">{{list.plateNumber}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">使用责任人：</p><p style="float: left">{{list.userId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">所属机构：</p><p style="float: left">{{list.orgId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px  ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">车辆状态：</p><p style="float: left">{{list.vehicleState}}</p>
+              </div>
+            </div>
+            <!-- 证件信息 -->
+            <div class="user" style="width: 15%;">
+              <div style="float: left;width: 200px;height: 20px ">
+                <p style="color: #99a9bf;width: 100px;float: left;margin-top: 10px">车辆牌照：</p><p style="float: left">{{list.plateNumber}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">使用责任人：</p><p style="float: left">{{list.userId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">所属机构：</p><p style="float: left">{{list.orgId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px  ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">车辆状态：</p><p style="float: left">{{list.vehicleState}}</p>
+              </div>
+            </div>
+            <!-- 技术信息 -->
+            <div class="user" style="width: 20%;">
+              <div style="float: left;width: 200px;height: 20px ">
+                <p style="color: #99a9bf;width: 100px;float: left;margin-top: 10px">车辆牌照：</p><p style="float: left">{{list.plateNumber}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">使用责任人：</p><p style="float: left">{{list.userId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">所属机构：</p><p style="float: left">{{list.orgId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px  ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">车辆状态：</p><p style="float: left">{{list.vehicleState}}</p>
+              </div>
+            </div>
+            <!-- 安全信息 -->
+            <div class="user" style="width: 20%;">
+              <div style="float: left;width: 200px;height: 20px ">
+                <p style="color: #99a9bf;width: 100px;float: left;margin-top: 10px">车辆牌照：</p><p style="float: left">{{list.plateNumber}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">使用责任人：</p><p style="float: left">{{list.userId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">所属机构：</p><p style="float: left">{{list.orgId}}</p>
+              </div>
+              <div style="float: left;width: 200px;height: 20px  ;margin-top: 10px">
+                <p style="color: #99a9bf;width: 100px;float: left">车辆状态：</p><p style="float: left">{{list.vehicleState}}</p>
+              </div>
             </div>
           </div>
-          <!--&lt;!&ndash; 招生记录 &ndash;&gt;-->
-          <!--<div class="user_recruit">-->
-            <!--<LineChart :chart-data="lineChartData"></LineChart>-->
-          <!--</div>-->
-          <!--&lt;!&ndash; 来访信息 &ndash;&gt;-->
-          <!--<div class="user_visit">-->
-            <!--<bar></bar>-->
-          <!--</div>-->
 
         </div>
         <!--<el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
@@ -229,12 +282,25 @@
     },
     data() {
       return {
-        lista: [{
-          motorcycleType: 12,
-          userId: 1
-        }],
         vehicle: {},
-        list: [],
+        list: [
+          {
+            motorcycleType: 1,
+            photo: 1,
+            plateNumber: 1,
+            userId: 1,
+            orgId: 1,
+            vehicleState: 1
+          },
+          {
+            motorcycleType: 1,
+            photo: 1,
+            plateNumber: 1,
+            userId: 1,
+            orgId: 1,
+            vehicleState: 1
+          }
+        ],
         total: null,
         listLoading: true,
         showModule: 'list',
@@ -306,7 +372,7 @@
 
   .user_info{
     float: left;
-    width: 35%;
+    width: 100%;
     height: 150px;
     margin: 10px 0 0 10px;
   }
@@ -314,11 +380,10 @@
     width: 150px;
     height: 150px;
     float: left;
+    margin-right:10px;
   }
   .user{
     float: left;
-    width: 130px;
-    height: 130px;
-    padding: 20px 0 0 20px;
+    height: 150px;
   }
 </style>

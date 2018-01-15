@@ -66,7 +66,7 @@
 
           <!-- 招生记录 -->
           <div class="user_visit">
-            <bar style="width: 220px;"></bar>
+            <bar style="width: 220px;" :data="barData"></bar>
           </div>
 
           <!-- 来访信息 -->
@@ -108,6 +108,7 @@
     data() {
       return {
         lineChartData: lineChartData,
+        barData: [79, 52, 200, 334, 390, 330, 220, 12, 79, 52, 200, 33],
         userList: [],
         total: 1,
         listLoading: true,

@@ -183,7 +183,7 @@
 
 <!--</style>-->
 <template>
-  <div :class="className" :style="{height:height,width:width,background:background}"></div>
+  <div :class="className" :style="{height:height,width:width,background:background}" :data="data"></div>
 </template>
 
 <script>
@@ -210,6 +210,9 @@
       background: {
         type: String,
         default: '#fff'
+      },
+      data: {
+        type: Object
       }
     },
     data() {
@@ -221,7 +224,8 @@
     },
     created() {
       this.mon = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-      this.pos = [79, 52, 200, 334, 390, 330, 220, 12, 79, 52, 200, 33]
+      // this.pos = [79, 52, 200, 334, 390, 330, 220, 12, 79, 52, 200, 33]
+      this.pos = this.data
     },
     mounted() {
       this.initChart()
@@ -304,6 +308,9 @@
             animationDuration
           }]
         })
+      },
+      get() {
+
       }
     }
   }

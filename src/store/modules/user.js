@@ -64,6 +64,9 @@ const user = {
           for (let i = 0; i < data.permissions.length; i++) {
             permissions[data.permissions[i]] = true
           }
+          console.log('............................')
+          console.log(data.permissions)
+          console.log(permissions)
           commit('SET_PERMISSIONS', permissions)
           resolve(response)
         }).catch(error => {

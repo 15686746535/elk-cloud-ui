@@ -8,7 +8,7 @@
               highlight-current-row style="width: 100%">
       <el-table-column align="center" label="编号">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.dictId }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="数据值">
@@ -67,7 +67,7 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="编号" prop="username">
-          <el-input v-model="form.id" placeholder="编号"></el-input>
+          <el-input v-model="form.dictId" placeholder="编号"></el-input>
         </el-form-item>
         <el-form-item label="数据值" prop="username">
           <el-input v-model="form.value" placeholder="数据值"></el-input>
@@ -151,17 +151,17 @@
     },
     created() {
       this.getList()
-      this.sys_dict_add = this.permissions['sys_dict_add']
-      this.sys_dict_upd = this.permissions['sys_dict_upd']
-      this.sys_dict_del = this.permissions['sys_dict_del']
+      this.sys_dict_add = this.permissions['basis_dict_add']
+      this.sys_dict_upd = this.permissions['basis_dict_upd']
+      this.sys_dict_del = this.permissions['basis_dict_del']
     },
     methods: {
       getList() {
         this.listLoading = true
-        this.listQuery.orderByField = "create_time"
+        this.listQuery.orderByField = 'create_time'
         this.listQuery.isAsc = false
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.records
+          this.list = response.data.list
           this.total = response.data.total
           this.listLoading = false
         })
@@ -236,7 +236,7 @@
             return false
           }
         })
-      },
+      }
     }
   }
 </script>

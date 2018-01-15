@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width,background:background}"></div>
+  <div :class="className" :style="{height:height,width:width}"></div>
 </template>
 
 <script>
@@ -27,10 +27,6 @@ export default {
     },
     chartData: {
       type: Object
-    },
-    background: {
-      type: String,
-      default: '#fff'
     }
   },
   data() {
@@ -76,10 +72,10 @@ export default {
     }
   },
   methods: {
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
           boundaryGap: false,
           axisTick: {
             show: false
@@ -104,27 +100,11 @@ export default {
             show: false
           }
         },
-        legend: {
-          data: ['expected', 'actual']
-        },
+        // legend: {
+        //   data: ['expected', 'actual']
+        // },
         series: [{
-          name: 'expected', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
-                color: '#FF005A',
-                width: 2
-              }
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: 'actual',
+          name: '来访人数',
           smooth: true,
           type: 'line',
           itemStyle: {

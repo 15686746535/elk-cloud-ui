@@ -220,8 +220,8 @@
       }
     },
     created() {
-      this.mon = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      this.pos = [79, 52, 200, 334, 390, 330, 220]
+      this.mon = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+      this.pos = [79, 52, 200, 334, 390, 330, 220, 12, 79, 52, 200, 33]
     },
     mounted() {
       this.initChart()
@@ -274,7 +274,7 @@
             }
           }],
           series: [{
-            name: 'pageAqq',
+            name: '招生人数',
             type: 'bar',
             stack: 'vistors',
             barWidth: '60%',

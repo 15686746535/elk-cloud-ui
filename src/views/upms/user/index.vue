@@ -42,7 +42,7 @@
       <el-col :span="16" style='margin-left: 10px; margin-top:15px;width: 75%'>
         <el-card>
         <!--<div>-->
-          <div class="tab_title" style="width: 35%;">基本信息</div>
+          <div class="tab_title" style="width: 54%;text-align: left;">基本信息</div>
           <div class="tab_title">招生图表</div>
           <div class="tab_title">来访登记表</div>
         <!--</div>-->
@@ -53,15 +53,23 @@
             <!-- 员工信息 -->
             <div class="user">
               姓名：{{list.name}}
+              <br/>
+              ：{{list.name}}
+              <br/>
+              姓名：{{list.name}}
+              <br/>
+              姓名：{{list.name}}
+              <br/>
+              姓名：{{list.name}}
             </div>
           </div>
           <!-- 招生记录 -->
           <div class="user_recruit">
-            <LineChart :chart-data="lineChartData"></LineChart>
+            <LineChart style="width: 240px;" :chart-data="lineChartData"></LineChart>
           </div>
           <!-- 来访信息 -->
           <div class="user_visit">
-            <bar></bar>
+            <bar style="width: 220px;"></bar>
           </div>
 
         </div>
@@ -159,6 +167,8 @@
         if (data != null) {
           this.listQuery.orgId = data.id
           fetchList(this.listQuery).then(response => {
+            console.log('.............................................................')
+            console.log(response.data.data.list)
             this.userList = response.data.data.list
           })
         } else {
@@ -187,7 +197,7 @@
   }
   .user_info{
     float: left;
-    width: 35%;
+    width: 54%;
     height: 150px;
     margin: 10px 0 0 10px;
   }
@@ -204,21 +214,21 @@
   }
   .user_visit {
     float: left;
-    width: 30%;
+    width: 20%;
     height: 150px;
-    margin: 10px 0 0 10px;
+    margin: 10px 0 20px 10px;
   }
 
   .user_recruit {
     float: left;
-    width: 30%;
+    width: 20%;
     height: 150px;
-    margin: 10px 0 0 10px;
+    margin: 10px 20px 0 10px;
   }
   .tab_title{
     float: left;
     text-align: center;
-    width: 30%;
+    width: 20%;
     height: 30px;
     margin: 10px 0 0 10px;
   }

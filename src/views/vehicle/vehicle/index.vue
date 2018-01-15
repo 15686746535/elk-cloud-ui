@@ -2,14 +2,68 @@
   <div class="app-container calendar-list-container">
     <div v-show="showModule=='list'">
       <el-card style="margin-bottom: 5px;">
+        <div slot="header" class="clearfix">
+          |&nbsp;<span style="font-weight: 600">筛选</span>
+          <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
+        </div>
         <div class="filter-container">
-          <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-          <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="create">添加</el-button>
+          <el-form ref="list" :model="list" inline label-width="80px">
+            <el-form-item label="车牌">
+              <el-select v-model="list.plateNumber" placeholder="请选择车牌">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="负责人">
+              <el-select v-model="list.plateNumber" placeholder="请选择负责人">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="车辆来源">
+              <el-select v-model="list.plateNumber" placeholder="请选择车辆来源">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+
+            <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
+            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="create">添加</el-button>
+          </el-form>
         </div>
       </el-card>
       <el-card>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
+        <div slot="header" class="clearfix">
+          |&nbsp;<span style="font-weight: 600">车辆信息</span>
+        </div>
+        <div style="width: 100%">
+          <div class="tab_title" style="width: 5%;">编号</div>
+          <div class="tab_title" style="width: 25%;">基本信息</div>
+          <div class="tab_title" style="width: 15%;">招生图表</div>
+          <div class="tab_title" style="width: 20%;">来访登记表</div>
+          <div class="tab_title" style="width: 20%;">来访登记表</div>
+        </div>
+        <!-- 身份卡循环 -->
+        <div class="car_table" v-for="list in lista"  v-loading="listLoading" element-loading-text="给我一点时间" >
+          <div class="user_info">
+            <img :src="list.userId" class="img">  <!-- 头像 -->
+            <!-- 员工信息 -->
+            <div class="user">
+              姓名：{{list.motorcycleType}}
+            </div>
+          </div>
+          <!--&lt;!&ndash; 招生记录 &ndash;&gt;-->
+          <!--<div class="user_recruit">-->
+            <!--<LineChart :chart-data="lineChartData"></LineChart>-->
+          <!--</div>-->
+          <!--&lt;!&ndash; 来访信息 &ndash;&gt;-->
+          <!--<div class="user_visit">-->
+            <!--<bar></bar>-->
+          <!--</div>-->
+
+        </div>
+        <!--<el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
                   highlight-current-row style="width: 100%">
           <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -140,7 +194,7 @@
             </template>
           </el-table-column>
 
-        </el-table>
+        </el-table>-->
         <div v-show="!listLoading" class="pagination-container">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                          :current-page.sync="listQuery.page"
@@ -175,6 +229,10 @@
     },
     data() {
       return {
+        lista: [{
+          motorcycleType: 12,
+          userId: 1
+        }],
         vehicle: {},
         list: [],
         total: null,
@@ -230,3 +288,37 @@
     }
   }
 </script>
+<style scoped>
+
+  .car_table{
+    width: 98%;
+    height: 170px;
+    clear: both;
+    background-color: #f7f7f7;
+    margin: 10px 0 0 10px;
+  }
+  .tab_title{
+    float: left;
+    text-align: left;
+    height: 30px;
+    margin: 10px 0 0 10px;
+  }
+
+  .user_info{
+    float: left;
+    width: 35%;
+    height: 150px;
+    margin: 10px 0 0 10px;
+  }
+  .img{
+    width: 150px;
+    height: 150px;
+    float: left;
+  }
+  .user{
+    float: left;
+    width: 130px;
+    height: 130px;
+    padding: 20px 0 0 20px;
+  }
+</style>

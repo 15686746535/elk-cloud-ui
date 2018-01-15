@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+  <div :class="className" :style="{height:height,width:width,background:background}"></div>
 </template>
 
 <script>
@@ -27,6 +27,10 @@ export default {
     },
     chartData: {
       type: Object
+    },
+    background: {
+      type: String,
+      default: '#fff'
     }
   },
   data() {

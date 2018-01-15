@@ -183,7 +183,7 @@
 
 <!--</style>-->
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+  <div :class="className" :style="{height:height,width:width,background:background}"></div>
 </template>
 
 <script>
@@ -206,6 +206,10 @@
       height: {
         type: String,
         default: '100%'
+      },
+      background: {
+        type: String,
+        default: '#fff'
       }
     },
     data() {
@@ -252,23 +256,25 @@
             left: '2%',
             right: '2%',
             bottom: '3%',
-            containLabel: true
+            containLabel: false
           },
           xAxis: [{
             type: 'category',
+            show: false,
             data: this.mon,
             axisTick: {
               alignWithLabel: true
             }
           }],
           yAxis: [{
+            show: false,
             type: 'value',
             axisTick: {
-              show: false
+              show: true
             }
           }],
           series: [{
-            name: 'pageA',
+            name: 'pageAqq',
             type: 'bar',
             stack: 'vistors',
             barWidth: '60%',

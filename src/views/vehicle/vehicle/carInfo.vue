@@ -7,22 +7,23 @@
         |&nbsp;<span style="font-weight: 600">基础信息</span>
       </div>
 
-      <el-form :inline="true"  :model="userInfo"  label-width="100px" label-position="left" class="demo-form-inline">
+      <el-form :inline="true"  :model="userInfo" label	 label-width="100px" label-position="left" class="demo-form-inline">
         <div style="width: 280px; height: 400px;float: left;">
-          <img :src="userInfo.user.avatar" class="image">
+          <img width="100%" height="100%" :src="userInfo.user.avatar" class="image">
           <!--<el-button type="primary" style="width: 174px;" @click="edit">修改头像</el-button>-->
           <!-- 车牌颜色 -->
-          <el-col :span="8">
-            <el-form-item label="车牌颜色:" required>
-              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.idCard}}</span>
-              <el-input  v-else v-model="userInfo.idCard" style="width: 100px" placeholder="车牌颜色"></el-input>
-            </el-form-item>
-
+          <!--<el-col :span="8">-->
+          <el-form-item  label-width="82px" label="车牌颜色:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
+            <dict type="dict_sex" v-else  style="width: 100px" v-model="userInfo.user.mobile" ></dict>
+            <!--<el-input v-else  v-model="userInfo.user.mobile" placeholder="车辆来源"  style="width: 180px"></el-input>-->
+          </el-form-item>
+<br>
             <el-form-item label-width="82px" label="车身颜色:" required>
               <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.idCard}}</span>
               <el-input  v-else v-model="userInfo.idCard" style="width: 100px" placeholder="车身颜色"></el-input>
             </el-form-item>
-          </el-col>
+          <!--</el-col>-->
         </div>
 
       <!--<div style="margin-left:220px; width: 1400px;height: 120px;">-->
@@ -35,25 +36,22 @@
           </el-form-item>
         </el-col>
 
+
         <el-col :span="6">
-          <el-form-item label="使用负责人:" required>
+          <el-form-item label="使用责任人" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.jobNumber}}</span>
-            <el-input v-else  v-model="userInfo.user.jobNumber" style="width: 180px" placeholder="工号"></el-input>
+            <el-select v-else v-model="userInfo.region" style="width: 180px" placeholder="使用责任人">
+              <el-option label="使用责任人一" value="shanghai"></el-option>
+              <el-option label="使用责任人二" value="beijing"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
+
 
         <el-col :span="6">
           <el-form-item label="所属机构:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.idNumber}}</span>
             <el-input v-else  v-model="userInfo.user.idNumber" style="width: 180px" placeholder="身份证号"></el-input>
-          </el-form-item>
-        </el-col>
-
-        <!-- 出生日期 -->
-        <el-col :span="6">
-          <el-form-item label="出生日期:" required>
-            <span class="" style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.birthday | parseTime('{y}-{m}-{d}')}}</span>
-            <el-date-picker v-else   type="date" placeholder="出生日期"  style="width: 180px;" v-model="userInfo.user.birthday"></el-date-picker>
           </el-form-item>
         </el-col>
 
@@ -74,7 +72,7 @@
         </el-col>
         <!-- 原车辆牌照 -->
         <el-col :span="6">
-          <el-form-item label="原车辆牌照:" required>
+          <el-form-item label="原车辆牌照:">
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>
             <el-input  v-else v-model="userInfo.idCard" style="width: 180px" placeholder="原车辆牌照"></el-input>
           </el-form-item>
@@ -84,7 +82,8 @@
         <el-col :span="6">
           <el-form-item label="车辆来源:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
-            <el-input v-else  v-model="userInfo.user.mobile" placeholder="车辆来源"  style="width: 180px"></el-input>
+            <dict type="dict_sex" v-else  style="width: 180px" v-model="userInfo.user.mobile" ></dict>
+            <!--<el-input v-else  v-model="userInfo.user.mobile" placeholder="车辆来源"  style="width: 180px"></el-input>-->
           </el-form-item>
         </el-col>
 
@@ -97,102 +96,85 @@
         </el-col>
 
         <!-- 车架号 -->
-        <el-col :span="6">
+        <el-col :span="10">
           <el-form-item label="车架号:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
             <el-input v-else  v-model="userInfo.user.mobile" placeholder="车架号"  style="width: 180px"></el-input>
           </el-form-item>
         </el-col>
 
-        <!-- 联系地址 -->
+
+        <!-- 车辆类别 -->
         <el-col :span="6">
-          <el-form-item label="联系地址:" required>
-            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.contactAddress}}</span>
-            <el-input v-else  v-model="userInfo.user.contactAddress" placeholder="联系地址"  style="width: 100px"></el-input>
+          <el-form-item label="车辆类别:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
+            <dict type="dict_sex" v-else  style="width: 180px" v-model="userInfo.user.mobile" ></dict>
+            <!--<el-input v-else  v-model="userInfo.user.mobile" placeholder="车辆来源"  style="width: 180px"></el-input>-->
           </el-form-item>
         </el-col>
 
-        <!-- 家庭住址 -->
+        <!-- 出厂日期 -->
         <el-col :span="6">
-          <el-form-item label="家庭地址:" required>
-            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.homeAddress}}</span>
-            <el-input v-else  v-model="userInfo.user.homeAddress" placeholder="家庭地址"  style="width: 180px"></el-input>
-          </el-form-item>
-        </el-col>
-
-        <!-- 学历 -->
-        <el-col :span="6">
-          <el-form-item label="学历:" required>
-            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.education}}</span>
-            <el-input v-else  v-model="userInfo.user.education" placeholder="学历"  style="width: 180px"></el-input>
-          </el-form-item>
-        </el-col>
-
-        <!-- 专业 -->
-        <el-col :span="6">
-          <el-form-item label="专业:" required>
-            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.major}}</span>
-            <el-input v-else v-model="userInfo.user.major" placeholder="专业"  style="width: 180px"></el-input>
-          </el-form-item>
-        </el-col>
-
-        <!-- QQ -->
-        <el-col :span="6">
-          <el-form-item label="QQ:" required>
-            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>
-            <el-input v-else  v-model="userInfo.user.qq" placeholder="QQ"  style="width: 180px"></el-input>
-          </el-form-item>
-        </el-col>
-
-        <!--<hr style="padding-top: 120px; margin-left:200px;margin-bottom: 30px; width: 1110px; border: none; border-bottom:1px solid #99a9bf;"/>-->
-
-        <!--<el-col :span="6">-->
-        <!--<el-form-item label="活动区域" required>-->
-        <!--<el-select v-model="userInfo.region" placeholder="活动区域">-->
-        <!--<el-option label="区域一" value="shanghai"></el-option>-->
-        <!--<el-option label="区域二" value="beijing"></el-option>-->
-        <!--</el-select>-->
-        <!--</el-form-item>-->
-        <!--</el-col>-->
-
-        <!--<el-col :span="5">-->
-        <!--<el-form-item label="档案号:" required>-->
-
-        <!--<span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>-->
-        <!--<el-input v-else  v-model="userInfo.user" style="width: 180px" placeholder="档案号"></el-input>-->
-        <!--</el-form-item>-->
-        <!--</el-col>-->
-
-        <!--<el-col :span="5">-->
-        <!--<el-form-item label="职位:" required>-->
-        <!--<span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>-->
-        <!--<el-input  v-else v-model="userInfo.idCard" style="width: 180px" placeholder="职位"></el-input>-->
-        <!--</el-form-item>-->
-        <!--</el-col>-->
-
-        <!-- 入职日期 -->
-        <el-col :span="6">
-          <el-form-item label="入职日期:" required>
+          <el-form-item label="出厂日期:" required>
             <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.joinedTime }}</span>
-            <el-date-picker  v-else type="date" placeholder="入职日期"  style="width: 180px" v-model="userInfo.user.joinedTime"></el-date-picker>
+            <el-date-picker  v-else type="date" placeholder="出厂日期"  style="width: 180px" v-model="userInfo.user.joinedTime"></el-date-picker>
+          </el-form-item>
+        </el-col>
+
+        <!-- 注册登记日期 -->
+        <el-col :span="6">
+          <el-form-item label="注册日期:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.joinedTime }}</span>
+            <el-date-picker  v-else type="date" placeholder="注册登记日期"  style="width: 180px" v-model="userInfo.user.joinedTime"></el-date-picker>
+          </el-form-item>
+        </el-col>
+
+        <!-- 技术等级 -->
+        <el-col :span="6">
+          <el-form-item label="技术等级:">
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.contactAddress}}</span>
+            <el-input v-else  v-model="userInfo.user.contactAddress" placeholder="技术等级"  style="width: 180px"></el-input>
+          </el-form-item>
+        </el-col>
+
+        <!-- 核定载客人 -->
+        <el-col :span="6">
+          <el-form-item label="核定载客人:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.homeAddress}}</span>
+            <el-input v-else  v-model="userInfo.user.homeAddress" placeholder="核定载客人"  style="width: 180px"></el-input>
+          </el-form-item>
+        </el-col>
+
+        <!-- 车辆类别 -->
+        <el-col :span="6">
+          <el-form-item label="燃料类别:">
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
+            <dict type="dict_sex" v-else  style="width: 180px" v-model="userInfo.user.mobile" ></dict>
+            <!--<el-input v-else  v-model="userInfo.user.mobile" placeholder="车辆来源"  style="width: 180px"></el-input>-->
           </el-form-item>
         </el-col>
 
 
+        <!-- 型号 -->
+        <el-col :span="6">
+          <el-form-item label="型号:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.education}}</span>
+            <el-input v-else  v-model="userInfo.user.education" placeholder="型号"  style="width: 180px"></el-input>
+          </el-form-item>
+        </el-col>
 
+        <!-- 厂牌 -->
+        <el-col :span="6">
+          <el-form-item label="厂牌:" required>
+            <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.major}}</span>
+            <el-input v-else v-model="userInfo.user.major" placeholder="厂牌"  style="width: 180px"></el-input>
+          </el-form-item>
+        </el-col>
 
-        <!--<el-col :span="5">-->
-        <!--<el-form-item label="场训教练:" required>-->
-        <!--<el-select v-model="userInfo.region" style="width: 180px" placeholder="场训教练">-->
-        <!--<el-option label="教练一" value="shanghai"></el-option>-->
-        <!--<el-option label="教练二" value="beijing"></el-option>-->
-        <!--</el-select>-->
-        <!--</el-form-item>-->
-        <!--</el-col>-->
 
         <!--<hr style="padding-top: 120px; margin-left:200px;margin-bottom: 30px; width: 980px; border: none; border-bottom:1px solid #99a9bf;"/>-->
 
-        <el-col :span="20">
+        <el-col :span="22">
           <el-form-item  style="float: right">
             <el-button type="primary" v-if="edit" style="width: 174px;" @click="saveInfo">确认</el-button>
             <el-button style="width: 174px;" @click="editInfo">编辑信息</el-button>
@@ -269,9 +251,11 @@
 <script>
   import Bar from '@/components/Bar'
   import { getObj } from '@/api/upms/user'
+  import Dict from '@/components/Dict'
 
   export default {
     components: {
+      Dict,
       Bar
     },
     name: 'index',

@@ -22,7 +22,7 @@
             highlight-current
             :props="defaultProps"
             :filter-node-method="filterNode"
-            @node-click="getUserList"
+            @node-click="searchByOrg"
             default-expand-all
           >
           </el-tree>
@@ -157,7 +157,7 @@
     },
     created() {
       this.getOrgList()
-      this.getUserList(null)
+      this.getUserList()
     },
     methods: {
       append: function(store, data) {
@@ -181,22 +181,17 @@
           this.treeData = response.data.data
         })
       },
-      getUserList(data) {
-        if (data != null) {
-          this.listQuery.orgId = data.id
-          fetchList(this.listQuery).then(response => {
-            console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
-            console.log(response.data.data.list)
-            this.userList = response.data.data.list
-            this.listLoading = false
-          })
-        } else {
-          fetchList(this.listQuery).then(response => {
-            this.userList = response.data.data.list
-            this.listLoading = false
-
-          })
-        }
+      getUserList() {
+        fetchList(this.listQuery).then(response => {
+          console.log('=-=-=-=-=-=-=-=-=-=-=-546456456456456=-=-=-=-=-=-')
+          console.log(response.data.data.list)
+          this.userList = response.data.data.list
+          this.listLoading = false
+        })
+      },
+      searchByOrg(data) {
+        this.listQuery.orgId = data.id
+        this.getUserList()
       },
       filterNode(value, data) {
         if (!value) return true

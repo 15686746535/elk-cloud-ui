@@ -42,38 +42,69 @@
       <el-col :span="16" style='margin-left: 10px; margin-top:15px;width: 75%'>
         <el-card>
         <!--<div>-->
-          <div class="tab_title" style="width: 54%;text-align: left;">基本信息</div>
-          <div class="tab_title">招生图表</div>
-          <div class="tab_title">来访登记表</div>
+          <!--<div class="tab_title" style="width: 54%;text-align: left;">基本信息</div>-->
+          <!--<div class="tab_title">招生图表</div>-->
+          <!--<div class="tab_title">来访登记表</div>-->
         <!--</div>-->
         <!-- 身份卡循环 -->
-        <div class="user_table" v-for="list in userList">
-          <div class="user_info">
-            <img :src="list.avatar" class="img">  <!-- 头像 -->
-            <!-- 员工信息 -->
-            <div class="user">
-              姓名：{{list.name}}
-              <br/>
-              ：{{list.name}}
-              <br/>
-              姓名：{{list.name}}
-              <br/>
-              姓名：{{list.name}}
-              <br/>
-              姓名：{{list.name}}
-            </div>
-          </div>
+        <el-table :data="list" height="500" border style="width: 100%"  v-loading="listLoading" element-loading-text="给我一点时间">
+          <el-table-column label="员工信息">
+            <template slot-scope="scope">
+              <img :src="list.avatar" class="img">  <!-- 头像 -->
+              <!-- 员工信息 -->
+              <div class="user">
+                姓名：{{scope.row.name}}
+                <br/>
+                ：{{scope.row.name}}
+                <br/>
+                姓名：{{scope.row.name}}
+                <br/>
+                姓名：{{scope.row.name}}
+                <br/>
+                姓名：{{scope.row.name}}
+              </div>
+            </template>
 
-          <!-- 招生记录 -->
-          <div class="user_visit">
-            <bar style="width: 220px;" :data="barData"></bar>
-          </div>
+            <el-table-column label="招生记录">
+              <template slot-scope="scope">
+                <bar style="width: 220px;" :data="barData"></bar>
+              </template>
+            </el-table-column>
 
-          <!-- 来访信息 -->
-          <div class="user_recruit">
-            <LineChart style="width: 240px" :chart-data="lineChartData"></LineChart>
-          </div>
-        </div>
+            <el-table-column label="来访信息">
+              <template slot-scope="scope">
+                <LineChart style="width: 240px" :chart-data="lineChartData"></LineChart>
+              </template>
+            </el-table-column>
+          </el-table-column>
+        </el-table>
+        <!--<div class="user_table" v-for="list in userList">-->
+          <!--<div class="user_info">-->
+            <!--<img :src="list.avatar" class="img">  &lt;!&ndash; 头像 &ndash;&gt;-->
+            <!--&lt;!&ndash; 员工信息 &ndash;&gt;-->
+            <!--<div class="user">-->
+              <!--姓名：{{list.name}}-->
+              <!--<br/>-->
+              <!--：{{list.name}}-->
+              <!--<br/>-->
+              <!--姓名：{{list.name}}-->
+              <!--<br/>-->
+              <!--姓名：{{list.name}}-->
+              <!--<br/>-->
+              <!--姓名：{{list.name}}-->
+            <!--</div>-->
+          <!--</div>-->
+
+          <!--&lt;!&ndash; 招生记录 &ndash;&gt;-->
+          <!--<div class="user_visit">-->
+            <!--<bar style="width: 220px;" :data="barData"></bar>-->
+          <!--</div>-->
+
+          <!--&lt;!&ndash; 来访信息 &ndash;&gt;-->
+          <!--<div class="user_recruit">-->
+            <!--<LineChart style="width: 240px" :chart-data="lineChartData"></LineChart>-->
+          <!--</div>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
         </el-card>
       </el-col>
       <!--<el-col :span="16" style='margin-top:15px;'>-->
@@ -154,13 +185,16 @@
         if (data != null) {
           this.listQuery.orgId = data.id
           fetchList(this.listQuery).then(response => {
-            console.log('.............................................................')
+            console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
             console.log(response.data.data.list)
             this.userList = response.data.data.list
+            this.listLoading = false
           })
         } else {
           fetchList(this.listQuery).then(response => {
             this.userList = response.data.data.list
+            this.listLoading = false
+
           })
         }
       },

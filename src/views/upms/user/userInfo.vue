@@ -235,7 +235,7 @@
         this.edit = false
       },
       handleClick(tab, event) {
-        console.log(tab, event);
+        console.log(tab, event)
       }
     }
   }

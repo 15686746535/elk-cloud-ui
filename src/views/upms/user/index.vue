@@ -1,119 +1,256 @@
 <template>
   <div class="app-container calendar-list-container">
-    <div class="filter-container">
-      |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
-      <!--<el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名"-->
-                <!--v-model="listQuery.username">-->
-      <!--</el-input>-->
-      <!--<el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>-->
-      <!--<el-button v-if="sys_user_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>-->
-      <!--<el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>-->
+    <div v-show="showModule=='list'">
+      <div class="filter-container">
+        |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
+      </div>
+      <el-row>
+        <el-col :span="16" style='margin-left: 63%; margin-top:15px;width: 37%'>
+          <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="用户名" v-model="listQuery.username"></el-input>
+          <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
+          <el-button class="filter-item" style="margin-left: 10px;" @click="handleCurrentChange" type="primary" icon="edit">添加</el-button>
+        </el-col>
+
+        <el-col style='width: 15%;margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
+          <el-card>
+            <span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
+            <hr>
+            <el-tree
+              class="filter-tree"
+              :data="treeData"
+              node-key="id"
+              highlight-current
+              :props="defaultProps"
+              :filter-node-method="filterNode"
+              @node-click="searchByOrg"
+              default-expand-all
+            ></el-tree>
+          </el-card>
+        </el-col>
+
+        <el-col :span="16" style='margin-left: 10px; margin-top:15px;width: 75%'>
+          <el-card>
+            <!-- 身份卡循环 -->
+            <el-table :data="userList" height="600" border style="width: 100%; " highlight-current-row @current-change="handleCurrentChange"  v-loading="listLoading" element-loading-text="给我一点时间">
+              <el-table-column label="员工信息">
+                <template slot-scope="scope">
+                  <!-- 头像 -->
+                  <img :src="scope.row.avatar" class="img">
+                  <!-- 员工信息 -->
+                  <div class="user">
+                    姓名：{{scope.row.name}}
+                    <br/>
+                    工号：{{scope.row.jobNumber}}
+                    <br/>
+                    职位：{{scope.row.birthday}}
+                    <br/>
+                    生日：{{scope.row.birthday}}
+                    <br/>
+                    私人电话：{{scope.row.mobile}}
+                    <br/>
+                    工作电话：{{scope.row.workMobile}}
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="招生记录">
+                <template slot-scope="scope">
+                  <bar style="height: 180px" :data="recruits"></bar>
+                </template>
+              </el-table-column>
+
+              <el-table-column label="来访信息">
+                <template slot-scope="scope">
+                  <LineChart style="height: 180px" :chart-data="visits"></LineChart>
+                </template>
+              </el-table-column>
+            </el-table>
+
+            <el-form-item>
+              <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+              <el-button class="filter-item" type="primary" v-waves >搜索</el-button>
+              <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="create">添加</el-button>
+            </el-form-item>
+
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
-    <el-row>
-      <el-col style='width: 15%;margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
-        <!--<div style="">-->
-        <el-card>
-          <span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-          <hr>
-          <el-tree
-            class="filter-tree"
-            :data="treeData"
-            node-key="id"
-            highlight-current
-            :props="defaultProps"
-            :filter-node-method="filterNode"
-            @node-click="searchByOrg"
-            default-expand-all
-          >
-          </el-tree>
-          <!--<el-tree-->
-            <!--:data="treeData"-->
-            <!--:props="defaultProps"-->
-            <!--show-checkbox-->
-            <!--node-key="id"-->
-            <!--default-expand-all-->
-            <!--:expand-on-click-node="true"-->
-            <!--:render-content="renderContent">-->
-          <!--</el-tree>-->
 
-        <!--</div>-->
-        </el-card>
-      </el-col>
-      <el-col :span="16" style='margin-left: 10px; margin-top:15px;width: 75%'>
-        <el-card>
-        <!--<div>-->
-          <!--<div class="tab_title" style="width: 54%;text-align: left;">基本信息</div>-->
-          <!--<div class="tab_title">招生图表</div>-->
-          <!--<div class="tab_title">来访登记表</div>-->
-        <!--</div>-->
-        <!-- 身份卡循环 -->
-        <el-table :data="list" height="500" border style="width: 100%"  v-loading="listLoading" element-loading-text="给我一点时间">
-          <el-table-column label="员工信息">
-            <template slot-scope="scope">
-              <img :src="list.avatar" class="img">  <!-- 头像 -->
-              <!-- 员工信息 -->
-              <div class="user">
-                姓名：{{scope.row.name}}
-                <br/>
-                ：{{scope.row.name}}
-                <br/>
-                姓名：{{scope.row.name}}
-                <br/>
-                姓名：{{scope.row.name}}
-                <br/>
-                姓名：{{scope.row.name}}
-              </div>
-            </template>
+    <div v-show="showModule=='info'">
+      <div class="filter-container">
+        |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
+      </div>
+      <el-card class="box-card1">
 
-            <el-table-column label="招生记录">
-              <template slot-scope="scope">
-                <bar style="width: 220px;" :data="barData"></bar>
-              </template>
-            </el-table-column>
+        <div style="width: 200px; height: 300px;float: left;">
+          <img width="100%" height="100%" :src="userInfo.user.avatar" class="image">
+          <el-button type="primary" style="width: 174px;">修改头像</el-button>
+        </div>
 
-            <el-table-column label="来访信息">
-              <template slot-scope="scope">
-                <LineChart style="width: 240px" :chart-data="lineChartData"></LineChart>
-              </template>
-            </el-table-column>
-          </el-table-column>
-        </el-table>
-        <!--<div class="user_table" v-for="list in userList">-->
-          <!--<div class="user_info">-->
-            <!--<img :src="list.avatar" class="img">  &lt;!&ndash; 头像 &ndash;&gt;-->
-            <!--&lt;!&ndash; 员工信息 &ndash;&gt;-->
-            <!--<div class="user">-->
-              <!--姓名：{{list.name}}-->
-              <!--<br/>-->
-              <!--：{{list.name}}-->
-              <!--<br/>-->
-              <!--姓名：{{list.name}}-->
-              <!--<br/>-->
-              <!--姓名：{{list.name}}-->
-              <!--<br/>-->
-              <!--姓名：{{list.name}}-->
-            <!--</div>-->
-          <!--</div>-->
+        <el-form :inline="true" :model="userListEdit" label label-width="82px" label-position="left" class="demo-form-inline">
 
-          <!--&lt;!&ndash; 招生记录 &ndash;&gt;-->
-          <!--<div class="user_visit">-->
-            <!--<bar style="width: 220px;" :data="barData"></bar>-->
-          <!--</div>-->
 
-          <!--&lt;!&ndash; 来访信息 &ndash;&gt;-->
-          <!--<div class="user_recruit">-->
-            <!--<LineChart style="width: 240px" :chart-data="lineChartData"></LineChart>-->
-          <!--</div>-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        </el-card>
-      </el-col>
-      <!--<el-col :span="16" style='margin-top:15px;'>-->
-        <!--<el-button @click="cancel('form')">取 消</el-button>-->
-        <!--<el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>-->
-        <!--<el-button v-else type="primary" @click="update('form')">修 改</el-button>-->
-      <!--</el-col>-->
-    </el-row>
+          <el-col :span="5">
+            <el-form-item label="员工姓名:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.username}}</span>
+              <el-input v-else  v-model="userListEdit.name" style="width: 180px" placeholder="员工姓名"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="工号:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.jobNumber}}</span>
+              <el-input v-else  v-model="userListEdit.jobNumber" style="width: 180px" placeholder="工号"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="5">
+            <el-form-item label="身份证号:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.idNumber}}</span>
+              <el-input v-else  v-model="userListEdit.idNumber" style="width: 180px" placeholder="身份证号"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!-- 出生日期 -->
+          <el-col :span="5">
+            <el-form-item label="出生日期:" required>
+              <span class="" style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.birthday | parseTime('{y}-{m}-{d}')}}</span>
+              <el-date-picker v-else   type="date" placeholder="出生日期"  style="width: 180px;" v-model="userListEdit.birthday"></el-date-picker>
+            </el-form-item>
+          </el-col>
+
+          <!--<div style="border-bottom:1px solid #001528;margin-left:220px; width: 1010px;"></div>   | parseTime('{y}-{m}-{d}')-->
+
+          <!-- 性别 -->
+          <el-col :span="5">
+            <el-form-item label="性别:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.sex==1?'男':'女'}}</span>
+              <span v-else >
+            <el-radio  v-model="userListEdit.sex" label="1">男</el-radio>
+            <el-radio  v-model="userListEdit.sex" label="2">女</el-radio>
+            </span>
+            </el-form-item>
+          </el-col>
+
+          <!-- 所属部门 -->
+          <el-col :span="5">
+            <el-form-item label="所属部门:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.qq}}</span>
+              <el-input  v-else v-model="userListEdit.idCard" style="width: 180px" placeholder="所属部门"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!-- 联系电话 -->
+          <el-col :span="5">
+            <el-form-item label="联系电话:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.mobile}}</span>
+              <el-input v-else  v-model="userListEdit.mobile" placeholder="联系电话"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!-- 联系地址 -->
+          <el-col :span="5">
+            <el-form-item label="联系地址:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.contactAddress}}</span>
+              <el-input v-else  v-model="userListEdit.contactAddress" placeholder="联系地址"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!-- 家庭住址 -->
+          <el-col :span="5">
+            <el-form-item label="家庭地址:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.homeAddress}}</span>
+              <el-input v-else  v-model="userListEdit.homeAddress" placeholder="家庭地址"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!-- 学历 -->
+          <el-col :span="5">
+            <el-form-item label="学历:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.education}}</span>
+              <el-input v-else  v-model="userListEdit.education" placeholder="学历"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!-- 专业 -->
+          <el-col :span="5">
+            <el-form-item label="专业:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.user.major}}</span>
+              <el-input v-else v-model="userListEdit.major" placeholder="专业"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!-- QQ -->
+          <el-col :span="5">
+            <el-form-item label="QQ:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.qq}}</span>
+              <el-input v-else  v-model="userListEdit.qq" placeholder="QQ"  style="width: 180px"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <!--<hr style="padding-top: 120px; margin-left:200px;margin-bottom: 30px; width: 1110px; border: none; border-bottom:1px solid #99a9bf;"/>-->
+
+          <!--<el-col :span="6">-->
+          <!--<el-form-item label="活动区域" required>-->
+          <!--<el-select v-model="userInfo.region" placeholder="活动区域">-->
+          <!--<el-option label="区域一" value="shanghai"></el-option>-->
+          <!--<el-option label="区域二" value="beijing"></el-option>-->
+          <!--</el-select>-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
+
+          <!--<el-col :span="5">-->
+          <!--<el-form-item label="档案号:" required>-->
+
+          <!--<span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>-->
+          <!--<el-input v-else  v-model="userInfo.user" style="width: 180px" placeholder="档案号"></el-input>-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
+
+          <!--<el-col :span="5">-->
+          <!--<el-form-item label="职位:" required>-->
+          <!--<span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.qq}}</span>-->
+          <!--<el-input  v-else v-model="userInfo.idCard" style="width: 180px" placeholder="职位"></el-input>-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
+
+          <!-- 入职日期 -->
+          <el-col :span="5">
+            <el-form-item label="入职日期:" required>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.joinedTime }}</span>
+              <el-date-picker  v-else type="date" placeholder="入职日期"  style="width: 180px" v-model="userListEdit.joinedTime"></el-date-picker>
+            </el-form-item>
+          </el-col>
+
+          <!--<hr style="padding-top: 120px; margin-left:200px;margin-bottom: 30px; width: 980px; border: none; border-bottom:1px solid #99a9bf;"/>-->
+
+          <el-col :span="20">
+            <el-form-item  style="float: right">
+              <el-button type="primary" v-if="edit" style="width: 174px;" @click="saveInfo">确认</el-button>
+              <el-button style="width: 174px;" @click="editInfo">编辑信息</el-button>
+            </el-form-item>
+          </el-col>
+
+
+        </el-form>
+
+
+      </el-card>
+      <el-card class="box-card2">
+
+        <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+          <el-tab-pane label="团队情况" name="first">
+            <bar style="width: 300px"></bar>
+          </el-tab-pane>
+          <el-tab-pane label="跟进情况" name="second">配置管理</el-tab-pane>
+          <el-tab-pane label="招生情况" name="third">角色管理</el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </div>
+
   </div>
+
+
 </template>
 
 <script>
@@ -122,10 +259,6 @@
   import LineChart from '@/components/LineChart'
   import { fetchTree } from '@/api/upms/org'
   import { fetchList } from '@/api/upms/user'
-
-  const lineChartData = {
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  }
 
   export default {
     components: {
@@ -138,8 +271,9 @@
     },
     data() {
       return {
-        lineChartData: lineChartData,
-        barData: [79, 52, 200, 334, 390, 330, 220, 12, 79, 52, 200, 33],
+        edit: false,
+        activeName2: 'first',
+        showModule: 'list',
         userList: [],
         total: 1,
         listLoading: true,
@@ -152,7 +286,47 @@
         defaultProps: {
           children: 'children',
           label: 'label'
-        }
+        },
+        userListEdit: {}
+        // userListEdit: {
+        //   avatar: 'https://static.oschina.net/uploads/user/1151/2303656_100.jpg?t=1471420284000',
+        //   birthday: null,
+        //   contactAddress: null,
+        //   createTime: 1515814031000,
+        //   delFlag: '0',
+        //   education: null,
+        //   email: null,
+        //   emergencyContact: null,
+        //   emergencyMobile: null,
+        //   fiveInsuranceTime: null,
+        //   homeAddress: null,
+        //   idNumber: '',
+        //   jobNumber: '312',
+        //   joinedTime: null,
+        //   latitude: null,
+        //   leaveTime: null,
+        //   longitude: null,
+        //   major: null,
+        //   mobile: null,
+        //   name: 'admin',
+        //   newpassword1: null,
+        //   operator: null,
+        //   orgId: 9,
+        //   password: null,
+        //   positiveTime: null,
+        //   providentFundTime: null,
+        //   qq: null,
+        //   quit: '0',
+        //   remark: null,
+        //   role: null,
+        //   roleName: 'admin',
+        //   sex: '1',
+        //   updateTime: 1515814031000,
+        //   userId: 7,
+        //   username: 'dfsf',
+        //   wechat: null,
+        //   workMobile: null
+        // }
       }
     },
     created() {
@@ -166,15 +340,10 @@
       remove: function(store, data) {
         store.remove(data)
       },
-      renderContent: function(createElement, { node }) {
-        return createElement('span', [
-          createElement('span', node.label),
-          createElement('span', {
-            attrs: {
-              style: 'float: right; margin-right: 20px'
-            }
-          })
-        ])
+      // 点击行  编辑
+      handleCurrentChange(val) {
+        this.showModule = 'info'
+        this.userListEdit = val
       },
       getOrgList() {
         fetchTree().then(response => {
@@ -196,6 +365,17 @@
       filterNode(value, data) {
         if (!value) return true
         return data.label.indexOf(value) !== -1
+      },
+      editInfo() {
+        this.edit = true
+        console.log(this.userInfo.user.sex)
+      },
+      saveInfo() {
+        this.edit = false
+      },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getUserList()
       }
     }
   }
@@ -203,20 +383,6 @@
 
 
 <style scoped>
-
-  .user_table{
-    width: 98%;
-    height: 170px;
-    clear: both;
-    background-color: #f7f7f7;
-    margin: 10px 0 0 10px;
-  }
-  .user_info{
-    float: left;
-    width: 54%;
-    height: 150px;
-    margin: 10px 0 0 10px;
-  }
   .img{
     width: 150px;
     height: 150px;
@@ -224,28 +390,15 @@
   }
   .user{
     float: left;
-    width: 130px;
-    height: 130px;
-    padding: 20px 0 0 20px;
-  }
-  .user_visit {
-    float: left;
-    width: 20%;
-    height: 150px;
-    margin: 10px 0 20px 10px;
+    padding: 0 0 0 20px;
   }
 
-  .user_recruit {
+  .image {
+    margin-bottom: 20px;
+    margin-right: 50px;
+    width: 174px;
+    height: 174px;
+    display: block;
     float: left;
-    width: 20%;
-    height: 150px;
-    margin: 10px 20px 0 10px;
-  }
-  .tab_title{
-    float: left;
-    text-align: center;
-    width: 20%;
-    height: 30px;
-    margin: 10px 0 0 10px;
   }
 </style>

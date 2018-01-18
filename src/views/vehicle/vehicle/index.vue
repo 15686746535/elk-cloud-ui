@@ -265,18 +265,17 @@
             <img width="100%" height="100%" :src="userInfo.user.avatar" class="image">
             <!--<el-button type="primary" style="width: 174px;" @click="edit">修改头像</el-button>-->
             <!-- 车牌颜色 -->
-            <!--<el-col :span="8">-->
+
             <el-form-item  label-width="82px" label="车牌颜色:" required>
               <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
               <Dict type="dict_sex" v-else  style="width: 100px" v-model="userInfo.user.mobile" ></Dict>
-              <!--<el-input v-else  v-model="userInfo.user.mobile" placeholder="车辆来源"  style="width: 180px"></el-input>-->
             </el-form-item>
             <br>
             <el-form-item label-width="82px" label="车身颜色:" required>
               <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.idCard}}</span>
               <el-input  v-else v-model="userInfo.idCard" style="width: 100px" placeholder="车身颜色"></el-input>
             </el-form-item>
-            <!--</el-col>-->
+
           </div>
 
           <!--<div style="margin-left:220px; width: 1400px;height: 120px;">-->
@@ -504,7 +503,6 @@
 <script>
   import { fetchList, getObj } from '@/api/vehicle/vehicle'
   import waves from '@/directive/waves/index.js' // 水波纹指令
-  // import { getObj } from '@/api/upms/user'
   import Dict from '@/components/Dict'
 
   export default {
@@ -539,10 +537,10 @@
     },
     methods: {
       getList() {
-        this.listLoading = true
+        this.listLoading = false
         fetchList(this.listQuery).then(response => {
           console.log('===================================================================================================')
-          console.log(response.data.data.list)
+          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false

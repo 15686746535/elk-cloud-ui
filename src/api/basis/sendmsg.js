@@ -1,8 +1,10 @@
 import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+  console.log(query)
   return request({
-    url: '/basis/sendmsg/userPage',
+    url: '/basis/sendmsg/getPage',
     method: 'get',
     params: query
   })

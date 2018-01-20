@@ -68,7 +68,8 @@
             <el-form-item>
               <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
               <el-button class="filter-item" type="primary" v-waves >搜索</el-button>
-              <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="create">添加</el-button>
+              <!--<el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="create">添加</el-button>-->
+              <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="create">添加</el-button>
             </el-form-item>
 
           </el-card>
@@ -77,13 +78,14 @@
     </div>
 
     <div v-show="showModule=='info'">
-      <div class="filter-container">
-        |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
-      </div>
       <el-card class="box-card1">
+        <div slot="header" class="clearfix">
+          |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
+          <el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>
+        </div>
 
         <div style="width: 200px; height: 300px;float: left;">
-          <img width="100%" height="100%" :src="userInfo.user.avatar" class="image">
+          <img width="100%" height="100%" :src="userListEdit.avatar" class="image">
           <el-button type="primary" style="width: 174px;">修改头像</el-button>
         </div>
 
@@ -92,7 +94,7 @@
 
           <el-col :span="5">
             <el-form-item label="员工姓名:" required>
-              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.username}}</span>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.name}}</span>
               <el-input v-else  v-model="userListEdit.name" style="width: 180px" placeholder="员工姓名"></el-input>
             </el-form-item>
           </el-col>
@@ -175,7 +177,7 @@
           <!-- 专业 -->
           <el-col :span="5">
             <el-form-item label="专业:" required>
-              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.user.major}}</span>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.major}}</span>
               <el-input v-else v-model="userListEdit.major" placeholder="专业"  style="width: 180px"></el-input>
             </el-form-item>
           </el-col>
@@ -238,7 +240,8 @@
       </el-card>
       <el-card class="box-card2">
 
-        <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+        <!--<el-tabs v-model="activeName2" type="card" @tab-click="handleClick">-->
+        <el-tabs v-model="activeName2" type="card">
           <el-tab-pane label="团队情况" name="first">
             <bar style="width: 300px"></bar>
           </el-tab-pane>
@@ -288,50 +291,10 @@
           label: 'label'
         },
         userListEdit: {}
-        // userListEdit: {
-        //   avatar: 'https://static.oschina.net/uploads/user/1151/2303656_100.jpg?t=1471420284000',
-        //   birthday: null,
-        //   contactAddress: null,
-        //   createTime: 1515814031000,
-        //   delFlag: '0',
-        //   education: null,
-        //   email: null,
-        //   emergencyContact: null,
-        //   emergencyMobile: null,
-        //   fiveInsuranceTime: null,
-        //   homeAddress: null,
-        //   idNumber: '',
-        //   jobNumber: '312',
-        //   joinedTime: null,
-        //   latitude: null,
-        //   leaveTime: null,
-        //   longitude: null,
-        //   major: null,
-        //   mobile: null,
-        //   name: 'admin',
-        //   newpassword1: null,
-        //   operator: null,
-        //   orgId: 9,
-        //   password: null,
-        //   positiveTime: null,
-        //   providentFundTime: null,
-        //   qq: null,
-        //   quit: '0',
-        //   remark: null,
-        //   role: null,
-        //   roleName: 'admin',
-        //   sex: '1',
-        //   updateTime: 1515814031000,
-        //   userId: 7,
-        //   username: 'dfsf',
-        //   wechat: null,
-        //   workMobile: null
-        // }
       }
     },
     created() {
       this.getOrgList()
-      this.getUserList()
     },
     methods: {
       append: function(store, data) {
@@ -345,12 +308,21 @@
         this.showModule = 'info'
         this.userListEdit = val
       },
+      back() {
+        this.showModule = 'list'
+      },
       getOrgList() {
         fetchTree().then(response => {
+          console.log(response.data.data)
+          this.listQuery.orgId = response.data.data[0].id
+          console.log(this.listQuery.orgId)
           this.treeData = response.data.data
+          this.getUserList()
         })
       },
       getUserList() {
+        console.log('=-=-=-=-=-=-=-=-=-=-=-546456456456456=-=-=-=-=-=-')
+        console.log(this.listQuery)
         fetchList(this.listQuery).then(response => {
           console.log('=-=-=-=-=-=-=-=-=-=-=-546456456456456=-=-=-=-=-=-')
           console.log(response.data.data.list)

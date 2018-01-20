@@ -114,11 +114,13 @@
         list: [],
         total: null,
         listLoading: true,
+        dialogStatus: 'create',
         showModule: 'list',
         listQuery: {
           page: 1,
           limit: 20
-        }
+        },
+        tableKey: 0
       }
     },
     created() {
@@ -128,7 +130,9 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.data.list
+          console.log('0.0.00.0.0.0.0.0.0.0.0.0.0.0.0.00..')
+          console.log(response.data)
+          this.list = response.data.data
           this.total = response.data.data.totalCount
           this.listLoading = false
         })

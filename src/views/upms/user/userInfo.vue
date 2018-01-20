@@ -181,7 +181,6 @@
 
     </el-card>
     <el-card class="box-card2">
-
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
         <el-tab-pane label="团队情况" name="first">
           <bar style="width: 300px"></bar>

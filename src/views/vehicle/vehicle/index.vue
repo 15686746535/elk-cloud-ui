@@ -7,24 +7,21 @@
           <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
         </div>
         <div class="filter-container">
-          <el-form ref="list" :model="list" inline label-width="80px">
+          <el-form ref="list.vehicleEntity" :model="list.vehicleEntity" inline label-width="80px">
             <el-form-item label="车牌">
-              <el-select v-model="list.plateNumber" placeholder="请选择车牌">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              <el-select v-model="list.vehicleEntity.userId" placeholder="请选择车牌">
+                <el-option v-for="item in list.vehicleEntity" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="负责人">
-              <el-select v-model="list.plateNumber" placeholder="请选择负责人">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              <el-select v-model="list.vehicleEntity" placeholder="请选择负责人">
+                <el-option v-for="item in list.vehicleEntity" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="车辆来源">
-              <el-select v-model="list.plateNumber" placeholder="请选择车辆来源">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
+              <dict type="dict_sex" v-model="list.vehicleEntity" ></dict>
             </el-form-item>
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
 
@@ -38,7 +35,7 @@
           |&nbsp;<span style="font-weight: 600">车辆信息</span>
         </div>
         <!-- 身份卡循环 -->
-        <el-table :data="list" height="500" border style="width: 100%"  v-loading="listLoading" element-loading-text="给我一点时间">
+        <el-table :data="list.vehicleEntity" height="500" border style="width: 100%"  v-loading="listLoading" element-loading-text="给我一点时间">
           <el-table-column label="编号" width="100px">
               <template slot-scope="scope">
               <span>{{scope.row.motorcycleType}}</span>
@@ -67,13 +64,13 @@
           <el-table-column label="证件信息">
             <template slot-scope="scope">
               <div style="width: 200px;height: 20px ">
-                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">标识卡到期日期：</p><p style="float: left">{{list.plateNumber}}</p>
+                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">标识卡到期日期：</p><p style="float: left"> </p>
               </div>
               <div style="width: 200px;height: 20px;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">评定日期：</p><p style="float: left">{{list.userId}}</p>
+                <p style="color: #868686;width: 140px;float: left">评定日期：</p><p style="float: left"> </p>
               </div>
               <div style="width: 200px;height: 20px ;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">强制报销日期：</p><p style="float: left">{{list.orgId}}</p>
+                <p style="color: #868686;width: 140px;float: left">强制报销日期：</p><p style="float: left"> </p>
               </div>
             </template>
           </el-table-column>
@@ -82,13 +79,13 @@
           <el-table-column label="技术信息">
             <template slot-scope="scope">
               <div style="width: 200px;height: 20px ">
-                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">排量/功率：</p><p style="float: left">{{list.plateNumber}}</p>
+                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">排量/功率：</p><p style="float: left"> </p>
               </div>
               <div style="width: 200px;height: 20px;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">总质量：</p><p style="float: left">{{list.userId}}</p>
+                <p style="color: #868686;width: 140px;float: left">总质量：</p><p style="float: left"> </p>
               </div>
               <div style="width: 200px;height: 20px ;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">制造厂商名称：</p><p style="float: left">{{list.orgId}}</p>
+                <p style="color: #868686;width: 140px;float: left">制造厂商名称：</p><p style="float: left"> </p>
               </div>
             </template>
           </el-table-column>
@@ -97,152 +94,20 @@
           <el-table-column label="证件信息">
             <template slot-scope="scope">
               <div style="width: 200px;height: 20px ">
-                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">安装GPS：</p><p style="float: left">{{list.plateNumber}}</p>
+                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">安装GPS：</p><p style="float: left"> </p>
               </div>
               <div style="width: 200px;height: 20px;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">三角架：</p><p style="float: left">{{list.userId}}</p>
+                <p style="color: #868686;width: 140px;float: left">三角架：</p><p style="float: left"> </p>
               </div>
               <div style="width: 200px;height: 20px ;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">发动机灭火器：</p><p style="float: left">{{list.orgId}}</p>
+                <p style="color: #868686;width: 140px;float: left">发动机灭火器：</p><p style="float: left"> </p>
               </div>
             </template>
           </el-table-column>
 
-          <!--</div>-->
+
         </el-table>
-        <!--</div>-->
-        <!--<el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                  highlight-current-row style="width: 100%">
-          <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-          <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-          <el-table-column label="负责人ID">
-            <template slot-scope="scope">
-              <span>{{scope.row.userId}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="组织ID">
-            <template slot-scope="scope">
-              <span>{{scope.row.orgId}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="型号(车辆品牌)">
-            <template slot-scope="scope">
-              <span>{{scope.row.motorcycleType}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="车辆状态">
-            <template slot-scope="scope">
-              <span>{{scope.row.vehicleState}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="自编号">
-            <template slot-scope="scope">
-              <span>{{scope.row.number}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="所属机构">
-            <template slot-scope="scope">
-              <span>{{scope.row.affiliation}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="教练车学牌">
-            <template slot-scope="scope">
-              <span>{{scope.row.plateNumber}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="原车辆牌照">
-            <template slot-scope="scope">
-              <span>{{scope.row.oldPlateNumber}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="发动机号">
-            <template slot-scope="scope">
-              <span>{{scope.row.engineNo}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="车架号">
-            <template slot-scope="scope">
-              <span>{{scope.row.vinNo}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="车身颜色">
-            <template slot-scope="scope">
-              <span>{{scope.row.carColor}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="车牌颜色">
-            <template slot-scope="scope">
-              <span>{{scope.row.plateColor}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="出厂时间">
-            <template slot-scope="scope">
-              <span>{{scope.row.factoryTime}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="注册登记日期">
-            <template slot-scope="scope">
-              <span>{{scope.row.registerTime}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="车辆类别(如:教练车,公交...)">
-            <template slot-scope="scope">
-              <span>{{scope.row.vehicleType}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="核定载客人">
-            <template slot-scope="scope">
-              <span>{{scope.row.allowNumber}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="燃料类别 ">
-            <template slot-scope="scope">
-              <span>{{scope.row.fuelType}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="技术等级">
-            <template slot-scope="scope">
-              <span>{{scope.row.technicalLevel}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="厂牌">
-            <template slot-scope="scope">
-              <span>{{scope.row.brand}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="备注">
-            <template slot-scope="scope">
-              <span>{{scope.row.remark}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作人">
-            <template slot-scope="scope">
-              <span>{{scope.row.operator}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="创建时间/通过时间">
-            <template slot-scope="scope">
-              <span>{{scope.row.createTime}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="更新时间/回访时间">
-            <template slot-scope="scope">
-              <span>{{scope.row.updateTime}}</span>
-            </template>
-          </el-table-column>
 
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" type="success"
-                         @click="update(scope.row)">编辑
-              </el-button>
-              <el-button size="mini" type="danger"
-                         @click="delete(scope.row)">删除
-              </el-button>
-            </template>
-          </el-table-column>
-
-        </el-table>-->
 
         <div v-show="!listLoading" class="pagination-container">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -258,6 +123,7 @@
 
         <div slot="header" class="clearfix">
           |&nbsp;<span style="font-weight: 600">基础信息</span>
+          <el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>
         </div>
 
         <el-form :inline="true"  :model="userInfo" label	 label-width="100px" label-position="left" class="demo-form-inline">
@@ -402,7 +268,6 @@
             <el-form-item label="燃料类别:">
               <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userInfo.user.mobile}}</span>
               <Dict type="dict_sex" v-else  style="width: 180px" v-model="userInfo.user.mobile" ></Dict>
-              <!--<el-input v-else  v-model="userInfo.user.mobile" placeholder="车辆来源"  style="width: 180px"></el-input>-->
             </el-form-item>
           </el-col>
 
@@ -436,15 +301,15 @@
 
         </el-form>
 
-        <!--</div>-->
 
       </el-card>
       <el-card class="box-card2">
 
         <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-          <el-tab-pane label="维修日志" name="1">
 
-            <el-table :data="tableData" stripe style="width: 100%">
+          <el-tab-pane label="证件信息" name="1">
+
+            <el-table :data="list.certificateEntity" stripe style="width: 100%">
               <el-table-column prop="date" label="维修事项" width="180">
               </el-table-column>
               <el-table-column prop="name" label="维修时间" width="180">
@@ -458,9 +323,58 @@
             </el-table>
 
           </el-tab-pane>
-          <el-tab-pane label="保养日志" name="2">
+          <el-tab-pane label="技术信息" name="2">
 
-            <el-table :data="tableData" stripe style="width: 100%">
+            <el-table :data="list.technicalEntity" stripe style="width: 100%">
+              <el-table-column prop="date" label="维修事项" width="180">
+              </el-table-column>
+              <el-table-column prop="name" label="维修时间" width="180">
+              </el-table-column>
+              <el-table-column prop="address" label="维修费用">
+              </el-table-column>
+              <el-table-column prop="address" label="维修人">
+              </el-table-column>
+              <el-table-column prop="address" label="备注">
+              </el-table-column>
+            </el-table>
+
+          </el-tab-pane>
+          <el-tab-pane label="安全信息" name="3">
+
+            <el-table :data="list.safetyEntity" stripe style="width: 100%">
+              <el-table-column prop="date" label="维修事项" width="180">
+              </el-table-column>
+              <el-table-column prop="name" label="维修时间" width="180">
+              </el-table-column>
+              <el-table-column prop="address" label="维修费用">
+              </el-table-column>
+              <el-table-column prop="address" label="维修人">
+              </el-table-column>
+              <el-table-column prop="address" label="备注">
+              </el-table-column>
+            </el-table>
+
+          </el-tab-pane>
+          <el-tab-pane label="图片相册" name="4">角色管理</el-tab-pane>
+          <el-tab-pane label="维修日志" name="5">
+
+            <el-table :data="list.repairEntityList" stripe style="width: 100%">
+              <el-table-column prop="date" label="维修事项" width="180">
+              </el-table-column>
+              <el-table-column prop="name" label="维修时间" width="180">
+              </el-table-column>
+              <el-table-column prop="address" label="维修费用">
+              </el-table-column>
+              <el-table-column prop="address" label="维修人">
+              </el-table-column>
+              <el-table-column prop="address" label="备注">
+              </el-table-column>
+            </el-table>
+
+          </el-tab-pane>
+          <el-tab-pane label="保养日志" name="6">
+
+            <el-table :data="list.maintainEntityList" stripe style="width: 100%">
               <el-table-column prop="date" label="保养事项" width="180">
               </el-table-column>
               <el-table-column prop="name" label="保养时间" width="180">
@@ -474,9 +388,9 @@
             </el-table>
 
           </el-tab-pane>
-          <el-tab-pane label="费用日志" name="3">
+          <el-tab-pane label="费用日志" name="7">
 
-            <el-table :data="tableData" stripe style="width: 100%">
+            <el-table :data="list.maintainEntityList" stripe style="width: 100%">
               <el-table-column prop="date" label="费用事项" width="180">
               </el-table-column>
               <el-table-column prop="name" label="记录时间" width="180">
@@ -490,10 +404,6 @@
             </el-table>
 
           </el-tab-pane>
-          <el-tab-pane label="证件信息" name="4">角色管理</el-tab-pane>
-          <el-tab-pane label="技术信息" name="5">角色管理</el-tab-pane>
-          <el-tab-pane label="安全信息" name="6">角色管理</el-tab-pane>
-          <el-tab-pane label="图片相册" name="7">角色管理</el-tab-pane>
         </el-tabs>
       </el-card>
     </div>
@@ -522,7 +432,8 @@
         showModule: 'list',
         listQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          cp: ''
         },
         edit: false,
         activeName2: '1',
@@ -540,8 +451,8 @@
         this.listLoading = false
         fetchList(this.listQuery).then(response => {
           console.log('===================================================================================================')
-          console.log(response.data)
-          this.list = response.data.data.list
+          console.log(response.data.data)
+          this.list = response.data.data
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
@@ -557,6 +468,9 @@
       create() {
         this.vehicle = {}
         this.showModule = 'info'
+      },
+      back() {
+        this.showModule = 'list'
       },
       update(row) {
         getObj(row.roleId)

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
     return request({
-        url: '/qrtz/schedulejob/userPage',
+        url: '/qrtz/schedulejob/getPage',
         method: 'get',
         params: query
     })

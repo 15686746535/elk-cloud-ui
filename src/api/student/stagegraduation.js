@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
   return request({
-    url: '/stu/stagegraduation/userPage',
+    url: '/stu/stagegraduation/getPage',
     method: 'get',
     params: query
   })

@@ -1,9 +1,9 @@
 <template>
   <div class="app-container calendar-list-container">
     <div v-show="showModule=='list'">
-      <div class="filter-container">
-        |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
-      </div>
+      <!--<div class="filter-container">-->
+        <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>-->
+      <!--</div>-->
       <el-row>
         <el-col :span="16" style='margin-left: 63%; margin-top:15px;width: 37%'>
           <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="用户名" v-model="listQuery.username"></el-input>
@@ -31,7 +31,7 @@
         <el-col :span="16" style='margin-left: 10px; margin-top:15px;width: 75%'>
           <el-card>
             <!-- 身份卡循环 -->
-            <el-table :data="userList" height="600" border style="width: 100%; " highlight-current-row @current-change="handleCurrentChange"  v-loading="listLoading" element-loading-text="给我一点时间">
+            <el-table :data="userList" height="600" border style="width: 100%; " highlight-current-row @row-dblclick="handleCurrentChange"  v-loading="listLoading" element-loading-text="给我一点时间">
               <el-table-column label="员工信息">
                 <template slot-scope="scope">
                   <!-- 头像 -->
@@ -65,12 +65,6 @@
               </el-table-column>
             </el-table>
 
-            <el-form-item>
-              <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-              <el-button class="filter-item" type="primary" v-waves >搜索</el-button>
-              <!--<el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="create">添加</el-button>-->
-              <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="create">添加</el-button>
-            </el-form-item>
 
           </el-card>
         </el-col>
@@ -80,7 +74,7 @@
     <div v-show="showModule=='info'">
       <el-card class="box-card1">
         <div slot="header" class="clearfix">
-          |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
+          <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>-->
           <el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>
         </div>
 
@@ -126,11 +120,12 @@
           <!-- 性别 -->
           <el-col :span="5">
             <el-form-item label="性别:" required>
-              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.sex==1?'男':'女'}}</span>
-              <span v-else >
-            <el-radio  v-model="userListEdit.sex" label="1">男</el-radio>
-            <el-radio  v-model="userListEdit.sex" label="2">女</el-radio>
-            </span>
+              <span style="padding-left: 16px;font-size: 12px;" v-if="!edit">{{userListEdit.sex==1?'男':userListEdit.sex==2?'女':''}}</span>
+              <dict type="dict_sex" style="width: 180px;" v-else v-model="userListEdit.sex" ></dict>
+              <!--<span v-else >-->
+                <!--<el-radio  v-model="userListEdit.sex" label="1">男</el-radio>-->
+                <!--<el-radio  v-model="userListEdit.sex" label="2">女</el-radio>-->
+              <!--</span>-->
             </el-form-item>
           </el-col>
 
@@ -259,14 +254,21 @@
 <script>
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import Bar from '@/components/Bar'
+  import Dict from '@/components/Dict'
   import LineChart from '@/components/LineChart'
   import { fetchTree } from '@/api/upms/org'
-  import { fetchList } from '@/api/upms/user'
+  // import { fetchList } from '@/api/upms/user'
+  const a = [
+    {},
+    {},
+    {}
+  ]
 
   export default {
     components: {
       Bar,
-      LineChart
+      LineChart,
+      Dict
     },
     name: 'index',
     directives: {
@@ -285,6 +287,7 @@
           limit: 20,
           orgId: null
         },
+        // 树形图
         treeData: [],
         defaultProps: {
           children: 'children',
@@ -323,12 +326,14 @@
       getUserList() {
         console.log('=-=-=-=-=-=-=-=-=-=-=-546456456456456=-=-=-=-=-=-')
         console.log(this.listQuery)
-        fetchList(this.listQuery).then(response => {
-          console.log('=-=-=-=-=-=-=-=-=-=-=-546456456456456=-=-=-=-=-=-')
-          console.log(response.data.data.list)
-          this.userList = response.data.data.list
-          this.listLoading = false
-        })
+        this.userList = a
+        this.listLoading = false
+        // fetchList(this.listQuery).then(response => {
+        //   console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+        //   console.log(response.data)
+        //   this.userList = response.data.data.list
+        //   this.listLoading = false
+        // })
       },
       searchByOrg(data) {
         this.listQuery.orgId = data.id

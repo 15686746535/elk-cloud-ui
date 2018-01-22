@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
   return request({
-    url: '/bespeak/shuttlestudent/userPage',
+    url: '/bespeak/shuttlestudent/getPage',
     method: 'get',
     params: query
   })

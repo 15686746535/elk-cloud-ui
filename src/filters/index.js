@@ -15,12 +15,24 @@ export function timeAgo(time) {
     return pluralize(~~(between / 86400), ' day')
   }
 }
+export function subTime(time) {
+  if (arguments[0] === undefined || arguments[0] == null) {
+    return null
+  }
+  try {
+    return time.substr(0,10)
+  } catch (e) {
+    return parseTime(time,'{y}-{m}-{d}')
+  }
+}
 
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
-
+  if (arguments[0] === undefined || arguments[0] == null) {
+    return null
+  }
   if ((time + '').length === 10) {
     time = +time * 1000
   }

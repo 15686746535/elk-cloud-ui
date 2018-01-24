@@ -1,8 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
-  console.log('//////////////////////////////////////////')
-  console.log(query)
   return request({
     url: '/vehicle/vehicle/getPage',
     method: 'get',

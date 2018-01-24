@@ -1,6 +1,6 @@
 <template>
   <div>
-      <el-select class="filter-item" placeholder="请选择" v-model="dict" @change="emitChange(dict)">
+      <el-select class="filter-item" :style="{height:height,width:width}" :placeholder=placeholder v-model="dict" @change="emitChange(dict)">
         <el-option v-for="item in  dictList" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
   </div>
@@ -16,6 +16,18 @@
       event: 'change'
     },
     props: {
+      width: {
+        type: String,
+        default: '100%'
+      },
+      height: {
+        type: String,
+        default: '100%'
+      },
+      placeholder: {
+        type: String,
+        default: '请选择'
+      },
       type: String
     },
     data() {

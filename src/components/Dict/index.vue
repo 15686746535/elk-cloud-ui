@@ -28,7 +28,10 @@
         type: String,
         default: '请选择'
       },
-      type: String
+      dictType: {
+        type: String,
+        default: null
+      }
     },
     data() {
       return {
@@ -38,12 +41,14 @@
     },
     // 数据请求
     created() {
-      fetch({
-        url: '/basis/dict/type/' + this.type,
-        method: 'get'
-      }).then(response => {
-        this.dictList = response.data.data
-      })
+      if (this.dictType) {
+        fetch({
+          url: '/basis/dict/type/' + this.dictType,
+          method: 'get'
+        }).then(response => {
+          this.dictList = response.data.data
+        })
+      }
     },
     methods: {
       emitChange(value) {

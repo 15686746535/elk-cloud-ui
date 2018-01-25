@@ -18,7 +18,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="车辆来源">
-              <dict type="dict_sex" v-model="listQuery.vehicleState" ></dict>
+              <dict dictType="dict_sex" v-model="listQuery.vehicleState" ></dict>
             </el-form-item>
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
 
@@ -129,7 +129,7 @@
             <br>
             <!-- 车牌颜色 -->
             <el-form-item  label-width="82px" label="车牌颜色:" >
-              <Dict type="dict_sex"  v-if="edit == 'vehicle'"  style="width: 120px" v-model="vehicle.vehicleEntity.plateColor" ></Dict>
+              <Dict dictType="dict_sex"  v-if="edit == 'vehicle'"  style="width: 120px" v-model="vehicle.vehicleEntity.plateColor" ></Dict>
               <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.plateColor}}</span>
             </el-form-item>
             <br>
@@ -195,7 +195,7 @@
           <!-- 车辆来源 -->
           <el-col :span="6">
             <el-form-item label="车辆来源:" >
-              <Dict type="dict_sex"  v-if="edit === 'vehicle'" style="width: 240px" v-model="vehicle.vehicleEntity.vehicleState" placeholder="车辆来源" ></Dict>
+              <Dict dictType="dict_sex"  v-if="edit === 'vehicle'" style="width: 240px" v-model="vehicle.vehicleEntity.vehicleState" placeholder="车辆来源" ></Dict>
               <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.vehicleState}}</span>
             </el-form-item>
           </el-col>
@@ -220,7 +220,7 @@
           <!-- 车辆类别 -->
           <el-col :span="6">
             <el-form-item label="车辆类别:" >
-              <Dict type="dict_sex" v-if="edit === 'vehicle'" style="width: 240px" v-model="vehicle.vehicleEntity.vehicleType"  placeholder="车辆类别"></Dict>
+              <Dict dictType="dict_sex" v-if="edit === 'vehicle'" style="width: 240px" v-model="vehicle.vehicleEntity.vehicleType"  placeholder="车辆类别"></Dict>
               <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.vehicleType}}</span>
             </el-form-item>
           </el-col>
@@ -260,7 +260,7 @@
           <!-- 燃料类别 -->
           <el-col :span="6">
             <el-form-item label="燃料类别:">
-              <Dict type="dict_sex" v-if="edit === 'vehicle'" style="width: 240px" v-model="vehicle.vehicleEntity.fuelType" placeholder="燃料类别" ></Dict>
+              <Dict dictType="dict_sex" v-if="edit === 'vehicle'" style="width: 240px" v-model="vehicle.vehicleEntity.fuelType" placeholder="燃料类别" ></Dict>
               <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.fuelType}}</span>
             </el-form-item>
           </el-col>
@@ -288,8 +288,9 @@
           <el-col :span="5">
 
             <el-form-item v-if="edit === 'vehicle'">
-              <el-button v-if="!addInfo" type="primary" style="width: 150px;" @click="cancel('vehicleEdit')">取消</el-button>
-              <el-button type="primary" style="width: 150px;" @click="vehicleSaveInfo">确认</el-button>
+              <el-button v-if="!addInfo" type="primary" style="width: 150px;" @click="cancel">取消</el-button>
+              <el-button v-if="addInfo" type="primary" style="width: 150px;" @click="add('vehicle',vehicle.vehicleEntity)">确认保存</el-button>
+              <el-button v-if="!addInfo" type="primary" style="width: 150px;" @click="update('vehicle',vehicle.vehicleEntity)">确认修改</el-button>
             </el-form-item>
 
 
@@ -471,8 +472,8 @@
               <el-col>
 
                 <el-form-item v-if="edit === 'certificate'" style="float: right">
-                  <el-button type="primary"  style="width: 150px;" @click="cancel('certificateEdit')">取消</el-button>
-                  <el-button type="primary"  style="width: 150px;" @click="certificateSaveInfo">确认</el-button>
+                  <el-button type="primary"  style="width: 150px;" @click="cancel">取消</el-button>
+                  <el-button type="primary"  style="width: 150px;" @click="update('certificate',vehicle.certificateEntity)">确认</el-button>
                 </el-form-item>
 
 
@@ -604,8 +605,8 @@
 
               <el-col>
                 <el-form-item v-if="edit === 'technical'" style="float: right">
-                  <el-button type="primary"  style="width: 150px;" @click="cancel('technicalEdit')">取消</el-button>
-                  <el-button type="primary"  style="width: 150px;" @click="technicalSaveInfo">确认</el-button>
+                  <el-button type="primary"  style="width: 150px;" @click="cancel">取消</el-button>
+                  <el-button type="primary"  style="width: 150px;" @click="update('technical',vehicle.technicalEntity)">确认</el-button>
                 </el-form-item>
 
 
@@ -681,8 +682,8 @@
               <el-col>
 
                 <el-form-item v-if="edit === 'safety'" style="float: right">
-                  <el-button type="primary"  style="width: 150px;" @click="cancel('safetyEdit')">取消</el-button>
-                  <el-button type="primary"  style="width: 150px;" @click="safetySaveInfo">确认</el-button>
+                  <el-button type="primary"  style="width: 150px;" @click="cancel">取消</el-button>
+                  <el-button type="primary"  style="width: 150px;" @click="update('safety',vehicle.safetyEntity)">确认</el-button>
                 </el-form-item>
 
                 <el-form-item v-else style="float: right">
@@ -923,17 +924,10 @@
       },
       // 添加
       add(key, obj) {
-        if (key === 'vehicle') {
-          putObj(key, obj).then(response => {
-            console.log(response.data)
-          })
-        } else if (key === 'technical') {
-        //  s
-        } else if (key === 'safety') {
-          // this.save(key, obj)
-        } else if (key === 'certificate') {
-          // this.save(key, obj)
-        }
+        addObj(key, obj).then(response => {
+          console.log(response.data)
+        })
+        this.edit = ''
       },
       // 修改
       update(key, obj) {
@@ -948,6 +942,7 @@
         } else if (key === 'certificate') {
           // this.save(key, obj)
         }
+        this.edit = ''
       },
       // 搜索
       search() {
@@ -959,29 +954,31 @@
         this.getList()
       },
       // 取消
-      cancel(flag) {
+      cancel() {
         console.log('=================== 正在完成取消操作 ===================')
-        if (flag === 'vehicleEdit') {
-          console.log('=================== 取消编辑车辆基本信息 ===================')
-          console.log(this.vehicle.vehicleEntity)
-          // this.vehicle.vehicleEntity = this.vehicleNotes.vehicleInfoNotes
-          console.log(this.vehicle.vehicleEntity)
-          this.edit.vehicleEdit = false
-          console.log('=================== 完成 ===================')
-        } else if (flag === 'certificateEdit') {
-          console.log('=================== 车辆证书信息取消编辑 ===================')
-          this.edit.certificateEdit = false
-          console.log('=================== 完成 ===================')
-        } else if (flag === 'technicalEdit') {
-          console.log('=================== 车辆技术信息取消编辑 ===================')
-          this.edit.technicalEdit = false
-          console.log('=================== 完成 ===================')
-        } else if (flag === 'safetyEdit') {
-          console.log('=================== 车辆技术信息取消编辑 ===================')
-          this.edit.safetyEdit = false
-          console.log('=================== 完成 ===================')
-        }
+        // if (flag === 'vehicleEdit') {
+        //   console.log('=================== 取消编辑车辆基本信息 ===================')
+        //   console.log(this.vehicle.vehicleEntity)
+        //   // this.vehicle.vehicleEntity = this.vehicleNotes.vehicleInfoNotes
+        //   console.log(this.vehicle.vehicleEntity)
+        //   this.edit.vehicleEdit = false
+        //   console.log('=================== 完成 ===================')
+        // } else if (flag === 'certificateEdit') {
+        //   console.log('=================== 车辆证书信息取消编辑 ===================')
+        //   this.edit.certificateEdit = false
+        //   console.log('=================== 完成 ===================')
+        // } else if (flag === 'technicalEdit') {
+        //   console.log('=================== 车辆技术信息取消编辑 ===================')
+        //   this.edit.technicalEdit = false
+        //   console.log('=================== 完成 ===================')
+        // } else if (flag === 'safetyEdit') {
+        //   console.log('=================== 车辆技术信息取消编辑 ===================')
+        //   this.edit.safetyEdit = false
+        //   console.log('=================== 完成 ===================')
+        // }
+        this.editlist(this.vehicle)
         this.showModule = 'info'
+        console.log('=================== 完成 ===================')
       },
       // 双击编辑
       editlist(val) {
@@ -1004,6 +1001,7 @@
             this.vehicle.repairList = response.data.data.repairEntityList
           })
         this.showModule = 'info'
+        this.edit = ''
         this.addInfo = false
       },
       // 所有编辑方法

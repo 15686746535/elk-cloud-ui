@@ -10,7 +10,7 @@ export function fetchList(query) {
 // 添加车辆信息
 export function addObj(key, obj) {
   return request({
-    url: '/vehicle/' + key,
+    url: '/vehicle/' + key + '/',
     method: 'post',
     data: obj
   })

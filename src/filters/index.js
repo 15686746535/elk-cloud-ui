@@ -20,9 +20,9 @@ export function subTime(time) {
     return null
   }
   try {
-    return time.substr(0,10)
+    return time.substr(0, 10)
   } catch (e) {
-    return parseTime(time,'{y}-{m}-{d}')
+    return parseTime(time, '{y}-{m}-{d}')
   }
 }
 

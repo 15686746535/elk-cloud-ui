@@ -138,6 +138,7 @@
     methods: {
       getList() {
         fetchTree(this.listQuery).then(response => {
+          console.log(response.data.data)
           this.treeData = response.data.data
         })
       },

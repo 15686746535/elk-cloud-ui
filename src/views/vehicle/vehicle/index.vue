@@ -153,9 +153,9 @@
 
           <el-col :span="6">
             <el-form-item label="使用责任人" >
-              <el-select v-if="edit == 'vehicle'" v-model="vehicle.vehicleEntity.name" style="width: 240px" placeholder="使用责任人">
-                <el-option label="使用责任人一" value="shanghai"></el-option>
-                <el-option label="使用责任人二" value="beijing"></el-option>
+              <el-select v-if="edit === 'vehicle'" v-model="vehicle.vehicleEntity.userId" style="width: 240px" placeholder="使用责任人">
+                <el-option label="使用责任人一" value="1"></el-option>
+                <el-option label="使用责任人二" value="1"></el-option>
               </el-select>
               <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.name}}</span>
             </el-form-item>
@@ -308,7 +308,7 @@
       </el-card>
       <!--<el-card class="box-card2" v-show="vehicle.vehicleEntity.vehicleId != null">-->
 
-        <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" style="margin-top: 10px" v-show="vehicle.vehicleEntity.vehicleId != null">
+        <el-tabs v-model="activeName" v-if="vehicle.vehicleEntity.vehicleId" type="border-card" @tab-click="handleClick" style="margin-top: 10px" >
 
           <el-tab-pane label="证件信息" name="1">
             <el-form :inline="true"  :model="vehicle" label	 label-width="160px" label-position="left" class="demo-form-inline">
@@ -752,7 +752,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj, addVehicle, putVehicle, addCertificate, addTechnical, addSafety, putCertificate, putTechnical, putSafety } from '@/api/vehicle/vehicle'
+  import { fetchList, getObj, addObj, putObj } from '@/api/vehicle/vehicle'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import Dict from '@/components/Dict'
 
@@ -770,14 +770,6 @@
         plates: [],
         // 负责人集合
         userNames: [],
-        // vehicleNotes: {
-        //   vehicleInfoNotes: {},
-        //   technicalEntityNotes: {},
-        //   safetyEntityNotes: {},
-        //   certificateEntityNotes: {},
-        //   maintainListNotes: [],
-        //   repairListNotes: []
-        // },
         // 单个车辆信息
         vehicle: {
           vehicleEntity: {},
@@ -805,12 +797,6 @@
         },
         // 编辑标记
         edit: '',
-        // edit: {
-        //   vehicleEdit: false,
-        //   certificateEdit: false,
-        //   technicalEdit: false,
-        //   safetyEdit: false
-        // },
         // 信息卡切换标记
         activeName: '1',
         // 时间范围
@@ -925,23 +911,17 @@
       // 添加
       add(key, obj) {
         addObj(key, obj).then(response => {
-          console.log(response.data)
+          console.log('这里是===========================')
+          this.vehicle.vehicleEntity.vehicleId = response.data.data
+          console.log(this.vehicle.vehicleEntity.vehicleId)
         })
         this.edit = ''
       },
       // 修改
       update(key, obj) {
-        if (key === 'vehicle') {
-          putObj(key, obj).then(response => {
-            console.log(response.data)
-          })
-        } else if (key === 'technical') {
-          // this.save(key, obj)
-        } else if (key === 'safety') {
-          // this.save(key, obj)
-        } else if (key === 'certificate') {
-          // this.save(key, obj)
-        }
+        putObj(key, obj).then(response => {
+          console.log(response.data)
+        })
         this.edit = ''
       },
       // 搜索
@@ -956,26 +936,6 @@
       // 取消
       cancel() {
         console.log('=================== 正在完成取消操作 ===================')
-        // if (flag === 'vehicleEdit') {
-        //   console.log('=================== 取消编辑车辆基本信息 ===================')
-        //   console.log(this.vehicle.vehicleEntity)
-        //   // this.vehicle.vehicleEntity = this.vehicleNotes.vehicleInfoNotes
-        //   console.log(this.vehicle.vehicleEntity)
-        //   this.edit.vehicleEdit = false
-        //   console.log('=================== 完成 ===================')
-        // } else if (flag === 'certificateEdit') {
-        //   console.log('=================== 车辆证书信息取消编辑 ===================')
-        //   this.edit.certificateEdit = false
-        //   console.log('=================== 完成 ===================')
-        // } else if (flag === 'technicalEdit') {
-        //   console.log('=================== 车辆技术信息取消编辑 ===================')
-        //   this.edit.technicalEdit = false
-        //   console.log('=================== 完成 ===================')
-        // } else if (flag === 'safetyEdit') {
-        //   console.log('=================== 车辆技术信息取消编辑 ===================')
-        //   this.edit.safetyEdit = false
-        //   console.log('=================== 完成 ===================')
-        // }
         this.editlist(this.vehicle)
         this.showModule = 'info'
         console.log('=================== 完成 ===================')
@@ -1016,95 +976,6 @@
           this.update(this.edit, this.vehicle.certificateEntity)
         }
         this.edit = key
-      },
-      // 改变车辆信息标记 编辑
-      vehicleEditInfo() {
-        console.log('=============  编辑车辆基本信息 ================')
-        this.edit.vehicleEdit = true
-        console.log(this.vehicle.vehicleEntity)
-        console.log(this.vehicle.vehicleEntity)
-        console.log('=============  完成 ================')
-      },
-      // 改变车辆信息标记 保存
-      vehicleSaveInfo() {
-        console.log('=============  保存车辆基本信息 ================')
-        // if (this.addInfo) {
-        //   addVehicle(this.vehicle.vehicleEntity).then(response => {
-        //     console.log(response.data)
-        //   })
-        // } else {
-        //   console.log('qwqe7q894da56sd465a7das6d4as1da56as11')
-        //   console.log(this.vehicle.vehicleEntity)
-        //   putVehicle(this.vehicle.vehicleEntity).then(response => {
-        //     console.log(response.data)
-        //   })
-        // }
-        this.edit.vehicleEdit = false
-        console.log('=============  完成 ================')
-      },
-      // 改变车辆证书信息标记 编辑
-      certificateEditInfo() {
-        console.log('=============  编辑车辆证书信息 ================')
-        this.timeGroup()
-        this.edit.certificateEdit = true
-        console.log('=============  完成 ================')
-      },
-      // 改变车辆证书信息标记 保存
-      certificateSaveInfo() {
-        console.log('=============  保存车辆证书信息 ================')
-        if (this.addInfo) {
-          addCertificate(this.vehicle.certificateEntity).then(response => {
-            console.log(response.data)
-          })
-        } else {
-          putCertificate(this.vehicle.certificateEntity).then(response => {
-            console.log(response.data)
-          })
-        }
-        this.edit.certificateEdit = false
-        console.log('=============  完成 ================')
-      },
-      // 改变车辆技术信息标记 编辑
-      technicalEditInfo() {
-        console.log('=============  编辑车辆技术信息 ================')
-        this.edit.technicalEdit = true
-        console.log('=============  完成 ================')
-      },
-      // 改变车辆技术信息标记 保存
-      technicalSaveInfo() {
-        console.log('=============  保存车辆技术信息 ================')
-        if (this.addInfo) {
-          addTechnical(this.vehicle.technicalEntity).then(response => {
-            console.log(response.data)
-          })
-        } else {
-          putTechnical(this.vehicle.technicalEntity).then(response => {
-            console.log(response.data)
-          })
-        }
-        this.edit.technicalEdit = false
-        console.log('=============  完成 ================')
-      },
-      // 改变车辆安全信息标记 编辑
-      safetyEditInfo() {
-        console.log('=============  编辑车辆技术信息 ================')
-        this.edit.safetyEdit = true
-        console.log('=============  完成 ================')
-      },
-      // 改变车辆安全信息标记 保存
-      safetySaveInfo() {
-        console.log('=============  保存车辆技术信息 ================')
-        if (this.addInfo) {
-          addSafety(this.vehicle.safetyEntity).then(response => {
-            console.log(response.data)
-          })
-        } else {
-          putSafety(this.vehicle.safetyEntity).then(response => {
-            console.log(response.data)
-          })
-        }
-        this.edit.safetyEdit = false
-        console.log('=============  完成 ================')
       },
       handleClick(tab, event) {
         console.log(tab)

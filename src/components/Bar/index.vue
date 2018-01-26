@@ -28,7 +28,7 @@
         default: '#fff'
       },
       data: {
-        type: Object
+        type: Array
       }
     },
     data() {

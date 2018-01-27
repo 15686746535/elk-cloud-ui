@@ -483,11 +483,6 @@
               </el-col>
             </el-form>
           </el-tab-pane>
-
-
-
-
-
           <el-tab-pane label="技术信息" name="2">
 
             <el-form :inline="true"  :model="vehicle" label	 label-width="160px" label-position="left" class="demo-form-inline">
@@ -745,6 +740,7 @@
             </el-table>
 
           </el-tab-pane>
+
         </el-tabs>
       <!--</el-card>-->
     </div>
@@ -858,15 +854,7 @@
         this.daterange.bottleTime[1] = this.vehicle.certificateEntity.bottleEnd == null ? '' : this.vehicle.certificateEntity.bottleEnd
         this.daterange.twoDimensionalTime[0] = this.vehicle.certificateEntity.twoDimensionalStart == null ? '' : this.vehicle.certificateEntity.twoDimensionalStart
         this.daterange.twoDimensionalTime[1] = this.vehicle.certificateEntity.twoDimensionalEnd == null ? '' : this.vehicle.certificateEntity.twoDimensionalEnd
-        console.log(this.vehicle.certificateEntity.viStart)
-        console.log(this.vehicle.certificateEntity.viEnd)
-        console.log(this.vehicle.certificateEntity.clivtaStart)
-        console.log(this.vehicle.certificateEntity.clivtaEnd)
-        console.log(this.vehicle.certificateEntity.bottleStart)
-        console.log(this.vehicle.certificateEntity.bottleEnd)
-        console.log(this.vehicle.certificateEntity.twoDimensionalStart)
-        console.log(this.vehicle.certificateEntity.twoDimensionalEnd)
-        console.log('=============  结束 ================')
+        console.log('=============  结束  ================')
       },
       // 获取所有车辆信息
       getList() {
@@ -905,6 +893,7 @@
       },
       // 返回列表
       back() {
+        this.getList()
         this.edit = ''
         this.showModule = 'list'
       },
@@ -959,6 +948,7 @@
             this.vehicle.certificateEntity = response.data.data.certificateEntity
             this.vehicle.maintainList = response.data.data.maintainEntityList
             this.vehicle.repairList = response.data.data.repairEntityList
+            this.timeGroup()
           })
         this.showModule = 'info'
         this.edit = ''
@@ -975,6 +965,7 @@
         } else if (this.edit === 'certificate') {
           this.update(this.edit, this.vehicle.certificateEntity)
         }
+        this.editlist(this.vehicle)
         this.edit = key
       },
       handleClick(tab, event) {

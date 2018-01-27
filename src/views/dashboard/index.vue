@@ -8,7 +8,8 @@
     <br/>
     <span>字典标签,自定义标签</span>
     <dict dictType="dict_sex" v-model="dict" >1111</dict>
-    <org></org>
+    <org-select></org-select>
+
     <el-button style="width: 174px;" @click="getDict">取值</el-button>
 
     <span>值为：{{dict}}</span>
@@ -16,25 +17,29 @@
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
-    <div style="height: 500px" >
+    <div style="height: 500px;float: left;width: 300px;" >
       <!-- 调用实例  -->
-      <tree :list="list" :open="false" v-model="treeModel"></tree>
+      <org-tree @node-click="nodeClick" ></org-tree>
     </div>
-
+    <div style="height: 500px;float: left;width: 300px;" >
+      <tree :list="list" :recordList="recordList" :open="true" choiceType="checkbox" @node-checkbox="nodeCheckbox"></tree>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Dict from '@/components/Dict'
-import Org from '@/components/OrgTree'
+import OrgSelect from '@/components/OrgSelect'
+import OrgTree from '@/components/OrgTree'
 import Tree from '@/components/Tree'
 
 export default {
   components: {
     Dict,
+    OrgTree,
     Tree,
-    Org
+    OrgSelect
   },
   name: 'dashboard',
   computed: {
@@ -47,9 +52,10 @@ export default {
     return {
       dict: null,
       disabled: true,
-      aaa: 0,
+      org: null,
       hidden: true,
-      treeModel: {},
+      checkbox: [],
+      recordList: [1, 2, 3],
       list: [
         {
           'id': 1,
@@ -115,15 +121,26 @@ export default {
     }
   },
   methods: {
-    getDict() {
-      console.log(this.dict)
-      if (this.aaa) {
-        console.log('-----------aaaaaaa')
-      } else {
-        console.log('=================aaaaaaa')
-      }
+    nodeClick: function(org) {
       console.log('treeModel')
-      console.log(this.treeModel)
+      console.log(org)
+    },
+    nodeCheckbox(val, isAdd) {
+      if (isAdd) {
+        this.checkbox.push(val)
+      } else {
+        this.delNodeId(val)
+      }
+      console.log(this.checkbox)
+    },
+    delNodeId(id) {
+      for (var i = 0; i < this.checkbox.length; i++) {
+        if (this.checkbox[i] === id) this.checkbox.splice(i, 1)
+      }
+    },
+    getDict() {
+      console.log('org')
+      console.log(this.org)
     }
   }
 }

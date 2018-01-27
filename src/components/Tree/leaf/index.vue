@@ -1,13 +1,15 @@
 <template>
-  <li :id="getID('_li')">
-    <span :id="getID('_li_switch')" class="button switch " :class="getSwitchClazz"  @click='toggle'></span>
-    <a :id="getID('_li_a')" @click="choice(model)">
-      <span :id="getID('_li_a_icon')"  class="button ico " :class="getIconClazz"></span>
-      <span :id="getID('_li_a_span')"  class="node_name">{{model.name}}</span>
+  <li :id="'li_'+model.id" >
+    <span :id="'li_switch_'+model.id" class="button switch " :class="getSwitchClazz"  @click='toggle'></span>
+    <span v-if="getChoiceType('checkbox')" :id="'li_checkbox_'+model.id" class="button chk "
+          :class="backfill(model.id)?'checkbox_true_full':'checkbox_false_full'"  @click='nodeChecked(model.id)'></span>
+    <a :id="'li_a_'+model.id" @click="nodeClick(model)" class="node ">
+      <span v-if="getChoiceType('folder')" :id="'li_a_icon_'+model.id"  class="button ico " :class="getIconClazz"></span>
+      <span :id="'li_a_name_'+model.id" class="node_name" >{{model.name}}</span>
     </a>
-    <ul v-show="isOpen" v-if='isFolder' :class="isLine?'line':''" :id="getID('_li_ul')">
+    <ul v-show="isOpen" v-if='isFolder' :class="isLine" :id="'li_ul_'+model.id">
       <template v-for='(cel,index) in model.children'>
-        <items  :model='cel' :id="getID('_li_ul')+'_'" :sort="index" :open="open" :extent="model.children.length"></items>
+        <items  :model='cel' :recordList="recordList"  @node-click="nodeClick" @node-checkbox="nodeCheckbox" :choiceType="choiceType"  :sort="index" :open="open" :listSize="model.children.length"></items>
       </template>
     </ul>
   </li>
@@ -16,33 +18,28 @@
 <script>
   export default {
     name: 'items',
-    model: {
-      prop: 'click',
-      event: 'change'
-    },
-    props: ['model', 'id', 'sort', 'open', 'extent'],
-    components: {},
+    props: ['model', 'id', 'sort', 'open', 'listSize', 'choiceType', 'recordList'],
     data() {
       return {
-        isOpen: true,
-        node: {
-          id: null,
-          name: ''
-        }
+        isOpen: true
       }
     },
     computed: {
-      isFolder: function() {
+      isFolder() {
         return this.model.children && this.model.children.length
       },
-      isLine: function() {
-        if (this.model.children.length > 1 || this.model.children.length === 1 && this.model.children[0].children.length > 0) {
-          return true
+      isLine() {
+        if (this.listSize === this.sort + 1) {
+          return ''
         } else {
-          return false
+          if (this.listSize > 1) {
+            return 'line'
+          } else {
+            return ''
+          }
         }
       },
-      getIconClazz: function() {
+      getIconClazz() {
         if (this.model.children.length > 0) {
           if (this.isOpen) {
             return 'ico_open'
@@ -53,10 +50,22 @@
           return 'ico_docu'
         }
       },
-      getSwitchClazz: function() {
+      getSwitchClazz() {
         if (this.id === 'tree_' && this.sort === 0) {
-          return this.isOpen ? 'roots_open' : 'roots_close'
-        } else if (this.extent === this.sort + 1) {
+          if (this.sort > 1) {
+            if (this.isOpen) {
+              return 'roots_open'
+            } else {
+              return 'roots_close'
+            }
+          } else {
+            if (this.isOpen) {
+              return 'root_open'
+            } else {
+              return 'root_close'
+            }
+          }
+        } else if (this.listSize === this.sort + 1) {
           if (!this.isFolder) {
             return 'bottom_docu'
           } else {
@@ -71,21 +80,61 @@
     },
     created() {
       this.isOpen = this.open
+      this.backfill()
     },
     methods: {
-      choice: function(model) {
-        this.$emit('change', model)
+      backfill(id) {
+        if (this.recordList && this.recordList.length) {
+          for (var i = 0; i < this.recordList.length; i++) {
+            if (id === this.recordList[i]) {
+              return true
+            }
+          }
+        }
+        return false
       },
-      getID: function(suffix) {
-        return this.id + (this.sort + 1) + suffix
+      nodeCheckbox(val, isAdd) {
+        this.$emit('node-checkbox', val, isAdd)
       },
-      toggle: function() {
+      nodeChecked(id) {
+        var classList = document.getElementById('li_checkbox_' + id).classList
+        if (this.hasClass(classList, 'checkbox_true_full')) {
+          classList.add('checkbox_false_full')
+          classList.remove('checkbox_true_full')
+          this.$emit('node-checkbox', id, false)
+        } else {
+          classList.add('checkbox_true_full')
+          classList.remove('checkbox_false_full')
+          this.$emit('node-checkbox', id, true)
+        }
+      },
+      getChoiceType(type) {
+        return this.choiceType.indexOf(type) !== -1
+      },
+      nodeClick(node) {
+        var a = document.getElementsByClassName('node')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('selected')
+        }
+        document.getElementById('li_a_' + node.id).classList.add('selected')
+        this.$emit('node-click', node)
+      },
+      hasClass(classList, clazz) {
+        for (var i = 0; i < classList.length; i++) {
+          if (classList[i] === clazz) {
+            return true
+          }
+        }
+        return false
+      },
+      toggle() {
         if (this.isFolder) {
           this.isOpen = !this.isOpen
         }
       }
     }
   }
+
 </script>
 <style scoped>
   li ul.line {
@@ -93,7 +142,7 @@
   }
   li ul {
     margin: 0;
-    padding: 0 0 0 18px;
+    padding: 0 0 0 12px;
   }
   li {
     padding: 0;
@@ -137,11 +186,21 @@
     background-attachment: scroll;
     background-image: url(../img/bootstrap.png);
   }
-  li span.button.ico {
-    margin-right: -2px;
-    margin-left: -6px;
+  li a.node{
+    margin-left: -7px;
   }
-
+  li a.node.selected{
+    background-color: #dcdfe6;
+  }
+  li span.button.ico {
+    margin-right: -7px;
+  }
+  li span.button.chk.checkbox_false_full {
+    background-position: -5px 0px;
+  }
+  li span.button.chk.checkbox_true_full {
+    background-position: -26px 0px;
+  }
   li span.button.ico_docu {
     background-position: -147px -43px;
     vertical-align: top;
@@ -154,47 +213,39 @@
     background-position: -147px -21px;
     vertical-align: top;
   }
-  /*顶级树形按钮样式*/
-  /*展开*/
   li span.button.roots_open {
     background-position: -105px 0;
   }
-  /*关闭*/
   li span.button.roots_close {
     background-position: -126px 0;
   }
-  /*中间树形按钮样式*/
-  /*展开*/
   li span.button.center_open {
-    background-position: -105px -21px;
+    background-position: -105px -20px;
   }
-  /*关闭*/
   li span.button.center_close {
-    background-position: -126px -21px;
+    background-position: -126px -20px;
   }
-  /*最后一个*/
-  /*展开*/
   li span.button.bottom_open {
     background-position: -105px -42px;
   }
-  /*关闭*/
   li span.button.bottom_close {
     background-position: -126px -42px;
   }
-  /*枝干的虚线连接┊*/
   li ul.line {
     background: url(../img/line_conn.png) 0 0 repeat-y;
   }
-  /*叶子节点 ├ */
   li span.button.center_docu {
     background-position: -84px -21px;
   }
-  /*叶子节点 └*/
   li span.button.bottom_docu {
     background-position: -84px -42px;
   }
-
-
+  li span.button.root_open {
+    background-position: -105px -62px;
+  }
+  li span.button.root_close {
+    background-position: -126px -62px;
+  }
   li span.button.center_docu {
     background-position: -84px -21px;
   }

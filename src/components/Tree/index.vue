@@ -1,7 +1,7 @@
 <template>
   <ul id="tree" class="tree">
     <template v-for="(model,index) in list">
-      <leaf  :model="model" id="tree_"  :sort="index" :open="open" :extent="list.length"></leaf>
+      <leaf  :model="model" :recordList="recordList" @node-click="nodeClick" @node-checkbox="nodeCheckbox" :choiceType="choiceType" id="tree_" :sort="index" :open="open" :listSize="list.length"></leaf>
     </template>
   </ul>
 </template>
@@ -14,12 +14,18 @@
     components: {
       Leaf
     },
-    props: ['list', 'open'],
-    created() {
-      // console.log(this.type)
+    props: ['list', 'open', 'choiceType', 'recordList'],
+    data() {
+      return {
+        node: null
+      }
     },
     methods: {
-      emitChange(value) {
+      nodeCheckbox(val, isAdd) {
+        this.$emit('node-checkbox', val, isAdd)
+      },
+      nodeClick(node) {
+        this.$emit('node-click', node)
       }
     }
   }

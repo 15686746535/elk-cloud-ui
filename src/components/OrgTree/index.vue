@@ -1,49 +1,19 @@
 <template>
-  <div>
-    <el-select class="filter-item" placeholder="请选择" v-model="org" @change="emitChange(org)">
-      <span v-for="item in  orgList">
-        <el-option class="top-level" :key="item.id" :label="item.label" :value="type == 'name'?item.label:item.id">
-          <div @click="isOpen" :class="item.children.length > 0 ?'open-icon':'no_child'"></div>
-          {{item.label}}
-        </el-option>
-        <span v-for="chird in  item.children">
-          <el-option class="chird" :key="chird.id" :label="chird.label" :value="type == 'name'?chird.label:chird.id">
-            <div @click="isOpen" :class="chird.children.length > 0 ?'open-icon':'no_child'"></div>
-            {{chird.label}}
-          </el-option>
-          <span v-for="chird1 in  chird.children">
-            <el-option class="chird_1" :key="chird1.id" :label="chird1.label" :value="type == 'name'?chird1.label:chird1.id">
-              <div :class="chird1.children.length > 0 ?'open-icon':'no_child'"></div>
-              {{chird1.label}}
-            </el-option>
-            <span v-for="chird2 in  chird1.children">
-            <el-option  class="chird_2" :key="chird2.id" :label="chird2.label" :value="type == 'name'?chird2.label:chird2.id">
-              <div class="no_child"></div>
-              {{chird2.label}}
-            </el-option>
-          </span>
-          </span>
-        </span>
-      </span>
-    </el-select>
-  </div>
+  <tree :list="orgList" :open="true" :choiceType="choiceType" @node-click="nodeClick"></tree>
 </template>
 
 <script>
   import fetch from '@/utils/fetch'
-
+  import Tree from '@/components/Tree'
   export default {
-    name: 'orgTree',
-    model: {
-      prop: 'selected',
-      event: 'change'
-    },
-    props: {
-      type: String
+    name: 'org-tree',
+    components: {
+      Tree
     },
     data() {
       return {
         org: null,
+        choiceType: 'folder',
         orgList: []
       }
     },
@@ -57,13 +27,9 @@
       })
     },
     methods: {
-      emitChange(value) {
-        this.$emit('change', value)
-      },
-      build(list) {
-
-      },
-      isOpen() {
+      nodeClick(value) {
+        this.org = value
+        this.$emit('node-click', value)
       }
     }
   }

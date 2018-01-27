@@ -2,14 +2,14 @@
   <li :id="'li_'+model.id" >
     <span :id="'li_switch_'+model.id" class="button switch " :class="getSwitchClazz"  @click='toggle'></span>
     <span v-if="getChoiceType('checkbox')" :id="'li_checkbox_'+model.id" class="button chk "
-          :class="backfill(model.id)?'checkbox_true_full':'checkbox_false_full'"  @click='nodeChecked(model.id)'></span>
-    <a :id="'li_a_'+model.id" @click="nodeClick(model)" class="node ">
+          :class="backfill(model.id)?'checkbox_true_full':'checkbox_false_full'"  @click='nodeChecked(model.id,$event)'></span>
+    <a :id="'li_a_'+model.id" @click="nodeClick(model,$event)" class="node " :class="id+'_node'">
       <span v-if="getChoiceType('folder')" :id="'li_a_icon_'+model.id"  class="button ico " :class="getIconClazz"></span>
       <span :id="'li_a_name_'+model.id" class="node_name" >{{model.name}}</span>
     </a>
     <ul v-show="isOpen" v-if='isFolder' :class="isLine" :id="'li_ul_'+model.id">
       <template v-for='(cel,index) in model.children'>
-        <items  :model='cel' :recordList="recordList"  @node-click="nodeClick" @node-checkbox="nodeCheckbox" :choiceType="choiceType"  :sort="index" :open="open" :listSize="model.children.length"></items>
+        <items  :model='cel' :id="id" :recordList="recordList"  @node-click="nodeClick" @node-checkbox="nodeCheckbox" :choiceType="choiceType"  :sort="index" :open="open" :listSize="model.children.length"></items>
       </template>
     </ul>
   </li>
@@ -18,7 +18,7 @@
 <script>
   export default {
     name: 'items',
-    props: ['model', 'id', 'sort', 'open', 'listSize', 'choiceType', 'recordList'],
+    props: ['model', 'id', 'clazz', 'sort', 'open', 'listSize', 'choiceType', 'recordList'],
     data() {
       return {
         isOpen: true
@@ -51,7 +51,7 @@
         }
       },
       getSwitchClazz() {
-        if (this.id === 'tree_' && this.sort === 0) {
+        if (this.clazz === 'tree_' && this.sort === 0) {
           if (this.sort > 1) {
             if (this.isOpen) {
               return 'roots_open'
@@ -96,8 +96,8 @@
       nodeCheckbox(val, isAdd) {
         this.$emit('node-checkbox', val, isAdd)
       },
-      nodeChecked(id) {
-        var classList = document.getElementById('li_checkbox_' + id).classList
+      nodeChecked(id, e) {
+        var classList = e.currentTarget.classList
         if (this.hasClass(classList, 'checkbox_true_full')) {
           classList.add('checkbox_false_full')
           classList.remove('checkbox_true_full')
@@ -111,13 +111,13 @@
       getChoiceType(type) {
         return this.choiceType.indexOf(type) !== -1
       },
-      nodeClick(node) {
-        var a = document.getElementsByClassName('node')
+      nodeClick(node, e) {
+        var a = document.getElementsByClassName(this.id + '_node')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('selected')
         }
-        document.getElementById('li_a_' + node.id).classList.add('selected')
-        this.$emit('node-click', node)
+        e.currentTarget.classList.add('selected')
+        this.$emit('node-click', node, e)
       },
       hasClass(classList, clazz) {
         for (var i = 0; i < classList.length; i++) {

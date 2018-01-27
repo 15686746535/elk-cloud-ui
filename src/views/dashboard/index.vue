@@ -22,7 +22,7 @@
       <org-tree @node-click="nodeClick" ></org-tree>
     </div>
     <div style="height: 500px;float: left;width: 300px;" >
-      <tree :list="list" :recordList="recordList" :open="true" choiceType="checkbox" @node-checkbox="nodeCheckbox"></tree>
+      <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="checkbox" @node-checkbox="nodeCheckbox"></tree>
     </div>
   </div>
 </template>

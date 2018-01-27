@@ -22,7 +22,18 @@
       <org-tree @node-click="nodeClick" ></org-tree>
     </div>
     <div style="height: 500px;float: left;width: 300px;" >
-      <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="checkbox" @node-checkbox="nodeCheckbox"></tree>
+      <!--
+      -- 参数
+      list:数据
+      recordList:有复选框时回选节点集合
+      id：如果同页面使用多个需要id区分
+      open：是否展开    folder
+      choiceType：类型 folder显示文件夹图标  checkbox显示复选框 folder_checkbox 都显示
+      -- 事件
+      @node-click：点击节点触发，返回节点对象
+      @node-checkbox：点击复选框时触发 类型为checkbox时用来获取选中集合  传出两个参数 (val, isAdd) val 节点id  ，isAdd true选中，false取消
+      -->
+      <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="folder_checkbox" @node-checkbox="nodeCheckbox"></tree>
     </div>
   </div>
 </template>

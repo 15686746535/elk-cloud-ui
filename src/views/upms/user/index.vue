@@ -1,3 +1,4 @@
+<script src="../../../api/upms/log.js"></script>
 <template>
   <div class="app-container">
     <div v-show="showModule=='list'">
@@ -19,16 +20,9 @@
           <el-card>
             <span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
             <hr>
-            <el-tree
-              class="filter-tree"
-              :data="treeData"
-              node-key="id"
-              highlight-current
-              :props="defaultProps"
-              :filter-node-method="filterNode"
-              @node-click="searchByOrg"
-              default-expand-all
-            ></el-tree>
+
+            <org-tree @node-click="searchByOrg" ></org-tree>
+
           </el-card>
         </el-col>
 
@@ -98,7 +92,7 @@
           <el-button type="primary" style="width: 174px;">修改头像</el-button>
         </el-row>
         <el-row style="width: 85%;float: left;">
-          <el-form :inline="true" :model="userListEdit" label label-width="120px" label-position="left" class="demo-form-inline">
+          <el-form :inline="true" :rules="userListEditRules" status-icon ref="userListEdit" :model="userListEdit" label label-width="120px" label-position="left" class="demo-form-inline">
 
 
             <el-col :span="6">
@@ -336,16 +330,18 @@
   import Bar from '@/components/Bar'
   import Dict from '@/components/Dict'
   import LineChart from '@/components/LineChart'
+  import OrgTree from '@/components/OrgTree'
   import { fetchTree } from '@/api/upms/org'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
 
   export default {
+    name: 'index',
     components: {
       Bar,
+      OrgTree,
       LineChart,
       Dict
     },
-    name: 'index',
     directives: {
       waves
     },
@@ -375,7 +371,81 @@
           label: 'label'
         },
         userListEdit: {},
-        addInfo: false
+        addInfo: false,
+        userListEditRules: {
+          jobNumber: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          birthday: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          mobile: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          contactAddress: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          homeAddress: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          education: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          major: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          joinedTime: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          positiveTime: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          providentFundTime: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          fiveInsuranceTime: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          qq: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          email: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          workMobile: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          wechat: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          emergencyContact: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          emergencyMobile: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ]
+        }
       }
     },
     created() {
@@ -460,13 +530,15 @@
       add() {
         addObj(this.userListEdit).then(response => {
           console.log('这里是添加方法===========================')
-          this.vehicle.vehicleEntity.vehicleId = response.data.data
+          this.userListEdit.userId = response.data.data
           console.log(this.vehicle.vehicleEntity.vehicleId)
         })
         this.edit = false
       },
       // 修改
       update() {
+        console.log('这里是修改方法===========================')
+        console.log(this.userListEdit)
         putObj(this.userListEdit).then(response => {
           console.log(response.data)
         })

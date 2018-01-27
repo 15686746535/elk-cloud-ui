@@ -9,6 +9,8 @@ export function fetchList(query) {
 }
 
 export function addObj(obj) {
+  console.log('========== 这里是保存接口  ============')
+  console.log(obj)
   return request({
     url: '/upms/user/',
     method: 'post',
@@ -31,6 +33,8 @@ export function delObj(id) {
 }
 
 export function putObj(obj) {
+  console.log('========== 这里是修改接口  ============')
+  console.log(obj)
   return request({
     url: '/upms/user',
     method: 'put',

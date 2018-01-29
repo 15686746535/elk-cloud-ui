@@ -10,17 +10,20 @@
 
     <el-row>
       <el-col :span="8" style='margin-top:15px;'>
-        <el-tree
-          class="filter-tree"
-          :data="treeData"
-          node-key="id"
-          highlight-current
-          :props="defaultProps"
-          :filter-node-method="filterNode"
-          @node-click="getNodeData"
-          default-expand-all
-        >
-        </el-tree>
+        <tree :list="treeData" id="menuTree"
+              :open="false" choiceType="folder"
+              @node-click="getNodeData"></tree>
+        <!--<el-tree-->
+          <!--class="filter-tree"-->
+          <!--:data="treeData"-->
+          <!--node-key="id"-->
+          <!--highlight-current-->
+          <!--:props="defaultProps"-->
+          <!--:filter-node-method="filterNode"-->
+          <!--@node-click="getNodeData"-->
+          <!--default-expand-all-->
+        <!--&gt;-->
+        <!--</el-tree>-->
       </el-col>
       <el-col :span="16" style='margin-top:15px;'>
         <el-card class="box-card">
@@ -77,8 +80,13 @@
 <script>
   import { fetchTree, getObj, addObj, delObj, putObj } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
+  import Tree from '@/components/Tree'
+
   export default {
     name: 'menu',
+    components: {
+      Tree
+    },
     data() {
       return {
         list: null,
@@ -94,11 +102,6 @@
         },
         // 树形图数据
         treeData: [],
-        // 树形图结构
-        defaultProps: {
-          children: 'children',
-          label: 'name'
-        },
         labelPosition: 'right',
         form: {
           permission: undefined,
@@ -142,11 +145,8 @@
           this.treeData = response.data.data
         })
       },
-      filterNode(value, data) {
-        if (!value) return true
-        return data.label.indexOf(value) !== -1
-      },
       getNodeData(data) {
+        console.log(data)
         if (!this.formEdit) {
           this.formStatus = 'update'
         }

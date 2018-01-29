@@ -8,15 +8,13 @@
     <br/>
     <span>字典标签,自定义标签</span>
     <dict dictType="dict_sex" v-model="dict" >1111</dict>
+
     <org-select></org-select>
 
     <el-button style="width: 174px;" @click="getDict">取值</el-button>
 
     <span>值为：{{dict}}</span>
-    <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"   multiple :limit="3" >
-      <el-button size="small" type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-    </el-upload>
+
     <div style="height: 500px;float: left;width: 300px;" >
       <!-- 调用实例  -->
       <org-tree @node-click="nodeClick" ></org-tree>
@@ -33,7 +31,16 @@
       @node-click：点击节点触发，返回节点对象
       @node-checkbox：点击复选框时触发 类型为checkbox时用来获取选中集合  传出两个参数 (val, isAdd) val 节点id  ，isAdd true选中，false取消
       -->
-      <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="folder_checkbox" @node-checkbox="nodeCheckbox"></tree>
+      <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="checkbox" @node-checkbox="nodeCheckbox"></tree>
+
+    </div>
+    <div style="height: 500px">
+      <div id="box">
+        <input type="button" value="按钮" @click="toggle">
+        <transition name="fade">
+          <div id="div1" class="test1" v-show="hidden" ></div>
+        </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -149,6 +156,9 @@ export default {
         if (this.checkbox[i] === id) this.checkbox.splice(i, 1)
       }
     },
+    toggle() {
+      this.hidden = !this.hidden
+    },
     getDict() {
       console.log('org')
       console.log(this.org)
@@ -166,5 +176,19 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+
+
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
+.test1{
+  height: 200px;
+  height: 200px;
+  background-color: chartreuse
 }
 </style>

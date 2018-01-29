@@ -1,5 +1,5 @@
 <template>
-  <tree :list="orgList" :open="true" id="org" :choiceType="choiceType" @node-click="nodeClick"></tree>
+  <tree :list="orgList" :open="true" :choiceType="choiceType" @node-click="nodeClick"></tree>
 </template>
 
 <script>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>transition</title>
+<style>
+  .con{
+    width:200px;
+    height:0px;
+    position: absolute;
+    left: 200px;
+    z-index: 66666;
+    background-color: yellow;
+    transition:height 0.4s;
+    -moz-transition:height 0.4s; /* Firefox 4 */
+    -webkit-transition:height 0.4s; /* Safari and Chrome */
+    -o-transition:height 0.4s; /* Opera */
+
+  }
+
+  .con:hover{
+    height:200px;
+  }
+  .test{
+    height:200px;
+  }
+  .con1{
+    width:100px;
+    height:100px;
+    background-color: yellow;
+    border:1px solid black;
+    font-size:12px;
+    transition:width 2s,background 2s,height 2s,font 10s,color 2s;
+    -moz-transition:width 2s,background 2s,height 2s,font 10s,color 2s; /* Firefox 4 */
+    -webkit-transition:width 2s,background 2s,height 2s,font 10s,color 2s; /* Safari and Chrome */
+    -o-transition:width 2s,background 2s,height 2s,font 10s,color 2s; /* Opera */
+
+  }
+
+  .con1:hover{
+    width:200px;
+    height:200px;
+    font-size:18px;
+    color:yellow;
+    background-color: red;
+  }
+</style>
+</head>
+<body>
+<p class="conp" onclick="show()">这个是单纯的横向拉伸</p>
+<div class="con" id="con">
+
+</div>
+<p>长宽拉伸颜色渐变</p>
+
+<div class="con1">
+  <p>鼠标移上来看效果！！！</p>
+</div>
+</body>
+<script type="">
+  function show() {
+    var con = document.getElementById('con').classList
+    if (hasClass(con, 'test')) {
+      con.remove('test')
+    } else {
+      con.add('test')
+    }
+  }
+  function hasClass(classList, clazz) {
+    for (var i = 0; i < classList.length; i++) {
+      if (classList[i] === clazz) {
+        return true
+      }
+    }
+    return false
+  }
+</script>
+</html>

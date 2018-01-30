@@ -1,5 +1,5 @@
 <template>
-  <el-select class="filter-item" :style="{height:height,width:width}" :placeholder=placeholder v-model="value" @change="emitChange(value)">
+  <el-select class="filter-item" :style="{height:height,width:width}" :placeholder=placeholder v-model="dict" @change="emitChange(dict)">
     <el-option v-for="item in  dictList" :key="item.value" :label="item.label" :value="item.value"></el-option>
   </el-select>
 </template>
@@ -37,6 +37,7 @@
     },
     data() {
       return {
+        dict: this.value,
         dictList: []
       }
     },
@@ -53,7 +54,16 @@
     },
     methods: {
       emitChange(value) {
+        for (var i = 0; i < this.dictList.length; i++) {
+          if (this.dictList[i].value === value) {
+            this.$emit('selectDict', this.dictList[i])
+          }
+        }
         this.$emit('change', value)
+      },
+      dictObj(value) {
+        console.log(value)
+        this.$emit('selectDict', value)
       }
     }
   }

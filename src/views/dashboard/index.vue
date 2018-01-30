@@ -8,7 +8,13 @@
 
     <el-row>
       <span>字典标签,自定义标签</span>
-      <dict dictType="dict_sex" v-model="dict" ></dict> {{dict}}
+      <!--
+        参数：
+        dictType:字典类型
+        方法：
+        selectDict ：字典发生改变是触发，返回字典对象
+      -->
+      <dict dictType="dict_sex" v-model="dict" @selectDict="getDict" ></dict> {{dict}}
     </el-row>
 
     <el-row>
@@ -19,10 +25,13 @@
     </el-row>
 
     <el-row>
+      <!--
+      -->
       <org-select v-model="orgId" ></org-select> {{orgId}}
     </el-row>
 
     <el-row>
+      <input type="button" value="按钮" @click="toggle">
     </el-row>
     <el-row>
     </el-row>
@@ -49,7 +58,7 @@
     <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="folder_checkbox" @node-click="nodeCheck" @node-checkbox="nodeCheckbox"></tree>
     <div style="height: 500px">
       <div id="box">
-        <input type="button" value="按钮" @click="toggle">
+
         <transition name="fade">
           <div id="div1" class="test1" v-show="hidden" ></div>
         </transition>
@@ -195,9 +204,10 @@ export default {
       console.log('nodeCheck')
       console.log(node)
     },
-    getDict() {
+    getDict(d) {
       console.log('org')
       console.log(this.dict)
+      console.log(d)
     }
   }
 }

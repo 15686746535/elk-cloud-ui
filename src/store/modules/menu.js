@@ -17,6 +17,9 @@ const menu = {
         findMenuByRole(roles[0]).then(response => {
           const myMenus = getMenuTree(response.data.data, -1)
           commit('SET_MENUS', myMenus)
+          console.log('SET_MENUS')
+          console.log(response.data.data)
+          console.log(myMenus)
           resolve()
         }).catch(error => {
           reject(error)

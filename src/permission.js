@@ -25,7 +25,6 @@ router.beforeEach((to, from, next) => { // 开启Progress
         console.log(store.getters.roles)
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
           const roles = res.data.data.roles
-          console.log(roles)
           store.dispatch('GenerateMenus', { roles }).then(() => { // 生成可访问的路由表
             store.dispatch('GenerateRoutes').then(() => { // 生成可访问的路由表
               router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表

@@ -7,17 +7,16 @@
             <el-button type="primary" v-if="menuManager_btn_del" icon="delete" @click="handleDelete">删除</el-button>
           </el-button-group>
       </el-row>
-    <el-row>
-      <el-col :xs="0" :sm="8" :md="6" :lg="6" :xl="4" style='margin-top:15px;'>
+    <el-row :gutter="20">
+      <el-col :span="6" style='margin-top:15px;'>
         <el-card class="box-card menuTreeCard" style="">
           <tree :list="treeData" id="menuTree"
                 :open="false" choiceType="folder"
                 @node-click="getNodeData"></tree>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="16" :md="18" :lg="18" :xl="20" style='margin-top:15px;'>
+      <el-col :span="18" style='margin-top:15px;'>
         <el-card class="box-card">
-
           <el-form :label-position="labelPosition" label-width="80px" :model="form" ref="form">
             <el-form-item label="父级节点" prop="parentId">
               <el-input v-model="form.parentId" :disabled="formEdit" placeholder="请输入父级节点" readonly></el-input>
@@ -38,7 +37,7 @@
               <el-input v-model="form.url" :disabled="formEdit" placeholder="请输入资源路径"></el-input>
             </el-form-item>
             <el-form-item label="请求方法" prop="method">
-              <el-select class="filter-item" v-model="form.method"  :disabled="formEdit"  placeholder="请输入资源请求类型">
+              <el-select class="filter-item" v-model="form.method"  :disabled="formEdit"  placeholder="请选择请求类型">
                 <el-option v-for="item in  methodOptions" :key="item" :label="item" :value="item"> </el-option>
               </el-select>
             </el-form-item>
@@ -138,7 +137,7 @@
           this.formStatus = 'update'
         }
         getObj(data.id).then(response => {
-          this.form = response.data
+          this.form = response.data.data
         })
         this.currentId = data.id
       },

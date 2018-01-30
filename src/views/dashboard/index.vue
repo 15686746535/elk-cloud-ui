@@ -14,7 +14,7 @@
         方法：
         selectDict ：字典发生改变是触发，返回字典对象
       -->
-      <dict dictType="dict_sex" v-model="dict" @selectDict="getDict" ></dict> {{dict}}
+      <dict dictType="dict_sex" v-model="dict" @selectDict="getDict"></dict> {{dict}}
     </el-row>
 
     <el-row>

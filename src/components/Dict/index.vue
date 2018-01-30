@@ -1,9 +1,7 @@
 <template>
-  <div>
-      <el-select class="filter-item" :style="{height:height,width:width}" :placeholder=placeholder v-model="dict" @change="emitChange(dict)">
-        <el-option v-for="item in  dictList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-      </el-select>
-  </div>
+  <el-select class="filter-item" :style="{height:height,width:width}" :placeholder=placeholder v-model="value" @change="emitChange(value)">
+    <el-option v-for="item in  dictList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+  </el-select>
 </template>
 
 <script>
@@ -12,7 +10,7 @@
   export default {
     name: 'dict',
     model: {
-      prop: 'selected',
+      prop: 'value',
       event: 'change'
     },
     props: {
@@ -31,11 +29,14 @@
       dictType: {
         type: String,
         default: null
+      },
+      value: {
+        type: String,
+        default: null
       }
     },
     data() {
       return {
-        dict: null,
         dictList: []
       }
     },

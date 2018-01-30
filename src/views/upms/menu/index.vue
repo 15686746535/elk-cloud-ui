@@ -1,32 +1,23 @@
 <template>
   <div class="app-container calendar-list-container">
-    <div class="filter-container">
-      <el-button-group>
-        <el-button type="primary" v-if="menuManager_btn_add" icon="plus" @click="handlerAdd">添加</el-button>
-        <el-button type="primary" v-if="menuManager_btn_edit" icon="edit" @click="handlerEdit">编辑</el-button>
-        <el-button type="primary" v-if="menuManager_btn_del" icon="delete" @click="handleDelete">删除</el-button>
-      </el-button-group>
-    </div>
-
+      <el-row>
+          <el-button-group>
+            <el-button type="primary" v-if="menuManager_btn_add" icon="plus" @click="handlerAdd">添加</el-button>
+            <el-button type="primary" v-if="menuManager_btn_edit" icon="edit" @click="handlerEdit">编辑</el-button>
+            <el-button type="primary" v-if="menuManager_btn_del" icon="delete" @click="handleDelete">删除</el-button>
+          </el-button-group>
+      </el-row>
     <el-row>
-      <el-col :span="8" style='margin-top:15px;'>
-        <tree :list="treeData" id="menuTree"
-              :open="false" choiceType="folder"
-              @node-click="getNodeData"></tree>
-        <!--<el-tree-->
-          <!--class="filter-tree"-->
-          <!--:data="treeData"-->
-          <!--node-key="id"-->
-          <!--highlight-current-->
-          <!--:props="defaultProps"-->
-          <!--:filter-node-method="filterNode"-->
-          <!--@node-click="getNodeData"-->
-          <!--default-expand-all-->
-        <!--&gt;-->
-        <!--</el-tree>-->
+      <el-col :xs="0" :sm="8" :md="6" :lg="6" :xl="4" style='margin-top:15px;'>
+        <el-card class="box-card menuTreeCard" style="">
+          <tree :list="treeData" id="menuTree"
+                :open="false" choiceType="folder"
+                @node-click="getNodeData"></tree>
+        </el-card>
       </el-col>
-      <el-col :span="16" style='margin-top:15px;'>
+      <el-col :xs="24" :sm="16" :md="18" :lg="18" :xl="20" style='margin-top:15px;'>
         <el-card class="box-card">
+
           <el-form :label-position="labelPosition" label-width="80px" :model="form" ref="form">
             <el-form-item label="父级节点" prop="parentId">
               <el-input v-model="form.parentId" :disabled="formEdit" placeholder="请输入父级节点" readonly></el-input>
@@ -89,12 +80,8 @@
     },
     data() {
       return {
-        list: null,
-        total: null,
         formEdit: true,
-        formAdd: true,
         formStatus: '',
-        showElement: false,
         typeOptions: ['0', '1'],
         methodOptions: ['GET', 'POST', 'PUT', 'DELETE'],
         listQuery: {
@@ -154,7 +141,6 @@
           this.form = response.data
         })
         this.currentId = data.id
-        this.showElement = true
       },
       handlerEdit() {
         if (this.form.menuId) {
@@ -229,4 +215,9 @@
     }
   }
 </script>
+<style scoped>
+  @media screen and (max-height: 768px) {
+    .menuTreeCard {height: 200px}
+  }
+</style>
 

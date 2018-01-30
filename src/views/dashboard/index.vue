@@ -1,39 +1,52 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎登陆</div>
-    <div class="dashboard-text">用户名：{{name}}</div>
-    <div class="dashboard-text">角色名：<span v-for='role in roles' :key='role'>{{role}}</span></div>
-    <br/>
-    <br/>
-    <br/>
-    <span>字典标签,自定义标签</span>
-    <dict dictType="dict_sex" v-model="dict" >1111</dict>
+    <el-row>
+      <div class="dashboard-text">欢迎登陆</div>
+      <div class="dashboard-text">用户名：{{name}}</div>
+      <div class="dashboard-text">角色名：<span v-for='role in roles' :key='role'>{{role}}</span></div>
+    </el-row>
 
-    <org-select></org-select>
+    <el-row>
+      <span>字典标签,自定义标签</span>
+      <dict dictType="dict_sex" v-model="dict" ></dict> {{dict}}
+    </el-row>
 
-    <el-button style="width: 174px;" @click="getDict">取值</el-button>
+    <el-row>
+      <el-select class="filter-item" v-model="sel" placeholder="请输入资源请求类型">
+          <el-option v-for="item in  methodOptions" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+      </el-select>
+      {{sel}}
+    </el-row>
 
-    <span>值为：{{dict}}</span>
+    <el-row>
+      <org-select v-model="orgId" ></org-select> {{orgId}}
+    </el-row>
 
-    <div style="height: 500px;float: left;width: 300px;" >
-      <!-- 调用实例  -->
+    <el-row>
+    </el-row>
+    <el-row>
+    </el-row>
+
+   <!-- <div style="height: 500px;float: left;width: 300px;" >
+      &lt;!&ndash; 调用实例  &ndash;&gt;
       <org-tree @node-click="nodeClick" ></org-tree>
     </div>
     <div style="height: 500px;float: left;width: 300px;" >
-      <!--
-      -- 参数
+      &lt;!&ndash;
+      &#45;&#45; 参数
       list:数据
       recordList:有复选框时回选节点集合
       id：如果同页面使用多个需要id区分
       open：是否展开    folder
       choiceType：类型 folder显示文件夹图标  checkbox显示复选框 folder_checkbox 都显示
-      -- 事件
+      &#45;&#45; 事件
       @node-click：点击节点触发，返回节点对象
       @node-checkbox：点击复选框时触发 类型为checkbox时用来获取选中集合  传出两个参数 (val, isAdd) val 节点id  ，isAdd true选中，false取消
-      -->
-      <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="checkbox" @node-checkbox="nodeCheckbox"></tree>
+      &ndash;&gt;
 
-    </div>
+
+    </div>-->
+    <tree :list="list" :recordList="recordList" id="tree" :open="true" choiceType="folder_checkbox" @node-click="nodeCheck" @node-checkbox="nodeCheckbox"></tree>
     <div style="height: 500px">
       <div id="box">
         <input type="button" value="按钮" @click="toggle">
@@ -48,16 +61,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import Dict from '@/components/Dict'
-import OrgSelect from '@/components/OrgSelect'
 import OrgTree from '@/components/OrgTree'
+import OrgSelect from '@/components/OrgSelect'
 import Tree from '@/components/Tree'
 
 export default {
   components: {
     Dict,
     OrgTree,
-    Tree,
-    OrgSelect
+    OrgSelect,
+    Tree
   },
   name: 'dashboard',
   computed: {
@@ -68,11 +81,27 @@ export default {
   },
   data() {
     return {
-      dict: null,
+      dict: '1',
+      orgId: 1,
       disabled: true,
+      methodOptions: [
+        {
+          id: 1,
+          name: '111111'
+        },
+        {
+          id: 2,
+          name: '222222'
+        },
+        {
+          id: 3,
+          name: '333333'
+        }
+      ],
       org: null,
+      sel: null,
       hidden: true,
-      checkbox: [],
+      checkbox: [1, 2, 3],
       recordList: [1, 2, 3],
       list: [
         {
@@ -157,11 +186,18 @@ export default {
       }
     },
     toggle() {
-      this.hidden = !this.hidden
+      this.sel = 2
+      this.orgId = 2
+      this.dict = '2'
+      // this.hidden = !this.hidden
+    },
+    nodeCheck(node) {
+      console.log('nodeCheck')
+      console.log(node)
     },
     getDict() {
       console.log('org')
-      console.log(this.org)
+      console.log(this.dict)
     }
   }
 }
@@ -186,9 +222,5 @@ export default {
 .fade-enter, .fade-leave-active {
   opacity: 0
 }
-.test1{
-  height: 200px;
-  height: 200px;
-  background-color: chartreuse
-}
+
 </style>

@@ -3,14 +3,15 @@
     <span :id="'li_switch_'+model.id" class="button switch " :class="getSwitchClazz"  @click='toggle'></span>
     <span v-if="getChoiceType('checkbox')" :id="'li_checkbox_'+model.id" class="button chk "
           :class="backfill(model.id)?'checkbox_true_full':'checkbox_false_full'"  @click='nodeChecked(model.id,$event)'></span>
-    <a :id="'li_a_'+model.id" @click="nodeClick(model,$event)" class="node " :class="id+'_node'">
+    <a :id="id+'_li_a_'+model.id" @click="nodeClick(model,$event)" class="node " :class="id + '_node '">
       <span v-if="getChoiceType('folder')" :id="'li_a_icon_'+model.id"  class="button ico " :class="getIconClazz"></span>
       <span :id="'li_a_name_'+model.id" class="node_name" >{{model.name}}</span>
     </a>
     <el-collapse-transition><!--collapse 展开折叠-->
       <ul v-show="isOpen"  v-if='isFolder' :class="isLine" :id="'li_ul_'+model.id">
         <template v-for='(cel,index) in model.children'>
-          <items  :model='cel' :id="id" :recordList="recordList"  @node-click="nodeClick" @node-checkbox="nodeCheckbox" :choiceType="choiceType"  :sort="index" :open="open" :listSize="model.children.length"></items>
+          <items  :model='cel' :id="id" :recordList="recordList" v-model="value" @node-click="nodeSelected"
+                  @node-checkbox="nodeCheckbox" :choiceType="choiceType"  :sort="index" :open="open" :listSize="model.children.length"></items>
         </template>
       </ul>
     </el-collapse-transition>
@@ -20,7 +21,35 @@
 <script>
   export default {
     name: 'items',
-    props: ['model', 'id', 'clazz', 'sort', 'open', 'listSize', 'choiceType', 'recordList'],
+    props: {
+      model: {
+        type: Object
+      },
+      id: {
+        type: String
+      },
+      clazz: {
+        type: String
+      },
+      sort: {
+        type: Number
+      },
+      open: {
+        type: Boolean
+      },
+      listSize: {
+        type: Number
+      },
+      choiceType: {
+        type: String
+      },
+      recordList: {
+        type: Array
+      },
+      value: {
+        type: Number
+      }
+    },
     data() {
       return {
         isOpen: true
@@ -83,8 +112,17 @@
     created() {
       this.isOpen = this.open
       this.backfill()
+      this.defaultSelect()
+    },
+    updated() {
+      this.defaultSelect()
     },
     methods: {
+      defaultSelect() {
+        if (this.model.id === this.value) {
+          this.nodeSelected(this.model)
+        }
+      },
       backfill(id) {
         if (this.recordList && this.recordList.length) {
           for (var i = 0; i < this.recordList.length; i++) {
@@ -113,13 +151,16 @@
       getChoiceType(type) {
         return this.choiceType.indexOf(type) !== -1
       },
+      nodeSelected(node) {
+        this.$emit('node-click', node)
+      },
       nodeClick(node, e) {
         var a = document.getElementsByClassName(this.id + '_node')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('selected')
         }
         e.currentTarget.classList.add('selected')
-        this.$emit('node-click', node, e)
+        this.nodeSelected(node)
       },
       hasClass(classList, clazz) {
         for (var i = 0; i < classList.length; i++) {

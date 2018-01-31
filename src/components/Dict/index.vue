@@ -33,6 +33,15 @@
       value: {
         type: String,
         default: null
+      },
+      result: {
+        type: String,
+        default: null
+      }
+    },
+    watch: {
+      result(val) {
+        this.dict = val
       }
     },
     data() {
@@ -52,6 +61,9 @@
         })
       }
     },
+    updated() {
+      console.log('修改了')
+    },
     methods: {
       emitChange(value) {
         for (var i = 0; i < this.dictList.length; i++) {
@@ -61,9 +73,8 @@
         }
         this.$emit('change', value)
       },
-      dictObj(value) {
-        console.log(value)
-        this.$emit('selectDict', value)
+      getDict(did) {
+
       }
     }
   }

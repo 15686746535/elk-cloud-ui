@@ -3,7 +3,7 @@
     <span :id="'li_switch_'+model.id" class="button switch " :class="getSwitchClazz"  @click='toggle'></span>
     <span v-if="getChoiceType('checkbox')" :id="'li_checkbox_'+model.id" class="button chk "
           :class="backfill(model.id)?'checkbox_true_full':'checkbox_false_full'"  @click='nodeChecked(model.id,$event)'></span>
-    <a :id="id+'_li_a_'+model.id" @click="nodeClick(model,$event)" class="node " :class="id + '_node '">
+    <a :id="id+'_li_a_'+model.id" @click="nodeClick(model,$event)" class="node " :class="defaultSelected">
       <span v-if="getChoiceType('folder')" :id="'li_a_icon_'+model.id"  class="button ico " :class="getIconClazz"></span>
       <span :id="'li_a_name_'+model.id" class="node_name" >{{model.name}}</span>
     </a>
@@ -80,6 +80,13 @@
         } else {
           return 'ico_docu'
         }
+      },
+      defaultSelected() {
+        var clazz = this.id + '_node '
+        if (this.model.id === this.value) {
+          return clazz + 'selected'
+        }
+        return clazz
       },
       getSwitchClazz() {
         if (this.clazz === 'tree_' && this.sort === 0) {

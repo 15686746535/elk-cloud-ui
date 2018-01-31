@@ -9,7 +9,7 @@
       </el-row>
     <el-row :gutter="20">
       <el-col :span="6" style='margin-top:15px;'>
-        <el-card class="box-card menuTreeCard" style="">
+        <el-card class="box-card menuTreeCard" style="max-height: 600px;overflow: auto;">
           <tree :list="treeData" id="menuTree"
                 :open="false" choiceType="folder"
                 @node-click="getNodeData"></tree>
@@ -18,38 +18,35 @@
       <el-col :span="18" style='margin-top:15px;'>
         <el-card class="box-card">
           <el-form :label-position="labelPosition" label-width="80px" :model="form" ref="form">
-            <el-form-item label="父级节点" prop="parentId">
-              <el-input v-model="form.parentId" :disabled="formEdit" placeholder="请输入父级节点" readonly></el-input>
-            </el-form-item>
-            <el-form-item label="节点ID" prop="parentId">
-              <el-input v-model="form.menuId" :disabled="formEdit" placeholder="请输入节点ID"></el-input>
-            </el-form-item>
-            <el-form-item label="标题" prop="name">
-              <el-input v-model="form.name" :disabled="formEdit"  placeholder="请输入标题"></el-input>
-            </el-form-item>
-            <el-form-item label="权限标识" prop="permission">
-              <el-input v-model="form.permission" :disabled="formEdit" placeholder="请输入权限标识"></el-input>
-            </el-form-item>
-            <el-form-item label="图标" prop="icon">
-              <el-input v-model="form.icon" :disabled="formEdit" placeholder="请输入图标"></el-input>
-            </el-form-item>
-            <el-form-item label="资源路径" prop="url">
-              <el-input v-model="form.url" :disabled="formEdit" placeholder="请输入资源路径"></el-input>
-            </el-form-item>
-            <el-form-item label="请求方法" prop="method">
-              <el-select class="filter-item" v-model="form.method"  :disabled="formEdit"  placeholder="请选择请求类型">
-                <el-option v-for="item in  methodOptions" :key="item" :label="item" :value="item"> </el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item label="类型" prop="type">
               <el-select class="filter-item" v-model="form.type"  :disabled="formEdit"  placeholder="请输入资源请求类型">
                 <el-option v-for="item in  typeOptions" :key="item" :label="item | typeFilter" :value="item"> </el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="父级节点" prop="parentId">
+              <el-input v-model="form.parentId" :disabled="formEdit" placeholder="请输入父级节点" readonly></el-input>
+            </el-form-item>
+            <el-form-item label="标题" prop="name">
+              <el-input v-model="form.name" :disabled="formEdit"  placeholder="请输入标题"></el-input>
+            </el-form-item>
+            <el-form-item label="权限标识" v-show="form.type==1" prop="permission">
+              <el-input v-model="form.permission" :disabled="formEdit" placeholder="请输入权限标识"></el-input>
+            </el-form-item>
+            <el-form-item label="图标" v-show="form.type!==1" prop="icon">
+              <el-input v-model="form.icon" :disabled="formEdit" placeholder="请输入图标"></el-input>
+            </el-form-item>
+            <el-form-item label="资源路径" v-show="form.type==1" prop="url">
+              <el-input v-model="form.url" :disabled="formEdit" placeholder="请输入资源路径"></el-input>
+            </el-form-item>
+            <el-form-item label="请求方法" v-show="form.type==1" prop="method">
+              <el-select class="filter-item" v-model="form.method"  :disabled="formEdit"  placeholder="请选择请求类型">
+                <el-option v-for="item in  methodOptions" :key="item" :label="item" :value="item"> </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="排序" prop="sort">
               <el-input v-model="form.sort" :disabled="formEdit" placeholder="请输入排序"></el-input>
             </el-form-item>
-            <el-form-item label="前端组件"   prop="component">
+            <el-form-item label="前端路径"   prop="component">
               <el-input v-model="form.component" :disabled="formEdit" placeholder="请输入描述"></el-input>
             </el-form-item>
             <el-form-item v-if="formStatus == 'update'">
@@ -92,7 +89,6 @@
         form: {
           permission: undefined,
           name: undefined,
-          menuId: undefined,
           parentId: undefined,
           url: undefined,
           icon: undefined,

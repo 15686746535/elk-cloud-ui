@@ -14,7 +14,7 @@
         方法：
         selectDict ：字典发生改变是触发，返回字典对象
       -->
-      <dict dictType="dict_sex" v-model="dict" @selectDict="getDict"></dict> {{dict}}
+      <dict dictType="dict_sex" :result="dict" v-model="dict" @selectDict="getDict"></dict> {{dict}}
     </el-row>
 
     <el-row>
@@ -195,10 +195,15 @@ export default {
       }
     },
     toggle() {
-      this.sel = 2
-      this.orgId = 2
-      this.dict = '2'
-      // this.hidden = !this.hidden
+      if (this.sel === 2) {
+        this.sel = 1
+        this.orgId = 1
+        this.dict = '1'
+      } else {
+        this.sel = 2
+        this.orgId = 2
+        this.dict = '2'
+      }
     },
     nodeCheck(node) {
       console.log('nodeCheck')

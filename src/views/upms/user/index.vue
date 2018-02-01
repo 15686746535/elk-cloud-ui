@@ -89,7 +89,7 @@
         <el-row :gutter="10">
           <el-col :span="4">
             <el-row><el-col><img width="100%" height="100%" :src="userListEdit.avatar" class="image"></el-col></el-row>
-            <el-row><el-col><el-button type="primary" style="width:100%;max-width: 200px;">修改头像</el-button></el-col></el-row>
+            <el-row><el-col><el-button type="primary" style="width:100%;max-width: 200px;">更换照片</el-button></el-col></el-row>
           </el-col>
 
           <el-col :span="20" style="line-height: 50px;">
@@ -176,8 +176,9 @@
               <el-row>
                 <el-col :span="8"><div class="text_css">所属部门：</div></el-col>
                 <el-col :span="14">
-                  <el-input v-if="edit"  v-model="userListEdit.orgId" placeholder="所属部门"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.orgId}}</span>
+                  <!--<el-input v-if="edit"  v-model="userListEdit.orgId" placeholder="所属部门"></el-input>-->
+                  <org-select v-if="edit" v-model="userListEdit.orgId" @org-click="orgClick"></org-select>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{orgName}}</span>
                 </el-col>
               </el-row>
 
@@ -400,9 +401,9 @@
 
               </el-col>
             </el-row>
-          <!-- 分割线 -->
-          <el-row><el-col> <hr style="border: none; "/> </el-col></el-row>
-        </el-col>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; "/> </el-col></el-row>
+          </el-col>
         </el-row>
       </el-card>
 
@@ -427,6 +428,7 @@
   import LineChart from '@/components/LineChart'
   import OrgTree from '@/components/OrgTree'
   import { fetchTree } from '@/api/upms/org'
+  import OrgSelect from '@/components/OrgSelect'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
 
   export default {
@@ -435,7 +437,8 @@
       Bar,
       OrgTree,
       LineChart,
-      Dict
+      Dict,
+      OrgSelect
     },
     directives: {
       waves
@@ -466,7 +469,10 @@
           label: 'label'
         },
         userListEdit: {},
-        addInfo: false
+        // 添加 标记
+        addInfo: false,
+        // 部门名字
+        orgName: ''
       }
     },
     created() {
@@ -564,6 +570,9 @@
           console.log(response.data)
         })
         this.edit = false
+      },
+      orgClick(org) {
+        this.orgName = org.name
       },
       filterNode(value, data) {
         if (!value) return true

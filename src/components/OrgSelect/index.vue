@@ -75,6 +75,7 @@
         this.cancel()
         this.orgId = value.id
         this.$emit('change', value.id)
+        this.$emit('org-click', value)
       },
       cancel() {
         this.isOpen = false

@@ -27,7 +27,7 @@
     <el-row>
       <!--
       -->
-      <org-select v-model="orgId" ></org-select> {{orgId}}
+      <org-select v-model="orgId" @org-click="orgClick"></org-select> {{orgId}}
     </el-row>
 
     <el-row>
@@ -193,6 +193,10 @@ export default {
       for (var i = 0; i < this.checkbox.length; i++) {
         if (this.checkbox[i] === id) this.checkbox.splice(i, 1)
       }
+    },
+    orgClick(org) {
+      console.log('=======================')
+      console.log(org)
     },
     toggle() {
       if (this.sel === 2) {

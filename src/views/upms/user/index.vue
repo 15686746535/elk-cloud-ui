@@ -86,229 +86,324 @@
           </div>
         </div>
 
+        <el-row :gutter="10">
+          <el-col :span="4">
+            <el-row><el-col><img width="100%" height="100%" :src="userListEdit.avatar" class="image"></el-col></el-row>
+            <el-row><el-col><el-button type="primary" style="width:100%;max-width: 200px;">修改头像</el-button></el-col></el-row>
+          </el-col>
 
-        <el-row style="width: 15%; float: left;">
-          <img width="100%" height="100%" :src="userListEdit.avatar" class="image">
-          <el-button type="primary" style="width: 174px;">修改头像</el-button>
+          <el-col :span="20" style="line-height: 50px;">
+          <!-- 第一大排 -->
+            <el-row>
+            <!-- 第一列 -->
+            <el-col :span="6">
+              <!-- 工号 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">工号：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.jobNumber" placeholder="工号"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.jobNumber}}</span>
+                </el-col>
+              </el-row>
+
+              <!-- 性别 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">性别：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.sex" placeholder="性别"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.sex}}</span>
+                </el-col>
+              </el-row>
+
+              <!-- 联系电话 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">联系电话：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.mobile" placeholder="联系电话"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.mobile}}</span>
+                </el-col>
+              </el-row>
+
+
+            </el-col>
+
+            <!-- 第二列 -->
+            <el-col :span="6">
+
+              <!-- 员工姓名 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">员工姓名：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.name" placeholder="员工姓名"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.name}}</span>
+                </el-col>
+              </el-row>
+
+              <!-- 入职日期 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">入职日期：</div></el-col>
+                <el-col :span="14">
+                  <el-date-picker  v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userListEdit.joinedTime"></el-date-picker>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.joinedTime | subTime}}</span>
+                </el-col>
+              </el-row>
+
+              <!-- email -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">E-mail：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.email" placeholder="E-mail"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.email}}</span>
+                </el-col>
+              </el-row>
+
+            </el-col>
+
+            <!-- 第三列 -->
+            <el-col :span="6">
+
+              <!-- 身份证号 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">身份证号：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.idNumber" placeholder="身份证号"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.idNumber}}</span>
+                </el-col>
+              </el-row>
+
+
+              <!-- 所属部门 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">所属部门：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.orgId" placeholder="所属部门"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.orgId}}</span>
+                </el-col>
+              </el-row>
+
+              <!-- 联系地址 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">联系地址：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.contactAddress" placeholder="联系地址"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.contactAddress}}</span>
+                </el-col>
+              </el-row>
+
+            </el-col>
+
+            <!-- 第四列 -->
+            <el-col :span="6">
+
+              <!-- 生日 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">生日：</div></el-col>
+                <el-col :span="14">
+                  <el-date-picker  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userListEdit.birthday"></el-date-picker>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.birthday | subTime}}</span>
+                </el-col>
+              </el-row>
+
+
+              <!-- 职位 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">职位：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.roleName" placeholder="职位"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.roleName}}</span>
+                </el-col>
+              </el-row>
+
+              <!-- 家庭住址 -->
+              <el-row>
+                <el-col :span="8"><div class="text_css">家庭住址：</div></el-col>
+                <el-col :span="14">
+                  <el-input v-if="edit"  v-model="userListEdit.homeAddress" placeholder="家庭住址"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.homeAddress}}</span>
+                </el-col>
+              </el-row>
+
+            </el-col>
+
+          </el-row>
+
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+            <!-- 第二大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="6">
+
+                <!-- 学历 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">学历：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit"  v-model="userListEdit.education" placeholder="学历" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.education}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="6">
+
+                <!-- 专业 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">专业：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit"  v-model="userListEdit.major" placeholder="专业" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.major}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+              <!-- 第三列 -->
+              <el-col :span="6">
+
+                <!-- QQ -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">QQ：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit"  v-model="userListEdit.qq" placeholder="QQ" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.qq}}</span>
+                  </el-col>
+                </el-row>
+
+
+              </el-col>
+              <!-- 第四列 -->
+              <el-col :span="6">
+
+                <!-- 微信 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">微信：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit"  v-model="userListEdit.wechat" placeholder="微信" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.wechat}}</span>
+                  </el-col>
+                </el-row>
+
+
+              </el-col>
+            </el-row>
+
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+            <!-- 第三大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="6">
+
+                <!-- 转正日期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">转正日期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userListEdit.positiveTime"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.positiveTime | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="6">
+
+                <!-- 公积金 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">公积金：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit" type="date" placeholder="公积金"  style="width: 100%" v-model="userListEdit.providentFundTime"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.providentFundTime | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+              <!-- 第三列 -->
+              <el-col :span="6">
+
+                <!-- 五险 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">五险：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit" type="date" placeholder="五险"  style="width: 100%" v-model="userListEdit.fiveInsuranceTime"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.fiveInsuranceTime | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+
+              </el-col>
+              <!-- 第四列 -->
+              <el-col :span="6">
+
+                <!-- 工作电话 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">工作电话：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit"  v-model="userListEdit.workMobile" placeholder="工作电话" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.workMobile}}</span>
+                  </el-col>
+                </el-row>
+
+
+              </el-col>
+
+            </el-row>
+
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+            <!-- 第三大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="6">
+
+                <!-- 紧急联系人 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">紧急联系人：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit"  v-model="userListEdit.emergencyContact" placeholder="紧急联系人" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.emergencyContact}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="6">
+
+                <!-- 紧急联系人电话 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">紧急联系人电话：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit"  v-model="userListEdit.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.emergencyMobile}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+              <!-- 第三列 -->
+              <el-col :span="6">
+
+                <el-row v-if="edit" :gutter="10">
+                  <el-col :span="12"><el-button v-if="!addInfo" type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>
+                  <el-col :span="12"><el-button v-if="addInfo" type="success" style="width: 100%;" @click="add">确认保存</el-button></el-col>
+                  <el-col :span="12"><el-button v-if="!addInfo" type="success" style="width: 100%;" @click="update">确认修改</el-button></el-col>
+                </el-row>
+
+
+                <el-row v-else>
+                  <el-col :span="12"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>
+                </el-row>
+
+              </el-col>
+            </el-row>
+          <!-- 分割线 -->
+          <el-row><el-col> <hr style="border: none; "/> </el-col></el-row>
+        </el-col>
         </el-row>
-        <el-row style="width: 85%;float: left;">
-          <el-form :inline="true" :rules="userListEditRules" status-icon ref="userListEdit" :model="userListEdit" label label-width="120px" label-position="left" class="demo-form-inline">
-
-
-            <el-col :span="6">
-              <el-form-item label="工号:" required>
-                <el-input v-if="edit"  v-model="userListEdit.jobNumber" style="width: 180px" placeholder="工号"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.jobNumber}}</span>
-              </el-form-item>
-            </el-col>
-
-
-            <el-col :span="6">
-              <el-form-item label="员工姓名:" required>
-                <el-input v-if="edit"  v-model="userListEdit.name" style="width: 180px" placeholder="员工姓名"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.name}}</span>
-              </el-form-item>
-            </el-col>
-
-
-            <el-col :span="6">
-              <el-form-item label="身份证号:" required>
-                <el-input v-if="edit"  v-model="userListEdit.idNumber" style="width: 180px" placeholder="身份证号"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.idNumber}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 出生日期 -->
-            <el-col :span="6">
-              <el-form-item label="生日:" required>
-                <el-date-picker v-if="edit"   type="date" placeholder="生日"  style="width: 180px;" v-model="userListEdit.birthday"></el-date-picker>
-                <span class="" style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.birthday | subTime}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!--<div style="border-bottom:1px solid #001528;margin-left:220px; width: 1010px;"></div>   | parseTime('{y}-{m}-{d}')-->
-
-            <!-- 性别 -->
-            <el-col :span="6">
-              <el-form-item label="性别:" required>
-                <dict dictType="dict_sex" style="width: 180px;" v-if="edit" v-model="userListEdit.sex" placeholder="性别"></dict>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.sex==1?'男':userListEdit.sex==2?'女':''}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 入职日期 -->
-            <el-col :span="6">
-              <el-form-item label="入职日期:" required>
-                <el-date-picker  v-if="edit" type="date" placeholder="入职日期"  style="width: 180px" v-model="userListEdit.joinedTime"></el-date-picker>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.joinedTime | subTime}}</span>
-              </el-form-item>
-            </el-col>
-
-
-
-
-
-            <!-- 所属部门 -->
-            <el-col :span="6">
-              <el-form-item label="所属部门:" required>
-                <el-input  v-if="edit" v-model="userListEdit.orgId" style="width: 180px" placeholder="所属部门"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.orgName}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 职位 -->
-            <el-col :span="6">
-              <el-form-item label="职位:" required>
-                <el-input  v-if="edit" v-model="userListEdit.roleId" style="width: 180px" placeholder="职位"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.roleName}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 联系电话 -->
-            <el-col :span="6">
-              <el-form-item label="联系电话:" required>
-                <el-input v-if="edit"  v-model="userListEdit.mobile" placeholder="联系电话"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.mobile}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- E-mail -->
-            <el-col :span="6">
-              <el-form-item label="E-mail:" required>
-                <el-input  v-if="edit" v-model="userListEdit.email" style="width: 180px" placeholder="E-mail"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.email}}</span>
-              </el-form-item>
-            </el-col>
-
-
-            <!-- 联系地址 -->
-            <el-col :span="6">
-              <el-form-item label="联系地址:" required>
-                <el-input v-if="edit"  v-model="userListEdit.contactAddress" placeholder="联系地址"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.contactAddress}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 家庭住址 -->
-            <el-col :span="6">
-              <el-form-item label="家庭地址:" required>
-                <el-input v-if="edit"  v-model="userListEdit.homeAddress" placeholder="家庭地址"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.homeAddress}}</span>
-              </el-form-item>
-            </el-col>
-
-
-            <!-- 分割线 -->
-            <el-col> <hr style="border: none;margin:-5px 0 20px 0; border-bottom:1px solid #d3dce6; "/> </el-col>
-
-            <!-- 学历 -->
-            <el-col :span="6">
-              <el-form-item label="学历:" required>
-                <el-input v-if="edit"  v-model="userListEdit.education" placeholder="学历"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.education}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 专业 -->
-            <el-col :span="6">
-              <el-form-item label="专业:" required>
-                <el-input v-if="edit" v-model="userListEdit.major" placeholder="专业"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.major}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- QQ -->
-            <el-col :span="6">
-              <el-form-item label="QQ:" required>
-                <el-input v-if="edit"  v-model="userListEdit.qq" placeholder="QQ"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.qq}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- wechat -->
-            <el-col :span="6">
-              <el-form-item label="微信:" required>
-                <el-input v-if="edit"  v-model="userListEdit.wechat" placeholder="微信"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.wechat}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 分割线 -->
-            <el-col> <hr style="border: none;margin:-5px 0 20px 0; border-bottom:1px solid #d3dce6; "/> </el-col>
-
-            <!-- 转正日期 -->
-            <el-col :span="6">
-              <el-form-item label="转正日期:" required>
-                <el-date-picker  v-if="edit" type="date" placeholder="转正日期"  style="width: 180px" v-model="userListEdit.positiveTime"></el-date-picker>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.positiveTime | subTime}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 公积金 -->
-            <el-col :span="6">
-              <el-form-item label="公积金:" required>
-                <el-date-picker  v-if="edit" type="date" placeholder="公积金"  style="width: 180px" v-model="userListEdit.providentFundTime"></el-date-picker>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.providentFundTime | subTime}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 五险 -->
-            <el-col :span="6">
-              <el-form-item label="五险:" required>
-                <el-date-picker  v-if="edit" type="date" placeholder="五险"  style="width: 180px" v-model="userListEdit.fiveInsuranceTime"></el-date-picker>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.fiveInsuranceTime | subTime}}</span>
-              </el-form-item>
-            </el-col>
-
-
-            <!-- 工作电话 -->
-            <el-col :span="6">
-              <el-form-item label="工作电话:" required>
-                <el-input v-if="edit"  v-model="userListEdit.workMobile" placeholder="工作电话"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.workMobile}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 分割线 -->
-            <el-col> <hr style="border: none;margin:-5px 0 20px 0; border-bottom:1px solid #d3dce6; "/> </el-col>
-
-            <!-- 紧急联系人 -->
-            <el-col :span="6">
-              <el-form-item label="紧急联系人:" required>
-                <el-input v-if="edit"  v-model="userListEdit.emergencyContact" placeholder="紧急联系人"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.emergencyContact}}</span>
-              </el-form-item>
-            </el-col>
-
-            <!-- 紧急联系人电话 -->
-            <el-col :span="6">
-              <el-form-item label="电话:" required>
-                <el-input v-if="edit"  v-model="userListEdit.emergencyMobile" placeholder="紧急联系人电话"  style="width: 180px"></el-input>
-                <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.emergencyMobile}}</span>
-              </el-form-item>
-            </el-col>
-
-
-            <el-col :span="6">
-
-              <el-form-item v-if="edit">
-                <el-button v-if="!addInfo" type="primary" style="width: 150px;" @click="cancel">取消</el-button>
-                <el-button v-if="addInfo" type="primary" style="width: 150px;" @click="add">确认保存</el-button>
-                <el-button v-if="!addInfo" type="primary" style="width: 150px;" @click="update">确认修改</el-button>
-              </el-form-item>
-
-
-              <el-form-item v-else>
-                <el-button type="primary" style="width: 150px;" @click="editInfo('vehicle')">编辑信息</el-button>
-              </el-form-item>
-
-
-            </el-col>
-
-
-          </el-form>
-        </el-row>
-
       </el-card>
 
         <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" style="margin-top: 10px" >
@@ -371,81 +466,7 @@
           label: 'label'
         },
         userListEdit: {},
-        addInfo: false,
-        userListEditRules: {
-          jobNumber: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          name: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          birthday: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          mobile: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          contactAddress: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          homeAddress: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          education: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          major: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          joinedTime: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          positiveTime: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          providentFundTime: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          fiveInsuranceTime: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          qq: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          email: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          workMobile: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          wechat: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          emergencyContact: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          emergencyMobile: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ]
-        }
+        addInfo: false
       }
     },
     created() {
@@ -574,9 +595,17 @@
   .image {
     margin-bottom: 20px;
     margin-right: 50px;
-    width: 174px;
-    height: 174px;
+    max-width: 200px;
+    max-height: 200px;
     display: block;
     float: left;
+  }
+  .text_css{
+    color:#495060;
+    font-size: 16px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
   }
 </style>

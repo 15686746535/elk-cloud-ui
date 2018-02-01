@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function roleList() {
+export function roleList(id) {
   return request({
-    url: '/upms/role/roleList',
+    url: '/upms/role/roleList?orgId=' + id,
     method: 'get'
   })
 }

@@ -8,7 +8,7 @@
             |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
           </div>
           <div style="float: right">
-            <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="用户名" v-model="listQuery.username"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
             <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
             <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="edit">添加</el-button>
           </div>
@@ -110,8 +110,8 @@
               <el-row>
                 <el-col :span="8"><div class="text_css">性别：</div></el-col>
                 <el-col :span="14">
-                  <el-input v-if="edit"  v-model="userListEdit.sex" placeholder="性别"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.sex}}</span>
+                  <el-input v-if="edit" disabled v-model="sexVO" placeholder="性别"></el-input>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.sex | sexFilter}}</span>
                 </el-col>
               </el-row>
 
@@ -166,7 +166,7 @@
               <el-row>
                 <el-col :span="8"><div class="text_css">身份证号：</div></el-col>
                 <el-col :span="14">
-                  <el-input v-if="edit"  v-model="userListEdit.idNumber" placeholder="身份证号"></el-input>
+                  <el-input v-if="edit" @blur="generateInfo"  v-model="userListEdit.idNumber" placeholder="身份证号"></el-input>
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.idNumber}}</span>
                 </el-col>
               </el-row>
@@ -176,9 +176,8 @@
               <el-row>
                 <el-col :span="8"><div class="text_css">所属部门：</div></el-col>
                 <el-col :span="14">
-                  <!--<el-input v-if="edit"  v-model="userListEdit.orgId" placeholder="所属部门"></el-input>-->
-                  <org-select v-if="edit" v-model="userListEdit.orgId" @org-click="orgClick"></org-select>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{orgName}}</span>
+                  <org-select v-if="edit" style="width: 100%" v-model="userListEdit.orgId" @org-click="orgClick"></org-select>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.orgName}}</span>
                 </el-col>
               </el-row>
 
@@ -210,8 +209,17 @@
               <el-row>
                 <el-col :span="8"><div class="text_css">职位：</div></el-col>
                 <el-col :span="14">
-                  <el-input v-if="edit"  v-model="userListEdit.roleName" placeholder="职位"></el-input>
+                  <el-select v-if="edit" v-model="userListEdit.roleId" @change="roleChange" filterable placeholder="职位">
+                    <el-option
+                      v-for="item in roles"
+                      :key="item.roleId"
+                      :label="item.roleName"
+                      :value="item.roleId">
+                    </el-option>
+                  </el-select>
+                  <!--<el-input v-if="edit"  v-model="userListEdit.roleName" placeholder="职位"></el-input>-->
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.roleName}}</span>
+
                 </el-col>
               </el-row>
 
@@ -423,6 +431,7 @@
 
 <script>
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { roleList } from '@/api/upms/role'
   import Bar from '@/components/Bar'
   import Dict from '@/components/Dict'
   import LineChart from '@/components/LineChart'
@@ -433,6 +442,15 @@
 
   export default {
     name: 'index',
+    computed: {
+      sexVO() {
+        const typeMap = {
+          1: '男',
+          0: '女'
+        }
+        return typeMap[this.userListEdit.sex]
+      }
+    },
     components: {
       Bar,
       OrgTree,
@@ -460,7 +478,8 @@
         listQuery: {
           page: 1,
           limit: 20,
-          orgId: null
+          orgId: null,
+          condition: null
         },
         // 树形图
         treeData: [],
@@ -471,8 +490,7 @@
         userListEdit: {},
         // 添加 标记
         addInfo: false,
-        // 部门名字
-        orgName: ''
+        roles: []
       }
     },
     created() {
@@ -572,7 +590,15 @@
         this.edit = false
       },
       orgClick(org) {
-        this.orgName = org.name
+        console.log(org)
+        this.userListEdit.orgName = org.name
+        roleList(org.id).then(response => {
+          console.log(response.data)
+          this.roles = response.data.data
+        })
+      },
+      roleChange() {
+        console.log(this.userListEdit.roleId)
       },
       filterNode(value, data) {
         if (!value) return true
@@ -584,6 +610,13 @@
       },
       handleClick(tab, event) {
         console.log(this.activeName)
+      },
+      // 根据身份证号生成信息
+      generateInfo() {
+        if (this.userListEdit.idNumber.length === 18) {
+          this.userListEdit.birthday = this.userListEdit.idNumber.substring(6, 10) + '-' + this.userListEdit.idNumber.substring(10, 12) + '-' + this.userListEdit.idNumber.substring(12, 14)
+          this.userListEdit.sex = this.userListEdit.idNumber.substr(16, 1) % 2
+        }
       }
     }
   }

@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div :style="{width:width}">
     <div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>
     <div class="ran-select">
-      <input class="ran-input" :class="isOpen?'selected':''" @click="choice" :style="{height:height,width:width}" :placeholder=placeholder v-model="org.label" readonly  placeholder="请选择"/>
-      <i class="ran-select-icon el-icon-arrow-up" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
+      <input class="ran-input hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="org.label" readonly  placeholder="请选择"/>
+      <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
       <div v-show="isOpen" class="ran-arrow"></div>
       <el-collapse-transition>
-        <div v-show="isOpen" class="ran-select-dropdown">
+        <div v-show="isOpen" class="ran-select-dropdown" :style="{minWidth:width}">
           <div class="not-data" v-show="noData">
             没有数据
           </div>
@@ -103,15 +103,13 @@
     right: 10px;
     transition:transform 0.4s;
   }
-  .ran-input:hover{
+  .hover:hover{
     cursor: pointer;
   }
   .ran-select{
     position: relative;
-    width: 200px;
   }
   .ran-select-dropdown{
-    min-width: 200px;
     transform-origin: center top 0px;
     position: absolute;
     z-index: 1001;
@@ -132,7 +130,7 @@
     width: 0px;
     height: 0px;
     left: 30px;
-    top: 39px;
+    top: 50px;
     border-style: solid;
     border-color: rgb(255, 255, 255) transparent;
     border-width: 0px 6px 7px 6px;
@@ -147,6 +145,7 @@
     border-color: #419dff!important;
   }
   .ran-input{
+      width: 100%;
      -webkit-appearance: none;
      background-color: #fff;
      border-radius: 4px;

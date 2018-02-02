@@ -24,7 +24,7 @@
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
 
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
-            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="create">添加</el-button>
+            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-form>
         </div>
 
@@ -383,297 +383,470 @@
 
 
       </el-card>
-      <!--<el-card class="box-card2" v-show="vehicle.vehicleEntity.vehicleId != null">-->
 
         <el-tabs v-model="activeName" v-if="vehicle.vehicleEntity.vehicleId" type="border-card" @tab-click="handleClick" style="margin-top: 10px" >
 
-          <el-tab-pane label="证件信息" name="1">
-            <el-form :inline="true"  :model="vehicle" label	 label-width="160px" label-position="left" class="demo-form-inline">
-              <!-- 行驶证注册登记日期 -->
+          <el-tab-pane label="证件信息" name="1" style="line-height: 50px;">
+
+
+            <!-- 第一大排 -->
+            <el-row>
+              <!-- 第一列 -->
               <el-col :span="8">
-                <el-form-item label="行驶证注册登记日期:" >
-                  <el-date-picker v-if="edit === 'certificate'" type="date" placeholder="行驶证注册登记日期"   v-model="vehicle.certificateEntity.drivingLicenseEnroll"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.certificateEntity.drivingLicenseEnroll | subTime }}</span>
-                </el-form-item>
-              </el-col>
-              <!-- 行驶证发证日期 -->
-              <el-col :span="8">
-                <el-form-item label="行驶证发证日期:" >
-                  <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证发证日期" style="width: 100%"   v-model="vehicle.certificateEntity.drivingLicenseRelease"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseRelease | subTime}}</span>
-                </el-form-item>
-              </el-col>
-              <!-- 行驶证年审有效期 -->
-                <el-col :span="8">
-                <el-form-item label="行驶证年审有效期:" >
-                  <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证年审有效期"   v-model="vehicle.certificateEntity.drivingLicenseEnd"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseEnd | subTime}}</span>
-                </el-form-item>
+                <!-- 行驶证注册登记日期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">行驶证注册登记日期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证注册登记日期"  style="width: 100%" v-model="vehicle.certificateEntity.drivingLicenseEnroll"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseEnroll | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+
               </el-col>
 
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:1px solid #d3dce6; "/> </el-col>
+              <!-- 第二列 -->
+              <el-col :span="8">
 
-              <!-- 道路运输证号 -->
-              <el-col :span="8">
-                <el-form-item label="道路运输证号:" >
-                  <el-input v-if="edit === 'certificate'"  v-model="vehicle.certificateEntity.roadTransport" placeholder="道路运输证号"  style="width: 240px"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransport}}</span>
-                </el-form-item>
-              </el-col>
-              <!-- 道路运输发证日期 -->
-              <el-col :span="8">
-                <el-form-item label="道路运输发证日期:" >
-                  <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="道路运输发证日期"  style="width: 240px" v-model="vehicle.certificateEntity.roadTransportStart"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportStart | subTime}}</span>
-                </el-form-item>
-              </el-col>
-              <!-- 行驶证注册登记日期 -->
-              <el-col :span="8">
-                <el-form-item label="道路运输年审有效期:" >
-                  <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="道路运输年审有效期"  style="width: 240px" v-model="vehicle.certificateEntity.roadTransportEnd"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportEnd | subTime}}</span>
-                </el-form-item>
+                <!-- 行驶证发证日期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">行驶证发证日期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证发证日期"  style="width: 100%" v-model="vehicle.certificateEntity.drivingLicenseRelease"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseRelease | subTime}}</span>
+                  </el-col>
+                </el-row>
+
               </el-col>
 
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:1px solid #d3dce6; "/> </el-col>
+              <!-- 第三列 -->
+              <el-col :span="8">
 
-              <!-- 行驶证注册登记日期 -->
-              <el-col :span="8">
-                <el-form-item label="标识卡到期日期:" >
-                  <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="标识卡到期日期"  style="width: 240px" v-model="vehicle.certificateEntity.identificationEnd"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.identificationEnd | subTime}}</span>
-                </el-form-item>
-              </el-col>
-              <!-- 评定日期 -->
-              <el-col :span="8">
-                <el-form-item label="评定日期:" >
-                  <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="评定日期"  style="width: 240px" v-model="vehicle.certificateEntity.evaluation"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.evaluation | subTime}}</span>
-                </el-form-item>
-              </el-col>
-              <!-- 强制报销日期 -->
-              <el-col :span="8">
-                <el-form-item label="强制报销日期:" >
-                  <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="强制报销日期"  style="width: 240px" v-model="vehicle.certificateEntity.scrap"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.scrap | subTime}}</span>
-                </el-form-item>
+                <!-- 行驶证年审有效期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">行驶证年审有效期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证年审有效期"  style="width: 100%" v-model="vehicle.certificateEntity.drivingLicenseEnd"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseEnd | subTime}}</span>
+                  </el-col>
+                </el-row>
+
               </el-col>
 
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:1px solid #d3dce6; "/> </el-col>
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
 
-              <!-- 交强险 -->
+
+            <!-- 第二大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 道路运输证号 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">道路运输证号：</div></el-col>
+                  <el-col :span="14">
+                    <el-input v-if="edit === 'certificate'"  v-model="vehicle.certificateEntity.roadTransport" placeholder="道路运输证号" ></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransport}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 道路运输发证日期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">道路运输发证日期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="道路运输发证日期"  style="width: 100%" v-model="vehicle.certificateEntity.roadTransportStart"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportStart | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 道路运输年审有效期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">道路运输年审有效期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="道路运输年审有效期"  style="width: 100%" v-model="vehicle.certificateEntity.roadTransportEnd"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportEnd | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+
+            <!-- 第三大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 标识卡到期日期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">标识卡到期日期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="标识卡到期日期"  style="width: 100%" v-model="vehicle.certificateEntity.identificationEnd"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.identificationEnd | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 评定日期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">评定日期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="评定日期"  style="width: 100%" v-model="vehicle.certificateEntity.evaluation"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.evaluation | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 强制报销日期 -->
+                <el-row>
+                  <el-col :span="8"><div class="text_css">强制报销日期：</div></el-col>
+                  <el-col :span="14">
+                    <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="强制报销日期"  style="width: 100%" v-model="vehicle.certificateEntity.scrap"></el-date-picker>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.scrap | subTime}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+
+            <!-- 第四大排 -->
+            <el-row>
+              <!-- 第一列 -->
               <el-col :span="12">
-                <el-form-item label="交强险:">
+                <!-- 交强险 -->
+                <el-row>
+                  <el-col :span="4"><div class="text_css">交强险：</div></el-col>
+                  <el-col :span="18">
+                    <el-date-picker v-if="edit === 'certificate'" @blur="clivtaTimeBlur" v-model="daterange.clivtaTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+                    </el-date-picker>
+                    <span v-else>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;">至</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaEnd | subTime}}</span>
+                    </span>
+                  </el-col>
+                </el-row>
 
-                  <el-date-picker v-if="edit === 'certificate'" @blur="clivtaTimeBlur" v-model="daterange.clivtaTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
-                  </el-date-picker>
-                  <span v-else>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaStart | subTime}}</span>
-                    <span style="padding-left: 16px;font-size: 12px;">至</span>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaEnd | subTime}}</span>
-                  </span>
+                <!-- 保养维修 -->
+                <el-row>
+                  <el-col :span="4"><div class="text_css">保养维修：</div></el-col>
+                  <el-col :span="18">
+                    <el-date-picker v-if="edit === 'certificate'" @blur="maintenanceTimeBlur" v-model="daterange.maintenanceTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+                    </el-date-picker>
+                    <span v-else>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;">至</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceEnd | subTime}}</span>
+                    </span>
+                  </el-col>
+                </el-row>
 
-                </el-form-item>
+                <!-- 二维检测 -->
+                <el-row>
+                  <el-col :span="4"><div class="text_css">二维检测：</div></el-col>
+                  <el-col :span="18">
+                    <el-date-picker v-if="edit === 'certificate'" @blur="twoDimensionalTimeBlur" v-model="daterange.twoDimensionalTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+                    </el-date-picker>
+                    <span v-else>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;">至</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalEnd | subTime}}</span>
+                    </span>
+                  </el-col>
+                </el-row>
+
+
               </el-col>
 
-
-              <!-- 商业险 -->
+              <!-- 第二列 -->
               <el-col :span="12">
-                <el-form-item label="商业险:">
-                  <el-date-picker v-if="edit === 'certificate'" @blur="viTimeBlur" v-model="daterange.viTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
-                  </el-date-picker>
-                  <span v-else>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viStart | subTime}}</span>
-                    <span style="padding-left: 16px;font-size: 12px;">至</span>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viEnd | subTime}}</span>
-                  </span>
-                </el-form-item>
+
+                <!-- 商业险 -->
+                <el-row>
+                  <el-col :span="4"><div class="text_css">商业险：</div></el-col>
+                  <el-col :span="18">
+                    <el-date-picker v-if="edit === 'certificate'" @blur="viTimeBlur" v-model="daterange.viTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+                    </el-date-picker>
+                    <span v-else>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;">至</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viEnd | subTime}}</span>
+                    </span>
+                  </el-col>
+                </el-row>
+
+
+                <!-- 气瓶 -->
+                <el-row>
+                  <el-col :span="4"><div class="text_css">气瓶：</div></el-col>
+                  <el-col :span="18">
+                    <el-date-picker v-if="edit === 'certificate'" @blur="bottleTimeBlur" v-model="daterange.bottleTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+                    </el-date-picker>
+                    <span v-else>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;">至</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleEnd | subTime}}</span>
+                    </span>
+                  </el-col>
+                </el-row>
+
+                <!-- 类型等级 -->
+                <el-row>
+                  <el-col :span="4"><div class="text_css">类型等级：</div></el-col>
+                  <el-col :span="18">
+                    <el-input v-if="edit === 'certificate'" v-model="vehicle.certificateEntity.typeLevel" placeholder="类型等级"  style="width: 100%"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.typeLevel }}</span>
+                  </el-col>
+                </el-row>
+
               </el-col>
 
-              <!-- 保养维修 -->
-              <el-col :span="12">
-                <el-form-item label="保养维修:">
-                  <el-date-picker v-if="edit === 'certificate'" @blur="maintenanceTimeBlur" v-model="daterange.maintenanceTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
-                  </el-date-picker>
-                  <span v-else>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceStart | subTime}}</span>
-                    <span style="padding-left: 16px;font-size: 12px;">至</span>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceEnd | subTime}}</span>
-                  </span>
 
-                </el-form-item>
-              </el-col>
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:2px solid #d3dce6; "/> </el-col></el-row>
 
-              <!-- 气瓶 -->
-              <el-col :span="12">
-                <el-form-item label="气瓶:">
-                  <el-date-picker v-if="edit === 'certificate'" @blur="bottleTimeBlur" v-model="daterange.bottleTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
-                  </el-date-picker>
-                  <span v-else>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleStart | subTime}}</span>
-                    <span style="padding-left: 16px;font-size: 12px;">至</span>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleEnd | subTime}}</span>
-                  </span>
+            <!-- 按钮 -->
+            <el-row>
 
-                </el-form-item>
-              </el-col>
-
-              <!-- 二维检测 -->
-              <el-col :span="12">
-                <el-form-item label="二维检测:">
-                  <el-date-picker v-if="edit === 'certificate'" @blur="twoDimensionalTimeBlur" v-model="daterange.twoDimensionalTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
-                  </el-date-picker>
-                  <span v-else>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalStart | subTime}}</span>
-                    <span style="padding-left: 16px;font-size: 12px;">至</span>
-                    <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalEnd | subTime}}</span>
-                  </span>
-
-                </el-form-item>
-              </el-col>
-
-              <!-- 类型等级 -->
+              <el-col :span="17">&nbsp;</el-col>
               <el-col :span="6">
-                <el-form-item label="类型等级:" >
-                  <el-input v-if="edit === 'certificate'" v-model="vehicle.certificateEntity.typeLevel" placeholder="类型等级"  style="width: 180px"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.typeLevel }}</span>
-                </el-form-item>
+
+                <el-row v-if="edit === 'certificate'" :gutter="10">
+                  <el-col :span="12"> <el-button type="info" style="width: 100%" @click="cancel">取消</el-button></el-col>
+                  <el-col :span="12"><el-button type="success"  style="width: 100%" @click="update('certificate',vehicle.certificateEntity)">确认</el-button></el-col>
+                </el-row>
+
+                <el-row v-else >
+                  <el-col :span="12"><el-button type="primary" style="width: 100%" @click="editInfo('certificate')">编辑信息</el-button></el-col>
+                </el-row>
+
               </el-col>
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:2px solid #d3dce6; "/> </el-col>
-
-              <el-col>
-
-                <el-form-item v-if="edit === 'certificate'" style="float: right">
-                  <el-button type="primary"  style="width: 150px;" @click="cancel">取消</el-button>
-                  <el-button type="primary"  style="width: 150px;" @click="update('certificate',vehicle.certificateEntity)">确认</el-button>
-                </el-form-item>
+            </el-row>
 
 
-                <el-form-item v-else style="float: right">
-                  <el-button type="primary" style="width: 150px;" @click="editInfo('certificate')">编辑信息</el-button>
-                </el-form-item>
-              </el-col>
-            </el-form>
           </el-tab-pane>
-          <el-tab-pane label="技术信息" name="2">
+          <el-tab-pane label="技术信息" name="2" style="line-height: 50px;">
+
+            <!-- 第一大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 轴距 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">轴距：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="轴距"  style="width: 100%" v-model="vehicle.technicalEntity.wheelbase"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.wheelbase}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 前/后轮距 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">前/后轮距：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'"  placeholder="前/后轮距"  style="width: 100%" v-model="vehicle.technicalEntity.tread"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.tread}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 轮胎数/规格 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">轮胎数/规格：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="轮胎数/规格"  style="width: 100%" v-model="vehicle.technicalEntity.standard"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.standard}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+
+            <!-- 第二大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 车长（外）mm -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">车长（外）mm：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="车长（外）mm"  style="width: 100%" v-model="vehicle.technicalEntity.length"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.length}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 车宽（外）mm -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">车宽（外）mm：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'"  placeholder="车宽（外）mm"  style="width: 100%" v-model="vehicle.technicalEntity.width"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.width}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 车高（外）mm -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">车高（外）mm：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="车高（外）mm"  style="width: 100%" v-model="vehicle.technicalEntity.height"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.height}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+
+            <!-- 第三大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 排量/功率 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">排量/功率：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="排量/功率"  style="width: 100%" v-model="vehicle.technicalEntity.displacement"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.displacement}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 转向形式 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">转向形式：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'"  placeholder="转向形式"  style="width: 100%" v-model="vehicle.technicalEntity.steering"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.steering}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 车轴数 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">车轴数：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="车轴数"  style="width: 100%" v-model="vehicle.technicalEntity.axleNumber"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.axleNumber}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+
+            <!-- 第四大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 总质量 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">总质量：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="总质量"  style="width: 100%" v-model="vehicle.technicalEntity.weight"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.weight}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 国产/进口 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">国产/进口：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'"  placeholder="国产/进口"  style="width: 100%" v-model="vehicle.technicalEntity.origin"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.origin}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 制造厂商名称 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">制造厂商名称：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'technical'" placeholder="制造厂商名称"  style="width: 100%" v-model="vehicle.technicalEntity.manufacturer"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.manufacturer}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:2px solid #d3dce6; "/> </el-col></el-row>
 
             <el-form :inline="true"  :model="vehicle" label	 label-width="160px" label-position="left" class="demo-form-inline">
-
-              <!-- 轴距 -->
-              <el-col :span="8">
-                <el-form-item label="轴距:" >
-                  <el-input  v-if="edit === 'technical'" placeholder="轴距"  style="width: 240px" v-model="vehicle.technicalEntity.wheelbase"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.wheelbase}}</span>
-
-                </el-form-item>
-              </el-col>
-
-              <!-- 前/后轮距 -->
-              <el-col :span="8">
-                <el-form-item label="前/后轮距:" >
-                  <el-input  v-if="edit === 'technical'"  placeholder="前/后轮距"  style="width: 240px" v-model="vehicle.technicalEntity.tread"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.tread}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 轮胎数/规格 -->
-              <el-col :span="8">
-                <el-form-item label="轮胎数/规格:" >
-                  <el-input  v-if="edit === 'technical'"  placeholder="轮胎数/规格"  style="width: 240px" v-model="vehicle.technicalEntity.standard"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.standard}}</span>
-                </el-form-item>
-              </el-col>
-
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:1px solid #d3dce6; "/> </el-col>
-
-              <!-- 车长（外）mm -->
-              <el-col :span="8">
-                <el-form-item label="车长（外）mm:" >
-                  <el-input  v-if="edit === 'technical'" placeholder="车长（外）mm"  style="width: 240px" v-model="vehicle.technicalEntity.length"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.length}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 车宽（外）mm -->
-              <el-col :span="8">
-                <el-form-item label="车宽（外）mm:" >
-                  <el-input  v-if="edit === 'technical'" placeholder="车宽（外）mm"  style="width: 240px" v-model="vehicle.technicalEntity.width"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.width}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 车高（外）mm -->
-              <el-col :span="8">
-                <el-form-item label="车高（外）mm:" >
-                  <el-input  v-if="edit === 'technical'" placeholder="车高（外）mm"  style="width: 240px" v-model="vehicle.technicalEntity.height"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.height}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:1px solid #d3dce6; "/> </el-col>
-
-              <!-- 排量/功率 -->
-              <el-col :span="8">
-                <el-form-item label="排量/功率:" >
-                  <el-input  v-if="edit === 'technical'" placeholder="排量/功率"  style="width: 240px" v-model="vehicle.technicalEntity.displacement"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.displacement}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 转向形式 -->
-              <el-col :span="8">
-                <el-form-item label="转向形式:" >
-                  <el-input  v-if="edit === 'technical'" placeholder="转向形式"  style="width: 240px" v-model="vehicle.technicalEntity.steering"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.steering}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 车轴数 -->
-              <el-col :span="8">
-                <el-form-item label="车轴数:" >
-                  <el-input  v-if="edit === 'technical'"  placeholder="车轴数"  style="width: 240px" v-model="vehicle.technicalEntity.axleNumber"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.axleNumber}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:1px solid #d3dce6; "/> </el-col>
-
-              <!-- 总质量 -->
-              <el-col :span="8">
-                <el-form-item label="总质量:" >
-                  <el-input  v-if="edit === 'technical'"  placeholder="总质量"  style="width: 240px" v-model="vehicle.technicalEntity.weight"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.weight}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 国产/进口 -->
-              <el-col :span="8">
-                <el-form-item label="国产/进口:" >
-                  <el-input  v-if="edit === 'technical'"  placeholder="国产/进口"  style="width: 240px" v-model="vehicle.technicalEntity.origin"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.origin}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 制造厂商名称 -->
-              <el-col :span="8">
-                <el-form-item label="制造厂商名称:" >
-                  <el-input  v-if="edit === 'technical'"  placeholder="制造厂商名称"  style="width: 240px" v-model="vehicle.technicalEntity.manufacturer"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.technicalEntity.manufacturer}}</span>
-                </el-form-item>
-              </el-col>
-
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:2px solid #d3dce6; "/> </el-col>
 
               <el-col>
                 <el-form-item v-if="edit === 'technical'" style="float: right">
@@ -690,66 +863,104 @@
             </el-form>
 
           </el-tab-pane>
-          <el-tab-pane label="安全信息" name="3">
+          <el-tab-pane label="安全信息" name="3" style="line-height: 50px;">
+
+            <!-- 第一大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 安装GPS -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">安装GPS：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'safety'" placeholder="安装GPS"  style="width: 100%" v-model="vehicle.safetyEntity.gps"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.gps}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 三角架 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">三角架：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'safety'"  placeholder="三角架"  style="width: 100%" v-model="vehicle.safetyEntity.tripod"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.tripod}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 发动机灭火器 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">发动机灭火器：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'safety'" placeholder="发动机灭火器"  style="width: 100%" v-model="vehicle.safetyEntity.extinguisher"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.extinguisher}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+
+
+            <!-- 第二大排 -->
+            <el-row>
+              <!-- 第一列 -->
+              <el-col :span="8">
+                <!-- 副后视境 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">副后视境：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'safety'" placeholder="副后视境"  style="width: 100%" v-model="vehicle.safetyEntity.rearView"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.rearView}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第二列 -->
+              <el-col :span="8">
+
+                <!-- 副刹 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">副刹：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'safety'"  placeholder="副刹"  style="width: 100%" v-model="vehicle.safetyEntity.brake"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.brake}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+              <!-- 第三列 -->
+              <el-col :span="8">
+
+                <!-- 故障警示牌 -->
+                <el-row>
+                  <el-col :span="6"><div class="text_css">故障警示牌：</div></el-col>
+                  <el-col :span="14">
+                    <el-input  v-if="edit === 'safety'" placeholder="故障警示牌"  style="width: 100%" v-model="vehicle.safetyEntity.faultWarning"></el-input>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.faultWarning}}</span>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
 
             <el-form :inline="true"  :model="vehicle" label	 label-width="160px" label-position="left" class="demo-form-inline">
-
-              <!-- 安装GPS -->
-              <el-col :span="8">
-                <el-form-item label="安装GPS:" >
-                  <el-input  v-if="edit === 'safety'"  placeholder="安装GPS"  style="width: 240px" v-model="vehicle.safetyEntity.gps"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.gps}}</span>
-
-                </el-form-item>
-              </el-col>
-
-              <!-- 三角架 -->
-              <el-col :span="8">
-                <el-form-item label="三角架:" >
-                  <el-input  v-if="edit === 'safety'"  placeholder="三角架"  style="width: 240px" v-model="vehicle.safetyEntity.tripod"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.tripod}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 发动机灭火器 -->
-              <el-col :span="8">
-                <el-form-item label="发动机灭火器:" >
-                  <el-input  v-if="edit === 'safety'"  placeholder="发动机灭火器"  style="width: 240px" v-model="vehicle.safetyEntity.extinguisher"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.extinguisher}}</span>
-                </el-form-item>
-              </el-col>
-
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:1px solid #d3dce6; "/> </el-col>
-
-              <!-- 副后视境 -->
-              <el-col :span="8">
-                <el-form-item label="副后视境:" >
-                  <el-input  v-if="edit === 'safety'" placeholder="副后视境"  style="width: 240px" v-model="vehicle.safetyEntity.rearView"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.rearView}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 副刹 -->
-              <el-col :span="8">
-                <el-form-item label="副刹:" >
-                  <el-input  v-if="edit === 'safety'" placeholder="副刹"  style="width: 240px" v-model="vehicle.safetyEntity.brake"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.brake}}</span>
-                </el-form-item>
-              </el-col>
-
-              <!-- 故障警示牌 -->
-              <el-col :span="8">
-                <el-form-item label="故障警示牌:" >
-                  <el-input  v-if="edit === 'safety'" placeholder="故障警示牌"  style="width: 240px" v-model="vehicle.safetyEntity.faultWarning"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.safetyEntity.faultWarning}}</span>
-                </el-form-item>
-              </el-col>
-
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none;margin-bottom: 20px; border-bottom:2px solid #d3dce6; "/> </el-col>
 
               <el-col>
 
@@ -768,7 +979,7 @@
             </el-form>
 
           </el-tab-pane>
-          <el-tab-pane label="图片相册" name="4">角色管理</el-tab-pane>
+          <el-tab-pane label="图片相册" name="4">图片相册</el-tab-pane>
           <el-tab-pane label="维修日志" name="5">
 
             <el-table :data="vehicle.repairEntityList" stripe style="width: 100%">
@@ -819,7 +1030,6 @@
           </el-tab-pane>
 
         </el-tabs>
-      <!--</el-card>-->
     </div>
   </div>
 </template>

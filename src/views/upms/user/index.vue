@@ -10,7 +10,7 @@
           <div style="float: right">
             <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
             <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
-            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="edit">添加</el-button>
+            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </div>
 
 

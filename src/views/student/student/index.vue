@@ -16,7 +16,19 @@
           <el-row>
             <el-card style="margin-bottom: 5px;">
               <div>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+                <el-date-picker v-model="listQuery.timeList" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+                </el-date-picker>
+                <el-select v-model="listQuery.subject" clearable placeholder="科目">
+                  <el-option
+                    v-for="item in subject"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选" @selectDict="getDict"></dict>
+                <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道" @selectDict="getDict"></dict>
+                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
                 <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
               </div>
@@ -25,7 +37,7 @@
 
           <el-row>
             <el-card>
-              <el-table :data="stuList" border height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
+              <el-table :data="stuList.length == 0?null:stuList" height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">
                     <!-- 头像 -->
@@ -90,10 +102,10 @@
                   <template slot-scope="scope">
 
                     <el-tag class="cost">
-                      场训教练：
+                      场训教练：{{scope.row.fieldCoachName}}
                     </el-tag>
                     <el-tag class="cost">
-                      路训教练：
+                      路训教练：{{scope.row.roadCoachName}}
                     </el-tag>
 
                   </template>
@@ -116,198 +128,7 @@
               </el-table>
 
 
-              <!-- <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                         highlight-current-row style="width: 100%">
-                 <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                 <el-table-column label="组织id">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.orgId}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="微信 openID">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.openId}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="密码">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.password}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="档案号">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.archivesNumber}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="学员名字">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.name}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="性别 1男 2女">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.sex}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="年龄">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.age}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="身份证">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.idNumber}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="生日">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.birthday}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="电话1">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.mobile}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="电话2">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.phone}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="邮件">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.email}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="微信">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.wechat}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="头像">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.avatar}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="联系地址">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.contactAddress}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="家庭地址">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.homeAddress}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="单位">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.company}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="职位">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.position}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="入学时间">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.enrolTime}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="期数">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.periods}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="总学时">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.period}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="纬度">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.latitude}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="经度">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.longitude}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="是否体检 1是 2否">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.physicalExamination}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="是否有车 1是 2否">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.haveCar}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="是否增驾 1是 2否">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.addDrive}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="学员状态 -1退学  5毕业">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.state}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="拿证时间">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.graduationTime}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="有效期">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.periodOfValidity}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="上车日期">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.aboardTime}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="删除标记">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.delFlag}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="备注">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.remark}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="操作人">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.operator}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="创建时间/通过时间">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.createTime}}</span>
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="更新时间/回访时间">
-                   <template slot-scope="scope">
-                     <span>{{scope.row.updateTime}}</span>
-                   </template>
-                 </el-table-column>
 
-                 <el-table-column label="操作">
-                   <template slot-scope="scope">
-                     <el-button size="mini" type="success"
-                                @click="update(scope.row)">编辑
-                     </el-button>
-                     <el-button size="mini" type="danger"
-                                @click="delete(scope.row)">删除
-                     </el-button>
-                   </template>
-                 </el-table-column>
-
-               </el-table>-->
               <div v-show="!listLoading" class="pagination-container">
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                :current-page.sync="listQuery.page"
@@ -317,7 +138,6 @@
               </div>
             </el-card>
           </el-row>
-
 
         </el-col>
       </el-row>
@@ -548,10 +368,69 @@
         addInfo: false,
         listQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          condition: null,
+          timeList: [],
+          subject: null,
+          roadCoach: null,
+          fieldCoach: null,
+          source: null,
+          orgId: null
         },
         activeName: '1',
-        edit: false
+        edit: false,
+        pickerOptions: {
+          shortcuts: [{
+            text: '昨天',
+            onClick(picker) {
+              const end = new Date(new Date().setHours(0, 0, 0, 0))
+              const start = new Date(new Date().setHours(0, 0, 0, 0))
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 1)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '近三天',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 3)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '本周',
+            onClick(picker) {
+              const end = new Date()
+              const day = new Date(new Date().setHours(0, 0, 0, 0))
+              var week = day.getDay()
+              if (week === 0) week = 7
+              const start = day
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * (week - 1))
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '本月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date(new Date().setHours(0, 0, 0, 0))
+              start.setDate(1)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
+        subject: [{
+          value: 1,
+          label: '科目一'
+        }, {
+          value: 2,
+          label: '科目二'
+        }, {
+          value: 3,
+          label: '科目三'
+        }, {
+          value: 4,
+          label: '科目四'
+        }],
+        value4: ''
       }
     },
     created() {
@@ -591,8 +470,6 @@
           console.log('===================  这是所有学员信息  ==================')
           console.log(response.data)
           this.stuList = response.data.data
-          // 要删除
-          this.student = response.data.data[0]
           this.total = response.data.total
           this.listLoading = false
         })
@@ -631,6 +508,8 @@
       // 搜索
       search() {
         this.listQuery.page = 1
+        console.log('============== 搜索方法 ===============')
+        console.log(this.listQuery)
         this.getList()
       },
       // 删除
@@ -726,4 +605,5 @@
   overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
   text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
 }
+
 </style>

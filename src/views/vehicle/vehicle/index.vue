@@ -279,7 +279,7 @@
                   <el-col :span="8"><div class="text_css">出厂日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'vehicle'" type="date" placeholder="出厂日期"  style="width: 100%" v-model="vehicle.vehicleEntity.factoryTime"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.factoryTime | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.factoryTime | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -304,7 +304,7 @@
                   <el-col :span="8"><div class="text_css">注册登记日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'vehicle'" type="date" placeholder="注册登记日期"  style="width: 100%" v-model="vehicle.vehicleEntity.registerTime"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.registerTime | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.registerTime | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -398,7 +398,7 @@
                   <el-col :span="8"><div class="text_css">行驶证注册登记日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证注册登记日期"  style="width: 100%" v-model="vehicle.certificateEntity.drivingLicenseEnroll"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseEnroll | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseEnroll | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -413,7 +413,7 @@
                   <el-col :span="8"><div class="text_css">行驶证发证日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证发证日期"  style="width: 100%" v-model="vehicle.certificateEntity.drivingLicenseRelease"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseRelease | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseRelease | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -427,7 +427,7 @@
                   <el-col :span="8"><div class="text_css">行驶证年审有效期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="行驶证年审有效期"  style="width: 100%" v-model="vehicle.certificateEntity.drivingLicenseEnd"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseEnd | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.drivingLicenseEnd | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -461,7 +461,7 @@
                   <el-col :span="8"><div class="text_css">道路运输发证日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="道路运输发证日期"  style="width: 100%" v-model="vehicle.certificateEntity.roadTransportStart"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportStart | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportStart | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -476,7 +476,7 @@
                   <el-col :span="8"><div class="text_css">道路运输年审有效期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="道路运输年审有效期"  style="width: 100%" v-model="vehicle.certificateEntity.roadTransportEnd"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportEnd | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.roadTransportEnd | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -496,7 +496,7 @@
                   <el-col :span="8"><div class="text_css">标识卡到期日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="标识卡到期日期"  style="width: 100%" v-model="vehicle.certificateEntity.identificationEnd"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.identificationEnd | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.identificationEnd | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -511,7 +511,7 @@
                   <el-col :span="8"><div class="text_css">评定日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="评定日期"  style="width: 100%" v-model="vehicle.certificateEntity.evaluation"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.evaluation | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.evaluation | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -525,7 +525,7 @@
                   <el-col :span="8"><div class="text_css">强制报销日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit === 'certificate'" type="date" placeholder="强制报销日期"  style="width: 100%" v-model="vehicle.certificateEntity.scrap"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.scrap | subTime}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.certificateEntity.scrap | parseTime('{y}-{m}-{d}')}}</span>
                   </el-col>
                 </el-row>
 
@@ -547,9 +547,9 @@
                     <el-date-picker v-if="edit === 'certificate'" @blur="clivtaTimeBlur" v-model="daterange.clivtaTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
                     <span v-else>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaStart | parseTime('{y}-{m}-{d}')}}</span>
                       <span style="padding-left: 16px;font-size: 12px;">至</span>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaEnd | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.clivtaEnd | parseTime('{y}-{m}-{d}')}}</span>
                     </span>
                   </el-col>
                 </el-row>
@@ -561,9 +561,9 @@
                     <el-date-picker v-if="edit === 'certificate'" @blur="maintenanceTimeBlur" v-model="daterange.maintenanceTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
                     <span v-else>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceStart | parseTime('{y}-{m}-{d}')}}</span>
                       <span style="padding-left: 16px;font-size: 12px;">至</span>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceEnd | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.maintenanceEnd | parseTime('{y}-{m}-{d}')}}</span>
                     </span>
                   </el-col>
                 </el-row>
@@ -575,9 +575,9 @@
                     <el-date-picker v-if="edit === 'certificate'" @blur="twoDimensionalTimeBlur" v-model="daterange.twoDimensionalTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
                     <span v-else>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalStart | parseTime('{y}-{m}-{d}')}}</span>
                       <span style="padding-left: 16px;font-size: 12px;">至</span>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalEnd | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.twoDimensionalEnd | parseTime('{y}-{m}-{d}')}}</span>
                     </span>
                   </el-col>
                 </el-row>
@@ -595,9 +595,9 @@
                     <el-date-picker v-if="edit === 'certificate'" @blur="viTimeBlur" v-model="daterange.viTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
                     <span v-else>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viStart | parseTime('{y}-{m}-{d}')}}</span>
                       <span style="padding-left: 16px;font-size: 12px;">至</span>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viEnd | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.viEnd | parseTime('{y}-{m}-{d}')}}</span>
                     </span>
                   </el-col>
                 </el-row>
@@ -610,9 +610,9 @@
                     <el-date-picker v-if="edit === 'certificate'" @blur="bottleTimeBlur" v-model="daterange.bottleTime" style="width: 100%" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
                     <span v-else>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleStart | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleStart | parseTime('{y}-{m}-{d}')}}</span>
                       <span style="padding-left: 16px;font-size: 12px;">至</span>
-                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleEnd | subTime}}</span>
+                      <span style="padding-left: 16px;font-size: 12px;" >{{vehicle.certificateEntity.bottleEnd | parseTime('{y}-{m}-{d}')}}</span>
                     </span>
                   </el-col>
                 </el-row>

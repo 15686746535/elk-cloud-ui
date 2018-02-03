@@ -163,7 +163,9 @@
         listQuery: {
           page: 1,
           limit: 20
-        }
+        },
+        tableKey: 0,
+        dialogStatus: ''
       }
     },
     created() {

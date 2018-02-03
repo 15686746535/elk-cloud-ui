@@ -40,7 +40,7 @@
           </el-table-column>
           <el-table-column label="考试时间">
             <template slot-scope="scope">
-              <span>{{scope.row.examTime}}</span>
+              <span>{{scope.row.examTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
             </template>
           </el-table-column>
           <el-table-column label="备注">
@@ -55,23 +55,25 @@
           </el-table-column>
           <el-table-column label="创建时间">
             <template slot-scope="scope">
-              <span>{{scope.row.createTime}}</span>
+              <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
             </template>
           </el-table-column>
           <el-table-column label="更新时间">
             <template slot-scope="scope">
-              <span>{{scope.row.updateTime}}</span>
+              <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="150">
             <template slot-scope="scope">
-              <el-button size="mini" type="success"
+              <el-row :gutter="10">
+                <el-col :span="12"><el-button size="mini" type="success" style="width: 100%"
                          @click="update(scope.row)">编辑
-              </el-button>
-              <el-button size="mini" type="danger"
-                         @click="delete(scope.row)">删除
-              </el-button>
+                </el-button></el-col>
+                <el-col :span="12"><el-button size="mini" type="danger" style="width: 100%"
+                           @click="delete(scope.row)">删除
+                </el-button></el-col>
+              </el-row>
             </template>
           </el-table-column>
 
@@ -130,8 +132,9 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.data
-          this.total = response.data.totalCount
+          console.log(response.data)
+          this.list = response.data.data.list
+          this.total = response.data.data.totalCount
           this.listLoading = false
         })
       },

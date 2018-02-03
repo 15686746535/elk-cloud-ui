@@ -1,64 +1,66 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" @click="add" type="primary" icon="plus">添加</el-button>
+      <el-button type="primary" :disabled="option != ''" icon="plus" @click="add">添加</el-button>
+      <el-button type="primary" :disabled="option != ''" icon="edit" @click="edit">编辑</el-button>
+      <el-button type="primary" :disabled="option != ''" icon="delete" @click="del">删除</el-button>
     </div>
 
-      <el-row>
-        <el-col :span="8" style='margin-top:15px;'>
-          <!--<el-tree-->
-            <!--class="filter-tree"-->
-            <!--:data="treeData"-->
-            <!--node-key="id"-->
-            <!--highlight-current-->
-            <!--:props="defaultProps"-->
-            <!--:filter-node-method="filterNode"-->
-            <!--@node-click="getUserList"-->
-            <!--default-expand-all-->
-          <!--&gt;-->
-          <!--</el-tree>-->
-          <org-tree @node-click="searchByOrg" ></org-tree>
+      <el-row :gutter="20">
+        <el-col :span="4">
+          <el-card class="box-card">
+            <org-tree @node-click="searchByOrg" ></org-tree>
+          </el-card>
         </el-col>
 
 
         <el-col :span="10">
-          <el-table :key='tableKey' :data="treeData" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%" border tooltip-effect="dark">
+          <el-card class="box-card" style="line-height: 50px;">
 
-            <el-table-column type="selection" class="selection" prop='uuid'></el-table-column>
+            <el-row :gutter="10">
+              <el-col :span="4">
+                上级部门：
+              </el-col>
+              <el-col :span="10">
+                <el-input v-model="org.parentName == null?'无':org.parentName" disabled ></el-input>
+              </el-col>
+            </el-row>
 
+            <el-row :gutter="10">
+              <el-col :span="4">
+                部门名字：
+              </el-col>
+              <el-col :span="10">
+                <el-input placeholder="请输入部门名字" v-model="org.name" clearable></el-input>
+              </el-col>
+            </el-row>
 
-            <el-table-column prop="id" label="主键"></el-table-column>
-            <el-table-column prop="name" label="部门名字"></el-table-column>
-            <el-table-column prop="parentId" label="上级部门"></el-table-column>
-            <el-table-column prop="remarks" label="备注"></el-table-column>
-            <el-table-column prop="createTime" label="创建时间"></el-table-column>
-            <el-table-column prop="updateTime" label="修改时间"></el-table-column>
-          </el-table>
-
-          <!--<div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">-->
-          <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
-                         <!--:current-page.sync="listQuery.page" background-->
-                         <!--:page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"-->
-                         <!--layout="total, sizes, prev, pager, next, jumper" :total="total">-->
-          <!--</el-pagination>-->
-        <!--</div>-->
+            <el-row :gutter="10">
+              <el-col :span="4">
+                备注：
+              </el-col>
+              <el-col :span="10">
+                <el-input type="textarea" :autosize="{ minRows: 11}" placeholder="请输入内容" v-model="org.remark">
+                </el-input>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col v-if="option === 'edit' || option === 'add'">
+                <el-button type="primary" icon="edit" @click="back">取消</el-button>
+                <el-button type="primary" icon="delete" @click="save">确定</el-button>
+              </el-col>
+            </el-row>
+          </el-card>
         </el-col>
+
       </el-row>
 
-
-  <!--<div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">-->
-  <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
-                 <!--:current-page.sync="listQuery.page" background-->
-                 <!--:page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"-->
-                 <!--layout="total, sizes, prev, pager, next, jumper" :total="total">-->
-  <!--</el-pagination>-->
-  <!--</div>-->
 
 </div>
 </template>
 
 <script>
-  import { fetchTree } from '@/api/upms/org'
+  import { fetchTree, addObj, getObj, putObj } from '@/api/upms/org'
   import OrgTree from '@/components/OrgTree'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   export default {
@@ -71,17 +73,23 @@
     },
     data() {
       return {
-        treeData: [],
+        org: {
+          orgId: null,
+          name: null,
+          parentId: null,
+          parentName: null,
+          remark: null
+        },
         defaultProps: {
           children: 'children',
           label: 'name'
         },
         listLoading: false,
-        tableKey: 0,
         listQuery: {
           page: 1,
           limit: 20
         },
+        option: '',
         total: null
       }
     },
@@ -92,7 +100,40 @@
       // 根据部门id查询员工
       searchByOrg(data) {
         console.log('=====================   点击   =======================')
-        console.log(data)
+        if (this.option === 'add') {
+          this.org.parentName = data.name
+          this.org.parentId = data.id
+          console.log('==============================')
+          console.log(this.org)
+        } else if (this.option === 'edit') {
+          if (data.parentId === -1) {
+            this.org.parentName = null
+          } else {
+            getObj(data.parentId).then(response => {
+              this.org.parentName = response.data.data.name
+            })
+          }
+          this.org.parentId = data.parentId
+          this.org.orgId = data.id
+          this.org.name = data.name
+          console.log('==============================')
+          console.log(this.org)
+        } else if (this.option === 'del') {
+          console.log('============ 删除 ================')
+        } else if (this.option === '') {
+          if (data.parentId === -1) {
+            this.org.parentName = null
+          } else {
+            getObj(data.parentId).then(response => {
+              this.org.parentName = response.data.data.name
+            })
+          }
+          this.org.parentId = data.parentId
+          this.org.orgId = data.id
+          this.org.name = data.name
+          console.log('==============================')
+          console.log(this.org)
+        }
       },
       filterNode(value, data) {
         if (!value) return true
@@ -101,11 +142,62 @@
       getOrgList() {
         fetchTree().then(response => {
           console.log(response.data.data)
-          this.treeData = response.data.data
+          // this.org = response.data.data
         })
       },
       add() {
         console.log('=========== 添加 ===========')
+        this.option = 'add'
+        this.org = {
+          orgId: null,
+          name: null,
+          parentId: null,
+          parentName: null,
+          remark: null
+        }
+      },
+      edit() {
+        console.log('=========== 编辑 ===========')
+        this.option = 'edit'
+        this.org = {
+          orgId: null,
+          name: null,
+          parentId: null,
+          parentName: null,
+          remark: null
+        }
+      },
+      del() {
+        console.log('=========== 删除 ===========')
+        this.option = 'del'
+        this.org = {
+          orgId: null,
+          name: null,
+          parentId: null,
+          parentName: null,
+          remark: null
+        }
+      },
+      back() {
+        this.option = ''
+        this.org = {
+          orgId: null,
+          name: null,
+          parentId: null,
+          parentName: null,
+          remark: null
+        }
+      },
+      save() {
+        if (this.option === 'add') {
+          addObj(this.org).then(response => {
+            console.log('....................')
+          })
+        } else if (this.option === 'edit') {
+          putObj(this.org).then(response => {
+            console.log('....................')
+          })
+        }
       }
     }
   }

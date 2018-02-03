@@ -76,9 +76,9 @@
           </el-table-column>
 
         </el-table>
-        <div v-show="!listLoading" class="pagination-container">
+        <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="listQuery.page"
+                         :current-page.sync="listQuery.page" background
                          :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
@@ -118,7 +118,9 @@
         listQuery: {
           page: 1,
           limit: 20
-        }
+        },
+        tableKey: 0,
+        dialogStatus: ''
       }
     },
     created() {
@@ -128,8 +130,8 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.data.list
-          this.total = response.data.data.totalCount
+          this.list = response.data.data
+          this.total = response.data.totalCount
           this.listLoading = false
         })
       },
@@ -146,6 +148,7 @@
         this.showModule = 'info'
       },
       update(row) {
+        console.log(row)
         getObj(row.roleId)
           .then(response => {
             this.batch = response.data

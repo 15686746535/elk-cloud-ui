@@ -1,22 +1,23 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="plus">添加</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="add" type="primary" icon="plus">添加</el-button>
     </div>
 
       <el-row>
         <el-col :span="8" style='margin-top:15px;'>
-          <el-tree
-            class="filter-tree"
-            :data="treeData"
-            node-key="id"
-            highlight-current
-            :props="defaultProps"
-            :filter-node-method="filterNode"
-            @node-click="getUserList"
-            default-expand-all
-          >
-          </el-tree>
+          <!--<el-tree-->
+            <!--class="filter-tree"-->
+            <!--:data="treeData"-->
+            <!--node-key="id"-->
+            <!--highlight-current-->
+            <!--:props="defaultProps"-->
+            <!--:filter-node-method="filterNode"-->
+            <!--@node-click="getUserList"-->
+            <!--default-expand-all-->
+          <!--&gt;-->
+          <!--</el-tree>-->
+          <org-tree @node-click="searchByOrg" ></org-tree>
         </el-col>
 
 
@@ -34,9 +35,9 @@
             <el-table-column prop="updateTime" label="修改时间"></el-table-column>
           </el-table>
 
-          <!--<div v-show="!listLoading" class="pagination-container">-->
+          <!--<div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">-->
           <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
-                         <!--:current-page.sync="listQuery.page"-->
+                         <!--:current-page.sync="listQuery.page" background-->
                          <!--:page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"-->
                          <!--layout="total, sizes, prev, pager, next, jumper" :total="total">-->
           <!--</el-pagination>-->
@@ -45,9 +46,9 @@
       </el-row>
 
 
-  <!--<div v-show="!listLoading" class="pagination-container">-->
+  <!--<div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">-->
   <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
-                 <!--:current-page.sync="listQuery.page"-->
+                 <!--:current-page.sync="listQuery.page" background-->
                  <!--:page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"-->
                  <!--layout="total, sizes, prev, pager, next, jumper" :total="total">-->
   <!--</el-pagination>-->
@@ -58,9 +59,13 @@
 
 <script>
   import { fetchTree } from '@/api/upms/org'
+  import OrgTree from '@/components/OrgTree'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   export default {
     name: 'index',
+    components: {
+      OrgTree
+    },
     directives: {
       waves
     },
@@ -84,6 +89,11 @@
       this.getOrgList()
     },
     methods: {
+      // 根据部门id查询员工
+      searchByOrg(data) {
+        console.log('=====================   点击   =======================')
+        console.log(data)
+      },
       filterNode(value, data) {
         if (!value) return true
         return data.label.indexOf(value) !== -1
@@ -93,6 +103,9 @@
           console.log(response.data.data)
           this.treeData = response.data.data
         })
+      },
+      add() {
+        console.log('=========== 添加 ===========')
       }
     }
   }

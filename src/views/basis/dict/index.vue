@@ -57,9 +57,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <div v-show="!listLoading" class="pagination-container">
+    <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                     :current-page.sync="listQuery.page"
+                     :current-page.sync="listQuery.page" background
                      :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
@@ -162,7 +162,7 @@
         this.listQuery.isAsc = false
         fetchList(this.listQuery).then(response => {
           this.list = response.data.list
-          this.total = response.data.total
+          this.total = response.data.data.totalCount
           this.listLoading = false
         })
       },

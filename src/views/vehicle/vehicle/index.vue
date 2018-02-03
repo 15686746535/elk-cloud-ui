@@ -106,9 +106,9 @@
         </el-table>
 
 
-        <div v-show="!listLoading" class="pagination-container">
+        <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="listQuery.page"
+                         :current-page.sync="listQuery.page" background
                          :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
@@ -1149,8 +1149,8 @@
         fetchList(this.listQuery).then(response => {
           console.log('=================== 这是所有车辆信息 ===================')
           console.log(response.data)
-          this.list = response.data.data
-          this.total = response.data.total
+          this.list = response.data.data.list
+          this.total = response.data.data.totalCount
           this.listLoading = false
         })
       },

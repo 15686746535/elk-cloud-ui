@@ -42,7 +42,7 @@
                     <br/>
                     职位：{{scope.row.roleName}}
                     <br/>
-                    生日：{{scope.row.birthday}}
+                    生日：{{scope.row.birthday | subTime}}
                     <br/>
                     私人电话：{{scope.row.mobile}}
                     <br/>
@@ -63,9 +63,10 @@
               </el-table-column>
             </el-table>
 
-            <div v-show="!listLoading" class="pagination-container">
+            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
+                             background
                              :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
@@ -548,6 +549,7 @@
         fetchList(this.listQuery).then(response => {
           console.log(response.data)
           this.userList = response.data.data.list
+          this.total = response.data.data.totalCount
           this.listLoading = false
         })
         console.log('=====================   完成   =======================')

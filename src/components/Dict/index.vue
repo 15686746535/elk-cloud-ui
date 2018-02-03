@@ -57,7 +57,7 @@
           url: '/basis/dict/type/' + this.dictType,
           method: 'get'
         }).then(response => {
-          this.dictList = response.data.data
+          this.dictList = response.data.data.list
         })
       }
     },

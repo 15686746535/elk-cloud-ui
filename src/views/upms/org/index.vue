@@ -78,7 +78,8 @@
           name: null,
           parentId: null,
           parentName: null,
-          remark: null
+          remark: null,
+          orgType: null
         },
         defaultProps: {
           children: 'children',
@@ -103,6 +104,13 @@
         if (this.option === 'add') {
           this.org.parentName = data.name
           this.org.parentId = data.id
+          if (data.orgType === '-') {
+            this.org.orgType = '1'
+          } else if (data.orgType === '1') {
+            this.org.orgType = '2'
+          } else if (data.orgType === '2' || data.orgType === '0') {
+            this.org.orgType = '0'
+          }
           console.log('==============================')
           console.log(this.org)
         } else if (this.option === 'edit') {
@@ -112,6 +120,13 @@
             getObj(data.parentId).then(response => {
               this.org.parentName = response.data.data.name
             })
+          }
+          if (data.orgType === '-') {
+            this.org.orgType = '1'
+          } else if (data.orgType === '1') {
+            this.org.orgType = '2'
+          } else if (data.orgType === '2' || data.orgType === '0') {
+            this.org.orgType = '0'
           }
           this.org.parentId = data.parentId
           this.org.orgId = data.id
@@ -127,6 +142,13 @@
             getObj(data.parentId).then(response => {
               this.org.parentName = response.data.data.name
             })
+          }
+          if (data.orgType === '-') {
+            this.org.orgType = '1'
+          } else if (data.orgType === '1') {
+            this.org.orgType = '2'
+          } else if (data.orgType === '2' || data.orgType === '0') {
+            this.org.orgType = '0'
           }
           this.org.parentId = data.parentId
           this.org.orgId = data.id

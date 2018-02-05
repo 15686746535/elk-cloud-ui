@@ -175,7 +175,8 @@
           name: null,
           parentId: null,
           parentName: null,
-          remark: null
+          remark: null,
+          orgType: null
         }
       },
       edit() {
@@ -186,7 +187,8 @@
           name: null,
           parentId: null,
           parentName: null,
-          remark: null
+          remark: null,
+          orgType: null
         }
       },
       del() {
@@ -197,7 +199,8 @@
           name: null,
           parentId: null,
           parentName: null,
-          remark: null
+          remark: null,
+          orgType: null
         }
       },
       back() {
@@ -207,7 +210,8 @@
           name: null,
           parentId: null,
           parentName: null,
-          remark: null
+          remark: null,
+          orgType: null
         }
       },
       save() {

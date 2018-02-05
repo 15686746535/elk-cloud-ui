@@ -1,3 +1,4 @@
+<script src="../../../api/upms/menu.js"></script>
 <template>
   <div class="app-container calendar-list-container">
       <el-row>
@@ -24,7 +25,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="父级节点" prop="parentId">
-              <el-input v-model="form.parentId" :disabled="formEdit" placeholder="请输入父级节点" readonly></el-input>
+              <el-input v-model="form.parentId" :disabled="formEdit" placeholder="请输入父级节点"></el-input>
             </el-form-item>
             <el-form-item label="标题" prop="name">
               <el-input v-model="form.name" :disabled="formEdit"  placeholder="请输入标题"></el-input>
@@ -123,6 +124,8 @@
     methods: {
       getList() {
         fetchTree(this.listQuery).then(response => {
+          console.log(response.data.data)
+          console.log('这里是树形')
           console.log(response.data.data)
           this.treeData = response.data.data
         })

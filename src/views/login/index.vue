@@ -75,7 +75,7 @@ export default {
   methods: {
     refreshCode: function() {
       this.loginForm.randomStr = Math.ceil(Math.random() * 100000) + Date.now()
-      // this.src = '/upms/code/' + this.loginForm.randomStr
+      this.src = '/upms/code/' + this.loginForm.randomStr
     },
     showPwd() {
       if (this.pwdType === 'password') {
@@ -103,7 +103,7 @@ export default {
     }
   },
   created() {
-    // this.src = '/upms/code/' + this.loginForm.randomStr
+    this.src = '/upms/code/' + this.loginForm.randomStr
   }
 }
 </script>

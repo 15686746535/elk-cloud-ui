@@ -30,10 +30,72 @@
       <org-select v-model="orgId" @org-click="orgClick"></org-select> {{orgId}}
     </el-row>
 
+
     <el-row>
       <input type="button" value="按钮" @click="toggle">
     </el-row>
     <el-row>
+      <object type="application/cert-reader"  id="plugin" width=0 height=0> </object>
+      <input type="button" value="连接" @click="connect">
+      <!--<input type="button" value="状态" @click="getStatus">-->
+      <input type="button" value="读取" @click="readCert">
+      <!--<input type="button" value="断开" @click="disconnect">
+-->
+      <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr><td align="right">姓名：{{fillForm.Name}}</td></tr>
+        <tr><td align="right">性别：{{fillForm.Sex}}</td></tr>
+        <tr><td align="right">民族：{{fillForm.Nation}}</td></tr>
+        <tr>
+          <td align="right">出生：{{fillForm.Born}}</td>
+        </tr>
+        <tr>
+          <td align="right">地址：{{fillForm.Address}}</td>
+        </tr>
+        <tr>
+          <td align="right">身份证号：{{fillForm.CardNo}}</td>
+        </tr>
+        <tr>
+          <td align="right">签发机关：{{fillForm.Police}}</td>
+        </tr>
+        <tr>
+          <td align="right">期限起始：{{fillForm.ActivityLFrom}}</td>
+        </tr>
+        <tr>
+          <td align="right">期限失效：{{fillForm.ActivityLTo}}</td>
+        </tr>
+
+        <tr>
+          <td align="right">resultFlag：{{fillForm.resultFlag}}</td>
+        </tr>
+
+        <tr>
+          <td align="right">errorMsg：{{fillForm.errorMsg}}</td>
+        </tr>
+        <tr>
+          <td align="right">status：{{fillForm.status}}</td>
+        </tr>
+
+        <tr>
+          <td align="left">
+            <img :src="fillForm.cardHimg" />(Jpg照片，在IE8中可以显示)
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <img :src="fillForm.cardFimg" />(Jpg照片，在IE8中可以显示)
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <img :src="fillForm.cardBimg"  />(Jpg照片，在IE8中可以显示)
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <img :src="fillForm.cardAimg"  />(Jpg照片，在IE8中可以显示)
+          </td>
+        </tr>
+      </table>
     </el-row>
 
    <!-- <div style="height: 500px;float: left;width: 300px;" >
@@ -93,6 +155,25 @@ export default {
       dict: '1',
       orgId: 1,
       disabled: true,
+      fillForm: {
+        Name: '',
+        Sex: '',
+        Nation: '',
+        Born: '',
+        Address: '',
+        CardNo: '',
+        Police: '',
+        ActivityLFrom: '',
+        ActivityLTo: '',
+        resultFlag: '',
+        errorMsg: '',
+        status: '',
+        cardHimg: '',
+        cardFimg: '',
+        ret: '',
+        cardBimg: '',
+        cardAimg: ''
+      },
       methodOptions: [
         {
           id: 1,
@@ -177,6 +258,37 @@ export default {
     }
   },
   methods: {
+    connect: function(org) {
+      var CVR_IDCard = document.getElementById('plugin')
+      var ret = CVR_IDCard.connect()
+      this.fillForm.ret = ret
+      ret = JSON.parse(ret)
+      console.log('connect=========')
+      console.log(ret)
+    },
+    readCert: function(org) {
+      var CVR_IDCard = document.getElementById('plugin')
+      var ret = CVR_IDCard.readCert()
+      this.fillForm.ret = ret
+      ret = JSON.parse(ret)
+      if (ret.resultFlag !== -1) {
+        this.fillForm.Name = ret.resultContent.partyName
+        this.fillForm.Sex = ret.resultContent.gender
+        this.fillForm.Nation = ret.resultContent.nation
+        this.fillForm.Born = ret.resultContent.bornDay
+        this.fillForm.Address = ret.resultContent.certAddress
+        this.fillForm.CardNo = ret.resultContent.certNumber
+        this.fillForm.Police = ret.resultContent.certOrg
+        this.fillForm.ActivityLFrom = ret.resultContent.effDate
+        this.fillForm.ActivityLTo = ret.resultContent.expDate
+        this.fillForm.cardHimg = 'data:image/jpg;base64,' + ret.resultContent.cardHimg
+        this.fillForm.cardFimg = 'data:image/jpg;base64,' + ret.resultContent.cardFimg
+        this.fillForm.cardBimg = 'data:image/jpg;base64,' + ret.resultContent.cardBimg
+        this.fillForm.cardAimg = 'data:image/jpg;base64,' + ret.resultContent.cardAimg
+      }
+    },
+    qqqq: function(org) {
+    },
     nodeClick: function(org) {
       console.log('treeModel')
       console.log(org)

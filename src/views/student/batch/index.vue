@@ -3,6 +3,14 @@
     <div v-show="showModule=='list'">
       <el-card style="margin-bottom: 5px;">
         <div class="filter-container">
+          <el-select v-model="listQuery.subject" clearable placeholder="科目">
+            <el-option
+              v-for="item in subject"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
           <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
           <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
           <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
@@ -10,68 +18,68 @@
       </el-card>
       <el-card>
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                  highlight-current-row style="width: 100%">
+                  highlight-current-row style="width: 100%;text-align: center">
           <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-          <el-table-column label="组织ID">
+          <!--<el-table-column label="组织ID">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.orgId}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <el-table-column align="center"  label="科目">
             <template slot-scope="scope">
-              <span>{{scope.row.orgId}}</span>
+              <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="考试科目 1.2.3.4分别代表相应科目">
-            <template slot-scope="scope">
-              <span>{{scope.row.subject}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="考试场地">
-            <template slot-scope="scope">
-              <span>{{scope.row.examField}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="人数">
-            <template slot-scope="scope">
-              <span>{{scope.row.stuCount}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="批次">
-            <template slot-scope="scope">
-              <span>{{scope.row.batch}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="考试时间">
+          <el-table-column align="center"  label="考试时间">
             <template slot-scope="scope">
               <span>{{scope.row.examTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注">
+          <el-table-column align="center"  label="考试场地">
             <template slot-scope="scope">
-              <span>{{scope.row.remark}}</span>
+              <span>{{scope.row.examField}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作人">
+          <el-table-column align="center"  label="人数">
             <template slot-scope="scope">
-              <span>{{scope.row.operator}}</span>
+              <span>{{scope.row.stuCount}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间">
-            <template slot-scope="scope">
-              <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="更新时间">
-            <template slot-scope="scope">
-              <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-            </template>
-          </el-table-column>
+          <!--<el-table-column label="批次">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.batch}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column label="备注">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.remark}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column label="操作人">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.operator}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column label="创建时间">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column label="更新时间">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
 
-          <el-table-column label="操作" width="150">
+          <el-table-column align="center" fixed="right" label="操作" width="150">
             <template slot-scope="scope">
               <el-row :gutter="10">
                 <el-col :span="12"><el-button size="mini" type="success" style="width: 100%"
-                         @click="update(scope.row)">编辑
+                         @click="update(scope.row)">查看
                 </el-button></el-col>
                 <el-col :span="12"><el-button size="mini" type="danger" style="width: 100%"
-                           @click="delete(scope.row)">删除
+                           @click="delete(scope.row)">编辑
                 </el-button></el-col>
               </el-row>
             </template>
@@ -119,14 +127,44 @@
         showModule: 'list',
         listQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          subject: null
         },
         tableKey: 0,
-        dialogStatus: ''
+        dialogStatus: '',
+        subject: [{
+          value: 1,
+          label: '科目一'
+        }, {
+          value: 2,
+          label: '科目二'
+        }, {
+          value: 3,
+          label: '科目三'
+        }, {
+          value: 4,
+          label: '科目四'
+        }]
       }
     },
     created() {
       this.getList()
+    },
+    computed: {
+      subjectVO(subject) {
+        switch (subject) {
+          case 1:
+            return '科目一'
+          case 2:
+            return '科目二'
+          case 3:
+            return '科目三'
+          case 4:
+            return '科目四'
+          default:
+            return ''
+        }
+      }
     },
     methods: {
       getList() {

@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column  align="center" label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="success"
                      @click="handleUpdate(scope.row)">编辑

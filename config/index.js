@@ -63,6 +63,13 @@ module.exports = {
           '^/vehicle' : '/vehicle'
         }
       },
+      '/visit': {
+        target: 'http://127.0.0.1:8003',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/visit' : '/visit'
+        }
+      },
       '/activiti': {
         target: 'http://127.0.0.1:8003',
         changeOrigin: true,

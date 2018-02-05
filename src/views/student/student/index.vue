@@ -37,7 +37,7 @@
 
           <el-row>
             <el-card>
-              <el-table :data="stuList.length == 0?null:stuList" height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
+              <el-table :data="stuList.length == 0?null:stuList" max-height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">
                     <!-- 头像 -->
@@ -430,8 +430,7 @@
         }, {
           value: 4,
           label: '科目四'
-        }],
-        value4: ''
+        }]
       }
     },
     created() {

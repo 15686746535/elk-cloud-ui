@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function followUpList(query) {
   return request({
     url: '/visit/followup/getPage',
     method: 'get',
@@ -8,7 +8,7 @@ export function fetchList(query) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function addFollowUp(obj) {
   return request({
     url: '/visit/followup/',
     method: 'post',
@@ -16,21 +16,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getFollowUp(id) {
   return request({
     url: '/visit/followup/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delFollowUp(id) {
   return request({
     url: '/visit/followup/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putFollowUp(obj) {
   return request({
     url: '/visit/followup',
     method: 'put',

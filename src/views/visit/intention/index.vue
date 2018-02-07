@@ -16,7 +16,7 @@
             <el-card style="margin-bottom: 5px;">
               <div>
 
-                <el-date-picker v-model="interval" @blur="intervalTime" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+                <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
                 </el-date-picker>
                 <el-select v-model="listQuery.operator" clearable placeholder="负责人">
                   <el-option
@@ -26,8 +26,8 @@
                     :value="item">
                   </el-option>
                 </el-select>
-                <dict dictType="dict_customer_type" style="width: 200px;"  placeholder="类型" @selectDict="getCustomerType"></dict>
-                <dict dictType="dict_source" style="width: 200px;"  placeholder="来源渠道" @selectDict="getSource"></dict>
+                <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
+                <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
                 <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
                 <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
@@ -170,7 +170,7 @@
           <el-card>
             <div slot="header" class="clearfix">
               <div style="float: left">
-                |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">学员信息</span>
+                |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">意向信息</span>
               </div>
               <div style="float: right">
                 <el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>
@@ -189,6 +189,14 @@
                </el-row>
 
                <el-row>
+                 <el-col :span="6" ><div class="text_css">负责人：</div></el-col>
+                 <el-col :span="14" >
+                   <el-input v-if="edit" disabled v-model="intention.operator" placeholder="负责人"></el-input>
+                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.operator}}</div>
+                 </el-col>
+               </el-row>
+
+               <el-row>
                    <el-col :span="6" ><div class="text_css">性别：</div></el-col>
                  <el-col :span="14" >
                    <template v-if="edit">
@@ -203,22 +211,23 @@
                <el-row>
                  <el-col :span="6" ><div class="text_css">客户类型：</div></el-col>
                  <el-col :span="14" >
-                   <dict dictType="dict_customer_type" style="width: 200px;"  placeholder="类型" @selectDict="setCustomerType"></dict>
-                   <el-input v-if="edit"  v-model="intention.customerType" placeholder="客户类型"></el-input>
+                   <dict v-if="edit" v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
+                   <!--<el-input v-if="edit"  v-model="intention.customerType" placeholder="客户类型"></el-input>-->
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.customerType}}</div>
                  </el-col>
                </el-row>
 
                <el-row>
-                 <el-col :span="6" ><div class="text_css">顾虑：</div></el-col>
+                 <el-col :span="6" ><div class="text_css">客户顾虑：</div></el-col>
                  <el-col :span="14" >
-                   <el-input v-if="edit"  v-model="intention.worry" placeholder="顾虑"></el-input>
+                   <!--<el-input v-if="edit"  v-model="intention.worry" placeholder="顾虑"></el-input>-->
+                   <dict v-if="edit" v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户类型"></dict>
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.worry}}</div>
                  </el-col>
                </el-row>
 
                <el-row>
-                 <el-col :span="6" ><div class="text_css">时间：</div></el-col>
+                 <el-col :span="6" ><div class="text_css">来访时间：</div></el-col>
                  <el-col :span="14" >
                    <el-date-picker  v-if="edit" type="date" placeholder="时间"  style="width: 100%" v-model="intention.visitTime"></el-date-picker>
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | parseTime('{y}-{m}-{d}')}}</div>
@@ -237,6 +246,8 @@
                  </el-col>
                </el-row>
 
+
+
                <el-row>
                  <el-col :span="6" ><div class="text_css">微信：</div></el-col>
                  <el-col :span="14" >
@@ -248,8 +259,8 @@
                <el-row>
                  <el-col :span="6" ><div class="text_css">来源：</div></el-col>
                  <el-col :span="14" >
-                   <dict v-if="edit" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道" @selectDict="getSource"></dict>
-                   <el-input v-if="edit" v-model="intention.source" placeholder="来源"></el-input>
+                   <dict v-if="edit" dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
+                   <!--<el-input v-if="edit" v-model="intention.source" placeholder="来源"></el-input>-->
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.source}}</div>
                  </el-col>
                </el-row>
@@ -264,21 +275,35 @@
                <el-row>
                  <el-col :span="6" ><div class="text_css">车型：</div></el-col>
                  <el-col :span="14" >
-                   <el-input v-if="edit"  v-model="intention.applyType" placeholder="车型"></el-input>
+
+                   <dict v-if="edit" v-model="intention.applyType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.applyType}}</div>
                  </el-col>
                </el-row>
 
+               <el-row>
+                 <el-col :span="6" ><div class="text_css">客户状态：</div></el-col>
+                 <el-col :span="14" >
+                   <el-select  v-if="edit" v-model="intention.state" style="width: 100%" clearable placeholder="客户状态"  @selectDict="getState">
+                     <el-option
+                       v-for="item in state"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+                     </el-option>
+                   </el-select>
+                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{stateLabel}}</div>
+                 </el-col>
+               </el-row>
+
+             </el-col>
+             <el-col :span="3" ><div class="text_css">咨询内容：</div></el-col>
+             <el-col :span="19" >
+               <el-input v-if="edit" type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
+               <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
              </el-col>
            </el-row>
 
-          <el-row>
-            <el-col :span="3" ><div class="text_css">咨询内容：</div></el-col>
-            <el-col :span="19" >
-              <el-input v-if="edit" type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
-              <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
-            </el-col>
-          </el-row>
 
             <!-- 分割线 -->
             <el-row><el-col>&nbsp;</el-col></el-row>
@@ -286,15 +311,24 @@
             <el-row>
               <el-col>
 
-                <el-row v-if="edit" :gutter="60">
-                  <el-col :span="12"><el-button v-if="!addInfo" type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>
-                  <el-col :span="12"><el-button v-if="addInfo" type="primary" style="width: 100%;" @click="add">确认保存</el-button></el-col>
-                  <el-col :span="12"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update">确认修改</el-button></el-col>
+                <el-row v-if="edit">
+                  <el-row  v-if="!addInfo" :gutter="10">
+                    <el-col :span="6">&nbsp;</el-col>
+                    <el-col :span="6"><el-button type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>
+                    <el-col :span="6"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update">确认修改</el-button></el-col>
+                    <el-col :span="6">&nbsp;</el-col>
+                  </el-row>
+                  <el-row v-if="addInfo">
+                    <el-col :span="8">&nbsp;</el-col>
+                    <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="add">确认保存</el-button></el-col>
+                    <el-col :span="8">&nbsp;</el-col>
+                  </el-row>
                 </el-row>
 
-                <el-row v-else :gutter="60">
-                  <el-col :span="12"><el-button type="success" style="width: 100%;" @click="editInfo">收款</el-button></el-col>
-                  <el-col :span="12"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>
+                <el-row v-else :gutter="10">
+                  <el-col :span="8">&nbsp;</el-col>
+                  <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>
+                  <el-col :span="8">&nbsp;</el-col>
                 </el-row>
 
               </el-col>
@@ -306,23 +340,32 @@
 
         <el-col :span="12">
           <el-row>
-            <el-card>
+            <el-card style="padding-bottom: 10px">
               <div slot="header" class="clearfix">
                 <div style="float: left">
-                  |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">学员信息</span>
+                  |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">跟进信息</span>
                 </div>
-                <div style="float: right">
-                  <el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>
-                </div>
+                <!--<div style="float: right">-->
+                  <!--<el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>-->
+                <!--</div>-->
               </div>
 
-              <img :src="bgImg">
+              <el-row>
+                <div style="width: 100%;overflow: auto;height: 350px;margin-bottom: 10px">
+                  <div style="line-height: 30px" v-for="followUps in followUps">
+                    <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 8px;color: mediumblue">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</span></div>
+                    <div style="font-size: 14px;margin-left: 20px">{{followUps.content}}</div>
+                  </div>
+                </div>
+              </el-row>
 
-              <div class="dialog-footer">
-                <el-button @click="cancel">取 消</el-button>
-                <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>
-                <el-button v-else type="primary" @click="update">修 改</el-button>
-              </div>
+              <el-row :gutter="10">
+                <el-col :span="20" >
+                  <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                </el-col>
+                <el-col :span="4" ><el-button style="width: 100%;height: 76px;" type="success" @click="addFollowUp">跟进</el-button></el-col>
+              </el-row>
+
             </el-card>
           </el-row>
         </el-col>
@@ -332,13 +375,14 @@
 </template>
 
 <script>
-  import { fetchList, getObj, putObj, getOperator } from '@/api/visit/client'
+  import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
+  import { followUpList, addFollowUp } from '@/api/visit/followup'
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {
-    name: 'table_client',
+    name: 'table_intention',
     components: {
       OrgTree,
       Dict
@@ -348,7 +392,6 @@
     },
     data() {
       return {
-        client: {},
         list: [],
         intention: {},
         total: null,
@@ -356,6 +399,14 @@
         listLoading: true,
         showModule: 'list',
         interval: [],
+        followUp: {
+          content: null,
+          intentionId: null
+        },
+        followUps: [],
+        followQuery: {
+          intentionId: null
+        },
         listQuery: {
           page: 1,
           limit: 20,
@@ -369,6 +420,7 @@
           operator: null,
           followUp: true
         },
+        stateLabel: '跟进中',
         bgImg: 'static/img/bj.png',
         dialogStatus: '',
         pickerOptions: {
@@ -411,7 +463,18 @@
         },
         customerType: [],
         operators: [],
-        edit: true
+        edit: true,
+        state: [{
+          value: '0',
+          label: '跟进中'
+        }, {
+          value: '1',
+          label: '待入学'
+        }, {
+          value: '2',
+          label: '已关闭'
+        }]
+        // apply_type
       }
     },
     created() {
@@ -433,6 +496,9 @@
         this.listQuery.beginTime = this.interval[0]
         this.listQuery.endTime = this.interval[1]
       },
+      getState(val) {
+        this.stateLabel = val.value
+      },
       getOperators() {
         getOperator().then(response => {
           console.log('================== 所有负责人 ===================')
@@ -447,23 +513,13 @@
         this.listQuery.orgId = data.id
         this.getList()
       },
-      // 车型筛选
-      getCustomerType(val) {
-        this.listQuery.customerType = val.value
-      },
-      // 来源渠道
-      getSource(val) {
-        this.listQuery.source = val.value
-      },
       // 双击行  编辑
       editlist(val) {
         console.log('====================== 正在进入单个学员编辑 =====================')
-        // getObj(val.userId).then(response => {
-        //   console.log(response.data)
-        //   this.userListEdit = response.data.data
-        // })
+        this.edit = false
         this.intention = val
         this.showModule = 'info'
+        this.getFollowUp(val)
       },
       getList() {
         this.listLoading = true
@@ -481,9 +537,12 @@
         this.listQuery.page = val
         this.getList()
       },
+      // 添加点击按钮
       create() {
-        this.client = {}
+        this.addInfo = true
+        this.intention = {}
         this.showModule = 'info'
+        this.edit = true
       },
       // 编辑
       editInfo() {
@@ -491,33 +550,47 @@
       },
       // 添加
       add() {
-        // addObj(this.userListEdit).then(response => {
-        //   console.log('这里是添加方法===========================')
-        //   this.userListEdit.userId = response.data.data
-        //   console.log(this.vehicle.vehicleEntity.vehicleId)
-        // })
+        addObj(this.intention).then(response => {
+          console.log('这里是添加方法===========================')
+        })
         this.edit = false
       },
-      update(row) {
-        putObj(row.roleId)
+      // 修改
+      update() {
+        console.log('================= 修改 ==================')
+        console.log(this.intention)
+        putObj(this.intention)
           .then(response => {
-            this.client = response.data
-            this.showModule = 'info'
+            this.edit = false
           })
       },
+      // 搜索
       search() {
-        console.log(this.listQuery.beginTime)
+        this.intervalTime()
         this.listQuery.page = 1
         this.getList()
       },
+      // 删除
       delete(id) {
         this.getList()
       },
+      // 取消
       cancel() {
+        getObj(this.intention.intentionId).then(response => {
+          console.log('================= 取消 ==================')
+          console.log(response.data)
+          this.intention = response.data.data
+        })
         this.edit = false
       },
+      // 返回
       back() {
         this.showModule = 'list'
+        this.addInfo = false
+        this.intention = {}
+        this.edit = false
+        this.getList()
+        this.getOperators()
       },
       // 来访信息点击事件
       visitClick(e) {
@@ -527,6 +600,23 @@
           a[i].classList.remove('visit_hover')
         }
         e.currentTarget.classList.add('visit_hover')
+      },
+      getFollowUp(val) {
+        this.followQuery.intentionId = val.intentionId
+        this.followUp.intentionId = val.intentionId
+        followUpList(this.followQuery).then(response => {
+          console.log('============= 跟进信息 ===================')
+          console.log(response.data.data.list)
+          this.followUps = response.data.data.list
+        })
+      },
+      addFollowUp() {
+        console.log('=================')
+        addFollowUp(this.followUp).then(response => {
+          console.log('0.0')
+          this.getFollowUp(this.followQuery)
+          this.followUp.content = null
+        })
       }
     }
   }

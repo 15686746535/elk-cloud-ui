@@ -112,12 +112,14 @@
     },
     data() {
       return {
-        list: null,
+        list: [],
+        lists: [],
         total: null,
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          type: null
         },
         rules: {
         },
@@ -161,7 +163,9 @@
         this.listQuery.orderByField = 'create_time'
         this.listQuery.isAsc = false
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.list
+          console.log('===========================')
+          console.log(response.data)
+          this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
         })

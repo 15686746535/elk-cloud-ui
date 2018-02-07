@@ -558,6 +558,7 @@
       // 根据部门id查询员工
       searchByOrg(data) {
         console.log('=====================   根据部门id查询员工信息   =======================')
+        this.listQuery.page = 1
         this.listQuery.orgId = data.id
         this.getUserList()
       },

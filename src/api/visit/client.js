@@ -37,3 +37,11 @@ export function putObj(obj) {
     data: obj
   })
 }
+// 获取负责人
+export function getOperator(id) {
+  return request({
+    url: '/visit/intention/operator',
+    method: 'get'
+  })
+}
+

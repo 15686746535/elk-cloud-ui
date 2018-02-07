@@ -16,7 +16,7 @@
           <el-row>
             <el-card style="margin-bottom: 5px;">
               <div>
-                <el-date-picker v-model="listQuery.timeList" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+                <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
                 </el-date-picker>
                 <el-select v-model="listQuery.subject" clearable placeholder="科目">
                   <el-option
@@ -371,7 +371,7 @@
           page: 1,
           limit: 20,
           condition: null,
-          timeList: [],
+          interval: [],
           subject: null,
           roadCoach: null,
           fieldCoach: null,
@@ -449,6 +449,9 @@
       // 根据部门id查询员工
       searchByOrg(data) {
         console.log('=====================   根据部门id查询学员信息   =======================')
+        this.listQuery.page = 1
+        this.listQuery.orgId = data.id
+        this.getList()
       },
       // 字典
       getDict(val) {

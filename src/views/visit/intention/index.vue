@@ -493,8 +493,13 @@
     methods: {
       intervalTime() {
         console.log('================== 时间转换 ===================')
-        this.listQuery.beginTime = this.interval[0]
-        this.listQuery.endTime = this.interval[1]
+        if (this.interval) {
+          this.listQuery.beginTime = this.interval[0]
+          this.listQuery.endTime = this.interval[1]
+        } else {
+          this.listQuery.beginTime = null
+          this.listQuery.endTime = null
+        }
       },
       getState(val) {
         this.stateLabel = val.value

@@ -26,8 +26,8 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-                <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选" @selectDict="getDict"></dict>
-                <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道" @selectDict="getDict"></dict>
+                <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
+                <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
                 <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
                 <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
@@ -215,7 +215,7 @@
                 <el-row>
                   <el-col :span="8" ><div class="text_css">所学车型：</div></el-col>
                   <el-col :span="14" >
-                    <el-input v-if="edit"  v-model="student.archivesNumber" placeholder="所学车型"></el-input>
+                    <dict v-if="edit" v-model="student.archivesNumber" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
                   </el-col>
                 </el-row>
@@ -223,7 +223,7 @@
                 <el-row>
                   <el-col :span="8"><div class="text_css">来源渠道：</div></el-col>
                   <el-col :span="14">
-                    <dict dictType="dict_sex" v-if="edit"  placeholder="来源渠道" @selectDict="getDict"></dict>
+                    <dict v-if="edit" dictType="dict_source" style="width: 100%;" v-model="student.source"  placeholder="来源渠道"></dict>
                   </el-col>
                 </el-row>
 
@@ -234,21 +234,21 @@
                 <el-row>
                   <el-col :span="8"><div class="text_css">入学期数：</div></el-col>
                   <el-col :span="14">
-                    <dict dictType="dict_sex" v-if="edit"  placeholder="入学期数" @selectDict="getDict"></dict>
+                    <dict dictType="dict_sex" v-if="edit"  placeholder="入学期数"  ></dict>
                   </el-col>
                 </el-row>
 
                 <el-row>
                   <el-col :span="8"><div class="text_css">场训教练：</div></el-col>
                   <el-col :span="14">
-                    <dict dictType="dict_sex" v-if="edit"  placeholder="场训教练" @selectDict="getDict"></dict>
+                    <dict dictType="dict_sex" v-if="edit"  placeholder="场训教练"  ></dict>
                   </el-col>
                 </el-row>
 
                 <el-row>
                   <el-col :span="8"><div class="text_css">报名点：</div></el-col>
                   <el-col :span="14">
-                    <dict dictType="dict_sex" v-if="edit"  placeholder="报名点" @selectDict="getDict"></dict>
+                    <dict dictType="dict_sex" v-if="edit"  placeholder="报名点"  ></dict>
                   </el-col>
                 </el-row>
 

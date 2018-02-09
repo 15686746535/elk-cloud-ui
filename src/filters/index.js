@@ -32,7 +32,11 @@ export function subTime(time) {
     return parseTime(time, '{y}-{m}-{d}')
   }
 }
-
+export function parseJson(value, column) {
+  value = JSON.parse(value)
+  if (column === 'cost') return value.cost
+  if (column === 'arrearage') return value.arrearage
+}
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

@@ -10,7 +10,7 @@ export function fetchList(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/basis/user/',
+    url: '/basis/dict',
     method: 'post',
     data: obj
   })
@@ -18,21 +18,21 @@ export function addObj(obj) {
 
 export function getObj(id) {
   return request({
-    url: '/basis/user/' + id,
+    url: '/basis/dict/' + id,
     method: 'get'
   })
 }
 
 export function delObj(id) {
   return request({
-    url: '/basis/user/' + id,
+    url: '/basis/dict/' + id,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/upms/user/',
+    url: '/basis/dict',
     method: 'put',
     data: obj
   })

@@ -54,14 +54,14 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="标签名"  prop="username">
-          <el-input v-model="increment.name" placeholder="标签名" ></el-input>
+        <el-form-item label="服务类别名字"  prop="username">
+          <el-input v-model="serviceType.name" placeholder="服务类别名字" ></el-input>
         </el-form-item>
         <el-form-item label="费用" prop="username">
-          <el-input type="number" v-model="increment.cost" placeholder="费用" ></el-input>
+          <el-input type="number" v-model="serviceType.cost" placeholder="费用" ></el-input>
         </el-form-item>
         <el-form-item label="服务欠费" prop="username">
-          <el-input type="number" v-model="increment.arrearage" placeholder="服务欠费" ></el-input>
+          <el-input type="number" v-model="serviceType.arrearage" placeholder="服务欠费" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="username">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
@@ -104,7 +104,7 @@
         },
         rules: {},
         dict: {},
-        increment: {},
+        serviceType: {},
         dialogFormVisible: false,
         dialogStatus: '',
         sys_dict_add: false,
@@ -177,9 +177,9 @@
         this.dialogFormVisible = true
       },
       handleUpdate(val) {
-        this.increment.name = val.label
-        this.increment.cost = JSON.parse(val.value).cost
-        this.increment.arrearage = JSON.parse(val.value).arrearage
+        this.serviceType.name = val.label
+        this.serviceType.cost = JSON.parse(val.value).cost
+        this.serviceType.arrearage = JSON.parse(val.value).arrearage
         console.log('==========================')
         console.log(val)
         this.dict = val
@@ -190,8 +190,8 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.increment.name
-            this.dict.value = JSON.stringify(this.increment)
+            this.dict.label = this.serviceType.name
+            this.dict.value = JSON.stringify(this.serviceType)
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
@@ -212,7 +212,7 @@
       cancel(formName) {
         this.dialogFormVisible = false
         this.dict = {}
-        this.increment = {}
+        this.serviceType = {}
         const set = this.$refs
         set[formName].resetFields()
       },
@@ -220,8 +220,8 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.increment.name
-            this.dict.value = JSON.stringify(this.increment)
+            this.dict.label = this.serviceType.name
+            this.dict.value = JSON.stringify(this.serviceType)
             putObj(this.dict).then(() => {
               this.dialogFormVisible = false
               this.getList()

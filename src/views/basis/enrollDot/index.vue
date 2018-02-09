@@ -8,14 +8,9 @@
               highlight-current-row style="width: 100%">
       <el-table-column type="index" align="center" label="编号" width="50">
       </el-table-column>
-      <el-table-column align="center"  label="增值包名字">
+      <el-table-column align="center"  label="报名点">
         <template slot-scope="scope">
           <span>{{ scope.row.label }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center"  label="费用">
-        <template slot-scope="scope">
-          <span>{{ scope.row.value | parseJson('cost')}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="描述">
@@ -48,14 +43,11 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="标签名"  prop="username">
-          <el-input v-model="increment.name" placeholder="标签名" ></el-input>
+        <el-form-item label="报名点"  prop="username">
+          <el-input v-model="dict.label" placeholder="报名点" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="username">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
-        </el-form-item>
-        <el-form-item label="费用" prop="username">
-          <el-input type="number" v-model="increment.cost" placeholder="费用" ></el-input>
         </el-form-item>
         <el-form-item label="排序（升序）" prop="username">
           <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
@@ -91,11 +83,11 @@
         listQuery: {
           page: 1,
           limit: 20,
-          type: 'dict_increment'
+          type: 'dict_enrollDot'
         },
         rules: {},
         dict: {},
-        increment: {},
+        enrollDot: {},
         dialogFormVisible: false,
         dialogStatus: '',
         sys_dict_add: false,
@@ -168,8 +160,6 @@
         this.dialogFormVisible = true
       },
       handleUpdate(val) {
-        this.increment.name = val.label
-        this.increment.cost = JSON.parse(val.value).cost
         console.log('==========================')
         console.log(val)
         this.dict = val
@@ -180,8 +170,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.increment.name
-            this.dict.value = JSON.stringify(this.increment)
+            this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
@@ -202,7 +191,7 @@
       cancel(formName) {
         this.dialogFormVisible = false
         this.dict = {}
-        this.increment = {}
+        this.enrollDot = {}
         const set = this.$refs
         set[formName].resetFields()
       },
@@ -210,8 +199,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.increment.name
-            this.dict.value = JSON.stringify(this.increment)
+            this.dict.value = this.dict.label
             putObj(this.dict).then(() => {
               this.dialogFormVisible = false
               this.getList()

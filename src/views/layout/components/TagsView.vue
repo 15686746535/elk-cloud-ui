@@ -2,7 +2,7 @@
   <scroll-pane class='tags-view-container' ref='scrollPane'>
     <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
       {{tag.title}}
-      <span class='el-icon-close' @click='closeViewTags(tag,$event)'></span>
+      <span class='el-icon-close' v-if="tag.title!='首页'" @click='closeViewTags(tag,$event)'></span>
     </router-link>
   </scroll-pane>
 </template>
@@ -22,10 +22,11 @@
     methods: {
       closeViewTags(view, $event) {
         this.$store.dispatch('delVisitedViews', view).then((views) => {
+          console.log(views)
           if (this.isActive(view)) {
             const latestView = views.slice(-1)[0]
-            if (latestView) {
-              this.$router.push(latestView.path)
+            if (latestView.length > 0) {
+              this.$router.push(latestView[latestView.length - 1].path)
             } else {
               this.$router.push('/')
             }

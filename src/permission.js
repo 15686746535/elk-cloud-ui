@@ -2,9 +2,8 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
-import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth'
-import menus from "./store/modules/menu"; // 验权
+// import menus from "./store/modules/menu"; // 验权
 
 // permissiom judge
 function hasPermission(roles, permissionRoles) {
@@ -22,7 +21,6 @@ router.beforeEach((to, from, next) => { // 开启Progress
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
-        console.log(store.getters.roles)
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
           const roles = res.data.data.roles
           store.dispatch('GenerateMenus', { roles }).then(() => { // 生成可访问的路由表
@@ -33,7 +31,6 @@ router.beforeEach((to, from, next) => { // 开启Progress
           })
         }).catch((e) => {
           store.dispatch('FedLogOut').then(() => {
-            Message.error('验证失败,请重新登录')
             next({ path: '/login' })
           })
         })

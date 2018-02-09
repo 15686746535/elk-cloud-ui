@@ -28,8 +28,8 @@
         <el-col :span="11">
           <el-input name="code" type="text" v-model="loginForm.code" autoComplete="on" placeholder="验证码"/>
         </el-col>
-        <el-col :span="10" align="right">
-          <img :src="src" style="padding-bottom: 1px" @click="refreshCode"/>
+        <el-col :span="10" style="height: 52px;">
+          <img :src="src" style="margin-top: 2px;border-radius: 3px;" @click="refreshCode"/>
         </el-col>
       </el-form-item>
 

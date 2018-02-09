@@ -13,8 +13,8 @@
         dictType:字典类型
         方法：
         selectDict ：字典发生改变是触发，返回字典对象
-      -->
       <dict dictType="dict_sex" :result="dict" v-model="dict" @selectDict="getDict"></dict> {{dict}}
+      -->
     </el-row>
 
     <el-row>
@@ -96,6 +96,9 @@
           </td>
         </tr>
       </table>
+    </el-row>
+    <el-row>
+      <iframe scrolling="yes" frameborder="0" style="width:100%;min-height:200px;overflow:visible;background:#fff;" src="/activiti/404.html"></iframe>
     </el-row>
 
    <!-- <div style="height: 500px;float: left;width: 300px;" >
@@ -311,6 +314,11 @@ export default {
       console.log(org)
     },
     toggle() {
+      Message({
+        message: text,
+        type: type,
+        duration: 5 * 1000
+      })
       if (this.sel === 2) {
         this.sel = 1
         this.orgId = 1
@@ -332,6 +340,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

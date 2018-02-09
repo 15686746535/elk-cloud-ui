@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Notification } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
@@ -17,6 +17,7 @@ service.interceptors.request.use(config => {
   return config
 }, error => {
   // Do something with request error
+  console.log(123456789)
   Promise.reject(error)
 })
 
@@ -25,32 +26,35 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     console.log(res)
-    if (res.code == 500) {
-      message(res.msg, 'error')
+    if (res.code === 500) {
+      message(res.msg, 'error', '提示')
       return Promise.reject(res)
     }
     return response
   },
   error => {
     const res = error.response
-    console.log(res)
-    if (res.status == 478 || res.status == 403) {
-      message(res.status + ': ' + res.data.msg, 'error')
-    } else if (res.status == 400) {
-      message(res.status + ': ' + res.data.error_description, 'error')
+    if (res.status === 478 || res.status === 403) {
+      message('您没有权限！', 'error', '错误')
+    } else if (res.status === 400) {
+      message('服务器异常!', 'error', '错误')
+    } else if (res.status === 404) {
+      message('数据丢失!', 'warning', '警告')
+    } else if (res.status === 401) {
+      message('登录过期!', 'warning', '警告')
     } else {
-      console.log(res.status)
-      message(res.status + ': ' + res.data.message, 'error')
+      message('未知异常，请联系管理员!', 'error', '错误')
     }
     return Promise.reject(error)
   }
 )
 
-export function message(text, type) {
-  Message({
-    message: text,
+export function message(text, type, title) {
+  Notification({
+    title: title,
     type: type,
-    duration: 5 * 1000
+    message: text,
+    duration: 3 * 1000
   })
 }
 

@@ -18,7 +18,7 @@
               <div>
                 <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
                 </el-date-picker>
-                <el-select v-model="listQuery.subject" clearable placeholder="科目">
+                <el-select v-model="listQuery.subject" clearable placeholder="状态">
                   <el-option
                     v-for="item in subject"
                     :key="item.value"
@@ -30,7 +30,6 @@
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
                 <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
-                <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
               </div>
             </el-card>
           </el-row>
@@ -372,7 +371,7 @@
           limit: 20,
           condition: null,
           interval: [],
-          subject: null,
+          subject: 5,
           roadCoach: null,
           fieldCoach: null,
           source: null,
@@ -419,17 +418,11 @@
           }]
         },
         subject: [{
-          value: 1,
-          label: '科目一'
+          value: 5,
+          label: '毕业'
         }, {
-          value: 2,
-          label: '科目二'
-        }, {
-          value: 3,
-          label: '科目三'
-        }, {
-          value: 4,
-          label: '科目四'
+          value: -1,
+          label: '退学'
         }]
       }
     },

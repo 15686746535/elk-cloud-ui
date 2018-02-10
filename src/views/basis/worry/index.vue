@@ -105,15 +105,6 @@
         'permissions'
       ])
     },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          0: '有效',
-          1: '无效'
-        }
-        return statusMap[status]
-      }
-    },
     created() {
       this.getList()
       this.sys_dict_add = this.permissions['basis_dict_add']
@@ -160,8 +151,6 @@
         this.dialogFormVisible = true
       },
       handleUpdate(val) {
-        console.log('==========================')
-        console.log(val)
         this.dict = val
         this.dialogStatus = 'update'
         this.dialogFormVisible = true

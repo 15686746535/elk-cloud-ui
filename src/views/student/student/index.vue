@@ -49,7 +49,7 @@
 
                           </el-tag>
                         </el-row>
-                        <el-row style="margin-top: 12px; text-align: center">
+                        <el-row style="line-height: 25px; text-align: center">
                           姓名：{{scope.row.name}}
                           <br/>
                           手机号：{{scope.row.mobile}}
@@ -57,18 +57,19 @@
                         </el-row>
                       </el-col>
                       <!-- 员工信息 -->
-                      <el-col :span="14" style="line-height: 20px;text-align: left">
+                      <el-col :span="14" style="line-height: 25px;text-align: left">
                         档案号：{{scope.row.archivesNumber}}
                         <br/>
                         身份证：{{scope.row.idNumber}}
                         <br/>
                         介绍人：{{scope.row.introducer}}
-                        <br/>
+                        <!-- 分割线 -->
+                        <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
                         入学日期：{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}
                         <br/>
-                        期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.motorcycle != null?scope.row.motorcycle.value:null}}
+                        期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.moctorcycleType}}
                         <br/>
-                        来源渠道：{{scope.row.workMobile}}
+                        来源渠道：{{scope.row.source}}
                       </el-col>
                     </el-row>
                   </template>
@@ -77,22 +78,22 @@
                   <template slot-scope="scope">
                     <el-tag class="subject">
                       科目一：
-                      <el-tag v-if="true" class="pass">已通过</el-tag>
+                      <el-tag v-if="scope.row.state > 1" class="pass">已通过</el-tag>
                       <el-tag v-else class="noPass">未通过</el-tag>
                     </el-tag>
                     <el-tag class="subject">
                       科目二：
-                      <el-tag v-if="true" class="pass">已通过</el-tag>
+                      <el-tag v-if="scope.row.state > 2" class="pass">已通过</el-tag>
                       <el-tag v-else class="noPass">未通过</el-tag>
                     </el-tag>
                     <el-tag class="subject">
                       科目三：
-                      <el-tag v-if="false" class="pass">已通过</el-tag>
+                      <el-tag v-if="scope.row.state > 3" class="pass">已通过</el-tag>
                       <el-tag v-else class="noPass">未通过</el-tag>
                     </el-tag>
                     <el-tag class="subject">
                       科目四：
-                      <el-tag v-if="false" class="pass">已通过</el-tag>
+                      <el-tag v-if="scope.row.state > 4" class="pass">已通过</el-tag>
                       <el-tag v-else class="noPass">未通过</el-tag>
                     </el-tag>
                   </template>
@@ -224,6 +225,7 @@
                   <el-col :span="8"><div class="text_css">来源渠道：</div></el-col>
                   <el-col :span="14">
                     <dict v-if="edit" dictType="dict_source" style="width: 100%;" v-model="student.source"  placeholder="来源渠道"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.source}}</div>
                   </el-col>
                 </el-row>
 
@@ -234,7 +236,8 @@
                 <el-row>
                   <el-col :span="8"><div class="text_css">入学期数：</div></el-col>
                   <el-col :span="14">
-                    <dict dictType="dict_sex" v-if="edit"  placeholder="入学期数"  ></dict>
+                    <dict dictType="dict_sex" v-model="student.periods" v-if="edit"  placeholder="入学期数"  ></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
                   </el-col>
                 </el-row>
 
@@ -248,7 +251,8 @@
                 <el-row>
                   <el-col :span="8"><div class="text_css">报名点：</div></el-col>
                   <el-col :span="14">
-                    <dict dictType="dict_enrollDot" v-if="edit"  placeholder="报名点"  ></dict>
+                    <dict dictType="dict_enrollDot" v-model="student.enrolSite" v-if="edit"  placeholder="报名点"  ></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
                   </el-col>
                 </el-row>
 
@@ -321,14 +325,11 @@
             <el-tabs v-model="activeName" type="border-card">
               <el-tab-pane label="最近信息" name="1">
 
-                <div>
-                  <el-button @click="cancel">取 消</el-button>
-                  <el-button v-if="addInfo=='create'" type="primary" @click="create">确 定</el-button>
-                  <el-button v-else type="primary" @click="update">修 改</el-button>
-                </div>
 
               </el-tab-pane>
-              <el-tab-pane label="科目情况" name="2">配置管理</el-tab-pane>
+              <el-tab-pane label="科目情况" name="2">
+
+              </el-tab-pane>
               <el-tab-pane label="费用情况" name="3">角色管理</el-tab-pane>
               <el-tab-pane label="来访跟进信息" name="4">定时任务补偿</el-tab-pane>
               <el-tab-pane label="约车日志" name="5">定时任务补偿</el-tab-pane>
@@ -345,7 +346,8 @@
 </template>
 
 <script>
-  import { fetchList, getObj, addObj } from '@/api/student/student'
+  import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
+  import { examFetchList, getExam } from '@/api/student/examnote'
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -459,18 +461,24 @@
       // 双击行  编辑
       editlist(val) {
         console.log('====================== 正在进入单个学员编辑 =====================')
-        // getObj(val.userId).then(response => {
-        //   console.log(response.data)
-        //   this.userListEdit = response.data.data
-        // })
-        this.student = val
+        getObj(val.studentId).then(response => {
+          // console.log(response.data)
+          this.student = response.data.data
+        })
+        examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
+          console.log('====================== getExam =====================')
+          console.log(response.data)
+          console.log('====================== getExam =====================')
+          // this.student = response.data.data
+        })
+        // this.student = val
         this.showModule = 'info'
       },
       // 获取所有学员
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          console.log('===================  这是所有学员信息  ==================')
+          console.log(' ====== =============  这是所有学员信息  ==================')
           console.log(response.data)
           this.stuList = response.data.data.list
           this.total = response.data.data.totalCount
@@ -491,11 +499,8 @@
       },
       // 添加
       add() {
-        // addObj(this.userListEdit).then(response => {
-        //   console.log('这里是添加方法===========================')
-        //   this.userListEdit.userId = response.data.data
-        //   console.log(this.vehicle.vehicleEntity.vehicleId)
-        // })
+        addObj(this.student).then(response => {
+        })
         this.edit = false
       },
       // 新增
@@ -506,6 +511,8 @@
       },
       // 修改
       update() {
+        putObj(this.student).then(response => {
+        })
         this.edit = false
       },
       // 搜索
@@ -542,8 +549,8 @@
 <style>
 
   .img{
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     padding: 0;
     border-radius: 150px;
     overflow: hidden;

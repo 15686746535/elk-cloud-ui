@@ -353,8 +353,8 @@
               <el-row>
                 <div style="width: 100%;overflow: auto;height: 350px;margin-bottom: 10px">
                   <div style="line-height: 30px" v-for="followUps in followUps">
-                    <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 8px;color: mediumblue">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</span></div>
-                    <div style="font-size: 14px;margin-left: 20px">{{followUps.content}}</div>
+                    <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 7px;color: mediumblue">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</span></div>
+                    <el-tag  type="success" style="font-size: 14px;margin-left: 20px;border-radius: 10px;">{{followUps.content}}</el-tag>
                   </div>
                 </div>
               </el-row>

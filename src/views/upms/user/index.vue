@@ -2,8 +2,8 @@
 <template>
   <div class="app-container">
     <div v-show="showModule=='list'">
-      <el-row>
-        <el-col :span="16" style='margin-top:15px;width: 100%'>
+      <el-row :gutter="10">
+        <el-col :span="24" style='margin-top:15px;width: 100%'>
           <div class="filter-container" style="float: left">
             |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
           </div>
@@ -16,21 +16,24 @@
 
         </el-col>
 
-        <el-col style='width: 15%;margin-top:15px; box-shadow: #99a9bf 5px 5px 5px;text-align: center'>
+        <el-col :span="4" style='margin-top:15px; text-align: center'>
           <el-card>
-            <span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-            <hr>
+            <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
+            </el-row>
 
-            <org-tree @node-click="searchByOrg" ></org-tree>
+            <!-- 分割线 -->
+            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
 
+            <el-row  style="overflow: auto"><org-tree @node-click="searchByOrg" ></org-tree>
+            </el-row>
           </el-card>
         </el-col>
 
-        <el-col :span="16" style='margin-left: 10px; margin-top:15px;width: 84%'>
-          <el-card>
+        <el-col :span="20" style='margin-top:15px;'>
+          <el-card style="overflow: auto">
             <!-- 身份卡循环 -->
-            <el-table :data="userList" height="600" border style="width: 100%; " highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
-              <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+            <el-table :data="userList" height="600"  border style="min-width: 980px; " highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
+              <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
               <el-table-column label="员工信息">
                 <template slot-scope="scope">
                   <!-- 头像 -->
@@ -202,7 +205,7 @@
                 <el-col :span="8"><div class="text_css">生日：</div></el-col>
                 <el-col :span="14">
                   <el-date-picker  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userListEdit.birthday"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.birthday | parseTime('{y}-{m}-{d}')}}</span>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userListEdit.birthday | subTime}}</span>
                 </el-col>
               </el-row>
 

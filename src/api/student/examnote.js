@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function examFetchList(query) {
   return request({
     url: '/student/examnote/getPage',
     method: 'get',
@@ -8,7 +8,7 @@ export function fetchList(query) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function addExam(obj) {
   return request({
     url: '/student/examnote/',
     method: 'post',
@@ -16,21 +16,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getExam(id) {
   return request({
     url: '/student/examnote/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delExam(id) {
   return request({
     url: '/student/examnote/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putExam(obj) {
   return request({
     url: '/student/examnote',
     method: 'put',

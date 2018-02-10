@@ -10,7 +10,7 @@ export function followUpList(query) {
 // 添加
 export function addFollowUp(obj) {
   return request({
-    url: '/visit/followup/',
+    url: '/visit/followup',
     method: 'post',
     data: obj
   })

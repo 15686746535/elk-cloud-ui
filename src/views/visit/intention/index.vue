@@ -52,7 +52,7 @@
                     </el-col>
                   </el-row>
                   <!-- 分割线 -->
-                  <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+                  <hr style="border: none; border-bottom:1px solid #d3dce6; "/>
                   <el-row class="visit_text">
                     <el-col :span="5">微信：</el-col>
                     <el-col :span="19">{{visit.wechat}}</el-col>

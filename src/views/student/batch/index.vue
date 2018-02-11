@@ -1,9 +1,106 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div v-show="showModule=='list'">
-      <el-card style="margin-bottom: 5px;">
-        <div class="filter-container">
-          <el-select v-model="listQuery.subject" clearable placeholder="科目">
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
+    <el-card style="margin-bottom: 5px;height: 80px">
+      <div class="filter-container">
+        <el-select v-model="listQuery.subject" clearable placeholder="科目">
+          <el-option
+            v-for="item in subject"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-select v-model="listQuery.subject" clearable placeholder="考场">
+          <el-option
+            v-for="item in subject"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button type="primary" v-waves @click="search" >搜索</el-button>
+        <el-button @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+      </div>
+    </el-card>
+    <el-card :style="{height: (client.height - 125) + 'px'}">
+      <el-table :key='tableKey' :data="list" v-loading="listLoading" :max-height="client.height - 225" element-loading-text="给我一点时间" border fit
+                highlight-current-row style="width: 100%;text-align: center;">
+        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <el-table-column align="center"  label="科目">
+          <template slot-scope="scope">
+            <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center"  label="考试时间">
+          <template slot-scope="scope">
+            <span>{{scope.row.examTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center"  label="考试场地">
+          <template slot-scope="scope">
+            <span>{{scope.row.examField}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center"  label="人数">
+          <template slot-scope="scope">
+            <span>{{scope.row.stuCount}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="批次">
+          <template slot-scope="scope">
+            <span>{{scope.row.batch}}</span>
+          </template>
+        </el-table-column>
+        <!--<el-table-column label="备注">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span>{{scope.row.remark}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column label="操作人">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span>{{scope.row.operator}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column label="创建时间">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column label="更新时间">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+
+        <el-table-column align="center" fixed="right" label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="see(scope.row)" plain>查 看</el-button>
+            <el-button size="mini" type="primary" @click="see(scope.row)">编 辑</el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+      </div>
+    </el-card>
+
+    <el-dialog title="考试设置" width="30%" :visible.sync="dialogFormVisible">
+
+      <el-form :model="batch" label-width="100px">
+        <el-form-item label="考试场地">
+          <el-input v-model="batch.examField" placeholder="考试场地"></el-input>
+        </el-form-item>
+        <el-form-item label="考试时间">
+          <el-date-picker style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="考试科目">
+          <el-select v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">
             <el-option
               v-for="item in subject"
               :key="item.value"
@@ -11,106 +108,26 @@
               :value="item.value">
             </el-option>
           </el-select>
-          <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-          <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
-        </div>
-      </el-card>
-      <el-card>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                  highlight-current-row style="width: 100%;text-align: center">
-          <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-          <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-          <!--<el-table-column label="组织ID">-->
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{scope.row.orgId}}</span>-->
-            <!--</template>-->
-          <!--</el-table-column>-->
-          <el-table-column align="center"  label="科目">
-            <template slot-scope="scope">
-              <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center"  label="考试时间">
-            <template slot-scope="scope">
-              <span>{{scope.row.examTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center"  label="考试场地">
-            <template slot-scope="scope">
-              <span>{{scope.row.examField}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center"  label="人数">
-            <template slot-scope="scope">
-              <span>{{scope.row.stuCount}}</span>
-            </template>
-          </el-table-column>
-          <!--<el-table-column label="批次">-->
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{scope.row.batch}}</span>-->
-            <!--</template>-->
-          <!--</el-table-column>-->
-          <!--<el-table-column label="备注">-->
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{scope.row.remark}}</span>-->
-            <!--</template>-->
-          <!--</el-table-column>-->
-          <!--<el-table-column label="操作人">-->
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{scope.row.operator}}</span>-->
-            <!--</template>-->
-          <!--</el-table-column>-->
-          <!--<el-table-column label="创建时间">-->
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
-            <!--</template>-->
-          <!--</el-table-column>-->
-          <!--<el-table-column label="更新时间">-->
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
-            <!--</template>-->
-          <!--</el-table-column>-->
+        </el-form-item>
+      </el-form>
 
-          <el-table-column align="center" fixed="right" label="操作" width="150">
-            <template slot-scope="scope">
-              <el-row :gutter="10">
-                <el-col :span="12"><el-button size="mini" type="success" style="width: 100%"
-                         @click="update(scope.row)">查看
-                </el-button></el-col>
-                <el-col :span="12"><el-button size="mini" type="danger" style="width: 100%"
-                           @click="delete(scope.row)">编辑
-                </el-button></el-col>
-              </el-row>
-            </template>
-          </el-table-column>
 
-        </el-table>
-        <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="listQuery.page" background
-                         :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                         layout="total, sizes, prev, pager, next, jumper" :total="total">
-          </el-pagination>
-        </div>
-      </el-card>
-    </div>
-    <div v-show="showModule=='info'">
-      <el-card>
-        <!-- 这里手写 -->
+      <!--<el-input style="line-height: 50px;" v-model="batch.examField" placeholder="考试场地"></el-input>-->
+      <!--<el-date-picker style="line-height: 50px;width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>-->
+      <!--<el-input style="line-height: 50px;" v-model="batch.subject" placeholder="考试科目"></el-input>-->
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel('batch')">取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('batch')">确 定</el-button>
+        <el-button v-else type="primary" @click="update('batch')">修 改</el-button>
+      </div>
+    </el-dialog>
 
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>
-          <el-button v-else type="primary" @click="update">修 改</el-button>
-        </div>
-      </el-card>
-    </div>
   </div>
 </template>
 
 <script>
   import { fetchList, getObj } from '@/api/student/batch'
+  import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
@@ -124,7 +141,6 @@
         list: [],
         total: null,
         listLoading: true,
-        showModule: 'list',
         listQuery: {
           page: 1,
           limit: 20,
@@ -133,38 +149,29 @@
         tableKey: 0,
         dialogStatus: '',
         subject: [{
-          value: 1,
+          value: '1',
           label: '科目一'
         }, {
-          value: 2,
+          value: '2',
           label: '科目二'
         }, {
-          value: 3,
+          value: '3',
           label: '科目三'
         }, {
-          value: 4,
+          value: '4',
           label: '科目四'
-        }]
+        }],
+        dialogFormVisible: false,
       }
     },
     created() {
       this.getList()
     },
     computed: {
-      subjectVO(subject) {
-        switch (subject) {
-          case 1:
-            return '科目一'
-          case 2:
-            return '科目二'
-          case 3:
-            return '科目三'
-          case 4:
-            return '科目四'
-          default:
-            return ''
-        }
-      }
+      ...mapGetters([
+        'permissions',
+        'client'
+      ])
     },
     methods: {
       getList() {
@@ -186,14 +193,17 @@
       },
       create() {
         this.batch = {}
-        this.showModule = 'info'
+        this.dialogFormVisible = true
+      },
+      see(val) {
+        this.batch = val
+        this.dialogFormVisible = true
       },
       update(row) {
         console.log(row)
         getObj(row.roleId)
           .then(response => {
             this.batch = response.data
-            this.showModule = 'info'
           })
       },
       search() {
@@ -203,8 +213,10 @@
       delete(id) {
         this.getList()
       },
-      cancel() {
-        this.showModule = 'list'
+      cancel(formName) {
+        this.dialogFormVisible = false
+        const set = this.$refs
+        set[formName].resetFields()
       }
     }
   }

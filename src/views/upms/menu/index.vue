@@ -1,22 +1,21 @@
-<script src="../../../api/upms/menu.js"></script>
 <template>
-  <div class="app-container calendar-list-container">
-      <el-row>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <!--  <el-row>
           <el-button-group>
             <el-button type="primary" v-if="menuManager_btn_add" icon="plus" @click="handlerAdd">添加</el-button>
             <el-button type="primary" v-if="menuManager_btn_edit" icon="edit" @click="handlerEdit">编辑</el-button>
             <el-button type="primary" v-if="menuManager_btn_del" icon="delete" @click="handleDelete">删除</el-button>
           </el-button-group>
-      </el-row>
-    <el-row :gutter="20">
-      <el-col :span="6" style='margin-top:15px;'>
-        <el-card class="box-card menuTreeCard" style="max-height: 600px;overflow: auto;">
-          <tree :list="treeData" id="menuTree"
-                :open="false" choiceType="folder"
-                @node-click="getNodeData"></tree>
+      </el-row>-->
+    <el-row :gutter="10">
+      <el-col class="org-tree-left">
+        <el-card class="box-card">
+             <tree :list="treeData" id="menuTree"
+                   :open="false" choiceType="folder"
+                   @node-click="getNodeData"></tree>
         </el-card>
       </el-col>
-      <el-col :span="18" style='margin-top:15px;'>
+      <el-col :style="{width: (client.width-230) + 'px'}">
         <el-card class="box-card">
           <el-form :label-position="labelPosition" label-width="80px" :model="form" ref="form">
             <el-form-item label="类型" prop="type">
@@ -69,7 +68,6 @@
   import { fetchTree, getObj, addObj, delObj, putObj } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
   import Tree from '@/components/Tree'
-
   export default {
     name: 'menu',
     components: {
@@ -113,14 +111,29 @@
         return typeMap[type]
       }
     },
+    updated: function() {
+      console.log('---------updated')
+      console.log(this.treeHeight)
+      console.log('---------updated')
+    },
     created() {
       this.getList()
     },
     computed: {
       ...mapGetters([
-        'elements'
+        'elements',
+        'permissions',
+        'client'
       ])
     },
+    // mounted() {
+    //   const that = this
+    //   window.onresize = () => {
+    //     return (() => {
+    //       that.clientHeight = client.getHeight(84)
+    //     })()
+    //   }
+    // },
     methods: {
       getList() {
         fetchTree(this.listQuery).then(response => {
@@ -152,23 +165,24 @@
         this.formStatus = 'create'
       },
       handleDelete() {
-        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          delObj(this.currentId).then(() => {
-            this.getList()
-            this.resetForm()
-            this.onCancel()
-            this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        })
+        console.log(this.clientHeight)
+        // this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        //   delObj(this.currentId).then(() => {
+        //     this.getList()
+        //     this.resetForm()
+        //     this.onCancel()
+        //     this.$notify({
+        //       title: '成功',
+        //       message: '删除成功',
+        //       type: 'success',
+        //       duration: 2000
+        //     })
+        //   })
+        // })
       },
       update() {
         putObj(this.form).then(() => {

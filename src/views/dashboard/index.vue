@@ -98,7 +98,6 @@
       </table>
     </el-row>
     <el-row>
-      <iframe scrolling="yes" frameborder="0" style="width:100%;min-height:200px;overflow:visible;background:#fff;" src="/activiti/404.html"></iframe>
     </el-row>
 
    <!-- <div style="height: 500px;float: left;width: 300px;" >
@@ -314,20 +313,19 @@ export default {
       console.log(org)
     },
     toggle() {
-      Message({
-        message: text,
-        type: type,
-        duration: 5 * 1000
-      })
-      if (this.sel === 2) {
-        this.sel = 1
-        this.orgId = 1
-        this.dict = '1'
-      } else {
-        this.sel = 2
-        this.orgId = 2
-        this.dict = '2'
-      }
+      var w = document.documentElement.scrollWidth || document.body.scrollWidth
+      var h = document.documentElement.scrollHeight || document.body.scrollHeight
+      console.log(w)
+      console.log(h)
+      // if (this.sel === 2) {
+      //   this.sel = 1
+      //   this.orgId = 1
+      //   this.dict = '1'
+      // } else {
+      //   this.sel = 2
+      //   this.orgId = 2
+      //   this.dict = '2'
+      // }
     },
     nodeCheck(node) {
       console.log('nodeCheck')
@@ -340,7 +338,12 @@ export default {
     }
   }
 }
-
+// window.onresize = function() {
+//   var w = document.documentElement.scrollWidth || document.body.scrollWidth
+//   var h = document.documentElement.scrollHeight || document.body.scrollHeight
+//   console.log(w)
+//   console.log(h)
+// }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

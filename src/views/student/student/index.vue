@@ -1,20 +1,15 @@
 <template>
-  <div class="app-container calendar-list-container" style="overflow: auto;">
-    <div v-show="showModule=='list'">
-      <el-row :gutter="25">
-
-
-        <el-col :xs="4" :sm="4" :md="8" :lg="6" :xl="4" >
-            <el-card style="min-width: 200px">
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <div v-show="showModule=='list'" style="height: 100%">
+      <el-row :gutter="5">
+        <el-col class="org-tree-left">
+            <el-card>
               <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
               <org-tree @node-click="searchByOrg" ></org-tree>
-
             </el-card>
         </el-col>
-        <el-col :xs="16" :sm="16" :md="16" :lg="18" :xl="20" >
-
-          <el-row>
-            <el-card style="margin-bottom: 5px;">
+        <el-col :style="{width: (client.width-230) + 'px'}">
+            <el-card style="margin-bottom: 5px;height: 130px;">
               <div>
                 <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
                 </el-date-picker>
@@ -27,16 +22,15 @@
                   </el-option>
                 </el-select>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
+                <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
+                <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
                 <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
                 <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
               </div>
             </el-card>
-          </el-row>
-
-          <el-row>
-            <el-card>
+            <el-card :style="{height: (client.height-175) + 'px'}">
               <el-table :data="stuList.length == 0?null:stuList" max-height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">
@@ -139,17 +133,14 @@
                 </el-pagination>
               </div>
             </el-card>
-          </el-row>
-
         </el-col>
       </el-row>
     </div>
 
-    <div v-show="showModule=='info'" style="min-width: 900px">
-      <el-row :gutter="20">
+    <div v-show="showModule=='info'" style="height: 100%">
+      <el-row :gutter="10">
 
         <el-col :span="10">
-
           <el-card>
             <div slot="header" class="clearfix">
               <div style="float: left">
@@ -318,11 +309,10 @@
             </el-row>
 
           </el-card>
-
         </el-col>
 
         <el-col :span="14" >
-            <el-tabs v-model="activeName" type="border-card">
+            <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px;">
               <el-tab-pane label="最近信息" name="1">
 
 
@@ -351,7 +341,7 @@
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
-
+  import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
     components: {
@@ -439,6 +429,10 @@
       this.getList()
     },
     computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ]),
       sexVO() {
         const typeMap = {
           1: '男',

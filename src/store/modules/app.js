@@ -5,7 +5,11 @@ const app = {
     sidebar: {
       opened: !+Cookies.get('sidebarStatus')
     },
-    visitedViews: []
+    visitedViews: [],
+    client: {
+      height: 0, /* 页面高度*/
+      width: 0 /* 页面宽度*/
+    }
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -15,6 +19,12 @@ const app = {
         Cookies.set('sidebarStatus', 0)
       }
       state.sidebar.opened = !state.sidebar.opened
+    },
+    SET_CLIENT_HEIGHT: (state, height) => {
+      state.client.height = height
+    },
+    SET_CLIENT_WIDTH: (state, width) => {
+      state.client.width = width
     },
     ADD_VISITED_VIEWS: (state, view) => {
       if (state.visitedViews.some(v => v.path === view.path)) return
@@ -37,6 +47,12 @@ const app = {
     },
     addVisitedViews: ({ commit }, view) => {
       commit('ADD_VISITED_VIEWS', view)
+    },
+    setClientHeight: ({ commit }, height) => {
+      commit('SET_CLIENT_HEIGHT', height)
+    },
+    setClientWidth: ({ commit }, width) => {
+      commit('SET_CLIENT_WIDTH', width)
     },
     delVisitedViews: ({ commit, state }, view) => {
       return new Promise((resolve) => {

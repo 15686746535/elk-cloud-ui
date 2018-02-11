@@ -25,7 +25,6 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     const res = response.data
-    console.log(res)
     if (res.code === 500) {
       message(res.msg, 'error', '提示')
       return Promise.reject(res)

@@ -19,12 +19,15 @@
       width: 100%;
     }
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 10px;
     }
     .el-menu {
       border: none;
       width: 100%;
     }
+  }
+  .el-submenu .svg-icon{
+    font-size: 15px;
   }
   .hideSidebar {
     .sidebar-container,.sidebar-container .el-menu {

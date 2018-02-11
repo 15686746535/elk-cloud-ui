@@ -1,20 +1,15 @@
 <template>
-  <div class="app-container calendar-list-container" style="overflow: auto;">
-    <div v-show="showModule=='list'">
-      <el-row :gutter="25">
-
-
-        <el-col :xs="4" :sm="4" :md="8" :lg="6" :xl="4" >
-            <el-card style="min-width: 200px">
-              <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-              <org-tree @node-click="searchByOrg" ></org-tree>
-
-            </el-card>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <div v-show="showModule=='list'" style="height: 100%">
+      <el-row :gutter="5">
+        <el-col class="org-tree-left">
+          <el-card>
+            <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
+            <org-tree @node-click="searchByOrg" ></org-tree>
+          </el-card>
         </el-col>
-        <el-col :xs="16" :sm="16" :md="16" :lg="18" :xl="20" >
-
-          <el-row>
-            <el-card style="margin-bottom: 5px;">
+        <el-col :style="{width: (client.width-250) + 'px'}" style="line-height: 50px">
+          <el-card style="margin-bottom: 5px;height: 130px;">
               <div>
                 <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
                 </el-date-picker>
@@ -32,10 +27,7 @@
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
               </div>
             </el-card>
-          </el-row>
-
-          <el-row>
-            <el-card>
+          <el-card :style="{height: (client.height-175) + 'px'}">
               <el-table :data="stuList.length == 0?null:stuList" max-height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">
@@ -62,7 +54,8 @@
                         身份证：{{scope.row.idNumber}}
                         <br/>
                         介绍人：{{scope.row.introducer}}
-                        <br/>
+                        <!-- 分割线 -->
+                        <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
                         入学日期：{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}
                         <br/>
                         期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.moctorcycleType}}
@@ -137,14 +130,13 @@
                 </el-pagination>
               </div>
             </el-card>
-          </el-row>
 
         </el-col>
       </el-row>
     </div>
 
-    <div v-show="showModule=='info'" style="min-width: 900px">
-      <el-row :gutter="20">
+    <div v-show="showModule=='info'" style="height: 100%">
+      <el-row :gutter="10">
 
         <el-col :span="10">
 
@@ -351,6 +343,7 @@
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_student',
@@ -422,10 +415,10 @@
         },
         subject: [{
           value: 5,
-          label: '毕业'
+          label: '已毕业'
         }, {
           value: -1,
-          label: '退学'
+          label: '已退学'
         }]
       }
     },
@@ -433,6 +426,10 @@
       this.getList()
     },
     computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ]),
       sexVO() {
         const typeMap = {
           1: '男',

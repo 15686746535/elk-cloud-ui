@@ -3,12 +3,12 @@
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
-            <el-card>
-              <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-              <org-tree @node-click="searchByOrg" ></org-tree>
-            </el-card>
+          <el-card>
+            <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
+            <org-tree @node-click="searchByOrg" ></org-tree>
+          </el-card>
         </el-col>
-        <el-col :style="{width: (client.width-230) + 'px'}">
+        <el-col :style="{width: (client.width-250) + 'px'}" style="line-height: 50px">
             <el-card style="margin-bottom: 5px;height: 130px;">
               <div>
                 <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">

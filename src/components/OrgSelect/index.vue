@@ -103,9 +103,6 @@
     right: 10px;
     transition:transform 0.4s;
   }
-  .hover:hover{
-    cursor: pointer;
-  }
   .ran-select{
     position: relative;
   }

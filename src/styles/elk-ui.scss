@@ -1,0 +1,74 @@
+.app-container {
+  padding: 20px;
+}
+
+.app-container.calendar-list-container{
+  overflow: auto;
+  background: url(../static/img/backgroundImg.png);
+}
+.el-row{
+  height: 100%;
+}
+.el-row .el-col{
+  height: 100%;
+}
+.el-card{
+  height: 100%;
+}
+.org-tree-left{
+  width: 230px;
+}
+.org-tree-left .el-card{
+  background-image:url(../static/img/treeBg.png);
+  /* 背景图片不重复显示*/
+  background-repeat: no-repeat;
+  /* 背景图片横向及纵向重复*/
+  /*background-repeat: repeat;*/
+  /*背景图片横向重复*/
+  /*background-repeat: repeat-x;*/
+  /*背景图片纵向重复*/
+  /*background-repeat: repeat-y;*/
+  /*固定背景图片*/
+  /*background-attachment: fixed;*/
+  /*滚动背景图片*/
+  /*background-attachment: scroll;*/
+  /*背景图片在横向的最左方显示*/
+  /*background-position-x: left;*/
+  /*背景图片在横向的最右方显示*/
+  background-position-x: center;
+  /*背景图片在纵向的最上方显示*/
+  /*background-position-y: top;*/
+  /*背景图片在纵向的最下方显示*/
+  background-position-y: bottom;
+}
+.org-tree-left .el-card{
+  overflow: auto;
+}
+.hover:hover{
+  cursor: pointer;
+}
+.tabs-dialog .el-dialog__body{
+  padding: 0;
+}
+.tabs-dialog .el-dialog__header {
+  padding: 0;
+}
+.tabs-dialog .el-dialog__header button{
+  z-index: 6;
+  top: 10px;
+}
+.el-tabs{
+  border-radius: 5px;
+}
+input::-webkit-input-placeholder{
+  color: #b2b6bd;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+  color:#b2b6bd;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+  color:#b2b6bd;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+  color:#b2b6bd;
+}

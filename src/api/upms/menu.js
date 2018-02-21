@@ -26,7 +26,7 @@ export function fetchUserTree() {
 
 export function addObj(obj) {
   return request({
-    url: '/upms/menu/',
+    url: '/upms/menu',
     method: 'post',
     data: obj
   })
@@ -48,7 +48,7 @@ export function delObj(id) {
 
 export function putObj(obj) {
   return request({
-    url: '/upms/menu/',
+    url: '/upms/menu',
     method: 'put',
     data: obj
   })

@@ -21,14 +21,15 @@ export function approverPage(query) {
     params: query
   })
 }
-// 删除
-export function delObj(id) {
+// 启动流程
+export function startFlow(obj) {
   return request({
-    url: '/basis/affiche/' + id,
-    method: 'delete'
+    url: '/activiti/deal/startFlow',
+    method: 'post',
+    data: obj
   })
 }
-// 更新
+// 更新 delete
 export function putObj(obj) {
   return request({
     url: '/basis/affiche',

@@ -54,7 +54,7 @@
     created() {
       if (this.dictType) {
         fetch({
-          url: '/basis/dict/type/' + this.dictType,
+          url: '/basis/dict/getByType/' + this.dictType,
           method: 'get'
         }).then(response => {
           this.dictList = response.data.data.list

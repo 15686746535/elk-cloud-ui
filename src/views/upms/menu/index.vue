@@ -18,7 +18,7 @@
             <el-button type="primary" v-if="menuManager_btn_del" icon="delete" @click="handleDelete">删除</el-button>
           </el-button-group>
         </el-card>
-        <el-card class="box-card" :style="{height: (client.height-130) + 'px'}">
+        <el-card class="box-card" :style="{height: (client.height-130) + 'px'}" style="overflow: auto">
           <el-form label-position="right" label-width="80px" :model="form" ref="form">
             <el-form-item label="父级节点" prop="parentId">
               <el-input v-model="parentName" disabled placeholder="请选择父级节点"></el-input>

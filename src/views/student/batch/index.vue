@@ -126,7 +126,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/student/batch'
+  import { fetchList, getObj, putObj } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
@@ -161,7 +161,7 @@
           value: '4',
           label: '科目四'
         }],
-        dialogFormVisible: false,
+        dialogFormVisible: false
       }
     },
     created() {
@@ -200,10 +200,10 @@
         this.dialogFormVisible = true
       },
       update(row) {
+        console.log('')
         console.log(row)
-        getObj(row.roleId)
+        putObj(row)
           .then(response => {
-            this.batch = response.data
           })
       },
       search() {

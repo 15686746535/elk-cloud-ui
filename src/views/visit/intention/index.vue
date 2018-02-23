@@ -39,36 +39,42 @@
           <el-card style="overflow: auto">
             <div class="visits"  v-loading="listLoading" element-loading-text="给我一点时间" >
               <div class="visit" v-for="visit in list" @click="visitClick($event)"  @dblclick="editlist(visit)">
-                <div style="width: 222px;height: 179px;margin: 19px 10px;">
-                  <el-row :gutter="5">
-                    <el-col :span="12">
+                <div style="width: 222px;height: 200px;margin: 9px 10px;">
+                  <div style="width: 50%;float: left">
                       <div class="visit_text">姓名：{{visit.name}}</div>
                       <div class="visit_text">性别：{{visit.sex | sexFilter}}</div>
                       <div class="visit_text">负责人：{{visit.operator}}</div>
-                    </el-col>
-                    <el-col :span="12">
+                  </div>
+                  <div style="width: 50%;float: left">
                       <div class="visit_text">类别：{{visit.customerType}}</div>
                       <div class="visit_text">渠道：{{visit.source}}</div>
-                    </el-col>
-                  </el-row>
+                  </div>
+
                   <!-- 分割线 -->
-                  <hr style="border: none; border-bottom:1px solid #d3dce6; "/>
-                  <el-row class="visit_text">
-                    <el-col :span="5">微信：</el-col>
-                    <el-col :span="19">{{visit.wechat}}</el-col>
-                  </el-row>
-                  <el-row class="visit_text">
-                    <el-col :span="5">电话：</el-col>
-                    <el-col :span="19">{{visit.mobile}}</el-col>
-                  </el-row>
-                  <el-row class="visit_text">
-                    <el-col :span="5">住址：</el-col>
-                    <el-col :span="19">{{visit.contactAddress}}</el-col>
-                  </el-row>
-                  <el-row class="visit_text">
-                    <el-col :span="5">顾虑：</el-col>
-                    <el-col :span="19">{{visit.worry}}</el-col>
-                  </el-row>
+                  <div style="width: 100%;float: left;border: none;border-bottom:1px solid #d3dce6;margin: 5px 0; "></div>
+                  <div style="width: 100%;height: 88px;float: left">
+
+                      <div class="visit_text">微信：{{visit.wechat}}</div>
+                      <div class="visit_text">电话：{{visit.mobile}}</div>
+                      <div class="visit_text">住址：{{visit.contactAddress}}</div>
+                      <div class="visit_text">顾虑：{{visit.worry}}</div>
+                  </div>
+                  <!--<el-row class="visit_text">-->
+                    <!--<el-col :span="5">微信：</el-col>-->
+                    <!--<el-col :span="19">{{visit.wechat}}</el-col>-->
+                  <!--</el-row>-->
+                  <!--<el-row class="visit_text">-->
+                    <!--<el-col :span="5">电话：</el-col>-->
+                    <!--<el-col :span="19">{{visit.mobile}}</el-col>-->
+                  <!--</el-row>-->
+                  <!--<el-row class="visit_text">-->
+                    <!--<el-col :span="5">住址：</el-col>-->
+                    <!--<el-col :span="19">{{visit.contactAddress}}</el-col>-->
+                  <!--</el-row>-->
+                  <!--<el-row class="visit_text">-->
+                    <!--<el-col :span="5">顾虑：</el-col>-->
+                    <!--<el-col :span="19">{{visit.worry}}</el-col>-->
+                  <!--</el-row>-->
 
                 </div>
               </div>

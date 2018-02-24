@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div class="filter-container">
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <el-card  style="margin-bottom: 5px;height: 80px;">
       <el-select v-model="listQuery.type" filterable placeholder="请选择">
         <el-option
           v-for="item in dicts"
@@ -10,89 +10,76 @@
         </el-option>
       </el-select>
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-    </div>
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+    </el-card>
+    <el-card :style="{height: (client.height-125) + 'px'}">
+      <el-table :key='tableKey' :style="{height: (client.height-205) + 'px'}" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;overflow: auto">
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
 
-      <el-table-column align="center" label="序号">
-        <template slot-scope="scope">
-          <span>{{scope.row.logId}}</span>
-        </template>
-      </el-table-column>
+        <el-table-column label="类型" align="center">
+          <template slot-scope="scope">
+            <span>
+                  <el-button type="success" v-if="scope.row.type == 0">{{ scope.row.type | typeFilter }}</el-button>
+                  <el-button type="danger" v-if="scope.row.type ==9">{{ scope.row.type | typeFilter }}</el-button>
+            </span>
+          </template>
+        </el-table-column>
 
-      <el-table-column label="类型" align="center">
-        <template slot-scope="scope">
-          <span>
-                <el-button type="success" v-if="scope.row.type == 0">{{ scope.row.type | typeFilter }}</el-button>
-                <el-button type="danger" v-if="scope.row.type ==9">{{ scope.row.type | typeFilter }}</el-button>
-          </span>
-        </template>
-      </el-table-column>
+        <el-table-column label="请求接口" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.requestUri}}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column label="请求接口" show-overflow-tooltip>
-        <template slot-scope="scope">
-          <span>{{ scope.row.requestUri}}</span>
-        </template>
-      </el-table-column>
+        <el-table-column align="center" label="IP地址">
+          <template slot-scope="scope">
+            <span>{{scope.row.remoteAddr}}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column align="center" label="IP地址">
-        <template slot-scope="scope">
-          <span>{{scope.row.remoteAddr}}</span>
-        </template>
-      </el-table-column>
+        <el-table-column align="center" label="请求方式">
+          <template slot-scope="scope">
+            <span>{{scope.row.method}}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column align="center" label="请求方式">
-        <template slot-scope="scope">
-          <span>{{scope.row.method}}</span>
-        </template>
-      </el-table-column>
+        <el-table-column align="center" label="传入参数" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.params}}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column align="center" label="传入参数" show-overflow-tooltip>
-        <template slot-scope="scope">
-          <span>{{scope.row.params}}</span>
-        </template>
-      </el-table-column>
+        <el-table-column align="center" label="请求时间">
+          <template slot-scope="scope">
+            <span>{{scope.row.time}}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column align="center" label="请求时间">
-        <template slot-scope="scope">
-          <span>{{scope.row.time}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="创建时间">
-        <template slot-scope="scope">
-          <!--<span>{{scope.row.createTime}}</span>-->
-          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-        </template>
-      </el-table-column>
-
-     <!-- <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" type="danger" v-if="sys_dict_del"
-                     @click="handleDelete(scope.row)">删除
-          </el-button>
-        </template>
-      </el-table-column>
-      这个要报错 v-if="sys_dict_del"
-      -->
+        <el-table-column align="center" label="创建时间">
+          <template slot-scope="scope">
+            <!--<span>{{scope.row.createTime}}</span>-->
+            <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+          </template>
+        </el-table-column>
 
 
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" type="danger" v-if="sys_log_del"
-                     @click="handleDelete(scope.row)">删除
-          </el-button>
-        </template>
-      </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" v-if="sys_log_del"
+                       @click="handleDelete(scope.row)">删除
+            </el-button>
+          </template>
+        </el-table-column>
 
 
-    </el-table>
-    <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                     :current-page.sync="listQuery.page" background
-                     :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                     layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -124,7 +111,8 @@
     },
     computed: {
       ...mapGetters([
-        'permissions'
+        'permissions',
+        'client'
       ])
     },
     filters: {

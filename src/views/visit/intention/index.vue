@@ -2,8 +2,6 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
-
-
         <el-col class="org-tree-left">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>

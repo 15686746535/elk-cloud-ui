@@ -1,78 +1,74 @@
 <template>
-    <div class="app-container calendar-list-container">
-      <div>
-          <el-card style="margin-bottom: 5px;">
-              <div class="filter-container">
-                  <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-                  <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
-                  <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="plus">添加</el-button>
-              </div>
-          </el-card>
-          <el-card>
-              <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                        highlight-current-row style="width: 100%">
-                  <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-                  <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                  <el-table-column label="内容">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.content}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="发布人">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.operator}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="发布日期">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="修改时间">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-                      </template>
-                  </el-table-column>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <el-card style="margin-bottom: 5px;height: 80px">
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+      <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="plus">添加</el-button>
+    </el-card>
+    <el-card :style="{height: (client.height - 125) + 'px'}">
+      <el-table :data="list" v-loading="listLoading" :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
+        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <el-table-column align="center" label="内容">
+            <template slot-scope="scope">
+                <span>{{scope.row.content}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column align="center" label="发布人">
+            <template slot-scope="scope">
+                <span>{{scope.row.operator}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column align="center" label="发布日期">
+            <template slot-scope="scope">
+                <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+            <template slot-scope="scope">
+                <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+            </template>
+        </el-table-column>
 
-                  <el-table-column label="操作">
-                      <template slot-scope="scope">
-                          <el-button size="mini" type="success"
-                                     @click="handleUpdate(scope.row)">编辑
-                          </el-button>
-                          <el-button size="mini" type="danger"
-                                     @click="handleDelete(scope.row)">删除
-                          </el-button>
-                      </template>
-                  </el-table-column>
+        <el-table-column align="center" label="操作">
+            <template slot-scope="scope">
+                <el-button size="mini" type="success"
+                           @click="handleUpdate(scope.row)">编辑
+                </el-button>
+                <el-button size="mini" type="danger"
+                           @click="handleDelete(scope.row)">删除
+                </el-button>
+            </template>
+        </el-table-column>
 
-              </el-table>
-              <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-                  <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                 :current-page.sync="listQuery.page" background
-                                 :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                                 layout="total, sizes, prev, pager, next, jumper" :total="total">
-                  </el-pagination>
-              </div>
-          </el-card>
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                         :current-page.sync="listQuery.page" background
+                         :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                         layout="total, sizes, prev, pager, next, jumper" :total="total">
+          </el-pagination>
       </div>
-      <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
-        <el-form label-position="left" :model="affiche" :rules="rules" ref="affiche" label-width="100px">
-          <el-form-item label="公告内容">
-            <el-input type="text" v-model="affiche.content" placeholder="公告内容" ></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancel('affiche')">取 消</el-button>
-          <el-button v-if="dialogStatus=='create'" type="primary" @click="create('affiche')">确 定</el-button>
-          <el-button v-else type="primary" @click="update('affiche')">修 改</el-button>
-        </div>
-      </el-dialog>
-    </div>
+    </el-card>
+    <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
+      <el-form label-position="left" :model="affiche" :rules="rules" ref="affiche" label-width="100px">
+        <el-form-item label="公告内容">
+          <el-input type="text" v-model="affiche.content" placeholder="公告内容" ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel('affiche')">取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('affiche')">确 定</el-button>
+        <el-button v-else type="primary" @click="update('affiche')">修 改</el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 import { fetchList, addObj, putObj, getObj ,delObj } from '@/api/basis/affiche'
 import waves from '@/directive/waves/index.js' // 水波纹指令
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'table_affiche',
@@ -101,6 +97,12 @@ export default {
   },
   created() {
     this.getList()
+  },
+  computed: {
+    ...mapGetters([
+      'permissions',
+      'client'
+    ])
   },
   methods: {
     getList() {

@@ -9,8 +9,7 @@
         </div>
       </el-card>
       <el-card>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                  highlight-current-row style="width: 100%">
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
           <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
           <el-table-column label="学员ID">
@@ -83,7 +82,8 @@
         listQuery: {
           page: 1,
           limit: 20
-        }
+        },
+        dialogStatus: ''
       }
     },
     created() {

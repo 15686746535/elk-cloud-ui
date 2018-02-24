@@ -2,6 +2,8 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
+        <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+        </el-date-picker>
         <el-select v-model="listQuery.subject" clearable placeholder="科目">
           <el-option
             v-for="item in subject"
@@ -19,12 +21,11 @@
           </el-option>
         </el-select>
         <el-button type="primary" v-waves @click="search" >搜索</el-button>
-        <el-button @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+        <el-button @click="handleCreate" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading" :max-height="client.height - 225" element-loading-text="给我一点时间" border fit
-                highlight-current-row style="width: 100%;text-align: center;">
+      <el-table :key='tableKey' :data="list" v-loading="listLoading" :max-height="client.height - 225" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
@@ -34,7 +35,7 @@
         </el-table-column>
         <el-table-column align="center"  label="考试时间">
           <template slot-scope="scope">
-            <span>{{scope.row.examTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+            <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center"  label="考试场地">
@@ -47,36 +48,17 @@
             <span>{{scope.row.stuCount}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="批次">
-          <template slot-scope="scope">
-            <span>{{scope.row.batch}}</span>
-          </template>
-        </el-table-column>
-        <!--<el-table-column label="备注">-->
+
+        <!--<el-table-column align="center" label="批次">-->
           <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.remark}}</span>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="操作人">-->
-          <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.operator}}</span>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="创建时间">-->
-          <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="更新时间">-->
-          <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>-->
+            <!--<span>{{scope.row.batch}}</span>-->
           <!--</template>-->
         <!--</el-table-column>-->
 
         <el-table-column align="center" fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="see(scope.row)" plain>查 看</el-button>
-            <el-button size="mini" type="primary" @click="see(scope.row)">编 辑</el-button>
+            <el-button size="mini" type="primary" @click="handleUpdate(scope.row)">编 辑</el-button>
           </template>
         </el-table-column>
 
@@ -92,15 +74,9 @@
 
     <el-dialog title="考试设置" width="30%" :visible.sync="dialogFormVisible">
 
-      <el-form :model="batch" label-width="100px">
-        <el-form-item label="考试场地">
-          <el-input v-model="batch.examField" placeholder="考试场地"></el-input>
-        </el-form-item>
-        <el-form-item label="考试时间">
-          <el-date-picker style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
-        </el-form-item>
+      <el-form :model="batch"  ref="batch" label-width="100px">
         <el-form-item label="考试科目">
-          <el-select v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">
+          <el-select @blur="setDictType" v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">
             <el-option
               v-for="item in subject"
               :key="item.value"
@@ -109,6 +85,25 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="考试场地">
+          <span v-if="batch.subject != null">
+            <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
+            <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
+            <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
+            <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
+          </span>
+          <span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>
+        </el-form-item>
+        <el-form-item label="人数"  prop="username">
+          <el-input v-model="batch.stuCount" placeholder="人数" ></el-input>
+        </el-form-item>
+        <el-form-item label="考试时间">
+          <el-date-picker style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
+        </el-form-item>
+        <!--<el-form-item label="批次"  prop="username">-->
+          <!--<el-input v-model="batch.batch" placeholder="批次" ></el-input>-->
+        <!--</el-form-item>-->
+
       </el-form>
 
 
@@ -126,12 +121,16 @@
 </template>
 
 <script>
-  import { fetchList, getObj, putObj } from '@/api/student/batch'
+  import { fetchList, getObj, addObj, putObj } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
+  import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
     name: 'table_batch',
+    components: {
+      Dict
+    },
     directives: {
       waves
     },
@@ -144,7 +143,8 @@
         listQuery: {
           page: 1,
           limit: 20,
-          subject: null
+          subject: null,
+          interval: null
         },
         tableKey: 0,
         dialogStatus: '',
@@ -183,6 +183,9 @@
           this.listLoading = false
         })
       },
+      setDictType() {
+        console.log(this.batch.subject)
+      },
       handleSizeChange(val) {
         this.listQuery.limit = val
         this.getList()
@@ -191,20 +194,66 @@
         this.listQuery.page = val
         this.getList()
       },
-      create() {
+      handleCreate() {
         this.batch = {}
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+      },
+      handleUpdate(val) {
+        this.batch = val
+        this.dialogStatus = 'update'
         this.dialogFormVisible = true
       },
       see(val) {
         this.batch = val
         this.dialogFormVisible = true
       },
-      update(row) {
-        console.log('')
-        console.log(row)
-        putObj(row)
-          .then(response => {
-          })
+      create(formName) {
+        const set = this.$refs
+        console.log(this.batch)
+        set[formName].validate(valid => {
+          if (valid) {
+            addObj(this.batch)
+              .then(() => {
+                this.dialogFormVisible = false
+                this.getList()
+                this.$notify({
+                  title: '成功',
+                  message: '创建成功',
+                  type: 'success',
+                  duration: 2000
+                })
+              })
+          } else {
+            return false
+          }
+        })
+      },
+      cancel(formName) {
+        this.dialogFormVisible = false
+        this.batch = {}
+        const set = this.$refs
+        set[formName].resetFields()
+        this.getList()
+      },
+      update(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            putObj(this.batch).then(() => {
+              this.dialogFormVisible = false
+              this.getList()
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          } else {
+            return false
+          }
+        })
       },
       search() {
         this.listQuery.page = 1
@@ -212,12 +261,13 @@
       },
       delete(id) {
         this.getList()
-      },
-      cancel(formName) {
-        this.dialogFormVisible = false
-        const set = this.$refs
-        set[formName].resetFields()
       }
+      // ,
+      // cancel(formName) {
+      //   this.dialogFormVisible = false
+      //   const set = this.$refs
+      //   set[formName].resetFields()
+      // }
     }
   }
 </script>

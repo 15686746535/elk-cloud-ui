@@ -1,43 +1,35 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div v-show="showModule=='list'">
-      <el-row :gutter="25">
-
-
-        <el-col :xs="4" :sm="4" :md="8" :lg="6" :xl="4" >
-          <el-card style="min-width: 200px">
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <div v-show="showModule=='list'" style="height: 100%">
+      <el-row :gutter="5">
+        <el-col class="org-tree-left">
+          <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
             <org-tree @node-click="searchByOrg" ></org-tree>
-
           </el-card>
         </el-col>
-        <el-col :xs="16" :sm="16" :md="16" :lg="18" :xl="20" >
-          <el-row>
-            <el-card style="margin-bottom: 5px;">
-              <div>
 
-                <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
-                </el-date-picker>
-                <el-select v-model="listQuery.operator" clearable placeholder="负责人">
-                  <el-option
-                    v-for="item in operators"
-                    :key="item"
-                    :label="item"
-                    :value="item">
-                  </el-option>
-                </el-select>
-                <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
-                <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-                <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
-                <el-button class="filter-item" style="margin-left: 10px;" @click="open" type="success" icon="plus">重新分配</el-button>
-              </div>
-            </el-card>
-          </el-row>
-          <el-row>
+        <el-col :style="{width: (client.width-250) + 'px'}">
+          <el-card style="margin-bottom: 5px;height: 80px;">
+            <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            </el-date-picker>
+            <el-select v-model="listQuery.operator" clearable placeholder="负责人">
+              <el-option
+                v-for="item in operators"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+            <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
+            <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+            <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
+            <el-button class="filter-item" style="margin-left: 10px;" @click="open" type="success" icon="plus">重新分配</el-button>
+          </el-card>
 
-          <el-card style="overflow: auto">
-            <div class="visits"  v-loading="listLoading" element-loading-text="给我一点时间" >
+          <el-card :style="{height: (client.height-125) + 'px'}">
+            <div class="visits" :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
               <div class="visit" v-for="visit in list" @click="visitClick(visit.intentionId,$event)" ><!--@dblclick="editlist(visit) "-->
                 <div style="width: 222px;height: 200px;margin: 9px 10px;">
                   <div style="width: 50%;float: left">
@@ -89,7 +81,6 @@
             </div>
 
           </el-card>
-          </el-row>
         </el-col>
       </el-row>
     </div>
@@ -100,6 +91,7 @@
   import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
+  import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {
@@ -193,6 +185,10 @@
       this.getOperators()
     },
     computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ]),
       sexVO() {
         const typeMap = {
           1: '男',
@@ -299,9 +295,6 @@
 <style>
 
   .visits {
-    min-width: 786px;
-    min-height: 460px;
-    max-height: 640px;
     overflow:auto;
   }
   .visit {

@@ -1,14 +1,17 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <el-card style="margin-bottom: 5px;height: 80px">
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加
-      </el-button>
+      <el-button v-waves @click="handleField('dict_exam_field1')" type="success" plain>科目一</el-button>
+      <el-button v-waves @click="handleField('dict_exam_field2')" type="success" plain>科目二</el-button>
+      <el-button v-waves @click="handleField('dict_exam_field3')" type="success" plain>科目三</el-button>
+      <el-button v-waves @click="handleField('dict_exam_field4')" type="success" plain>科目四</el-button>
+      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
       <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
-        <el-table-column align="center"  label="顾虑问题">
+        <el-table-column align="center"  label="考试场地">
           <template slot-scope="scope">
             <span>{{ scope.row.label }}</span>
           </template>
@@ -51,8 +54,8 @@
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="顾虑问题"  prop="username">
-          <el-input v-model="dict.label" placeholder="顾虑问题" ></el-input>
+        <el-form-item label="考试场地"  prop="username">
+          <el-input v-model="dict.label" placeholder="考试场地" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="username">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
@@ -90,7 +93,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          type: 'dict_worry'
+          type: 'dict_exam_field1'
         },
         rules: {},
         dict: {},
@@ -132,6 +135,12 @@
           this.listLoading = false
         })
       },
+      // 根据科目查询场地
+      handleField(field) {
+        this.listQuery.page = 1
+        this.listQuery.type = field
+        this.getList()
+      },
       handleSizeChange(val) {
         this.listQuery.limit = val
         this.getList()
@@ -155,6 +164,7 @@
           })
       },
       handleCreate() {
+        this.dict = {}
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
       },

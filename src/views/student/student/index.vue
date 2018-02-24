@@ -10,8 +10,7 @@
         </el-col>
 
         <el-col :style="{width: (client.width-250) + 'px'}">
-          <el-card style="margin-bottom: 5px;height: 130px;line-height: 50px">
-            <div>
+          <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
               <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
               <el-select v-model="listQuery.subject" clearable placeholder="科目">
@@ -29,10 +28,9 @@
               <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
-            </div>
           </el-card>
 
-          <el-card :style="{height: (client.height-175) + 'px'}">
+          <el-card :style="{height: (client.height-170) + 'px'}">
               <el-table :data="stuList.length == 0?null:stuList" max-height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">

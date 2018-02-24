@@ -1,49 +1,57 @@
-<template>
-  <div class="app-container calendar-list-container">
-    <div class="filter-container">
+<template xmlns:v-popover="http://www.w3.org/1999/xhtml">
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <el-card style="margin-bottom: 5px;height: 80px">
       <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加
       </el-button>
-    </div>
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-              highlight-current-row style="width: 100%">
-      <el-table-column type="index" align="center" label="编号" width="50">
-      </el-table-column>
-      <el-table-column align="center"  label="车型">
-        <template slot-scope="scope">
-          <span>{{ scope.row.label }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="描述">
-        <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="创建时间">
-        <template slot-scope="scope">
-          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="sys_dict_upd" size="small" type="success"
-                     @click="handleUpdate(scope.row)">编辑
-          </el-button>
-          <el-button v-if="sys_dict_del" size="mini" type="danger"
-                     @click="handleDelete(scope.row)">删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                     :current-page.sync="listQuery.page" background
-                     :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                     layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
+    </el-card>
+    <el-card :style="{height: (client.height - 125) + 'px'}">
+      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
+        <el-table-column type="index" align="center" label="编号" width="50">
+        </el-table-column>
+        <el-table-column align="center"  label="车型">
+          <template slot-scope="scope">
+            <span>{{ scope.row.label }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="描述">
+          <template slot-scope="scope">
+            <span>{{ scope.row.description }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="排序">
+          <template slot-scope="scope">
+            <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
+            </el-popover>
+            <span v-popover:popover>{{ scope.row.sort }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="创建时间">
+          <template slot-scope="scope">
+            <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button v-if="sys_dict_upd" size="small" type="success"
+                       @click="handleUpdate(scope.row)">编辑
+            </el-button>
+            <el-button v-if="sys_dict_del" size="mini" type="danger"
+                       @click="handleDelete(scope.row)">删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+      </div>
+    </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="车型"  prop="username">
+        <el-form-item label="报名点"  prop="username">
           <el-input v-model="dict.label" placeholder="车型" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="username">
@@ -102,7 +110,8 @@
     },
     computed: {
       ...mapGetters([
-        'permissions'
+        'permissions',
+        'client'
       ])
     },
     filters: {

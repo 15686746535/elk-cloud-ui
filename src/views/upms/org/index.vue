@@ -21,45 +21,18 @@
         <el-card class="box-card" :style="{height: (client.height-130) + 'px'}" style="overflow: auto">
           <el-form label-position="right" label-width="80px" :model="org" ref="org">
             <el-form-item label="上级部门">
-              <el-input v-model="parentName" disabled placeholder="请选择上级部门"></el-input>
+              <el-input v-model="org.parentName" disabled placeholder="请选择上级部门"></el-input>
             </el-form-item>
 
             <el-form-item label="部门名字">
-              <el-input v-model="name" :disabled="false" placeholder="请输入部门名字"></el-input>
+              <el-input v-model="org.name" :disabled="false" placeholder="请输入部门名字"></el-input>
             </el-form-item>
 
             <el-form-item label="备注">
-              <el-input v-model="remark" :disabled="false" placeholder="请输入备注"></el-input>
+              <el-input v-model="org.remark" :disabled="false" placeholder="请输入备注"></el-input>
             </el-form-item>
 
           </el-form>
-          <!--<el-row :gutter="10">-->
-            <!--<el-col :span="4">-->
-              <!--上级部门：-->
-            <!--</el-col>-->
-            <!--<el-col :span="10">-->
-              <!--<el-input v-model="org.parentName == null?'无':org.parentName" disabled ></el-input>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-
-          <!--<el-row :gutter="10">-->
-            <!--<el-col :span="4">-->
-              <!--部门名字：-->
-            <!--</el-col>-->
-            <!--<el-col :span="10">-->
-              <!--<el-input placeholder="请输入部门名字" v-model="org.name" clearable></el-input>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-
-          <!--<el-row :gutter="10">-->
-            <!--<el-col :span="4">-->
-              <!--备注：-->
-            <!--</el-col>-->
-            <!--<el-col :span="10">-->
-              <!--<el-input type="textarea" :autosize="{ minRows: 11}" placeholder="请输入内容" v-model="org.remark">-->
-              <!--</el-input>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
           <el-row :gutter="10">
             <el-col v-if="option === 'edit' || option === 'add'">
               <el-button type="primary" icon="edit" @click="back">取消</el-button>
@@ -240,10 +213,12 @@
         if (this.option === 'add') {
           addObj(this.org).then(response => {
             console.log('....................')
+            this.option = ''
           })
         } else if (this.option === 'edit') {
           putObj(this.org).then(response => {
             console.log('....................')
+            this.option = ''
           })
         }
       }

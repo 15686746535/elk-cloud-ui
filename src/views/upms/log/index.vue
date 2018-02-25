@@ -12,7 +12,7 @@
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
     </el-card>
     <el-card :style="{height: (client.height-125) + 'px'}">
-      <el-table :key='tableKey' :style="{height: (client.height-205) + 'px'}" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;overflow: auto">
+      <el-table :key='tableKey' :height="(client.height-205)"  :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
 
         <el-table-column label="类型" align="center">
@@ -62,13 +62,13 @@
         </el-table-column>
 
 
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" type="danger" v-if="sys_log_del"
-                       @click="handleDelete(scope.row)">删除
-            </el-button>
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="操作">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-button size="mini" type="danger" v-if="sys_log_del"-->
+                       <!--@click="handleDelete(scope.row)">删除-->
+            <!--</el-button>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
 
 
       </el-table>
@@ -153,7 +153,7 @@
         this.getList()
       },
       handleDelete(row) {
-        delObj(row.id)
+        delObj(row.logId)
           .then(response => {
             this.dialogFormVisible = false
             this.getList()

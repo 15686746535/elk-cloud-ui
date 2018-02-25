@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
-        <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+        <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
         </el-date-picker>
         <el-select v-model="listQuery.subject" clearable placeholder="科目">
           <el-option
@@ -25,7 +25,7 @@
       </div>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading" :max-height="client.height - 225" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+      <el-table :key='tableKey' :data="list"  :style="{height: (client.height-130) + 'px'}" v-loading="listLoading" :max-height="client.height - 225" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
@@ -55,7 +55,7 @@
           <!--</template>-->
         <!--</el-table-column>-->
 
-        <el-table-column align="center" fixed="right" label="操作">
+        <el-table-column align="center" label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="see(scope.row)" plain>查 看</el-button>
             <el-button size="mini" type="primary" @click="handleUpdate(scope.row)">编 辑</el-button>
@@ -72,7 +72,7 @@
       </div>
     </el-card>
 
-    <el-dialog title="考试设置" width="30%" :visible.sync="dialogFormVisible">
+    <el-dialog title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch"  ref="batch" label-width="100px">
         <el-form-item label="考试科目">
@@ -110,18 +110,45 @@
       <!--<el-input style="line-height: 50px;" v-model="batch.examField" placeholder="考试场地"></el-input>-->
       <!--<el-date-picker style="line-height: 50px;width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>-->
       <!--<el-input style="line-height: 50px;" v-model="batch.subject" placeholder="考试科目"></el-input>-->
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer">
         <el-button @click="cancel('batch')">取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('batch')">确 定</el-button>
         <el-button v-else type="primary" @click="update('batch')">修 改</el-button>
       </div>
     </el-dialog>
 
+
+    <el-dialog title="考试计划操作" :visible.sync="examOption">
+      <el-table :data="list" :height="(client.height/2)" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+        <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+        <el-table-column label="学员">
+          <template slot-scope="scope">
+            <span>{{scope.row.examField}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="see(scope.row)">取消约考</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+      </div>
+
+    </el-dialog>
+
+
   </div>
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj } from '@/api/student/batch'
+  import { getBatchList, getObj, addObj, putObj } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -161,7 +188,8 @@
           value: '4',
           label: '科目四'
         }],
-        dialogFormVisible: false
+        batchOption: false,
+        examOption: false
       }
     },
     created() {
@@ -176,7 +204,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        getBatchList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
@@ -197,16 +225,15 @@
       handleCreate() {
         this.batch = {}
         this.dialogStatus = 'create'
-        this.dialogFormVisible = true
+        this.batchOption = true
       },
       handleUpdate(val) {
         this.batch = val
         this.dialogStatus = 'update'
-        this.dialogFormVisible = true
+        this.batchOption = true
       },
       see(val) {
-        this.batch = val
-        this.dialogFormVisible = true
+        this.examOption = true
       },
       create(formName) {
         const set = this.$refs
@@ -215,7 +242,7 @@
           if (valid) {
             addObj(this.batch)
               .then(() => {
-                this.dialogFormVisible = false
+                this.batchOption = false
                 this.getList()
                 this.$notify({
                   title: '成功',
@@ -230,7 +257,7 @@
         })
       },
       cancel(formName) {
-        this.dialogFormVisible = false
+        this.batchOption = false
         this.batch = {}
         const set = this.$refs
         set[formName].resetFields()
@@ -241,7 +268,7 @@
         set[formName].validate(valid => {
           if (valid) {
             putObj(this.batch).then(() => {
-              this.dialogFormVisible = false
+              this.batchOption = false
               this.getList()
               this.$notify({
                 title: '成功',
@@ -264,7 +291,7 @@
       }
       // ,
       // cancel(formName) {
-      //   this.dialogFormVisible = false
+      //   this.batchOption = false
       //   const set = this.$refs
       //   set[formName].resetFields()
       // }

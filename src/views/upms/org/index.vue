@@ -1,78 +1,90 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div class="filter-container">
-      <el-button type="primary" :disabled="option != ''" icon="plus" @click="add">添加</el-button>
-      <el-button type="primary" :disabled="option != ''" icon="edit" @click="edit">编辑</el-button>
-      <el-button type="primary" :disabled="option != ''" icon="delete" @click="del">删除</el-button>
-    </div>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <el-row :gutter="10">
+      <el-col class="org-tree-left">
+        <el-card class="box-card">
+          <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 部门总览</span>
+          <tree :list="treeData" id="menuTree"
+                :open="true" choiceType="folder"
+                @node-click="searchByOrg"></tree>
+        </el-card>
+      </el-col>
 
-      <el-row :gutter="20">
-        <el-col :span="4">
-          <el-card class="box-card">
-            <org-tree @node-click="searchByOrg" ></org-tree>
-          </el-card>
-        </el-col>
+      <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
+          <el-button-group>
+            <el-button type="primary" :disabled="option != ''" icon="plus" @click="add">添加</el-button>
+            <el-button type="primary" :disabled="option != ''" icon="edit" @click="edit">编辑</el-button>
+            <el-button type="primary" :disabled="option != ''" icon="delete" @click="del">删除</el-button>
+          </el-button-group>
+        </el-card>
+        <el-card class="box-card" :style="{height: (client.height-130) + 'px'}" style="overflow: auto">
+          <el-form label-position="right" label-width="80px" :model="org" ref="org">
+            <el-form-item label="上级部门">
+              <el-input v-model="parentName" disabled placeholder="请选择上级部门"></el-input>
+            </el-form-item>
 
+            <el-form-item label="部门名字">
+              <el-input v-model="name" :disabled="false" placeholder="请输入部门名字"></el-input>
+            </el-form-item>
 
-        <el-col :span="10">
-          <el-card class="box-card" style="line-height: 50px;">
+            <el-form-item label="备注">
+              <el-input v-model="remark" :disabled="false" placeholder="请输入备注"></el-input>
+            </el-form-item>
 
-            <el-row :gutter="10">
-              <el-col :span="4">
-                上级部门：
-              </el-col>
-              <el-col :span="10">
-                <el-input v-model="org.parentName == null?'无':org.parentName" disabled ></el-input>
-              </el-col>
-            </el-row>
+          </el-form>
+          <!--<el-row :gutter="10">-->
+            <!--<el-col :span="4">-->
+              <!--上级部门：-->
+            <!--</el-col>-->
+            <!--<el-col :span="10">-->
+              <!--<el-input v-model="org.parentName == null?'无':org.parentName" disabled ></el-input>-->
+            <!--</el-col>-->
+          <!--</el-row>-->
 
-            <el-row :gutter="10">
-              <el-col :span="4">
-                部门名字：
-              </el-col>
-              <el-col :span="10">
-                <el-input placeholder="请输入部门名字" v-model="org.name" clearable></el-input>
-              </el-col>
-            </el-row>
+          <!--<el-row :gutter="10">-->
+            <!--<el-col :span="4">-->
+              <!--部门名字：-->
+            <!--</el-col>-->
+            <!--<el-col :span="10">-->
+              <!--<el-input placeholder="请输入部门名字" v-model="org.name" clearable></el-input>-->
+            <!--</el-col>-->
+          <!--</el-row>-->
 
-            <el-row :gutter="10">
-              <el-col :span="4">
-                备注：
-              </el-col>
-              <el-col :span="10">
-                <el-input type="textarea" :autosize="{ minRows: 11}" placeholder="请输入内容" v-model="org.remark">
-                </el-input>
-              </el-col>
-            </el-row>
-            <el-row :gutter="10">
-              <el-col v-if="option === 'edit' || option === 'add'">
-                <el-button type="primary" icon="edit" @click="back">取消</el-button>
-                <el-button type="primary" icon="delete" @click="save">确定</el-button>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-col>
+          <!--<el-row :gutter="10">-->
+            <!--<el-col :span="4">-->
+              <!--备注：-->
+            <!--</el-col>-->
+            <!--<el-col :span="10">-->
+              <!--<el-input type="textarea" :autosize="{ minRows: 11}" placeholder="请输入内容" v-model="org.remark">-->
+              <!--</el-input>-->
+            <!--</el-col>-->
+          <!--</el-row>-->
+          <el-row :gutter="10">
+            <el-col v-if="option === 'edit' || option === 'add'">
+              <el-button type="primary" icon="edit" @click="back">取消</el-button>
+              <el-button type="primary" icon="delete" @click="save">确定</el-button>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
+    </el-row>
 
-      </el-row>
-
-
-</div>
+  </div>
 </template>
 
 <script>
   import { fetchTree, addObj, getObj, putObj } from '@/api/upms/org'
-  import OrgTree from '@/components/OrgTree'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { mapGetters } from 'vuex'
+  import Tree from '@/components/Tree'
   export default {
     name: 'index',
     components: {
-      OrgTree
-    },
-    directives: {
-      waves
+      Tree
     },
     data() {
       return {
+        treeData: [], /* 树形图数据*/
         org: {
           orgId: null,
           name: null,
@@ -93,6 +105,11 @@
         option: '',
         total: null
       }
+    },
+    computed: {
+      ...mapGetters([
+        'client'
+      ])
     },
     created() {
       this.getOrgList()
@@ -157,6 +174,10 @@
           console.log(this.org)
         }
       },
+      getNodeData(data) {
+        this.currentMenu = data
+        this.setForm()
+      },
       filterNode(value, data) {
         if (!value) return true
         return data.label.indexOf(value) !== -1
@@ -165,6 +186,7 @@
         fetchTree().then(response => {
           console.log(response.data.data)
           // this.org = response.data.data
+          this.treeData = response.data.data
         })
       },
       add() {

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getBatchList(query) {
   return request({
     url: '/student/batch/getPage',
     method: 'get',

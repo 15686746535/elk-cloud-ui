@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getexambespeak(query) {
   return request({
     url: '/student/exambespeak/getPage',
     method: 'get',
@@ -10,7 +10,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/student/exambespeak/',
+    url: '/student/exambespeak',
     method: 'post',
     data: obj
   })

@@ -119,12 +119,12 @@
 
 
     <el-dialog title="考试计划操作" :visible.sync="examOption">
-      <el-table :data="list" :height="(client.height/2)" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+      <el-table :data="examBespeak" :height="(client.height/2)" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
         <el-table-column label="学员">
           <template slot-scope="scope">
-            <span>{{scope.row.examField}}</span>
+            <!--<span>{{scope.row.examField}}</span>-->
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
@@ -149,6 +149,7 @@
 
 <script>
   import { getBatchList, getObj, addObj, putObj } from '@/api/student/batch'
+  import { getexambespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -189,7 +190,8 @@
           label: '科目四'
         }],
         batchOption: false,
-        examOption: false
+        examOption: false,
+        examBespeak: {}
       }
     },
     created() {
@@ -233,6 +235,11 @@
         this.batchOption = true
       },
       see(val) {
+        getexambespeak(val.batchId).then(response => {
+          console.log('============= 单场次报考学员信息 ===================')
+          console.log(response)
+          this.examBespeak = response.data
+        })
         this.examOption = true
       },
       create(formName) {

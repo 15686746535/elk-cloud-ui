@@ -102,6 +102,8 @@
         ref="menuTree"
         :filter-node-method="filterNode"
         default-expand-all
+        :style="{height: (client.height)/2 +'px'}"
+        style="overflow: auto"
       >
       </el-tree>
       <div slot="footer" class="dialog-footer">

@@ -16,21 +16,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getexambespeakbyid(id) {
   return request({
     url: '/student/exambespeak/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delexambespeak(id) {
   return request({
     url: '/student/exambespeak/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putexambespeak(obj) {
   return request({
     url: '/student/exambespeak',
     method: 'put',

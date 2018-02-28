@@ -1,8 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-  console.log(query)
   return request({
     url: '/basis/sendmsg/getPage',
     method: 'get',
@@ -12,7 +10,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/basis/sendmsg/',
+    url: '/basis/sendmsg',
     method: 'post',
     data: obj
   })

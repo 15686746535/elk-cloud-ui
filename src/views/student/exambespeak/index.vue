@@ -5,13 +5,14 @@
 
       <el-col :span="12">
         <el-card>
-          <div style="border-bottom: 20px;height: 60px">
-            <div @click="handleField(1,$event)" class="subjectBtn" >科目一</div>
+          <div style="line-height: 50px;height: 50px;margin-bottom:5px;">
+            <div @click="handleField(1,$event)" class="subjectBtn subjectBtn_selected" >科目一</div>
             <div @click="handleField(2,$event)" class="subjectBtn" >科目二</div>
             <div @click="handleField(3,$event)" class="subjectBtn" >科目三</div>
             <div @click="handleField(4,$event)" class="subjectBtn" >科目四</div>
             <el-input v-model="studentListQuery.condition" :style="{width: (client.width/7) + 'px'}" placeholder="姓名/身份证/电话" ></el-input>
             <el-button type="primary" v-waves @click="search" >搜索</el-button>
+            可预约：{{studentTotal}}人
           </div>
           <el-table @row-click="clickOld" :data="studentOld" :height="(client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
@@ -39,9 +40,11 @@
       </el-col>
       <el-col :span="12">
         <el-card>
-          <el-button v-waves @click="handleBespeak" type="primary" style=" float: right; margin-bottom: 20px;">预 约</el-button>
-
-          <el-table  @row-click="clickNew"  :data="studentNew"   :height="(client.height-205)" border fithighlight-current-row style="width: 100%">
+          <div style="line-height: 50px;height: 50px;margin-bottom:5px;">
+            已选择：{{studentNew.length}}人
+            <el-button v-waves @click="handleBespeak" type="primary" style=" float: right;">预 约</el-button>
+          </div>
+          <el-table  @row-click="clickNew" :data="studentNew" :height="(client.height-205)" border fithighlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column label="姓名">
@@ -63,10 +66,16 @@
             </el-table-column>
           </el-table>
 
-          <el-dialog :close-on-click-modal="false" title="选择批次" width="30%" :visible.sync="dialogFormBespeak">
-            <div :style="{height: (client.height)/3 +'px'}">
-              <div class="batchCss"  v-for="batch in batchList" @click="batchClick($event,batch)" style="float: left;margin: 5px">
-                {{batch.examTime | subTime}}
+          <el-dialog @close="cancel" title="选择批次" width="30%" :visible.sync="dialogFormBespeak">
+            <div :style="{height: (client.height)/3 +'px'}" style="overflow: auto">
+              <div v-for="batch in batchList"  style="float: left;margin: 5px">
+                <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
+                  {{batch.examTime | subTime}}&nbsp;{{batch.examField}}
+                  <!--{{batch.hasReserved}}/{{batch.stuCount}}-->
+                  <span v-if="(batch.stuCount - batch.hasReserved)>0">【剩余 {{batch.stuCount - batch.hasReserved}} 人】</span>
+                  <span v-else style="color: crimson">【已满】</span>
+                </div>
+
               </div>
             </div>
             <div slot="footer" class="dialog-footer">
@@ -84,7 +93,7 @@
   import waves from '@/directive/waves/index.js'
   import { fetchList } from '@/api/student/student'
   import { addObj } from '@/api/student/exambespeak'
-  import { getBatchList } from '@/api/student/batch'
+  import { getBatchList, getBatch } from '@/api/student/batch'
   import { mapGetters } from 'vuex'// 水波纹指令
 
   export default {
@@ -97,20 +106,16 @@
         studentOld: [],
         studentNew: [],
         batchList: [],
-        total: null,
+        studentTotal: null,
         listNewLoading: true,
         listOldLoading: true,
         studentListQuery: {
           page: 1,
-          limit: 20,
+          limit: 10000000,
           subject: 1,
           condition: null
         },
-        batchListQuery: {
-          page: 1,
-          limit: 20,
-          subject: 1
-        },
+        subject: 1,
         examBespeakList: {
           studentIds: [],
           state: 1,
@@ -132,20 +137,22 @@
       getList() {
         this.listNewLoading = true
         this.listOldLoading = true
+        this.studentNew = []
+        this.examBespeakList.studentIds = []
         console.log(' ====== =============  这是查询条件  ==================')
         console.log(this.studentListQuery)
         fetchList(this.studentListQuery).then(response => {
           console.log(' ====== =============  这是所有学员信息  ==================')
           console.log(response.data)
           this.studentOld = response.data.data.list
-          this.total = response.data.data.totalCount
+          this.studentTotal = response.data.data.totalCount
           this.listNewLoading = false
         })
-        getBatchList(this.batchListQuery).then(response => {
+        getBatch(this.subject).then(response => {
           console.log(' ===================  这是所有批次信息  ==================')
-          console.log(response.data)
-          this.batchList = response.data.data.list
-          this.total = response.data.data.totalCount
+          console.log(response.data.data)
+          this.batchList = response.data.data
+          // this.total = response.data.data.totalCount
           this.listOldLoading = false
         })
       },
@@ -153,8 +160,7 @@
       handleField(field, e) {
         this.studentListQuery.page = 1
         this.studentListQuery.subject = field
-        this.batchListQuery.subject = field
-        this.studentNew = []
+        this.subject = field
         var a = document.getElementsByClassName('subjectBtn')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('subjectBtn_selected')
@@ -163,32 +169,48 @@
         this.getList()
       },
       cancel() {
+        this.examBespeakList.batchId = null
         this.dialogFormBespeak = false
       },
       create() {
-        this.dialogFormBespeak = false
         console.log('================== 这里是添加批次 ====================')
         console.log(this.examBespeakList)
-        addObj(this.examBespeakList).then(response => {
-        })
+        if (this.examBespeakList.batchId === null) {
+          this.$alert('请先选择报考批次', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        } else {
+          addObj(this.examBespeakList).then(response => {
+            this.dialogFormBespeak = false
+            this.examBespeakList.batchId = null
+          })
+        }
       },
       clickOld(row) {
-        this.studentNew.push(row)
-        this.examBespeakList.studentIds.push(row.studentId)
-        this.delNodeId(this.studentOld, row)
+        var flag = true
+        for (var i = 0; i < this.studentNew.length; i++) {
+          if (this.studentNew[i].studentId === row.studentId) flag = false
+        }
+        if (flag) {
+          this.studentNew.push(row)
+          this.examBespeakList.studentIds.push(row.studentId)
+        }
+        // this.delNodeId(this.studentOld, row)
       },
       clickNew(row) {
-        this.studentOld.push(row)
+        // this.studentOld.push(row)
         this.delNodeId(this.studentNew, row)
         this.delNodeId(this.examBespeakList.studentIds, row.studentId)
       },
-      delNodeId(student, id) {
+      delNodeId(student, val) {
         for (var i = 0; i < student.length; i++) {
-          if (student[i] === id) student.splice(i, 1)
+          if (student[i] === val) student.splice(i, 1)
         }
       },
       handleBespeak() {
         console.log(this.examBespeakList)
+        console.log(this.batchList)
         if (this.studentNew.length !== 0) {
           this.dialogFormBespeak = true
         } else {
@@ -207,12 +229,20 @@
         }
       },
       batchClick(e, batch) {
-        this.examBespeakList.batchId = batch.batchId
-        var a = document.getElementsByClassName('batchCss')
-        for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('batchCss_selected')
+        console.log(this.examBespeakList.studentIds.length)
+        if ((batch.stuCount - batch.hasReserved) >= this.examBespeakList.studentIds.length) {
+          this.examBespeakList.batchId = batch.batchId
+          var a = document.getElementsByClassName('batchCss')
+          for (var i = 0; i < a.length; i++) {
+            a[i].classList.remove('batchCss_selected')
+          }
+          e.currentTarget.classList.add('batchCss_selected')
+        } else {
+          this.$alert('选择人数大于批次剩余人数,请核对后选择', '警告', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
         }
-        e.currentTarget.classList.add('batchCss_selected')
       },
       hasClass(classList, clazz) {
         for (var i = 0; i < classList.length; i++) {
@@ -223,6 +253,14 @@
         return false
       },
       search() {
+        this.getList()
+      },
+      handleSizeChange(val) {
+        this.studentListQuery.limit = val
+        this.getList()
+      },
+      handleCurrentChange(val) {
+        this.studentListQuery.page = val
         this.getList()
       }
     }

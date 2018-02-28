@@ -7,6 +7,12 @@ export function getBatchList(query) {
     params: query
   })
 }
+export function getBatch(id) {
+  return request({
+    url: '/student/batch/getBatch/' + id,
+    method: 'get'
+  })
+}
 // 添加
 export function addObj(obj) {
   return request({

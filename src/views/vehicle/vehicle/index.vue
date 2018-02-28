@@ -1,10 +1,8 @@
-<template xmlns:v-popover="http://www.w3.org/1999/xhtml">
-  <div class="app-container calendar-list-container">
+<template>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <div v-show="showModule=='list'">
 
-      <el-card style="margin-bottom: 5px;">
-
-        <div class="filter-container">
+      <el-card style="margin-bottom: 5px;height: 80px">
           <el-form ref="listQuery" :model="listQuery" inline label-width="80px">
             <el-form-item label="车牌">
               <el-select v-model="listQuery.plate" placeholder="请选择车牌">
@@ -26,13 +24,11 @@
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
             <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-form>
-        </div>
-
       </el-card>
-      <el-card>
+      <el-card :style="{height: (client.height - 125) + 'px'}">
 
         <!-- 身份卡循环 -->
-        <el-table :data="list" height="500" border style="width: 100%"  highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
+        <el-table :data="list" :height="(client.height - 215)" border style="width: 100%"  highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
           <el-table-column label="编号" width="100px">
               <template slot-scope="scope">
               <span>{{scope.row.vehicleEntity.vehicleId}}</span>
@@ -61,13 +57,13 @@
           <el-table-column label="证件信息">
             <template slot-scope="scope">
               <div style="width: 200px;height: 20px ">
-                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">标识卡到期日期：</p><p style="float: left">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.identificationEnd}}</p>
+                <p style="color: #868686;width: 140px;float: left;margin-top: 10px">标识卡到期日期：</p><p style="float: left">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.identificationEnd | subTime}}</p>
               </div>
               <div style="width: 200px;height: 20px;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">评定日期：</p><p style="float: left">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.evaluation}}</p>
+                <p style="color: #868686;width: 140px;float: left">评定日期：</p><p style="float: left">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.evaluation | subTime}}</p>
               </div>
               <div style="width: 200px;height: 20px ;margin-top: 10px">
-                <p style="color: #868686;width: 140px;float: left">强制报销日期：</p><p style="float: left">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.scrap}}</p>
+                <p style="color: #868686;width: 140px;float: left">强制报销日期：</p><p style="float: left">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.scrap | subTime}}</p>
               </div>
             </template>
           </el-table-column>
@@ -106,7 +102,7 @@
         </el-table>
 
 
-        <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <div v-show="!listLoading" style="margin-top: 20px">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                          :current-page.sync="listQuery.page" background
                          :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
@@ -115,8 +111,9 @@
         </div>
       </el-card>
     </div>
+
     <div v-show="showModule=='info'">
-      <el-card  class="box-card1">
+      <el-card class="box-card1">
 
         <div slot="header" class="clearfix">
           |&nbsp;<span style="font-weight: 600">基础信息</span>
@@ -126,7 +123,6 @@
         <el-row :gutter="10">
           <el-col :span="4" style="line-height: 50px;">
             <el-row><el-col><img width="100%" height="100%" :src="vehicle.vehicleEntity.vehiclePhoto" class="image"></el-col></el-row>
-            <el-row><el-col><el-button type="primary" style="width:100%;max-width: 200px;">更换照片</el-button></el-col></el-row>
             <!-- 车牌颜色 -->
             <el-row>
               <el-col :span="8"><div class="text_css">车牌颜色:</div></el-col>
@@ -1038,6 +1034,7 @@
   import { fetchList, getObj, addObj, putObj } from '@/api/vehicle/vehicle'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import Dict from '@/components/Dict'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_vehicle',
@@ -1095,6 +1092,12 @@
     },
     created() {
       this.getList()
+    },
+    computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ])
     },
     methods: {
       // 时间范围分解

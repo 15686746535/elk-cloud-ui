@@ -25,8 +25,8 @@
       </div>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list"  :style="{height: (client.height-130) + 'px'}" v-loading="listLoading" :max-height="client.height - 225" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
-        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="client.height - 225" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+        <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
           <template slot-scope="scope">
@@ -45,7 +45,7 @@
         </el-table-column>
         <el-table-column align="center"  label="人数">
           <template slot-scope="scope">
-            <span>{{scope.row.stuCount}}</span>
+            <span>{{scope.row.hasReserved}}/{{scope.row.stuCount}}</span>
           </template>
         </el-table-column>
 
@@ -57,7 +57,7 @@
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="see(scope.row)" plain>查 看</el-button>
+            <el-button size="mini" type="primary" @click="see(scope.row.batchId)" plain>查 看</el-button>
             <el-button size="mini" type="primary" @click="handleUpdate(scope.row)">编 辑</el-button>
           </template>
         </el-table-column>
@@ -72,7 +72,7 @@
       </div>
     </el-card>
 
-    <el-dialog title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
+    <el-dialog  @close="getList" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch"  ref="batch" label-width="100px">
         <el-form-item label="考试科目">
@@ -100,16 +100,9 @@
         <el-form-item label="考试时间">
           <el-date-picker style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
         </el-form-item>
-        <!--<el-form-item label="批次"  prop="username">-->
-          <!--<el-input v-model="batch.batch" placeholder="批次" ></el-input>-->
-        <!--</el-form-item>-->
 
       </el-form>
 
-
-      <!--<el-input style="line-height: 50px;" v-model="batch.examField" placeholder="考试场地"></el-input>-->
-      <!--<el-date-picker style="line-height: 50px;width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>-->
-      <!--<el-input style="line-height: 50px;" v-model="batch.subject" placeholder="考试科目"></el-input>-->
       <div slot="footer">
         <el-button @click="cancel('batch')">取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('batch')">确 定</el-button>
@@ -118,27 +111,54 @@
     </el-dialog>
 
 
-    <el-dialog title="考试计划操作" :visible.sync="examOption">
-      <el-table :data="examBespeak" :height="(client.height/2)" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+    <el-dialog @close="getList" title="考试计划操作" :visible.sync="examOption">
+      <el-table :data="examBespeak" :height="(client.height/2)" v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-        <el-table-column label="学员">
+        <el-table-column align="center"  label="学员">
           <template slot-scope="scope">
-            <!--<span>{{scope.row.examField}}</span>-->
+            <span>{{scope.row.name}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  align="center" label="电话">
+          <template slot-scope="scope">
+            <span>{{scope.row.mobile}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  align="center" label="车型">
+          <template slot-scope="scope">
+            <span>{{scope.row.moctorcycleType}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  align="center" label="考试时间">
+          <template slot-scope="scope">
+            <span>{{scope.row.examTime | subTime}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  align="center" label="状态">
+          <template slot-scope="scope">
+            <!--<span>{{scope.row.state}}</span>-->
+
+            <el-tag v-if="scope.row.state === '1'" type="warning" size="small" style="border-radius: 20px;">已预约</el-tag>
+            <el-tag v-else-if="scope.row.state === '2'" type="primary" size="small" style="border-radius: 20px;">合格</el-tag>
+            <el-tag v-else-if="scope.row.state === '3'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
+            <el-tag v-else-if="scope.row.state === '4'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="danger" @click="see(scope.row)">取消约考</el-button>
+            <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page.sync="listQuery.page" background
-                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                       layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
+      <div slot="footer" style="margin-top: -30px">
+        <el-button-group>
+          <el-button style="margin:0 5px;" type="warning" round>已预约</el-button>
+          <el-button style="margin:0 5px;" type="primary" round>合格</el-button>
+          <el-button style="margin:0 5px;" type="danger" round>失败</el-button>
+          <el-button style="margin:0 5px;" type="success" round>已报考</el-button>
+        </el-button-group>
       </div>
 
     </el-dialog>
@@ -148,8 +168,8 @@
 </template>
 
 <script>
-  import { getBatchList, getObj, addObj, putObj } from '@/api/student/batch'
-  import { getexambespeak } from '@/api/student/exambespeak'
+  import { getBatchList, addObj, putObj } from '@/api/student/batch'
+  import { getexambespeakbyid, delexambespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -168,6 +188,7 @@
         list: [],
         total: null,
         listLoading: true,
+        examBespeakLoading: true,
         listQuery: {
           page: 1,
           limit: 20,
@@ -191,7 +212,7 @@
         }],
         batchOption: false,
         examOption: false,
-        examBespeak: {}
+        examBespeak: []
       }
     },
     created() {
@@ -234,11 +255,13 @@
         this.dialogStatus = 'update'
         this.batchOption = true
       },
-      see(val) {
-        getexambespeak(val.batchId).then(response => {
+      see(batchId) {
+        this.examBespeakLoading = true
+        getexambespeakbyid(batchId).then(response => {
           console.log('============= 单场次报考学员信息 ===================')
-          console.log(response)
-          this.examBespeak = response.data
+          console.log(response.data.data)
+          this.examBespeak = response.data.data
+          this.examBespeakLoading = false
         })
         this.examOption = true
       },
@@ -295,6 +318,28 @@
       },
       delete(id) {
         this.getList()
+      },
+      revokeExam(val) {
+        this.$confirm('此操作将取消该学员约考, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delexambespeak(val.examBespeakId).then(() => {
+            this.see(val.batchId)
+            this.$notify({
+              title: '成功',
+              message: '取消成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          })
+        })
       }
       // ,
       // cancel(formName) {

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px;">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.name"></el-input>
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
@@ -77,7 +77,8 @@
         showModule: 'list',
         listQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          name: null
         }
       }
     },

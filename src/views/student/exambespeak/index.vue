@@ -12,7 +12,7 @@
             <div @click="handleField(4,$event)" class="subjectBtn" >科目四</div>
             <el-input v-model="studentListQuery.condition" :style="{width: (client.width/7) + 'px'}" placeholder="姓名/身份证/电话" ></el-input>
             <el-button type="primary" v-waves @click="search" >搜索</el-button>
-            可预约：{{studentTotal}}人
+            可预约：{{studentOld.length}}人
           </div>
           <el-table @row-click="clickOld" :data="studentOld" :height="(client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
@@ -137,14 +137,29 @@
       getList() {
         this.listNewLoading = true
         this.listOldLoading = true
-        this.studentNew = []
-        this.examBespeakList.studentIds = []
         console.log(' ====== =============  这是查询条件  ==================')
         console.log(this.studentListQuery)
         fetchList(this.studentListQuery).then(response => {
           console.log(' ====== =============  这是所有学员信息  ==================')
           console.log(response.data)
           this.studentOld = response.data.data.list
+          var studentOldCount = this.studentOld.length
+          console.log(this.studentOld)
+          console.log(this.studentOld.length)
+          for (var i = 0; i < studentOldCount; i++) {
+            for (var j = 0; j < this.studentNew.length; j++) {
+              console.log('=========== 老 ==========' + i + j)
+              console.log(studentOldCount)
+              console.log('=========== 新 ==========')
+              console.log(this.studentNew[j])
+              if (this.studentOld[i].studentId === this.studentNew[j].studentId) {
+                this.studentOld.splice(i, 1)
+                studentOldCount--
+                i--
+                break
+              }
+            }
+          }
           this.studentTotal = response.data.data.totalCount
           this.listNewLoading = false
         })
@@ -160,6 +175,9 @@
       handleField(field, e) {
         this.studentListQuery.page = 1
         this.studentListQuery.subject = field
+        this.studentListQuery.condition = null
+        this.studentNew = []
+        this.examBespeakList.studentIds = []
         this.subject = field
         var a = document.getElementsByClassName('subjectBtn')
         for (var i = 0; i < a.length; i++) {
@@ -195,17 +213,24 @@
         if (flag) {
           this.studentNew.push(row)
           this.examBespeakList.studentIds.push(row.studentId)
+          this.delNodeId(this.studentOld, row.studentId)
         }
-        // this.delNodeId(this.studentOld, row)
       },
       clickNew(row) {
-        // this.studentOld.push(row)
-        this.delNodeId(this.studentNew, row)
-        this.delNodeId(this.examBespeakList.studentIds, row.studentId)
+        this.studentOld.push(row)
+        this.delNodeId(this.studentNew, row.studentId)
+        // this.delNodeId(this.examBespeakList.studentIds, row.studentId)
+        for (var i = 0; i < this.examBespeakList.studentIds.length; i++) {
+          if (this.examBespeakList.studentIds[i] === row.studentId) {
+            this.examBespeakList.studentIds.splice(i, 1)
+          }
+        }
       },
       delNodeId(student, val) {
         for (var i = 0; i < student.length; i++) {
-          if (student[i] === val) student.splice(i, 1)
+          if (student[i].studentId === val) {
+            student.splice(i, 1)
+          }
         }
       },
       handleBespeak() {

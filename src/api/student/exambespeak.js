@@ -15,11 +15,20 @@ export function addObj(obj) {
     data: obj
   })
 }
-// 根据ID获取
-export function getexambespeakbyid(id) {
+// 添加
+export function batchSave(obj) {
   return request({
-    url: '/student/exambespeak/' + id,
-    method: 'get'
+    url: '/student/exambespeak/batchSave',
+    method: 'post',
+    data: obj
+  })
+}
+// 根据条件获取
+export function getexambespeakbyid(query) {
+  return request({
+    url: '/student/exambespeak/queryBespeak',
+    method: 'post',
+    params: query
   })
 }
 // 删除

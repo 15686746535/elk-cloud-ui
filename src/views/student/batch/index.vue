@@ -57,7 +57,7 @@
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="see(scope.row.batchId)" plain>查 看</el-button>
+            <el-button size="mini" type="primary" @click="see(scope.row.batchId, '1')" plain>查 看</el-button>
             <el-button size="mini" type="primary" @click="handleUpdate(scope.row)">编 辑</el-button>
           </template>
         </el-table-column>
@@ -112,7 +112,14 @@
 
 
     <el-dialog @close="getList" title="考试计划操作" :visible.sync="examOption">
-      <el-table :data="examBespeak" :height="(client.height/2)" v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+      <div style="width:450px; margin:-30px auto 10px">
+        <div @click="handleField('1',$event)" class="subjectBtn subjectBtn_selected" >审核中</div>
+        <div @click="handleField('2',$event)" class="subjectBtn" >约考中</div>
+        <div @click="handleField('3',$event)" class="subjectBtn" >已报考</div>
+        <div @click="handleField('4',$event)" class="subjectBtn" >失 败</div>
+      </div>
+
+      <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="学员">
@@ -139,8 +146,8 @@
           <template slot-scope="scope">
             <!--<span>{{scope.row.state}}</span>-->
 
-            <el-tag v-if="scope.row.state === '1'" type="warning" size="small" style="border-radius: 20px;">已预约</el-tag>
-            <el-tag v-else-if="scope.row.state === '2'" type="primary" size="small" style="border-radius: 20px;">合格</el-tag>
+            <el-tag v-if="scope.row.state === '1'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
+            <el-tag v-else-if="scope.row.state === '2'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
             <el-tag v-else-if="scope.row.state === '3'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
             <el-tag v-else-if="scope.row.state === '4'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
 
@@ -153,12 +160,20 @@
         </el-table-column>
       </el-table>
       <div slot="footer" style="margin-top: -30px">
-        <el-button-group>
-          <el-button style="margin:0 5px;" type="warning" round>已预约</el-button>
-          <el-button style="margin:0 5px;" type="primary" round>合格</el-button>
-          <el-button style="margin:0 5px;" type="danger" round>失败</el-button>
-          <el-button style="margin:0 5px;" type="success" round>已报考</el-button>
+        <!--<el-button-group>-->
+          <!--<el-button style="margin:0 5px;" type="primary" round>审核通过</el-button>-->
+          <!--<el-button style="margin:0 5px;" type="danger" round>失败审核</el-button>-->
+        <!--</el-button-group>-->
+        <el-button-group v-if="studentListQuery.state === '1'">
+          <el-button @click="operation('4')" style="margin:0 5px;" type="danger" round>失败审核</el-button>
+          <el-button @click="operation('2')" style="margin:0 5px;" type="success" round>审核通过</el-button>
         </el-button-group>
+        <el-button-group v-else-if="studentListQuery.state === '2'">
+          <el-button @click="operation('4')" style="margin:0 5px;" type="danger" round>报考失败</el-button>
+          <el-button @click="operation('3')" style="margin:0 5px;" type="success" round>报考成功</el-button>
+        </el-button-group>
+        <span v-else>
+        </span>
       </div>
 
     </el-dialog>
@@ -212,7 +227,16 @@
         }],
         batchOption: false,
         examOption: false,
-        examBespeak: []
+        examBespeak: [],
+        examBespeakList: {
+          studentIds: [],
+          state: null,
+          batchId: null
+        },
+        studentListQuery: {
+          batchId: null,
+          state: '1'
+        }
       }
     },
     created() {
@@ -255,14 +279,17 @@
         this.dialogStatus = 'update'
         this.batchOption = true
       },
-      see(batchId) {
+      see(batchId, state) {
         this.examBespeakLoading = true
-        getexambespeakbyid(batchId).then(response => {
+        this.studentListQuery.batchId = batchId
+        this.studentListQuery.state = state
+        getexambespeakbyid(this.studentListQuery).then(response => {
           console.log('============= 单场次报考学员信息 ===================')
           console.log(response.data.data)
           this.examBespeak = response.data.data
           this.examBespeakLoading = false
         })
+        this.examBespeakList.batchId = batchId
         this.examOption = true
       },
       create(formName) {
@@ -319,6 +346,7 @@
       delete(id) {
         this.getList()
       },
+      // 取消约考
       revokeExam(val) {
         this.$confirm('此操作将取消该学员约考, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -340,13 +368,62 @@
             message: '取消操作'
           })
         })
+      },
+      handleSelectionChange(val) {
+        this.examBespeakList.studentIds = []
+        for (var i = 0; i < val.length; i++) {
+          this.examBespeakList.studentIds.push(val[i].studentId)
+        }
+        console.log(val)
+        console.log(this.examBespeakList.studentIds)
+      },
+      // 根据状态查询约考学员
+      handleField(state, e) {
+        this.studentListQuery.state = state
+        var a = document.getElementsByClassName('subjectBtn')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('subjectBtn_selected')
+        }
+        e.currentTarget.classList.add('subjectBtn_selected')
+        this.see(this.studentListQuery.batchId, state)
+        console.log('=====================================')
+        console.log(this.studentListQuery.state)
+      },
+      operation(state) {
+        this.examBespeakList.state = state
       }
-      // ,
-      // cancel(formName) {
-      //   this.batchOption = false
-      //   const set = this.$refs
-      //   set[formName].resetFields()
-      // }
     }
   }
 </script>
+<style>
+  .subjectBtn{
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    margin:0 12px;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 84px;
+    color: #409eff;
+    background: #ecf5ff;
+    border: 1px solid #b3d8ff;
+  }
+  .subjectBtn:hover{
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
+  }
+  .subjectBtn_selected{
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
+  }
+</style>

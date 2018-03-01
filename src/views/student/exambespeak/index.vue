@@ -92,7 +92,7 @@
 <script>
   import waves from '@/directive/waves/index.js'
   import { fetchList } from '@/api/student/student'
-  import { addObj } from '@/api/student/exambespeak'
+  import { batchSave } from '@/api/student/exambespeak'
   import { getBatchList, getBatch } from '@/api/student/batch'
   import { mapGetters } from 'vuex'// 水波纹指令
 
@@ -144,14 +144,8 @@
           console.log(response.data)
           this.studentOld = response.data.data.list
           var studentOldCount = this.studentOld.length
-          console.log(this.studentOld)
-          console.log(this.studentOld.length)
           for (var i = 0; i < studentOldCount; i++) {
             for (var j = 0; j < this.studentNew.length; j++) {
-              console.log('=========== 老 ==========' + i + j)
-              console.log(studentOldCount)
-              console.log('=========== 新 ==========')
-              console.log(this.studentNew[j])
               if (this.studentOld[i].studentId === this.studentNew[j].studentId) {
                 this.studentOld.splice(i, 1)
                 studentOldCount--
@@ -191,7 +185,7 @@
         this.dialogFormBespeak = false
       },
       create() {
-        console.log('================== 这里是添加批次 ====================')
+        console.log('================== 这里是添加学员到批次 ====================')
         console.log(this.examBespeakList)
         if (this.examBespeakList.batchId === null) {
           this.$alert('请先选择报考批次', '提示', {
@@ -199,7 +193,12 @@
             type: 'warning'
           })
         } else {
-          addObj(this.examBespeakList).then(response => {
+          batchSave(this.examBespeakList).then(response => {
+            this.$notify({
+              title: '成功',
+              message: '预约成功',
+              type: 'success'
+            })
             this.dialogFormBespeak = false
             this.examBespeakList.batchId = null
           })

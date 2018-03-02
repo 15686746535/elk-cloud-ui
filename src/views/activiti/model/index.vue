@@ -3,7 +3,7 @@
       <div>
           <el-card style="margin-bottom: 5px;">
               <div class="filter-container">
-                  <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+                  <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
                   <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
                   <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="plus">添加</el-button>
               </div>

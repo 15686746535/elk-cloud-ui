@@ -23,7 +23,7 @@
                 </el-select>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+                <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
               </div>
             </el-card>

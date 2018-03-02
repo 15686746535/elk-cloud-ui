@@ -184,7 +184,7 @@
 
 <script>
   import { getBatchList, addObj, putObj } from '@/api/student/batch'
-  import { getexambespeakbyid, delexambespeak } from '@/api/student/exambespeak'
+  import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -254,6 +254,7 @@
         getBatchList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data.data.list
+          this.studentListQuery.state = '1'
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
@@ -391,6 +392,15 @@
       },
       operation(state) {
         this.examBespeakList.state = state
+        putExamBespeak(this.examBespeakList).then(() => {
+          this.see(this.studentListQuery.batchId, this.studentListQuery.state)
+          this.$notify({
+            title: '成功',
+            message: '修改成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
       }
     }
   }

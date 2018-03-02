@@ -27,7 +27,7 @@ export function batchSave(obj) {
 export function getexambespeakbyid(query) {
   return request({
     url: '/student/exambespeak/queryBespeak',
-    method: 'post',
+    method: 'get',
     params: query
   })
 }
@@ -39,7 +39,7 @@ export function delexambespeak(id) {
   })
 }
 // 更新
-export function putexambespeak(obj) {
+export function putExamBespeak(obj) {
   return request({
     url: '/student/exambespeak',
     method: 'put',

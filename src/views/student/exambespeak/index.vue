@@ -10,7 +10,7 @@
             <div @click="handleField(2,$event)" class="subjectBtn" >科目二</div>
             <div @click="handleField(3,$event)" class="subjectBtn" >科目三</div>
             <div @click="handleField(4,$event)" class="subjectBtn" >科目四</div>
-            <el-input v-model="studentListQuery.condition" :style="{width: (client.width/7) + 'px'}" placeholder="姓名/身份证/电话" ></el-input>
+            <el-input v-model="studentListQuery.condition"  @keyup.enter.native="search" :style="{width: (client.width/7) + 'px'}" placeholder="姓名/身份证/电话" ></el-input>
             <el-button type="primary" v-waves @click="search" >搜索</el-button>
             可预约：{{studentOld.length}}人
           </div>

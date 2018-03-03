@@ -11,7 +11,7 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
             <el-select v-model="listQuery.operator" clearable placeholder="负责人">
               <el-option

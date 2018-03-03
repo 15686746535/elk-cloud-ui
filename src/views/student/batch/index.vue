@@ -2,24 +2,19 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
-        <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+        <div @click="handleSubject(1,$event)" class="subjectBtn subjectBtn_selected" >科目一</div>
+        <div @click="handleSubject(2,$event)" class="subjectBtn" >科目二</div>
+        <div @click="handleSubject(3,$event)" class="subjectBtn" >科目三</div>
+        <div @click="handleSubject(4,$event)" class="subjectBtn" >科目四</div>
+        <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
         </el-date-picker>
-        <el-select v-model="listQuery.subject" clearable placeholder="科目">
-          <el-option
-            v-for="item in subject"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="listQuery.subject" clearable placeholder="考场">
-          <el-option
-            v-for="item in subject"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+
+
+        <span v-show="'1' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field1" style="width: 240px;margin-top: 8px"  placeholder="科目一考试场地"></dict></span>
+        <span v-show="'2' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field2" style="width: 240px;margin-top: 8px"  placeholder="科目二考试场地"></dict></span>
+        <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
+        <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
+
         <el-button type="primary" v-waves @click="search" >搜索</el-button>
         <el-button @click="handleCreate" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
@@ -113,10 +108,10 @@
 
     <el-dialog @close="getList" title="考试计划操作" :visible.sync="examOption">
       <div style="width:450px; margin:-30px auto 10px">
-        <div @click="handleField('1',$event)" class="subjectBtn subjectBtn_selected" >审核中</div>
-        <div @click="handleField('2',$event)" class="subjectBtn" >约考中</div>
-        <div @click="handleField('3',$event)" class="subjectBtn" >已报考</div>
-        <div @click="handleField('4',$event)" class="subjectBtn" >失 败</div>
+        <div @click="handleField('1',$event)" class="stateBtn stateBtn_selected" >审核中</div>
+        <div @click="handleField('2',$event)" class="stateBtn" >约考中</div>
+        <div @click="handleField('3',$event)" class="stateBtn" >已报考</div>
+        <div @click="handleField('4',$event)" class="stateBtn" >失 败</div>
       </div>
 
       <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
@@ -207,8 +202,9 @@
         listQuery: {
           page: 1,
           limit: 20,
-          subject: null,
-          interval: null
+          subject: '1',
+          interval: null,
+          examField: null
         },
         tableKey: 0,
         dialogStatus: '',
@@ -381,11 +377,11 @@
       // 根据状态查询约考学员
       handleField(state, e) {
         this.studentListQuery.state = state
-        var a = document.getElementsByClassName('subjectBtn')
+        var a = document.getElementsByClassName('stateBtn')
         for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('subjectBtn_selected')
+          a[i].classList.remove('stateBtn_selected')
         }
-        e.currentTarget.classList.add('subjectBtn_selected')
+        e.currentTarget.classList.add('stateBtn_selected')
         this.see(this.studentListQuery.batchId, state)
         console.log('=====================================')
         console.log(this.studentListQuery.state)
@@ -401,12 +397,23 @@
             duration: 2000
           })
         })
+      },
+      // 根据科目查询场地
+      handleSubject(field, e) {
+        this.listQuery.page = 1
+        this.listQuery.subject = field
+        var a = document.getElementsByClassName('subjectBtn')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('subjectBtn_selected')
+        }
+        e.currentTarget.classList.add('subjectBtn_selected')
+        this.getList()
       }
     }
   }
 </script>
 <style>
-  .subjectBtn{
+  .stateBtn{
     display: inline-block;
     line-height: 1;
     white-space: nowrap;
@@ -426,14 +433,43 @@
     background: #ecf5ff;
     border: 1px solid #b3d8ff;
   }
-  .subjectBtn:hover{
+  .stateBtn:hover{
     color: #fff;
     background-color: #409eff;
     border-color: #409eff;
   }
-  .subjectBtn_selected{
+  .stateBtn_selected{
     color: #fff;
     background-color: #409eff;
     border-color: #409eff;
+  }
+  .subjectBtn{
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid #c2e7b0;
+    -webkit-appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    margin: 0;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    color: #67c23a;
+    background: #f0f9eb;
+  }
+  .subjectBtn:hover{
+    color: #fff;
+    background-color: #67c23a;
+    border-color: #67c23a;
+  }
+  .subjectBtn_selected{
+    color: #fff;
+    background-color: #67c23a;
+    border-color: #67c23a;
   }
 </style>

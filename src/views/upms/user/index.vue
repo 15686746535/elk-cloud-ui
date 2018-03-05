@@ -1,38 +1,33 @@
-<script src="../../../api/upms/log.js"></script>
 <template>
-  <div class="app-container">
-    <div v-show="showModule=='list'">
-      <el-row :gutter="10">
-        <el-col :span="24" style='margin-top:15px;width: 100%'>
-          <div class="filter-container" style="float: left">
-            |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
-          </div>
-          <div style="float: right">
-            <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
-            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
-          </div>
-
-
-        </el-col>
-
-        <el-col :span="4" style='margin-top:15px; text-align: center'>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <div v-show="showModule=='list'"  style="height: 100%">
+      <el-row :gutter="5">
+        <el-col class="org-tree-left">
           <el-card>
             <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-            </el-row>
 
             <!-- 分割线 -->
-            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+           <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
 
-            <el-row  style="overflow: auto"><org-tree @node-click="searchByOrg" ></org-tree>
-            </el-row>
+            <org-tree @node-click="searchByOrg" ></org-tree>
           </el-card>
         </el-col>
 
-        <el-col :span="20" style='margin-top:15px;'>
-          <el-card style="overflow: auto">
+        <el-col :style="{width: (client.width-250) + 'px'}">
+          <el-card style="height: 80px">
+            <div class="filter-container" style="float: left">
+              |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
+            </div>
+            <div style="float: right">
+              <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+              <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
+              <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
+            </div>
+          </el-card>
+
+          <el-card style="overflow: auto;margin-top: 5px;"  :style="{height: (client.height-125) + 'px'}">
             <!-- 身份卡循环 -->
-            <el-table :data="userList" height="600"  border style="min-width: 980px; " highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
+            <el-table :data="userList" :height="(client.height-220)"  border style="min-width: 980px; " highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
               <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
               <el-table-column label="员工信息">
                 <template slot-scope="scope">
@@ -433,9 +428,9 @@
 
 
 </template>
-
 <script>
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { mapGetters } from 'vuex'
   import { roleList } from '@/api/upms/role'
   import Bar from '@/components/Bar'
   import Dict from '@/components/Dict'
@@ -444,10 +439,15 @@
   import { fetchTree } from '@/api/upms/org'
   import OrgSelect from '@/components/OrgSelect'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
+  import ElCard from "element-ui/packages/card/src/main";
 
   export default {
     name: 'index',
     computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ]),
       sexVO() {
         const typeMap = {
           1: '男',
@@ -457,6 +457,7 @@
       }
     },
     components: {
+      ElCard,
       Bar,
       OrgTree,
       LineChart,

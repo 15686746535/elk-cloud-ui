@@ -2,10 +2,10 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
-        <div @click="handleSubject(1,$event)" class="subjectBtn subjectBtn_selected" >科目一</div>
-        <div @click="handleSubject(2,$event)" class="subjectBtn" >科目二</div>
-        <div @click="handleSubject(3,$event)" class="subjectBtn" >科目三</div>
-        <div @click="handleSubject(4,$event)" class="subjectBtn" >科目四</div>
+        <div @click="handleSubject('1',$event)" class="subjectBtn subjectBtn_selected" >科目一</div>
+        <div @click="handleSubject('2',$event)" class="subjectBtn" >科目二</div>
+        <div @click="handleSubject('3',$event)" class="subjectBtn" >科目三</div>
+        <div @click="handleSubject('4',$event)" class="subjectBtn" >科目四</div>
         <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
         </el-date-picker>
 

@@ -204,6 +204,8 @@
           limit: 20,
           subject: '1',
           interval: null,
+          beginTime: null,
+          endTime: null,
           examField: null
         },
         tableKey: 0,
@@ -338,6 +340,7 @@
       },
       search() {
         this.listQuery.page = 1
+        this.examTimeBlur()
         this.getList()
       },
       delete(id) {
@@ -402,12 +405,25 @@
       handleSubject(field, e) {
         this.listQuery.page = 1
         this.listQuery.subject = field
+        this.listQuery.examField = null
+        this.listQuery.interval = null
+        this.listQuery.beginTime = null
+        this.listQuery.endTime = null
         var a = document.getElementsByClassName('subjectBtn')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('subjectBtn_selected')
         }
         e.currentTarget.classList.add('subjectBtn_selected')
         this.getList()
+      },
+      examTimeBlur() {
+        console.log('=============  我正在转换时间范围 ================')
+        console.log(this.listQuery.interval.length)
+        if (this.listQuery.interval.length !== 0) {
+          this.listQuery.beginTime = this.listQuery.interval[0]
+          this.listQuery.endTime = this.listQuery.interval[1]
+        }
+        console.log('=============  完成 ================')
       }
     }
   }

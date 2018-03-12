@@ -319,9 +319,9 @@ export default {
       var h = document.documentElement.scrollHeight || document.body.scrollHeight
       console.log(w)
       console.log(h)
-      var $ = require('jquery')
+      /*var $ = require('jquery')
       var va = $('#testjquery').val()
-      console.log(va)
+      console.log(va)*/
       // if (this.sel === 2) {
       //   this.sel = 1
       //   this.orgId = 1

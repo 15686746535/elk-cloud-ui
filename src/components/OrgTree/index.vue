@@ -24,11 +24,15 @@
         method: 'get'
       }).then(response => {
         this.orgList = response.data.data
+        console.log(688)
+        console.log(response.data.data)
       })
     },
     methods: {
       nodeClick(value) {
         this.org = value
+        console.log(value)
+        console.log(888)
         this.$emit('node-click', value)
       }
     }

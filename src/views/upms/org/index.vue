@@ -4,9 +4,7 @@
       <el-col class="org-tree-left">
         <el-card class="box-card">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 部门总览</span>
-          <tree :list="treeData" id="menuTree"
-                :open="true" choiceType="folder"
-                @node-click="searchByOrg"></tree>
+          <org-tree @node-click="searchByOrg" ></org-tree>
         </el-card>
       </el-col>
 
@@ -49,11 +47,11 @@
 <script>
   import { fetchTree, addObj, getObj, putObj } from '@/api/upms/org'
   import { mapGetters } from 'vuex'
-  import Tree from '@/components/Tree'
+  import OrgTree from '@/components/OrgTree'
   export default {
     name: 'index',
     components: {
-      Tree
+      OrgTree
     },
     data() {
       return {
@@ -85,12 +83,14 @@
       ])
     },
     created() {
-      this.getOrgList()
+      // this.getOrgList()
     },
     methods: {
       // 根据部门id查询员工
       searchByOrg(data) {
         console.log('=====================   点击   =======================')
+        console.log(data)
+
         if (this.option === 'add') {
           this.org.parentName = data.name
           this.org.parentId = data.id
@@ -105,7 +105,7 @@
           console.log(this.org)
         } else if (this.option === 'edit') {
           if (data.parentId === -1) {
-            this.org.parentName = null
+            this.org.parentName = '无'
           } else {
             getObj(data.parentId).then(response => {
               this.org.parentName = response.data.data.name
@@ -155,13 +155,13 @@
         if (!value) return true
         return data.label.indexOf(value) !== -1
       },
-      getOrgList() {
-        fetchTree().then(response => {
-          console.log(response.data.data)
-          // this.org = response.data.data
-          this.treeData = response.data.data
-        })
-      },
+      // getOrgList() {
+      //   fetchTree().then(response => {
+      //     console.log(response.data.data)
+      //     // this.org = response.data.data
+      //     this.treeData = response.data.data
+      //   })
+      // },
       add() {
         console.log('=========== 添加 ===========')
         this.option = 'add'

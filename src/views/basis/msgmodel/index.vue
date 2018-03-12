@@ -75,6 +75,7 @@
   import { fetchList, delObj, addObj, putObj } from '@/api/basis/msgmodel'
   import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_msgmodel',

@@ -118,6 +118,7 @@
   import { fetchTree } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_role',
@@ -245,9 +246,7 @@
           })
       },
       handleFilter() {
-        if (this.listQuery.roleName === '') {
-          this.listQuery.roleName = null
-        }
+        this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
         console.log(this.listQuery)
         this.listQuery.page = 1
         this.getList()

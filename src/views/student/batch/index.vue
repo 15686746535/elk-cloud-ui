@@ -183,6 +183,7 @@
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_batch',
@@ -203,7 +204,7 @@
           page: 1,
           limit: 20,
           subject: '1',
-          interval: null,
+          interval: [],
           beginTime: null,
           endTime: null,
           examField: null
@@ -406,7 +407,7 @@
         this.listQuery.page = 1
         this.listQuery.subject = field
         this.listQuery.examField = null
-        this.listQuery.interval = null
+        this.listQuery.interval = []
         this.listQuery.beginTime = null
         this.listQuery.endTime = null
         var a = document.getElementsByClassName('subjectBtn')
@@ -418,7 +419,8 @@
       },
       examTimeBlur() {
         console.log('=============  我正在转换时间范围 ================')
-        if (this.listQuery.interval !== null || this.listQuery.interval.length !== 0) {
+        if (this.listQuery.interval === null) this.listQuery.interval = []
+        if (this.listQuery.interval.length !== 0) {
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }

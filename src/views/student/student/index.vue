@@ -21,10 +21,11 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
-              <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
-              <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
-              <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
+              <dict dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型筛选"  ></dict>
+              <dict dictType="dict_enrollDot" style="width: 200px;"  placeholder="报名点"  ></dict>
+              <dict dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
+              <dict dictType="dict_sex" style="width: 200px;"  placeholder="场训教练"  ></dict>
+              <dict dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
@@ -341,6 +342,7 @@
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
@@ -513,6 +515,7 @@
       search() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         console.log(this.listQuery)
         this.getList()
       },

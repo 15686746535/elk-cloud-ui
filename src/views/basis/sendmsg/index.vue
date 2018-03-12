@@ -55,6 +55,7 @@
   import { fetchList, getObj } from '@/api/basis/sendmsg'
   import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_sendmsg',

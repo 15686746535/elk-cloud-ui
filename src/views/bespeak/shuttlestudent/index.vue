@@ -56,6 +56,7 @@
 
 <script>
   import { fetchList, getObj } from '@/api/bespeak/shuttlestudent'
+  import { removeAllSpace } from '@/utils/validate'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {

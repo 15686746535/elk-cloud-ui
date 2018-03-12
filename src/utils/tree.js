@@ -10,7 +10,7 @@ import Layout from '../views/layout/Layout'
 export function getMenuTree(menuList, pid) {
   const menus = []
   menuList.forEach(function(item, index) {
-    if (item.parentId == pid && item.type == '0') {
+    if (item.parentId === pid && item.type === '0') {
       const menu = {
         menuId: item.menuId,
         path: item.path,
@@ -19,7 +19,7 @@ export function getMenuTree(menuList, pid) {
         meta: { title: item.name, icon: item.icon },
         children: null
       }
-      if (item.component == 'Layout') {
+      if (item.component === 'Layout') {
         menu.component = Layout
       } else {
         menu.component = _import(item.component)

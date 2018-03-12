@@ -341,6 +341,7 @@
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { examFetchList, getExam } from '@/api/student/examnote'
   import OrgTree from '@/components/OrgTree'
+  import { removeAllSpace } from '@/utils/validate'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { mapGetters } from 'vuex'

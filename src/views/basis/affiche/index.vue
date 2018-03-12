@@ -67,6 +67,7 @@
 
 <script>
 import { fetchList, addObj, putObj, getObj ,delObj } from '@/api/basis/affiche'
+import { removeAllSpace } from '@/utils/validate'
 import waves from '@/directive/waves/index.js' // 水波纹指令
 import { mapGetters } from 'vuex'
 
@@ -124,6 +125,7 @@ export default {
     },
     search() {
       this.listQuery.page = 1
+      this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
       this.getList()
     },
     handleCreate() {

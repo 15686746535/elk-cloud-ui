@@ -30,4 +30,7 @@ export function validatAlphabets(str) {
   const reg = /^[A-Za-z]+$/
   return reg.test(str)
 }
-
+// 去除所有空格
+export function removeAllSpace(str) {
+  return str.replace(/\s+/g, '')
+}

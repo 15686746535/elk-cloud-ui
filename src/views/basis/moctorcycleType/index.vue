@@ -75,6 +75,7 @@
 <script>
   import { fetchList, addObj, putObj, delObj } from '@/api/basis/dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
   export default {

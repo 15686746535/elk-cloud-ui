@@ -24,7 +24,7 @@ export function getObj(id) {
 
 export function addObj(obj) {
   return request({
-    url: '/upms/role/',
+    url: '/upms/role',
     method: 'post',
     data: obj
   })
@@ -32,7 +32,7 @@ export function addObj(obj) {
 
 export function putObj(obj) {
   return request({
-    url: '/upms/role/',
+    url: '/upms/role',
     method: 'put',
     data: obj
   })

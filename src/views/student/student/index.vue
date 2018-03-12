@@ -501,6 +501,7 @@
       create() {
         this.student = {}
         this.showModule = 'info'
+        this.addInfo = true
         this.edit = true
       },
       // 修改

@@ -418,8 +418,7 @@
       },
       examTimeBlur() {
         console.log('=============  我正在转换时间范围 ================')
-        console.log(this.listQuery.interval.length)
-        if (this.listQuery.interval.length !== 0) {
+        if (this.listQuery.interval !== null || this.listQuery.interval.length !== 0) {
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }

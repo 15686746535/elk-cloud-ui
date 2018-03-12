@@ -17,7 +17,7 @@ export function delObj(id) {
 
 export function addObj(obj) {
   return request({
-    url: '/upms/user/',
+    url: '/upms/user',
     method: 'post',
     data: obj
   })
@@ -32,7 +32,7 @@ export function getObj(id) {
 
 export function putObj(obj) {
   return request({
-    url: '/upms/user/',
+    url: '/upms/user',
     method: 'put',
     data: obj
   })

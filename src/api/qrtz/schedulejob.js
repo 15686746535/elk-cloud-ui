@@ -10,7 +10,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
     return request({
-        url: '/qrtz/schedulejob/',
+        url: '/qrtz/schedulejob',
         method: 'post',
         data: obj
     })

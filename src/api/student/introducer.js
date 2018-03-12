@@ -10,7 +10,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/student/introducer/',
+    url: '/student/introducer',
     method: 'post',
     data: obj
   })

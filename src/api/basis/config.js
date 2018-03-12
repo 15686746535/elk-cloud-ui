@@ -10,7 +10,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/basis/config/',
+    url: '/basis/config',
     method: 'post',
     data: obj
   })

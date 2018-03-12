@@ -11,7 +11,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/basis/fileshare/',
+    url: '/basis/fileshare',
     method: 'post',
     data: obj
   })

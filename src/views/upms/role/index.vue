@@ -69,6 +69,9 @@
 
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+        <el-form-item label="所属部门" prop="roleName">
+          <org-select style="width: 100%" v-model="form.orgId"></org-select>
+        </el-form-item>
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="角色名称"></el-input>
         </el-form-item>
@@ -117,11 +120,15 @@
   import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/upms/role'
   import { fetchTree } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
+  import OrgSelect from '@/components/OrgSelect'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_role',
+    components: {
+      OrgSelect
+    },
     directives: {
       waves
     },
@@ -143,6 +150,7 @@
           roleName: null
         },
         form: {
+          orgId: undefined,
           roleName: undefined,
           roleKey: undefined,
           roleDesc: undefined
@@ -179,7 +187,7 @@
           roleDesc: [
             {
               required: true,
-              message: '角色标识',
+              message: '角色备注',
               trigger: 'blur'
             },
             {

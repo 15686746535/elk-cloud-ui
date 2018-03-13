@@ -7,7 +7,14 @@ export function fetchList(query) {
     params: query
   })
 }
-
+// export function fetchList(query) {
+//   return request({
+//     url: '/upms/user/userPage',
+//     method: 'get',
+//     params: query
+//   })
+// }
+// iscoach
 export function addObj(obj) {
   console.log('========== 这里是保存接口  ============')
   console.log(obj)

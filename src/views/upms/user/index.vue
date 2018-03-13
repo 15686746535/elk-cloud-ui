@@ -592,10 +592,10 @@
       },
       // 添加
       add() {
+        console.log('这里是添加方法===========================')
+        console.log(this.userEdit)
         addObj(this.userEdit).then(response => {
-          console.log('这里是添加方法===========================')
           this.userEdit.userId = response.data.data
-          console.log(this.vehicle.vehicleEntity.vehicleId)
         })
         this.edit = false
       },

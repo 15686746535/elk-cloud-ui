@@ -21,12 +21,12 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型筛选"  ></dict>
-              <dict dictType="dict_enrollDot" style="width: 200px;"  placeholder="报名点"  ></dict>
-              <dict dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
-              <dict dictType="dict_sex" style="width: 200px;"  placeholder="场训教练"  ></dict>
-              <dict dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
-              <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+              <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.source" dictType="dict_enrollDot" style="width: 200px;"  placeholder="报名点"  ></dict>
+              <dict v-model="listQuery.fieldCoach" dictType="dict_sex" style="width: 200px;"  placeholder="场训教练"  ></dict>
+              <dict v-model="listQuery.roadCoach" dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
+              <dict v-model="listQuery.source" dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
+              <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-card>
@@ -208,8 +208,8 @@
                 <el-row>
                   <el-col :span="8" ><div class="text_css">所学车型：</div></el-col>
                   <el-col :span="14" >
-                    <dict v-if="edit" v-model="student.archivesNumber" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
+                    <dict v-if="edit" v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.moctorcycleType}}</div>
                   </el-col>
                 </el-row>
 
@@ -370,6 +370,7 @@
           roadCoach: null,
           fieldCoach: null,
           source: null,
+          moctorcycleType: null,
           orgId: null
         },
         activeName: '1',
@@ -532,6 +533,7 @@
         this.showModule = 'list'
         this.edit = false
         this.addInfo = false
+        this.getList()
       },
       generateInfo() {
         if (this.student.idNumber.length === 18) {

@@ -8,14 +8,9 @@
       <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
-        <el-table-column align="center"  label="增值包名字">
+        <el-table-column align="center"  label="校区">
           <template slot-scope="scope">
             <span>{{ scope.row.label }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  label="费用">
-          <template slot-scope="scope">
-            <span>{{ scope.row.value | parseJson('cost')}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="描述">
@@ -35,7 +30,7 @@
             <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column align="center" label="操作">
           <template slot-scope="scope">
             <el-button v-if="sys_dict_upd" size="small" type="success"
                        @click="handleUpdate(scope.row)">编辑
@@ -56,14 +51,11 @@
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="增值包名字"  prop="username">
-          <el-input v-model="increment.name" placeholder="增值包名字" ></el-input>
+        <el-form-item label="校区"  prop="username">
+          <el-input v-model="dict.label" placeholder="校区" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="username">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
-        </el-form-item>
-        <el-form-item label="费用" prop="username">
-          <el-input type="number" v-model="increment.cost" placeholder="费用" ></el-input>
         </el-form-item>
         <el-form-item label="排序（升序）" prop="username">
           <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
@@ -79,7 +71,6 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
   import { fetchList, addObj, putObj, delObj } from '@/api/basis/dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -100,11 +91,11 @@
         listQuery: {
           page: 1,
           limit: 20,
-          type: 'dict_increment'
+          type: 'dict_campus'
         },
         rules: {},
         dict: {},
-        increment: {},
+        enrollDot: {},
         dialogFormVisible: false,
         dialogStatus: '',
         sys_dict_add: false,
@@ -122,15 +113,6 @@
         'permissions',
         'client'
       ])
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          0: '有效',
-          1: '无效'
-        }
-        return statusMap[status]
-      }
     },
     created() {
       this.getList()
@@ -179,10 +161,6 @@
         this.dialogFormVisible = true
       },
       handleUpdate(val) {
-        this.increment.name = val.label
-        this.increment.cost = JSON.parse(val.value).cost
-        console.log('==========================')
-        console.log(val)
         this.dict = val
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
@@ -191,8 +169,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.increment.name
-            this.dict.value = JSON.stringify(this.increment)
+            this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
@@ -213,7 +190,7 @@
       cancel(formName) {
         this.dialogFormVisible = false
         this.dict = {}
-        this.increment = {}
+        this.enrollDot = {}
         const set = this.$refs
         set[formName].resetFields()
       },
@@ -221,8 +198,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.increment.name
-            this.dict.value = JSON.stringify(this.increment)
+            this.dict.value = this.dict.label
             putObj(this.dict).then(() => {
               this.dialogFormVisible = false
               this.getList()

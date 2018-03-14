@@ -458,6 +458,7 @@
       // 双击行  编辑
       editlist(val) {
         console.log('====================== 正在进入单个学员编辑 =====================')
+        console.log(val)
         getObj(val.studentId).then(response => {
           // console.log(response.data)
           this.student = response.data.data

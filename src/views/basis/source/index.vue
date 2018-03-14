@@ -166,6 +166,7 @@
           })
       },
       handleCreate() {
+        this.dict = {}
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
       },

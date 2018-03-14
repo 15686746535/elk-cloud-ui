@@ -4,7 +4,25 @@
       <el-card :style="{height: (client.height-45) + 'px'}">
         <div style="width:145px;font-size: 36px;font-weight: 500;margin: 0 auto;">学员录入</div>
         <div style="width:400px;margin: 0 auto; line-height: 50px;" :style="{marginTop: ((client.height-45)/4) + 'px'}">
-          <el-row>
+
+          <el-form label-position="left" :model="student" :rules="student" ref="student" label-width="80px">
+            <el-form-item>
+              <label slot="label"><span class="text_css">姓名：</span></label>
+              <el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+              <label slot="label"><span class="text_css">身份证号：</span></label>
+              <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" v-model="student.idNumber"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" style="width: 100px;" @click="convertClick('detailed')">录  入</el-button>
+              <el-button style="float: right;width: 100px;" @click="reset">重  置</el-button>
+            </el-form-item>
+
+          </el-form>
+          <!--<el-row>
             <el-col :span="6"><span class="text_css">姓名：</span></el-col>
             <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
             </el-col>
@@ -13,16 +31,16 @@
             <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
             <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="身份证号" v-model="student.idNumber"></el-input></el-col>
           </el-row>
-          <el-row :gutter="20" style="margin-top: 30px;">
-            <el-col :span="3">&nbsp;</el-col>
-            <el-col :span="9">
-              <el-button type="primary" style="width: 100%" @click="convertClick('detailed')">录  入</el-button>
-            </el-col>
-            <el-col :span="9">
+          <el-row :gutter="20" style="margin-top: 70px;">
+            <el-col :span="4">&nbsp;</el-col>
+            <el-col :span="8">
               <el-button style="width: 100%" plain @click="reset">重  置</el-button>
             </el-col>
-            <el-col :span="3">&nbsp;</el-col>
-          </el-row>
+            <el-col :span="8">
+              <el-button type="primary" style="width: 100%" @click="convertClick('detailed')">录  入</el-button>
+            </el-col>
+            <el-col :span="4">&nbsp;</el-col>
+          </el-row>-->
         </div>
       </el-card>
     </div>
@@ -44,20 +62,6 @@
                   <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input></el-col>
                 </el-row>
 
-                <!-- 身份证号 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
-                  <el-col :span="18">
-                    <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" maxlength="18" @change="generateInfo" v-model="student.idNumber"></el-input>
-                  </el-col>
-                </el-row>
-
-                <!-- 联系电话 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model.number="student.mobile"></el-input></el-col>
-                </el-row>
-
                 <!-- 性别 -->
                 <el-row style="height: 50px">
                   <el-col :span="6"><span class="text_css">性别：</span></el-col>
@@ -73,16 +77,10 @@
                   <el-col :span="18"><el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker></el-col>
                 </el-row>
 
-                <!-- 报考车型 -->
+                <!-- 联系电话 -->
                 <el-row style="height: 50px">
                   <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
-                </el-row>
-
-                <!-- 报考车型 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
+                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model.number="student.mobile"></el-input></el-col>
                 </el-row>
 
               </el-col>
@@ -109,6 +107,7 @@
 <script>
   import { addObj } from '@/api/student/student'
   import Dict from '@/components/Dict'
+  import { removeAllSpace } from '@/utils/validate'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { mapGetters } from 'vuex'
   export default {
@@ -121,9 +120,53 @@
     },
     data() {
       return {
-        student: {},
+        student: {
+          aboardTime: null,
+          addDrive: null,
+          age: null,
+          archivesNumber: null,
+          arrearage: null,
+          avatar: null,
+          birthday: null,
+          company: null,
+          contactAddress: null,
+          createTime: null,
+          email: null,
+          enrolSite: null,
+          enrolTime: null,
+          fieldCoach: null,
+          fieldCoachName: null,
+          graduationTime: null,
+          haveCar: null,
+          homeAddress: null,
+          idNumber: null,
+          increment: null,
+          incrementList: null,
+          introducer: null,
+          latitude: null,
+          longitude: null,
+          mobile: null,
+          moctorcycleType: null,
+          name: null,
+          operator: null,
+          periodOfValidity: null,
+          periods: null,
+          phone: null,
+          physicalExamination: null,
+          position: null,
+          punchTime: null,
+          remark: null,
+          roadCoach: null,
+          roadCoachName: null,
+          serviceType: null,
+          serviceTypeDto: null,
+          sex: null,
+          source: null,
+          studyTime: null,
+          wechat: null
+        },
         /* basic 基本 detailed 详细 */
-        showModule: 'detailed'
+        showModule: 'basic'
       }
     },
     created() {
@@ -144,10 +187,30 @@
     methods: {
       /* 基本信息跳转到详细信息 */
       convertClick(stare) {
-        this.showModule = stare
-        // 解析身份证信息
-        this.generateInfo()
-        console.log(this.student.sex)
+        this.student.name = removeAllSpace(this.student.name)
+        this.student.idNumber = removeAllSpace(this.student.idNumber)
+        console.log(this.student.idNumber.length)
+        if (this.student.name === null || this.student.name === '') {
+          this.$alert('请输入姓名', '提示', {
+            type: 'info'
+          })
+          return
+        }
+        if (this.student.idNumber === null) {
+          this.$alert('请输入身份证', '提示', {
+            type: 'warning'
+          })
+          return
+        } else if (this.student.idNumber.length !== 18 && this.student.idNumber.length !== 12) {
+          this.$alert('请输入正确的身份证信息', '提示', {
+            type: 'warning'
+          })
+          return
+        } else {
+          this.showModule = stare
+          // 解析身份证信息
+          this.generateInfo()
+        }
       },
       reset() {
         this.student = {}

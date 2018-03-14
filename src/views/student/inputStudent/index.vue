@@ -52,10 +52,17 @@
                   </el-col>
                 </el-row>
 
+
+                <!-- 档案号 -->
+                <el-row style="height: 50px">
+                  <el-col :span="6"><span class="text_css">档案号：</span></el-col>
+                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model.number="student.archivesNumber"></el-input></el-col>
+                </el-row>
+
                 <!-- 联系电话 -->
                 <el-row style="height: 50px">
                   <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model.number="student.mobile"></el-input></el-col>
+                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系电话" v-model.number="student.mobile"></el-input></el-col>
                 </el-row>
 
                 <!-- 性别 -->
@@ -75,15 +82,28 @@
 
                 <!-- 报考车型 -->
                 <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
+                  <el-col :span="6"><span class="text_css">报考车型：</span></el-col>
+                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="报考车型"></dict></el-col>
                 </el-row>
 
-                <!-- 报考车型 -->
+                <!-- 校区 -->
                 <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
+                  <el-col :span="6"><span class="text_css">校区：</span></el-col>
+                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict></el-col>
                 </el-row>
+
+                <!-- 联系住址 -->
+                <el-row style="height: 50px">
+                  <el-col :span="6"><span class="text_css">联系住址：</span></el-col>
+                  <el-col :span="18"><dict v-model="student.contactAddress" dictType="dict_campus" style="width: 100%;"  placeholder="联系住址"></dict></el-col>
+                </el-row>
+
+                <!-- 入学时间 -->
+                <el-row style="height: 50px">
+                  <el-col :span="6"><span class="text_css">入学时间：</span></el-col>
+                  <el-col :span="18"><el-date-picker type="date" placeholder="入学时间"  style="width: 100%" v-model="student.enrolTime"></el-date-picker></el-col>
+                </el-row>
+
 
               </el-col>
 
@@ -121,7 +141,51 @@
     },
     data() {
       return {
-        student: {},
+        student: {
+          aboardTime: null,
+          addDrive: null,
+          age: null,
+          archivesNumber: null,
+          arrearage: null,
+          avatar: null,
+          birthday: null,
+          company: null,
+          contactAddress: null,
+          createTime: null,
+          email: null,
+          enrolSite: null,
+          enrolTime: null,
+          fieldCoach: null,
+          fieldCoachName: null,
+          graduationTime: null,
+          haveCar: null,
+          homeAddress: null,
+          idNumber: null,
+          increment: null,
+          incrementList: null,
+          introducer: null,
+          latitude: null,
+          longitude: null,
+          mobile: null,
+          moctorcycleType: null,
+          name: null,
+          operator: null,
+          periodOfValidity: null,
+          periods: null,
+          phone: null,
+          physicalExamination: null,
+          position: null,
+          punchTime: null,
+          remark: null,
+          roadCoach: null,
+          roadCoachName: null,
+          serviceType: null,
+          serviceTypeDto: null,
+          sex: null,
+          source: null,
+          studyTime: null,
+          wechat: null
+        },
         /* basic 基本 detailed 详细 */
         showModule: 'detailed'
       }
@@ -234,6 +298,7 @@
 .text_css{
   color:#495060;
   font-size: 16px;
+  float: right;
   word-break:keep-all;/* 不换行 */
   white-space:nowrap;/* 不换行 */
   overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */

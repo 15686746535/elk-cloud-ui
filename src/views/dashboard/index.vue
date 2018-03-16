@@ -15,12 +15,15 @@
       </el-form-item>
 
     </el-form>
+
+    <el-button type="primary" @click="aaaaaa">ceshi</el-button>
+
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
+import { wechatLogin } from '@/api/upms/login'
 export default {
   name: 'dashboard',
   computed: {
@@ -45,10 +48,18 @@ export default {
         pic: '',
         picture: '',
         pictureLen: ''
-      }
+      },
+      openId: 'sdsadsad'
     }
   },
   methods: {
+    aaaaaa() {
+      wechatLogin(this.openId).then(response => {
+        console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     ClearForm() {
       this.person = {
         name: '',

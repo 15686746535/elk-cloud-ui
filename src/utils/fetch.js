@@ -43,6 +43,7 @@ service.interceptors.response.use(
     } else if (res.status === 404) {
       message('数据丢失!', 'warning', '警告')
     } else if (res.status === 401) {
+      console.log(res)
       message('登录过期!', 'warning', '警告')
     } else {
       message('未知异常，请联系管理员!', 'error', '错误')

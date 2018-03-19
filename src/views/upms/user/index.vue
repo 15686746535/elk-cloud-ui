@@ -615,7 +615,7 @@
         this.userEdit.orgName = org.name
         roleList(org.id).then(response => {
           console.log(response.data)
-          this.roleList = response.data.data.list
+          this.roleList = response.data.data
         })
       },
       roleChange(val) {

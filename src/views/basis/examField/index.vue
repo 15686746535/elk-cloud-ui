@@ -98,7 +98,7 @@
         },
         rules: {},
         dict: {},
-        enrollDot: {},
+        enrolSite: {},
         dialogFormVisible: false,
         dialogStatus: '',
         sys_dict_add: false,
@@ -199,7 +199,7 @@
       cancel(formName) {
         this.dialogFormVisible = false
         this.dict = {}
-        this.enrollDot = {}
+        this.enrolSite = {}
         const set = this.$refs
         set[formName].resetFields()
       },

@@ -20,7 +20,7 @@
       </div>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="client.height - 225" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fithighlight-current-row style="width: 100%;text-align: center;">
         <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
@@ -52,8 +52,9 @@
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="see(scope.row.batchId, '1')" plain>查 看</el-button>
-            <el-button size="mini" type="primary" @click="handleUpdate(scope.row)">编 辑</el-button>
+            <el-button size="mini" type="info" @click="see(scope.row.batchId, '1')" plain>查 看</el-button>
+            <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
           </template>
         </el-table-column>
 
@@ -70,7 +71,7 @@
     <el-dialog  @close="getList" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch"  ref="batch" label-width="100px">
-        <el-form-item label="考试科目">
+        <!--<el-form-item label="考试科目">
           <el-select @blur="setDictType" v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">
             <el-option
               v-for="item in subject"
@@ -79,7 +80,7 @@
               :value="item.value">
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="考试场地">
           <span v-if="batch.subject != null">
             <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
@@ -106,7 +107,7 @@
     </el-dialog>
 
 
-    <el-dialog @close="getList" title="考试计划操作" :visible.sync="examOption">
+    <el-dialog @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
       <div style="width:450px; margin:-30px auto 10px">
         <div @click="handleField('1',$event)" class="stateBtn stateBtn_selected" >审核中</div>
         <div @click="handleField('2',$event)" class="stateBtn" >约考中</div>
@@ -178,7 +179,7 @@
 </template>
 
 <script>
-  import { getBatchList, addObj, putObj } from '@/api/student/batch'
+  import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
@@ -250,6 +251,8 @@
     methods: {
       getList() {
         this.listLoading = true
+        console.log('========== 查询条件  ====================')
+        console.log(this.listQuery)
         getBatchList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data.data.list
@@ -275,9 +278,15 @@
         this.batchOption = true
       },
       handleUpdate(val) {
-        this.batch = val
-        this.dialogStatus = 'update'
-        this.batchOption = true
+        if (val.hasReserved === 0) {
+          this.batch = val
+          this.dialogStatus = 'update'
+          this.batchOption = true
+        } else {
+          this.$alert('当前批次已被预约，不可操作', '提示', {
+            type: 'warning'
+          })
+        }
       },
       see(batchId, state) {
         this.examBespeakLoading = true
@@ -292,8 +301,13 @@
         this.examBespeakList.batchId = batchId
         this.examOption = true
       },
+      closeExamOption() {
+        // this.handleField(1, e)
+        this.getList()
+      },
       create(formName) {
         const set = this.$refs
+        console.log('============= 添加信息 ===================')
         console.log(this.batch)
         set[formName].validate(valid => {
           if (valid) {
@@ -344,8 +358,28 @@
         this.examTimeBlur()
         this.getList()
       },
-      delete(id) {
-        this.getList()
+      handleDelete(val) {
+        if (val.hasReserved === 0) {
+          this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            delObj(val.batchId).then(() => {
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.getList()
+            })
+          })
+        } else {
+          this.$alert('当前批次已被预约，不可操作', '提示', {
+            type: 'warning'
+          })
+        }
       },
       // 取消约考
       revokeExam(val) {
@@ -419,11 +453,18 @@
       },
       examTimeBlur() {
         console.log('=============  我正在转换时间范围 ================')
-        if (this.listQuery.interval === null) this.listQuery.interval = []
+        if (this.listQuery.interval === null) {
+          this.listQuery.interval = []
+          this.listQuery.beginTime = null
+          this.listQuery.endTime = null
+        }
         if (this.listQuery.interval.length !== 0) {
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }
+        console.log(this.listQuery.interval)
+        console.log(this.listQuery.beginTime)
+        console.log(this.listQuery.endTime)
         console.log('=============  完成 ================')
       }
     }

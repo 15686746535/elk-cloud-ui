@@ -1,5 +1,5 @@
 <template>
-  <el-select class="filter-item" :style="{height:height,width:width}" clearable :placeholder=placeholder v-model="dict" @change="emitChange(dict)">
+  <el-select class="filter-item" :style="{height:height,width:width}" :size="size" clearable :placeholder=placeholder v-model="dict" @change="emitChange(dict)">
     <el-option v-for="item in  dictList" :key="item.value" :label="item.label" :value="item.value"></el-option>
   </el-select>
 </template>
@@ -37,6 +37,10 @@
       result: {
         type: String,
         default: null
+      },
+      size: {
+        type: String,
+        default: ''
       }
     },
     watch: {

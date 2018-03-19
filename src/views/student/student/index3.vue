@@ -8,27 +8,31 @@
             <org-tree @node-click="searchByOrg" ></org-tree>
           </el-card>
         </el-col>
-        <el-col :style="{width: (client.width-250) + 'px'}" style="line-height: 50px">
-          <el-card style="margin-bottom: 5px;height: 130px;">
-              <div>
-                <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
-                </el-date-picker>
-                <el-select v-model="listQuery.subject" clearable placeholder="状态">
-                  <el-option
-                    v-for="item in subject"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-                <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
-                <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
-                <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-                <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
-              </div>
-            </el-card>
-          <el-card :style="{height: (client.height-175) + 'px'}">
-              <el-table :data="stuList.length == 0?null:stuList" max-height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
+
+        <el-col :style="{width: (client.width-250) + 'px'}">
+          <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
+              <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              </el-date-picker>
+              <el-select v-model="listQuery.subject" clearable placeholder="科目">
+                <el-option
+                  v-for="item in subject"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+              <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.source" dictType="dict_enrolSite" style="width: 200px;"  placeholder="报名点"  ></dict>
+              <dict v-model="listQuery.fieldCoach" dictType="dict_sex" style="width: 200px;"  placeholder="场训教练"  ></dict>
+              <dict v-model="listQuery.roadCoach" dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
+              <dict v-model="listQuery.source" dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
+              <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+              <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
+              <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
+          </el-card>
+
+          <el-card :style="{height: (client.height-170) + 'px'}">
+              <el-table :data="stuList.length == 0?null:stuList" :height="(client.height-260)" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">
                     <!-- 头像 -->
@@ -130,7 +134,6 @@
                 </el-pagination>
               </div>
             </el-card>
-
         </el-col>
       </el-row>
     </div>
@@ -139,7 +142,6 @@
       <el-row :gutter="10">
 
         <el-col :span="10">
-
           <el-card>
             <div slot="header" class="clearfix">
               <div style="float: left">
@@ -206,8 +208,8 @@
                 <el-row>
                   <el-col :span="8" ><div class="text_css">所学车型：</div></el-col>
                   <el-col :span="14" >
-                    <dict v-if="edit" v-model="student.archivesNumber" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
+                    <dict v-if="edit" v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.moctorcycleType}}</div>
                   </el-col>
                 </el-row>
 
@@ -226,7 +228,8 @@
                 <el-row>
                   <el-col :span="8"><div class="text_css">入学期数：</div></el-col>
                   <el-col :span="14">
-                    <dict dictType="dict_sex" v-if="edit"  placeholder="入学期数"  ></dict>
+                    <dict dictType="dict_sex" v-model="student.periods" v-if="edit"  placeholder="入学期数"  ></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
                   </el-col>
                 </el-row>
 
@@ -286,42 +289,38 @@
             <!-- 分割线 -->
             <el-row><el-col> </el-col></el-row>
 
-            <!--<el-row>-->
-              <!--<el-col>-->
+            <el-row>
+              <el-col>
 
-                <!--<el-row v-if="edit" :gutter="60">-->
-                  <!--<el-col :span="12"><el-button v-if="!addInfo" type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>-->
-                  <!--<el-col :span="12"><el-button v-if="addInfo" type="primary" style="width: 100%;" @click="add">确认保存</el-button></el-col>-->
-                  <!--<el-col :span="12"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update">确认修改</el-button></el-col>-->
-                <!--</el-row>-->
-
-
-                <!--<el-row v-else :gutter="60">-->
-                  <!--<el-col :span="12"><el-button type="success" style="width: 100%;" @click="editInfo">收款</el-button></el-col>-->
-                  <!--<el-col :span="12"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>-->
-                <!--</el-row>-->
+                <el-row v-if="edit" :gutter="60">
+                  <el-col :span="12"><el-button v-if="!addInfo" type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>
+                  <el-col :span="12"><el-button v-if="addInfo" type="primary" style="width: 100%;" @click="add">确认保存</el-button></el-col>
+                  <el-col :span="12"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update">确认修改</el-button></el-col>
+                </el-row>
 
 
-              <!--</el-col>-->
+                <el-row v-else :gutter="60">
+                  <el-col :span="12"><el-button type="success" style="width: 100%;" @click="editInfo">收款</el-button></el-col>
+                  <el-col :span="12"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>
+                </el-row>
 
-            <!--</el-row>-->
+
+              </el-col>
+
+            </el-row>
 
           </el-card>
-
         </el-col>
 
         <el-col :span="14" >
-            <el-tabs v-model="activeName" type="border-card">
+            <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px;">
               <el-tab-pane label="最近信息" name="1">
 
-                <div>
-                  <el-button @click="cancel">取 消</el-button>
-                  <el-button v-if="addInfo=='create'" type="primary" @click="create">确 定</el-button>
-                  <el-button v-else type="primary" @click="update">修 改</el-button>
-                </div>
 
               </el-tab-pane>
-              <el-tab-pane label="科目情况" name="2">配置管理</el-tab-pane>
+              <el-tab-pane label="科目情况" name="2">
+
+              </el-tab-pane>
               <el-tab-pane label="费用情况" name="3">角色管理</el-tab-pane>
               <el-tab-pane label="来访跟进信息" name="4">定时任务补偿</el-tab-pane>
               <el-tab-pane label="约车日志" name="5">定时任务补偿</el-tab-pane>
@@ -341,11 +340,10 @@
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { examFetchList, getExam } from '@/api/student/examnote'
   import OrgTree from '@/components/OrgTree'
-  import { removeAllSpace } from '@/utils/validate'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-
   export default {
     name: 'table_student',
     components: {
@@ -368,10 +366,11 @@
           limit: 20,
           condition: null,
           interval: [],
-          subject: 5,
+          subject: null,
           roadCoach: null,
           fieldCoach: null,
           source: null,
+          moctorcycleType: null,
           orgId: null
         },
         activeName: '1',
@@ -415,11 +414,17 @@
           }]
         },
         subject: [{
-          value: 5,
-          label: '已毕业'
+          value: 1,
+          label: '科目一'
         }, {
-          value: -1,
-          label: '已退学'
+          value: 2,
+          label: '科目二'
+        }, {
+          value: 3,
+          label: '科目三'
+        }, {
+          value: 4,
+          label: '科目四'
         }]
       }
     },
@@ -453,6 +458,7 @@
       // 双击行  编辑
       editlist(val) {
         console.log('====================== 正在进入单个学员编辑 =====================')
+        console.log(val)
         getObj(val.studentId).then(response => {
           // console.log(response.data)
           this.student = response.data.data
@@ -470,7 +476,7 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          console.log('===================  这是所有学员信息  ==================')
+          console.log(' ====== =============  这是所有学员信息  ==================')
           console.log(response.data)
           this.stuList = response.data.data.list
           this.total = response.data.data.totalCount
@@ -491,11 +497,8 @@
       },
       // 添加
       add() {
-        // addObj(this.userListEdit).then(response => {
-        //   console.log('这里是添加方法===========================')
-        //   this.userListEdit.userId = response.data.data
-        //   console.log(this.vehicle.vehicleEntity.vehicleId)
-        // })
+        addObj(this.student).then(response => {
+        })
         this.edit = false
       },
       // 新增
@@ -506,12 +509,15 @@
       },
       // 修改
       update() {
+        putObj(this.student).then(response => {
+        })
         this.edit = false
       },
       // 搜索
       search() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         console.log(this.listQuery)
         this.getList()
       },
@@ -528,6 +534,7 @@
         this.showModule = 'list'
         this.edit = false
         this.addInfo = false
+        this.getList()
       },
       generateInfo() {
         if (this.student.idNumber.length === 18) {

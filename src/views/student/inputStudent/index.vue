@@ -6,12 +6,12 @@
         <div style="width:400px;margin: 0 auto; line-height: 50px;" :style="{marginTop: ((client.height-45)/4) + 'px'}">
           <el-row>
             <el-col :span="6"><span class="text_css">姓名：</span></el-col>
-            <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
+            <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="studentEntity.name"></el-input>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
-            <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="身份证号" v-model="student.idNumber"></el-input></el-col>
+            <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="身份证号" v-model="studentEntity.idNumber"></el-input></el-col>
           </el-row>
           <el-row :gutter="20" style="margin-top: 30px;">
             <el-col :span="3">&nbsp;</el-col>
@@ -31,93 +31,175 @@
         录入详细信息
         <div style="float: right"><el-button type="primary" @click="convertClick('basic')">返  回</el-button></div>
       </el-card>
-      <el-row :gutter="5" :style="{height: (client.height - 110) + 'px'}">
+      <el-row :gutter="5">
         <el-col :span="12">
-          <el-card>
+          <el-card :style="{height: (client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
+            <el-row>
+              <el-row :gutter="20">
+                <el-col :span="12" >
 
-            <el-row :gutter="20">
-              <el-col :span="12" style="line-height: 50px">
+                  <!-- 档案号 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">档案号：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model.number="studentEntity.archivesNumber"></el-input></el-col>
+                  </el-row>
 
-                <!-- 姓名 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">姓名：</span></el-col>
-                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input></el-col>
-                </el-row>
+                  <!-- 姓名 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">姓名：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="studentEntity.name"></el-input></el-col>
+                  </el-row>
 
-                <!-- 身份证号 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
-                  <el-col :span="18">
-                    <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" maxlength="18" @change="generateInfo" v-model="student.idNumber"></el-input>
-                  </el-col>
-                </el-row>
+                  <!-- 身份证号 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
+                    <el-col :span="18">
+                      <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @change="generateInfo" v-model="studentEntity.idNumber"></el-input>
+                    </el-col>
+                  </el-row>
 
+                  <!-- 联系电话 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="studentEntity.mobile"></el-input></el-col>
+                  </el-row>
 
-                <!-- 档案号 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">档案号：</span></el-col>
-                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model.number="student.archivesNumber"></el-input></el-col>
-                </el-row>
+                  <!-- 性别 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">性别：</span></el-col>
+                    <el-col :span="18">
+                      <el-radio v-model="studentEntity.sex" label="1">男</el-radio>
+                      <el-radio v-model="studentEntity.sex" label="0">女</el-radio>
+                    </el-col>
+                  </el-row>
 
-                <!-- 联系电话 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系电话" v-model.number="student.mobile"></el-input></el-col>
-                </el-row>
+                  <!-- 生日 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">生日：</span></el-col>
+                    <el-col :span="18"><el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker></el-col>
+                  </el-row>
 
-                <!-- 性别 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">性别：</span></el-col>
-                  <el-col :span="18">
-                    <el-radio v-model="student.sex" label="1">男</el-radio>
-                    <el-radio v-model="student.sex" label="0">女</el-radio>
-                  </el-col>
-                </el-row>
+                  <!-- 所学车型 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">所学车型：</span></el-col>
+                    <el-col :span="18"><dict v-model="studentEntity.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
+                  </el-row>
 
-                <!-- 生日 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">生日：</span></el-col>
-                  <el-col :span="18"><el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker></el-col>
-                </el-row>
-
-                <!-- 报考车型 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">报考车型：</span></el-col>
-                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="报考车型"></dict></el-col>
-                </el-row>
-
-                <!-- 校区 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">校区：</span></el-col>
-                  <el-col :span="18"><dict v-model="student.moctorcycleType" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict></el-col>
-                </el-row>
-
-                <!-- 联系住址 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">联系住址：</span></el-col>
-                  <el-col :span="18"><dict v-model="student.contactAddress" dictType="dict_campus" style="width: 100%;"  placeholder="联系住址"></dict></el-col>
-                </el-row>
-
-                <!-- 入学时间 -->
-                <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">入学时间：</span></el-col>
-                  <el-col :span="18"><el-date-picker type="date" placeholder="入学时间"  style="width: 100%" v-model="student.enrolTime"></el-date-picker></el-col>
-                </el-row>
+                  <!-- 来源渠道 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">来源渠道：</span></el-col>
+                    <el-col :span="18"><dict v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict></el-col>
+                  </el-row>
 
 
-              </el-col>
+                  <!-- 入学日期 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">入学日期：</span></el-col>
+                    <el-col :span="18"><el-date-picker type="date" placeholder="入学日期"  style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker></el-col>
+                  </el-row>
 
-              <el-col :span="12">
 
-              </el-col>
+                  <!-- 报名点 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">报名点：</span></el-col>
+                    <el-col :span="18"><dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict></el-col>
+                  </el-row>
 
+
+                  <!-- 所在单位 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">所在单位：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model.number="studentEntity.company"></el-input></el-col>
+
+                  </el-row>
+
+
+
+
+
+                </el-col>
+
+                <el-col :span="12">
+
+                  <el-row>
+                    <el-col :span="6"> &nbsp;</el-col>
+                    <el-col  :span="18">
+                      <div style="height: 250px;width: 200px;margin: 0 auto">
+                        <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                          <img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="avatar">
+                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+
+                      </div>
+                    </el-col>
+                  </el-row>
+
+                  <!-- 微信 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">微信：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="微信" :maxlength="11" v-model.number="studentEntity.wechat"></el-input></el-col>
+                  </el-row>
+
+
+                  <!-- 校区 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">校区：</span></el-col>
+                    <el-col :span="18"><dict v-model="studentEntity.homeAddress" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict></el-col>
+                  </el-row>
+
+                  <!-- 联系地址 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">联系地址：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model.number="studentEntity.contactAddress"></el-input></el-col>
+                  </el-row>
+
+
+                  <!-- 入学期数 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">入学期数：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model.number="studentEntity.periods"></el-input></el-col>
+                  </el-row>
+
+                  <!-- 电子邮箱 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">电子邮箱：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model.number="studentEntity.email"></el-input></el-col>
+                  </el-row>
+
+                  <!-- 所属职位 -->
+                  <el-row style="height: 50px">
+                    <el-col :span="6"><span class="text_css">所属职位：</span></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model.number="studentEntity.position"></el-input></el-col>
+                  </el-row>
+
+                </el-col>
+
+              </el-row>
+
+              <el-row style="height: 50px">
+                <el-col :span="3"><span class="text_css">介绍人1：</span></el-col>
+                <el-col :span="5"><org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select></el-col>
+                <el-col :span="1"><div class="text_css" style="float: none;margin: 0 auto;text-align:center;">--</div></el-col>
+                <el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model.number="studentEntity.introducer"></el-input></el-col>
+              </el-row>
+
+              <el-row style="height: 50px">
+                <el-col :span="3"><span class="text_css">介绍人2：</span></el-col>
+                <el-col :span="16"></el-col>
+              </el-row>
             </el-row>
-
-
+            <el-row>
+              <el-col>
+                <div style="width: 163px;margin: 0 auto">
+                  <el-button type="primary">建 档</el-button>
+                  <el-button>重 置</el-button>
+                </div>
+              </el-col>
+            </el-row>
           </el-card>
         </el-col>
         <el-col :span="12">
-          <el-card>
+          <el-card :style="{height: (client.height - 110) + 'px'}" style="overflow: auto">
 
           </el-card>
         </el-col>
@@ -129,25 +211,27 @@
 <script>
   import { addObj } from '@/api/student/student'
   import Dict from '@/components/Dict'
+  import OrgSelect from '@/components/OrgSelect'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
     components: {
-      Dict
+      Dict,
+      OrgSelect
     },
     directives: {
       waves
     },
     data() {
       return {
-        student: {
+        studentEntity: {
           aboardTime: null,
           addDrive: null,
           age: null,
           archivesNumber: null,
           arrearage: null,
-          avatar: null,
+          avatar: '',
           birthday: null,
           company: null,
           contactAddress: null,
@@ -202,7 +286,7 @@
           1: '男',
           0: '女'
         }
-        return typeMap[this.student.sex]
+        return typeMap[this.studentEntity.sex]
       }
     },
     methods: {
@@ -211,89 +295,68 @@
         this.showModule = stare
         // 解析身份证信息
         this.generateInfo()
-        console.log(this.student.sex)
+        console.log(this.studentEntity.sex)
       },
       reset() {
-        this.student = {}
+        this.studentEntity = {}
       },
       getDict(val) {
       },
       // 添加
       add() {
-        addObj(this.student).then(response => {
+        addObj(this.studentEntity).then(response => {
         })
       },
       generateInfo() {
-        if (this.student.idNumber.length === 18) {
-          this.student.birthday = this.student.idNumber.substring(6, 10) + '-' + this.student.idNumber.substring(10, 12) + '-' + this.student.idNumber.substring(12, 14)
-          if (this.student.idNumber.substr(16, 1) % 2 === 1) this.student.sex = '1'
-          if (this.student.idNumber.substr(16, 1) % 2 === 0) this.student.sex = '0'
+        if (this.studentEntity.idNumber.length === 18) {
+          this.studentEntity.birthday = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
+          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 1) this.studentEntity.sex = '1'
+          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 0) this.studentEntity.sex = '0'
         }
+      },
+      orgClick() {},
+      handleAvatarSuccess(res, file) {
+        this.studentEntity.avatar = URL.createObjectURL(file.raw)
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 / 1024 < 2
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!')
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isJPG && isLt2M
       }
     }
   }
 </script>
 
 <style>
-
-  .img{
-    width: 100px;
-    height: 100px;
-    padding: 0;
-    border-radius: 150px;
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
     overflow: hidden;
   }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
   }
-  .clearfix:after {
-    clear: both
-  }
-  .subject{
-    width: 140px;
-    height: 30px;
-    display:block;
-    margin: 10px auto;
-    color: rgb(124,124,124);
-    background: none;
-    border: none;
-    font-size: 14px;
-  }
-  .pass{
-    width: 70px;
-    height: 30px;
-    border-radius: 10px;
-    color: #fff;
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 200px;
+    height: 230px;
+    line-height: 230px;
     text-align: center;
-    border: none;
-    background-color: rgb(66,185,131);
   }
-  .noPass{
-    width: 70px;
-    height: 30px;
-    border-radius: 10px;
-    color:#fff;
-    border: none;
-    text-align: center;
-    background-color: rgb(177,177,177);
-  }
-  .cost{
-    width: 140px;
-    height: 30px;
-    display:block;
-    margin: 10px auto;
-    text-align: left;
-    color: rgb(124,124,124);
-    background: none;
-    border: none;
-    font-size: 14px;
-  }
-  .image {
-    max-width: 200px;
-    max-height: 200px;
+  .avatar {
+    width: 200px;
+    height: 230px;
+    display: block;
   }
 .text_css{
   color:#495060;

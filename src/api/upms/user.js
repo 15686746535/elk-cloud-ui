@@ -8,6 +8,8 @@ export function fetchList(query) {
   })
 }
 export function userList(query) {
+  console.log('========================================================================================================================================')
+  console.log(query)
   return request({
     url: '/upms/user/userList',
     method: 'get',

@@ -23,8 +23,8 @@
               </el-select>
               <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
               <dict v-model="listQuery.source" dictType="dict_enrolSite" style="width: 200px;"  placeholder="报名点"  ></dict>
-              <dict v-model="listQuery.fieldCoach" dictType="dict_sex" style="width: 200px;"  placeholder="场训教练"  ></dict>
-              <dict v-model="listQuery.roadCoach" dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
+              <Coach v-model="listQuery.fieldCoach" coachType="field" style="width: 200px;"  placeholder="场训教练"  ></Coach>
+              <Coach v-model="listQuery.roadCoach" coachType="road" style="width: 200px;"  placeholder="路训教练"  ></Coach>
               <dict v-model="listQuery.source" dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
@@ -569,10 +569,10 @@
 
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
-  import { userList } from '@/api/upms/user'
   import { examFetchList, getExam } from '@/api/student/examnote'
   import OrgSelect from '@/components/OrgSelect'
   import OrgTree from '@/components/OrgTree'
+  import Coach from '@/components/Coach'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
@@ -582,7 +582,8 @@
     components: {
       OrgTree,
       Dict,
-      OrgSelect
+      OrgSelect,
+      Coach
     },
     directives: {
       waves
@@ -660,12 +661,7 @@
           value: 4,
           label: '科目四'
         }],
-        studentEntity: {},
-        condition: {
-          iscoach: null
-        },
-        fieldCoach: [],
-        roadCoach: []
+        studentEntity: {}
       }
     },
     created() {
@@ -692,21 +688,6 @@
         this.listQuery.page = 1
         this.listQuery.orgId = data.id
         this.getList()
-      },
-      /* 获取教练列表 */
-      getCoachList() {
-        this.condition.iscoach = 16
-        userList(this.condition).then(response => {
-          console.log('=====================   场训教练   =======================')
-          console.log(response.data.data)
-          // this.fieldCoach = response.data.data
-        })
-        this.condition.iscoach = 32
-        userList(this.condition).then(response => {
-          console.log('=====================   场训教练   =======================')
-          console.log(response.data.data)
-          // this.roadCoach = response.data.data
-        })
       },
       // 字典
       getDict(val) {

@@ -59,6 +59,10 @@ export function setComponent(myMenus) {
   console.log(myMenus)
   console.log(JSON.stringify(myMenus))
   myMenus.forEach(function(item, index) {
+    item.meta = {
+      title: item.name,
+      icon: item.icon
+    }
     if (item.component === 'Layout') {
       item.component = Layout
     } else {

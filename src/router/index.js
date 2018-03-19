@@ -55,9 +55,6 @@ export const asyncRouterMap = [
 ]
 
 export function setComponent(myMenus) {
-  console.log('myMenus<====================')
-  console.log(myMenus)
-  console.log(JSON.stringify(myMenus))
   myMenus.forEach(function(item, index) {
     item.meta = {
       title: item.name,
@@ -70,6 +67,5 @@ export function setComponent(myMenus) {
     }
     setComponent(item.children)
   })
-  console.log('end')
   return myMenus
 }

@@ -1,73 +1,77 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div v-show="showModule=='list'">
-      <el-row :gutter="10">
-        <el-col :span="24" style='margin-top:15px;width: 100%'>
-          <div class="filter-container" style="float: left">
-            |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>
-          </div>
-          <div style="float: right">
-            <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
-          </div>
-
-
-        </el-col>
-
-        <el-col :span="4" style='margin-top:15px; text-align: center'>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <div v-show="showModule=='list'" style="height: 100%">
+      <el-row :gutter="5">
+        <el-col class="org-tree-left">
           <el-card>
-            <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-            </el-row>
-
-            <!-- 分割线 -->
-            <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
-
-            <el-row  style="overflow: auto"><org-tree @node-click="searchByOrg" ></org-tree>
-            </el-row>
+            <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
+            <org-tree @node-click="searchByOrg" ></org-tree>
           </el-card>
         </el-col>
-        <el-col :span="20" style='margin-top:15px;'>
-          <el-card>
-            <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                      highlight-current-row style="width: 100%">
+
+        <el-col :style="{width: (client.width-250) + 'px'}">
+          <el-card body-style="padding:10px 20px;" style="height: 70px;line-height: 50px">
+            <!--<div style="float: left">-->
+              <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>-->
+            <!--</div>-->
+
+            <div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">
+              <div @click="handleSubject('2',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
+              <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
+              <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目三</div>
+              <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>-->
+            </div>
+            <div style="float: right">
+              <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+              <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
+            </div>
+          </el-card>
+          <el-card style="margin-top: 5px;"  :style="{height: (client.height-115) + 'px'}">
+
+            <el-table  :height="(client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
               <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
               <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-              <el-table-column label="姓名">
+              <el-table-column align="center" label="姓名">
                 <template slot-scope="scope">
                   <span>{{scope.row.name}}</span>
                 </template>
               </el-table-column>
-              <el-table-column  width="165px" label="身份证">
+              <el-table-column align="center" width="165px" label="身份证">
                 <template slot-scope="scope">
                   <span>{{scope.row.idNumber}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="性别">
+              <el-table-column align="center" label="性别">
                 <template slot-scope="scope">
                   <span>{{scope.row.sex | sexFilter}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="车型">
+              <el-table-column align="center" label="车型">
                 <template slot-scope="scope">
                   <span>{{scope.row.moctorcycleType}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="电话">
+              <el-table-column align="center" label="电话">
                 <template slot-scope="scope">
                   <span>{{scope.row.mobile}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="科目">
+              <el-table-column align="center" label="期数">
                 <template slot-scope="scope">
-                  <span>{{scope.row.subject}}</span>
+                  <span>{{scope.row.periods}}</span>
                 </template>
               </el-table-column>
-              <el-table-column width="210px" label="是否回访">
+              <!--<el-table-column align="center" width="210px" label="是否回访">
                 <template slot-scope="scope">
                   <el-tag class="subject">
                     <el-tag v-if="scope.row.rvisitFlag == 1" class="pass">已回访</el-tag>
                     <el-tag v-else class="noPass">未回访</el-tag>
                   </el-tag>
+                </template>
+              </el-table-column>-->
+              <el-table-column align="center" label="通过时间">
+                <template slot-scope="scope">
+                  <span>{{scope.row.passTime | parseTime('{y}-{m}-{d}')}}</span>
                 </template>
               </el-table-column>
 
@@ -88,6 +92,7 @@
               </el-pagination>
             </div>
           </el-card>
+
         </el-col>
       </el-row>
     </div>
@@ -109,6 +114,7 @@
   import { fetchList, getObj } from '@/api/student/rvisitstudent'
   import { removeAllSpace } from '@/utils/validate'
   import OrgTree from '@/components/OrgTree'
+  import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
@@ -129,7 +135,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          orgId: ''
+          subject: '2'
         },
         dialogStatus: ''
       }
@@ -137,10 +143,25 @@
     created() {
       this.getList()
     },
+    computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ]),
+      sexVO() {
+        const typeMap = {
+          1: '男',
+          0: '女'
+        }
+        return typeMap[this.student.sex]
+      }
+    },
     methods: {
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
+          console.log('============== 回访信息 =============')
+          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -177,13 +198,25 @@
       },
       handleFilter() {
         this.listQuery.page = 1
-        this.getUserList()
+        this.getList()
       },
       // 根据部门id查询员工
       searchByOrg(data) {
         console.log('=====================   根据部门id查询员工信息   =======================')
         this.listQuery.page = 1
         this.listQuery.orgId = data.id
+        this.getList()
+      },
+      // 根据科目查询回访
+      handleSubject(field, e) {
+        this.listQuery.page = 1
+        this.listQuery.subject = field
+        this.listQuery.condition = null
+        var a = document.getElementsByClassName('subjectBtn')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('subjectBtn_selected')
+        }
+        e.currentTarget.classList.add('subjectBtn_selected')
         this.getList()
       }
     }
@@ -218,5 +251,35 @@
     border: none;
     text-align: center;
     background-color: rgb(177,177,177);
+  }
+  .subjectBtn{
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    margin:0 -3px;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 84px;
+    color: #409eff;
+    background: #ecf5ff;
+    border: 1px solid #b3d8ff;
+  }
+  .subjectBtn:hover{
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
+  }
+  .subjectBtn_selected{
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
   }
 </style>

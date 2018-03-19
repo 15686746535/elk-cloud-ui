@@ -42,7 +42,7 @@
                 <el-col :span="10">
                   <el-row><img width="100%" height="100%" :src="scope.row.vehicleEntity.vehiclePhoto"></el-row>  <!-- 车辆图片 -->
                 </el-col>
-                <el-col style="text-align: left;color: #868686;" :span="16">
+                <el-col style="text-align: left;color: #868686;" :span="14">
                   <el-row style="margin: 12px 0;">车辆牌照：{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.plateNumber}}</el-row>
                   <el-row style="margin: 12px 0;">使用责任人：{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.name}}</el-row>
                   <el-row style="margin: 12px 0;">所属机构：{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.affiliation}}</el-row>

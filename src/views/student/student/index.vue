@@ -32,44 +32,85 @@
           </el-card>
 
           <el-card :style="{height: (client.height-170) + 'px'}">
-              <el-table :data="stuList.length == 0?null:stuList" :height="(client.height-260)" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
-                <el-table-column align="center" label="基础信息" min-width="390">
+              <el-table :data="stuList" :height="(client.height-260)" highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
+                <el-table-column align="center" label="头像" min-width="170px">
                   <template slot-scope="scope">
                     <!-- 头像 -->
-                    <el-row :gutter="15">
-                      <el-col :span="10">
-                        <el-row>
-                          <el-tag class="img">
-                            <img :src="scope.row.avatar" class="img">
-
-                          </el-tag>
-                        </el-row>
-                        <el-row style="line-height: 25px; text-align: center">
-                          姓名：{{scope.row.name}}
-                          <br/>
-                          手机号：{{scope.row.mobile}}
-                          <br/>
-                        </el-row>
-                      </el-col>
-                      <!-- 员工信息 -->
-                      <el-col :span="14" style="line-height: 25px;text-align: left">
-                        档案号：{{scope.row.archivesNumber}}
-                        <br/>
-                        身份证：{{scope.row.idNumber}}
-                        <br/>
-                        介绍人：{{scope.row.introducer}}
-                        <!-- 分割线 -->
-                        <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
-                        入学日期：{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}
-                        <br/>
-                        期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.moctorcycleType}}
-                        <br/>
-                        来源渠道：{{scope.row.source}}
-                      </el-col>
-                    </el-row>
+                    <el-tag class="img">
+                      <img :src="scope.row.avatar" class="img">
+                    </el-tag>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="科目情况" min-width="240">
+                <el-table-column align="center" label="个人信息" min-width="230px">
+                  <template slot-scope="scope" >
+                    <!-- 个人信息 -->
+                    <el-col style=" line-height: 25px">
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">姓名：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.name}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">手机号：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.mobile}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">身份证：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.idNumber}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">介绍人：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.introducer}}</el-col>
+                      </el-row>
+                    </el-col>
+                  </template>
+                </el-table-column>
+
+                <el-table-column align="center" label="入学信息" min-width="230px">
+                  <template slot-scope="scope">
+                    <el-col style=" line-height: 25px">
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">档案号：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.archivesNumber}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">入学日期：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">期数：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.periods}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">来源渠道：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.source}}</el-col>
+                      </el-row>
+                    </el-col>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="培训信息" min-width="230px">
+                  <template slot-scope="scope">
+                    <el-col style=" line-height: 25px">
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">车型：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.moctorcycleType}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">培训场地：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.campus}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">报名点：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolSite}}</el-col>
+                      </el-row>
+                      <!--<el-row style="margin: 12px 0;" :gutter="10">-->
+                        <!--<el-col :span="7" style="color: #7c7c7c;font-size: 16px;text-align: left;">来源渠道：</el-col>-->
+                        <!--<el-col :span="17" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.source}}</el-col>-->
+                      <!--</el-row>-->
+                    </el-col>
+                  </template>
+                </el-table-column>
+
+                <el-table-column align="center" label="科目信息" min-width="200px">
                   <template slot-scope="scope">
                     <el-tag class="subject">
                       科目一：
@@ -94,33 +135,33 @@
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="教练" min-width="240">
-                  <template slot-scope="scope">
+                <!--<el-table-column align="center" label="教练" min-width="240">-->
+                  <!--<template slot-scope="scope">-->
 
-                    <el-tag class="cost">
-                      场训教练：{{scope.row.fieldCoachName}}
-                    </el-tag>
-                    <el-tag class="cost">
-                      路训教练：{{scope.row.roadCoachName}}
-                    </el-tag>
+                    <!--<el-tag class="cost">-->
+                      <!--场训教练：{{scope.row.fieldCoachName}}-->
+                    <!--</el-tag>-->
+                    <!--<el-tag class="cost">-->
+                      <!--路训教练：{{scope.row.roadCoachName}}-->
+                    <!--</el-tag>-->
 
-                  </template>
-                </el-table-column>
-                <el-table-column align="center" label="费用信息" min-width="240">
-                  <template slot-scope="scope">
+                  <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column align="center" label="费用信息" min-width="240">-->
+                  <!--<template slot-scope="scope">-->
 
-                    <el-tag class="cost">
-                      学费：
-                    </el-tag>
-                    <el-tag class="cost">
-                      补考费：
-                    </el-tag>
-                    <el-tag class="cost">
-                      合场费：
-                    </el-tag>
+                    <!--<el-tag class="cost">-->
+                      <!--学费：-->
+                    <!--</el-tag>-->
+                    <!--<el-tag class="cost">-->
+                      <!--补考费：-->
+                    <!--</el-tag>-->
+                    <!--<el-tag class="cost">-->
+                      <!--合场费：-->
+                    <!--</el-tag>-->
 
-                  </template>
-                </el-table-column>
+                  <!--</template>-->
+                <!--</el-table-column>-->
               </el-table>
 
 
@@ -528,6 +569,7 @@
 
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
+  import { userList } from '@/api/upms/user'
   import { examFetchList, getExam } from '@/api/student/examnote'
   import OrgSelect from '@/components/OrgSelect'
   import OrgTree from '@/components/OrgTree'
@@ -618,11 +660,17 @@
           value: 4,
           label: '科目四'
         }],
-        studentEntity: {}
+        studentEntity: {},
+        condition: {
+          iscoach: null
+        },
+        fieldCoach: [],
+        roadCoach: []
       }
     },
     created() {
       this.getList()
+      this.getCoachList()
     },
     computed: {
       ...mapGetters([
@@ -644,6 +692,21 @@
         this.listQuery.page = 1
         this.listQuery.orgId = data.id
         this.getList()
+      },
+      /* 获取教练列表 */
+      getCoachList() {
+        this.condition.iscoach = 16
+        userList(this.condition).then(response => {
+          console.log('=====================   场训教练   =======================')
+          console.log(response.data.data)
+          // this.fieldCoach = response.data.data
+        })
+        this.condition.iscoach = 32
+        userList(this.condition).then(response => {
+          console.log('=====================   场训教练   =======================')
+          console.log(response.data.data)
+          // this.roadCoach = response.data.data
+        })
       },
       // 字典
       getDict(val) {
@@ -715,8 +778,8 @@
             type: 'success',
             duration: 2000
           })
+          this.edit = false
         })
-        this.edit = false
       },
       // 搜索
       search() {
@@ -795,8 +858,8 @@
 <style>
 
   .img{
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     padding: 0;
     border-radius: 150px;
     overflow: hidden;

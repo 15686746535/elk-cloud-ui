@@ -36,3 +36,36 @@ export default new Router({
   // scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+export const asyncRouterMap = [
+  {
+    menuId: 1,
+    path: '/upms',
+    component: Layout,
+    name: '系统管理',
+    hidden: false,
+    meta: {
+      title: '系统管理',
+      icon: 'table'
+    },
+    children: [
+      { menuId: 2, path: 'user', component: _import('upms/user/index'), name: '用户管理', meta: { title: '用户管理', icon: 'user' }},
+      { menuId: 3, path: 'menu', component: _import('upms/menu/index'), name: '菜单管理', meta: { title: '菜单管理', icon: 'tree' }},
+    ]
+  }
+]
+
+export function setComponent(myMenus) {
+  console.log('myMenus<====================')
+  console.log(myMenus)
+  console.log(JSON.stringify(myMenus))
+  myMenus.forEach(function(item, index) {
+    if (item.component === 'Layout') {
+      item.component = Layout
+    } else {
+      item.component = _import(item.component)
+    }
+    setComponent(item.children)
+  })
+  console.log('end')
+  return myMenus
+}

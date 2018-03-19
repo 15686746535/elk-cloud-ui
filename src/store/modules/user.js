@@ -17,9 +17,6 @@ const user = {
     SET_REFRESH_TOKEN: (state, rfToken) => {
       state.refresh_token = rfToken
     },
-    SET_INTRODUCTION: (state, introduction) => {
-      state.introduction = introduction
-    },
     SET_NAME: (state, name) => {
       state.name = name
     },

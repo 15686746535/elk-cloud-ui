@@ -10,9 +10,8 @@ export function fetchTree(query) {
 
 // 通过角色查询用户菜单 主页菜单
 export function findMenuByRole(role) {
-  console.log(role)
   return request({
-    url: '/upms/menu/findMenuByRole/' + role,
+    url: '/upms/menu/indexMenuList',
     method: 'get'
   })
 }

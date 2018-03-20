@@ -77,9 +77,7 @@
 
               <el-table-column align="center" width="120px" label="操作">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="success"
-                             @click="update(scope.row)">登记
-                  </el-button>
+                  <el-button size="mini" type="success" @click="update(scope.row)">回 访</el-button>
                 </template>
               </el-table-column>
 
@@ -186,7 +184,7 @@
             this.showModule = 'info'
           })
       },
-      search() {
+      handleFilter() {
         this.listQuery.page = 1
         this.getList()
       },
@@ -197,6 +195,7 @@
         this.showModule = 'list'
       },
       handleFilter() {
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.listQuery.page = 1
         this.getList()
       },

@@ -31,7 +31,7 @@
         default: null
       },
       value: {
-        type: String,
+        type: Number,
         default: null
       },
       result: {
@@ -45,7 +45,7 @@
     },
     watch: {
       result(val) {
-        this.dict = val
+        this.coach = val
       }
     },
     data() {
@@ -79,6 +79,7 @@
         })
       },
       emitChange(value) {
+        if (value === '') value = null
         for (var i = 0; i < this.coachList.length; i++) {
           if (this.coachList[i].userId === value) {
             this.$emit('selectCoach', this.coachList[i])
@@ -86,7 +87,7 @@
         }
         this.$emit('change', value)
       },
-      getDict(did) {
+      getCoach(did) {
 
       }
     }

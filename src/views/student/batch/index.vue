@@ -15,7 +15,7 @@
         <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
         <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
 
-        <el-button type="primary" v-waves @click="search" >搜索</el-button>
+        <el-button type="primary" v-waves @click="handleFilter" >搜索</el-button>
         <el-button @click="handleCreate" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
@@ -353,7 +353,7 @@
           }
         })
       },
-      search() {
+      handleFilter() {
         this.listQuery.page = 1
         this.examTimeBlur()
         this.getList()

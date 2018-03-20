@@ -255,7 +255,6 @@
       },
       handleFilter() {
         this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
-        console.log(this.listQuery)
         this.listQuery.page = 1
         this.getList()
       },

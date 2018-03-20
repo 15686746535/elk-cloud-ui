@@ -24,7 +24,7 @@
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
                 <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-                <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
+                <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
               </div>
             </el-card>
           <el-card :style="{height: (client.height-175) + 'px'}">
@@ -509,7 +509,7 @@
         this.edit = false
       },
       // 搜索
-      search() {
+      handleFilter() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
         console.log(this.listQuery)

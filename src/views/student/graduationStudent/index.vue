@@ -27,7 +27,7 @@
               <dict v-model="listQuery.roadCoach" dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
               <dict v-model="listQuery.source" dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
+              <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-card>
 
@@ -760,7 +760,7 @@
         })
       },
       // 搜索
-      search() {
+      handleFilter() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)

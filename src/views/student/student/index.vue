@@ -27,7 +27,7 @@
               <Coach v-model="listQuery.roadCoach" coachType="road" style="width: 200px;"  placeholder="路训教练"  ></Coach>
               <dict v-model="listQuery.source" dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
+              <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-card>
 
@@ -46,19 +46,19 @@
                     <!-- 个人信息 -->
                     <el-col style=" line-height: 25px">
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">姓名：</el-col>
+                        <el-col :span="8" class="table_text">姓名：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.name}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">手机号：</el-col>
+                        <el-col :span="8" class="table_text">手机号：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.mobile}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">身份证：</el-col>
+                        <el-col :span="8" class="table_text">身份证：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.idNumber}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">介绍人：</el-col>
+                        <el-col :span="8" class="table_text">介绍人：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.introducer}}</el-col>
                       </el-row>
                     </el-col>
@@ -69,43 +69,21 @@
                   <template slot-scope="scope">
                     <el-col style=" line-height: 25px">
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">档案号：</el-col>
+                        <el-col :span="8" class="table_text">档案号：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.archivesNumber}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">入学日期：</el-col>
+                        <el-col :span="8" class="table_text">入学日期：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">期数：</el-col>
+                        <el-col :span="8" class="table_text">期数：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.periods}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">来源渠道：</el-col>
+                        <el-col :span="8" class="table_text">来源渠道：</el-col>
                         <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.source}}</el-col>
                       </el-row>
-                    </el-col>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center" label="培训信息" min-width="230px">
-                  <template slot-scope="scope">
-                    <el-col style=" line-height: 25px">
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">车型：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.moctorcycleType}}</el-col>
-                      </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">培训场地：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.campus}}</el-col>
-                      </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" style="color: #7c7c7c;font-size: 14px;text-align: left;">报名点：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolSite}}</el-col>
-                      </el-row>
-                      <!--<el-row style="margin: 12px 0;" :gutter="10">-->
-                        <!--<el-col :span="7" style="color: #7c7c7c;font-size: 16px;text-align: left;">来源渠道：</el-col>-->
-                        <!--<el-col :span="17" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.source}}</el-col>-->
-                      <!--</el-row>-->
                     </el-col>
                   </template>
                 </el-table-column>
@@ -134,6 +112,31 @@
                     </el-tag>
                   </template>
                 </el-table-column>
+
+                <el-table-column align="center" label="培训信息" min-width="230px">
+                  <template slot-scope="scope">
+                    <el-col style=" line-height: 25px">
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" class="table_text">车型：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.moctorcycleType}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" class="table_text">培训场地：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.campus}}</el-col>
+                      </el-row>
+                      <el-row style="margin: 12px 0;" :gutter="10">
+                        <el-col :span="8" class="table_text">报名点：</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolSite}}</el-col>
+                      </el-row>
+                      <!--<el-row style="margin: 12px 0;" :gutter="10">-->
+                        <!--<el-col :span="7" style="color: #7c7c7c;font-size: 16px;text-align: left;">来源渠道：</el-col>-->
+                        <!--<el-col :span="17" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.source}}</el-col>-->
+                      <!--</el-row>-->
+                    </el-col>
+                  </template>
+                </el-table-column>
+
+
 
                 <!--<el-table-column align="center" label="教练" min-width="240">-->
                   <!--<template slot-scope="scope">-->
@@ -666,7 +669,6 @@
     },
     created() {
       this.getList()
-      this.getCoachList()
     },
     computed: {
       ...mapGetters([
@@ -763,7 +765,7 @@
         })
       },
       // 搜索
-      search() {
+      handleFilter() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
@@ -908,6 +910,13 @@
   .text_css{
     color:#495060;
     font-size: 16px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+  }
+  .table_text{
+    color: #7c7c7c;font-size: 14px;text-align: left;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */

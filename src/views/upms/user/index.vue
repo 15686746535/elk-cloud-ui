@@ -629,7 +629,6 @@
       handleFilter() {
         this.listQuery.page = 1
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
-        console.log(this.listQuery.condition)
         this.getUserList()
       },
       handleClick(tab, event) {

@@ -204,7 +204,7 @@
           <el-card :style="{height: (client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;line-height: 50px;overflow-y: auto;box-shadow: none;">
             <!-- 基本信息 -->
             <el-row class="title">基本信息</el-row>
-            <el-row style="height: 220px; padding: 0 10px;margin-top: 10px">
+            <el-row style="height: 260px; padding: 0 10px;margin-top: 10px">
               <el-col :span="12">
                 <!-- 档案号 -->
                 <el-row style="height: 50px;">
@@ -224,6 +224,27 @@
                   </el-col>
                 </el-row>
 
+                <!-- 身份证号 -->
+                <el-row style="height: 50px;">
+                  <el-col :span="7"><span class="text_css">身份证号：</span></el-col>
+                  <el-col :span="17">
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @blur="generateInfo" v-model="student.idNumber"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
+                  </el-col>
+                </el-row>
+
+                <!-- 性别 -->
+                <el-row style="height: 50px;">
+                  <el-col :span="7" ><div class="text_css">性别：</div></el-col>
+                  <el-col :span="17" >
+                    <template v-if="edit">
+                      <el-radio v-model="student.sex" label="1">男</el-radio>
+                      <el-radio v-model="student.sex" label="0">女</el-radio>
+                    </template>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
+                  </el-col>
+                </el-row>
+
                 <!-- 生日 -->
                 <el-row style="height: 50px;">
                   <el-col :span="7"><span class="text_css">生日：</span></el-col>
@@ -234,22 +255,14 @@
                   </el-col>
                 </el-row>
 
-                <!-- 身份证号 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7"><span class="text_css">身份证号：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @change="generateInfo" v-model="student.idNumber"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
-                  </el-col>
-                </el-row>
-
               </el-col>
               <el-col :span="12">
                 <el-row>
-                  <el-upload style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                  <el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="student.avatar" :src="student.avatar" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                   </el-upload>
+                  <img v-else :src="student.avatar" class="avatar_img">
                 </el-row>
               </el-col>
             </el-row>
@@ -257,7 +270,7 @@
 
             <!-- 入学信息 -->
             <el-row class="title">入学信息</el-row>
-            <el-row :gutter="10" style="height: 160px; padding: 0 10px;margin-top: 10px">
+            <el-row :gutter="10" style="height: 210px; padding: 0 10px;margin-top: 10px">
               <el-col :span="12">
 
                 <!-- 入学日期 -->
@@ -285,6 +298,15 @@
                   <el-col :span="17">
                     <dict v-if="edit" v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.moctorcycleType}}</div>
+                  </el-col>
+                </el-row>
+
+                <!-- 场训教练 -->
+                <el-row style="height: 50px">
+                  <el-col :span="7"><span class="text_css">场训教练：</span></el-col>
+                  <el-col :span="17">
+                    <Coach v-if="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.fieldCoachName}}</div>
                   </el-col>
                 </el-row>
 
@@ -316,6 +338,15 @@
                   <el-col :span="17">
                     <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
+                  </el-col>
+                </el-row>
+
+                <!-- 路训教练 -->
+                <el-row style="height: 50px">
+                  <el-col :span="7"><span class="text_css">路训教练：</span></el-col>
+                  <el-col :span="17">
+                    <Coach v-if="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.roadCoachName}}</div>
                   </el-col>
                 </el-row>
 
@@ -486,7 +517,7 @@
                     <el-col :span="6"> &nbsp;</el-col>
                     <el-col  :span="18">
                       <div style="height: 250px;width: 200px;margin: 0 auto">
-                        <el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="AddBeforeAvatarUpload">
+                        <el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">
                           <img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">
                           <i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>
                         </el-upload>
@@ -697,9 +728,8 @@
       // 双击行  编辑
       editlist(val) {
         console.log('====================== 正在进入单个学员编辑 =====================')
-        console.log(val)
         getObj(val.studentId).then(response => {
-          console.log(response.data)
+          console.log(response.data.data)
           this.student = response.data.data
         })
         examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
@@ -812,18 +842,6 @@
       AddHandleAvatarSuccess(res, file) {
         this.studentEntity.avatar = URL.createObjectURL(file.raw)
       },
-      AddBeforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 < 2
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
-        }
-        return isJPG && isLt2M
-      },
       AddGenerateInfo() {
         if (this.studentEntity.idNumber.length === 18) {
           this.studentEntity.birthday = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
@@ -833,6 +851,16 @@
       },
       reset() {
         this.studentEntity = {}
+      },
+      getFieldCoach(coach) {
+        console.log('============ 教练 =============')
+        console.log(coach)
+        this.student.fieldCoachName = coach.name
+      },
+      getRoadCoach(coach) {
+        console.log('============ 教练 =============')
+        console.log(coach)
+        this.student.roadCoachName = coach.name
       }
     }
   }
@@ -941,6 +969,16 @@
     text-align: center;
   }
   .avatar {
+    width: 140px;
+    height: 180px;
+    display: block;
+  }
+  .avatar_img {
+    line-height: 180px;
+    position: relative;
+    margin: auto;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
     width: 140px;
     height: 180px;
     display: block;

@@ -65,9 +65,6 @@
         })
       }
     },
-    updated() {
-      console.log('修改了')
-    },
     methods: {
       emitChange(value) {
         for (var i = 0; i < this.dictList.length; i++) {
@@ -76,9 +73,6 @@
           }
         }
         this.$emit('change', value)
-      },
-      getDict(did) {
-
       }
     }
   }

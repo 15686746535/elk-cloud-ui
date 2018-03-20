@@ -483,7 +483,7 @@
                     <el-col :span="6"> &nbsp;</el-col>
                     <el-col  :span="18">
                       <div style="height: 250px;width: 200px;margin: 0 auto">
-                        <el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="AddBeforeAvatarUpload">
+                        <el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">
                           <img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">
                           <i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>
                         </el-upload>
@@ -806,18 +806,6 @@
       orgClick() {},
       AddHandleAvatarSuccess(res, file) {
         this.studentEntity.avatar = URL.createObjectURL(file.raw)
-      },
-      AddBeforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 < 2
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
-        }
-        return isJPG && isLt2M
       },
       AddGenerateInfo() {
         if (this.studentEntity.idNumber.length === 18) {

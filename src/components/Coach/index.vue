@@ -86,9 +86,6 @@
           }
         }
         this.$emit('change', value)
-      },
-      getCoach(did) {
-
       }
     }
   }

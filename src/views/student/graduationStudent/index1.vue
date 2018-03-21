@@ -8,7 +8,7 @@
             <org-tree @node-click="searchByOrg" ></org-tree>
           </el-card>
         </el-col>
-        <el-col :style="{width: (client.width-250) + 'px'}" style="line-height: 50px">
+        <el-col :style="{width: (client.width-225) + 'px'}" style="line-height: 50px">
           <el-card style="margin-bottom: 5px;height: 130px;">
               <div>
                 <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">

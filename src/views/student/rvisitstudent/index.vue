@@ -9,7 +9,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-col :style="{width: (client.width-225) + 'px'}">
           <el-card body-style="padding:10px 20px;" style="height: 70px;line-height: 50px">
             <!--<div style="float: left">-->
               <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>-->
@@ -77,7 +77,7 @@
 
               <el-table-column align="center" width="120px" label="操作">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="success" @click="update(scope.row)">回 访</el-button>
+                  <el-button size="mini" type="success" @click="visitStudent(scope.row)">回 访</el-button>
                 </template>
               </el-table-column>
 
@@ -184,10 +184,6 @@
             this.showModule = 'info'
           })
       },
-      handleFilter() {
-        this.listQuery.page = 1
-        this.getList()
-      },
       delete(id) {
         this.getList()
       },
@@ -217,7 +213,9 @@
         }
         e.currentTarget.classList.add('subjectBtn_selected')
         this.getList()
-      }
+      },
+      /* 回访 */
+      visitStudent() {}
     }
   }
 </script>

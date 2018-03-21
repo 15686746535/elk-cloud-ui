@@ -92,7 +92,7 @@
 <script>
   import waves from '@/directive/waves/index.js'
   import { fetchList } from '@/api/student/student'
-  import { batchSave } from '@/api/student/exambespeak'
+  import { batchsSave } from '@/api/student/exambespeak'
   import { getBatchList, getBatch } from '@/api/student/batch'
   import { mapGetters } from 'vuex'// 水波纹指令
 
@@ -193,7 +193,7 @@
             type: 'warning'
           })
         } else {
-          batchSave(this.examBespeakList).then(response => {
+          batchsSave(this.examBespeakList).then(response => {
             this.$notify({
               title: '成功',
               message: '预约成功',

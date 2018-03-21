@@ -2,10 +2,10 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
-        <div @click="handleSubject('1',$event)" class="subjectBtn subjectBtn_selected" >科目一</div>
-        <div @click="handleSubject('2',$event)" class="subjectBtn" >科目二</div>
-        <div @click="handleSubject('3',$event)" class="subjectBtn" >科目三</div>
-        <div @click="handleSubject('4',$event)" class="subjectBtn" >科目四</div>
+        <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
+        <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
+        <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
+        <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>
         <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
         </el-date-picker>
 
@@ -71,24 +71,24 @@
     <el-dialog  @close="getList" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch"  ref="batch" label-width="100px">
-        <!--<el-form-item label="考试科目">
-          <el-select @blur="setDictType" v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">
-            <el-option
-              v-for="item in subject"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>-->
+        <!--<el-form-item v-show="dialogStatus=='create'" label="考试科目">-->
+          <!--<el-select @blur="setDictType" v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">-->
+            <!--<el-option-->
+              <!--v-for="item in subject"-->
+              <!--:key="item.value"-->
+              <!--:label="item.label"-->
+              <!--:value="item.value">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item label="考试场地">
-          <span v-if="batch.subject != null">
+          <!--<span v-if="batch.subject != null">-->
             <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
             <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
             <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
             <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
-          </span>
-          <span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>
+          <!--</span>-->
+          <!--<span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>-->
         </el-form-item>
         <el-form-item label="人数"  prop="username">
           <el-input v-model="batch.stuCount" placeholder="人数" ></el-input>
@@ -196,7 +196,9 @@
     },
     data() {
       return {
-        batch: {},
+        batch: {
+          subject: '1'
+        },
         list: [],
         total: null,
         listLoading: true,
@@ -389,7 +391,7 @@
           type: 'warning'
         }).then(() => {
           delexambespeak(val.examBespeakId).then(() => {
-            this.see(val.batchId)
+            this.see(val.batchId,this.studentListQuery.state)
             this.$notify({
               title: '成功',
               message: '取消成功',
@@ -440,6 +442,7 @@
       handleSubject(field, e) {
         this.listQuery.page = 1
         this.listQuery.subject = field
+        this.batch.subject = field
         this.listQuery.examField = null
         this.listQuery.interval = []
         this.listQuery.beginTime = null

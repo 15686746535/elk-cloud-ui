@@ -16,9 +16,17 @@ export function addObj(obj) {
   })
 }
 // 添加
+export function batchsSave(obj) {
+  return request({
+    url: '/student/exambespeak/batchsSave',
+    method: 'post',
+    data: obj
+  })
+}
+// 添加
 export function batchSave(obj) {
   return request({
-    url: '/student/exambespeak/batchSave',
+    url: '/student/exambespeak',
     method: 'post',
     data: obj
   })

@@ -9,7 +9,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-col :style="{width: (client.width-225) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
               <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>

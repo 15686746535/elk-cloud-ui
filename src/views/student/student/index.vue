@@ -9,11 +9,11 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-col :style="{width: (client.width-225) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
-              <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
-              <el-select v-model="listQuery.subject" clearable placeholder="科目">
+              <el-select :style="{width: (client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
                 <el-option
                   v-for="item in subject"
                   :key="item.value"
@@ -21,11 +21,11 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
-              <dict v-model="listQuery.source" dictType="dict_enrolSite" style="width: 200px;"  placeholder="报名点"  ></dict>
-              <Coach v-model="listQuery.fieldCoach" coachType="field" style="width: 200px;"  placeholder="场训教练"  ></Coach>
-              <Coach v-model="listQuery.roadCoach" coachType="road" style="width: 200px;"  placeholder="路训教练"  ></Coach>
-              <dict v-model="listQuery.source" dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
+              <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" :style="{width: (client.width/7) + 'px'}"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.source" dictType="dict_enrolSite" :style="{width: (client.width/7) + 'px'}"  placeholder="报名点"  ></dict>
+              <Coach v-model="listQuery.fieldCoach" coachType="field":style="{width: (client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>
+              <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: (client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
+              <dict v-model="listQuery.source" dictType="dict_source" :style="{width: (client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
@@ -201,7 +201,7 @@
         </el-col>
         <el-col style="width: 570px"  :style="{height: (client.height-105) + 'px'}" >
 
-          <el-card :style="{height: (client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;line-height: 50px;overflow-y: auto;box-shadow: none;">
+          <el-card :style="{height: (client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;z-index: 50;line-height: 50px;overflow-y: auto;box-shadow: none;">
             <!-- 基本信息 -->
             <el-row class="title">基本信息</el-row>
             <el-row style="height: 260px; padding: 0 10px;margin-top: 10px">
@@ -368,15 +368,14 @@
                   </el-col>
                 </el-row>
 
-                <!-- 联系地址 -->
+                <!-- 电子邮箱 -->
                 <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">联系地址：</span></el-col>
+                  <el-col :span="7"><span class="text_css">电子邮箱：</span></el-col>
                   <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model.number="student.contactAddress"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model.number="student.email"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.email}}</div>
                   </el-col>
                 </el-row>
-
 
               </el-col>
               <el-col :span="12">
@@ -388,8 +387,38 @@
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.wechat}}</div>
                   </el-col>
                 </el-row>
+
+                <!-- 所属职位 -->
+                <el-row style="height: 50px">
+                  <el-col :span="7"><span class="text_css">所属职位：</span></el-col>
+                  <el-col :span="17">
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model.number="student.position"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.position}}</div>
+                  </el-col>
+                </el-row>
+
               </el-col>
             </el-row>
+
+            <!-- 所属单位 -->
+            <el-row style="height: 50px;margin: 0 5px">
+              <el-col :span="4"><span class="text_css">所属单位：</span></el-col>
+              <el-col :span="17">
+                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model.number="student.company"></el-input>
+                <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.company}}</div>
+              </el-col>
+            </el-row>
+
+
+            <!-- 联系地址 -->
+            <el-row style="height: 50px;margin: 0 5px">
+              <el-col :span="4"><span class="text_css">联系地址：</span></el-col>
+              <el-col :span="17">
+                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model.number="student.contactAddress"></el-input>
+                <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
+              </el-col>
+            </el-row>
+
 
 
             <!-- 费用信息 -->
@@ -399,7 +428,7 @@
 
 
           </el-card>
-          <el-card body-style="padding: 0;" style="height:60px; border-radius:0 0 4px 0;border-top: none;">
+          <el-card body-style="padding: 0;" style="height:60px; border-radius:0 0 4px 0;border-top: none;border-top: 1px solid #dcdfe6;">
             <div v-if="edit && !addInfo" style="width: 163px;margin: 10px auto">
               <el-button type="danger" plain  @click="cancel">取 消</el-button>
               <el-button type="primary" @click="update">修 改</el-button>
@@ -408,7 +437,7 @@
               <el-button type="primary" @click="add">保 存</el-button>
             </div>
             <div v-else style="width: 163px;margin: 10px auto">
-              <el-button type="success">预 约</el-button>
+              <el-button type="success" @click="handleBespeak">预 约</el-button>
               <el-button type="primary" @click="editInfo">编 辑</el-button>
             </div>
 
@@ -505,10 +534,6 @@
 
                   </el-row>
 
-
-
-
-
                 </el-col>
 
                 <el-col :span="12">
@@ -597,6 +622,25 @@
         </el-col>
       </el-row>
     </div>
+    <el-dialog @close="cancel" title="选择批次" width="30%" :visible.sync="dialogFormBespeak">
+      <div :style="{height: (client.height)/3 +'px'}" style="overflow: auto">
+        <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
+          无可预约场次
+        </div>
+        <div v-else v-for="batch in batchList"  style="float: left;margin: 5px">
+          <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
+            {{batch.examTime | subTime}}&nbsp;{{batch.examField}}
+            <!--{{batch.hasReserved}}/{{batch.stuCount}}-->
+            <span>【{{batch.hasReserved}}/{{batch.stuCount}}】</span>
+          </div>
+
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeBespeak">取 消</el-button>
+        <el-button type="primary" @click="createBespeak">确 定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -611,6 +655,8 @@
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
+  import { getBatchList, getBatch } from '@/api/student/batch'
+  import { batchSave } from '@/api/student/exambespeak'
   export default {
     name: 'table_student',
     components: {
@@ -695,7 +741,14 @@
           value: 4,
           label: '科目四'
         }],
-        studentEntity: {}
+        studentEntity: {},
+        dialogFormBespeak: false,
+        batchList: [],
+        examBespeak: {
+          studentId: null,
+          state: 1,
+          batchId: null
+        }
       }
     },
     created() {
@@ -731,6 +784,7 @@
         getObj(val.studentId).then(response => {
           console.log(response.data.data)
           this.student = response.data.data
+          this.examBespeak.studentId = this.student.studentId
         })
         examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
           console.log('====================== getExam =====================')
@@ -808,6 +862,7 @@
       },
       // 取消
       cancel() {
+        this.editlist(this.student)
         this.edit = false
       },
       // 返回列表
@@ -861,7 +916,74 @@
         console.log('============ 教练 =============')
         console.log(coach)
         this.student.roadCoachName = coach.name
-      }
+      },
+      examTimeBlur() {
+        console.log('=============  我正在转换时间范围 ================')
+        if (this.listQuery.interval === null) {
+          this.listQuery.interval = []
+          this.listQuery.beginTime = null
+          this.listQuery.endTime = null
+        }
+        if (this.listQuery.interval.length !== 0) {
+          this.listQuery.beginTime = this.listQuery.interval[0]
+          this.listQuery.endTime = this.listQuery.interval[1]
+        }
+        console.log(this.listQuery.interval)
+        console.log(this.listQuery.beginTime)
+        console.log(this.listQuery.endTime)
+        console.log('=============  完成 ================')
+      },
+      handleBespeak() {
+        console.log(this.student.state)
+        getBatch(this.student.state).then(response => {
+          console.log(' ===================  这是所有批次信息  ==================')
+          console.log(response.data.data)
+          this.batchList = response.data.data
+          // this.total = response.data.data.totalCount
+          this.listOldLoading = false
+        })
+        this.dialogFormBespeak = true
+        this.cleanBatchSelected()
+        this.examBespeak.batchId = null
+      },
+      cleanBatchSelected() {
+        var a = document.getElementsByClassName('batchCss')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('batchCss_selected')
+        }
+      },
+      closeBespeak() {
+        this.examBespeak.batchId = null
+        this.dialogFormBespeak = false
+      },
+      batchClick(e, batch) {
+        this.examBespeak.batchId = batch.batchId
+        var a = document.getElementsByClassName('batchCss')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('batchCss_selected')
+        }
+        e.currentTarget.classList.add('batchCss_selected')
+      },
+      createBespeak() {
+        console.log('================== 这里是添加学员到批次 ====================')
+        console.log(this.examBespeak)
+        if (this.examBespeak.batchId === null) {
+          this.$alert('请先选择报考批次', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        } else {
+          batchSave(this.examBespeak).then(response => {
+            this.$notify({
+              title: '成功',
+              message: '预约成功',
+              type: 'success'
+            })
+            this.dialogFormBespeak = false
+            this.examBespeak.batchId = null
+          })
+        }
+      },
     }
   }
 </script>
@@ -1005,5 +1127,29 @@
     width: 200px;
     height: 230px;
     display: block;
+  }
+  .batchCss{
+       background-color: rgba(64,158,255,.1);
+       display: inline-block;
+       padding: 0 10px;
+       height: 32px;
+       line-height: 30px;
+       font-size: 12px;
+       color: #409eff;
+       border-radius: 4px;
+       box-sizing: border-box;
+       border: 1px solid rgba(64,158,255,.2);
+       white-space: nowrap;
+       cursor: pointer;
+     }
+  .batchCss_selected{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
+  }
+  .batchCss:hover{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
   }
 </style>

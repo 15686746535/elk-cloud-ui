@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/qrtz/job'
+  import { fetchList, getObj } from '@/api/quartz/job'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
 

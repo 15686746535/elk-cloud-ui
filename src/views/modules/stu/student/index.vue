@@ -746,7 +746,7 @@
         batchList: [],
         examBespeak: {
           studentId: null,
-          state: 1,
+          state: 0,
           batchId: null
         }
       }
@@ -786,11 +786,11 @@
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
         })
-        examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
-          console.log('====================== getExam =====================')
-          console.log(response.data)
-          console.log('====================== getExam =====================')
-        })
+        // examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
+        //   console.log('====================== getExam =====================')
+        //   console.log(response.data)
+        //   console.log('====================== getExam =====================')
+        // })
         this.showModule = 'info'
       },
       // 获取所有学员

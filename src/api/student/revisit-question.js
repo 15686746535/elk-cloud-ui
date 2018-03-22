@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function getQuestion(query) {
   return request({
-    url: '/student/rvisitquestion/getPage',
+    url: '/stu/revisitquestion/getPage',
     method: 'get',
     params: query
   })
@@ -10,7 +10,7 @@ export function getQuestion(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/student/rvisitquestion',
+    url: '/stu/revisitquestion',
     method: 'post',
     data: obj
   })
@@ -18,14 +18,14 @@ export function addObj(obj) {
 // 根据ID获取
 export function getObj(id) {
   return request({
-    url: '/student/rvisitquestion/' + id,
+    url: '/stu/revisitquestion/' + id,
     method: 'get'
   })
 }
 // 删除
 export function delObj(id) {
   return request({
-    url: '/student/rvisitquestion/' + id,
+    url: '/stu/revisitquestion/' + id,
     method: 'delete'
   })
 }

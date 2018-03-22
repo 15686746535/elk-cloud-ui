@@ -52,7 +52,7 @@
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="info" @click="see(scope.row.batchId, '1')" plain>查 看</el-button>
+            <el-button size="mini" type="info" @click="see(scope.row.batchId, studentListQuery.state)" plain>查 看</el-button>
             <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
           </template>
@@ -142,10 +142,10 @@
           <template slot-scope="scope">
             <!--<span>{{scope.row.state}}</span>-->
 
-            <el-tag v-if="scope.row.state === '1'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
-            <el-tag v-else-if="scope.row.state === '2'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
-            <el-tag v-else-if="scope.row.state === '3'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
-            <el-tag v-else-if="scope.row.state === '4'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+            <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
+            <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
+            <el-tag v-else-if="scope.row.state === '2'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
+            <el-tag v-else-if="scope.row.state === '3'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
 
           </template>
         </el-table-column>
@@ -160,13 +160,21 @@
           <!--<el-button style="margin:0 5px;" type="primary" round>审核通过</el-button>-->
           <!--<el-button style="margin:0 5px;" type="danger" round>失败审核</el-button>-->
         <!--</el-button-group>-->
-        <el-button-group v-if="studentListQuery.state === '1'">
-          <el-button @click="operation('3')" style="margin:0 5px;" type="danger" round>失败审核</el-button>
-          <el-button @click="operation('1')" style="margin:0 5px;" type="success" round>审核通过</el-button>
+        <el-button-group v-if="studentListQuery.state === '0'">
+          <el-button @click="operation('3','审核失败')" style="margin:0 5px;" type="danger" round>失败审核</el-button>
+          <el-button @click="operation('1','审核通过')" style="margin:0 5px;" type="success" round>审核通过</el-button>
+        </el-button-group>
+        <el-button-group v-else-if="studentListQuery.state === '1'">
+          <el-button @click="operation('3','报考失败')" style="margin:0 5px;" type="danger" round>报考失败</el-button>
+          <el-button @click="operation('0','撤销成功')" style="margin:0 5px;" type="info" round>撤   销</el-button>
+          <el-button @click="operation('2','报考成功')" style="margin:0 5px;" type="success" round>报考成功</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '2'">
-          <el-button @click="operation('3')" style="margin:0 5px;" type="danger" round>报考失败</el-button>
-          <el-button @click="operation('2')" style="margin:0 5px;" type="success" round>报考成功</el-button>
+          <el-button @click="operation('1','撤销成功')" style="margin:0 5px;" type="info" round>撤   销</el-button>
+        </el-button-group>
+        <el-button-group v-else-if="studentListQuery.state === '3'">
+          <el-button @click="operation('0','报考失败')" style="margin:0 5px;" type="warning" round>撤销到审核</el-button>
+          <el-button @click="operation('1','报考成功')" style="margin:0 5px;" type="primary" round>撤销到报考</el-button>
         </el-button-group>
         <span v-else>
         </span>
@@ -237,7 +245,7 @@
         },
         studentListQuery: {
           batchId: null,
-          state: '1'
+          state: '0'
         }
       }
     },
@@ -258,7 +266,6 @@
         getBatchList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data.data.list
-          this.studentListQuery.state = '1'
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
@@ -295,6 +302,8 @@
         this.examBespeakLoading = true
         this.studentListQuery.batchId = batchId
         this.studentListQuery.state = state
+        console.log('============= 查询条件 ===================')
+        console.log(this.studentListQuery)
         getexambespeakbyid(this.studentListQuery).then(response => {
           console.log('============= 单场次报考学员信息 ===================')
           console.log(response.data.data)
@@ -427,17 +436,24 @@
         console.log('=====================================')
         console.log(this.studentListQuery.state)
       },
-      operation(state) {
-        this.examBespeakList.state = state
-        putExamBespeak(this.examBespeakList).then(() => {
-          this.see(this.studentListQuery.batchId, this.studentListQuery.state)
-          this.$notify({
-            title: '成功',
-            message: '修改成功',
-            type: 'success',
-            duration: 2000
+      operation(state, str) {
+        if (this.examBespeakList.studentIds.length === 0) {
+          this.$alert('请先选择学员', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
           })
-        })
+        } else {
+          this.examBespeakList.state = state
+          putExamBespeak(this.examBespeakList).then(() => {
+            this.see(this.studentListQuery.batchId, this.studentListQuery.state)
+            this.$notify({
+              title: '成功',
+              message: str,
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
       },
       // 根据科目查询场地
       handleSubject(field, e) {

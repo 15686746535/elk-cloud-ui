@@ -49,11 +49,11 @@ module.exports = {
           '^/basis' : '/basis'
         }
       },
-      '/student': {
+      '/stu': {
         target: 'http://127.0.0.1:8003',
         changeOrigin: true,
         pathRewrite: {
-          '^/student' : '/student'
+          '^/stu' : '/stu'
         }
       },
       '/vehicle': {

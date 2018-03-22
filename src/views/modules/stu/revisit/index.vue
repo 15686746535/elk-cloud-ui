@@ -114,7 +114,7 @@
 
 <script>
   import { fetchList, getObj } from '@/api/student/revisit'
-  import { getQuestion } from '@/api/student/revisitquestion'
+  import { getQuestion } from '@/api/student/revisit-question'
   import { removeAllSpace } from '@/utils/validate'
   import OrgTree from '@/components/OrgTree'
   import { mapGetters } from 'vuex'

@@ -22,7 +22,7 @@
         <el-card>
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (client.height - 250) + 'px'}">
-            <div v-for="(batch, index) in batchList">
+            <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
                 <el-col :span="12">{{batch.examTime | parseTime('{y}-{m}-{d}')}}</el-col>
                 <el-col :span="12">{{batch.examField}}</el-col>
@@ -41,13 +41,19 @@
       </el-col>
       <el-col :span="20">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  @selection-change="handleSelectionChange"  :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
-            <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  @selection-change="handleSelectionChange" :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+            <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
+            <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
             <el-table-column align="center" label="姓名">
               <template slot-scope="scope">
                 <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="电话">
+              <template slot-scope="scope">
+                <span>{{scope.row.mobile}}</span>
               </template>
             </el-table-column>
 
@@ -107,7 +113,7 @@
             </el-table-column>
 
 
-            <el-table-column align="center" label="操作" width="160">
+            <el-table-column align="center" fixed="right" label="操作" width="160">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" plain>编 辑</el-button>
                 <el-button size="mini" type="danger" >删 除</el-button>
@@ -125,6 +131,92 @@
         </el-card>
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
 
+          <el-table :data="gradeStudentList" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+            <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
+            <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
+
+            <el-table-column align="center" label="姓名">
+              <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="电话">
+              <template slot-scope="scope">
+                <span>{{scope.row.mobile}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column  align="center" label="身份证" width="200">
+              <template slot-scope="scope">
+                <span>{{scope.row.idNumber}}</span>
+              </template>
+            </el-table-column>
+
+            <!--<el-table-column align="center" label="科目">
+              <template slot-scope="scope">
+                <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="批次">
+              <template slot-scope="scope">
+                <span>{{scope.row.batch}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="期数">
+              <template slot-scope="scope">
+                <span>{{scope.row.periods}}</span>
+              </template>
+            </el-table-column>
+
+
+            <el-table-column align="center" label="考试日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="状态">
+              <template slot-scope="scope">
+                <span>{{scope.row.examState == 1?'通过':scope.row.examState == 2?'失败':scope.row.examState == 2?'失败':'失败'}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="通过日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.passTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="失败日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.failTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="缺考日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.missTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>-->
+
+
+            <!--<el-table-column align="center" fixed="right" label="操作" width="160">-->
+              <!--<template slot-scope="scope">-->
+                <!--<el-button size="mini" type="primary" plain>编 辑</el-button>-->
+                <!--<el-button size="mini" type="danger" >删 除</el-button>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
+
+          </el-table>
+
+          <div slot="footer">
+            <el-button type="success">通 过</el-button>
+            <el-button type="danger">失 败</el-button>
+            <el-button type="warning" >缺 考</el-button>
+          </div>
         </el-dialog>
       </el-col>
     </el-row>
@@ -158,18 +250,20 @@
           page: 1,
           limit: 20,
           subject: 1,
-          batchId: null
+          batchId: null,
+          examState: null
         },
         batchListQuery: {
           page: 1,
           limit: 16,
           /* 今天以前传 before   今天之后传 after */
-          sortState: 'before',
+          scope: 'before',
           subject: 1
         },
         studentListLoading: false,
         batchListLoading: true,
         gradeOption: false,
+        gradeOptionLoading: false,
         pickerOptions: {
           shortcuts: [{
             text: '昨天',
@@ -223,6 +317,8 @@
     methods: {
       getGradeList() {
         this.studentListLoading = true
+        console.log('==========  查询学员条件  =-=======')
+        console.log(this.studentListQuery)
         getGrade(this.studentListQuery).then(response => {
           console.log('========== 数据 ==========')
           console.log(response.data)
@@ -283,17 +379,31 @@
       /* 搜索方法 */
       searchClick() {
         this.studentListQuery.page = 1
+        this.intervalTime()
         this.getGradeList()
       },
-      /* 创建方法 */
+      /* 添加学员方法 */
       createClick() {
         this.gradeOption = true
+        this.gradeOptionLoading = true
+        this.studentListQuery.examState = 'exam_note_true'
+        getGrade(this.studentListQuery).then(response => {
+          console.log('========== 数据 ==========')
+          console.log(response.data)
+          if (response.data.code === 0) {
+            this.gradeStudentList = response.data.data.list
+            this.studentTotal = response.data.data.totalCount
+            this.gradeOptionLoading = false
+          } else {
+            console.log('这里是错误信息：' + response.data.msg)
+          }
+        })
       },
       handleSelectionChange(val) {
-        this.examBespeakList.studentIds = []
-        for (var i = 0; i < val.length; i++) {
-          this.examBespeakList.studentIds.push(val[i].studentId)
-        }
+        // this.examBespeakList.studentIds = []
+        // for (var i = 0; i < val.length; i++) {
+        //   this.examBespeakList.studentIds.push(val[i].studentId)
+        // }
         console.log(val)
         console.log(this.examBespeakList.studentIds)
       },
@@ -308,6 +418,7 @@
           a[i].classList.remove('batchCss_selected')
         }
         e.currentTarget.classList.add('batchCss_selected')
+        this.studentListQuery.examState = 'exam_note_true'
         this.getGradeList()
       },
       /* 清除批次样式 */
@@ -320,7 +431,9 @@
       /* 时间转换方法 */
       intervalTime() {
         console.log('================== 时间转换 ===================')
-        if (this.interval.length === 0) {
+        if (this.interval.length !== 0) {
+          this.studentListQuery.batchId = null
+          this.cleanBatchSelected()
           this.studentListQuery.beginTime = this.interval[0]
           this.studentListQuery.endTime = this.interval[1]
         } else {

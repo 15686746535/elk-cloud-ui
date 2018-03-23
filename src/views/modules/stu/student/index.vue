@@ -749,6 +749,13 @@
           state: 0,
           batchId: null,
           subject: null
+        },
+        batchListQuery: {
+          page: 1,
+          limit: 0,
+          /* 今天以前传 before   今天之后传 after */
+          scope: 'after',
+          subject: null
         }
       }
     },
@@ -937,10 +944,11 @@
       handleBespeak() {
         console.log(this.student.state)
         this.examBespeak.subject = this.student.state
-        getBatch(this.student.state).then(response => {
+        this.batchListQuery.subject = this.student.state
+        getBatchList(this.batchListQuery).then(response => {
           console.log(' ===================  这是所有批次信息  ==================')
           console.log(response.data.data)
-          this.batchList = response.data.data
+          this.batchList = response.data.data.list
           // this.total = response.data.data.totalCount
           this.listOldLoading = false
         })

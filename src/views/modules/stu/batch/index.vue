@@ -68,7 +68,7 @@
       </div>
     </el-card>
 
-    <el-dialog  @close="getList" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
+    <el-dialog  @close="cancel('batch')" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch"  ref="batch" label-width="100px">
         <!--<el-form-item v-show="dialogStatus=='create'" label="考试科目">-->
@@ -83,10 +83,10 @@
         <!--</el-form-item>-->
         <el-form-item label="考试场地">
           <!--<span v-if="batch.subject != null">-->
-            <span v-if="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
-            <span v-else-if="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
-            <span v-else-if="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
-            <span v-else-if="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
+            <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
+            <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
+            <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
+            <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
           <!--</span>-->
           <!--<span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>-->
         </el-form-item>
@@ -288,6 +288,7 @@
         this.batchOption = true
       },
       handleUpdate(val) {
+        console.log('=========编辑对象=======')
         console.log(val)
         this.batch = val
         this.dialogStatus = 'update'
@@ -316,6 +317,7 @@
         const set = this.$refs
         console.log('============= 添加信息 ===================')
         console.log(this.batch)
+        this.batch.batch = this.batch.examTime
         set[formName].validate(valid => {
           if (valid) {
             addObj(this.batch)
@@ -343,17 +345,19 @@
       },
       update(formName) {
         const set = this.$refs
+        this.batch.batch = this.batch.examTime
         set[formName].validate(valid => {
           if (valid) {
-            putObj(this.batch).then(() => {
-              this.batchOption = false
-              this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
+            putObj(this.batch).then(response => {
+              console.log(response.data)
+              // this.batchOption = false
+              // this.getList()
+              // this.$notify({
+              //   title: '成功',
+              //   message: '修改成功',
+              //   type: 'success',
+              //   duration: 2000
+              // })
             })
           } else {
             return false
@@ -452,6 +456,7 @@
       },
       // 根据科目查询场地
       handleSubject(field, e) {
+        this.batch = {}
         this.listQuery.page = 1
         this.listQuery.subject = field
         this.batch.subject = field

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <transition name="el-zoom-in-center">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
@@ -9,7 +10,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-225) + 'px'}">
+        <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
             <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
@@ -23,8 +24,8 @@
             </el-select>
             <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
             <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-            <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+            <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+            <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
             <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}">
@@ -143,6 +144,8 @@
         </el-col>
       </el-row>
     </div>
+    </transition>
+    <transition name="el-zoom-in-center">
     <div v-show="showModule=='info'">
 
       <el-row :gutter="20">
@@ -351,6 +354,7 @@
         </el-col>
       </el-row>
     </div>
+    </transition>
   </div>
 </template>
 
@@ -555,7 +559,7 @@
           })
       },
       // 搜索
-      handleFilter() {
+      searchClick() {
         this.intervalTime()
         this.listQuery.page = 1
         this.getList()

@@ -9,7 +9,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-225) + 'px'}">
+        <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
               <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
@@ -26,8 +26,8 @@
               <Coach v-model="listQuery.fieldCoach" coachType="field":style="{width: (client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>
               <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: (client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
               <dict v-model="listQuery.source" dictType="dict_source" :style="{width: (client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
-              <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+              <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+              <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-card>
 
@@ -746,7 +746,7 @@
         batchList: [],
         examBespeak: {
           studentId: null,
-          state: 1,
+          state: 0,
           batchId: null
         }
       }
@@ -786,11 +786,11 @@
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
         })
-        examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
-          console.log('====================== getExam =====================')
-          console.log(response.data)
-          console.log('====================== getExam =====================')
-        })
+        // examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
+        //   console.log('====================== getExam =====================')
+        //   console.log(response.data)
+        //   console.log('====================== getExam =====================')
+        // })
         this.showModule = 'info'
       },
       // 获取所有学员
@@ -849,7 +849,7 @@
         })
       },
       // 搜索
-      handleFilter() {
+      searchClick() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)

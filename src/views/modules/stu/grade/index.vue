@@ -2,183 +2,137 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
-        <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
-        <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
-        <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
-        <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>
-        <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
-        </el-date-picker>
-
-
-        <span v-show="'1' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field1" style="width: 240px;margin-top: 8px"  placeholder="科目一考试场地"></dict></span>
-        <span v-show="'2' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field2" style="width: 240px;margin-top: 8px"  placeholder="科目二考试场地"></dict></span>
-        <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
-        <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
-
-        <el-button type="primary" v-waves @click="handleFilter" >搜索</el-button>
-        <el-button @click="handleCreate" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+        <div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">
+          <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
+          <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
+          <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
+          <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>
+        </div>
+        <div style="float: right">
+          <el-date-picker v-model="interval" type="daterange" align="right" style="margin-bottom: 0px;" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+          </el-date-picker>
+          <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition"></el-input>
+          <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
+          <el-button @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+        </div>
       </div>
     </el-card>
-    <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fithighlight-current-row style="width: 100%;text-align: center;">
-        <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
-        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-        <el-table-column align="center"  label="科目">
-          <template slot-scope="scope">
-            <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  label="考试时间">
-          <template slot-scope="scope">
-            <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  label="考试场地">
-          <template slot-scope="scope">
-            <span>{{scope.row.examField}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  label="人数">
-          <template slot-scope="scope">
-            <span>{{scope.row.hasReserved}}/{{scope.row.stuCount}}</span>
-          </template>
-        </el-table-column>
+    <el-row :gutter="5" :style="{height: (client.height - 125) + 'px'}">
+      <el-col :span="4">
+        <el-card>
+          <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
+          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (client.height - 250) + 'px'}">
+            <div v-for="batch in batchList">
+              <div class="batchCss" @click="batchClick($event,batch)">
+                <el-col :span="12">{{batch.examField}}</el-col>
+                <el-col :span="12">{{batch.examTime | parseTime('{y}-{m}-{d}')}}</el-col>
+              </div>
+            </div>
+          </div>
+          <el-pagination
+            small
+            @current-change="batchHandleCurrentChange"
+            layout="prev, pager, next"
+            :current-page="batchListQuery.page"
+            :page-size="batchListQuery.limit"
+            :total="batchTotal">
+          </el-pagination>
+        </el-card>
+      </el-col>
+      <el-col :span="20">
+        <el-card>
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  @selection-change="handleSelectionChange"  :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+            <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
 
-        <!--<el-table-column align="center" label="批次">-->
-          <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.batch}}</span>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
+            <el-table-column align="center" label="姓名">
+              <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
 
-        <el-table-column align="center" label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" type="info" @click="see(scope.row.batchId, '1')" plain>查 看</el-button>
-            <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
-          </template>
-        </el-table-column>
+            <el-table-column  align="center" label="身份证" width="200">
+              <template slot-scope="scope">
+                <span>{{scope.row.idNumber}}</span>
+              </template>
+            </el-table-column>
 
-      </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page.sync="listQuery.page" background
-                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                       layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-      </div>
-    </el-card>
+            <el-table-column align="center" label="科目">
+              <template slot-scope="scope">
+                <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
+              </template>
+            </el-table-column>
 
-    <el-dialog  @close="getList" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
+            <el-table-column align="center" label="批次">
+              <template slot-scope="scope">
+                <span>{{scope.row.batch}}</span>
+              </template>
+            </el-table-column>
 
-      <el-form :model="batch"  ref="batch" label-width="100px">
-        <!--<el-form-item v-show="dialogStatus=='create'" label="考试科目">-->
-          <!--<el-select @blur="setDictType" v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">-->
-            <!--<el-option-->
-              <!--v-for="item in subject"-->
-              <!--:key="item.value"-->
-              <!--:label="item.label"-->
-              <!--:value="item.value">-->
-            <!--</el-option>-->
-          <!--</el-select>-->
-        <!--</el-form-item>-->
-        <el-form-item label="考试场地">
-          <!--<span v-if="batch.subject != null">-->
-            <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
-            <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
-            <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
-            <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
-          <!--</span>-->
-          <!--<span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>-->
-        </el-form-item>
-        <el-form-item label="人数"  prop="username">
-          <el-input v-model="batch.stuCount" placeholder="人数" ></el-input>
-        </el-form-item>
-        <el-form-item label="考试时间">
-          <el-date-picker style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
-        </el-form-item>
-
-      </el-form>
-
-      <div slot="footer">
-        <el-button @click="cancel('batch')">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('batch')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('batch')">修 改</el-button>
-      </div>
-    </el-dialog>
+            <el-table-column align="center" label="期数">
+              <template slot-scope="scope">
+                <span>{{scope.row.periods}}</span>
+              </template>
+            </el-table-column>
 
 
-    <el-dialog @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
-      <div style="width:450px; margin:-30px auto 10px">
-        <div @click="handleField('0',$event)" class="stateBtn stateBtn_selected" >审核中</div>
-        <div @click="handleField('1',$event)" class="stateBtn" >约考中</div>
-        <div @click="handleField('2',$event)" class="stateBtn" >已报考</div>
-        <div @click="handleField('3',$event)" class="stateBtn" >失 败</div>
-      </div>
+            <el-table-column align="center" label="考试日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>
 
-      <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
-        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-        <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-        <el-table-column align="center"  label="学员">
-          <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column  align="center" label="电话">
-          <template slot-scope="scope">
-            <span>{{scope.row.mobile}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column  align="center" label="车型">
-          <template slot-scope="scope">
-            <span>{{scope.row.moctorcycleType}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column  align="center" label="考试时间">
-          <template slot-scope="scope">
-            <span>{{scope.row.examTime | subTime}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column  align="center" label="状态">
-          <template slot-scope="scope">
-            <!--<span>{{scope.row.state}}</span>-->
+            <el-table-column align="center" label="状态">
+              <template slot-scope="scope">
+                <span>{{scope.row.examState == 1?'通过':scope.row.examState == 2?'失败':scope.row.examState == 2?'失败':'失败'}}</span>
+              </template>
+            </el-table-column>
 
-            <el-tag v-if="scope.row.state === '1'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
-            <el-tag v-else-if="scope.row.state === '2'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
-            <el-tag v-else-if="scope.row.state === '3'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
-            <el-tag v-else-if="scope.row.state === '4'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+            <el-table-column align="center" label="通过日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.passTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>
 
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div slot="footer" style="margin-top: -30px">
-        <!--<el-button-group>-->
-          <!--<el-button style="margin:0 5px;" type="primary" round>审核通过</el-button>-->
-          <!--<el-button style="margin:0 5px;" type="danger" round>失败审核</el-button>-->
-        <!--</el-button-group>-->
-        <el-button-group v-if="studentListQuery.state === '1'">
-          <el-button @click="operation('3')" style="margin:0 5px;" type="danger" round>失败审核</el-button>
-          <el-button @click="operation('1')" style="margin:0 5px;" type="success" round>审核通过</el-button>
-        </el-button-group>
-        <el-button-group v-else-if="studentListQuery.state === '2'">
-          <el-button @click="operation('3')" style="margin:0 5px;" type="danger" round>报考失败</el-button>
-          <el-button @click="operation('2')" style="margin:0 5px;" type="success" round>报考成功</el-button>
-        </el-button-group>
-        <span v-else>
-        </span>
-      </div>
+            <el-table-column align="center" label="失败日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.failTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>
 
-    </el-dialog>
+            <el-table-column align="center" label="缺考日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.missTime | parseTime('{y}-{m}-{d}')}}</span>
+              </template>
+            </el-table-column>
 
 
+            <el-table-column align="center" label="操作" width="160">
+              <template slot-scope="scope">
+                <el-button size="mini" type="primary" plain>编 辑</el-button>
+                <el-button size="mini" type="danger" >删 除</el-button>
+              </template>
+            </el-table-column>
+
+          </el-table>
+          <div class="pagination-container" style="margin-top: 20px">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page.sync="studentListQuery.page" background
+                           :page-sizes="[10,20,30, 50]" :page-size="studentListQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="studentTotal">
+            </el-pagination>
+          </div>
+        </el-card>
+        <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
+
+        </el-dialog>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+  import { getGrade, getObj } from '@/api/student/grade'
   import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
@@ -196,53 +150,69 @@
     },
     data() {
       return {
-        batch: {
-          subject: '1'
-        },
-        list: [],
-        total: null,
-        listLoading: true,
-        examBespeakLoading: true,
-        listQuery: {
+        gradeStudentList: [],
+        batchList: [],
+        studentTotal: 0,
+        batchTotal: 0,
+        studentListQuery: {
           page: 1,
           limit: 20,
-          subject: '1',
-          interval: [],
-          beginTime: null,
-          endTime: null,
-          examField: null
-        },
-        tableKey: 0,
-        dialogStatus: '',
-        subject: [{
-          value: '1',
-          label: '科目一'
-        }, {
-          value: '2',
-          label: '科目二'
-        }, {
-          value: '3',
-          label: '科目三'
-        }, {
-          value: '4',
-          label: '科目四'
-        }],
-        batchOption: false,
-        examOption: false,
-        examBespeak: [],
-        examBespeakList: {
-          studentIds: [],
-          state: null,
+          subject: 1,
           batchId: null
         },
-        studentListQuery: {
-          batchId: null,
-          state: '1'
-        }
+        batchListQuery: {
+          page: 1,
+          limit: 16,
+          /* 今天以前传 before   今天之后传 after */
+          sortState: 'before',
+          subject: 1
+        },
+        studentListLoading: true,
+        batchListLoading: true,
+        gradeOption: false,
+        pickerOptions: {
+          shortcuts: [{
+            text: '昨天',
+            onClick(picker) {
+              const end = new Date(new Date().setHours(0, 0, 0, 0))
+              const start = new Date(new Date().setHours(0, 0, 0, 0))
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 1)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '近三天',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 3)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '本周',
+            onClick(picker) {
+              const end = new Date()
+              const day = new Date(new Date().setHours(0, 0, 0, 0))
+              var week = day.getDay()
+              if (week === 0) week = 7
+              const start = day
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * (week - 1))
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '本月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date(new Date().setHours(0, 0, 0, 0))
+              start.setDate(1)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
+        interval: []
       }
     },
     created() {
-      this.getList()
+      this.getBatchList()
     },
     computed: {
       ...mapGetters([
@@ -251,162 +221,69 @@
       ])
     },
     methods: {
-      getList() {
-        this.listLoading = true
-        console.log('========== 查询条件  ====================')
-        console.log(this.listQuery)
-        getBatchList(this.listQuery).then(response => {
+      getGradeList() {
+        this.studentListLoading = true
+        getGrade(this.studentListQuery).then(response => {
+          console.log('========== 数据 ==========')
           console.log(response.data)
-          this.list = response.data.data.list
-          this.studentListQuery.state = '1'
-          this.total = response.data.data.totalCount
-          this.listLoading = false
+          if (response.data.code === 0) {
+            this.gradeStudentList = response.data.data.list
+            this.studentTotal = response.data.data.totalCount
+            this.studentListLoading = false
+          } else {
+            console.log('这里是错误信息：' + response.data.msg)
+          }
         })
       },
-      setDictType() {
-        console.log(this.batch.subject)
+      getBatchList() {
+        this.batchListLoading = true
+        console.log(this.batchListQuery)
+        getBatchList(this.batchListQuery).then(response => {
+          console.log('========== Batch数据 ==========')
+          console.log(response.data)
+          if (response.data.code === 0) {
+            this.batchList = response.data.data.list
+            this.batchTotal = response.data.data.totalCount
+            if (this.batchList.length > 0) this.studentListQuery.batchId = this.batchList[0].batchId
+            this.getGradeList()
+            this.batchListLoading = false
+          } else {
+            console.log('这里是错误信息：' + response.data.msg)
+          }
+        })
       },
+      /* 分页插件方法 */
       handleSizeChange(val) {
-        this.listQuery.limit = val
-        this.getList()
+        this.studentListQuery.limit = val
+        this.getGradeList()
       },
       handleCurrentChange(val) {
-        this.listQuery.page = val
-        this.getList()
+        this.studentListQuery.page = val
+        this.getGradeList()
       },
-      handleCreate() {
-        this.batch = {}
-        this.batch.subject = this.listQuery.subject
-        this.dialogStatus = 'create'
-        this.batchOption = true
+      batchHandleCurrentChange(val) {
+        this.batchListQuery.page = val
+        this.getBatchList()
       },
-      handleUpdate(val) {
-        if (val.hasReserved === 0) {
-          this.batch = val
-          this.dialogStatus = 'update'
-          this.batchOption = true
-        } else {
-          this.$alert('当前批次已被预约，不可操作', '提示', {
-            type: 'warning'
-          })
+      /* 根据科目查询 */
+      handleSubject(field, e) {
+        this.studentListQuery.page = 1
+        this.studentListQuery.subject = field
+        this.batchListQuery.subject = field
+        var a = document.getElementsByClassName('subjectBtn')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('subjectBtn_selected')
         }
+        e.currentTarget.classList.add('subjectBtn_selected')
+        this.getBatchList()
       },
-      see(batchId, state) {
-        this.examBespeakLoading = true
-        this.studentListQuery.batchId = batchId
-        this.studentListQuery.state = state
-        getexambespeakbyid(this.studentListQuery).then(response => {
-          console.log('============= 单场次报考学员信息 ===================')
-          console.log(response.data.data)
-          this.examBespeak = response.data.data
-          this.examBespeakLoading = false
-        })
-        this.examBespeakList.batchId = batchId
-        this.examOption = true
+      /* 搜索方法 */
+      searchClick() {
+        this.studentListQuery.page = 1
+        this.getGradeList()
       },
-      closeExamOption() {
-        // this.handleField(1, e)
-        this.getList()
-      },
-      create(formName) {
-        const set = this.$refs
-        console.log('============= 添加信息 ===================')
-        console.log(this.batch)
-        set[formName].validate(valid => {
-          if (valid) {
-            addObj(this.batch)
-              .then(() => {
-                this.batchOption = false
-                this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
-              })
-          } else {
-            return false
-          }
-        })
-      },
-      cancel(formName) {
-        this.batchOption = false
-        this.batch = {}
-        const set = this.$refs
-        set[formName].resetFields()
-        this.getList()
-      },
-      update(formName) {
-        const set = this.$refs
-        set[formName].validate(valid => {
-          if (valid) {
-            putObj(this.batch).then(() => {
-              this.batchOption = false
-              this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
-            })
-          } else {
-            return false
-          }
-        })
-      },
-      handleFilter() {
-        this.listQuery.page = 1
-        this.examTimeBlur()
-        this.getList()
-      },
-      handleDelete(val) {
-        if (val.hasReserved === 0) {
-          this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            delObj(val.batchId).then(() => {
-              this.$notify({
-                title: '成功',
-                message: '删除成功',
-                type: 'success',
-                duration: 2000
-              })
-              this.getList()
-            })
-          })
-        } else {
-          this.$alert('当前批次已被预约，不可操作', '提示', {
-            type: 'warning'
-          })
-        }
-      },
-      // 取消约考
-      revokeExam(val) {
-        this.$confirm('此操作将取消该学员约考, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          delexambespeak(val.examBespeakId).then(() => {
-            this.see(val.batchId,this.studentListQuery.state)
-            this.$notify({
-              title: '成功',
-              message: '取消成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消操作'
-          })
-        })
-      },
+      /* 创建方法 */
+      createClick() {},
       handleSelectionChange(val) {
         this.examBespeakList.studentIds = []
         for (var i = 0; i < val.length; i++) {
@@ -415,95 +292,59 @@
         console.log(val)
         console.log(this.examBespeakList.studentIds)
       },
-      // 根据状态查询约考学员
-      handleField(state, e) {
-        this.studentListQuery.state = state
-        var a = document.getElementsByClassName('stateBtn')
+      /* 控制批次点击样式 */
+      batchClick(e, batch) {
+        this.studentListQuery.batchId = batch.batchId
+        this.interval = []
+        this.studentListQuery.beginTime = null
+        this.studentListQuery.endTime = null
+        var a = document.getElementsByClassName('batchCss')
         for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('stateBtn_selected')
+          a[i].classList.remove('batchCss_selected')
         }
-        e.currentTarget.classList.add('stateBtn_selected')
-        this.see(this.studentListQuery.batchId, state)
-        console.log('=====================================')
-        console.log(this.studentListQuery.state)
+        e.currentTarget.classList.add('batchCss_selected')
       },
-      operation(state) {
-        this.examBespeakList.state = state
-        putExamBespeak(this.examBespeakList).then(() => {
-          this.see(this.studentListQuery.batchId, this.studentListQuery.state)
-          this.$notify({
-            title: '成功',
-            message: '修改成功',
-            type: 'success',
-            duration: 2000
-          })
-        })
-      },
-      // 根据科目查询场地
-      handleSubject(field, e) {
-        this.listQuery.page = 1
-        this.listQuery.subject = field
-        this.batch.subject = field
-        this.listQuery.examField = null
-        this.listQuery.interval = []
-        this.listQuery.beginTime = null
-        this.listQuery.endTime = null
-        var a = document.getElementsByClassName('subjectBtn')
-        for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('subjectBtn_selected')
+      /* 时间转换方法 */
+      intervalTime() {
+        console.log('================== 时间转换 ===================')
+        if (this.interval.length === 0) {
+          this.studentListQuery.beginTime = this.interval[0]
+          this.studentListQuery.endTime = this.interval[1]
+        } else {
+          this.studentListQuery.beginTime = null
+          this.studentListQuery.endTime = null
         }
-        e.currentTarget.classList.add('subjectBtn_selected')
-        this.getList()
-      },
-      examTimeBlur() {
-        console.log('=============  我正在转换时间范围 ================')
-        if (this.listQuery.interval === null) {
-          this.listQuery.interval = []
-          this.listQuery.beginTime = null
-          this.listQuery.endTime = null
-        }
-        if (this.listQuery.interval.length !== 0) {
-          this.listQuery.beginTime = this.listQuery.interval[0]
-          this.listQuery.endTime = this.listQuery.interval[1]
-        }
-        console.log(this.listQuery.interval)
-        console.log(this.listQuery.beginTime)
-        console.log(this.listQuery.endTime)
-        console.log('=============  完成 ================')
       }
     }
   }
 </script>
 <style>
-  .stateBtn{
-    display: inline-block;
-    line-height: 1;
+  .batchCss{
+    background-color: rgba(64,158,255,.1);
+    /*display: inline-block;*/
+    width: 100%;
+    margin: 5px auto;
+    padding: 0 10px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #409eff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(64,158,255,.2);
     white-space: nowrap;
     cursor: pointer;
-    -webkit-appearance: none;
-    text-align: center;
-    box-sizing: border-box;
-    outline: none;
-    margin:0 12px;
-    transition: .1s;
-    font-weight: 500;
-    padding: 12px 20px;
-    font-size: 14px;
-    border-radius: 4px;
-    width: 84px;
-    color: #409eff;
-    background: #ecf5ff;
-    border: 1px solid #b3d8ff;
+    box-shadow:3px 3px 10px #f6f6f6;
   }
-  .stateBtn:hover{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
+  .batchCss_selected{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
   }
-  .stateBtn_selected{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
+  .batchCss:hover{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
   }
   .subjectBtn{
     display: inline-block;

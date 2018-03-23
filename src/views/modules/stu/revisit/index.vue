@@ -8,7 +8,7 @@
         </el-card>
       </el-col>
 
-      <el-col :style="{width: (client.width-225) + 'px'}">
+      <el-col :style="{width: (client.width-250) + 'px'}">
         <el-card body-style="padding:10px 20px;" style="height: 70px;line-height: 50px">
           <!--<div style="float: left">-->
             <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>-->
@@ -21,8 +21,8 @@
             <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>-->
           </div>
           <div style="float: right">
-            <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
+            <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+            <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
           </div>
         </el-card>
         <el-card style="margin-top: 5px;"  :style="{height: (client.height-115) + 'px'}">
@@ -94,19 +94,26 @@
     </el-row>
 
     <el-dialog  title="回访登记" width="40%" :visible.sync="visitStudentOption">
-      <div style="clear: both;width: 80%;margin: 0 auto;" v-for="(question, index) in revisitQuestion">
-        <el-row>
-          <el-col :span="2">
-            <span style="color: #001528;font-size: 18px;">{{index+1}}、</span>
-          </el-col>
-          <el-col :span="22">
-            <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-            <el-row>A: {{question.itemA}}</el-row>
-            <el-row>B: {{question.itemB}}</el-row>
-            <el-row>C: {{question.itemC}}</el-row>
-            <el-row>D: {{question.itemD}}</el-row>
-          </el-col>
-        </el-row>
+      <div :style="{height: (client.height)/2 +'px'}" style="overflow: auto">
+
+        <div style="clear: both;width: 80%;margin: 0 auto;" v-for="(question, index) in revisitQuestion">
+          <el-row>
+            <el-col :span="2">
+              <span style="color: #001528;font-size: 18px;">{{index+1}}、</span>
+            </el-col>
+            <el-col :span="22">
+              <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
+              <el-row>A: {{question.itemA}}</el-row>
+              <el-row>B: {{question.itemB}}</el-row>
+              <el-row>C: {{question.itemC}}</el-row>
+              <el-row>D: {{question.itemD}}</el-row>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button >取 消</el-button>
+        <el-button type="primary" >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -114,14 +121,14 @@
 
 <script>
   import { fetchList, getObj } from '@/api/student/revisit'
-  import { getQuestion } from '@/api/student/revisitquestion'
+  import { getQuestion } from '@/api/student/revisit-question'
   import { removeAllSpace } from '@/utils/validate'
   import OrgTree from '@/components/OrgTree'
   import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
-    name: 'table_rvisitstudent',
+    name: 'table_revisitStudent',
     directives: {
       waves
     },
@@ -130,7 +137,7 @@
     },
     data() {
       return {
-        rvisitstudent: {},
+        revisitStudent: {},
         list: [],
         total: null,
         listLoading: true,
@@ -143,7 +150,7 @@
         dialogStatus: '',
         visitStudentOption: false,
         revisitQuestion: [],
-        subject: null
+        subject: '1'
       }
     },
     created() {
@@ -182,13 +189,13 @@
         this.getList()
       },
       create() {
-        this.rvisitstudent = {}
+        this.revisitStudent = {}
         this.showModule = 'info'
       },
       update(row) {
         getObj(row.roleId)
           .then(response => {
-            this.rvisitstudent = response.data
+            this.revisitStudent = response.data
             this.showModule = 'info'
           })
       },
@@ -198,7 +205,7 @@
       cancel() {
         this.showModule = 'list'
       },
-      handleFilter() {
+      searchClick() {
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.listQuery.page = 1
         this.getList()
@@ -227,9 +234,11 @@
       },
       /* 回访 */
       visitStudent(val) {
-        this.visitStudentOption = true
-        getQuestion(this.subject).then(response => {
+        console.log(this.subject)
+        getQuestion({ subject: this.subject }).then(response => {
+          console.log(response.data)
           this.revisitQuestion = response.data.data
+          this.visitStudentOption = true
         })
       }
     }

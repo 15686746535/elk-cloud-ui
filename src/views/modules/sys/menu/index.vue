@@ -10,7 +10,7 @@
         </el-card>
       </el-col>
 
-      <el-col :style="{width: (client.width-225) + 'px'}">
+      <el-col :style="{width: (client.width-250) + 'px'}">
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
             <el-button type="primary" v-if="menuManager_btn_add" icon="plus" @click="handlerAdd">添加</el-button>

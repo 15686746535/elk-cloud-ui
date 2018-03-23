@@ -5,7 +5,7 @@
       <el-button v-waves @click="handleField('dict_exam_field2')" type="success" plain>科目二</el-button>
       <el-button v-waves @click="handleField('dict_exam_field3')" type="success" plain>科目三</el-button>
       <el-button v-waves @click="handleField('dict_exam_field4')" type="success" plain>科目四</el-button>
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加</el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
       <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
@@ -164,7 +164,7 @@
             })
           })
       },
-      handleCreate() {
+      createClick() {
         this.dict = {}
         this.dialogStatus = 'create'
         this.dialogFormVisible = true

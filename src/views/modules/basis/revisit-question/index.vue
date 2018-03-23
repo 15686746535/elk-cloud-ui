@@ -130,7 +130,7 @@
 </template>
 
 <script>
-  import { addObj } from '@/api/student/revisitquestion'
+  import { addObj } from '@/api/student/revisit-question'
   import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {

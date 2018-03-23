@@ -1,7 +1,7 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <el-card style="margin-bottom: 5px;height: 80px">
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加
+      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加
       </el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
@@ -165,7 +165,7 @@
             })
           })
       },
-      handleCreate() {
+      createClick() {
         this.dict = {}
         this.dialogStatus = 'create'
         this.dialogFormVisible = true

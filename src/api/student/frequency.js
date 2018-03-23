@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
   return request({
-    url: '/student/frequency/getPage',
+    url: '/stu/frequency/getPage',
     method: 'get',
     params: query
   })
@@ -10,7 +10,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/student/frequency',
+    url: '/stu/frequency',
     method: 'post',
     data: obj
   })
@@ -18,7 +18,7 @@ export function addObj(obj) {
 // 根据ID获取
 export function getObj(id) {
   return request({
-    url: '/student/frequency/' + id,
+    url: '/stu/frequency/' + id,
     method: 'get'
   })
 }
@@ -26,7 +26,7 @@ export function getObj(id) {
 // 删除
 export function delObj(id) {
   return request({
-    url: '/student/frequency/' + id,
+    url: '/stu/frequency/' + id,
     method: 'delete'
   })
 }

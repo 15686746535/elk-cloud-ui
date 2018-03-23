@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function getexambespeak(query) {
   return request({
-    url: '/student/exambespeak/getPage',
+    url: '/stu/exambespeak/getPage',
     method: 'get',
     params: query
   })
@@ -10,7 +10,7 @@ export function getexambespeak(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/student/exambespeak',
+    url: '/stu/exambespeak',
     method: 'post',
     data: obj
   })
@@ -18,7 +18,7 @@ export function addObj(obj) {
 // 添加
 export function batchsSave(obj) {
   return request({
-    url: '/student/exambespeak/batchsSave',
+    url: '/stu/exambespeak/batchsSave',
     method: 'post',
     data: obj
   })
@@ -26,7 +26,7 @@ export function batchsSave(obj) {
 // 添加
 export function batchSave(obj) {
   return request({
-    url: '/student/exambespeak',
+    url: '/stu/exambespeak',
     method: 'post',
     data: obj
   })
@@ -34,7 +34,7 @@ export function batchSave(obj) {
 // 根据条件获取
 export function getexambespeakbyid(query) {
   return request({
-    url: '/student/exambespeak/queryBespeak',
+    url: '/stu/exambespeak/queryBespeak',
     method: 'get',
     params: query
   })
@@ -42,14 +42,14 @@ export function getexambespeakbyid(query) {
 // 删除
 export function delexambespeak(id) {
   return request({
-    url: '/student/exambespeak/' + id,
+    url: '/stu/exambespeak/' + id,
     method: 'delete'
   })
 }
 // 更新
 export function putExamBespeak(obj) {
   return request({
-    url: '/student/exambespeak',
+    url: '/stu/exambespeak',
     method: 'put',
     data: obj
   })

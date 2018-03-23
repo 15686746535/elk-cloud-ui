@@ -2,21 +2,21 @@ import request from '@/utils/request'
 // 查询集合
 export function getBatchList(query) {
   return request({
-    url: '/student/batch/getPage',
+    url: '/stu/batch/getPage',
     method: 'get',
     params: query
   })
 }
 export function getBatch(id) {
   return request({
-    url: '/student/batch/getBatch/' + id,
+    url: '/stu/batch/getBatch/' + id,
     method: 'get'
   })
 }
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/student/batch',
+    url: '/stu/batch',
     method: 'post',
     data: obj
   })
@@ -24,21 +24,21 @@ export function addObj(obj) {
 // 根据ID获取
 export function getObj(id) {
   return request({
-    url: '/student/batch/' + id,
+    url: '/stu/batch/' + id,
     method: 'get'
   })
 }
 // 删除
 export function delObj(id) {
   return request({
-    url: '/student/batch/' + id,
+    url: '/stu/batch/' + id,
     method: 'delete'
   })
 }
 // 更新
 export function putObj(obj) {
   return request({
-    url: '/student/batch',
+    url: '/stu/batch',
     method: 'put',
     data: obj
   })

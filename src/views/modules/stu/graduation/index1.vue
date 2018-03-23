@@ -8,7 +8,7 @@
             <org-tree @node-click="searchByOrg" ></org-tree>
           </el-card>
         </el-col>
-        <el-col :style="{width: (client.width-225) + 'px'}" style="line-height: 50px">
+        <el-col :style="{width: (client.width-250) + 'px'}" style="line-height: 50px">
           <el-card style="margin-bottom: 5px;height: 130px;">
               <div>
                 <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
@@ -23,8 +23,8 @@
                 </el-select>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
-                <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-                <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+                <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+                <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
               </div>
             </el-card>
           <el-card :style="{height: (client.height-175) + 'px'}">
@@ -509,7 +509,7 @@
         this.edit = false
       },
       // 搜索
-      handleFilter() {
+      searchClick() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
         console.log(this.listQuery)

@@ -2,9 +2,9 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
 
     <el-card  style="margin-bottom: 5px;height: 80px;">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="plus">添加</el-button>
+      <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
+      <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="plus">添加</el-button>
     </el-card>
 
 
@@ -238,7 +238,7 @@
         this.listQuery.page = val
         this.getList()
       },
-      handleCreate() {
+      createClick() {
         this.resetTemp()
         this.change = 2
         this.dialogStatus = 'create'
@@ -253,7 +253,7 @@
             this.dialogStatus = 'update'
           })
       },
-      handleFilter() {
+      searchClick() {
         this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
         this.listQuery.page = 1
         this.getList()

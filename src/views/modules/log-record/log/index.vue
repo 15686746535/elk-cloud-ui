@@ -9,7 +9,7 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
     </el-card>
     <el-card :style="{height: (client.height-125) + 'px'}">
       <el-table :key='tableKey' :height="(client.height-205)"  :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
@@ -166,7 +166,7 @@
             })
           })
       },
-      handleFilter() {
+      searchClick() {
         this.listQuery.page = 1
         this.getList()
       }

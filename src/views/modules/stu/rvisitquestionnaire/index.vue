@@ -3,8 +3,8 @@
     <div v-show="showModule=='list'">
       <el-card style="margin-bottom: 5px;">
         <div class="filter-container">
-          <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-          <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+          <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
           <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
         </div>
       </el-card>
@@ -143,7 +143,7 @@
             this.showModule = 'info'
           })
       },
-      handleFilter() {
+      searchClick() {
         this.listQuery.page = 1
         this.getList()
       },

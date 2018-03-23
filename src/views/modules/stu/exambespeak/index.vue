@@ -10,8 +10,8 @@
             <div @click="handleField(2,$event)" class="subjectBtn" >科目二</div>
             <div @click="handleField(3,$event)" class="subjectBtn" >科目三</div>
             <div @click="handleField(4,$event)" class="subjectBtn" >科目四</div>
-            <el-input v-model="studentListQuery.condition"  @keyup.enter.native="search" :style="{width: (client.width/7) + 'px'}" placeholder="姓名/身份证/电话" ></el-input>
-            <el-button type="primary" v-waves @click="handleFilter" >搜索</el-button>
+            <el-input v-model="studentListQuery.condition"  @keyup.enter.native="searchClick" :style="{width: (client.width/7) + 'px'}" placeholder="姓名/身份证/电话" ></el-input>
+            <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
             可预约：{{studentOld.length}}人
           </div>
           <el-table @row-click="clickOld" :data="studentOld" :height="(client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
@@ -275,7 +275,7 @@
         }
         return false
       },
-      handleFilter() {
+      searchClick() {
         this.getList()
       },
       handleSizeChange(val) {

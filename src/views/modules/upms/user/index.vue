@@ -13,14 +13,14 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-225) + 'px'}">
+        <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="height: 80px">
             <div class="filter-container" style="float: left">
               |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
             </div>
             <div style="float: right">
-              <el-input @keyup.enter.native="handleFilter" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves @click="handleFilter">搜索</el-button>
+              <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+              <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
             </div>
           </el-card>
@@ -626,7 +626,7 @@
         if (!value) return true
         return data.label.indexOf(value) !== -1
       },
-      handleFilter() {
+      searchClick() {
         this.listQuery.page = 1
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.getUserList()

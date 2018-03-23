@@ -15,8 +15,8 @@
         <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
         <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
 
-        <el-button type="primary" v-waves @click="handleFilter" >搜索</el-button>
-        <el-button @click="handleCreate" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+        <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
+        <el-button @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
@@ -83,10 +83,10 @@
         <!--</el-form-item>-->
         <el-form-item label="考试场地">
           <!--<span v-if="batch.subject != null">-->
-            <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
-            <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
-            <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
-            <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
+            <span v-if="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
+            <span v-else-if="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
+            <span v-else-if="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
+            <span v-else-if="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
           <!--</span>-->
           <!--<span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>-->
         </el-form-item>
@@ -281,22 +281,17 @@
         this.listQuery.page = val
         this.getList()
       },
-      handleCreate() {
+      createClick() {
         this.batch = {}
         this.batch.subject = this.listQuery.subject
         this.dialogStatus = 'create'
         this.batchOption = true
       },
       handleUpdate(val) {
-        if (val.hasReserved === 0) {
-          this.batch = val
-          this.dialogStatus = 'update'
-          this.batchOption = true
-        } else {
-          this.$alert('当前批次已被预约，不可操作', '提示', {
-            type: 'warning'
-          })
-        }
+        console.log(val)
+        this.batch = val
+        this.dialogStatus = 'update'
+        this.batchOption = true
       },
       see(batchId, state) {
         this.examBespeakLoading = true
@@ -365,7 +360,7 @@
           }
         })
       },
-      handleFilter() {
+      searchClick() {
         this.listQuery.page = 1
         this.examTimeBlur()
         this.getList()

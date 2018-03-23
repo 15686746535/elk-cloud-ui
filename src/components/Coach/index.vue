@@ -1,5 +1,5 @@
 <template>
-  <el-select class="filter-item" :style="{height:height,width:width}" :size="size" clearable :placeholder=placeholder v-model="coach" @change="emitChange(coach)">
+  <el-select class="filter-item" style="margin-bottom: 0px;" :style="{height:height,width:width}" :size="size" clearable :placeholder=placeholder v-model="coach" @change="emitChange(coach)">
     <el-option v-for="item in coachList" :key="item.userId" :label="item.name" :value="item.userId"></el-option>
   </el-select>
 </template>

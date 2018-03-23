@@ -2,7 +2,7 @@
   <div :style="{width:width}">
     <div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>
     <div class="ran-select">
-      <input class="ran-input hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="obj.label" readonly  placeholder="请选择"/>
+      <input id="aaaaaaaa" class="ran-input hover el-input__inner " :class="isOpen?'selected':''" @click="choice($event)" :style="{height:height}" :placeholder=placeholder v-model="label"   placeholder="请选择"/>
       <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
       <div v-show="isOpen" class="ran-arrow"></div>
       <el-collapse-transition>
@@ -11,7 +11,7 @@
             没有数据
           </div>
           <div class="ran-data" v-show="dataList.length > 0">
-            <tree :list="dataList" :open="true" id="orgSelect" v-model="value" choiceType="folder" @node-click="emitChange"></tree>
+            <tree :list="dataList" :open="true" id="busSelect" v-model="value" choiceType="folder" @node-click="emitChange"></tree>
           </div>
         </div>
       </el-collapse-transition>
@@ -55,23 +55,38 @@
     data() {
       return {
         isOpen: false,
+        label: '',
         obj: {}
       }
     },
     // 数据请求
     created() {
     },
+    watch: {
+      value: function(val) {
+        console.log('watch----B')
+        console.log(val)
+        this.$emit('bus-click', this.obj)
+      }
+    },
     methods: {
       emitChange(value) {
+        if (value) {
+          this.label = value.label
+        } else {
+          this.label = ''
+        }
         this.obj = value
         this.cancel()
-        this.$emit('change', value.id)
-        this.$emit('bus-click', value)
+        this.$emit('change', value ? value.id : null)
+      },
+      ranBlur() {
+        this.$emit('blur', true)
       },
       cancel() {
         this.isOpen = false
       },
-      choice() {
+      choice(e) {
         this.isOpen = !this.isOpen
       }
     }

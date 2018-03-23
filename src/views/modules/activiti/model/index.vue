@@ -59,14 +59,14 @@
     </transition>
 
     <el-dialog  @close="getList" title="添加" :show-close="false" width="30%" :visible.sync="option">
-      <el-form :model="model"  ref="model" label-width="100px">
-        <el-form-item label="名称"  prop="username">
+      <el-form :model="model"  ref="model" :rules="rules" label-width="100px">
+        <el-form-item label="名称"  prop="name">
           <el-input v-model="model.name" placeholder="流程名称" ></el-input>
         </el-form-item>
-        <el-form-item label="业务">
+        <el-form-item label="业务" prop="businessId">
           <bus-select :dataList="busTree" v-model="model.businessId" placeholder="关联业务" @bus-click="busSet"></bus-select>
         </el-form-item>
-        <el-form-item label="描述">
+        <el-form-item label="描述" prop="description">
           <el-input v-model="model.description" placeholder="描述" ></el-input>
         </el-form-item>
       </el-form>
@@ -93,6 +93,20 @@
       BusSelect
     },
     data() {
+      var checkBus = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请选择业务'))
+        }
+        if (this.bus.type === '1') {
+          return callback(new Error('只能选择业务类，不能选择分组'))
+        }
+        if (this.bus.type === '2') {
+          callback()
+        }
+        // setTimeout(() => {
+        //
+        // }, 1000)
+      }
       return {
         showList: true,
         option: false,
@@ -107,6 +121,14 @@
           businessId: '2dd79ea6652244b789cfeffbece4fec9', // 关联的 业务表 ID
           name: null, // 模型名称
           description: null // 描述
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入模型名称', trigger: 'submit' }
+          ],
+          businessId: [
+            { validator: checkBus, trigger: 'submit' }
+          ]
         },
         busTree: [],
         bus: {},
@@ -140,9 +162,14 @@
         })
       },
       busSet(bus) {
-        console.log('========== 设计流程图 busSet ====================')
+        console.log('=====')
         console.log(bus)
         this.bus = bus
+      },
+      checkBus(rule, value, callback) {
+        if (!value) {
+          return callback(new Error('请选择业务'))
+        }
       },
       designFlow(modelId) {
         console.log('========== 设计流程图 busSet ====================')
@@ -166,30 +193,31 @@
         console.log(obj)
       },
       create(formName) {
-        // const set = this.$refs
+        const set = this.$refs
         console.log('============= 添加信息 ===================')
         console.log(this.model)
-        // set[formName].validate(valid => {
-        //   if (valid) {
-        //     // addObj(this.batch)
-        //     //   .then(() => {
-        //     //     this.batchOption = false
-        //     //     this.getList()
-        //     //     this.$notify({
-        //     //       title: '成功',
-        //     //       message: '创建成功',
-        //     //       type: 'success',
-        //     //       duration: 2000
-        //     //     })
-        //     //   })
-        //   } else {
-        //     return false
-        //   }
-        // })
+        set[formName].validate(valid => {
+          if (valid) {
+            // addObj(this.batch)
+            //   .then(() => {
+            //     this.batchOption = false
+            //     this.getList()
+            //     this.$notify({
+            //       title: '成功',
+            //       message: '创建成功',
+            //       type: 'success',
+            //       duration: 2000
+            //     })
+            //   })
+          } else {
+            return false
+          }
+        })
       },
       cancel(formName) {
         this.option = false
         this.bus = {}
+        this.model = {}
         const set = this.$refs
         set[formName].resetFields()
         this.getList()

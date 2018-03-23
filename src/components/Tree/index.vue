@@ -39,12 +39,23 @@
         node: null
       }
     },
+    watch: {
+      value: function(val) {
+        console.log('watch----T')
+        console.log(val)
+        // this.Click()
+      }
+    },
     methods: {
       nodeCheckbox(val, isAdd) {
         this.$emit('node-checkbox', val, isAdd)
       },
+      Click() {
+        this.$emit('node-click', this.node)
+      },
       nodeClick(node) {
         this.$emit('node-click', node)
+        // this.$emit('node-click', node)
       }
     }
   }

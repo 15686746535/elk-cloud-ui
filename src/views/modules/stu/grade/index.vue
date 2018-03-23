@@ -22,10 +22,10 @@
         <el-card>
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (client.height - 250) + 'px'}">
-            <div v-for="batch in batchList">
+            <div v-for="(batch, index) in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
-                <el-col :span="12">{{batch.examField}}</el-col>
                 <el-col :span="12">{{batch.examTime | parseTime('{y}-{m}-{d}')}}</el-col>
+                <el-col :span="12">{{batch.examField}}</el-col>
               </div>
             </div>
           </div>
@@ -167,7 +167,7 @@
           sortState: 'before',
           subject: 1
         },
-        studentListLoading: true,
+        studentListLoading: false,
         batchListLoading: true,
         gradeOption: false,
         pickerOptions: {
@@ -244,9 +244,11 @@
           if (response.data.code === 0) {
             this.batchList = response.data.data.list
             this.batchTotal = response.data.data.totalCount
-            if (this.batchList.length > 0) this.studentListQuery.batchId = this.batchList[0].batchId
-            this.getGradeList()
+            // if (this.batchList.length > 0) this.studentListQuery.batchId = this.batchList[0].batchId
+            // this.getGradeList()
             this.batchListLoading = false
+            var b = document.getElementById('1')
+            console.log(b)
           } else {
             console.log('这里是错误信息：' + response.data.msg)
           }
@@ -264,6 +266,7 @@
       batchHandleCurrentChange(val) {
         this.batchListQuery.page = val
         this.getBatchList()
+        this.cleanBatchSelected()
       },
       /* 根据科目查询 */
       handleSubject(field, e) {
@@ -283,7 +286,9 @@
         this.getGradeList()
       },
       /* 创建方法 */
-      createClick() {},
+      createClick() {
+        this.gradeOption = true
+      },
       handleSelectionChange(val) {
         this.examBespeakList.studentIds = []
         for (var i = 0; i < val.length; i++) {
@@ -303,6 +308,14 @@
           a[i].classList.remove('batchCss_selected')
         }
         e.currentTarget.classList.add('batchCss_selected')
+        this.getGradeList()
+      },
+      /* 清除批次样式 */
+      cleanBatchSelected() {
+        var a = document.getElementsByClassName('batchCss')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('batchCss_selected')
+        }
       },
       /* 时间转换方法 */
       intervalTime() {
@@ -334,17 +347,18 @@
     border: 1px solid rgba(64,158,255,.2);
     white-space: nowrap;
     cursor: pointer;
+    transition: .1s;
     box-shadow:3px 3px 10px #f6f6f6;
   }
   .batchCss_selected{
-    background-color: rgba(103,194,58,.1);
-    border-color: rgba(103,194,58,.2);
-    color: #67c23a;
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
   }
   .batchCss:hover{
-    background-color: rgba(103,194,58,.1);
-    border-color: rgba(103,194,58,.2);
-    color: #67c23a;
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
   }
   .subjectBtn{
     display: inline-block;

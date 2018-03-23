@@ -622,7 +622,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-dialog @close="cancel" title="选择批次" width="30%" :visible.sync="dialogFormBespeak">
+    <el-dialog @close="cancel" title="选择批次" width="40%" :visible.sync="dialogFormBespeak">
       <div :style="{height: (client.height)/3 +'px'}" style="overflow: auto">
         <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
           无可预约场次
@@ -747,7 +747,8 @@
         examBespeak: {
           studentId: null,
           state: 0,
-          batchId: null
+          batchId: null,
+          subject: null
         }
       }
     },
@@ -935,6 +936,7 @@
       },
       handleBespeak() {
         console.log(this.student.state)
+        this.examBespeak.subject = this.student.state
         getBatch(this.student.state).then(response => {
           console.log(' ===================  这是所有批次信息  ==================')
           console.log(response.data.data)

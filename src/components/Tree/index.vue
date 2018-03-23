@@ -32,7 +32,6 @@
         type: Array
       },
       value: {
-        type: Number
       }
     },
     data() {

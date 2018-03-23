@@ -1,198 +1,248 @@
 <template>
-    <div class="app-container calendar-list-container">
-      <div>
-          <el-card style="margin-bottom: 5px;">
-              <div class="filter-container">
-                  <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-                  <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-                  <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="plus">添加</el-button>
-              </div>
-          </el-card>
-          <el-card>
-              <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                        highlight-current-row style="width: 100%">
-                  <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-                  <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                  <el-table-column label="内容">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.content}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="发布人">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.operator}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="发布日期">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="修改时间">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-                      </template>
-                  </el-table-column>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <transition name="el-zoom-in-center">
+      <div v-show="showList">
+        <el-card :style="{height: (client.height - 40) + 'px'}">
+          <div class="filter-container" style="padding-bottom: 20px;">
+            <el-input @keyup.enter.native="search" style="width: 200px;margin: 0" class="filter-item" placeholder="关键字" v-model="listQuery.condition"></el-input>
+            <el-button type="primary" @click="search" >搜索</el-button>
+            <el-button  type="primary" @click="dialogOpen"><i class="el-icon-plus"></i>添加</el-button>
+          </div>
+          <el-table  :data="modelList"  v-loading="loading" border :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fithighlight-current-row
+                     style="width: 100%;text-align: center;">
+            <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
+            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
 
-                  <el-table-column label="操作">
-                      <template slot-scope="scope">
-                          <el-button size="mini" type="success"
-                                     @click="handleUpdate(scope.row)">编辑
-                          </el-button>
-                          <el-button size="mini" type="danger"
-                                     @click="handleDelete(scope.row)">删除
-                          </el-button>
-                      </template>
-                  </el-table-column>
+            <el-table-column prop="name" label="流程名字" align="center" width="250"></el-table-column>
+            <el-table-column prop="businessName" label="业务" align="center" width="150"></el-table-column>
+            <el-table-column align="center"  label="是否部署" width="80">
+              <template slot-scope="scope">
+                <span>{{scope.row.status === '0'?'未部署':'已部署'}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="orgName" label="机构" align="center" width="300"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" align="center" width="200"></el-table-column>
 
-              </el-table>
-              <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-                  <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                 :current-page.sync="listQuery.page" background
-                                 :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                                 layout="total, sizes, prev, pager, next, jumper" :total="total">
-                  </el-pagination>
-              </div>
-          </el-card>
+
+            <el-table-column align="center" label="操作" width="600">
+              <template slot-scope="scope">
+                <el-button size="mini" type="primary" plain >编 辑</el-button>
+                <el-button size="mini" type="primary" @click="designFlow(scope.row.modelId)" plain>设计流程图</el-button>
+                <el-button size="mini" type="primary" plain>设计节点</el-button>
+                <el-button size="mini" type="primary" plain>查看流程图</el-button>
+
+                <el-button size="mini" type="primary" plain>部署</el-button>
+                <el-button size="mini" type="danger" plain>删除</el-button>
+
+                <el-button size="mini" type="primary" plain>升级</el-button>
+              </template>
+            </el-table-column>
+
+          </el-table>
+          <div v-show="!loading" class="pagination-container" style="margin-top: 20px">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page.sync="listQuery.page" background
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+          </div>
+        </el-card>
       </div>
-      <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
-        <el-form label-position="left" :model="affiche" :rules="rules" ref="affiche" label-width="100px">
-          <el-form-item label="公告内容">
-            <el-input type="text" v-model="affiche.content" placeholder="公告内容" ></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancel('affiche')">取 消</el-button>
-          <el-button v-if="dialogStatus=='create'" type="primary" @click="create('affiche')">确 定</el-button>
-          <el-button v-else type="primary" @click="update('affiche')">修 改</el-button>
-        </div>
-      </el-dialog>
-    </div>
+    </transition>
+    <transition name="el-zoom-in-center">
+      <div v-show="!showList">
+      <span @click="closeIframe">
+        <svg-icon class="close-iframe" icon-class="close" ></svg-icon>
+      </span>
+        <iframe ref="iframe" :src="url" frameborder="0" style="border:0;" :height="(client.height-60)+'px'" width="100%"></iframe>
+      </div>
+    </transition>
+
+    <el-dialog  @close="getList" title="添加" :show-close="false" width="30%" :visible.sync="option">
+      <el-form :model="model"  ref="model" label-width="100px">
+        <el-form-item label="名称"  prop="username">
+          <el-input v-model="model.name" placeholder="流程名称" ></el-input>
+        </el-form-item>
+        <el-form-item label="业务">
+          <bus-select :dataList="busTree" v-model="model.businessId" placeholder="关联业务" @bus-click="busSet"></bus-select>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="model.description" placeholder="描述" ></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer">
+        <el-button @click="cancel('model')">取 消</el-button>
+        <el-button v-if="dialogType=='create'" type="primary" @click="create('model')">确 定</el-button>
+        <el-button v-else type="primary" @click="update('model')">修 改</el-button>
+      </div>
+    </el-dialog>
+  </div>
+
 </template>
 
 <script>
-import { fetchList, addObj, putObj, getObj ,delObj } from '@/api/basis/affiche'
-import waves from '@/directive/waves/index.js' // 水波纹指令
-import { removeAllSpace } from '@/utils/validate'
+  import { modelPage } from '@/api/activiti/model'
+  import { busTree } from '@/api/activiti/business'
+  import { mapGetters } from 'vuex'
+  import BusSelect from '@/components/BusSelect'
 
-export default {
-  name: 'table_affiche',
-  directives: {
-    waves
-  },
-  data() {
-    return {
-      affiche: {},
-      list: [],
-      total: null,
-      listLoading: true,
-      showModule: 'list',
-      listQuery: {
-        page: 1,
-        limit: 20
-      },
-      rules: {},
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
-      dialogStatus: '',
-      dialogFormVisible: false
-    }
-  },
-  created() {
-    this.getList()
-  },
-  methods: {
-    getList() {
-      this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        console.log(response.data)
-        this.list = response.data.data.list
-        this.total = response.data.data.totalCount
-        this.listLoading = false
-      })
+  export default {
+    name: 'active_model',
+    components: {
+      BusSelect
     },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
+    data() {
+      return {
+        showList: true,
+        option: false,
+        dialogType: 'create',
+        listQuery: {
+          page: 1,
+          limit: 20,
+          condition: ''
+        },
+        modelList: [],
+        model: {
+          businessId: '2dd79ea6652244b789cfeffbece4fec9', // 关联的 业务表 ID
+          name: null, // 模型名称
+          description: null // 描述
+        },
+        busTree: [],
+        bus: {},
+        total: null,
+        loading: false,
+        url: '' // http://127.0.0.1:8114/model/add?modelId=ff9c84da-c37f-11e7-8db5-2c4d5453f651
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ])
+    },
+    mounted() {
+    },
+    created() {
       this.getList()
     },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
-    },
-    searchClick() {
-      this.listQuery.page = 1
-      this.getList()
-    },
-    createClick() {
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-    },
-    handleUpdate(val) {
-      this.affiche = val
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-    },
-    handleDelete(row) {
-      console.log(row)
-      delObj(row.afficheId)
-        .then(response => {
-          this.dialogFormVisible = false
-          this.getList()
-          this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success',
-            duration: 2000
-          })
+    methods: {
+      getList() {
+        this.loading = true
+        console.log('========== 查询条件  ====================')
+        console.log(this.listQuery)
+        modelPage(this.listQuery).then(response => {
+          console.log(response)
+          var data = response.data.data
+          this.modelList = data.list
+          this.total = data.totalCount
+          this.loading = false
         })
-    },
-    create(formName) {
-      const set = this.$refs
-      set[formName].validate(valid => {
-        if (valid) {
-          addObj(this.affiche)
-            .then(() => {
-              this.dialogFormVisible = false
-              this.getList()
-              this.$notify({
-                title: '成功',
-                message: '创建成功',
-                type: 'success',
-                duration: 2000
-              })
-            })
-        } else {
-          return false
-        }
-      })
-    },
-    cancel(formName) {
-      this.dialogFormVisible = false
-      this.affiche = {}
-      const set = this.$refs
-      set[formName].resetFields()
-    },
-    update(formName) {
-      const set = this.$refs
-      set[formName].validate(valid => {
-        if (valid) {
-          putObj(this.affiche).then(() => {
-            this.dialogFormVisible = false
-            this.getList()
-            this.$notify({
-              title: '成功',
-              message: '修改成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        } else {
-          return false
-        }
-      })
+      },
+      busSet(bus) {
+        console.log('========== 设计流程图 busSet ====================')
+        console.log(bus)
+        this.bus = bus
+      },
+      designFlow(modelId) {
+        console.log('========== 设计流程图 busSet ====================')
+        console.log(modelId)
+        this.url = 'http://127.0.0.1:8114/model/add?modelId=' + modelId
+        this.showList = false
+      },
+      getBusTree() {
+        console.log('========== 查询业务树  ====================')
+        busTree().then(response => {
+          console.log(response)
+          this.busTree = response.data.data
+          console.log(this.busTree)
+        })
+      },
+      dialogOpen() {
+        this.option = true
+        this.getBusTree()
+      },
+      setBusiness(obj) {
+        console.log(obj)
+      },
+      create(formName) {
+        // const set = this.$refs
+        console.log('============= 添加信息 ===================')
+        console.log(this.model)
+        // set[formName].validate(valid => {
+        //   if (valid) {
+        //     // addObj(this.batch)
+        //     //   .then(() => {
+        //     //     this.batchOption = false
+        //     //     this.getList()
+        //     //     this.$notify({
+        //     //       title: '成功',
+        //     //       message: '创建成功',
+        //     //       type: 'success',
+        //     //       duration: 2000
+        //     //     })
+        //     //   })
+        //   } else {
+        //     return false
+        //   }
+        // })
+      },
+      cancel(formName) {
+        this.option = false
+        this.bus = {}
+        const set = this.$refs
+        set[formName].resetFields()
+        this.getList()
+      },
+      update(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            // putObj(this.batch).then(() => {
+            //   this.batchOption = false
+            //   this.getList()
+            //   this.$notify({
+            //     title: '成功',
+            //     message: '修改成功',
+            //     type: 'success',
+            //     duration: 2000
+            //   })
+            // })
+          } else {
+            return false
+          }
+        })
+      },
+      search() {
+        this.listQuery.page = 1
+        this.getList()
+      },
+      closeIframe() {
+        this.showList = true
+        this.url = ''
+      },
+      handleSizeChange(val) {
+        this.listQuery.limit = val
+        this.getList()
+      },
+      handleCurrentChange(val) {
+        this.listQuery.page = val
+        this.getList()
+      }
     }
   }
-}
 </script>
+
+<style scoped>
+  .close-iframe{
+    position: absolute;
+    right: 35px;
+    top: 110px;
+    font-size: 40px;
+    z-index: 66;
+    color: red;
+  }
+  .close-iframe:hover{
+    cursor: pointer;
+  }
+</style>

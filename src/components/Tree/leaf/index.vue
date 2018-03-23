@@ -47,7 +47,6 @@
         type: Array
       },
       value: {
-        type: Number
       }
     },
     data() {
@@ -122,7 +121,7 @@
       this.defaultSelect()
     },
     updated() {
-      this.defaultSelect()
+      // this.defaultSelect()
     },
     methods: {
       defaultSelect() {

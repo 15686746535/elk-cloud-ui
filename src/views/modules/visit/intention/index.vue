@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='list'" style="height: 100%">
@@ -29,29 +29,40 @@
             <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}">
-            <div class="visits"  :style="{height: (client.height-205) + 'px'}"  v-loading="listLoading" element-loading-text="给我一点时间" >
-              <div class="visit" v-for="visit in list" @click="visitClick($event)"  @dblclick="editlist(visit)">
+            <div class="intentions"  :style="{height: (client.height-205) + 'px'}"  v-loading="listLoading" element-loading-text="给我一点时间" >
+
+              <!--<div class="intention" v-for="intention in intentionList" @click="intentionClick($event)"  @dblclick="editlist(intention)">-->
+                <!--&lt;!&ndash;<div>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="intention_btn">重新分配</div>&ndash;&gt;-->
+              <!--</div>-->
+              <div class="intention" v-for="intention in intentionList" @click="intentionClick($event)"  @dblclick="editlist(intention)">
                 <div style="width: 222px;margin: 9px 10px;">
                   <div style="width: 50%;float: left">
-                      <div class="visit_text">姓名：{{visit.name}}</div>
-                      <div class="visit_text">性别：{{visit.sex | sexFilter}}</div>
-                      <div class="visit_text">负责人：{{visit.operator}}</div>
+                      <div class="intention_text">姓名：{{intention.name}}</div>
+                      <div class="intention_text">性别：{{intention.sex | sexFilter}}</div>
+                      <div class="intention_text">负责人：{{intention.operator}}</div>
                   </div>
                   <div style="width: 50%;float: left">
-                      <div class="visit_text">类别：{{visit.customerType}}</div>
-                      <div class="visit_text">渠道：{{visit.source}}</div>
+                      <div class="intention_text">类别：{{intention.customerType}}</div>
+                      <div class="intention_text">渠道：{{intention.source}}</div>
                   </div>
 
                   <!-- 分割线 -->
                   <div style="width: 100%;float: left;border: none;border-bottom:1px solid #d3dce6;margin: 5px 0; "></div>
                   <div style="width: 100%;height: 88px;float: left">
 
-                      <div class="visit_text">微信：{{visit.wechat}}</div>
-                      <div class="visit_text">电话：{{visit.mobile}}</div>
-                      <div class="visit_text">住址：{{visit.contactAddress}}</div>
-                      <div class="visit_text">顾虑：{{visit.worry}}</div>
+                      <div class="intention_text">微信：{{intention.wechat}}</div>
+                      <div class="intention_text">电话：{{intention.mobile}}</div>
+                      <div class="intention_text">住址：{{intention.contactAddress}}</div>
+                      <div class="intention_text">顾虑：{{intention.worry}}</div>
                   </div>
 
+                  <div class="intention_btn">关 闭</div>
                 </div>
               </div>
             </div>
@@ -108,7 +119,7 @@
               </el-table-column>
               <el-table-column align="center" label="来访日期" width="100">
                 <template slot-scope="scope">
-                  <span>{{scope.row.visitTime | parseTime('{y}-{m}-{d}')}}</span>
+                  <span>{{scope.row.intentionTime | parseTime('{y}-{m}-{d}')}}</span>
                 </template>
               </el-table-column>
               &lt;!&ndash;<el-table-column align="center" label="备注" width="200">&ndash;&gt;
@@ -377,7 +388,7 @@
     },
     data() {
       return {
-        list: [],
+        intentionList: [],
         intention: {},
         total: null,
         addInfo: false,
@@ -458,7 +469,8 @@
         }, {
           value: '2',
           label: '已关闭'
-        }]
+        }],
+        intention_show_btn: false
         // apply_type
       }
     },
@@ -512,13 +524,14 @@
         console.log('====================== 正在进入单个学员编辑 =====================')
         this.edit = false
         this.intention = val
+        console.log(val)
         this.showModule = 'info'
         this.getFollowUp(val)
       },
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.data.list
+          this.intentionList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
@@ -587,13 +600,13 @@
         this.getOperators()
       },
       // 来访信息点击事件
-      visitClick(e) {
+      intentionClick(e) {
         console.log(e)
-        var a = document.getElementsByClassName('visit')
+        var a = document.getElementsByClassName('intention')
         for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('visit_hover')
+          a[i].classList.remove('intention_hover')
         }
-        e.currentTarget.classList.add('visit_hover')
+        e.currentTarget.classList.add('intention_hover')
       },
       getFollowUp(val) {
         this.followQuery.intentionId = val.intentionId
@@ -611,13 +624,15 @@
           this.getFollowUp(this.followQuery)
           this.followUp.content = null
         })
+      },
+      intentionBtn() {
+        this.intention_show_btn = !this.intention_show_btn
       }
     }
   }
 </script>
 
-<style>
-
+<style rel="stylesheet/scss" lang="scss" scoped>
 
   .clearfix:before,
   .clearfix:after {
@@ -627,64 +642,50 @@
   .clearfix:after {
     clear: both
   }
-  .subject{
-    width: 140px;
-    height: 30px;
-    display:block;
-    margin: 10px auto;
-    color: rgb(124,124,124);
-    background: none;
-    border: none;
-    font-size: 14px;
-  }
-  .pass{
-    width: 70px;
-    height: 30px;
-    border-radius: 10px;
-    color: #fff;
-    text-align: center;
-    border: none;
-    background-color: rgb(66,185,131);
-  }
-  .noPass{
-    width: 70px;
-    height: 30px;
-    border-radius: 10px;
-    color:#fff;
-    border: none;
-    text-align: center;
-    background-color: rgb(177,177,177);
-  }
-  .cost{
-    width: 140px;
-    height: 30px;
-    display:block;
-    margin: 10px auto;
-    text-align: left;
-    color: rgb(124,124,124);
-    background: none;
-    border: none;
-    font-size: 14px;
-  }
-  .visits {
+  .intentions {
     overflow:auto;
   }
-  .visit {
+  .intention {
     float: left;
     width: 242px;
     height: 218px;
     margin:5px;
     cursor: pointer;
-    background-image: url(../../../../../static/img/bj1.png);
-    transition: background-image 0.2s;
+    border: 1px solid #67c23a;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 4px solid #67c23a;
+    transition: border-color 0.2s;
   }
-  .visit_hover {
-    background-image: url(../../../../../static/img/bj.png);
+  .intention_btn{
+    width: 60px;
+    height: 25px;
+    position: relative;
+    top: 192px;
+    left: 181px;
+    cursor: pointer;
+    background-color: #66c23a;
+    transition: background-color 0.2s;
+    color: #ffffff;
+    text-align: center;
+    line-height: 25px;
+    font-size: 14px
   }
-  .visit:hover {
-    background-image: url(../../../../../static/img/bj.png);
+  /*.intention_btn:hover{*/
+    /*background-color: #449ffb;*/
+  /*}*/
+  .intention:hover{
+    border-color: #449ffb;
+    .intention_btn{
+      background-color: #449ffb;
+    }
   }
-  .visit_text{
+  .intention_hover {
+    border-color: #449ffb;
+    .intention_btn{
+      background-color: #449ffb;
+    }
+  }
+  .intention_text{
     color:#495060;
     font-size: 13px;
     line-height: 25px;

@@ -82,7 +82,7 @@
 </template>
 
 <script>
-  import { modelPage } from '@/api/activiti/model'
+  import { modelPage, modelSave } from '@/api/activiti/model'
   import { busTree } from '@/api/activiti/business'
   import { mapGetters } from 'vuex'
   import BusSelect from '@/components/BusSelect'
@@ -100,12 +100,11 @@
         if (this.bus.type === '1') {
           return callback(new Error('只能选择业务类，不能选择分组'))
         }
-        if (this.bus.type === '2') {
-          callback()
-        }
-        // setTimeout(() => {
-        //
-        // }, 1000)
+        setTimeout(() => {
+          if (this.bus.type === '2') {
+            callback()
+          }
+        }, 1000)
       }
       return {
         showList: true,
@@ -196,19 +195,22 @@
         const set = this.$refs
         console.log('============= 添加信息 ===================')
         console.log(this.model)
+        console.log(formName)
         set[formName].validate(valid => {
+          console.log(valid)
           if (valid) {
-            // addObj(this.batch)
-            //   .then(() => {
-            //     this.batchOption = false
-            //     this.getList()
-            //     this.$notify({
-            //       title: '成功',
-            //       message: '创建成功',
-            //       type: 'success',
-            //       duration: 2000
-            //     })
-            //   })
+            console.log('============= modelSave ===================')
+            modelSave(this.model)
+              .then(() => {
+                this.option = false
+                this.getList()
+                this.$notify({
+                  title: '成功',
+                  message: '创建成功',
+                  type: 'success',
+                  duration: 2000
+                })
+              })
           } else {
             return false
           }

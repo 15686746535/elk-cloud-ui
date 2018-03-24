@@ -64,8 +64,6 @@
     },
     watch: {
       value: function(val) {
-        console.log('watch----B')
-        console.log(val)
         this.$emit('bus-click', this.obj)
       }
     },

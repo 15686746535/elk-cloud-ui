@@ -2,7 +2,7 @@
   <div :style="{width:width}">
     <div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>
     <div class="ran-select">
-      <input class="ran-input hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="org.label" readonly  placeholder="请选择"/>
+      <input class="ran-input hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
       <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
       <div v-show="isOpen" class="ran-arrow"></div>
       <el-collapse-transition>
@@ -54,10 +54,17 @@
         noData: true,
         isOpen: false,
         orgList: [],
+        label: '',
         org: {}
       }
     },
     // 数据请求
+    watch: {
+      value: function(val) {
+        this.$emit('change', val)
+        this.$emit('org-click', this.org)
+      }
+    },
     created() {
       fetch({
         url: '/upms/org/tree',
@@ -72,10 +79,8 @@
     methods: {
       emitChange(value) {
         this.org = value
+        this.label = value ? value.label : ''
         this.cancel()
-        this.orgId = value.id
-        this.$emit('change', value.id)
-        this.$emit('org-click', value)
       },
       cancel() {
         this.isOpen = false

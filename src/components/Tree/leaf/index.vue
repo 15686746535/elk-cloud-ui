@@ -123,8 +123,15 @@
     updated() {
       this.defaultSelect()
     },
+    // watch: {
+    //   value: function(val) {
+    //     console.log('//////////////////')
+    //     this.defaultSelect()
+    //   }
+    // },
     methods: {
       defaultSelect() {
+        console.log()
         if (this.value) {
           if (this.model.id === this.value) {
             this.nodeSelected(this.model)

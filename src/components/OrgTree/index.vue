@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import fetch from '@/utils/fetch'
+  import request from '@/utils/request'
   import Tree from '@/components/Tree'
   export default {
     name: 'org-tree',
@@ -19,7 +19,7 @@
     },
     // 数据请求
     created() {
-      fetch({
+      request({
         url: '/upms/org/tree',
         method: 'get'
       }).then(response => {

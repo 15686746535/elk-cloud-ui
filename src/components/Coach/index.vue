@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import fetch from '@/utils/fetch'
+  import request from '@/utils/request'
 
   export default {
     name: 'coach',
@@ -70,7 +70,7 @@
     },
     methods: {
       getCoachList() {
-        fetch({
+        request({
           url: '/upms/user/userList',
           method: 'get',
           params: this.query

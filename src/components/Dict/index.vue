@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import fetch from '@/utils/fetch'
+  import request from '@/utils/request'
 
   export default {
     name: 'dict',
@@ -57,7 +57,7 @@
     // 数据请求
     created() {
       if (this.dictType) {
-        fetch({
+        request({
           url: '/basis/dict/getByType/' + this.dictType,
           method: 'get'
         }).then(response => {

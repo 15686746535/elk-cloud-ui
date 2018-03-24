@@ -2,6 +2,8 @@ import axios from 'axios'
 import { Notification } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+// 调试模式 抛出异常到控制台
+const debug = true
 
 // 创建axios实例
 const service = axios.create({
@@ -26,7 +28,11 @@ service.interceptors.response.use(
     const res = response.data
     if (res.code === 500) {
       message(res.msg, 'error', '提示')
-      return Promise.reject(res)
+      if (debug) return Promise.reject(res)
+    }
+    if (res.status === 500) {
+      message(res.message, 'error', '提示')
+      if (debug) return Promise.reject(res)
     }
     return response
   },
@@ -42,9 +48,9 @@ service.interceptors.response.use(
       console.log(res)
       message('登录过期!', 'warning', '警告')
     } else {
-      message('未知异常，请联系管理员!', 'error', '错误')
+      message(res.msg, 'error', '错误')
     }
-    return Promise.reject(error)
+    if (debug) return Promise.reject(error)
   }
 )
 

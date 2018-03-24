@@ -6,6 +6,7 @@ const app = {
       opened: !+Cookies.get('sidebarStatus')
     },
     visitedViews: [],
+    loading: false,
     client: {
       height: 0, /* 页面高度*/
       width: 0 /* 页面宽度*/
@@ -19,6 +20,9 @@ const app = {
         Cookies.set('sidebarStatus', 0)
       }
       state.sidebar.opened = !state.sidebar.opened
+    },
+    SET_LOADING: (state, loading) => {
+      state.loading = loading
     },
     SET_CLIENT_HEIGHT: (state, height) => {
       state.client.height = height
@@ -47,6 +51,9 @@ const app = {
     },
     addVisitedViews: ({ commit }, view) => {
       commit('ADD_VISITED_VIEWS', view)
+    },
+    setLoading: ({ commit }, loading) => {
+      commit('SET_LOADING', loading)
     },
     setClientHeight: ({ commit }, height) => {
       commit('SET_CLIENT_HEIGHT', height)

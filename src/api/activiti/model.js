@@ -51,14 +51,6 @@ export function userAreaSelect(params) {
   })
 }
 
-// 查看流程图片
-export function showFlowImg(modelId) {
-  return request({
-    url: '/activiti/model/showFlowImg/' + modelId,
-    method: 'get'
-  })
-}
-
 // 删除模型
 export function modelDel(modelId) {
   return request({
@@ -77,7 +69,7 @@ export function saveNode(obj) {
 }
 
 // 部署流程
-export function deploy(modelId) {
+export function modelDeploy(modelId) {
   return request({
     url: '/activiti/model/deploy/' + modelId,
     method: 'put'

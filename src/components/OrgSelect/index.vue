@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import fetch from '@/utils/fetch'
+  import request from '@/utils/request'
   import Tree from '@/components/Tree'
 
   export default {
@@ -66,7 +66,7 @@
       }
     },
     created() {
-      fetch({
+      request({
         url: '/upms/org/tree',
         method: 'get'
       }).then(response => {

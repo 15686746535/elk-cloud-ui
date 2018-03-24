@@ -5,19 +5,24 @@
 </template>
 
 <script>
-import client from '@/utils/client'
 export default {
   name: 'app',
   created() {
-    this.$store.dispatch('setClientHeight', client.getHeight(84))
-    this.$store.dispatch('setClientWidth', client.getWidth(220))
+    this.setClientSize()
   },
   mounted() {
     window.onresize = () => {
       return (() => {
-        this.$store.dispatch('setClientHeight', client.getHeight(84))
-        this.$store.dispatch('setClientWidth', client.getWidth(220))
+        this.setClientSize()
       })()
+    }
+  },
+  methods: {
+    setClientSize() {
+      var height = document.documentElement.clientHeight - 84 || document.body.clientHeight - 84
+      var width = document.documentElement.clientWidth - 220 || document.body.clientWidth - 220
+      this.$store.dispatch('setClientHeight', height)
+      this.$store.dispatch('setClientWidth', width)
     }
   }
 }

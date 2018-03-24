@@ -20,7 +20,6 @@
 </template>
 
 <script>
-  import fetch from '@/utils/fetch'
   import Tree from '@/components/Tree'
 
   export default {

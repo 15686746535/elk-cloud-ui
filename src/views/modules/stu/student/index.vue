@@ -995,7 +995,7 @@
             this.examBespeak.batchId = null
           })
         }
-      },
+      }
     }
   }
 </script>

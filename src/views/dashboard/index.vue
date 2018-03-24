@@ -11,7 +11,7 @@
         <el-input v-model="person.name" placeholder="姓名" ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" style="width:100%;"  @click.native.prevent="Button1_onclick">登陆</el-button>
+        <el-button type="primary" style="width:100%;"  @click.native.prevent="printPdf">登陆</el-button>
       </el-form-item>
 
     </el-form>
@@ -24,6 +24,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { wechatLogin } from '@/api/upms/login'
+import { getLodop } from '@/common/LodopFuncs'
+let LODOP
 export default {
   name: 'dashboard',
   computed: {
@@ -50,6 +52,7 @@ export default {
         pictureLen: ''
       },
       openId: 'sdsadsad'
+      // LODOP: getLodop
     }
   },
   methods: {
@@ -103,6 +106,20 @@ export default {
     Button3_onclick() {
       var CVR_IDCard = document.getElementById('CVR_IDCard')
       CVR_IDCard.AboutBox()
+    },
+    printPdf() {
+      this.CreateOneFormPage()
+      // LODOP.PRINT()
+      LODOP.PREVIEW()
+    },
+    CreateOneFormPage() {
+      LODOP = getLodop()
+      LODOP.PRINT_INIT('订货单')
+      LODOP.SET_PRINT_STYLE('FontSize', 18)
+      LODOP.SET_PRINT_STYLE('Bold', 1)
+      LODOP.ADD_PRINT_TEXT(50, 231, 260, 39, '打印页面部分内容')
+      LODOP.ADD_PRINT_HTM(88, 200, 350, 600, this.openId)
+
     }
   }
 }

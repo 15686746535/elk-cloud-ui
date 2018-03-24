@@ -30,6 +30,7 @@ service.interceptors.response.use(
       message(res.msg, 'error', '提示')
       if (debug) return Promise.reject(res)
     }
+    // 网关异常统一拦截
     if (res.status === 500) {
       message(res.message, 'error', '提示')
       if (debug) return Promise.reject(res)

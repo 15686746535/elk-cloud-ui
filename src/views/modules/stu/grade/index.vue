@@ -131,7 +131,7 @@
         </el-card>
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
 
-          <el-table :data="gradeStudentList" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="gradeStudentLists" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -243,6 +243,7 @@
     data() {
       return {
         gradeStudentList: [],
+        gradeStudentLists: [],
         batchList: [],
         studentTotal: 0,
         batchTotal: 0,
@@ -319,6 +320,7 @@
         this.studentListLoading = true
         console.log('==========  查询学员条件  =-=======')
         console.log(this.studentListQuery)
+        this.studentListQuery.examState = 'exam_note_true'
         getGrade(this.studentListQuery).then(response => {
           console.log('========== 数据 ==========')
           console.log(response.data)
@@ -386,12 +388,12 @@
       createClick() {
         this.gradeOption = true
         this.gradeOptionLoading = true
-        this.studentListQuery.examState = 'exam_note_true'
+        this.studentListQuery.examState = 'exam_note_false'
         getGrade(this.studentListQuery).then(response => {
           console.log('========== 数据 ==========')
           console.log(response.data)
           if (response.data.code === 0) {
-            this.gradeStudentList = response.data.data.list
+            this.gradeStudentLists = response.data.data.list
             this.studentTotal = response.data.data.totalCount
             this.gradeOptionLoading = false
           } else {

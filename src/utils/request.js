@@ -56,6 +56,8 @@ service.interceptors.response.use(
 )
 
 export function message(text, type, title) {
+  // 关闭加载遮罩
+  store.dispatch('setLoading', false)
   Notification({
     title: title,
     type: type,

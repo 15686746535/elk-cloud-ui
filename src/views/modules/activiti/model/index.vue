@@ -90,14 +90,6 @@
         <el-button v-else type="primary" :loading="loading" @click="update('model')">修 改</el-button>
       </div>
     </el-dialog>
-
-    <!--加载框-->
-    <div v-loading.fullscreen.lock="loading"
-         element-loading-text="玩儿命加载中···"
-         element-loading-background="rgba(246, 246, 246, 0.2)">
-
-    </div>
-
   </div>
 
 </template>
@@ -208,6 +200,8 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          // 展开加载中
+          this.$store.dispatch('setLoading', true)
           this.loading = true
           modelDeploy(modelId).then(response => {
             this.loading = false

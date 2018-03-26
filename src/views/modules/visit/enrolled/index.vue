@@ -218,10 +218,12 @@
       },
       // 根据部门id查询员工
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询来访信息   =======================')
-        this.listQuery.page = 1
-        this.listQuery.orgId = data.id
-        this.getList()
+        if (data) {
+          console.log('=====================   根据部门id查询来访信息   =======================')
+          this.listQuery.page = 1
+          this.listQuery.orgId = data.id
+          this.getList()
+        }
       },
       getList() {
         this.listLoading = true

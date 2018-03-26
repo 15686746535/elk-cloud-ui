@@ -15,9 +15,9 @@
           <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类别"></dict>
           <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
-          <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary">上传</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" @click="open" type="success" icon="plus">重新分配</el-button>
+          <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜 索</el-button>
+          <el-button class="filter-item" style="margin-left: 10px;" type="primary">上 传</el-button>
+          <el-button class="filter-item" style="margin-left: 10px;" @click="distribution" type="success" icon="plus">分 配</el-button>
         </el-card>
 
         <el-card :style="{height: (client.height-125) + 'px'}">
@@ -67,6 +67,21 @@
 
 
         </el-card>
+        <el-dialog @close="getList" title="选择负责人" width="40%" :visible.sync="dialogIntentionList">
+          <org-select v-model="orgId" @org-click="orgClick"></org-select>
+          <el-select v-model="intentionList.userId" clearable placeholder="负责人">
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.name"
+              :value="item.userId">
+            </el-option>
+          </el-select>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="closeIntention">取 消</el-button>
+            <el-button type="primary" @click="redistribution">确 定</el-button>
+          </div>
+        </el-dialog>
       </el-col>
     </el-row>
   </div>
@@ -74,8 +89,10 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
+  import { userList } from '@/api/upms/user'
+  import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
   import OrgTree from '@/components/OrgTree'
+  import OrgSelect from '@/components/OrgSelect'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js'// 水波纹指令
 
@@ -83,7 +100,8 @@
     name: 'table_intention',
     components: {
       OrgTree,
-      Dict
+      Dict,
+      OrgSelect
     },
     directives: {
       waves
@@ -102,15 +120,19 @@
           customerType: null,
           beginTime: null,
           endTime: null,
-          state: null,
+          state: -1,
           operator: null,
           followUp: true
         },
         interval: [],
         intentionList: {
           intentionIds: [],
-          state: null
-        }
+          state: 0,
+          userId: null
+        },
+        userList: [],
+        dialogIntentionList: false,
+        orgId: null
       }
     },
     created() {
@@ -141,38 +163,59 @@
       },
       // 根据部门id查询员工
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询来访信息   =======================')
-        this.listQuery.page = 1
-        // this.listQuery.orgId = data.id
-        // this.getList()
+        if (data) {
+          console.log('=====================   根据部门id查询来访信息   =======================')
+          this.listQuery.page = 1
+          this.listQuery.orgId = data.id
+          this.getList()
+        }
       },
       // 搜索
       searchClick() {
         this.listQuery.page = 1
         this.getList()
       },
-      open() {
-        this.$confirm('是否将选择信息重新分配', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'info'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '移交成功'
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消移交'
-          })
-        })
+      distribution() {
+        this.dialogIntentionList = true
       },
       handleSelectionChange(val) {
         this.intentionList.intentionIds = []
         for (var i = 0; i < val.length; i++) {
           this.intentionList.intentionIds.push(val[i].intentionId)
         }
+      },
+      orgClick(val) {
+        console.log('====== =====')
+        console.log(val)
+        if (val) {
+          userList({ orgId: val.id }).then(response => {
+            console.log(response.data.data)
+            this.userList = response.data.data
+          })
+        }
+      },
+      redistribution() {
+        this.$confirm('是否将选择信息重新分配', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          putIntention(this.intentionList).then(() => {
+            this.$message({
+              type: 'success',
+              message: '分配成功'
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消分配'
+          })
+        })
+        console.log(this.orgId)
+      },
+      closeIntention() {
+        this.dialogIntentionList = false
       }
     }
   }

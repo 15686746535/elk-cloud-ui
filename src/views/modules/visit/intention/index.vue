@@ -60,9 +60,11 @@
                       <div class="intention_text">电话：{{intention.mobile}}</div>
                       <div class="intention_text">住址：{{intention.contactAddress}}</div>
                       <div class="intention_text">顾虑：{{intention.worry}}</div>
+                    <div class="intention_btn" @click="updateState(intention, '-1')">分 配</div>
+                    <div style="top: -54px;" class="intention_btn" @click="updateState(intention, '2')">关 闭</div>
                   </div>
 
-                  <div class="intention_btn">关 闭</div>
+                  <!--<div class="intention_btn">关 闭</div>-->
                 </div>
               </div>
             </div>
@@ -514,10 +516,12 @@
       },
       // 根据部门id查询员工
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询来访信息   =======================')
-        this.listQuery.page = 1
-        this.listQuery.orgId = data.id
-        this.getList()
+        if (data) {
+          console.log('=====================   根据部门id查询来访信息   =======================')
+          this.listQuery.page = 1
+          this.listQuery.orgId = data.id
+          this.getList()
+        }
       },
       // 双击行  编辑
       editlist(val) {
@@ -534,6 +538,7 @@
           this.intentionList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
+          this.cleanIntentionSelected()
         })
       },
       handleSizeChange(val) {
@@ -569,7 +574,14 @@
         putObj(this.intention)
           .then(response => {
             this.edit = false
+            this.getList()
           })
+      },
+      // 更改客户状态
+      updateState(val, state) {
+        this.intention = val
+        this.intention.state = state
+        this.update()
       },
       // 搜索
       searchClick() {
@@ -604,9 +616,16 @@
         console.log(e)
         var a = document.getElementsByClassName('intention')
         for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('intention_hover')
+          a[i].classList.remove('intention_selected')
         }
-        e.currentTarget.classList.add('intention_hover')
+        e.currentTarget.classList.add('intention_selected')
+      },
+      /* 清除批次样式 */
+      cleanIntentionSelected() {
+        var a = document.getElementsByClassName('intention')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('intention_selected')
+        }
       },
       getFollowUp(val) {
         this.followQuery.intentionId = val.intentionId
@@ -660,8 +679,8 @@
     width: 60px;
     height: 25px;
     position: relative;
-    top: 192px;
-    left: 181px;
+    top: -3px;
+    left: 171px;
     cursor: pointer;
     background-color: #66c23a;
     transition: background-color 0.2s;
@@ -679,7 +698,7 @@
       background-color: #449ffb;
     }
   }
-  .intention_hover {
+  .intention_selected {
     border-color: #449ffb;
     .intention_btn{
       background-color: #449ffb;

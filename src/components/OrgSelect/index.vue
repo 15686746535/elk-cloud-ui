@@ -61,8 +61,8 @@
     // 数据请求
     watch: {
       value: function(val) {
-        this.$emit('change', val)
-        this.$emit('org-click', this.org)
+        console.log('===-------------------------------')
+        console.log(val)
       }
     },
     created() {
@@ -81,6 +81,8 @@
         this.org = value
         this.label = value ? value.label : ''
         this.cancel()
+        this.$emit('change', value ? value.id : null)
+        this.$emit('org-click', this.org)
       },
       cancel() {
         this.isOpen = false

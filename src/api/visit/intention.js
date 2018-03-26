@@ -32,7 +32,15 @@ export function delObj(id) {
 // 更新
 export function putObj(obj) {
   return request({
-    url: '/visit/intention',
+    url: '/visit/intention/',
+    method: 'put',
+    data: obj
+  })
+}
+// 更新
+export function putIntention(obj) {
+  return request({
+    url: '/visit/intention/redistribution',
     method: 'put',
     data: obj
   })

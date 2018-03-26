@@ -26,7 +26,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { wechatLogin } from '@/api/upms/login'
-import { getLodop } from '@/common/LodopFuncs'
+import { getLodop } from '@/utils/LodopFuncs'
 let LODOP
 export default {
   name: 'dashboard',

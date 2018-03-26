@@ -86,8 +86,8 @@
 
       <div slot="footer">
         <el-button @click="cancel('model')">取 消</el-button>
-        <el-button v-if="dialogType === 'create'" type="primary" @click="create('model')"  :loading="loading">确 定</el-button>
-        <el-button v-else type="primary" :loading="loading" @click="update('model')">修 改</el-button>
+        <el-button v-if="dialogType === 'create'" type="primary" @click="create('model')" >确 定</el-button>
+        <el-button v-else type="primary" @click="update('model')">修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -146,7 +146,6 @@
         bus: {},
         total: null,
         tableLoading: false,
-        loading: false,
         url: '' // http://127.0.0.1:8114/model/add?modelId=ff9c84da-c37f-11e7-8db5-2c4d5453f651
       }
     },
@@ -165,7 +164,6 @@
       getList() {
         this.tableLoading = true
         console.log('========== 查询条件  ====================')
-        console.log(this.listQuery)
         modelPage(this.listQuery).then(response => {
           var data = response.data.data
           this.modelList = data.list
@@ -202,9 +200,7 @@
         }).then(() => {
           // 展开加载中
           this.$store.dispatch('setLoading', true)
-          this.loading = true
           modelDeploy(modelId).then(response => {
-            this.loading = false
             this.getList()
           })
         })
@@ -244,13 +240,11 @@
       create(formName) {
         const set = this.$refs
         console.log('============= 添加信息 ===================')
-        console.log(this.model)
-        console.log(formName)
         set[formName].validate(valid => {
           console.log(valid)
           if (valid) {
-            console.log('============= modelSave ===================')
-            this.loading = true
+            // 展开加载中
+            this.$store.dispatch('setLoading', true)
             modelSave(this.model)
               .then(() => {
                 this.option = false
@@ -280,17 +274,11 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.loading = true
+            // 展开加载中
+            this.$store.dispatch('setLoading', true)
             modelUpdate(this.model).then(() => {
               this.option = false
-              this.loading = false
               this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
             })
           } else {
             return false

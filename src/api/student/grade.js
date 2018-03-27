@@ -30,9 +30,9 @@ export function delObj(id) {
   })
 }
 // 更新
-export function putObj(obj) {
+export function putExamNote(obj) {
   return request({
-    url: '/stu/revisitstudent',
+    url: '/stu/examnote',
     method: 'put',
     data: obj
   })

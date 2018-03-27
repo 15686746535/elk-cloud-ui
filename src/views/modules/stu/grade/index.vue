@@ -41,17 +41,17 @@
       </el-col>
       <el-col :span="20">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  @selection-change="handleSelectionChange" :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
-            <el-table-column align="center" label="姓名">
+            <el-table-column align="center"  fixed="left"  label="姓名">
               <template slot-scope="scope">
                 <span>{{scope.row.name}}</span>
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="电话">
+            <el-table-column align="center" label="电话" width="120">
               <template slot-scope="scope">
                 <span>{{scope.row.mobile}}</span>
               </template>
@@ -69,20 +69,20 @@
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="批次">
+            <el-table-column align="center" label="批次" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.batch}}</span>
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="期数">
+            <el-table-column align="center" label="期数" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.periods}}</span>
               </template>
             </el-table-column>
 
 
-            <el-table-column align="center" label="考试日期">
+            <el-table-column align="center" label="考试日期" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
               </template>
@@ -90,23 +90,23 @@
 
             <el-table-column align="center" label="状态">
               <template slot-scope="scope">
-                <span>{{scope.row.examState == 1?'通过':scope.row.examState == 2?'失败':scope.row.examState == 2?'失败':'失败'}}</span>
+                <span>{{scope.row.examState == 1?'通过':scope.row.examState == 2?'失败':scope.row.examState == 2?'失败':'缺考'}}</span>
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="通过日期">
+            <el-table-column align="center" label="通过日期" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.passTime | parseTime('{y}-{m}-{d}')}}</span>
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="失败日期">
+            <el-table-column align="center" label="失败日期" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.failTime | parseTime('{y}-{m}-{d}')}}</span>
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="缺考日期">
+            <el-table-column align="center" label="缺考日期" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.missTime | parseTime('{y}-{m}-{d}')}}</span>
               </template>
@@ -115,7 +115,7 @@
 
             <el-table-column align="center" fixed="right" label="操作" width="160">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain>编 辑</el-button>
+                <el-button size="mini" type="primary" @click="examEdit(scope.row)" plain>编 辑</el-button>
                 <el-button size="mini" type="danger" >删 除</el-button>
               </template>
             </el-table-column>
@@ -129,9 +129,16 @@
             </el-pagination>
           </div>
         </el-card>
+        <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeEdit">
+          <el-button-group>
+            <el-button type="success" @click="examOperation(1)">通 过</el-button>
+            <el-button type="danger" @click="examOperation(2)">失 败</el-button>
+            <el-button type="warning"  @click="examOperation(3)">缺 考</el-button>
+          </el-button-group>
+        </el-dialog>
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
 
-          <el-table :data="gradeStudentLists" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="notGradeStudentList" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -213,9 +220,9 @@
           </el-table>
 
           <div slot="footer">
-            <el-button type="success">通 过</el-button>
-            <el-button type="danger">失 败</el-button>
-            <el-button type="warning" >缺 考</el-button>
+            <el-button type="success" @click="examOperation(1)">通 过</el-button>
+            <el-button type="danger" @click="examOperation(2)">失 败</el-button>
+            <el-button type="warning"  @click="examOperation(3)">缺 考</el-button>
           </div>
         </el-dialog>
       </el-col>
@@ -224,7 +231,7 @@
 </template>
 
 <script>
-  import { getGrade, getObj } from '@/api/student/grade'
+  import { getGrade, getObj, putExamNote } from '@/api/student/grade'
   import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
@@ -243,7 +250,7 @@
     data() {
       return {
         gradeStudentList: [],
-        gradeStudentLists: [],
+        notGradeStudentList: [],
         batchList: [],
         studentTotal: 0,
         batchTotal: 0,
@@ -264,6 +271,7 @@
         studentListLoading: false,
         batchListLoading: true,
         gradeOption: false,
+        gradeEdit: false,
         gradeOptionLoading: false,
         pickerOptions: {
           shortcuts: [{
@@ -303,7 +311,13 @@
             }
           }]
         },
-        interval: []
+        interval: [],
+        /* 修改状态的参数 */
+        examParameter: {
+          studentIds: [],
+          batchId: null,
+          examState: null
+        }
       }
     },
     created() {
@@ -393,7 +407,7 @@
           console.log('========== 数据 ==========')
           console.log(response.data)
           if (response.data.code === 0) {
-            this.gradeStudentLists = response.data.data.list
+            this.notGradeStudentList = response.data.data.list
             this.studentTotal = response.data.data.totalCount
             this.gradeOptionLoading = false
           } else {
@@ -402,16 +416,17 @@
         })
       },
       handleSelectionChange(val) {
-        // this.examBespeakList.studentIds = []
-        // for (var i = 0; i < val.length; i++) {
-        //   this.examBespeakList.studentIds.push(val[i].studentId)
-        // }
+        this.examParameter.studentIds = []
+        for (var i = 0; i < val.length; i++) {
+          this.examParameter.studentIds.push(val[i].studentId)
+        }
         console.log(val)
-        console.log(this.examBespeakList.studentIds)
+        console.log(this.examParameter.studentIds)
       },
       /* 控制批次点击样式 */
       batchClick(e, batch) {
         this.studentListQuery.batchId = batch.batchId
+        this.examParameter.batchId = batch.batchId
         this.interval = []
         this.studentListQuery.beginTime = null
         this.studentListQuery.endTime = null
@@ -429,6 +444,25 @@
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('batchCss_selected')
         }
+      },
+      examOperation(state) {
+        this.examParameter.examState = state
+        putExamNote(this.examParameter).then(response => {
+          this.getGradeList()
+          this.$notify({
+            title: '成功',
+            message: '修改成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.gradeOption = false
+          this.gradeEdit = false
+        })
+      },
+      examEdit(e) {
+        this.examParameter.studentIds = []
+        this.examParameter.studentIds.push(e.studentId)
+        console.log(e)
       },
       /* 时间转换方法 */
       intervalTime() {

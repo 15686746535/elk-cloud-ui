@@ -47,7 +47,7 @@
             </el-table-column>
             <el-table-column align="center" label="车型">
               <template slot-scope="scope">
-                <span>{{scope.row.moctorcycleType}}</span>
+                <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
             <el-table-column align="center" label="电话">

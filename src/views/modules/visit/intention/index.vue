@@ -272,7 +272,7 @@
                  <el-col :span="6" ><div class="text_css">车型：</div></el-col>
                  <el-col :span="14" >
 
-                   <dict v-if="edit" v-model="intention.applyType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+                   <dict v-if="edit" v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.applyType}}</div>
                  </el-col>
                </el-row>
@@ -579,9 +579,18 @@
       },
       // 更改客户状态
       updateState(val, state) {
-        this.intention = val
-        this.intention.state = state
-        this.update()
+        var stu = ''
+        if (state === '-1') stu = '转入分配'
+        else if (state === '2') stu = '关闭'
+        this.$confirm('是否将该学员' + stu + '?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.intention = val
+          this.intention.state = state
+          this.update()
+        })
       },
       // 搜索
       searchClick() {

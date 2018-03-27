@@ -88,7 +88,7 @@
 </template>
 
 <script>
-  import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
+  import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
@@ -176,7 +176,10 @@
           value: '2',
           label: '已关闭'
         }],
-        intentionIds: []
+        intentionList: {
+          intentionIds: [],
+          state: -1
+        }
         // apply_type
       }
     },
@@ -256,13 +259,13 @@
           this.delNodeId(id)
         } else {
           classList.add('visit_hover')
-          this.intentionIds.push(id)
+          this.intentionList.intentionIds.push(id)
         }
-        console.log(this.intentionIds)
+        console.log(this.intentionList.intentionIds)
       },
       delNodeId(id) {
-        for (var i = 0; i < this.intentionIds.length; i++) {
-          if (this.intentionIds[i] === id) this.intentionIds.splice(i, 1)
+        for (var i = 0; i < this.intentionList.intentionIds.length; i++) {
+          if (this.intentionList.intentionIds[i] === id) this.intentionList.intentionIds.splice(i, 1)
         }
       },
       hasClass(classList, clazz) {
@@ -279,9 +282,11 @@
           cancelButtonText: '取消',
           type: 'info'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '移交成功'
+          putIntention(this.intentionList).then(() => {
+            this.$message({
+              type: 'success',
+              message: '分配成功'
+            })
           })
         }).catch(() => {
           this.$message({

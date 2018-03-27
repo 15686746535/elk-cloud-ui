@@ -92,7 +92,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          type: 'dict_moctorcycle_type'
+          type: 'dict_motorcycle_type'
         },
         rules: {},
         dict: {},

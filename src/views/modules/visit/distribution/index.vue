@@ -188,6 +188,7 @@
         console.log('====== =====')
         console.log(val)
         if (val) {
+          this.intentionList.orgId = val.id
           userList({ orgId: val.id }).then(response => {
             console.log(response.data.data)
             this.userList = response.data.data
@@ -200,6 +201,8 @@
           cancelButtonText: '取消',
           type: 'info'
         }).then(() => {
+          console.log('------- 分配信息 -------')
+          console.log(this.intentionList)
           putIntention(this.intentionList).then(() => {
             this.$message({
               type: 'success',

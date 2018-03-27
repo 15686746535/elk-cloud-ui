@@ -146,7 +146,7 @@
           latitude: null,
           longitude: null,
           mobile: null,
-          moctorcycleType: null,
+          motorcycleType: null,
           name: null,
           operator: null,
           periodOfValidity: null,

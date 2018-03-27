@@ -130,7 +130,7 @@
         </el-table-column>
         <el-table-column  align="center" label="车型">
           <template slot-scope="scope">
-            <span>{{scope.row.moctorcycleType}}</span>
+            <span>{{scope.row.motorcycleType}}</span>
           </template>
         </el-table-column>
         <el-table-column  align="center" label="考试时间">
@@ -324,12 +324,12 @@
               .then(() => {
                 this.batchOption = false
                 this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
+                // this.$notify({
+                //   title: '成功',
+                //   message: '创建成功',
+                //   type: 'success',
+                //   duration: 2000
+                // })
               })
           } else {
             return false
@@ -350,8 +350,8 @@
           if (valid) {
             putObj(this.batch).then(response => {
               console.log(response.data)
-              // this.batchOption = false
-              // this.getList()
+              this.batchOption = false
+              this.getList()
               // this.$notify({
               //   title: '成功',
               //   message: '修改成功',

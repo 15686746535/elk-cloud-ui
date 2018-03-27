@@ -16,6 +16,13 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
+export function getIntentionByMobile(id) {
+  return request({
+    url: '/visit/intention/queryIntentionByMobile/' + id,
+    method: 'get'
+  })
+}
+// 根据ID获取
 export function getObj(id) {
   return request({
     url: '/visit/intention/' + id,

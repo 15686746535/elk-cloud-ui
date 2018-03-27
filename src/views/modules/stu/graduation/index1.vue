@@ -58,7 +58,7 @@
                         <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
                         入学日期：{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}
                         <br/>
-                        期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.moctorcycleType}}
+                        期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.motorcycleType}}
                         <br/>
                         来源渠道：{{scope.row.source}}
                       </el-col>
@@ -206,7 +206,7 @@
                 <el-row>
                   <el-col :span="8" ><div class="text_css">所学车型：</div></el-col>
                   <el-col :span="14" >
-                    <dict v-if="edit" v-model="student.archivesNumber" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                    <dict v-if="edit" v-model="student.archivesNumber" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
                   </el-col>
                 </el-row>

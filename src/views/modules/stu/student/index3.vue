@@ -21,7 +21,7 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.motorcycleType" dictType="dict_motorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
               <dict v-model="listQuery.source" dictType="dict_enrolSite" style="width: 200px;"  placeholder="报名点"  ></dict>
               <dict v-model="listQuery.fieldCoach" dictType="dict_sex" style="width: 200px;"  placeholder="场训教练"  ></dict>
               <dict v-model="listQuery.roadCoach" dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
@@ -62,7 +62,7 @@
                         <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
                         入学日期：{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}
                         <br/>
-                        期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.moctorcycleType}}
+                        期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.motorcycleType}}
                         <br/>
                         来源渠道：{{scope.row.source}}
                       </el-col>
@@ -208,8 +208,8 @@
                 <el-row>
                   <el-col :span="8" ><div class="text_css">所学车型：</div></el-col>
                   <el-col :span="14" >
-                    <dict v-if="edit" v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.moctorcycleType}}</div>
+                    <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                   </el-col>
                 </el-row>
 
@@ -370,7 +370,7 @@
           roadCoach: null,
           fieldCoach: null,
           source: null,
-          moctorcycleType: null,
+          motorcycleType: null,
           orgId: null
         },
         activeName: '1',

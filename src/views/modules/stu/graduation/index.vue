@@ -21,7 +21,7 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.motorcycleType" dictType="dict_motorcycle_type" style="width: 200px;"  placeholder="车型"  ></dict>
               <dict v-model="listQuery.source" dictType="dict_enrolSite" style="width: 200px;"  placeholder="报名点"  ></dict>
               <Coach v-model="listQuery.fieldCoach" coachType="field" style="width: 200px;"  placeholder="场训教练"  ></Coach>
               <Coach v-model="listQuery.roadCoach" coachType="road" style="width: 200px;"  placeholder="路训教练"  ></Coach>
@@ -118,7 +118,7 @@
                     <el-col style=" line-height: 25px">
                       <el-row style="margin: 12px 0;" :gutter="10">
                         <el-col :span="8" class="table_text">车型：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.moctorcycleType}}</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.motorcycleType}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
                         <el-col :span="8" class="table_text">培训场地：</el-col>
@@ -296,8 +296,8 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">所学车型：</span></el-col>
                   <el-col :span="17">
-                    <dict v-if="edit" v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.moctorcycleType}}</div>
+                    <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                   </el-col>
                 </el-row>
 
@@ -491,7 +491,7 @@
           roadCoach: null,
           fieldCoach: null,
           source: null,
-          moctorcycleType: null,
+          motorcycleType: null,
           orgId: null
         },
         activeName: '1',

@@ -21,7 +21,7 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict v-model="listQuery.moctorcycleType" dictType="dict_moctorcycle_type" :style="{width: (client.width/7) + 'px'}"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.motorcycleType" dictType="dict_motorcycle_type" :style="{width: (client.width/7) + 'px'}"  placeholder="车型"  ></dict>
               <dict v-model="listQuery.source" dictType="dict_enrolSite" :style="{width: (client.width/7) + 'px'}"  placeholder="报名点"  ></dict>
               <Coach v-model="listQuery.fieldCoach" coachType="field":style="{width: (client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>
               <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: (client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
@@ -118,7 +118,7 @@
                     <el-col style=" line-height: 25px">
                       <el-row style="margin: 12px 0;" :gutter="10">
                         <el-col :span="8" class="table_text">车型：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.moctorcycleType}}</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.motorcycleType}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
                         <el-col :span="8" class="table_text">培训场地：</el-col>
@@ -210,7 +210,7 @@
                 <el-row style="height: 50px;">
                   <el-col :span="7"><span class="text_css">档案号：</span></el-col>
                   <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model.number="student.archivesNumber"></el-input>
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
                   </el-col>
                 </el-row>
@@ -287,7 +287,7 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">入学期数：</span></el-col>
                   <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="入学期数" v-model.number="student.periods"></el-input>
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="student.periods"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
                   </el-col>
                 </el-row>
@@ -296,8 +296,8 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">所学车型：</span></el-col>
                   <el-col :span="17">
-                    <dict v-if="edit" v-model="student.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.moctorcycleType}}</div>
+                    <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                   </el-col>
                 </el-row>
 
@@ -372,7 +372,7 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">电子邮箱：</span></el-col>
                   <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model.number="student.email"></el-input>
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="student.email"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.email}}</div>
                   </el-col>
                 </el-row>
@@ -383,7 +383,7 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">微信：</span></el-col>
                   <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="微信" v-model.number="student.wechat"></el-input>
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="微信" v-model="student.wechat"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.wechat}}</div>
                   </el-col>
                 </el-row>
@@ -392,7 +392,7 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">所属职位：</span></el-col>
                   <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model.number="student.position"></el-input>
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="student.position"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.position}}</div>
                   </el-col>
                 </el-row>
@@ -404,7 +404,7 @@
             <el-row style="height: 50px;margin: 0 5px">
               <el-col :span="4"><span class="text_css">所属单位：</span></el-col>
               <el-col :span="17">
-                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model.number="student.company"></el-input>
+                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model="student.company"></el-input>
                 <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.company}}</div>
               </el-col>
             </el-row>
@@ -414,7 +414,7 @@
             <el-row style="height: 50px;margin: 0 5px">
               <el-col :span="4"><span class="text_css">联系地址：</span></el-col>
               <el-col :span="17">
-                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model.number="student.contactAddress"></el-input>
+                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
                 <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
               </el-col>
             </el-row>
@@ -482,7 +482,11 @@
                   <!-- 联系电话 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="studentEntity.mobile"></el-input></el-col>
+                    <el-col :span="14">
+                      <el-input style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
+                    </el-col>
+                    <el-col :span="4"><el-button @click="matchingStudents">匹配</el-button></el-col>
+
                   </el-row>
 
                   <!-- 性别 -->
@@ -503,7 +507,7 @@
                   <!-- 所学车型 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">所学车型：</span></el-col>
-                    <el-col :span="18"><dict v-model="studentEntity.moctorcycleType" dictType="dict_moctorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
+                    <el-col :span="18"><dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
                   </el-row>
 
                   <!-- 来源渠道 -->
@@ -530,7 +534,7 @@
                   <!-- 所在单位 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">所在单位：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model.number="studentEntity.company"></el-input></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.company"></el-input></el-col>
 
                   </el-row>
 
@@ -554,7 +558,7 @@
                   <!-- 微信 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">微信：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="微信" :maxlength="11" v-model.number="studentEntity.wechat"></el-input></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input></el-col>
                   </el-row>
 
 
@@ -567,26 +571,26 @@
                   <!-- 联系地址 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">联系地址：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model.number="studentEntity.contactAddress"></el-input></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input></el-col>
                   </el-row>
 
 
                   <!-- 入学期数 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">入学期数：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model.number="studentEntity.periods"></el-input></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input></el-col>
                   </el-row>
 
                   <!-- 电子邮箱 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">电子邮箱：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model.number="studentEntity.email"></el-input></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="studentEntity.email"></el-input></el-col>
                   </el-row>
 
                   <!-- 所属职位 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">所属职位：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model.number="studentEntity.position"></el-input></el-col>
+                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="studentEntity.position"></el-input></el-col>
                   </el-row>
 
                 </el-col>
@@ -597,7 +601,7 @@
                 <el-col :span="3"><span class="text_css">介绍人1：</span></el-col>
                 <el-col :span="5"><org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select></el-col>
                 <el-col :span="1"><div class="text_css" style="float: none;margin: 0 auto;text-align:center;">--</div></el-col>
-                <el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model.number="studentEntity.introducer"></el-input></el-col>
+                <el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.introducer"></el-input></el-col>
               </el-row>
 
               <el-row style="height: 50px">
@@ -648,6 +652,7 @@
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { examFetchList, getExam } from '@/api/student/examnote'
+  import { getIntentionByMobile } from '@/api/visit/intention'
   import OrgSelect from '@/components/OrgSelect'
   import OrgTree from '@/components/OrgTree'
   import Coach from '@/components/Coach'
@@ -670,7 +675,52 @@
     },
     data() {
       return {
-        student: {},
+        student: {
+          studentId: null,
+          orgId: null,
+          openId: null,
+          archivesNumber: null,
+          name: null,
+          sex: null,
+          age: null,
+          idNumber: null,
+          birthday: null,
+          mobile: null,
+          phone: null,
+          email: null,
+          wechat: null,
+          avatar: null,
+          contactAddress: null,
+          campus: null,
+          company: null,
+          position: null,
+          enrolTime: null,
+          periods: null,
+          studyTime: null,
+          latitude: null,
+          longitude: null,
+          physicalExamination: null,
+          haveCar: null,
+          addDrive: null,
+          state: null,
+          graduationTime: null,
+          periodOfValidity: null,
+          aboardTime: null,
+          roadCoach: null,
+          fieldCoach: null,
+          increment: null,
+          introducer: null,
+          serviceType: null,
+          arrearage: null,
+          enrolSite: null,
+          source: null,
+          motorcycleType: null,
+          delFlag: null,
+          remark: null,
+          operator: null,
+          createTime: null,
+          updateTime: null
+        },
         stuList: [],
         total: 1,
         listLoading: true,
@@ -685,7 +735,7 @@
           roadCoach: null,
           fieldCoach: null,
           source: null,
-          moctorcycleType: null,
+          motorcycleType: null,
           orgId: null
         },
         activeName: '1',
@@ -741,7 +791,52 @@
           value: 4,
           label: '科目四'
         }],
-        studentEntity: {},
+        studentEntity: {
+          studentId: null,
+          orgId: null,
+          openId: null,
+          archivesNumber: null,
+          name: null,
+          sex: null,
+          age: null,
+          idNumber: null,
+          birthday: null,
+          mobile: null,
+          phone: null,
+          email: null,
+          wechat: null,
+          avatar: null,
+          contactAddress: null,
+          campus: null,
+          company: null,
+          position: null,
+          enrolTime: null,
+          periods: null,
+          studyTime: null,
+          latitude: null,
+          longitude: null,
+          physicalExamination: null,
+          haveCar: null,
+          addDrive: null,
+          state: null,
+          graduationTime: null,
+          periodOfValidity: null,
+          aboardTime: null,
+          roadCoach: null,
+          fieldCoach: null,
+          increment: null,
+          introducer: null,
+          serviceType: null,
+          arrearage: null,
+          enrolSite: null,
+          source: null,
+          motorcycleType: null,
+          delFlag: null,
+          remark: null,
+          operator: null,
+          createTime: null,
+          updateTime: null
+        },
         dialogFormBespeak: false,
         batchList: [],
         examBespeak: {
@@ -829,19 +924,60 @@
       },
       // 添加
       add() {
+        this.studentEntity.orgId = 1
+        this.studentEntity.introducer = 2
         addObj(this.studentEntity).then(response => {
-          this.$notify({
-            title: '成功',
-            message: '创建成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.backClick()
+          // this.backClick()
         })
       },
       // 新增
       create() {
-        this.student = {}
+        this.studentEntity = {
+          studentId: null,
+          orgId: null,
+          openId: null,
+          archivesNumber: null,
+          name: null,
+          sex: null,
+          age: null,
+          idNumber: null,
+          birthday: null,
+          mobile: null,
+          phone: null,
+          email: null,
+          wechat: null,
+          avatar: null,
+          contactAddress: null,
+          campus: null,
+          company: null,
+          position: null,
+          enrolTime: null,
+          periods: null,
+          studyTime: null,
+          latitude: null,
+          longitude: null,
+          physicalExamination: null,
+          haveCar: null,
+          addDrive: null,
+          state: null,
+          graduationTime: null,
+          periodOfValidity: null,
+          aboardTime: null,
+          roadCoach: null,
+          fieldCoach: null,
+          increment: null,
+          introducer: null,
+          serviceType: null,
+          arrearage: null,
+          enrolSite: null,
+          source: null,
+          motorcycleType: null,
+          delFlag: null,
+          remark: null,
+          operator: null,
+          createTime: null,
+          updateTime: null
+        }
         this.showModule = 'create'
         this.edit = true
         this.addInfo = true
@@ -995,6 +1131,20 @@
             this.examBespeak.batchId = null
           })
         }
+      },
+      matchingStudents() {
+        getIntentionByMobile(this.studentEntity.mobile).then(response => {
+          console.log('======== 匹配到的值 =========')
+          console.log(response.data)
+          this.studentEntity.name = response.data.data.name
+          this.studentEntity.sex = response.data.data.sex
+          this.studentEntity.source = response.data.data.source
+          this.studentEntity.wechat = response.data.data.wechat
+          this.studentEntity.contactAddress = response.data.data.contactAddress
+          this.studentEntity.userId = response.data.data.userId
+          this.studentEntity.operator = response.data.data.operator
+          this.studentEntity.applyType = response.data.data.applyType
+        })
       }
     }
   }

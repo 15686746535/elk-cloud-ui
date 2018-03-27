@@ -35,8 +35,9 @@ service.interceptors.response.use(
       message(res.message, 'error', '提示')
       if (debug) return Promise.reject(res)
     }
-    console.log('00000000000000000000000000000000000')
+    console.log('---------- 这里是请求提示 ------------')
     console.log(res)
+    console.log('---------- 这里是请求提示 ------------')
     return response
   },
   error => {

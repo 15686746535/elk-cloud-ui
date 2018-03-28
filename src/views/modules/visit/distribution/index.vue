@@ -1,14 +1,7 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
 
-    <el-row :gutter="5">
-      <el-col class="org-tree-left">
-        <el-card>
-          <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-          <org-tree @node-click="searchByOrg" ></org-tree>
-        </el-card>
-      </el-col>
-      <el-col :style="{width: (client.width-250) + 'px'}">
+    <el-col :style="{width: (client.width) + 'px'}">
         <el-card style="margin-bottom: 5px;height: 80px;">
           <!--<el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
           <!--</el-date-picker>-->
@@ -83,7 +76,6 @@
           </div>
         </el-dialog>
       </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -211,6 +203,7 @@
               type: 'success',
               message: '分配成功'
             })
+            this.dialogIntentionList = false
           })
         }).catch(() => {
           this.$message({

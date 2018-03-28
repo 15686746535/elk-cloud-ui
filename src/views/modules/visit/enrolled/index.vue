@@ -26,48 +26,32 @@
             <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
             <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
             <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
+            <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
             <el-button class="filter-item" style="margin-left: 10px;" @click="open" type="success" icon="plus">重新分配</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}">
-            <div class="visits"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
-              <div class="visit" v-for="visit in list" @click="visitClick(visit.intentionId,$event)" ><!--@dblclick="editlist(visit) "-->
+            <div class="intentions"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
+              <div class="intention" v-for="intention in list" @click="intentionClick(intention.intentionId,$event)" ><!--@dblclick="editlist(intention) "-->
                 <div style="width: 222px;height: 200px;margin: 9px 10px;">
                   <div style="width: 50%;float: left">
-                    <div class="visit_text">姓名：{{visit.name}}</div>
-                    <div class="visit_text">性别：{{visit.sex | sexFilter}}</div>
-                    <div class="visit_text">负责人：{{visit.operator}}</div>
+                    <div class="intention_text">姓名：{{intention.name}}</div>
+                    <div class="intention_text">性别：{{intention.sex | sexFilter}}</div>
+                    <div class="intention_text">负责人：{{intention.operator}}</div>
                   </div>
                   <div style="width: 50%;float: left">
-                    <div class="visit_text">类别：{{visit.customerType}}</div>
-                    <div class="visit_text">渠道：{{visit.source}}</div>
+                    <div class="intention_text">类别：{{intention.customerType}}</div>
+                    <div class="intention_text">渠道：{{intention.source}}</div>
                   </div>
 
                   <!-- 分割线 -->
                   <div style="width: 100%;float: left;border: none;border-bottom:1px solid #d3dce6;margin: 5px 0; "></div>
                   <div style="width: 100%;height: 88px;float: left">
 
-                    <div class="visit_text">微信：{{visit.wechat}}</div>
-                    <div class="visit_text">电话：{{visit.mobile}}</div>
-                    <div class="visit_text">住址：{{visit.contactAddress}}</div>
-                    <div class="visit_text">顾虑：{{visit.worry}}</div>
+                    <div class="intention_text">微信：{{intention.wechat}}</div>
+                    <div class="intention_text">电话：{{intention.mobile}}</div>
+                    <div class="intention_text">住址：{{intention.contactAddress}}</div>
+                    <div class="intention_text">顾虑：{{intention.worry}}</div>
                   </div>
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">微信：</el-col>-->
-                  <!--<el-col :span="19">{{visit.wechat}}</el-col>-->
-                  <!--</el-row>-->
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">电话：</el-col>-->
-                  <!--<el-col :span="19">{{visit.mobile}}</el-col>-->
-                  <!--</el-row>-->
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">住址：</el-col>-->
-                  <!--<el-col :span="19">{{visit.contactAddress}}</el-col>-->
-                  <!--</el-row>-->
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">顾虑：</el-col>-->
-                  <!--<el-col :span="19">{{visit.worry}}</el-col>-->
-                  <!--</el-row>-->
 
                 </div>
               </div>
@@ -89,7 +73,7 @@
 </template>
 
 <script>
-  import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
+  import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
@@ -177,8 +161,12 @@
           value: '2',
           label: '已关闭'
         }],
-        intentionIds: []
         // apply_type
+        intentionList: {
+          intentionIds: [],
+          uCondition: 'no',
+          state: -1
+        }
       }
     },
     created() {
@@ -248,22 +236,22 @@
         this.getList()
       },
       // 来访信息点击事件
-      visitClick(id, e) {
+      intentionClick(id, e) {
         var classList = e.currentTarget.classList
         console.log('========== 点击事件 ===========')
-        console.log(this.hasClass(classList, 'visit_hover'))
-        if (this.hasClass(classList, 'visit_hover')) {
-          classList.remove('visit_hover')
+        console.log(this.hasClass(classList, 'intention_selected'))
+        if (this.hasClass(classList, 'intention_selected')) {
+          classList.remove('intention_selected')
           this.delNodeId(id)
         } else {
-          classList.add('visit_hover')
-          this.intentionIds.push(id)
+          classList.add('intention_selected')
+          this.intentionList.intentionIds.push(id)
         }
-        console.log(this.intentionIds)
+        console.log(this.intentionList.intentionIds)
       },
       delNodeId(id) {
-        for (var i = 0; i < this.intentionIds.length; i++) {
-          if (this.intentionIds[i] === id) this.intentionIds.splice(i, 1)
+        for (var i = 0; i < this.intentionList.intentionIds.length; i++) {
+          if (this.intentionList.intentionIds[i] === id) this.intentionList.intentionIds.splice(i, 1)
         }
       },
       hasClass(classList, clazz) {
@@ -280,9 +268,12 @@
           cancelButtonText: '取消',
           type: 'info'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '移交成功'
+          putIntention(this.intentionList).then(() => {
+            this.$message({
+              type: 'success',
+              message: '分配成功'
+            })
+            this.getList()
           })
         }).catch(() => {
           this.$message({
@@ -297,28 +288,61 @@
 
 <style>
 
-  .visits {
+  .intentions {
     overflow:auto;
   }
-  .visit {
+  .intention {
     float: left;
     width: 242px;
     height: 218px;
     margin:5px;
     cursor: pointer;
-    background-image: url(../../../../../static/img/bj1.png);
-    transition: background-image 0.2s;
+    border: 1px solid #67c23a;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 4px solid #67c23a;
+    transition: border-color 0.2s;
   }
-  .visit_hover {
-    background-image: url(../../../../../static/img/bj.png);
+  .intention_btn{
+    width: 60px;
+    height: 25px;
+    position: relative;
+    top: -3px;
+    left: 171px;
+    cursor: pointer;
+    background-color: #66c23a;
+    transition: background-color 0.2s;
+    color: #ffffff;
+    text-align: center;
+    line-height: 25px;
+    font-size: 14px
   }
-  .visit:hover {
-    background-image: url(../../../../../static/img/bj.png);
+  /*.intention_btn:hover{*/
+  /*background-color: #449ffb;*/
+  /*}*/
+  .intention:hover{
+    border-color: #449ffb;
+    .intention_btn{
+      background-color: #449ffb;
+    }
   }
-  .visit_text{
+  .intention_selected {
+    border-color: #449ffb;
+    .intention_btn{
+      background-color: #449ffb;
+    }
+  }
+  .intention_text{
     color:#495060;
     font-size: 13px;
     line-height: 25px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+  }
+  .text_css{
+    color:#495060;
+    font-size: 16px;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */

@@ -60,8 +60,15 @@
                       <div class="intention_text">电话：{{intention.mobile}}</div>
                       <div class="intention_text">住址：{{intention.contactAddress}}</div>
                       <div class="intention_text">顾虑：{{intention.worry}}</div>
-                    <div class="intention_btn" @click="updateState(intention, '-1')">分 配</div>
-                    <div style="top: -54px;" class="intention_btn" @click="updateState(intention, '2')">关 闭</div>
+
+                    <el-tooltip placement="right" effect="dark">
+                      <div slot="content">
+                        <el-button type="success" size="mini" @click="updateState(intention, '2')">关 闭</el-button>
+                        <el-button type="info" size="mini" @click="updateState(intention, '-1')">分 配</el-button>
+                      </div>
+                      <div class="intention_btn">操作</div>
+                    </el-tooltip>
+
                   </div>
 
                   <!--<div class="intention_btn">关 闭</div>-->
@@ -728,6 +735,10 @@
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
     text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
   }
+  .el-tooltip__popper.is-dark {
+    background: #303133;
+    color: #fff;
+   }
 
 </style>
 

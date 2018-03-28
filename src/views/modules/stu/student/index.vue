@@ -27,8 +27,7 @@
               <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: (client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
               <dict v-model="listQuery.source" dictType="dict_source" :style="{width: (client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-              <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" icon="plus">添加</el-button>
+              <el-button class="filter-item" type="primary" v-waves @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
           </el-card>
 
           <el-card :style="{height: (client.height-170) + 'px'}">
@@ -173,9 +172,11 @@
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                :current-page.sync="listQuery.page"
                                background
+                               style="float:left;"
                                :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                                layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
+                <el-button style="float:right;" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
               </div>
             </el-card>
         </el-col>

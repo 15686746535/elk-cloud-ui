@@ -12,13 +12,12 @@
           <el-date-picker v-model="interval" type="daterange" align="right" style="margin-bottom: 0px;" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
           </el-date-picker>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition"></el-input>
-          <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
-          <el-button @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+          <el-button type="primary" v-waves @click="searchClick" ><i class="el-icon-search"></i>搜索</el-button>
         </div>
       </div>
     </el-card>
     <el-row :gutter="5" :style="{height: (client.height - 125) + 'px'}">
-      <el-col :span="4">
+      <el-col :span="3">
         <el-card>
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (client.height - 250) + 'px'}">
@@ -29,17 +28,19 @@
               </div>
             </div>
           </div>
-          <el-pagination
-            small
-            @current-change="batchHandleCurrentChange"
-            layout="prev, pager, next"
-            :current-page="batchListQuery.page"
-            :page-size="batchListQuery.limit"
-            :total="batchTotal">
-          </el-pagination>
+          <div class="pagination-container" style="margin-top: 20px">
+            <el-pagination
+              small
+              @current-change="batchHandleCurrentChange"
+              layout="prev, pager, next"
+              :current-page="batchListQuery.page"
+              :page-size="batchListQuery.limit"
+              :total="batchTotal">
+            </el-pagination>
+          </div>
         </el-card>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="21">
         <el-card>
           <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
@@ -90,7 +91,9 @@
 
             <el-table-column align="center" label="状态">
               <template slot-scope="scope">
-                <span>{{scope.row.examState == 1?'通过':scope.row.examState == 2?'失败':scope.row.examState == 2?'失败':'缺考'}}</span>
+                <el-tag type="success" color v-if="scope.row.examState == 1">通过</el-tag>
+                <el-tag type="danger" v-else-if="scope.row.examState == 2">失败</el-tag>
+                <el-tag type="warning" color v-else>缺考</el-tag>
               </template>
             </el-table-column>
 
@@ -115,8 +118,8 @@
 
             <el-table-column align="center" fixed="right" label="操作" width="160">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" @click="examEdit(scope.row)" plain>编 辑</el-button>
-                <el-button size="mini" type="danger" >删 除</el-button>
+                <el-button size="mini" type="primary" @click="examEdit(scope.row, null)" plain>编 辑</el-button>
+                <el-button size="mini" type="danger"  @click="examEdit(scope.row, 0)" >撤 销</el-button>
               </template>
             </el-table-column>
 
@@ -125,16 +128,24 @@
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page.sync="studentListQuery.page" background
                            :page-sizes="[10,20,30, 50]" :page-size="studentListQuery.limit"
+                           style="float:left;"
                            layout="total, sizes, prev, pager, next, jumper" :total="studentTotal">
             </el-pagination>
+            <el-button style="float:right;"  @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
           </div>
         </el-card>
-        <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeEdit">
+        <el-dialog @close="getGradeList" width="30%" title="成绩修改" :visible.sync="gradeEdit">
           <el-button-group>
             <el-button type="success" @click="examOperation(1)">通 过</el-button>
             <el-button type="danger" @click="examOperation(2)">失 败</el-button>
             <el-button type="warning"  @click="examOperation(3)">缺 考</el-button>
           </el-button-group>
+          <div slot="footer">
+            <el-button-group>
+              <el-button type="info">取消</el-button>
+              <el-button type="primary">确定</el-button>
+            </el-button-group>
+          </div>
         </el-dialog>
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
 
@@ -462,11 +473,21 @@
           this.gradeEdit = false
         })
       },
-      examEdit(e) {
+      examEdit(e, state) {
         this.examParameter.studentIds = []
         this.examParameter.studentIds.push(e.studentId)
         this.examParameter.batchId = e.batchId
-        this.gradeEdit = true
+        if (state === 0) {
+          this.$confirm('是否撤销该学员成绩?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.examOperation(state)
+          })
+        } else {
+          this.gradeEdit = true
+        }
         console.log(e)
       },
       /* 时间转换方法 */

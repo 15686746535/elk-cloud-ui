@@ -14,7 +14,7 @@
       <el-col :style="{width: (client.width-250) + 'px'}">
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
-            <el-button type="primary" icon="plus" @click="operationClick('create')">添加</el-button>
+            <el-button type="primary" @click="operationClick('create')"><i class="el-icon-plus"></i>添加</el-button>
             <el-button type="primary" icon="edit" @click="operationClick('update')">编辑</el-button>
             <el-button type="primary" icon="delete" @click="deleteClick">删除</el-button>
           </el-button-group>

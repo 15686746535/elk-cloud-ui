@@ -178,6 +178,7 @@
         }],
         intentionList: {
           intentionIds: [],
+          uCondition: 'no',
           state: -1
         }
         // apply_type
@@ -287,6 +288,7 @@
               type: 'success',
               message: '分配成功'
             })
+            this.getList()
           })
         }).catch(() => {
           this.$message({

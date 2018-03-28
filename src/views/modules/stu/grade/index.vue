@@ -385,6 +385,8 @@
         this.studentListQuery.page = 1
         this.studentListQuery.subject = field
         this.batchListQuery.subject = field
+        this.gradeStudentList = []
+        this.notGradeStudentList = []
         var a = document.getElementsByClassName('subjectBtn')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('subjectBtn_selected')
@@ -447,6 +449,7 @@
       },
       examOperation(state) {
         this.examParameter.examState = state
+        console.log(this.examParameter)
         putExamNote(this.examParameter).then(response => {
           this.getGradeList()
           this.$notify({
@@ -462,6 +465,8 @@
       examEdit(e) {
         this.examParameter.studentIds = []
         this.examParameter.studentIds.push(e.studentId)
+        this.examParameter.batchId = e.batchId
+        this.gradeEdit = true
         console.log(e)
       },
       /* 时间转换方法 */

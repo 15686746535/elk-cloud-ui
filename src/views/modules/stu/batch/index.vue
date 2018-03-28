@@ -52,9 +52,11 @@
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="info" @click="see(scope.row.batchId, studentListQuery.state)" plain>查 看</el-button>
-            <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
+            <el-button-group>
+              <el-button size="mini" type="info" @click="see(scope.row.batchId, studentListQuery.state)" plain>查 看</el-button>
+              <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
+            </el-button-group>
           </template>
         </el-table-column>
 

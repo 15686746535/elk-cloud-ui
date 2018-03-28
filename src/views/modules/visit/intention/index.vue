@@ -45,7 +45,7 @@
                   <div style="width: 50%;float: left">
                       <div class="intention_text">姓名：{{intention.name}}</div>
                       <div class="intention_text">性别：{{intention.sex | sexFilter}}</div>
-                      <div class="intention_text">负责人：{{intention.operator}}</div>
+                      <div class="intention_text">负责人：{{intention.userName}}</div>
                   </div>
                   <div style="width: 50%;float: left">
                       <div class="intention_text">类别：{{intention.customerType}}</div>
@@ -161,9 +161,9 @@
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='info'">
 
-      <el-row :gutter="20">
+      <el-row :gutter="5">
         <el-col :span="12">
-          <el-card>
+          <el-card :style="{height: (client.height-40) + 'px'}">
             <div slot="header" class="clearfix">
               <div style="float: left">
                 |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">意向信息</span>
@@ -335,8 +335,7 @@
         </el-col>
 
         <el-col :span="12">
-          <el-row>
-            <el-card style="padding-bottom: 10px">
+          <el-card :style="{height: (client.height-40) + 'px'}">
               <div slot="header" class="clearfix">
                 <div style="float: left">
                   |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">跟进信息</span>
@@ -363,7 +362,6 @@
               </el-row>
 
             </el-card>
-          </el-row>
         </el-col>
       </el-row>
     </div>

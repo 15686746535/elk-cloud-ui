@@ -128,6 +128,9 @@
         intentionList: {
           intentionIds: [],
           state: 0,
+          oCondition: 'yes',
+          uCondition: 'yes',
+          orgId: null,
           userId: null
         },
         userList: [],

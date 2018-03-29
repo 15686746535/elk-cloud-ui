@@ -448,7 +448,7 @@
       </el-row>
     </div>
 
-    <div v-show="showModule=='create'">
+    <div v-show="showModule=='create'"  v-loading="createLoading" element-loading-text="匹配中...">
       <el-card body-style="padding:5px 20px;" style="margin-bottom: 5px;height: 60px;line-height: 50px">
         录入详细信息
         <div style="float: right"><el-button type="primary" @click="backClick">返  回</el-button></div>
@@ -476,17 +476,17 @@
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
                     <el-col :span="18">
-                      <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @change="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
+                      <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
                     </el-col>
                   </el-row>
 
                   <!-- 联系电话 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                    <el-col :span="14">
-                      <el-input style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
+                    <el-col :span="18">
+                      <el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
                     </el-col>
-                    <el-col :span="4"><el-button @click="matchingStudents">匹配</el-button></el-col>
+                    <!--<el-col :span="4"><el-button @click="matchingStudents">匹配</el-button></el-col>-->
 
                   </el-row>
 
@@ -600,8 +600,11 @@
 
               <el-row style="height: 50px">
                 <el-col :span="3"><span class="text_css">介绍人1：</span></el-col>
+                <!--<el-select v-model="studentEntity.introducer" multiple  filterable placeholder="请选择">-->
+                  <!--<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">-->
+                  <!--</el-option>-->
+                <!--</el-select>-->
                 <el-col :span="5"><org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select></el-col>
-                <el-col :span="1"><div class="text_css" style="float: none;margin: 0 auto;text-align:center;">--</div></el-col>
                 <el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.introducer"></el-input></el-col>
               </el-row>
 
@@ -634,7 +637,7 @@
         </div>
         <div v-else v-for="batch in batchList"  style="float: left;margin: 5px">
           <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
-            {{batch.examTime | subTime}}&nbsp;{{batch.examField}}
+            {{batch.batch}}
             <!--{{batch.hasReserved}}/{{batch.stuCount}}-->
             <span>【{{batch.hasReserved}}/{{batch.stuCount}}】</span>
           </div>
@@ -725,7 +728,7 @@
         stuList: [],
         total: 1,
         listLoading: true,
-        showModule: 'list',
+        showModule: 'create',
         addInfo: false,
         listQuery: {
           page: 1,
@@ -852,7 +855,9 @@
           /* 今天以前传 before   今天之后传 after */
           scope: 'after',
           subject: null
-        }
+        },
+        /* 添加加载动画 */
+        createLoading: false
       }
     },
     created() {
@@ -933,52 +938,7 @@
       },
       // 新增
       create() {
-        this.studentEntity = {
-          studentId: null,
-          orgId: null,
-          openId: null,
-          archivesNumber: null,
-          name: null,
-          sex: null,
-          age: null,
-          idNumber: null,
-          birthday: null,
-          mobile: null,
-          phone: null,
-          email: null,
-          wechat: null,
-          avatar: null,
-          contactAddress: null,
-          campus: null,
-          company: null,
-          position: null,
-          enrolTime: null,
-          periods: null,
-          studyTime: null,
-          latitude: null,
-          longitude: null,
-          physicalExamination: null,
-          haveCar: null,
-          addDrive: null,
-          state: null,
-          graduationTime: null,
-          periodOfValidity: null,
-          aboardTime: null,
-          roadCoach: null,
-          fieldCoach: null,
-          increment: null,
-          introducer: null,
-          serviceType: null,
-          arrearage: null,
-          enrolSite: null,
-          source: null,
-          motorcycleType: null,
-          delFlag: null,
-          remark: null,
-          operator: null,
-          createTime: null,
-          updateTime: null
-        }
+        this.reset()
         this.showModule = 'create'
         this.edit = true
         this.addInfo = true
@@ -1046,13 +1006,58 @@
       },
       AddGenerateInfo() {
         if (this.studentEntity.idNumber.length === 18) {
-          this.studentEntity.birthday = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
-          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 1) this.studentEntity.sex = '1'
-          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 0) this.studentEntity.sex = '0'
+          if (this.studentEntity.birthday === null) this.studentEntity.birthday = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
+          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 1 && this.studentEntity.sex === null) this.studentEntity.sex = '1'
+          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 0 && this.studentEntity.sex === null) this.studentEntity.sex = '0'
         }
       },
       reset() {
-        this.studentEntity = {}
+        this.studentEntity = {
+          studentId: null,
+          orgId: null,
+          openId: null,
+          archivesNumber: null,
+          name: null,
+          sex: null,
+          age: null,
+          idNumber: null,
+          birthday: null,
+          mobile: null,
+          phone: null,
+          email: null,
+          wechat: null,
+          avatar: null,
+          contactAddress: null,
+          campus: null,
+          company: null,
+          position: null,
+          enrolTime: null,
+          periods: null,
+          studyTime: null,
+          latitude: null,
+          longitude: null,
+          physicalExamination: null,
+          haveCar: null,
+          addDrive: null,
+          state: null,
+          graduationTime: null,
+          periodOfValidity: null,
+          aboardTime: null,
+          roadCoach: null,
+          fieldCoach: null,
+          increment: null,
+          introducer: null,
+          serviceType: null,
+          arrearage: null,
+          enrolSite: null,
+          source: null,
+          motorcycleType: null,
+          delFlag: null,
+          remark: null,
+          operator: null,
+          createTime: null,
+          updateTime: null
+        }
       },
       getFieldCoach(coach) {
         console.log('============ 教练 =============')
@@ -1134,17 +1139,21 @@
         }
       },
       matchingStudents() {
+        this.createLoading = true
         getIntentionByMobile(this.studentEntity.mobile).then(response => {
           console.log('======== 匹配到的值 =========')
           console.log(response.data)
-          this.studentEntity.name = response.data.data.name
-          this.studentEntity.sex = response.data.data.sex
-          this.studentEntity.source = response.data.data.source
-          this.studentEntity.wechat = response.data.data.wechat
-          this.studentEntity.contactAddress = response.data.data.contactAddress
-          this.studentEntity.userId = response.data.data.userId
-          this.studentEntity.operator = response.data.data.operator
-          this.studentEntity.applyType = response.data.data.applyType
+          if (response.data.data) {
+            if (this.studentEntity.name === null) this.studentEntity.name = response.data.data.name
+            if (this.studentEntity.sex === null) this.studentEntity.sex = response.data.data.sex
+            if (this.studentEntity.source === null) this.studentEntity.source = response.data.data.source
+            if (this.studentEntity.wechat === null) this.studentEntity.wechat = response.data.data.wechat
+            if (this.studentEntity.contactAddress === null) this.studentEntity.contactAddress = response.data.data.contactAddress
+            if (this.studentEntity.userId === null) this.studentEntity.userId = response.data.data.userId
+            if (this.studentEntity.operator === null) this.studentEntity.operator = response.data.data.operator
+            if (this.studentEntity.applyType === null) this.studentEntity.applyType = response.data.data.applyType
+          }
+          this.createLoading = false
         })
       }
     }

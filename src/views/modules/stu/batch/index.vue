@@ -1,11 +1,11 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
-    <el-card style="margin-bottom: 5px;height: 80px">
+    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
         <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
         <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
         <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
-        <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>
+        <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>
         <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
         </el-date-picker>
 
@@ -194,6 +194,7 @@
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
+  import { parseTime } from '@/utils/index'
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
@@ -319,19 +320,19 @@
         const set = this.$refs
         console.log('============= 添加信息 ===================')
         console.log(this.batch)
-        this.batch.batch = this.batch.examTime
+        this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
         set[formName].validate(valid => {
           if (valid) {
             addObj(this.batch)
               .then(() => {
                 this.batchOption = false
                 this.getList()
-                // this.$notify({
-                //   title: '成功',
-                //   message: '创建成功',
-                //   type: 'success',
-                //   duration: 2000
-                // })
+                this.$notify({
+                  title: '成功',
+                  message: '创建成功',
+                  type: 'success',
+                  duration: 2000
+                })
               })
           } else {
             return false
@@ -528,28 +529,29 @@
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
-    border: 1px solid #c2e7b0;
     -webkit-appearance: none;
     text-align: center;
     box-sizing: border-box;
     outline: none;
-    margin: 0;
+    margin:0 -3px;
     transition: .1s;
     font-weight: 500;
     padding: 12px 20px;
     font-size: 14px;
     border-radius: 4px;
-    color: #67c23a;
-    background: #f0f9eb;
+    width: 84px;
+    color: #409eff;
+    background: #ecf5ff;
+    border: 1px solid #b3d8ff;
   }
   .subjectBtn:hover{
     color: #fff;
-    background-color: #67c23a;
-    border-color: #67c23a;
+    background-color: #409eff;
+    border-color: #409eff;
   }
   .subjectBtn_selected{
     color: #fff;
-    background-color: #67c23a;
-    border-color: #67c23a;
+    background-color: #409eff;
+    border-color: #409eff;
   }
 </style>

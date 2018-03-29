@@ -23,8 +23,7 @@
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (client.height - 250) + 'px'}">
             <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
-                <el-col :span="12">{{batch.examTime | parseTime('{y}-{m}-{d}')}}</el-col>
-                <el-col :span="12">{{batch.examField}}</el-col>
+                {{batch.batch}}
               </div>
             </div>
           </div>
@@ -364,17 +363,11 @@
         getBatchList(this.batchListQuery).then(response => {
           console.log('========== Batch数据 ==========')
           console.log(response.data)
-          if (response.data.code === 0) {
-            this.batchList = response.data.data.list
-            this.batchTotal = response.data.data.totalCount
-            // if (this.batchList.length > 0) this.studentListQuery.batchId = this.batchList[0].batchId
-            // this.getGradeList()
-            this.batchListLoading = false
-            var b = document.getElementById('1')
-            console.log(b)
-          } else {
-            console.log('这里是错误信息：' + response.data.msg)
-          }
+          this.batchList = response.data.data.list
+          this.batchTotal = response.data.data.totalCount
+          // if (this.batchList.length > 0) this.studentListQuery.batchId = this.batchList[0].batchId
+          // this.getGradeList()
+          this.batchListLoading = false
         })
       },
       /* 分页插件方法 */
@@ -393,6 +386,7 @@
       },
       /* 根据科目查询 */
       handleSubject(field, e) {
+        this.cleanBatchSelected()
         this.studentListQuery.page = 1
         this.studentListQuery.subject = field
         this.batchListQuery.subject = field
@@ -540,28 +534,29 @@
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
-    border: 1px solid #c2e7b0;
     -webkit-appearance: none;
     text-align: center;
     box-sizing: border-box;
     outline: none;
-    margin: 0;
+    margin:0 -3px;
     transition: .1s;
     font-weight: 500;
     padding: 12px 20px;
     font-size: 14px;
     border-radius: 4px;
-    color: #67c23a;
-    background: #f0f9eb;
+    width: 84px;
+    color: #409eff;
+    background: #ecf5ff;
+    border: 1px solid #b3d8ff;
   }
   .subjectBtn:hover{
     color: #fff;
-    background-color: #67c23a;
-    border-color: #67c23a;
+    background-color: #409eff;
+    border-color: #409eff;
   }
   .subjectBtn_selected{
     color: #fff;
-    background-color: #67c23a;
-    border-color: #67c23a;
+    background-color: #409eff;
+    border-color: #409eff;
   }
 </style>

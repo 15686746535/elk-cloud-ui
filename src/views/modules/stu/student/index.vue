@@ -456,171 +456,286 @@
       <el-row :gutter="5">
         <el-col :span="12">
           <el-card :style="{height: (client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
-            <el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" >
+            <el-form :label-position="labelPosition" label-width="100px" model="right">
+              <el-row>
+                <el-row :gutter="20">
+                  <el-col :span="12" >
+                    <!-- 档案号 -->
+                    <el-row style="height: 50px">
+                      <el-form-item >
+                        <span slot="label" class="text_css">档案号：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model="studentEntity.archivesNumber"></el-input>
+                      </el-form-item>
+                    </el-row>
 
-                  <!-- 档案号 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">档案号：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model="studentEntity.archivesNumber"></el-input></el-col>
-                  </el-row>
+                    <!-- 姓名 -->
+                    <el-row style="height: 50px">
 
-                  <!-- 姓名 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">姓名：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="studentEntity.name"></el-input></el-col>
-                  </el-row>
+                      <el-form-item >
+                        <span slot="label" class="text_css">姓名：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="姓名" clearable v-model="studentEntity.name"></el-input>
+                      </el-form-item>
 
-                  <!-- 身份证号 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
-                    <el-col :span="18">
-                      <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
-                    </el-col>
-                  </el-row>
+                      <!--<el-col :span="6"><span class="text_css">姓名：</span></el-col>-->
+                      <!--<el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" clearable v-model="studentEntity.name"></el-input></el-col>-->
+                    </el-row>
 
-                  <!-- 联系电话 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
-                    <el-col :span="18">
-                      <el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
-                    </el-col>
-                    <!--<el-col :span="4"><el-button @click="matchingStudents">匹配</el-button></el-col>-->
+                    <!-- 身份证号 -->
+                    <el-row style="height: 50px">
+                      <el-form-item >
+                        <span slot="label" class="text_css">身份证号：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">身份证号：</span></el-col>-->
+                      <!--<el-col :span="18">-->
+                        <!--<el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>-->
+                      <!--</el-col>-->
+                    </el-row>
 
-                  </el-row>
+                    <!-- 联系电话 -->
+                    <el-row style="height: 50px">
+                      <el-form-item >
+                        <span slot="label" class="text_css">联系电话：</span>
+                        <el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">联系电话：</span></el-col>-->
+                      <!--<el-col :span="18">-->
+                        <!--<el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>-->
+                      <!--</el-col>-->
+                      <!--<el-col :span="4"><el-button @click="matchingStudents">匹配</el-button></el-col>-->
 
-                  <!-- 性别 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">性别：</span></el-col>
-                    <el-col :span="18">
-                      <el-radio v-model="studentEntity.sex" label="1">男</el-radio>
-                      <el-radio v-model="studentEntity.sex" label="0">女</el-radio>
-                    </el-col>
-                  </el-row>
+                    </el-row>
 
-                  <!-- 生日 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">生日：</span></el-col>
-                    <el-col :span="18"><el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker></el-col>
-                  </el-row>
+                    <!-- 性别 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label" class="text_css">性别：</span>
+                        <el-col :span="18">
+                          <el-radio v-model="studentEntity.sex" label="1">男</el-radio>
+                          <el-radio v-model="studentEntity.sex" label="0">女</el-radio>
+                        </el-col>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">性别：</span></el-col>-->
+                      <!--<el-col :span="18">-->
+                        <!--<el-radio v-model="studentEntity.sex" label="1">男</el-radio>-->
+                        <!--<el-radio v-model="studentEntity.sex" label="0">女</el-radio>-->
+                      <!--</el-col>-->
+                    </el-row>
 
-                  <!-- 所学车型 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">所学车型：</span></el-col>
-                    <el-col :span="18"><dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
-                  </el-row>
+                    <!-- 生日 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">生日：</span>
+                        <el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">生日：</span></el-col>-->
+                      <!--<el-col :span="18"><el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker></el-col>-->
+                    </el-row>
 
-                  <!-- 来源渠道 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">来源渠道：</span></el-col>
-                    <el-col :span="18"><dict v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict></el-col>
-                  </el-row>
+                    <!-- 所学车型 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">所学车型：</span>
+                        <dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">所学车型：</span></el-col>-->
+                      <!--<el-col :span="18"><dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>-->
+                    </el-row>
+
+                    <!-- 来源渠道 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">来源渠道：</span>
+                        <dict v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">来源渠道：</span></el-col>-->
+                      <!--<el-col :span="18"><dict v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict></el-col>-->
+                    </el-row>
 
 
-                  <!-- 入学日期 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">入学日期：</span></el-col>
-                    <el-col :span="18"><el-date-picker type="date" placeholder="入学日期"  style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker></el-col>
-                  </el-row>
+                    <!-- 入学日期 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">入学日期：</span>
+                        <el-date-picker type="date" placeholder="入学日期"  style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">入学日期：</span></el-col>-->
+                      <!--<el-col :span="18"><el-date-picker type="date" placeholder="入学日期"  style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker></el-col>-->
+                    </el-row>
 
 
-                  <!-- 报名点 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">报名点：</span></el-col>
-                    <el-col :span="18"><dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict></el-col>
-                  </el-row>
+                    <!-- 报名点 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">报名点：</span>
+                        <dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">报名点：</span></el-col>-->
+                      <!--<el-col :span="18"><dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict></el-col>-->
+                    </el-row>
 
 
-                  <!-- 所在单位 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">所在单位：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.company"></el-input></el-col>
+                    <!-- 所在单位 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">所在单位：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.company"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">所在单位：</span></el-col>-->
+                      <!--<el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.company"></el-input></el-col>-->
 
-                  </el-row>
+                    </el-row>
 
+
+                    <!-- 介绍人 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">介绍人：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="介绍人" v-model="studentEntity.introducer"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="3"><span class="text_css">介绍人1：</span></el-col>-->
+                      <!--<el-select v-model="studentEntity.introducer" multiple  filterable placeholder="请选择">-->
+                      <!--<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">-->
+                      <!--</el-option>-->
+                      <!--</el-select>-->
+                      <!--<el-col :span="5"><org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select></el-col>-->
+                      <!--<el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.introducer"></el-input></el-col>-->
+                    </el-row>
+
+                  </el-col>
+
+                  <el-col :span="12">
+
+                    <el-row>
+                      <el-col :span="6"> &nbsp;</el-col>
+                      <el-col  :span="18">
+                        <div style="height: 150px;width: 100px;margin: 0 auto">
+                          <el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                            <img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">
+                            <i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>
+                          </el-upload>
+
+                        </div>
+                      </el-col>
+                    </el-row>
+
+                    <!-- 微信 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">微信：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">微信：</span></el-col>-->
+                      <!--<el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input></el-col>-->
+                    </el-row>
+
+
+                    <!-- 校区 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">校区：</span>
+                        <dict v-model="studentEntity.homeAddress" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">校区：</span></el-col>-->
+                      <!--<el-col :span="18"><dict v-model="studentEntity.homeAddress" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict></el-col>-->
+                    </el-row>
+
+                    <!-- 联系地址 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">联系地址：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">联系地址：</span></el-col>-->
+                      <!--<el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input></el-col>-->
+                    </el-row>
+
+
+                    <!-- 入学期数 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">入学期数：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">入学期数：</span></el-col>-->
+                      <!--<el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input></el-col>-->
+                    </el-row>
+
+                    <!-- 电子邮箱 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">电子邮箱：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="studentEntity.email"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">电子邮箱：</span></el-col>-->
+                      <!--<el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="studentEntity.email"></el-input></el-col>-->
+                    </el-row>
+
+                    <!-- 所属职位 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label"  class="text_css">所属职位：</span>
+                        <el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="studentEntity.position"></el-input>
+                      </el-form-item>
+                      <!--<el-col :span="6"><span class="text_css">所属职位：</span></el-col>-->
+                      <!--<el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="studentEntity.position"></el-input></el-col>-->
+                    </el-row>
+
+
+                    <!-- 是否体检 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label" class="text_css">是否体检：</span>
+                        <el-col :span="18">
+                          <el-radio-group v-model="studentEntity.physicalExamination">
+                            <el-radio-button label="1">是</el-radio-button>
+                            <el-radio-button label="0">否</el-radio-button>
+                          </el-radio-group>
+                        </el-col>
+                      </el-form-item>
+                    </el-row>
+
+
+                    <!-- 是否增驾 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label" class="text_css">是否增驾：</span>
+                        <el-col :span="18">
+                          <el-radio-group v-model="studentEntity.addDrive">
+                            <el-radio-button label="1">是</el-radio-button>
+                            <el-radio-button label="0">否</el-radio-button>
+                          </el-radio-group>
+                        </el-col>
+                      </el-form-item>
+                    </el-row>
+
+                    <!-- 是否有车 -->
+                    <el-row style="height: 50px">
+                      <el-form-item>
+                        <span slot="label" class="text_css">是否有车：</span>
+                        <el-col :span="18">
+                          <el-radio-group v-model="studentEntity.haveCar">
+                            <el-radio-button label="1">是</el-radio-button>
+                            <el-radio-button label="0">否</el-radio-button>
+                          </el-radio-group>
+                        </el-col>
+                      </el-form-item>
+                    </el-row>
+                  </el-col>
+
+                </el-row>
+
+              </el-row>
+              <el-row>
+                <el-col>
+                  <div style="width: 163px;margin: 0 auto">
+                    <el-button type="primary"  @click="add">建 档</el-button>
+                    <el-button plain @click="reset">重  置</el-button>
+                  </div>
                 </el-col>
-
-                <el-col :span="12">
-
-                  <el-row>
-                    <el-col :span="6"> &nbsp;</el-col>
-                    <el-col  :span="18">
-                      <div style="height: 250px;width: 200px;margin: 0 auto">
-                        <el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                          <img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">
-                          <i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>
-                        </el-upload>
-
-                      </div>
-                    </el-col>
-                  </el-row>
-
-                  <!-- 微信 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">微信：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input></el-col>
-                  </el-row>
-
-
-                  <!-- 校区 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">校区：</span></el-col>
-                    <el-col :span="18"><dict v-model="studentEntity.homeAddress" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict></el-col>
-                  </el-row>
-
-                  <!-- 联系地址 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">联系地址：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input></el-col>
-                  </el-row>
-
-
-                  <!-- 入学期数 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">入学期数：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input></el-col>
-                  </el-row>
-
-                  <!-- 电子邮箱 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">电子邮箱：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="studentEntity.email"></el-input></el-col>
-                  </el-row>
-
-                  <!-- 所属职位 -->
-                  <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">所属职位：</span></el-col>
-                    <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="studentEntity.position"></el-input></el-col>
-                  </el-row>
-
-                </el-col>
-
               </el-row>
 
-              <el-row style="height: 50px">
-                <el-col :span="3"><span class="text_css">介绍人1：</span></el-col>
-                <!--<el-select v-model="studentEntity.introducer" multiple  filterable placeholder="请选择">-->
-                  <!--<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">-->
-                  <!--</el-option>-->
-                <!--</el-select>-->
-                <el-col :span="5"><org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select></el-col>
-                <el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.introducer"></el-input></el-col>
-              </el-row>
-
-              <el-row style="height: 50px">
-                <el-col :span="3"><span class="text_css">介绍人2：</span></el-col>
-                <el-col :span="16"></el-col>
-              </el-row>
-            </el-row>
-            <el-row>
-              <el-col>
-                <div style="width: 163px;margin: 0 auto">
-                  <el-button type="primary"  @click="add">建 档</el-button>
-                  <el-button plain @click="reset">重  置</el-button>
-                </div>
-              </el-col>
-            </el-row>
+            </el-form>
           </el-card>
         </el-col>
         <el-col :span="12">
@@ -630,6 +745,7 @@
         </el-col>
       </el-row>
     </div>
+
     <el-dialog @close="cancel" title="选择批次" width="40%" :visible.sync="dialogFormBespeak">
       <div :style="{height: (client.height)/3 +'px'}" style="overflow: auto">
         <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
@@ -638,7 +754,6 @@
         <div v-else v-for="batch in batchList"  style="float: left;margin: 5px">
           <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
             {{batch.batch}}
-            <!--{{batch.hasReserved}}/{{batch.stuCount}}-->
             <span>【{{batch.hasReserved}}/{{batch.stuCount}}】</span>
           </div>
 
@@ -655,6 +770,7 @@
 
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
+  import { userList } from '@/api/upms/user'
   import { examFetchList, getExam } from '@/api/student/examnote'
   import { getIntentionByMobile } from '@/api/visit/intention'
   import OrgSelect from '@/components/OrgSelect'
@@ -728,7 +844,7 @@
         stuList: [],
         total: 1,
         listLoading: true,
-        showModule: 'create',
+        showModule: 'list',
         addInfo: false,
         listQuery: {
           page: 1,
@@ -942,6 +1058,10 @@
         this.showModule = 'create'
         this.edit = true
         this.addInfo = true
+        userList().then(response => {
+          // console.log(response.data.data)
+          // this.userList = response.data.data
+        })
       },
       // 修改
       update() {
@@ -1144,14 +1264,14 @@
           console.log('======== 匹配到的值 =========')
           console.log(response.data)
           if (response.data.data) {
-            if (this.studentEntity.name === null) this.studentEntity.name = response.data.data.name
-            if (this.studentEntity.sex === null) this.studentEntity.sex = response.data.data.sex
-            if (this.studentEntity.source === null) this.studentEntity.source = response.data.data.source
-            if (this.studentEntity.wechat === null) this.studentEntity.wechat = response.data.data.wechat
-            if (this.studentEntity.contactAddress === null) this.studentEntity.contactAddress = response.data.data.contactAddress
-            if (this.studentEntity.userId === null) this.studentEntity.userId = response.data.data.userId
-            if (this.studentEntity.operator === null) this.studentEntity.operator = response.data.data.operator
-            if (this.studentEntity.applyType === null) this.studentEntity.applyType = response.data.data.applyType
+            if (this.studentEntity.name === null || this.studentEntity.name === '') this.studentEntity.name = response.data.data.name
+            if (this.studentEntity.sex === null || this.studentEntity.sex === '') this.studentEntity.sex = response.data.data.sex
+            if (this.studentEntity.source === null || this.studentEntity.source === '') this.studentEntity.source = response.data.data.source
+            if (this.studentEntity.wechat === null || this.studentEntity.wechat === '') this.studentEntity.wechat = response.data.data.wechat
+            if (this.studentEntity.contactAddress === null || this.studentEntity.contactAddress === '') this.studentEntity.contactAddress = response.data.data.contactAddress
+            if (this.studentEntity.userId === null || this.studentEntity.userId === '') this.studentEntity.userId = response.data.data.userId
+            if (this.studentEntity.operator === null || this.studentEntity.operator === '') this.studentEntity.operator = response.data.data.operator
+            if (this.studentEntity.applyType === null || this.studentEntity.applyType === '') this.studentEntity.applyType = response.data.data.applyType
           }
           this.createLoading = false
         })
@@ -1290,14 +1410,14 @@
   .AddAvatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 200px;
-    height: 230px;
-    line-height: 230px;
+    width: 100px;
+    height: 130px;
+    line-height: 130px;
     text-align: center;
   }
   .AddAvatar {
-    width: 200px;
-    height: 230px;
+    width: 100px;
+    height: 130px;
     display: block;
   }
   .batchCss{

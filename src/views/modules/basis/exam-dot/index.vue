@@ -1,11 +1,12 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <el-card style="margin-bottom: 5px;height: 80px">
-      <el-button v-waves @click="handleField('dict_exam_field1')" type="success" plain>科目一</el-button>
-      <el-button v-waves @click="handleField('dict_exam_field2')" type="success" plain>科目二</el-button>
-      <el-button v-waves @click="handleField('dict_exam_field3')" type="success" plain>科目三</el-button>
-      <el-button v-waves @click="handleField('dict_exam_field4')" type="success" plain>科目四</el-button>
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加</el-button>
+
+      <div @click="handleField('dict_exam_field1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
+      <div @click="handleField('dict_exam_field2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
+      <div @click="handleField('dict_exam_field3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
+      <div @click="handleField('dict_exam_field4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>
+
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
       <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
@@ -35,22 +36,25 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button v-if="sys_dict_upd" size="small" type="success"
+            <el-button v-if="menu_upd" size="small" type="success"
                        @click="handleUpdate(scope.row)">编辑
             </el-button>
-            <el-button v-if="sys_dict_del" size="mini" type="danger"
+            <el-button v-if="menu_del" size="mini" type="danger"
                        @click="handleDelete(scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page" background
+                       style="float:left;"
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
+        <el-button v-if="menu_add" class="filter-item" style="margin-left: 10px;float: right" @click="createClick" type="primary" icon="edit">添加</el-button>
       </div>
+
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
@@ -101,9 +105,9 @@
         enrolSite: {},
         dialogFormVisible: false,
         dialogStatus: '',
-        sys_dict_add: false,
-        sys_dict_upd: false,
-        sys_dict_del: false,
+        menu_add: false,
+        menu_upd: false,
+        menu_del: false,
         textMap: {
           update: '编辑',
           create: '创建'
@@ -119,9 +123,9 @@
     },
     created() {
       this.getList()
-      this.sys_dict_add = this.permissions['basis_dict_add']
-      this.sys_dict_upd = this.permissions['basis_dict_update']
-      this.sys_dict_del = this.permissions['basis_dict_del']
+      this.menu_add = this.permissions['basis_exam_dot_add']
+      this.menu_upd = this.permissions['basis_exam_dot_update']
+      this.menu_del = this.permissions['basis_exam_dot_del']
     },
     methods: {
       getList() {
@@ -137,9 +141,15 @@
         })
       },
       // 根据科目查询场地
-      handleField(field) {
+      handleField(field, e) {
         this.listQuery.page = 1
         this.listQuery.type = field
+
+        var a = document.getElementsByClassName('subjectBtn')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('subjectBtn_selected')
+        }
+        e.currentTarget.classList.add('subjectBtn_selected')
         this.getList()
       },
       handleSizeChange(val) {
@@ -201,6 +211,7 @@
         this.dict = {}
         this.enrolSite = {}
         const set = this.$refs
+        this.getList()
         set[formName].resetFields()
       },
       update(formName) {
@@ -226,3 +237,36 @@
     }
   }
 </script>
+
+<style>
+  .subjectBtn{
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    margin:0 -3px;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 84px;
+    color: #409eff;
+    background: #ecf5ff;
+    border: 1px solid #b3d8ff;
+  }
+  .subjectBtn:hover{
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
+  }
+  .subjectBtn_selected{
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
+  }
+</style>

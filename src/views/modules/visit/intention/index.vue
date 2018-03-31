@@ -66,7 +66,7 @@
                         <el-button type="success" size="mini" @click="updateState(intention, '2')">关 闭</el-button>
                         <el-button type="info" size="mini" @click="updateState(intention, '-1')">分 配</el-button>
                       </div>
-                      <div class="intention_btn">操作</div>
+                      <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
                     </el-tooltip>
 
                   </div>

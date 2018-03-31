@@ -1,11 +1,9 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
-    <el-card style="margin-bottom: 5px;height: 80px">
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加
-      </el-button>
-    </el-card>
-    <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
+    <!--<el-card style="margin-bottom: 5px;height: 80px">-->
+    <!--</el-card>-->
+    <el-card :style="{height: (client.height - 40) + 'px'}">
+      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-125) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
         <el-table-column align="center"  label="校区">
@@ -32,21 +30,24 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button v-if="sys_dict_upd" size="small" type="success"
+            <el-button v-if="menu_upd" size="small" type="success"
                        @click="handleUpdate(scope.row)">编辑
             </el-button>
-            <el-button v-if="sys_dict_del" size="mini" type="danger"
+            <el-button v-if="menu_del" size="mini" type="danger"
                        @click="handleDelete(scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page" background
+                       style="float: left"
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
+        <el-button v-if="menu_add" class="filter-item" style="margin-left: 10px;float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加
+        </el-button>
       </div>
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
@@ -78,7 +79,7 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'table_sys_dict',
+    name: 'table_menu',
     directives: {
       waves
     },
@@ -98,9 +99,9 @@
         enrolSite: {},
         dialogFormVisible: false,
         dialogStatus: '',
-        sys_dict_add: false,
-        sys_dict_upd: false,
-        sys_dict_del: false,
+        menu_add: false,
+        menu_upd: false,
+        menu_del: false,
         textMap: {
           update: '编辑',
           create: '创建'
@@ -116,9 +117,9 @@
     },
     created() {
       this.getList()
-      this.sys_dict_add = this.permissions['basis_dict_add']
-      this.sys_dict_upd = this.permissions['basis_dict_update']
-      this.sys_dict_del = this.permissions['basis_dict_del']
+      this.menu_add = this.permissions['basis_campus_add']
+      this.menu_upd = this.permissions['basis_campus_update']
+      this.menu_del = this.permissions['basis_campus_del']
     },
     methods: {
       getList() {

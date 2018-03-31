@@ -687,7 +687,7 @@
                       <el-form-item>
                         <span slot="label" class="text_css">是否体检：</span>
                         <el-col :span="18">
-                          <el-radio-group v-model="studentEntity.physicalExamination">
+                          <el-radio-group v-model="studentEntity.physicalExamination" size="mini">
                             <el-radio-button label="1">是</el-radio-button>
                             <el-radio-button label="0">否</el-radio-button>
                           </el-radio-group>
@@ -701,7 +701,7 @@
                       <el-form-item>
                         <span slot="label" class="text_css">是否增驾：</span>
                         <el-col :span="18">
-                          <el-radio-group v-model="studentEntity.addDrive">
+                          <el-radio-group v-model="studentEntity.addDrive" size="mini">
                             <el-radio-button label="1">是</el-radio-button>
                             <el-radio-button label="0">否</el-radio-button>
                           </el-radio-group>
@@ -714,7 +714,7 @@
                       <el-form-item>
                         <span slot="label" class="text_css">是否有车：</span>
                         <el-col :span="18">
-                          <el-radio-group v-model="studentEntity.haveCar">
+                          <el-radio-group v-model="studentEntity.haveCar" size="mini">
                             <el-radio-button label="1">是</el-radio-button>
                             <el-radio-button label="0">否</el-radio-button>
                           </el-radio-group>

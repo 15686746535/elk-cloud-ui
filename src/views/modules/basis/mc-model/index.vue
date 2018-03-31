@@ -3,7 +3,7 @@
     <el-card style="margin-bottom: 5px;height: 80px;">
       <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.content"></el-input>
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="plus">添加</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
       <el-table :data="list" :height="client.height - 225" v-loading="listLoading" element-loading-text="给我一点时间" border fit

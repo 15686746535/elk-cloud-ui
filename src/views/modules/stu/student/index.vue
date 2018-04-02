@@ -456,7 +456,7 @@
       <el-row :gutter="5">
         <el-col :span="12">
           <el-card :style="{height: (client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
-            <el-form :label-position="labelPosition" label-width="100px" model="right">
+            <el-form :model="studentEntity" label-width="100px" model="right">
               <el-row>
                 <el-row :gutter="20">
                   <el-col :span="12" >

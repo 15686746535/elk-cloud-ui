@@ -2,21 +2,24 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
-        <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
-        <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
-        <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
-        <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>
-        <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
-        </el-date-picker>
+        <div style="float:left;margin-top: 8px">
+          <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
+          <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
+          <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
+          <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>
+        </div>
+        <div style="float:right;">
+          <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
+          </el-date-picker>
 
 
-        <span v-show="'1' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field1" style="width: 240px;margin-top: 8px"  placeholder="科目一考试场地"></dict></span>
-        <span v-show="'2' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field2" style="width: 240px;margin-top: 8px"  placeholder="科目二考试场地"></dict></span>
-        <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
-        <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
+          <span v-show="'1' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field1" style="width: 240px;margin-top: 8px"  placeholder="科目一考试场地"></dict></span>
+          <span v-show="'2' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field2" style="width: 240px;margin-top: 8px"  placeholder="科目二考试场地"></dict></span>
+          <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
+          <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
 
-        <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
-        <el-button @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+          <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
+        </div>
       </div>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
@@ -64,9 +67,12 @@
       <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page" background
+                       style="float:left;"
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
+
+        <el-button style="float:right;" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
 
@@ -109,15 +115,228 @@
     </el-dialog>
 
 
-    <el-dialog @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
-      <div style="width:450px; margin:-30px auto 10px">
-        <div @click="handleField('0',$event)" class="stateBtn stateBtn_selected" >审核中</div>
-        <div @click="handleField('1',$event)" class="stateBtn" >约考中</div>
-        <div @click="handleField('2',$event)" class="stateBtn" >已报考</div>
-        <div @click="handleField('3',$event)" class="stateBtn" >失 败</div>
-      </div>
+    <el-dialog  @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
+      <!--<div style="width:450px; margin:-30px auto 10px">-->
+        <!--<div @click="handleField('0',$event)" class="stateBtn stateBtn_selected" >审核中</div>-->
+        <!--<div @click="handleField('1',$event)" class="stateBtn" >约考中</div>-->
+        <!--<div @click="handleField('2',$event)" class="stateBtn" >已报考</div>-->
+        <!--<div @click="handleField('3',$event)" class="stateBtn" >失 败</div>-->
+      <!--</div>-->
 
-      <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+      <el-tabs type="border-card" @tab-click="handleField">
+        <el-tab-pane name="123" label="申请名单">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+          <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+          <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+          <el-table-column align="center"  label="学员">
+            <template slot-scope="scope">
+              <span>{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="电话">
+            <template slot-scope="scope">
+              <span>{{scope.row.mobile}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="车型">
+            <template slot-scope="scope">
+              <span>{{scope.row.motorcycleType}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="考试时间">
+            <template slot-scope="scope">
+              <span>{{scope.row.examTime | subTime}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="状态">
+            <template slot-scope="scope">
+              <!--<span>{{scope.row.state}}</span>-->
+
+              <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
+              <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
+              <el-tag v-else-if="scope.row.state === '2'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
+              <el-tag v-else-if="scope.row.state === '3'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        </el-tab-pane>
+        <el-tab-pane name="0" label="待审核">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+          <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+          <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+          <el-table-column align="center"  label="学员">
+            <template slot-scope="scope">
+              <span>{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="电话">
+            <template slot-scope="scope">
+              <span>{{scope.row.mobile}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="车型">
+            <template slot-scope="scope">
+              <span>{{scope.row.motorcycleType}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="考试时间">
+            <template slot-scope="scope">
+              <span>{{scope.row.examTime | subTime}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="状态">
+            <template slot-scope="scope">
+              <!--<span>{{scope.row.state}}</span>-->
+
+              <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
+              <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
+              <el-tag v-else-if="scope.row.state === '2'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
+              <el-tag v-else-if="scope.row.state === '3'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        </el-tab-pane>
+        <el-tab-pane name="1" label="待约考">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+            <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+            <el-table-column align="center"  label="学员">
+              <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="电话">
+              <template slot-scope="scope">
+                <span>{{scope.row.mobile}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="车型">
+              <template slot-scope="scope">
+                <span>{{scope.row.motorcycleType}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考试时间">
+              <template slot-scope="scope">
+                <span>{{scope.row.examTime | subTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="状态">
+              <template slot-scope="scope">
+                <!--<span>{{scope.row.state}}</span>-->
+
+                <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
+                <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
+                <el-tag v-else-if="scope.row.state === '2'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
+                <el-tag v-else-if="scope.row.state === '3'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane name="2" label="已约考">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+            <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+            <el-table-column align="center"  label="学员">
+              <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="电话">
+              <template slot-scope="scope">
+                <span>{{scope.row.mobile}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="车型">
+              <template slot-scope="scope">
+                <span>{{scope.row.motorcycleType}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考试时间">
+              <template slot-scope="scope">
+                <span>{{scope.row.examTime | subTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="状态">
+              <template slot-scope="scope">
+                <!--<span>{{scope.row.state}}</span>-->
+
+                <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
+                <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
+                <el-tag v-else-if="scope.row.state === '2'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
+                <el-tag v-else-if="scope.row.state === '3'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane name="3" label="考试名单">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+            <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+            <el-table-column align="center"  label="学员">
+              <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="电话">
+              <template slot-scope="scope">
+                <span>{{scope.row.mobile}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="车型">
+              <template slot-scope="scope">
+                <span>{{scope.row.motorcycleType}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考试时间">
+              <template slot-scope="scope">
+                <span>{{scope.row.examTime | subTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="状态">
+              <template slot-scope="scope">
+                <!--<span>{{scope.row.state}}</span>-->
+
+                <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
+                <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
+                <el-tag v-else-if="scope.row.state === '2'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
+                <el-tag v-else-if="scope.row.state === '3'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+
+      <!--<el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="学员">
@@ -142,7 +361,7 @@
         </el-table-column>
         <el-table-column  align="center" label="状态">
           <template slot-scope="scope">
-            <!--<span>{{scope.row.state}}</span>-->
+            &lt;!&ndash;<span>{{scope.row.state}}</span>&ndash;&gt;
 
             <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
             <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
@@ -156,7 +375,7 @@
             <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table>-->
       <div slot="footer" style="margin-top: -30px">
         <!--<el-button-group>-->
           <!--<el-button style="margin:0 5px;" type="primary" round>审核通过</el-button>-->
@@ -428,13 +647,13 @@
       },
       // 根据状态查询约考学员
       handleField(state, e) {
-        this.studentListQuery.state = state
-        var a = document.getElementsByClassName('stateBtn')
-        for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('stateBtn_selected')
-        }
-        e.currentTarget.classList.add('stateBtn_selected')
-        this.see(this.studentListQuery.batchId, state)
+        this.studentListQuery.state = state.name
+        // var a = document.getElementsByClassName('stateBtn')
+        // for (var i = 0; i < a.length; i++) {
+        //   a[i].classList.remove('stateBtn_selected')
+        // }
+        // e.currentTarget.classList.add('stateBtn_selected')
+        this.see(this.studentListQuery.batchId, state.name)
         console.log('=====================================')
         console.log(this.studentListQuery.state)
       },

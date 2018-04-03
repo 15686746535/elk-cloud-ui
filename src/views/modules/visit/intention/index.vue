@@ -26,10 +26,9 @@
             <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
             <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
           </el-card>
-          <el-card :style="{height: (client.height-125) + 'px'}">
-            <div class="intentions"  :style="{height: (client.height-205) + 'px'}"  v-loading="listLoading" element-loading-text="给我一点时间" >
+          <el-card :style="{height: (client.height-125) + 'px'}" style="overflow: hidden">
+            <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
 
               <!--<div class="intention" v-for="intention in intentionList" @click="intentionClick($event)"  @dblclick="editlist(intention)">-->
                 <!--&lt;!&ndash;<div>&ndash;&gt;-->
@@ -40,7 +39,7 @@
                 <!--&lt;!&ndash;</div>&ndash;&gt;-->
                 <!--&lt;!&ndash;<div class="intention_btn">重新分配</div>&ndash;&gt;-->
               <!--</div>-->
-              <div class="intention" v-for="intention in intentionList" @click="intentionClick($event)"  @dblclick="editlist(intention)">
+              <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editlist(intention)">
                 <div style="width: 222px;margin: 9px 10px;">
                   <div style="width: 50%;float: left">
                       <div class="intention_text">姓名：{{intention.name}}</div>
@@ -63,8 +62,8 @@
 
                     <el-tooltip placement="right" effect="dark">
                       <div slot="content">
-                        <el-button type="success" size="mini" @click="updateState(intention, '2')">关 闭</el-button>
-                        <el-button type="info" size="mini" @click="updateState(intention, '-1')">分 配</el-button>
+                        <el-button type="success" size="mini" @click="updateState(intention, '-1')">分 配</el-button>
+                        <el-button type="info" size="mini" @click="updateState(intention, '2')">关 闭</el-button>
                       </div>
                       <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
                     </el-tooltip>
@@ -74,14 +73,38 @@
                   <!--<div class="intention_btn">关 闭</div>-->
                 </div>
               </div>
+
+              <el-collapse-transition>
+                <div v-show="followShow">
+                  <div :style="{height: (client.height-1) + 'px'}" class="alert_follow" style="border-radius: 6px 0 0 5px">
+                    <div style="width: 100%;background-color: #e9e9e9;height: 40px;line-height: 40px;border-radius: 5px 0 0 0; ">
+                      <div style="border: 5px solid #e9e9e9;border-left-color:#b7b7b7; height: 40px; width: 6px;float: left"></div>
+                      <span class="text_css" style="font-size: 16px;padding-left: 10px">{{alertFollowEntity.name}}</span>
+                      <span class="text_css" style="font-size: 14px;padding-left: 10px">{{alertFollowEntity.mobile}}</span>
+                      <div @click="followShow = !followShow" style="float: right;cursor: pointer;margin-right: 10px;"><svg-icon icon-class="closeLink"></svg-icon></div>
+                    </div>
+                    <div style="width: 100%;overflow: auto;height: 350px;margin-bottom: 10px">
+                      <div style="line-height: 30px" v-for="followUps in followUps">
+                        <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 7px;color: mediumblue">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</span></div>
+                        <el-tag  type="success" style="font-size: 14px;margin-left: 20px;border-radius: 10px;">{{followUps.content}}</el-tag>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </el-collapse-transition>
             </div>
-            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;clear: both">
+            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
                              background
+                             style="float: left;margin-top: 4px"
                              :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
+
+              <el-button class="filter-item" style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
             </div>
             <!--<el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
                       highlight-current-row  @row-dblclick="editlist"  style="width: 100%">
@@ -165,6 +188,7 @@
       </el-row>
     </div>
     </transition>
+
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='info'">
 
@@ -423,6 +447,7 @@
           operator: null,
           followUp: true
         },
+        alertFollowEntity: {},
         stateLabel: '跟进中',
         bgImg: 'static/img/bj.png',
         dialogStatus: '',
@@ -477,7 +502,8 @@
           value: '2',
           label: '已关闭'
         }],
-        intention_show_btn: false
+        intention_show_btn: false,
+        followShow: false
         // apply_type
       }
     },
@@ -626,8 +652,11 @@
         this.getOperators()
       },
       // 来访信息点击事件
-      intentionClick(e) {
+      intentionClick(e,val) {
+        this.alertFollowEntity = val
+        this.getFollowUp(val)
         console.log(e)
+        this.followShow = true
         var a = document.getElementsByClassName('intention')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('intention_selected')
@@ -684,19 +713,21 @@
     height: 218px;
     margin:5px;
     cursor: pointer;
-    border: 1px solid #67c23a;
-    border-radius: 5px 5px 0 0;
-    border-bottom: 4px solid #67c23a;
-    transition: border-color 0.2s;
+    border: 1px solid #449ffb;
+    border-radius: 5px 5px;
+    border-bottom: 4px solid #449ffb;
+    box-shadow: 5px 3px 3px #ffffff;
+    transition: border-color 0.2s,box-shadow 0.2s;
   }
   .intention_btn{
     width: 60px;
     height: 25px;
+    border-radius: 5px 0px;
     position: relative;
     top: -3px;
     left: 171px;
     cursor: pointer;
-    background-color: #66c23a;
+    background-color: #449ffb;
     transition: background-color 0.2s;
     color: #ffffff;
     text-align: center;
@@ -707,15 +738,16 @@
     /*background-color: #449ffb;*/
   /*}*/
   .intention:hover{
-    border-color: #449ffb;
+    border-color: #67c23a;
     .intention_btn{
-      background-color: #449ffb;
+      background-color: #67c23a;
     }
   }
   .intention_selected {
-    border-color: #449ffb;
+    border-color: #67c23a;
+    box-shadow: 5px 3px 3px #b2b6bd;
     .intention_btn{
-      background-color: #449ffb;
+      background-color: #67c23a;
     }
   }
   .intention_text{
@@ -739,6 +771,14 @@
     background: #303133;
     color: #fff;
    }
-
+  .alert_follow{
+    position: fixed;
+    top: 85px;
+    right: 0;
+    width: 400px;
+    background-color: #fff;
+    border-left: 1px solid #449ffb;
+    transition: left 0.2s;
+  }
 </style>
 

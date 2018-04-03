@@ -297,9 +297,9 @@
     height: 218px;
     margin:5px;
     cursor: pointer;
-    border: 1px solid #67c23a;
-    border-radius: 5px 5px 0 0;
-    border-bottom: 4px solid #67c23a;
+    border: 1px solid #449ffb;
+    border-radius: 5px 5px;
+    border-bottom: 4px solid #449ffb;
     transition: border-color 0.2s;
   }
   .intention_btn{
@@ -320,15 +320,17 @@
   /*background-color: #449ffb;*/
   /*}*/
   .intention:hover{
-    border-color: #449ffb;
+    border-color: #67c23a;
+    /*box-shadow: 5px 5px 5px #b2b6bd;*/
     .intention_btn{
-      background-color: #449ffb;
+      background-color: #67c23a;
     }
   }
   .intention_selected {
-    border-color: #449ffb;
+    border-color: #67c23a;
+    box-shadow: 5px 5px 5px #b2b6bd;
     .intention_btn{
-      background-color: #449ffb;
+      background-color: #67c23a;
     }
   }
   .intention_text{

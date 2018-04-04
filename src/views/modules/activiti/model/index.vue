@@ -6,47 +6,44 @@
           <div class="filter-container" style="padding-bottom: 20px;">
             <el-input @keyup.enter.native="search" style="width: 200px;margin: 0" class="filter-item" placeholder="关键字" v-model="listQuery.condition"></el-input>
             <el-button type="primary" @click="search" >搜索</el-button>
-            <el-button  type="primary" @click="dialogOpen(null)"><i class="el-icon-plus"></i>添加</el-button>
           </div>
-
-          <el-table  :data="modelList"  v-loading="tableLoading" border :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fithighlight-current-row
-                     style="width: 100%;text-align: center;">
-            <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
+          <el-table :data="modelList"  v-loading="tableLoading" border :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-
             <el-table-column prop="name" label="流程名字" align="center" width="250"></el-table-column>
-            <el-table-column prop="businessName" label="业务" align="center" width="150"></el-table-column>
             <el-table-column align="center"  label="是否部署" width="80">
               <template slot-scope="scope">
                 <span>{{scope.row.status === '0'?'未部署':'已部署'}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="orgName" label="机构" align="center" width="300"></el-table-column>
-            <el-table-column prop="createTime" label="创建时间" align="center" width="200"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" align="center" width="200">
+              <template slot-scope="scope">
+                <span>{{scope.row.createTime | subTime }}</span>
+              </template>
+            </el-table-column>
 
 
-            <el-table-column align="left" label="操作" width="600">
+            <el-table-column align="left" label="操作" >
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" @click="dialogOpen(scope.row)" plain >编 辑</el-button>
                 <el-button size="mini" type="primary" @click="designFlow(scope.row.modelId)" plain>设计流程图</el-button>
-                <el-button size="mini" type="primary" @click="flowTree(scope.row.modelId)" plain>设计节点</el-button>
                 <el-button size="mini" type="primary" @click="showFlowImg(scope.row.modelId)" plain>查看流程图</el-button>
-
-                <el-button v-show="scope.row.status === '0'" size="mini" @click="deploy(scope.row.modelId)" type="primary" plain>部署</el-button>
-                <el-button v-show="scope.row.status === '0'" size="mini" type="danger" plain>删除</el-button>
-
-                <el-button v-show="scope.row.status !== '0'" size="mini" type="primary" plain>升级</el-button>
+                <el-button v-if="scope.row.status === '0'" size="mini" @click="deploy(scope.row.modelId)" type="primary" plain>部署</el-button>
+                <el-button v-if="scope.row.status === '0'" size="mini"  @click="delModel(scope.row.modelId)" type="danger" plain>删除</el-button>
               </template>
             </el-table-column>
 
           </el-table>
 
-          <div v-show="!tableLoading" class="pagination-container" style="margin-top: 20px">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+          <div v-show="!tableLoading" class="pagination-container" style="margin-top: 20px;">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float: left"
                            :current-page.sync="listQuery.page" background
                            :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
+            <div class="" style="float: right;">
+              <el-button  type="primary" @click="dialogOpen(null)"><i class="el-icon-plus"></i>添加</el-button>
+            </div>
           </div>
 
         </el-card>
@@ -66,18 +63,18 @@
           <span @click="openList">
             <svg-icon class="close-iframe" icon-class="close" ></svg-icon>
           </span>
-          <img :src="url" >
+          <div v-html="svg"></div>
         </el-card>
       </div>
     </transition>
 
     <el-dialog  @close="getList" title="添加" :show-close="false" width="30%" :visible.sync="option">
       <el-form :model="model"  ref="model" :rules="rules" label-width="100px">
+        <el-form-item label="组织"  prop="name">
+          <org-select v-model="model.orgId"></org-select>
+        </el-form-item>
         <el-form-item label="名称"  prop="name">
           <el-input v-model="model.name" placeholder="流程名称" ></el-input>
-        </el-form-item>
-        <el-form-item v-if="dialogType == 'create'" label="业务" prop="businessId">
-          <bus-select :dataList="busTree" v-model="model.businessId" placeholder="关联业务" @bus-click="busSet"></bus-select>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="model.description" placeholder="描述" ></el-input>
@@ -95,30 +92,17 @@
 </template>
 
 <script>
-  import { modelPage, modelSave, flowTree, modelUpdate, modelDeploy } from '@/api/activiti/model'
-  import { busTree } from '@/api/activiti/business'
+  import { modelPage, modelSave, flowTree, modelUpdate, modelDeploy, showFlowImg, modelDel } from '@/api/activiti/model'
   import { mapGetters } from 'vuex'
-  import BusSelect from '@/components/BusSelect'
+  import { getToken } from '@/utils/auth'
+  import OrgSelect from '@/components/OrgSelect'
 
   export default {
     name: 'active_model',
     components: {
-      BusSelect
+      OrgSelect
     },
     data() {
-      var checkBus = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请选择业务'))
-        }
-        if (this.bus.type === '1') {
-          return callback(new Error('只能选择业务类，不能选择分组'))
-        }
-        setTimeout(() => {
-          if (this.bus.type === '2') {
-            callback()
-          }
-        }, 100)
-      }
       return {
         showPlate: 'list',
         option: false,
@@ -130,7 +114,7 @@
         },
         modelList: [],
         model: {
-          businessId: null, // 关联的 业务表 ID 2dd79ea6652244b789cfeffbece4fec9
+          orgId: null, // 组织
           name: null, // 模型名称
           description: null // 描述
         },
@@ -138,14 +122,18 @@
           name: [
             { required: true, message: '请输入模型名称', trigger: 'submit' }
           ],
-          businessId: [
-            { validator: checkBus, trigger: 'submit' }
+          description: [
+            { required: true, message: '请输入描述', trigger: 'submit' }
+          ],
+          orgId: [
+            { required: true, message: '请选择组织', trigger: 'submit' }
           ]
         },
         busTree: [],
         bus: {},
         total: null,
         tableLoading: false,
+        svg: '',
         url: '' // http://127.0.0.1:8114/model/add?modelId=ff9c84da-c37f-11e7-8db5-2c4d5453f651
       }
     },
@@ -180,15 +168,19 @@
       designFlow(modelId) {
         console.log('========== 设计流程图 busSet ====================')
         console.log(modelId)
-        this.url = 'http://127.0.0.1:8114/model/add?modelId=' + modelId
+        this.url = 'http://127.0.0.1:8114/model/create?modelId=' + modelId + '&token=' + getToken()
         this.showPlate = 'design'
       },
-      getBusTree() {
-        console.log('========== 查询业务树  ====================')
-        busTree().then(response => {
-          console.log(response)
-          this.busTree = response.data.data
-          console.log(this.busTree)
+      delModel(modelId) {
+        console.log('========== 删除流程  ====================')
+        this.$confirm('确定删除流程?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          modelDel(modelId).then(response => {
+            this.getList()
+          })
         })
       },
       deploy(modelId) {
@@ -198,8 +190,6 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          // 展开加载中
-          this.$store.dispatch('setLoading', true)
           modelDeploy(modelId).then(response => {
             this.getList()
           })
@@ -207,8 +197,11 @@
       },
       showFlowImg(modelId) {
         console.log('========== 查看流程图片  ====================')
-        this.url = '/activiti/model/showFlowImg/' + modelId
-        this.showPlate = 'img'
+        showFlowImg(modelId).then(response => {
+          console.log(response)
+          this.svg = response.data.data
+          this.showPlate = 'img'
+        })
       },
       flowTree(modelId) {
         console.log('========== 获取流程图所有节点和连线  ====================')
@@ -221,42 +214,31 @@
         console.log(model)
         if (model) {
           this.model = {
-            extendModelId: model.extendModelId, // ID
-            businessId: '', // 关联的 业务表 ID
+            modelId: model.modelId, // ID
+            orgId: model.orgId, // 关联的 业务表 ID
             name: model.name, // 模型名称
             description: model.description // 描述
           }
           this.dialogType = 'update'
         } else {
-          this.getBusTree()
           this.dialogType = 'create'
         }
-        console.log(this.dialogType)
         this.option = true
-      },
-      setBusiness(obj) {
-        console.log(obj)
       },
       create(formName) {
         const set = this.$refs
         console.log('============= 添加信息 ===================')
+        console.log(this.model)
         set[formName].validate(valid => {
           console.log(valid)
           if (valid) {
             // 展开加载中
             this.$store.dispatch('setLoading', true)
-            modelSave(this.model)
-              .then(() => {
-                this.option = false
-                this.loading = false
-                this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
-              })
+            modelSave(this.model).then(() => {
+              this.option = false
+              this.loading = false
+              this.getList()
+            })
           } else {
             return false
           }

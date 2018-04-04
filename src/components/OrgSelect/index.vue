@@ -2,7 +2,7 @@
   <div :style="{width:width}">
     <div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>
     <div class="ran-select">
-      <input class="ran-input hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
+      <input class="ran-input el-input__inner hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
       <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
       <div v-show="isOpen" class="ran-arrow"></div>
       <el-collapse-transition>

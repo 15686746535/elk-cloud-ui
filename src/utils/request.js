@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { Notification } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 // 调试模式 抛出异常到控制台
-const debug = true
 
 // 创建axios实例
 const service = axios.create({
@@ -25,47 +24,50 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
+    console.log(response)
     const res = response.data
     if (res.code === 500) {
-      message(res.msg, 'error', '提示')
-      if (debug) return Promise.reject(res)
+      Message.error(res.msg)
     }
     // 网关异常统一拦截
     if (res.status === 500) {
-      message(res.message, 'error', '提示')
-      if (debug) return Promise.reject(res)
+      Message.error(res.message)
     }
-    console.log('---------- 这里是请求提示 ------------')
+    if (res.code === 0 && res.msg !== 'success') {
+      Message.success(res.msg)
+    }
+    store.dispatch('setLoading', false)
     console.log(res)
-    console.log('---------- 这里是请求提示 ------------')
     return response
   },
   error => {
     const res = error.response
     if (res.status === 478 || res.status === 403) {
-      message('您没有权限！', 'error', '错误')
+      Message.error('您没有权限！')
     } else if (res.status === 400) {
-      message('服务器异常!', 'error', '错误')
+      Message.error('服务器异常!')
     } else if (res.status === 404) {
-      message('数据丢失!', 'warning', '警告')
+      Message.warning('数据丢失!')
     } else if (res.status === 401) {
       console.log(res)
-      message('登录过期!', 'warning', '警告')
+      Message.warning('登录过期!')
     } else {
-      message(res.msg, 'error', '错误')
+      Message.error(res.msg)
     }
-    if (debug) return Promise.reject(error)
+    store.dispatch('setLoading', false)
+
+    // if (debug) return Promise.reject(error)
   }
 )
 
 export function message(text, type, title) {
   // 关闭加载遮罩
-  store.dispatch('setLoading', false)
-  Notification({
+  Message({
     title: title,
-    type: type,
-    message: text,
-    duration: 3 * 1000
+    type: type, // 主题 success/warning/info/error
+    message: text, // 消息文字
+    showClose: false, // 是否显示关闭按钮
+    duration: 3 * 1000 // 显示时间, 毫秒。设为 0 则不会自动关闭
   })
 }
 

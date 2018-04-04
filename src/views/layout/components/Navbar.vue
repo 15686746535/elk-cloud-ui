@@ -3,14 +3,12 @@
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb class="breadcrumb-container"></breadcrumb>
     <div class="right-menu">
-      <el-tooltip effect="dark" content="全屏" placement="bottom">
-        <screenfull class="screenfull right-menu-item"></screenfull>
-      </el-tooltip>
-
       <el-dropdown class="avatar-container" trigger="click">
         <el-tooltip effect="dark" content="点击查看更多功能" placement="bottom">
           <div class="avatar-wrapper">
-            <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+            <el-badge :value="notice" :max="99" class="item" style="height: 40px;">
+              <img class="user-avatar" :src="avatar + '?imageView2/1/w/80/h/80'">
+            </el-badge>
             <!--<i class="el-icon-caret-bottom"></i>-->
           </div>
         </el-tooltip>
@@ -45,6 +43,7 @@ export default {
     ...mapGetters([
       'name',
       'sidebar',
+      'notice',
       'avatar'
     ])
   },
@@ -91,8 +90,8 @@ export default {
       margin-top: 5px;
       position: relative;
       .user-avatar {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
       }
       .el-icon-caret-bottom {

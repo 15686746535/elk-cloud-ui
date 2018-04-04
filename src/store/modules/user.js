@@ -6,6 +6,7 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
+    notice: 0,
     permissions: [],
     roles: []
   },
@@ -22,6 +23,9 @@ const user = {
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
+    },
+    SET_NOTICE: (state, notice) => {
+      state.notice = notice
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
@@ -61,6 +65,8 @@ const user = {
           commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.loginUser.username)
           commit('SET_AVATAR', data.loginUser.avatar)
+          // 修改通知数量
+          commit('SET_NOTICE', 666)
           const permissions = {}
           for (let i = 0; i < data.permissions.length; i++) {
             permissions[data.permissions[i]] = true

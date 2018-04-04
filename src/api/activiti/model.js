@@ -8,10 +8,17 @@ export function modelPage(query) {
   })
 }
 
+export function showFlowImg(modelId) {
+  return request({
+    url: '/activiti/model/showFlowImg/' + modelId,
+    method: 'get'
+  })
+}
+
 // 保存
 export function modelSave(obj) {
   return request({
-    url: '/activiti/model',
+    url: '/activiti/model/add',
     method: 'post',
     data: obj
   })

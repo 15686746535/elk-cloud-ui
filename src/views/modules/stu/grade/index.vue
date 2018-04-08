@@ -64,7 +64,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column  align="center" label="身份证" width="200">
+            <el-table-column  align="center" label="身份证" width="170">
               <template slot-scope="scope">
                 <span>{{scope.row.idNumber}}</span>
               </template>
@@ -76,7 +76,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="批次" width="100">
+            <el-table-column align="center" label="批次" width="195">
               <template slot-scope="scope">
                 <span>{{scope.row.batch}}</span>
               </template>
@@ -176,63 +176,6 @@
                 <span>{{scope.row.idNumber}}</span>
               </template>
             </el-table-column>
-
-            <!--<el-table-column align="center" label="科目">
-              <template slot-scope="scope">
-                <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="批次">
-              <template slot-scope="scope">
-                <span>{{scope.row.batch}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="期数">
-              <template slot-scope="scope">
-                <span>{{scope.row.periods}}</span>
-              </template>
-            </el-table-column>
-
-
-            <el-table-column align="center" label="考试日期">
-              <template slot-scope="scope">
-                <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="状态">
-              <template slot-scope="scope">
-                <span>{{scope.row.examState == 1?'通过':scope.row.examState == 2?'失败':scope.row.examState == 2?'失败':'失败'}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="通过日期">
-              <template slot-scope="scope">
-                <span>{{scope.row.passTime | parseTime('{y}-{m}-{d}')}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="失败日期">
-              <template slot-scope="scope">
-                <span>{{scope.row.failTime | parseTime('{y}-{m}-{d}')}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="缺考日期">
-              <template slot-scope="scope">
-                <span>{{scope.row.missTime | parseTime('{y}-{m}-{d}')}}</span>
-              </template>
-            </el-table-column>-->
-
-
-            <!--<el-table-column align="center" fixed="right" label="操作" width="160">-->
-              <!--<template slot-scope="scope">-->
-                <!--<el-button size="mini" type="primary" plain>编 辑</el-button>-->
-                <!--<el-button size="mini" type="danger" >删 除</el-button>-->
-              <!--</template>-->
-            <!--</el-table-column>-->
 
           </el-table>
 

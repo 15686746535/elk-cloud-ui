@@ -32,28 +32,27 @@
           <el-card :style="{height: (client.height-125) + 'px'}">
             <div class="intentions"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
               <div class="intention" v-for="intention in list" @click="intentionClick(intention.intentionId,$event)" ><!--@dblclick="editlist(intention) "-->
-                <div style="width: 222px;height: 200px;margin: 9px 10px;">
-                  <div style="width: 50%;float: left">
-                    <div class="intention_text">姓名：{{intention.name}}</div>
-                    <div class="intention_text">性别：{{intention.sex | sexFilter}}</div>
-                    <div class="intention_text">负责人：{{intention.operator}}</div>
-                  </div>
-                  <div style="width: 50%;float: left">
-                    <div class="intention_text">类别：{{intention.customerType}}</div>
-                    <div class="intention_text">渠道：{{intention.source}}</div>
-                  </div>
-
-                  <!-- 分割线 -->
-                  <div style="width: 100%;float: left;border: none;border-bottom:1px solid #d3dce6;margin: 5px 0; "></div>
-                  <div style="width: 100%;height: 88px;float: left">
-
-                    <div class="intention_text">微信：{{intention.wechat}}</div>
-                    <div class="intention_text">电话：{{intention.mobile}}</div>
-                    <div class="intention_text">住址：{{intention.contactAddress}}</div>
-                    <div class="intention_text">顾虑：{{intention.worry}}</div>
-                  </div>
-
+                <div style="width: 100%;height: 25px">
+                  <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
+                  <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
                 </div>
+
+                <!-- 分割线 -->
+                <div style="width: 100%;float: left;border: none;border-bottom:1px solid #9fcfff;"></div>
+                <div style="width: 100%;height: 25px">
+                  <div class="intention_text" style="width: 50%;float: left">性别：{{intention.sex | sexFilter}}</div>
+                  <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
+                </div>
+
+                <div class="intention_text" style="width: 100%;float: left">电话：{{intention.mobile}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">微信：{{intention.wechat}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">住址：{{intention.contactAddress}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">顾虑：{{intention.worry}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
               </div>
             </div>
             <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;clear: both">
@@ -300,51 +299,25 @@
     border: 1px solid #449ffb;
     border-radius: 5px 5px;
     border-bottom: 4px solid #449ffb;
-    transition: border-color 0.2s;
-  }
-  .intention_btn{
-    width: 60px;
-    height: 25px;
-    position: relative;
-    top: -3px;
-    left: 171px;
-    cursor: pointer;
-    background-color: #66c23a;
-    transition: background-color 0.2s;
-    color: #ffffff;
-    text-align: center;
-    line-height: 25px;
-    font-size: 14px
+    box-shadow: 5px 3px 3px #ffffff;
+    padding: 5px;
+    transition: border-color 0.2s,box-shadow 0.2s;
   }
   /*.intention_btn:hover{*/
   /*background-color: #449ffb;*/
   /*}*/
   .intention:hover{
     border-color: #67c23a;
-    /*box-shadow: 5px 5px 5px #b2b6bd;*/
-    .intention_btn{
-      background-color: #67c23a;
-    }
   }
   .intention_selected {
     border-color: #67c23a;
-    box-shadow: 5px 5px 5px #b2b6bd;
-    .intention_btn{
-      background-color: #67c23a;
-    }
+    box-shadow: 5px 3px 3px #b2b6bd;
   }
   .intention_text{
     color:#495060;
-    font-size: 13px;
+    margin: 2px 0;
+    font-size: 14px;
     line-height: 25px;
-    word-break:keep-all;/* 不换行 */
-    white-space:nowrap;/* 不换行 */
-    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
-    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
-  }
-  .text_css{
-    color:#495060;
-    font-size: 16px;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */

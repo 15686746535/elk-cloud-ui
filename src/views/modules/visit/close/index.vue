@@ -2,6 +2,8 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
+
+
         <el-col class="org-tree-left">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
@@ -11,7 +13,7 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="——" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
             <el-select v-model="listQuery.operator" clearable placeholder="负责人">
               <el-option
@@ -24,51 +26,33 @@
             <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
             <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
             <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
+            <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
             <el-button class="filter-item" style="margin-left: 10px;" @click="open" type="success" icon="plus">重新分配</el-button>
           </el-card>
-
           <el-card :style="{height: (client.height-125) + 'px'}">
-            <div class="visits" :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
-              <div class="visit" v-for="visit in list" @click="visitClick(visit.intentionId,$event)" ><!--@dblclick="editlist(visit) "-->
-                <div style="width: 222px;height: 200px;margin: 9px 10px;">
-                  <div style="width: 50%;float: left">
-                    <div class="visit_text">姓名：{{visit.name}}</div>
-                    <div class="visit_text">性别：{{visit.sex | sexFilter}}</div>
-                    <div class="visit_text">负责人：{{visit.operator}}</div>
-                  </div>
-                  <div style="width: 50%;float: left">
-                    <div class="visit_text">类别：{{visit.customerType}}</div>
-                    <div class="visit_text">渠道：{{visit.source}}</div>
-                  </div>
-
-                  <!-- 分割线 -->
-                  <div style="width: 100%;float: left;border: none;border-bottom:1px solid #d3dce6;margin: 5px 0; "></div>
-                  <div style="width: 100%;height: 88px;float: left">
-
-                    <div class="visit_text">微信：{{visit.wechat}}</div>
-                    <div class="visit_text">电话：{{visit.mobile}}</div>
-                    <div class="visit_text">住址：{{visit.contactAddress}}</div>
-                    <div class="visit_text">顾虑：{{visit.worry}}</div>
-                  </div>
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">微信：</el-col>-->
-                  <!--<el-col :span="19">{{visit.wechat}}</el-col>-->
-                  <!--</el-row>-->
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">电话：</el-col>-->
-                  <!--<el-col :span="19">{{visit.mobile}}</el-col>-->
-                  <!--</el-row>-->
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">住址：</el-col>-->
-                  <!--<el-col :span="19">{{visit.contactAddress}}</el-col>-->
-                  <!--</el-row>-->
-                  <!--<el-row class="visit_text">-->
-                  <!--<el-col :span="5">顾虑：</el-col>-->
-                  <!--<el-col :span="19">{{visit.worry}}</el-col>-->
-                  <!--</el-row>-->
-
+            <div class="intentions"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
+              <div class="intention" v-for="intention in list" @click="intentionClick(intention.intentionId,$event)" ><!--@dblclick="editlist(intention) "-->
+                <div style="width: 100%;height: 25px">
+                  <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
+                  <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
                 </div>
+
+                <!-- 分割线 -->
+                <div style="width: 100%;float: left;border: none;border-bottom:1px solid #9fcfff;"></div>
+                <div style="width: 100%;height: 25px">
+                  <div class="intention_text" style="width: 50%;float: left">性别：{{intention.sex | sexFilter}}</div>
+                  <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
+                </div>
+
+                <div class="intention_text" style="width: 100%;float: left">电话：{{intention.mobile}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">微信：{{intention.wechat}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">住址：{{intention.contactAddress}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">顾虑：{{intention.worry}}</div>
+
+                <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
               </div>
             </div>
             <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;clear: both">
@@ -176,12 +160,12 @@
           value: '2',
           label: '已关闭'
         }],
+        // apply_type
         intentionList: {
           intentionIds: [],
           uCondition: 'no',
           state: -1
         }
-        // apply_type
       }
     },
     created() {
@@ -251,15 +235,15 @@
         this.getList()
       },
       // 来访信息点击事件
-      visitClick(id, e) {
+      intentionClick(id, e) {
         var classList = e.currentTarget.classList
         console.log('========== 点击事件 ===========')
-        console.log(this.hasClass(classList, 'visit_hover'))
-        if (this.hasClass(classList, 'visit_hover')) {
-          classList.remove('visit_hover')
+        console.log(this.hasClass(classList, 'intention_selected'))
+        if (this.hasClass(classList, 'intention_selected')) {
+          classList.remove('intention_selected')
           this.delNodeId(id)
         } else {
-          classList.add('visit_hover')
+          classList.add('intention_selected')
           this.intentionList.intentionIds.push(id)
         }
         console.log(this.intentionList.intentionIds)
@@ -303,27 +287,36 @@
 
 <style>
 
-  .visits {
+  .intentions {
     overflow:auto;
   }
-  .visit {
+  .intention {
     float: left;
     width: 242px;
     height: 218px;
     margin:5px;
     cursor: pointer;
-    background-image: url(../../../../../static/img/bj1.png);
-    transition: background-image 0.2s;
+    border: 1px solid #449ffb;
+    border-radius: 5px 5px;
+    border-bottom: 4px solid #449ffb;
+    box-shadow: 5px 3px 3px #ffffff;
+    padding: 5px;
+    transition: border-color 0.2s,box-shadow 0.2s;
   }
-  .visit_hover {
-    background-image: url(../../../../../static/img/bj.png);
+  /*.intention_btn:hover{*/
+  /*background-color: #449ffb;*/
+  /*}*/
+  .intention:hover{
+    border-color: #67c23a;
   }
-  .visit:hover {
-    background-image: url(../../../../../static/img/bj.png);
+  .intention_selected {
+    border-color: #67c23a;
+    box-shadow: 5px 3px 3px #b2b6bd;
   }
-  .visit_text{
+  .intention_text{
     color:#495060;
-    font-size: 13px;
+    margin: 2px 0;
+    font-size: 14px;
     line-height: 25px;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */

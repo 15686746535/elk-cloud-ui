@@ -15,9 +15,15 @@
           <!--</div>-->
 
           <div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">
-            <div @click="handleSubject('2',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
-            <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
-            <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目三</div>
+            <el-radio-group @change="handleSubject" v-model="listQuery.subject">
+              <el-radio-button label="1">科目一</el-radio-button>
+              <el-radio-button label="2">科目二</el-radio-button>
+              <el-radio-button label="3">科目三</el-radio-button>
+              <el-radio-button label="4">科目四</el-radio-button>
+            </el-radio-group>
+            <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
+            <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
+            <div @click="handleSubject('3',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目三</div>
             <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>-->
           </div>
           <div style="float: right">
@@ -93,7 +99,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog  title="回访登记" width="40%" :visible.sync="visitStudentOption">
+    <el-dialog @close="getList" title="回访登记" width="40%" :visible.sync="visitStudentOption">
       <div :style="{height: (client.height)/2 +'px'}" style="overflow: auto">
 
         <div style="clear: both;width: 80%;margin: 0 auto;" v-for="(question, index) in revisitQuestion">
@@ -145,7 +151,8 @@
         listQuery: {
           page: 1,
           limit: 20,
-          subject: '2'
+          subject: '1',
+          rvisitFlag: '0'
         },
         dialogStatus: '',
         visitStudentOption: false,

@@ -6,7 +6,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :data="list" v-loading="listLoading" :height="(client.height-205)" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
+      <el-table :data="list" v-loading="listLoading" :height="(client.height-205)" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center" label="内容">

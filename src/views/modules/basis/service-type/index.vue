@@ -5,7 +5,7 @@
       </el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
+      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
       </el-table-column>
       <el-table-column align="center"  label="服务类别名字">

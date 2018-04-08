@@ -3,10 +3,16 @@
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
         <div style="float:left;margin-top: 8px">
-          <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
-          <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
-          <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
-          <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>
+          <el-radio-group @change="handleSubject" v-model="listQuery.subject">
+            <el-radio-button label="1">科目一</el-radio-button>
+            <el-radio-button label="2">科目二</el-radio-button>
+            <el-radio-button label="3">科目三</el-radio-button>
+            <el-radio-button label="4">科目四</el-radio-button>
+          </el-radio-group>
+          <!--<div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>-->
+          <!--<div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>-->
+          <!--<div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>-->
+          <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>-->
         </div>
         <div style="float:right;">
           <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -23,7 +29,7 @@
       </div>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fithighlight-current-row style="width: 100%;text-align: center;">
+      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
         <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
@@ -124,7 +130,7 @@
       <!--</div>-->
         <el-tabs type="border-card" @tab-click="handleField">
           <el-tab-pane name="all" label="申请名单">
-            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column align="center"  label="学员">
@@ -147,14 +153,25 @@
                   <span>{{scope.row.examTime | subTime}}</span>
                 </template>
               </el-table-column>
-              <el-table-column  align="center" label="状态">
+              <el-table-column  align="center"
+                                :filters="[
+                                  { text: '报考失败', value: '4' },
+                                  { text: '审核失败', value: '审核失败' },
+                                  { text: '待审核', value: '待审核' },
+                                  { text: '待约考', value: '待约考' },
+                                  { text: '已约考', value: '已约考' },
+                                  { text: '报考成功', value: '报考成功' }
+                                 ]"
+                                :filter-method="filterTag" filter-placement="bottom-end" label="状态">
                 <template slot-scope="scope">
                   <!--<span>{{scope.row.state}}</span>-->
-
-                  <el-tag v-if="scope.row.state === '0'" type="warning" size="small" style="border-radius: 20px;">审核中</el-tag>
-                  <el-tag v-else-if="scope.row.state === '1'" type="primary" size="small" style="border-radius: 20px;">报考中</el-tag>
-                  <el-tag v-else-if="scope.row.state === '2'" type="success" size="small" style="border-radius: 20px;">已报考</el-tag>
-                  <el-tag v-else-if="scope.row.state === '3'" type="danger" size="small" style="border-radius: 20px;">失败</el-tag>
+                  <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
+                  <span v-if="scope.row.state === '4'" style="border-radius: 20px;color: #f56c6c">报考失败</span>
+                  <span v-else-if="scope.row.state === '5'" style="border-radius: 20px;color: #e6a23c">审核失败</span>
+                  <span v-else-if="scope.row.state === '0'" style="border-radius: 20px;color: #909399">待审核</span>
+                  <span v-else-if="scope.row.state === '1'" style="border-radius: 20px;color: #02b7ac">待约考</span>
+                  <span v-else-if="scope.row.state === '2'" style="border-radius: 20px;color: #409eff">已约考</span>
+                  <span v-else-if="scope.row.state === '3'" style="border-radius: 20px;color: #67c23a">报考成功</span>
 
                 </template>
               </el-table-column>
@@ -166,7 +183,7 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane name="0" label="待审核">
-            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column align="center"  label="学员">
@@ -208,7 +225,7 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane name="1" label="待约考">
-            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column align="center"  label="学员">
@@ -250,7 +267,7 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane name="2" label="已约考">
-            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column align="center"  label="学员">
@@ -292,7 +309,7 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane name="3" label="考试名单">
-            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column align="center"  label="学员">
@@ -334,7 +351,7 @@
             </el-table>
           </el-tab-pane>
         </el-tabs>
-      <!--<el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;">
+      <!--<el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="学员">
@@ -375,24 +392,18 @@
         </el-table-column>
       </el-table>-->
       <div slot="footer" style="margin-top: -30px">
-        <!--<el-button-group>-->
-          <!--<el-button style="margin:0 5px;" type="primary" round>审核通过</el-button>-->
-          <!--<el-button style="margin:0 5px;" type="danger" round>失败审核</el-button>-->
-        <!--</el-button-group>-->
 
-
-        <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 -2报考失败 -1审核失败  -->
+        <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
         <el-button-group v-if="studentListQuery.state === '0'">
-          <el-button @click="operation('-1','审核失败')" type="danger" round>失败</el-button>
+          <el-button @click="operation('5','审核失败')" type="danger" round>失败</el-button>
           <el-button @click="operation('1','审核通过')" type="success" round>通过</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '1'">
-          <!--<el-button @click="operation('-2','约考失败')" type="danger" round>约考失败</el-button>-->
           <el-button @click="operation('0','撤销成功')" type="info" round>撤销</el-button>
           <el-button @click="operation('2','约考成功')" type="success" round>已约</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '2'">
-          <el-button @click="operation('-2','报考失败')" type="danger" round>失败</el-button>
+          <el-button @click="operation('4','报考失败')" type="danger" round>失败</el-button>
           <el-button @click="operation('1','撤销成功')" type="info" round>撤销</el-button>
           <el-button @click="operation('3','报考成功')" type="success" round>成功</el-button>
         </el-button-group>
@@ -680,20 +691,21 @@
         }
       },
       // 根据科目查询场地
-      handleSubject(field, e) {
+      handleSubject() {
+        console.log(this.listQuery.subject)
         this.batch = {}
         this.listQuery.page = 1
-        this.listQuery.subject = field
-        this.batch.subject = field
+        this.batch.subject = this.listQuery.subject
+        // this.batch.subject = field
         this.listQuery.examField = null
         this.listQuery.interval = []
         this.listQuery.beginTime = null
         this.listQuery.endTime = null
-        var a = document.getElementsByClassName('subjectBtn')
-        for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('subjectBtn_selected')
-        }
-        e.currentTarget.classList.add('subjectBtn_selected')
+        // var a = document.getElementsByClassName('subjectBtn')
+        // for (var i = 0; i < a.length; i++) {
+        //   a[i].classList.remove('subjectBtn_selected')
+        // }
+        // e.currentTarget.classList.add('subjectBtn_selected')
         this.getList()
       },
       examTimeBlur() {
@@ -711,6 +723,14 @@
         console.log(this.listQuery.beginTime)
         console.log(this.listQuery.endTime)
         console.log('=============  完成 ================')
+      },
+      filterTag(value, row) {
+        console.log('...................')
+        return row.state === value
+      },
+      filterHandler(value, row, column) {
+        const property = column['property']
+        return row[property] === value
       }
     }
   }

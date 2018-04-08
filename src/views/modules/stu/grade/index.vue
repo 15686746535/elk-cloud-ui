@@ -2,12 +2,19 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
-        <div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">
-          <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
-          <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
-          <div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>
-          <div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>
-        </div>
+
+        <el-radio-group @change="handleSubject" v-model="batchListQuery.subject">
+          <el-radio-button label="1">科目一</el-radio-button>
+          <el-radio-button label="2">科目二</el-radio-button>
+          <el-radio-button label="3">科目三</el-radio-button>
+          <el-radio-button label="4">科目四</el-radio-button>
+        </el-radio-group>
+        <!--<div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">-->
+          <!--<div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>-->
+          <!--<div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>-->
+          <!--<div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>-->
+          <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>-->
+        <!--</div>-->
         <div style="float: right">
           <el-date-picker v-model="interval" type="daterange" align="right" style="margin-bottom: 0px;" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
           </el-date-picker>
@@ -41,7 +48,7 @@
       </el-col>
       <el-col :span="21">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -148,7 +155,7 @@
         </el-dialog>
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
 
-          <el-table :data="notGradeStudentList" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="notGradeStudentList" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -385,18 +392,18 @@
         this.cleanBatchSelected()
       },
       /* 根据科目查询 */
-      handleSubject(field, e) {
+      handleSubject() {
         this.cleanBatchSelected()
         this.studentListQuery.page = 1
-        this.studentListQuery.subject = field
-        this.batchListQuery.subject = field
+        this.studentListQuery.subject = this.batchListQuery.subject
+        // this.batchListQuery.subject = field
         this.gradeStudentList = []
         this.notGradeStudentList = []
-        var a = document.getElementsByClassName('subjectBtn')
-        for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('subjectBtn_selected')
-        }
-        e.currentTarget.classList.add('subjectBtn_selected')
+        // var a = document.getElementsByClassName('subjectBtn')
+        // for (var i = 0; i < a.length; i++) {
+        //   a[i].classList.remove('subjectBtn_selected')
+        // }
+        // e.currentTarget.classList.add('subjectBtn_selected')
         this.getBatchList()
       },
       /* 搜索方法 */

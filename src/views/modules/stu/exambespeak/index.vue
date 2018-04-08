@@ -14,7 +14,7 @@
             <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
             可预约：{{studentOld.length}}人
           </div>
-          <el-table @row-click="clickOld" :data="studentOld" :height="(client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%">
+          <el-table @row-click="clickOld" :data="studentOld" :height="(client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column label="姓名">
@@ -44,7 +44,7 @@
             已选择：{{studentNew.length}}人
             <el-button v-waves @click="handleBespeak" type="primary" style=" float: right;">预 约</el-button>
           </div>
-          <el-table  @row-click="clickNew" :data="studentNew" :height="(client.height-205)" border fithighlight-current-row style="width: 100%">
+          <el-table  @row-click="clickNew" :data="studentNew" :height="(client.height-205)" border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column label="姓名">

@@ -9,7 +9,7 @@
 
 
     <el-card :style="{height: (client.height-125) + 'px'}">
-      <el-table :key='tableKey'  :height="(client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fithighlight-current-row style="width: 100%" >
+      <el-table :key='tableKey'  :height="(client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
         <!--<el-table-column type="selection" class="selection" prop='uuid'></el-table-column>-->
 
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>

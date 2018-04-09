@@ -19,11 +19,10 @@
               <el-radio-button label="1">科目一</el-radio-button>
               <el-radio-button label="2">科目二</el-radio-button>
               <el-radio-button label="3">科目三</el-radio-button>
-              <el-radio-button label="4">科目四</el-radio-button>
             </el-radio-group>
-            <div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>
-            <div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>
-            <div @click="handleSubject('3',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目三</div>
+            <!--<div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>-->
+            <!--<div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>-->
+            <!--<div @click="handleSubject('3',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目三</div>-->
             <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>-->
           </div>
           <div style="float: right">
@@ -152,6 +151,7 @@
           page: 1,
           limit: 20,
           subject: '1',
+          examState: 'exam_note_pass',
           rvisitFlag: '0'
         },
         dialogStatus: '',
@@ -227,18 +227,9 @@
         }
       },
       // 根据科目查询回访
-      handleSubject(field, e) {
+      handleSubject() {
         this.listQuery.page = 1
-        this.listQuery.subject = field
-        if (field === '2') this.subject = '1'
-        if (field === '3') this.subject = '2'
-        if (field === '4') this.subject = '3'
         this.listQuery.condition = null
-        var a = document.getElementsByClassName('subjectBtn')
-        for (var i = 0; i < a.length; i++) {
-          a[i].classList.remove('subjectBtn_selected')
-        }
-        e.currentTarget.classList.add('subjectBtn_selected')
         this.getList()
       },
       /* 回访 */

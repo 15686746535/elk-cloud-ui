@@ -85,13 +85,13 @@
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
-    name: 'table_rvisitnote',
+    name: 'table_revisited',
     directives: {
       waves
     },
     data() {
       return {
-        rvisitnote: {},
+        revisited: {},
         list: [],
         total: null,
         listLoading: true,
@@ -99,7 +99,8 @@
         listQuery: {
           page: 1,
           limit: 20
-        }
+        },
+        dialogStatus: ''
       }
     },
     created() {
@@ -123,13 +124,13 @@
         this.getList()
       },
       create() {
-        this.rvisitnote = {}
+        this.revisited = {}
         this.showModule = 'info'
       },
       update(row) {
         getObj(row.roleId)
           .then(response => {
-            this.rvisitnote = response.data
+            this.revisited = response.data
             this.showModule = 'info'
           })
       },

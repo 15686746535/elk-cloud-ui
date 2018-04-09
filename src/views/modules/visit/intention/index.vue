@@ -84,26 +84,29 @@
                       <span class="text_css" style="font-size: 14px;padding-left: 10px">{{alertFollowEntity.mobile}}</span>
                       <div @click="followShow = !followShow" style="float: right;cursor: pointer;margin-right: 10px;"><svg-icon icon-class="closeLink"></svg-icon></div>
                     </div>
-                    <div style="width: 100%;overflow: auto;height: 100%;margin-bottom: 10px">
+                    <div style="width: 100%;height: 100%;">
 
-                      <!--<div style="border-left: 1px solid #9fcfff" v-for="followUps in followUps">-->
-                        <!--<el-tag style="width:50px; height: 50px; border-radius: 1000px">-->
-                          <!--asd-->
-                        <!--</el-tag>-->
-                      <!--</div>-->
-
-                      <div style="line-height: 30px" v-for="followUps in followUps">
-                        <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 7px;color: mediumblue">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</span></div>
-                        <el-tag  type="success" style="font-size: 14px;margin-left: 20px;border-radius: 10px;">{{followUps.content}}</el-tag>
+                      <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
+                        <div style="border-left: 2px solid #9fcfff;min-height: 200px;" v-for="followUps in followUps">
+                          <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;background-color: crimson;margin-left: -26px;margin-top: -15px;">
+                            asd
+                          </el-tag>
+                          <div style="float:left;color:#495060;font-size: 16px;margin-left: 10px">{{followUps.operator}}</div>
+                          <div style="float:right;color:#495060;font-size: 14px;">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</div>
+                          <div style="clear: both">
+                            <el-tag  type="success" style="font-size: 14px;margin-left: 40px;border-radius: 10px;">{{followUps.content}}</el-tag>
+                          </div>
+                        </div>
                       </div>
 
 
+
                       <div>
-                        <el-row :gutter="10">
-                          <el-col :span="20" >
+                        <el-row :gutter="5">
+                          <el-col :span="19" >
                             <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                           </el-col>
-                          <el-col :span="4" ><el-button style="width: 100%;height: 76px;" type="success" @click="addFollowUp">跟进</el-button></el-col>
+                          <el-col :span="5" ><el-button style="width: 100%;height: 76px;" type="success" @click="addFollowUp">跟进</el-button></el-col>
                         </el-row>
                       </div>
                     </div>
@@ -734,7 +737,7 @@
     cursor: pointer;
     border: 1px solid #449ffb;
     border-radius: 5px 5px;
-    border-bottom: 4px solid #449ffb;
+    /*border-bottom: 4px solid #449ffb;*/
     box-shadow: 5px 3px 3px #ffffff;
     padding: 5px;
     transition: border-color 0.2s,box-shadow 0.2s;

@@ -22,7 +22,6 @@
     methods: {
       closeViewTags(view, $event) {
         this.$store.dispatch('delVisitedViews', view).then((views) => {
-          console.log(views)
           if (this.isActive(view)) {
             const latestView = views.slice(-1)[0]
             if (latestView.length > 0) {

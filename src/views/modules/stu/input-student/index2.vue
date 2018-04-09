@@ -189,7 +189,6 @@
       convertClick(stare) {
         this.student.name = removeAllSpace(this.student.name)
         this.student.idNumber = removeAllSpace(this.student.idNumber)
-        console.log(this.student.idNumber.length)
         if (this.student.name === null || this.student.name === '') {
           this.$alert('请输入姓名', '提示', {
             type: 'info'

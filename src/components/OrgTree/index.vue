@@ -24,7 +24,6 @@
         method: 'get'
       }).then(response => {
         this.orgList = response.data.data
-        console.log(response.data.data)
       })
     },
     methods: {

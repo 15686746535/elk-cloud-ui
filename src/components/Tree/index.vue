@@ -41,8 +41,6 @@
     },
     watch: {
       value: function(val) {
-        console.log('watch----T')
-        console.log(val)
         // this.Click()
       }
     },

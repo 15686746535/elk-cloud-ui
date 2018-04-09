@@ -136,11 +136,7 @@
       getList() {
         this.listNewLoading = true
         this.listOldLoading = true
-        console.log(' ====== =============  这是查询条件  ==================')
-        console.log(this.studentListQuery)
         fetchList(this.studentListQuery).then(response => {
-          console.log(' ====== =============  这是所有学员信息  ==================')
-          console.log(response.data)
           this.studentOld = response.data.data.list
           var studentOldCount = this.studentOld.length
           for (var i = 0; i < studentOldCount; i++) {
@@ -157,8 +153,6 @@
           this.listNewLoading = false
         })
         getBatch(this.subject).then(response => {
-          console.log(' ===================  这是所有批次信息  ==================')
-          console.log(response.data.data)
           this.batchList = response.data.data
           // this.total = response.data.data.totalCount
           this.listOldLoading = false
@@ -184,8 +178,6 @@
         this.dialogFormBespeak = false
       },
       create() {
-        console.log('================== 这里是添加学员到批次 ====================')
-        console.log(this.examBespeakList)
         if (this.examBespeakList.batchId === null) {
           this.$alert('请先选择报考批次', '提示', {
             confirmButtonText: '确定',
@@ -232,8 +224,6 @@
         }
       },
       handleBespeak() {
-        console.log(this.examBespeakList)
-        console.log(this.batchList)
         if (this.studentNew.length !== 0) {
           this.dialogFormBespeak = true
         } else {

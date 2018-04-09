@@ -41,7 +41,6 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password, userInfo.randomStr, userInfo.code).then(response => {
-          console.log(response)
           const data = response.data
           setToken(data.access_token)
           commit('SET_TOKEN', data.access_token)
@@ -56,11 +55,7 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        console.log(123)
-        console.log(state.token)
         getInfo().then(response => {
-          console.log(456)
-          console.log(response)
           const data = response.data.data
           commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.loginUser.username)
@@ -71,9 +66,6 @@ const user = {
           for (let i = 0; i < data.permissions.length; i++) {
             permissions[data.permissions[i]] = true
           }
-          console.log('............................')
-          console.log(data.permissions)
-          console.log(permissions)
           commit('SET_PERMISSIONS', permissions)
           resolve(response)
         }).catch(error => {

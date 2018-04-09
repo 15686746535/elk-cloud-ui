@@ -267,8 +267,6 @@ export default {
       var ret = CVR_IDCard.connect()
       this.fillForm.ret = ret
       ret = JSON.parse(ret)
-      console.log('connect=========')
-      console.log(ret)
     },
     readCert: function(org) {
       var CVR_IDCard = document.getElementById('plugin')
@@ -294,8 +292,6 @@ export default {
     qqqq: function(org) {
     },
     nodeClick: function(org) {
-      console.log('treeModel')
-      console.log(org)
     },
     nodeCheckbox(val, isAdd) {
       if (isAdd) {
@@ -311,14 +307,10 @@ export default {
       }
     },
     orgClick(org) {
-      console.log('=======================')
-      console.log(org)
     },
     toggle() {
       var w = document.documentElement.scrollWidth || document.body.scrollWidth
       var h = document.documentElement.scrollHeight || document.body.scrollHeight
-      console.log(w)
-      console.log(h)
       // var $ = require('jquery')
       // var va = $('#testjquery').val()
       // console.log(va)
@@ -333,13 +325,8 @@ export default {
       // }
     },
     nodeCheck(node) {
-      console.log('nodeCheck')
-      console.log(node)
     },
     getDict(d) {
-      console.log('org')
-      console.log(this.dict)
-      console.log(d)
     }
   }
 }

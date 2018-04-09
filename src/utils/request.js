@@ -24,7 +24,6 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    console.log(response)
     const res = response.data
     if (res.code === 500) {
       Message.error(res.msg)
@@ -37,7 +36,6 @@ service.interceptors.response.use(
       Message.success(res.msg)
     }
     store.dispatch('setLoading', false)
-    console.log(res)
     return response
   },
   error => {
@@ -49,7 +47,6 @@ service.interceptors.response.use(
     } else if (res.status === 404) {
       Message.warning('数据丢失!')
     } else if (res.status === 401) {
-      console.log(res)
       Message.warning('登录过期!')
     } else {
       Message.error(res.msg)

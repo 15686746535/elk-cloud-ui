@@ -61,8 +61,6 @@
     // 数据请求
     watch: {
       value: function(val) {
-        console.log('===-------------------------------')
-        console.log(val)
       }
     },
     created() {

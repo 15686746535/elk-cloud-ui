@@ -1,103 +1,139 @@
 <template>
-    <div class="app-container calendar-list-container">
-      <div>
-          <el-card style="margin-bottom: 5px;">
-              <div class="filter-container">
-                  <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-                  <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-                  <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
-              </div>
-          </el-card>
-          <el-card>
-              <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                        highlight-current-row style="width: 100%">
-                  <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-                  <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                  <el-table-column label="内容">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.content}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="发布人">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.operator}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="发布日期">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-                      </template>
-                  </el-table-column>
-                  <el-table-column label="修改时间">
-                      <template slot-scope="scope">
-                          <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-                      </template>
-                  </el-table-column>
+    <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+      <div v-show="isShow('list')">
+          <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
+            <div class="filter-container" style="padding-bottom: 20px;">
+              <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+              <el-button class="filter-item" type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
+            </div>
+            <el-table :data="list" v-loading="listLoading" :height="$store.state.app.client.height - 225" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+                <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+                <el-table-column label="组织" align="center" width="150">
+                    <template slot-scope="scope" >
+                        <span>{{scope.row.orgName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="业务" align="center" width="150">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.name}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="路由" align="center" width="250">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.router}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="消息" align="center" width="350">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.message}}</span>
+                    </template>
+                </el-table-column>
+               <!-- <el-table-column label="状态" align="center" width="80">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.state === '0' ? '启用' : '启用'}}</span>
+                  </template>
+                </el-table-column>-->
 
-                  <el-table-column label="操作">
-                      <template slot-scope="scope">
-                          <el-button size="mini" type="success"
-                                     @click="handleUpdate(scope.row)">编辑
-                          </el-button>
-                          <el-button size="mini" type="danger"
-                                     @click="handleDelete(scope.row)">删除
-                          </el-button>
-                      </template>
-                  </el-table-column>
+                <el-table-column align="left" label="操作">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="success"
+                                   @click="handleUpdate(scope.row)">编辑
+                        </el-button>
+                        <el-button size="mini" type="danger"
+                                   @click="handleDelete(scope.row)">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
 
-              </el-table>
-              <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-                  <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                 :current-page.sync="listQuery.page" background
-                                 :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                                 layout="total, sizes, prev, pager, next, jumper" :total="total">
-                  </el-pagination>
+            </el-table>
+            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float: left"
+                             :current-page.sync="listQuery.page" background
+                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                             layout="total, sizes, prev, pager, next, jumper" :total="total">
+              </el-pagination>
+              <div class="" style="float: right;">
+                <el-button  type="primary" icon="el-icon-plus" @click="createClick()">添加</el-button>
               </div>
+            </div>
           </el-card>
       </div>
-      <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
-        <el-form label-position="left" :model="affiche" :rules="rules" ref="affiche" label-width="100px">
-          <el-form-item label="公告内容">
-            <el-input type="text" v-model="affiche.content" placeholder="公告内容" ></el-input>
+      <div v-show="isShow('info')">
+        <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
+          <div align="right">
+            <el-button  type="primary" @click="createClick()">返回</el-button>
+          </div>
+        </el-card>
+      </div>
+
+      <el-dialog  @close="getList" :title="dialogType === 'create'?'添加':'编辑'" :show-close="false" width="30%" :visible.sync="option">
+        <el-form :model="bus"  ref="bus" :rules="rules" label-width="100px">
+          <el-form-item label="组织"  prop="orgId">
+            <org-select v-model="bus.orgId"></org-select>
+          </el-form-item>
+          <el-form-item label="业务"  prop="name">
+            <el-input v-model="bus.name" placeholder="业务名称" ></el-input>
+          </el-form-item>
+          <el-form-item label="路由" prop="router">
+            <el-input v-model="bus.router" placeholder="路由" ></el-input>
+          </el-form-item>
+          <el-form-item label="消息" prop="message">
+            <el-input v-model="bus.message" placeholder="消息" ></el-input>
           </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancel('affiche')">取 消</el-button>
-          <el-button v-if="dialogStatus=='create'" type="primary" @click="create('affiche')">确 定</el-button>
-          <el-button v-else type="primary" @click="update('affiche')">修 改</el-button>
+
+        <div slot="footer">
+          <el-button @click="cancel('bus')">取 消</el-button>
+          <el-button v-if="dialogType === 'create'" type="primary" @click="create('bus')" >确 定</el-button>
+          <el-button v-else @click="update('bus')" type="primary">修 改</el-button>
         </div>
       </el-dialog>
+
     </div>
 </template>
 
 <script>
-import { fetchList, addObj, putObj, getObj ,delObj } from '@/api/basis/affiche'
-import waves from '@/directive/waves/index.js' // 水波纹指令
-import { removeAllSpace } from '@/utils/validate'
+import { busPage, addObj, putObj, delObj } from '@/api/activiti/business'
 
 export default {
-  name: 'table_affiche',
+  name: 'active_business',
   directives: {
-    waves
   },
   data() {
     return {
-      affiche: {},
+      showModule: 'list',
+      option: false,
+      dialogType: 'create',
       list: [],
       total: null,
       listLoading: true,
-      showModule: 'list',
+      bus: {
+        id: null,
+        name: null,
+        router: null,
+        message: null,
+        orgId: null
+      },
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        condition: ''
       },
-      rules: {},
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
-      dialogStatus: '',
-      dialogFormVisible: false
+      rules: {
+        name: [
+          { required: true, message: '请输入模型名称', trigger: 'submit' }
+        ],
+        router: [
+          { required: true, message: '请输入描述', trigger: 'submit' }
+        ],
+        message: [
+          { required: true, message: '请输入描述', trigger: 'submit' }
+        ],
+        orgId: [
+          { required: true, message: '请选择组织', trigger: 'submit' }
+        ]
+      }
     }
   },
   created() {
@@ -106,12 +142,14 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        console.log(response.data)
+      busPage(this.listQuery).then(response => {
         this.list = response.data.data.list
         this.total = response.data.data.totalCount
         this.listLoading = false
       })
+    },
+    isShow(module) {
+      return this.showModule === module
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
@@ -126,8 +164,7 @@ export default {
       this.getList()
     },
     createClick() {
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
+      this.showModule = 'info'
     },
     handleUpdate(val) {
       this.affiche = val

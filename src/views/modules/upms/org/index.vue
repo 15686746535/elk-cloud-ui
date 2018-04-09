@@ -198,10 +198,8 @@
       // },
       getOrgList() {
         fetchTree().then(response => {
-          console.log(response.data.data)
           // this.org = response.data.data
           this.treeData = response.data.data
-          console.log(this.treeData)
         })
       },
       back() {
@@ -230,7 +228,6 @@
           })
         } else if (this.option === 'update') {
           putObj(this.form).then(response => {
-            console.log('....................')
             this.option = ''
             this.$notify({
               title: '成功',

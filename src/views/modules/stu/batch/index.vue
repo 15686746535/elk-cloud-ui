@@ -421,8 +421,6 @@
     methods: {
       getList() {
         this.listLoading = true
-        console.log('========== 查询条件  ====================')
-        console.log(this.listQuery)
         getBatchList(this.listQuery).then(response => {
           console.log(response.data)
           this.list = response.data.data.list
@@ -431,7 +429,6 @@
         })
       },
       setDictType() {
-        console.log(this.batch.subject)
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
@@ -448,8 +445,6 @@
         this.batchOption = true
       },
       handleUpdate(val) {
-        console.log('=========编辑对象=======')
-        console.log(val)
         this.batch = val
         this.dialogStatus = 'update'
         this.batchOption = true
@@ -458,11 +453,7 @@
         this.examBespeakLoading = true
         this.studentListQuery.batchId = batchId
         this.studentListQuery.state = state
-        console.log('============= 查询条件 ===================')
-        console.log(this.studentListQuery)
         getexambespeakbyid(this.studentListQuery).then(response => {
-          console.log('============= 单场次报考学员信息 ===================')
-          console.log(response.data.data)
           this.examBespeak = response.data.data
           this.examBespeakLoading = false
         })
@@ -475,8 +466,6 @@
       },
       create(formName) {
         const set = this.$refs
-        console.log('============= 添加信息 ===================')
-        console.log(this.batch)
         this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
         set[formName].validate(valid => {
           if (valid) {
@@ -580,8 +569,6 @@
         for (var i = 0; i < val.length; i++) {
           this.examBespeakList.studentIds.push(val[i].studentId)
         }
-        console.log(val)
-        console.log(this.examBespeakList.studentIds)
       },
       // 根据状态查询约考学员
       handleField(state, e) {
@@ -593,8 +580,6 @@
         // }
         // e.currentTarget.classList.add('stateBtn_selected')
         this.see(this.studentListQuery.batchId, this.studentListQuery.state)
-        console.log('=====================================')
-        console.log(this.studentListQuery.state)
       },
       operation(state, str) {
         if (this.examBespeakList.studentIds.length === 0) {
@@ -634,7 +619,6 @@
         this.getList()
       },
       examTimeBlur() {
-        console.log('=============  我正在转换时间范围 ================')
         if (this.listQuery.interval === null) {
           this.listQuery.interval = []
           this.listQuery.beginTime = null
@@ -644,10 +628,6 @@
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }
-        console.log(this.listQuery.interval)
-        console.log(this.listQuery.beginTime)
-        console.log(this.listQuery.endTime)
-        console.log('=============  完成 ================')
       },
       filterTag(value, row) {
         console.log('...................')

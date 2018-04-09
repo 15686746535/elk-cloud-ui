@@ -35,4 +35,12 @@ export default {
 <style lang="scss">
   @import '~normalize.css/normalize.css';// normalize.css 样式格式化
   @import './styles/index.scss'; // 全局自定义的css样式
+  @import 'assets/fa-icon/fontawesome/font-awesome.min.css';
+  [class^="el-icon-fa"], [class*=" el-icon-fa"] {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome!important;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 </style>

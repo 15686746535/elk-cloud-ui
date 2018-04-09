@@ -295,7 +295,6 @@
         this.showModule = stare
         // 解析身份证信息
         this.generateInfo()
-        console.log(this.studentEntity.sex)
       },
       reset() {
         this.studentEntity = {}

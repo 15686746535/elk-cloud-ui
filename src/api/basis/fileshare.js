@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
 export function fetchList(query) {
-  console.log('sss')
   return request({
     url: '/basis/fileshare/getPage',
     method: 'get',

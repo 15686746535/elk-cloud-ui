@@ -89,12 +89,12 @@
                       <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
                         <div style="border-left: 2px solid #9fcfff;min-height: 200px;" v-for="followUps in followUps">
                           <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;background-color: crimson;margin-left: -26px;margin-top: -15px;">
-                            asd
+                            <img width="100%" height="100%" :src="followUps.avatar">
                           </el-tag>
                           <div style="float:left;color:#495060;font-size: 16px;margin-left: 10px">{{followUps.operator}}</div>
-                          <div style="float:right;color:#495060;font-size: 14px;">({{followUps.createTime}})</div>
+                          <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime}}</div>
                           <div style="clear: both;white-space:normal;width: 100%">
-                            <el-tag type="success" style="font-size: 14px;margin-left: 35px;border-radius: 10px;">{{followUps.content}}</el-tag>
+                            <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
                           </div>
                         </div>
                       </div>
@@ -104,9 +104,9 @@
                       <div>
                         <el-row :gutter="5">
                           <el-col :span="19" >
-                            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                            <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                           </el-col>
-                          <el-col :span="5" ><el-button style="width: 100%;height: 76px;" type="success" @click="addFollowUp">跟进</el-button></el-col>
+                          <el-col :span="5" ><el-button style="width: 100%;height: 96px;" type="success" @click="addFollowUp">跟进</el-button></el-col>
                         </el-row>
                       </div>
                     </div>

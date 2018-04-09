@@ -9,6 +9,8 @@ export function fetchList(query) {
 }
 // 添加
 export function addObj(obj) {
+  console.log('====12138===')
+  console.log(obj)
   return request({
     url: '/visit/intention',
     method: 'post',

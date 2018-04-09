@@ -279,7 +279,7 @@
             <el-col :span="12">
               <el-form-item prop="visitTime">
                 <span slot="label" class="text_css">来访时间：</span>
-                <el-date-picker type="date" placeholder="来访时间"  style="width: 100%" v-model="intention.visitTime"></el-date-picker>
+                <el-date-picker type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -384,7 +384,7 @@
                <el-row>
                  <el-col :span="6" ><div class="text_css">来访时间：</div></el-col>
                  <el-col :span="14" >
-                   <el-date-picker  v-if="edit" type="date" placeholder="时间"  style="width: 100%" v-model="intention.visitTime"></el-date-picker>
+                   <el-date-picker  v-if="edit" type="date" placeholder="时间"  value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | subTime}}</div>
                  </el-col>
                </el-row>
@@ -729,10 +729,12 @@
       add(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.intention.state = 0
             addObj(this.intention).then(response => {
               console.log('这里是添加方法===========================')
             })
             this.addOption = false
+            this.closeAlert(formName)
           } else {
             console.log('error submit!!')
             return false

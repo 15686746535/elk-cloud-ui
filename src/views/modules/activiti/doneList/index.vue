@@ -25,12 +25,12 @@
                   </el-table-column>
                   <el-table-column label="发布日期">
                       <template slot-scope="scope">
-                          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+                          <span>{{scope.row.createTime}}</span>
                       </template>
                   </el-table-column>
                   <el-table-column label="修改时间">
                       <template slot-scope="scope">
-                          <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+                          <span>{{scope.row.updateTime}}</span>
                       </template>
                   </el-table-column>
 

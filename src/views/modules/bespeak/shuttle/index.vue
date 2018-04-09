@@ -9,86 +9,74 @@
                 </div>
             </el-card>
             <el-card>
-                <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                          highlight-current-row style="width: 100%">
-                    <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-                    <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                    <el-table-column label="教练ID">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.userId}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="车辆ID">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.vehicleId}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="接送级别">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.level}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="区域">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.region}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="接送时间">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.shuttleTime}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="状态">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.state}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="删除标记">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.delFlag}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="创建时间">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.createTime}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="更新时间">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.updateTime}}</span>
-                        </template>
-                    </el-table-column>
+              <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+                  <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+                  <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+                  <el-table-column label="教练ID">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.userId}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="车辆ID">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.vehicleId}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="接送级别">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.level}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="区域">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.region}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="接送时间">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.shuttleTime}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="状态">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.state}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="删除标记">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.delFlag}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="创建时间">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.createTime}}</span>
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="更新时间">
+                      <template slot-scope="scope">
+                          <span>{{scope.row.updateTime}}</span>
+                      </template>
+                  </el-table-column>
 
-                    <el-table-column label="操作">
-                        <template slot-scope="scope">
-                            <el-button size="mini" type="success"
-                                       @click="update(scope.row)">编辑
-                            </el-button>
-                            <el-button size="mini" type="danger"
-                                       @click="delete(scope.row)">删除
-                            </el-button>
-                        </template>
-                    </el-table-column>
+                  <el-table-column label="操作">
+                      <template slot-scope="scope">
+                          <el-button size="mini" type="success"
+                                     @click="update(scope.row)">编辑
+                          </el-button>
+                          <el-button size="mini" type="danger"
+                                     @click="delete(scope.row)">删除
+                          </el-button>
+                      </template>
+                  </el-table-column>
 
-                </el-table>
-                <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                   :current-page.sync="listQuery.page" background
-                                   :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                                   layout="total, sizes, prev, pager, next, jumper" :total="total">
-                    </el-pagination>
-                </div>
-            </el-card>
-        </div>
-        <div v-show="showModule=='info'">
-            <el-card>
-                <!-- 这里手写 -->
-
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="cancel">取 消</el-button>
-                    <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>
-                    <el-button v-else type="primary" @click="update">修 改</el-button>
-                </div>
+              </el-table>
+              <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                               :current-page.sync="listQuery.page" background
+                               :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                               layout="total, sizes, prev, pager, next, jumper" :total="total">
+                </el-pagination>
+              </div>
             </el-card>
         </div>
     </div>

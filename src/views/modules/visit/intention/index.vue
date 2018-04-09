@@ -92,9 +92,9 @@
                             asd
                           </el-tag>
                           <div style="float:left;color:#495060;font-size: 16px;margin-left: 10px">{{followUps.operator}}</div>
-                          <div style="float:right;color:#495060;font-size: 14px;">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</div>
-                          <div style="clear: both">
-                            <el-tag  type="success" style="font-size: 14px;margin-left: 40px;border-radius: 10px;">{{followUps.content}}</el-tag>
+                          <div style="float:right;color:#495060;font-size: 14px;">({{followUps.createTime}})</div>
+                          <div style="clear: both;white-space:normal;width: 100%">
+                            <el-tag type="success" style="font-size: 14px;margin-left: 35px;border-radius: 10px;">{{followUps.content}}</el-tag>
                           </div>
                         </div>
                       </div>
@@ -172,7 +172,7 @@
               </el-table-column>
               <el-table-column align="center" label="来访日期" width="100">
                 <template slot-scope="scope">
-                  <span>{{scope.row.intentionTime | parseTime('{y}-{m}-{d}')}}</span>
+                  <span>{{scope.row.intentionTime | subTime}}</span>
                 </template>
               </el-table-column>
               &lt;!&ndash;<el-table-column align="center" label="备注" width="200">&ndash;&gt;
@@ -187,7 +187,7 @@
               </el-table-column>
               <el-table-column align="center" label="更新时间" width="100">
                 <template slot-scope="scope">
-                  <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d}')}}</span>
+                  <span>{{scope.row.updateTime | subTime}}</span>
                 </template>
               </el-table-column>
 
@@ -278,7 +278,7 @@
                  <el-col :span="6" ><div class="text_css">来访时间：</div></el-col>
                  <el-col :span="14" >
                    <el-date-picker  v-if="edit" type="date" placeholder="时间"  style="width: 100%" v-model="intention.visitTime"></el-date-picker>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | parseTime('{y}-{m}-{d}')}}</div>
+                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | subTime}}</div>
                  </el-col>
                </el-row>
 
@@ -400,7 +400,7 @@
               <el-row>
                 <div style="width: 100%;overflow: auto;height: 350px;margin-bottom: 10px">
                   <div style="line-height: 30px" v-for="followUps in followUps">
-                    <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 7px;color: mediumblue">({{followUps.createTime | parseTime('{y}/{m}/{d} {h}:{i}:{s}')}})</span></div>
+                    <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 7px;color: mediumblue">({{followUps.createTime}})</span></div>
                     <el-tag  type="success" style="font-size: 14px;margin-left: 20px;border-radius: 10px;">{{followUps.content}}</el-tag>
                   </div>
                 </div>

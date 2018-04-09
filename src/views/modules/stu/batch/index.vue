@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column align="center"  label="考试时间">
           <template slot-scope="scope">
-            <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
+            <span>{{scope.row.examTime | subTime}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center"  label="考试场地">

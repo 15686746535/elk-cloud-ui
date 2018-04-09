@@ -73,7 +73,7 @@
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
                         <el-col :span="8" class="table_text">入学日期：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}</el-col>
+                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolTime | subTime}}</el-col>
                       </el-row>
                       <el-row style="margin: 12px 0;" :gutter="10">
                         <el-col :span="8" class="table_text">期数：</el-col>
@@ -251,7 +251,7 @@
                   <el-col :span="7"><span class="text_css">生日：</span></el-col>
                   <el-col :span="17">
                     <el-date-picker v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | parseTime('{y}-{m}-{d}')}}</div>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
 
                   </el-col>
                 </el-row>
@@ -279,7 +279,7 @@
                   <el-col :span="7"><span class="text_css">入学日期：</span></el-col>
                   <el-col :span="17">
                     <el-date-picker v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | parseTime('{y}-{m}-{d}')}}</div>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
                   </el-col>
                 </el-row>
 

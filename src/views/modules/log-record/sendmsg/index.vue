@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column align="center" label="发送时间">
           <template slot-scope="scope">
-            <span>{{scope.row.sendTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+            <span>{{scope.row.sendTime}}</span>
           </template>
         </el-table-column>
 

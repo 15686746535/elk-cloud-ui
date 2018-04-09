@@ -41,7 +41,7 @@
                     <br/>
                     职位：{{scope.row.roleName}}
                     <br/>
-                    生日：{{scope.row.birthday | parseTime('{y}-{m}-{d}')}}
+                    生日：{{scope.row.birthday | subTime}}
                     <br/>
                     私人电话：{{scope.row.mobile}}
                     <br/>
@@ -144,7 +144,7 @@
                 <el-col :span="8"><div class="text_css">入职日期：</div></el-col>
                 <el-col :span="14">
                   <el-date-picker  v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEdit.joinedTime"></el-date-picker>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.joinedTime | parseTime('{y}-{m}-{d}')}}</span>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.joinedTime | subTime}}</span>
                 </el-col>
               </el-row>
 
@@ -312,7 +312,7 @@
                   <el-col :span="8"><div class="text_css">转正日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEdit.positiveTime"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.positiveTime | parseTime('{y}-{m}-{d}')}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.positiveTime | subTime}}</span>
                   </el-col>
                 </el-row>
 
@@ -326,7 +326,7 @@
                   <el-col :span="8"><div class="text_css">公积金：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit" type="date" placeholder="公积金"  style="width: 100%" v-model="userEdit.providentFundTime"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.providentFundTime | parseTime('{y}-{m}-{d}')}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.providentFundTime | subTime}}</span>
                   </el-col>
                 </el-row>
 
@@ -339,7 +339,7 @@
                   <el-col :span="8"><div class="text_css">五险：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit" type="date" placeholder="五险"  style="width: 100%" v-model="userEdit.fiveInsuranceTime"></el-date-picker>
-                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.fiveInsuranceTime | parseTime('{y}-{m}-{d}')}}</span>
+                    <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.fiveInsuranceTime | subTime}}</span>
                   </el-col>
                 </el-row>
 

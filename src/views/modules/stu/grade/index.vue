@@ -91,7 +91,7 @@
 
             <el-table-column align="center" label="考试日期" width="100">
               <template slot-scope="scope">
-                <span>{{scope.row.examTime | parseTime('{y}-{m}-{d}')}}</span>
+                <span>{{scope.row.examTime | subTime}}</span>
               </template>
             </el-table-column>
 
@@ -105,19 +105,19 @@
 
             <el-table-column align="center" label="通过日期" width="100">
               <template slot-scope="scope">
-                <span>{{scope.row.passTime | parseTime('{y}-{m}-{d}')}}</span>
+                <span>{{scope.row.passTime | subTime}}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="失败日期" width="100">
               <template slot-scope="scope">
-                <span>{{scope.row.failTime | parseTime('{y}-{m}-{d}')}}</span>
+                <span>{{scope.row.failTime | subTime}}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="缺考日期" width="100">
               <template slot-scope="scope">
-                <span>{{scope.row.missTime | parseTime('{y}-{m}-{d}')}}</span>
+                <span>{{scope.row.missTime | subTime}}</span>
               </template>
             </el-table-column>
 

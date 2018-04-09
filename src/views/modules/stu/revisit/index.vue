@@ -75,7 +75,7 @@
             </el-table-column>-->
             <el-table-column align="center" label="通过时间">
               <template slot-scope="scope">
-                <span>{{scope.row.passTime | parseTime('{y}-{m}-{d}')}}</span>
+                <span>{{scope.row.passTime | subTime}}</span>
               </template>
             </el-table-column>
 

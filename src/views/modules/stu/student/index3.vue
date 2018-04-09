@@ -60,7 +60,7 @@
                         介绍人：{{scope.row.introducer}}
                         <!-- 分割线 -->
                         <el-row><el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
-                        入学日期：{{scope.row.enrolTime | parseTime('{y}-{m}-{d}')}}
+                        入学日期：{{scope.row.enrolTime | subTime}}
                         <br/>
                         期数：{{scope.row.periods}} &nbsp;&nbsp;&nbsp;车型：{{scope.row.motorcycleType}}
                         <br/>
@@ -177,7 +177,7 @@
                   <el-col :span="8"><div class="text_css">出生日期：</div></el-col>
                   <el-col :span="14">
                     <el-date-picker  v-if="edit" type="date" placeholder="出生日期"  style="width: 100%" v-model="student.birthday"></el-date-picker>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | parseTime('{y}-{m}-{d}')}}</div>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
                   </el-col>
                 </el-row>
 
@@ -202,7 +202,7 @@
                   <el-col :span="8" ><div class="text_css">入学日期：</div></el-col>
                   <el-col :span="14" >
                     <el-date-picker  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | parseTime('{y}-{m}-{d}')}}</div>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
                   </el-col>
                 </el-row>
                 <el-row>

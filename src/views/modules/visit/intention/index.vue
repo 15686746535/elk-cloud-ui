@@ -66,8 +66,9 @@
                 <el-tooltip placement="bottom" effect="dark">
                   <div slot="content">
                     <div style="margin: 3px 0"><el-button type="primary" size="mini" @click="editlist(intention)">查  看</el-button></div>
-                    <div style="margin: 3px 0"><el-button type="success" size="mini" @click="updateState(intention, '-1')">分 配</el-button></div>
-                    <div style="margin: 3px 0"><el-button type="info" size="mini" @click="updateState(intention, '2')">关 闭</el-button></div>
+                    <div style="margin: 3px 0"><el-button type="success" size="mini" @click="updateState(intention, '1')">入 学</el-button></div>
+                    <div style="margin: 3px 0"><el-button type="warning" size="mini" @click="updateState(intention, '-1')">分 配</el-button></div>
+                    <div style="margin: 3px 0"><el-button type="danger" size="mini" @click="updateState(intention, '2')">关 闭</el-button></div>
                   </div>
                   <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
                 </el-tooltip>
@@ -87,11 +88,11 @@
                     <div style="width: 100%;height: 100%;">
 
                       <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
-                        <div style="border-left: 2px solid #9fcfff;min-height: 200px;" v-for="followUps in followUps">
-                          <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;background-color: crimson;margin-left: -26px;margin-top: -15px;">
+                        <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 25px;" v-for="followUps in followUps">
+                          <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
                             <img width="100%" height="100%" :src="followUps.avatar">
                           </el-tag>
-                          <div style="float:left;color:#495060;font-size: 16px;margin-left: 10px">{{followUps.operator}}</div>
+                          <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
                           <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime}}</div>
                           <div style="clear: both;white-space:normal;width: 100%">
                             <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
@@ -101,12 +102,12 @@
 
 
 
-                      <div>
+                      <div style="padding: 0 5px;">
                         <el-row :gutter="5">
                           <el-col :span="19" >
                             <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                           </el-col>
-                          <el-col :span="5" ><el-button style="width: 100%;height: 96px;" type="success" @click="addFollowUp">跟进</el-button></el-col>
+                          <el-col :span="5" ><el-button style="width: 100%;height: 96px;" type="primary" @click="addFollowUp">跟进</el-button></el-col>
                         </el-row>
                       </div>
                     </div>
@@ -207,22 +208,128 @@
           </el-card>
         </el-col>
       </el-row>
+      <el-dialog :close-on-click-modal="false" @close="back" width="40%" title="录入意向" :visible.sync="addOption">
+
+
+        <!--:rules="rules"-->
+        <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm">
+
+          <el-row :gutter="5">
+            <el-col :span="12">
+              <el-form-item prop="name">
+                <span slot="label" class="text_css">姓名：</span>
+                <el-input v-model="intention.name" placeholder="姓名"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="sex">
+                <span slot="label" class="text_css">性别：</span>
+                <el-radio v-model="intention.sex" label="1">男</el-radio>
+                <el-radio v-model="intention.sex" label="0">女</el-radio>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item prop="mobile">
+                <span slot="label" class="text_css">电话：</span>
+                <el-input v-model="intention.mobile" placeholder="电话"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="wechat">
+                <span slot="label" class="text_css">微信：</span>
+                <el-input v-model="intention.wechat" placeholder="微信"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item prop="contactAddress">
+                <span slot="label" class="text_css">住址：</span>
+                <el-input v-model="intention.contactAddress" placeholder="住址"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="customerType">
+                <span slot="label" class="text_css">客户类型：</span>
+                <dict v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item prop="source">
+                <span slot="label" class="text_css">来源渠道：</span>
+                <dict dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="worry">
+                <span slot="label" class="text_css">客户顾虑：</span>
+                <dict v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户顾虑"></dict>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item prop="visitTime">
+                <span slot="label" class="text_css">来访时间：</span>
+                <el-date-picker type="date" placeholder="来访时间"  style="width: 100%" v-model="intention.visitTime"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="applyType">
+                <span slot="label" class="text_css">车型：</span>
+                <dict v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col>
+              <el-form-item prop="content">
+                <span slot="label" class="text_css">咨询内容：</span>
+                <el-input type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+
+        <div slot="footer">
+          <el-button @click="closeAlert('intention')">取 消</el-button>
+          <el-button @click="add('intention')" type="primary">录 入</el-button>
+        </div>
+
+      </el-dialog>
     </div>
     </transition>
 
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='info'">
 
+      <el-row>
+        <el-card style="margin-bottom: 5px;height: 60px;" body-style="padding:10px 20px">
+          <div style="float: left;height: 40px;line-height: 40px;">
+            |&nbsp;<span style="font-size: 18px;color:rgb(145,145,145)">意向详细信息</span>
+          </div>
+          <div style="float: right">
+            <el-button type="primary" style="float: right" @click="back">返回</el-button>
+          </div>
+        </el-card>
+      </el-row>
       <el-row :gutter="5">
         <el-col :span="12">
-          <el-card :style="{height: (client.height-40) + 'px'}">
+          <el-card :style="{height: (client.height-105) + 'px'}">
             <div slot="header" class="clearfix">
               <div style="float: left">
-                |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">意向信息</span>
+                |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">基本信息</span>
               </div>
-              <div style="float: right">
-                <el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>
-              </div>
+
             </div>
 
            <el-row style="line-height: 50px;">
@@ -329,20 +436,7 @@
                  </el-col>
                </el-row>
 
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">客户状态：</div></el-col>
-                 <el-col :span="14" >
-                   <el-select  v-if="edit" v-model="intention.state" style="width: 100%" clearable placeholder="客户状态"  @selectDict="getState">
-                     <el-option
-                       v-for="item in state"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-                     </el-option>
-                   </el-select>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{stateLabel}}</div>
-                 </el-col>
-               </el-row>
+
 
              </el-col>
              <el-col :span="3" ><div class="text_css">咨询内容：</div></el-col>
@@ -358,7 +452,6 @@
 
             <el-row>
               <el-col>
-
                 <el-row v-if="edit">
                   <el-row  v-if="!addInfo" :gutter="10">
                     <el-col :span="6">&nbsp;</el-col>
@@ -387,7 +480,7 @@
         </el-col>
 
         <el-col :span="12">
-          <el-card :style="{height: (client.height-40) + 'px'}">
+          <el-card :style="{height: (client.height-105) + 'px'}">
               <div slot="header" class="clearfix">
                 <div style="float: left">
                   |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">跟进信息</span>
@@ -397,27 +490,36 @@
                 <!--</div>-->
               </div>
 
-              <el-row>
-                <div style="width: 100%;overflow: auto;height: 350px;margin-bottom: 10px">
-                  <div style="line-height: 30px" v-for="followUps in followUps">
-                    <div style="color:#495060;font-size: 16px;">{{followUps.operator}}:<span style="font-size: 7px;color: mediumblue">({{followUps.createTime}})</span></div>
-                    <el-tag  type="success" style="font-size: 14px;margin-left: 20px;border-radius: 10px;">{{followUps.content}}</el-tag>
+              <div :style="{height: (client.height-315) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
+                <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 25px;" v-for="followUps in followUps">
+                  <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
+                    <img width="100%" height="100%" :src="followUps.avatar">
+                  </el-tag>
+                  <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
+                  <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime}}</div>
+                  <div style="clear: both;white-space:normal;width: 100%">
+                    <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
                   </div>
                 </div>
-              </el-row>
+              </div>
 
-              <el-row :gutter="10">
-                <el-col :span="20" >
-                  <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
-                </el-col>
-                <el-col :span="4" ><el-button style="width: 100%;height: 76px;" type="success" @click="addFollowUp">跟进</el-button></el-col>
-              </el-row>
+
+
+              <div style="padding: 0 5px;">
+                <el-row :gutter="5">
+                  <el-col :span="19" >
+                    <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                  </el-col>
+                  <el-col :span="5" ><el-button style="width: 100%;height: 96px;" type="primary" @click="addFollowUp">跟进</el-button></el-col>
+                </el-row>
+              </div>
 
             </el-card>
         </el-col>
       </el-row>
     </div>
     </transition>
+
   </div>
 </template>
 
@@ -426,8 +528,10 @@
   import { followUpList, addFollowUp } from '@/api/visit/followup'
   import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
+  import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-  import waves from '@/directive/waves/index.js'// 水波纹指令
+  import waves from '@/directive/waves/index.js'
+  // 水波纹指令
 
   export default {
     name: 'table_intention',
@@ -470,7 +574,6 @@
         },
         alertFollowEntity: {},
         stateLabel: '跟进中',
-        bgImg: 'static/img/bj.png',
         dialogStatus: '',
         pickerOptions: {
           shortcuts: [{
@@ -513,19 +616,31 @@
         customerType: [],
         operators: [],
         edit: true,
-        state: [{
-          value: '0',
-          label: '跟进中'
-        }, {
-          value: '1',
-          label: '待入学'
-        }, {
-          value: '2',
-          label: '已关闭'
-        }],
-        intention_show_btn: false,
-        followShow: false
-        // apply_type
+        followShow: false,
+        addOption: false,
+        rules: {
+          name: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          sex: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          mobile: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          wechat: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          contactAddress: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          customerType: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          source: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ]
+        }
       }
     },
     created() {
@@ -603,21 +718,30 @@
       },
       // 添加点击按钮
       create() {
-        this.addInfo = true
         this.intention = {}
-        this.showModule = 'info'
-        this.edit = true
+        this.addOption = true
       },
       // 编辑
       editInfo() {
         this.edit = true
       },
       // 添加
-      add() {
-        addObj(this.intention).then(response => {
-          console.log('这里是添加方法===========================')
+      add(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            addObj(this.intention).then(response => {
+              console.log('这里是添加方法===========================')
+            })
+            this.addOption = false
+          } else {
+            console.log('error submit!!')
+            return false
+          }
         })
-        this.edit = false
+      },
+      closeAlert(formName) {
+        this.$refs[formName].resetFields()
+        this.addOption = false
       },
       // 修改
       update() {
@@ -634,6 +758,7 @@
         var stu = ''
         if (state === '-1') stu = '转入分配'
         else if (state === '2') stu = '关闭'
+        else if (state === '1') stu = '转为入学'
         this.$confirm('是否将该学员' + stu + '?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -670,6 +795,7 @@
         this.intention = {}
         this.edit = false
         this.followShow = false
+        this.addOption = false
         this.getList()
         this.getOperators()
       },
@@ -697,20 +823,20 @@
         this.followUp.intentionId = val.intentionId
         followUpList(this.followQuery).then(response => {
           console.log('============= 跟进信息 ===================')
-          console.log(response.data.data.list)
-          this.followUps = response.data.data.list
+          console.log(response.data.data)
+          this.followUps = response.data.data
         })
       },
       addFollowUp() {
         console.log('=================')
-        addFollowUp(this.followUp).then(response => {
-          console.log('0.0')
-          this.getFollowUp(this.followQuery)
-          this.followUp.content = null
-        })
-      },
-      intentionBtn() {
-        this.intention_show_btn = !this.intention_show_btn
+        this.followUp.content = removeAllSpace(this.followUp.content)
+        if (this.followUp.content) {
+          addFollowUp(this.followUp).then(response => {
+            console.log('0.0')
+            this.getFollowUp(this.followQuery)
+            this.followUp.content = null
+          })
+        }
       }
     }
   }

@@ -93,7 +93,7 @@
                             <img width="100%" height="100%" :src="followUps.avatar">
                           </el-tag>
                           <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
-                          <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dataTime')}}</div>
+                          <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dateTime')}}</div>
                           <div style="clear: both;white-space:normal;width: 100%">
                             <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
                           </div>
@@ -128,82 +128,7 @@
 
               <el-button class="filter-item" style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
             </div>
-            <!--<el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                      highlight-current-row  @row-dblclick="editlist"  style="width: 100%">
-              <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-              <el-table-column align="center" label="姓名">
-                <template slot-scope="scope">
-                  <span>{{scope.row.name}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="车型">
-                <template slot-scope="scope">
-                  <span>{{scope.row.applyType}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="咨询内容" width="150">
-                <template slot-scope="scope">
-                  <span>{{scope.row.content}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="性别">
-                <template slot-scope="scope">
-                  <span>{{scope.row.sex | sexFilter}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="电话" width="150">
-                <template slot-scope="scope">
-                  <span>{{scope.row.mobile}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="微信号" width="150">
-                <template slot-scope="scope">
-                  <span>{{scope.row.wechat}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="客户类别">
-                <template slot-scope="scope">
-                  <span>{{scope.row.customerType}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="联系地址" width="200">
-                <template slot-scope="scope">
-                  <span>{{scope.row.contactAddress}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="来访日期" width="100">
-                <template slot-scope="scope">
-                  <span>{{scope.row.intentionTime | subTime}}</span>
-                </template>
-              </el-table-column>
-              &lt;!&ndash;<el-table-column align="center" label="备注" width="200">&ndash;&gt;
-                &lt;!&ndash;<template slot-scope="scope">&ndash;&gt;
-                  &lt;!&ndash;<span>{{scope.row.remark}}</span>&ndash;&gt;
-                &lt;!&ndash;</template>&ndash;&gt;
-              &lt;!&ndash;</el-table-column>&ndash;&gt;
-              <el-table-column align="center" label="操作人" width="150">
-                <template slot-scope="scope">
-                  <span>{{scope.row.operator}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="更新时间" width="100">
-                <template slot-scope="scope">
-                  <span>{{scope.row.updateTime | subTime}}</span>
-                </template>
-              </el-table-column>
 
-              <el-table-column align="center" label="操作" fixed="right" width="150">
-                <template slot-scope="scope">
-                  <el-button size="mini" type="success"
-                             @click="update(scope.row)">编辑
-                  </el-button>
-                  <el-button size="mini" type="danger"
-                             @click="delete(scope.row)">删除
-                  </el-button>
-                </template>
-              </el-table-column>
-
-            </el-table>-->
 
           </el-card>
         </el-col>
@@ -329,10 +254,7 @@
               <div style="float: left">
                 |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">基本信息</span>
               </div>
-
             </div>
-
-
             <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm">
 
               <el-row :gutter="5"  style="line-height: 50px;">
@@ -497,7 +419,7 @@
                     <img width="100%" height="100%" :src="followUps.avatar">
                   </el-tag>
                   <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
-                  <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dataTime')}}</div>
+                  <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dateTime')}}</div>
                   <div style="clear: both;white-space:normal;width: 100%">
                     <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
                   </div>

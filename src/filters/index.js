@@ -37,7 +37,7 @@ export function subTime(time, cFormat) {
   if (arguments[0] === undefined || arguments[0] == null) {
     return null
   }
-  if (cFormat === 'dataTime') {
+  if (cFormat === 'dateTime') {
     try {
       return parseTime(time, '{y}-{m}-{d} {h}:{i}:{s}')
     } catch (e) {

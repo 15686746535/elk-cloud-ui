@@ -67,6 +67,8 @@ const user = {
             permissions[data.permissions[i]] = true
           }
           commit('SET_PERMISSIONS', permissions)
+          console.log('==================////////////////////////////')
+          console.log(permissions)
           resolve(response)
         }).catch(error => {
           reject(error)

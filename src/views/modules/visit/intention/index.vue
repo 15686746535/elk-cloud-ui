@@ -93,7 +93,7 @@
                             <img width="100%" height="100%" :src="followUps.avatar">
                           </el-tag>
                           <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
-                          <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime}}</div>
+                          <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dataTime')}}</div>
                           <div style="clear: both;white-space:normal;width: 100%">
                             <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
                           </div>
@@ -332,154 +332,151 @@
 
             </div>
 
-           <el-row style="line-height: 50px;">
-             <el-col :span="12">
 
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">姓名：</div></el-col>
-                 <el-col :span="14" >
-                   <el-input v-if="edit"  v-model="intention.name" placeholder="姓名"></el-input>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.name}}</div>
-                 </el-col>
-               </el-row>
+            <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm">
 
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">负责人：</div></el-col>
-                 <el-col :span="14" >
-                   <el-input v-if="edit" disabled v-model="intention.operator" placeholder="负责人"></el-input>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.operator}}</div>
-                 </el-col>
-               </el-row>
-
-               <el-row>
-                   <el-col :span="6" ><div class="text_css">性别：</div></el-col>
-                 <el-col :span="14" >
-                   <template v-if="edit">
-                     <el-radio v-model="intention.sex" label="1">男</el-radio>
-                     <el-radio v-model="intention.sex" label="0">女</el-radio>
-                   </template>
-                   <!--<el-input v-if="edit"  v-model="intention.sex" placeholder="性别"></el-input>-->
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.sex | sexFilter}}</div>
-                 </el-col>
-               </el-row>
-
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">客户类型：</div></el-col>
-                 <el-col :span="14" >
-                   <dict v-if="edit" v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
-                   <!--<el-input v-if="edit"  v-model="intention.customerType" placeholder="客户类型"></el-input>-->
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.customerType}}</div>
-                 </el-col>
-               </el-row>
-
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">客户顾虑：</div></el-col>
-                 <el-col :span="14" >
-                   <!--<el-input v-if="edit"  v-model="intention.worry" placeholder="顾虑"></el-input>-->
-                   <dict v-if="edit" v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户类型"></dict>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.worry}}</div>
-                 </el-col>
-               </el-row>
-
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">来访时间：</div></el-col>
-                 <el-col :span="14" >
-                   <el-date-picker v-if="edit" type="date" placeholder="时间"  value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | subTime}}</div>
-                 </el-col>
-               </el-row>
-
-             </el-col>
-
-             <el-col :span="12">
-
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">电话：</div></el-col>
-                 <el-col :span="14" >
-                   <el-input v-if="edit"  v-model="intention.mobile" placeholder="电话"></el-input>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.mobile}}</div>
-                 </el-col>
-               </el-row>
+              <el-row :gutter="5"  style="line-height: 50px;">
+                <el-col :span="12">
+                  <el-form-item prop="name">
+                    <span slot="label" class="text_css">姓名：</span>
+                    <el-input v-if="edit"  v-model="intention.name" placeholder="姓名"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.name}}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item prop="mobile">
+                    <span slot="label" class="text_css">电话：</span>
+                    <el-input v-if="edit"  v-model="intention.mobile" placeholder="电话"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.mobile}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
 
-
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">微信：</div></el-col>
-                 <el-col :span="14" >
-                   <el-input v-if="edit"  v-model="intention.wechat" placeholder="微信"></el-input>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.wechat}}</div>
-                 </el-col>
-               </el-row>
-
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">来源：</div></el-col>
-                 <el-col :span="14" >
-                   <dict v-if="edit" dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
-                   <!--<el-input v-if="edit" v-model="intention.source" placeholder="来源"></el-input>-->
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.source}}</div>
-                 </el-col>
-               </el-row>
-
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">住址：</div></el-col>
-                 <el-col :span="14" >
-                   <el-input v-if="edit"  v-model="intention.contactAddress" placeholder="住址"></el-input>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.contactAddress}}</div>
-                 </el-col>
-               </el-row>
-               <el-row>
-                 <el-col :span="6" ><div class="text_css">车型：</div></el-col>
-                 <el-col :span="14" >
-
-                   <dict v-if="edit" v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
-                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.applyType}}</div>
-                 </el-col>
-               </el-row>
+              <el-row :gutter="5"  style="line-height: 50px;">
+                <el-col :span="12">
+                  <el-form-item prop="operator">
+                    <span slot="label" class="text_css">负责人：</span>
+                    <el-input v-if="edit" disabled v-model="intention.operator" placeholder="负责人"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.operator}}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item prop="wechat">
+                    <span slot="label" class="text_css">微信：</span>
+                    <el-input v-if="edit"  v-model="intention.wechat" placeholder="微信"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.wechat}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
 
+              <el-row :gutter="5"  style="line-height: 50px;">
+                <el-col :span="12">
+                  <el-form-item prop="sex">
+                    <span slot="label" class="text_css">性别：</span>
+                    <template v-if="edit">
+                      <el-radio v-model="intention.sex" label="1">男</el-radio>
+                      <el-radio v-model="intention.sex" label="0">女</el-radio>
+                    </template>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.sex | sexFilter}}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item prop="source">
+                    <span slot="label" class="text_css">来源渠道：</span>
+                    <dict v-if="edit" dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.source}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-             </el-col>
 
-           </el-row>
+              <el-row :gutter="5"  style="line-height: 50px;">
+                <el-col :span="12">
+                  <el-form-item prop="customerType">
+                    <span slot="label" class="text_css">客户类型：</span>
+                    <dict v-if="edit" v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.customerType}}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item prop="contactAddress">
+                    <span slot="label" class="text_css">住址：</span>
+                    <el-input v-if="edit"  v-model="intention.contactAddress" placeholder="住址"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.contactAddress}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-            <el-row :gutter="10" style="line-height: 50px;">
-              <el-col :span="3" ><div class="text_css">咨询内容：</div></el-col>
-              <el-col :span="19" >
-                <el-input v-if="edit" type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="intention.content" placeholder="咨询内容"></el-input>
-                <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
-              </el-col>
-            </el-row>
+              <el-row :gutter="5"  style="line-height: 50px;">
+                <el-col :span="12">
+                  <el-form-item prop="worry">
+                    <span slot="label" class="text_css">客户顾虑：</span>
+                    <dict v-if="edit" v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户顾虑"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.worry}}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item prop="applyType">
+                    <span slot="label" class="text_css">车型：</span>
+                    <dict v-if="edit" v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.applyType}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
+              <el-row :gutter="5"  style="line-height: 50px;">
+                <el-col :span="12">
+                  <el-form-item prop="visitTime">
+                    <span slot="label" class="text_css">来访时间：</span>
+                    <el-date-picker v-if="edit" type="date" placeholder="来访时间"  value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | subTime('data')}}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  &nbsp;
+                </el-col>
+              </el-row>
+              <el-row :gutter="5"  style="line-height: 50px;">
+                <el-col>
+                  <el-form-item prop="content">
+                    <span slot="label" class="text_css">咨询内容：</span>
+                    <el-input v-if="edit" type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="intention.content" placeholder="咨询内容"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-            <!-- 分割线 -->
-            <el-row><el-col>&nbsp;</el-col></el-row>
+              <!-- 分割线 -->
+              <el-row><el-col>&nbsp;</el-col></el-row>
 
-            <el-row>
-              <el-col>
-                <el-row v-if="edit">
-                  <el-row  v-if="!addInfo" :gutter="10">
-                    <el-col :span="6">&nbsp;</el-col>
-                    <el-col :span="6"><el-button type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>
-                    <el-col :span="6"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update">确认修改</el-button></el-col>
-                    <el-col :span="6">&nbsp;</el-col>
+              <el-row>
+                <el-col>
+                  <el-row v-if="edit">
+                    <el-row  v-if="!addInfo" :gutter="10">
+                      <el-col :span="6">&nbsp;</el-col>
+                      <el-col :span="6"><el-button type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>
+                      <el-col :span="6"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update">确认修改</el-button></el-col>
+                      <el-col :span="6">&nbsp;</el-col>
+                    </el-row>
+                    <el-row v-if="addInfo">
+                      <el-col :span="8">&nbsp;</el-col>
+                      <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="add">确认保存</el-button></el-col>
+                      <el-col :span="8">&nbsp;</el-col>
+                    </el-row>
                   </el-row>
-                  <el-row v-if="addInfo">
+
+                  <el-row v-else :gutter="10">
                     <el-col :span="8">&nbsp;</el-col>
-                    <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="add">确认保存</el-button></el-col>
+                    <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>
                     <el-col :span="8">&nbsp;</el-col>
                   </el-row>
-                </el-row>
 
-                <el-row v-else :gutter="10">
-                  <el-col :span="8">&nbsp;</el-col>
-                  <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>
-                  <el-col :span="8">&nbsp;</el-col>
-                </el-row>
+                </el-col>
 
-              </el-col>
-
-            </el-row>
-
+              </el-row>
+            </el-form>
           </el-card>
         </el-col>
 
@@ -500,7 +497,7 @@
                     <img width="100%" height="100%" :src="followUps.avatar">
                   </el-tag>
                   <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
-                  <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime}}</div>
+                  <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dataTime')}}</div>
                   <div style="clear: both;white-space:normal;width: 100%">
                     <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
                   </div>
@@ -736,9 +733,9 @@
             this.intention.state = 0
             addObj(this.intention).then(response => {
               console.log('这里是添加方法===========================')
+              this.closeAlert(formName)
+              this.addOption = false
             })
-            this.addOption = false
-            this.closeAlert(formName)
           } else {
             console.log('error submit!!')
             return false

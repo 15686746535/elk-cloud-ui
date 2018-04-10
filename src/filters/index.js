@@ -22,14 +22,33 @@ export function sexFilter(sex) {
   }
   return typeMap[sex]
 }
-export function subTime(time) {
+export function subjectFilter(subject) {
+  const typeMap = {
+    1: '科目一',
+    2: '科目二',
+    3: '科目三',
+    4: '科目四',
+    5: '科目一',
+    6: '科目二'
+  }
+  return typeMap[subject]
+}
+export function subTime(time, cFormat) {
   if (arguments[0] === undefined || arguments[0] == null) {
     return null
   }
-  try {
-    return time.substr(0, 10)
-  } catch (e) {
-    return parseTime(time, '{y}-{m}-{d}')
+  if (cFormat === 'dataTime') {
+    try {
+      return parseTime(time, '{y}-{m}-{d} {h}:{i}:{s}')
+    } catch (e) {
+      return time
+    }
+  } else if (cFormat === undefined || 'data') {
+    try {
+      return time.substr(0, 10)
+    } catch (e) {
+      return parseTime(time, '{y}-{m}-{d}')
+    }
   }
 }
 export function parseJson(value, column) {

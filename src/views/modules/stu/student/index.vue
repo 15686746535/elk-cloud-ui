@@ -11,7 +11,7 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
-              <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              <el-date-picker value-format="timestamp"  :style="{width: (client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
               <el-select :style="{width: (client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
                 <el-option
@@ -35,30 +35,39 @@
                 <el-table-column align="center" label="头像" min-width="170px">
                   <template slot-scope="scope">
                     <!-- 头像 -->
-                    <el-tag class="img">
-                      <img :src="scope.row.avatar" class="img">
-                    </el-tag>
+                    <el-row>
+                      <el-tag class="img">
+                        <img :src="scope.row.avatar" class="img">
+                      </el-tag>
+                    </el-row>
+                    <el-row>
+                      <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.name}}</el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.mobile}}</el-col>
+                    </el-row>
                   </template>
                 </el-table-column>
                 <el-table-column align="center" label="个人信息" min-width="230px">
                   <template slot-scope="scope" >
                     <!-- 个人信息 -->
                     <el-col style=" line-height: 25px">
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" class="table_text">姓名：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.name}}</el-col>
-                      </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" class="table_text">手机号：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.mobile}}</el-col>
-                      </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
+                      <el-row :gutter="10">
                         <el-col :span="8" class="table_text">身份证：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.idNumber}}</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.idNumber}}</el-col>
                       </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">性别：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
+                      </el-row>
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">状态：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.state | subjectFilter}}</el-col>
+                      </el-row>
+
+                      <el-row :gutter="10">
                         <el-col :span="8" class="table_text">介绍人：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.introducer}}</el-col>
+                        <el-col :span="16" class="table_text"><span v-for="introducer in scope.row.introducerList">{{scope.row.introducer}}</span></el-col>
                       </el-row>
                     </el-col>
                   </template>
@@ -67,103 +76,78 @@
                 <el-table-column align="center" label="入学信息" min-width="230px">
                   <template slot-scope="scope">
                     <el-col style=" line-height: 25px">
-                      <el-row style="margin: 12px 0;" :gutter="10">
+                      <el-row :gutter="10">
                         <el-col :span="8" class="table_text">档案号：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.archivesNumber}}</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.archivesNumber}}</el-col>
                       </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
+                      <el-row :gutter="10">
                         <el-col :span="8" class="table_text">入学日期：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolTime | subTime}}</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.enrolTime | subTime}}</el-col>
                       </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
+                      <el-row :gutter="10">
                         <el-col :span="8" class="table_text">期数：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.periods}}</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.periods}}</el-col>
                       </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" class="table_text">来源渠道：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.source}}</el-col>
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">车型：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.motorcycleType}}</el-col>
                       </el-row>
                     </el-col>
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="科目信息" min-width="200px">
+                <el-table-column align="center" label="培训信息" min-width="200px">
                   <template slot-scope="scope">
-                    <el-tag class="subject">
-                      科目一：
-                      <el-tag v-if="scope.row.state > 1" class="pass">已通过</el-tag>
-                      <el-tag v-else class="noPass">未通过</el-tag>
-                    </el-tag>
-                    <el-tag class="subject">
-                      科目二：
-                      <el-tag v-if="scope.row.state > 2" class="pass">已通过</el-tag>
-                      <el-tag v-else class="noPass">未通过</el-tag>
-                    </el-tag>
-                    <el-tag class="subject">
-                      科目三：
-                      <el-tag v-if="scope.row.state > 3" class="pass">已通过</el-tag>
-                      <el-tag v-else class="noPass">未通过</el-tag>
-                    </el-tag>
-                    <el-tag class="subject">
-                      科目四：
-                      <el-tag v-if="scope.row.state > 4" class="pass">已通过</el-tag>
-                      <el-tag v-else class="noPass">未通过</el-tag>
-                    </el-tag>
+
+                    <el-col style=" line-height: 25px">
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">校区：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.campus}}</el-col>
+                      </el-row>
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">来源渠道：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.source}}</el-col>
+                      </el-row>
+
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">场训教练：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.fieldName}}</el-col>
+                      </el-row>
+
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">路训教练：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.roadName}}</el-col>
+                      </el-row>
+                    </el-col>
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="培训信息" min-width="230px">
+                <el-table-column align="center" label="费用信息" min-width="230px">
                   <template slot-scope="scope">
                     <el-col style=" line-height: 25px">
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" class="table_text">车型：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.motorcycleType}}</el-col>
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">服务类别：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.roadName}}</el-col>
                       </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" class="table_text">培训场地：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.campus}}</el-col>
+
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">增值服务：</el-col>
+                        <el-col :span="16" class="table_text"><span v-for="increment in scope.row.incrementList">{{scope.row.increment}}</span></el-col>
                       </el-row>
-                      <el-row style="margin: 12px 0;" :gutter="10">
-                        <el-col :span="8" class="table_text">报名点：</el-col>
-                        <el-col :span="16" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.enrolSite}}</el-col>
+
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">应收金额：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.receivable}}</el-col>
                       </el-row>
-                      <!--<el-row style="margin: 12px 0;" :gutter="10">-->
-                        <!--<el-col :span="7" style="color: #7c7c7c;font-size: 16px;text-align: left;">来源渠道：</el-col>-->
-                        <!--<el-col :span="17" style="color: #7c7c7c;text-align: left;font-size: 14px;">{{scope.row.source}}</el-col>-->
-                      <!--</el-row>-->
+
+                      <el-row :gutter="10">
+                        <el-col :span="8" class="table_text">欠费金额：</el-col>
+                        <el-col :span="16" class="table_text">{{scope.row.arrearage}}</el-col>
+                      </el-row>
                     </el-col>
                   </template>
                 </el-table-column>
 
-
-
-                <!--<el-table-column align="center" label="教练" min-width="240">-->
-                  <!--<template slot-scope="scope">-->
-
-                    <!--<el-tag class="cost">-->
-                      <!--场训教练：{{scope.row.fieldCoachName}}-->
-                    <!--</el-tag>-->
-                    <!--<el-tag class="cost">-->
-                      <!--路训教练：{{scope.row.roadCoachName}}-->
-                    <!--</el-tag>-->
-
-                  <!--</template>-->
-                <!--</el-table-column>-->
-                <!--<el-table-column align="center" label="费用信息" min-width="240">-->
-                  <!--<template slot-scope="scope">-->
-
-                    <!--<el-tag class="cost">-->
-                      <!--学费：-->
-                    <!--</el-tag>-->
-                    <!--<el-tag class="cost">-->
-                      <!--补考费：-->
-                    <!--</el-tag>-->
-                    <!--<el-tag class="cost">-->
-                      <!--合场费：-->
-                    <!--</el-tag>-->
-
-                  <!--</template>-->
-                <!--</el-table-column>-->
               </el-table>
 
 
@@ -250,7 +234,7 @@
                 <el-row style="height: 50px;">
                   <el-col :span="7"><span class="text_css">生日：</span></el-col>
                   <el-col :span="17">
-                    <el-date-picker v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
 
                   </el-col>
@@ -278,7 +262,7 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">入学日期：</span></el-col>
                   <el-col :span="17">
-                    <el-date-picker v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
                   </el-col>
                 </el-row>
@@ -513,7 +497,7 @@
                     <el-row style="height: 50px">
                       <el-form-item>
                         <span slot="label" class="text_css">生日：</span>
-                        <el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
+                        <el-date-picker value-format="timestamp"  type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
                       </el-form-item>
                     </el-row>
 
@@ -538,7 +522,7 @@
                     <el-row style="height: 50px">
                       <el-form-item>
                         <span slot="label"  class="text_css">入学日期：</span>
-                        <el-date-picker type="date" placeholder="入学日期"  value-format="timestamp" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
+                        <el-date-picker value-format="timestamp" type="date" placeholder="入学日期" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
                       </el-form-item>
                     </el-row>
 
@@ -566,9 +550,8 @@
                     <el-row style="height: 50px">
                       <el-form-item>
                         <span slot="label"  class="text_css">介绍人：</span>
-                        <el-select v-model="studentEntity.introducers" collapse-tags style="width: 100%" filterable multiple placeholder="请选择介绍人">
+                        <el-select v-model="studentEntity.introducerList" collapse-tags style="width: 100%" filterable multiple placeholder="请选择介绍人">
                           <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
-                            {{user.name}}
                           </el-option>
                         </el-select>
                       </el-form-item>
@@ -788,8 +771,54 @@
           aboardTime: null,
           roadCoach: null,
           fieldCoach: null,
-          increment: null,
-          introducer: null,
+          incrementList: [],
+          introducerList: [],
+          serviceType: null,
+          arrearage: null,
+          enrolSite: null,
+          source: null,
+          motorcycleType: null,
+          delFlag: null,
+          remark: null,
+          operator: null,
+          createTime: null,
+          updateTime: null
+        },
+        studentEntity: {
+          studentId: null,
+          orgId: null,
+          openId: null,
+          archivesNumber: null,
+          name: null,
+          sex: null,
+          age: null,
+          idNumber: null,
+          birthday: null,
+          mobile: null,
+          phone: null,
+          email: null,
+          wechat: null,
+          avatar: null,
+          contactAddress: null,
+          campus: null,
+          company: null,
+          position: null,
+          enrolTime: null,
+          periods: null,
+          studyTime: null,
+          latitude: null,
+          longitude: null,
+          physicalExamination: null,
+          haveCar: null,
+          addDrive: null,
+          state: null,
+          graduationTime: null,
+          periodOfValidity: null,
+          aboardTime: null,
+          roadCoach: null,
+          fieldCoach: null,
+          incrementList: [],
+          introducerList: [],
           serviceType: null,
           arrearage: null,
           enrolSite: null,
@@ -871,52 +900,6 @@
           value: 4,
           label: '科目四'
         }],
-        studentEntity: {
-          studentId: null,
-          orgId: null,
-          openId: null,
-          archivesNumber: null,
-          name: null,
-          sex: null,
-          age: null,
-          idNumber: null,
-          birthday: null,
-          mobile: null,
-          phone: null,
-          email: null,
-          wechat: null,
-          avatar: null,
-          contactAddress: null,
-          campus: null,
-          company: null,
-          position: null,
-          enrolTime: null,
-          periods: null,
-          studyTime: null,
-          latitude: null,
-          longitude: null,
-          physicalExamination: null,
-          haveCar: null,
-          addDrive: null,
-          state: null,
-          graduationTime: null,
-          periodOfValidity: null,
-          aboardTime: null,
-          roadCoach: null,
-          fieldCoach: null,
-          increment: null,
-          introducers: [],
-          serviceType: null,
-          arrearage: null,
-          enrolSite: null,
-          source: null,
-          motorcycleType: null,
-          delFlag: null,
-          remark: null,
-          operator: null,
-          createTime: null,
-          updateTime: null
-        },
         dialogFormBespeak: false,
         batchList: [],
         examBespeak: {
@@ -1007,6 +990,8 @@
       },
       // 添加
       add() {
+        console.log('======================= 添加的数据 ======')
+        console.log(this.studentEntity)
         addObj(this.studentEntity).then(response => {
           // this.backClick()
         })
@@ -1078,8 +1063,14 @@
         this.studentEntity.avatar = URL.createObjectURL(file.raw)
       },
       AddGenerateInfo() {
+        var date
         if (this.studentEntity.idNumber.length === 18) {
-          if (this.studentEntity.birthday === null) this.studentEntity.birthday = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
+          if (!this.studentEntity.birthday) {
+            date = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
+            date = date.substring(0, 10)
+            date = date.replace(/-/g, '/')
+            this.studentEntity.birthday = new Date(date).getTime()
+          }
           if (this.studentEntity.idNumber.substr(16, 1) % 2 === 1 && this.studentEntity.sex === null) this.studentEntity.sex = '1'
           if (this.studentEntity.idNumber.substr(16, 1) % 2 === 0 && this.studentEntity.sex === null) this.studentEntity.sex = '0'
         }
@@ -1118,8 +1109,8 @@
           aboardTime: null,
           roadCoach: null,
           fieldCoach: null,
-          increment: null,
-          introducers: [],
+          incrementList: [],
+          introducerList: [],
           serviceType: null,
           arrearage: null,
           enrolSite: null,
@@ -1236,8 +1227,8 @@
 <style>
 
   .img{
-    width: 150px;
-    height: 150px;
+    width: 50px;
+    height: 50px;
     padding: 0;
     border-radius: 150px;
     overflow: hidden;

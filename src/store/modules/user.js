@@ -53,20 +53,15 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
-          const data = response.data.data
+          const data = response.data
           commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.loginUser.username)
-          commit('SET_AVATAR', data.loginUser.avatar)
-          // 修改通知数量
-          commit('SET_NOTICE', 666)
-          const permissions = {}
-          for (let i = 0; i < data.permissions.length; i++) {
-            permissions[data.permissions[i]] = true
-          }
-          commit('SET_PERMISSIONS', permissions)
+          commit('SET_NAME', data.username)
+          commit('SET_AVATAR', data.avatar)
+          commit('SET_NOTICE', data.notice)
+          commit('SET_PERMISSIONS', data.permissions)
           resolve(response)
         }).catch(error => {
           reject(error)

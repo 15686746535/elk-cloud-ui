@@ -21,7 +21,7 @@
             <div style="float: right">
               <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
-              <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
+
             </div>
           </el-card>
 
@@ -66,9 +66,11 @@
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
                              background
+                             style="float: left"
                              :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
+              <el-button class="filter-item" style="margin-left: 10px; float: right" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
             </div>
           </el-card>
         </el-col>
@@ -143,7 +145,7 @@
               <el-row style="height: 50px;">
                 <el-col :span="8"><div class="text_css">入职日期：</div></el-col>
                 <el-col :span="14">
-                  <el-date-picker  v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEdit.joinedTime"></el-date-picker>
+                  <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEdit.joinedTime"></el-date-picker>
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.joinedTime | subTime}}</span>
                 </el-col>
               </el-row>
@@ -199,7 +201,7 @@
               <el-row style="height: 50px;">
                 <el-col :span="8"><div class="text_css">生日：</div></el-col>
                 <el-col :span="14">
-                  <el-date-picker  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userEdit.birthday"></el-date-picker>
+                  <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userEdit.birthday"></el-date-picker>
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.birthday | subTime}}</span>
                 </el-col>
               </el-row>
@@ -311,7 +313,7 @@
                 <el-row style="height: 50px;">
                   <el-col :span="8"><div class="text_css">转正日期：</div></el-col>
                   <el-col :span="14">
-                    <el-date-picker  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEdit.positiveTime"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEdit.positiveTime"></el-date-picker>
                     <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.positiveTime | subTime}}</span>
                   </el-col>
                 </el-row>
@@ -325,7 +327,7 @@
                 <el-row style="height: 50px;">
                   <el-col :span="8"><div class="text_css">公积金：</div></el-col>
                   <el-col :span="14">
-                    <el-date-picker  v-if="edit" type="date" placeholder="公积金"  style="width: 100%" v-model="userEdit.providentFundTime"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金"  style="width: 100%" v-model="userEdit.providentFundTime"></el-date-picker>
                     <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.providentFundTime | subTime}}</span>
                   </el-col>
                 </el-row>
@@ -338,7 +340,7 @@
                 <el-row style="height: 50px;">
                   <el-col :span="8"><div class="text_css">五险：</div></el-col>
                   <el-col :span="14">
-                    <el-date-picker  v-if="edit" type="date" placeholder="五险"  style="width: 100%" v-model="userEdit.fiveInsuranceTime"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险"  style="width: 100%" v-model="userEdit.fiveInsuranceTime"></el-date-picker>
                     <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.fiveInsuranceTime | subTime}}</span>
                   </el-col>
                 </el-row>
@@ -560,7 +562,7 @@
       // 查询员工集合
       getUserList() {
         console.log('=====================   查询员工集合   =======================')
-        this.listLoading = true
+        this.listLoading = false
         fetchList(this.listQuery).then(response => {
           console.log(response.data)
           this.userList = response.data.data.list

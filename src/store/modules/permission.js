@@ -1,5 +1,4 @@
 import { constantRouterMap, setComponent } from '@/router'
-import { findMenuByRole } from '@/api/upms/menu'
 
 const permission = {
   state: {
@@ -13,14 +12,12 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({ commit }) {
+    GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        findMenuByRole().then(response => {
-          var myMenus = response.data.data
-          setComponent(myMenus)
-          commit('SET_ROUTERS', myMenus)
-          resolve()
-        })
+        const menus = data.menus
+        setComponent(menus)
+        commit('SET_ROUTERS', menus)
+        resolve()
       })
     }
   }

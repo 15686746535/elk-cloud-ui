@@ -11,7 +11,7 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
-              <el-date-picker v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              <el-date-picker value-format="timestamp" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
               <el-select v-model="listQuery.subject" clearable placeholder="科目">
                 <el-option
@@ -176,7 +176,7 @@
                 <el-row>
                   <el-col :span="8"><div class="text_css">出生日期：</div></el-col>
                   <el-col :span="14">
-                    <el-date-picker  v-if="edit" type="date" placeholder="出生日期"  style="width: 100%" v-model="student.birthday"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="出生日期"  style="width: 100%" v-model="student.birthday"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
                   </el-col>
                 </el-row>
@@ -201,7 +201,7 @@
                 <el-row>
                   <el-col :span="8" ><div class="text_css">入学日期：</div></el-col>
                   <el-col :span="14" >
-                    <el-date-picker  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
                   </el-col>
                 </el-row>

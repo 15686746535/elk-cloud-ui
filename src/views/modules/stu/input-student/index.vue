@@ -76,7 +76,7 @@
                   <!-- 生日 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">生日：</span></el-col>
-                    <el-col :span="18"><el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker></el-col>
+                    <el-col :span="18"><el-date-picker value-format="timestamp" type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker></el-col>
                   </el-row>
 
                   <!-- 所学车型 -->
@@ -95,7 +95,7 @@
                   <!-- 入学日期 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">入学日期：</span></el-col>
-                    <el-col :span="18"><el-date-picker type="date" placeholder="入学日期"  style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker></el-col>
+                    <el-col :span="18"><el-date-picker value-format="timestamp" type="date" placeholder="入学日期"  style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker></el-col>
                   </el-row>
 
 

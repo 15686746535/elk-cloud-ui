@@ -12,7 +12,7 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
             <el-select v-model="listQuery.operator" clearable placeholder="负责人">
               <el-option
@@ -384,7 +384,7 @@
                <el-row>
                  <el-col :span="6" ><div class="text_css">来访时间：</div></el-col>
                  <el-col :span="14" >
-                   <el-date-picker  v-if="edit" type="date" placeholder="时间"  value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
+                   <el-date-picker v-if="edit" type="date" placeholder="时间"  value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | subTime}}</div>
                  </el-col>
                </el-row>
@@ -439,12 +439,16 @@
 
 
              </el-col>
-             <el-col :span="3" ><div class="text_css">咨询内容：</div></el-col>
-             <el-col :span="19" >
-               <el-input v-if="edit" type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
-               <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
-             </el-col>
+
            </el-row>
+
+            <el-row :gutter="10" style="line-height: 50px;">
+              <el-col :span="3" ><div class="text_css">咨询内容：</div></el-col>
+              <el-col :span="19" >
+                <el-input v-if="edit" type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="intention.content" placeholder="咨询内容"></el-input>
+                <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
+              </el-col>
+            </el-row>
 
 
             <!-- 分割线 -->

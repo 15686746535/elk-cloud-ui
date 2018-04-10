@@ -11,7 +11,7 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
-              <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              <el-date-picker value-format="timestamp"  :style="{width: (client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
               <el-select :style="{width: (client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
                 <el-option
@@ -250,7 +250,7 @@
                 <el-row style="height: 50px;">
                   <el-col :span="7"><span class="text_css">生日：</span></el-col>
                   <el-col :span="17">
-                    <el-date-picker v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
 
                   </el-col>
@@ -278,7 +278,7 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">入学日期：</span></el-col>
                   <el-col :span="17">
-                    <el-date-picker v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
+                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
                   </el-col>
                 </el-row>
@@ -513,7 +513,7 @@
                     <el-row style="height: 50px">
                       <el-form-item>
                         <span slot="label" class="text_css">生日：</span>
-                        <el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
+                        <el-date-picker value-format="timestamp"  type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
                       </el-form-item>
                     </el-row>
 
@@ -538,7 +538,7 @@
                     <el-row style="height: 50px">
                       <el-form-item>
                         <span slot="label"  class="text_css">入学日期：</span>
-                        <el-date-picker type="date" placeholder="入学日期"  value-format="timestamp" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
+                        <el-date-picker value-format="timestamp" type="date" placeholder="入学日期" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
                       </el-form-item>
                     </el-row>
 

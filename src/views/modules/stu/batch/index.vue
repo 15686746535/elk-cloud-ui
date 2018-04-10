@@ -15,7 +15,7 @@
           <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>-->
         </div>
         <div style="float:right;">
-          <el-date-picker style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker value-format="timestamp" style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
 
 
@@ -108,7 +108,7 @@
           <el-input v-model="batch.stuCount" placeholder="人数" ></el-input>
         </el-form-item>
         <el-form-item label="考试时间">
-          <el-date-picker style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
+          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
         </el-form-item>
 
       </el-form>

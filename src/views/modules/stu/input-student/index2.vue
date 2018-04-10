@@ -74,7 +74,7 @@
                 <!-- 生日 -->
                 <el-row style="height: 50px">
                   <el-col :span="6"><span class="text_css">生日：</span></el-col>
-                  <el-col :span="18"><el-date-picker type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker></el-col>
+                  <el-col :span="18"><el-date-picker value-format="timestamp" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker></el-col>
                 </el-row>
 
                 <!-- 联系电话 -->

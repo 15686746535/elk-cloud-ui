@@ -11,7 +11,9 @@
         <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px"></div>
       </el-col>
       <el-col :span="6">
-        <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px"></div>
+        <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px">
+          <barTickAlign :data="[12,21,32,22,12,54,42]"></barTickAlign>
+        </div>
       </el-col>
     </el-row>
     <el-row :gutter="20" style="height: 340px;">
@@ -28,6 +30,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import barTickAlign from '@/components/barTickAlign'
 
 export default {
   name: 'dashboard',
@@ -38,6 +41,9 @@ export default {
       'permissions',
       'client'
     ])
+  },
+  components: {
+    barTickAlign
   },
   data() {
     return {

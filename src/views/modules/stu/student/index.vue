@@ -937,9 +937,9 @@
       }
     },
     methods: {
-      // 根据部门id查询员工
+      // 根据部门id查询学员信息
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询学员信息   =======================')
+        console.log('=====================   1根据部门id查询学员信息   =======================')
         if (data) {
           this.listQuery.page = 1
           this.listQuery.orgId = data.id

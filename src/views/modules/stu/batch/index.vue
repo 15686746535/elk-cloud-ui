@@ -122,12 +122,7 @@
 
 
     <el-dialog :close-on-click-modal="false" @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
-      <!--<div style="width:450px; margin:-30px auto 10px">-->
-        <!--<div @click="handleField('0',$event)" class="stateBtn stateBtn_selected" >审核中</div>-->
-        <!--<div @click="handleField('1',$event)" class="stateBtn" >约考中</div>-->
-        <!--<div @click="handleField('2',$event)" class="stateBtn" >已报考</div>-->
-        <!--<div @click="handleField('3',$event)" class="stateBtn" >失 败</div>-->
-      <!--</div>-->
+
       <el-tabs body-style="padding:0;" type="border-card" @tab-click="handleField">
         <el-tab-pane name="all" label="申请名单">
           <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
@@ -147,7 +142,7 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考试时间">
+            <el-table-column  align="center" label="考试时间" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
@@ -200,7 +195,7 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考试时间">
+            <el-table-column  align="center" label="考试时间" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
@@ -232,7 +227,7 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考试时间">
+            <el-table-column  align="center" label="考试时间" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
@@ -263,7 +258,7 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考试时间">
+            <el-table-column  align="center" label="考试时间" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
@@ -294,7 +289,7 @@
                   <span>{{scope.row.motorcycleType}}</span>
                 </template>
               </el-table-column>
-              <el-table-column  align="center" label="考试时间">
+              <el-table-column  align="center" label="考试时间" width="100">
                 <template slot-scope="scope">
                   <span>{{scope.row.examTime | subTime}}</span>
                 </template>
@@ -399,7 +394,7 @@
         examOption: false,
         examBespeak: [],
         examBespeakList: {
-          studentIds: [],
+          studentList: [],
           state: null,
           batchId: null
         },
@@ -461,7 +456,6 @@
         this.examOption = true
       },
       closeExamOption() {
-        // this.handleField(1, e)
         this.getList()
       },
       create(formName) {
@@ -565,24 +559,21 @@
         })
       },
       handleSelectionChange(val) {
-        this.examBespeakList.studentIds = []
+        console.log('====123321')
+        console.log(val)
+        this.examBespeakList.studentList = []
         for (var i = 0; i < val.length; i++) {
-          this.examBespeakList.studentIds.push(val[i].studentId)
+          this.examBespeakList.studentList.push({ 'studentId': val[i].studentId, 'makeUpExam': val[i].makeUpExam })
         }
       },
       // 根据状态查询约考学员
-      handleField(state, e) {
+      handleField(state) {
         this.studentListQuery.state = state.name
         if (state.name === 'all') this.studentListQuery.state = null
-        // var a = document.getElementsByClassName('stateBtn')
-        // for (var i = 0; i < a.length; i++) {
-        //   a[i].classList.remove('stateBtn_selected')
-        // }
-        // e.currentTarget.classList.add('stateBtn_selected')
         this.see(this.studentListQuery.batchId, this.studentListQuery.state)
       },
       operation(state, str) {
-        if (this.examBespeakList.studentIds.length === 0) {
+        if (this.examBespeakList.studentList.length === 0) {
           this.$alert('请先选择学员', '提示', {
             confirmButtonText: '确定',
             type: 'warning'
@@ -606,16 +597,10 @@
         this.batch = {}
         this.listQuery.page = 1
         this.batch.subject = this.listQuery.subject
-        // this.batch.subject = field
         this.listQuery.examField = null
         this.listQuery.interval = []
         this.listQuery.beginTime = null
         this.listQuery.endTime = null
-        // var a = document.getElementsByClassName('subjectBtn')
-        // for (var i = 0; i < a.length; i++) {
-        //   a[i].classList.remove('subjectBtn_selected')
-        // }
-        // e.currentTarget.classList.add('subjectBtn_selected')
         this.getList()
       },
       examTimeBlur() {
@@ -641,64 +626,5 @@
   }
 </script>
 <style>
-  .stateBtn{
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    -webkit-appearance: none;
-    text-align: center;
-    box-sizing: border-box;
-    outline: none;
-    margin:0 12px;
-    transition: .1s;
-    font-weight: 500;
-    padding: 12px 20px;
-    font-size: 14px;
-    border-radius: 4px;
-    width: 84px;
-    color: #409eff;
-    background: #ecf5ff;
-    border: 1px solid #b3d8ff;
-  }
-  .stateBtn:hover{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
-  }
-  .stateBtn_selected{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
-  }
-  .subjectBtn{
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    -webkit-appearance: none;
-    text-align: center;
-    box-sizing: border-box;
-    outline: none;
-    margin:0 -3px;
-    transition: .1s;
-    font-weight: 500;
-    padding: 12px 20px;
-    font-size: 14px;
-    border-radius: 4px;
-    width: 84px;
-    color: #409eff;
-    background: #ecf5ff;
-    border: 1px solid #b3d8ff;
-  }
-  .subjectBtn:hover{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
-  }
-  .subjectBtn_selected{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
-  }
+
 </style>

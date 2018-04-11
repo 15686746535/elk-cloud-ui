@@ -124,13 +124,12 @@
       </div>
     </el-card>-->
     <el-card>
-      asd
     </el-card>
   </div>
 </template>
 
 <script>
-  import { addObj } from '@/api/student/revisit-question'
+  import { getQuestion, getObj, addObj } from '@/api/student/revisit-question'
   import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {

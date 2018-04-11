@@ -274,8 +274,7 @@
         interval: [],
         /* 修改状态的参数 */
         examParameter: {
-          studentIds: [],
-          batchId: null,
+          examNoteList: [],
           examState: null
         }
       }
@@ -373,17 +372,16 @@
         })
       },
       handleSelectionChange(val) {
-        this.examParameter.studentIds = []
+        this.examParameter.examNoteList = []
         for (var i = 0; i < val.length; i++) {
-          this.examParameter.studentIds.push(val[i].studentId)
+          this.examParameter.examNoteList.push({ 'examNoteId': val[i].examNoteId, 'studentId': val[i].studentId })
         }
         console.log(val)
-        console.log(this.examParameter.studentIds)
+        console.log(this.examParameter.examNoteList)
       },
       /* 控制批次点击样式 */
       batchClick(e, batch) {
         this.studentListQuery.batchId = batch.batchId
-        this.examParameter.batchId = batch.batchId
         this.interval = []
         this.studentListQuery.beginTime = null
         this.studentListQuery.endTime = null
@@ -418,8 +416,8 @@
         })
       },
       examEdit(e, state) {
-        this.examParameter.studentIds = []
-        this.examParameter.studentIds.push(e.studentId)
+        this.examParameter.examNoteList = []
+        this.examParameter.examNoteList.push({ 'examNoteId': e.examNoteId, 'studentId': e.studentId })
         this.examParameter.batchId = e.batchId
         if (state === 0) {
           this.$confirm('是否撤销该学员成绩?', '提示', {

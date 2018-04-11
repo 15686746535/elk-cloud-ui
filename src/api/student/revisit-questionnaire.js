@@ -1,14 +1,14 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getRevisitQuestionNaireList(query) {
   return request({
-    url: '/student/revisitquestionnaire/getPage',
+    url: '/stu/revisitquestionnaire/getPage',
     method: 'get',
     params: query
   })
 }
 // 添加
-export function addObj(obj) {
+export function addQuestionNaireList(obj) {
   return request({
     url: '/stu/revisitquestionnaire',
     method: 'post',
@@ -16,21 +16,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getQuestionNaireList(id) {
   return request({
     url: '/stu/revisitquestionnaire/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delQuestionNaireList(id) {
   return request({
     url: '/stu/revisitquestionnaire/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putQuestionNaireList(obj) {
   return request({
     url: '/stu/revisitquestionnaire',
     method: 'put',

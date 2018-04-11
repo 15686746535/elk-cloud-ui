@@ -90,7 +90,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/student/revisitquestionnaire'
+  import { getRevisitQuestionNaireList, getQuestionNaireList } from '@/api/student/revisit-questionnaire'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
 
@@ -118,7 +118,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        getRevisitQuestionNaireList(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -137,7 +137,7 @@
         this.showModule = 'info'
       },
       update(row) {
-        getObj(row.roleId)
+        getQuestionNaireList(row.roleId)
           .then(response => {
             this.rvisitquestionnaire = response.data
             this.showModule = 'info'

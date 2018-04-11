@@ -1,6 +1,15 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <el-card style="margin-bottom: 5px;">
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
+    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 80px">
+      <div class="filter-container">
+        <div style="float:left;margin-top: 8px">
+          <el-radio-group @change="handleSubject" v-model="questionnaireListQuery.subject">
+            <el-radio-button label="1">科目一</el-radio-button>
+            <el-radio-button label="2">科目二</el-radio-button>
+            <el-radio-button label="3">科目三</el-radio-button>
+          </el-radio-group>
+        </div>
+      </div>
     </el-card>
     <!--<el-card>
       <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
@@ -123,36 +132,71 @@
         </el-pagination>
       </div>
     </el-card>-->
-    <el-card>
-    </el-card>
+    <el-row :style="{height: (client.height-125) + 'px'}">
+      <el-col :style="{height: (client.height-125) + 'px',width: (client.width-570) + 'px'}">
+        <el-card>
+
+        </el-card>
+      </el-col>
+      <el-col style="width: 570px"  :style="{height: (client.height-125) + 'px'}" >
+
+        <el-card :style="{height: (client.height-185) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;z-index: 50;line-height: 50px;overflow-y: auto;box-shadow: none;">
+        </el-card>
+        <el-card body-style="padding: 0;" style="height:60px; border-radius:0 0 4px 0;border-top: none;border-top: 1px solid #dcdfe6;">
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
   import { getQuestion, getObj, addObj } from '@/api/student/revisit-question'
+  import { mapGetters } from 'vuex'
+  import { getRevisitQuestionNaireList, addQuestionNaireList, getQuestionNaireList} from '@/api/student/revisit-questionnaire'
   import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {
-    name: 'table_rvisitquestion',
+    name: 'table_revisitQuestion',
     directives: {
       waves
     },
+    computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ])
+    },
     data() {
       return {
-        rvisitquestion: {},
-        list: [],
+        revisitQuestion: {},
+        questionnaireList: [],
         total: null,
-        listLoading: true,
+        questionnaireLoading: true,
         showModule: 'list',
-        listQuery: {
+        questionnaireListQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          subject: 1
         },
         tableKey: 0,
         dialogStatus: ''
       }
     },
+    created() {
+      this.getQuestionnaireList()
+    },
     methods: {
+      getQuestionnaireList() {
+        this.questionnaireLoading = true
+        getRevisitQuestionNaireList(this.questionnaireListQuery).then(response => {
+          console.log('=================== 问卷 -=============')
+          console.log(response.data.data)
+          this.questionnaireList = response.data.data
+          this.total = response.data.data.totalCount
+          this.questionnaireLoading = false
+        })
+      },
+      handleSubject() {}
     }
   }
 </script>

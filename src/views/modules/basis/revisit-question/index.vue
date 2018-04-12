@@ -215,9 +215,11 @@
                 <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
               </el-col>
               <el-col :span="22">
-                <el-row><span style="color: #001528;font-size: 16px;">
+
+                <el-row style="color: #001528;font-size: 16px;">
                   <el-input v-model="question.question" placeholder="题目" ></el-input>
-                </span></el-row>
+                </el-row>
+
                 <el-row style="margin-top: 10px;font-size: 14px;">
                   <el-col :span="12">
                     <el-col :span="4">A:</el-col>
@@ -232,22 +234,37 @@
                     </el-col>
                   </el-col>
                 </el-row>
+
                 <el-row style="margin-top: 10px;font-size: 14px;">
                   <el-col :span="12">
-                    C:  <el-input v-model="question.itemC" placeholder="答案C" ></el-input>
+                    <el-col :span="4">C:</el-col>
+                    <el-col :span="20">
+                      <el-input style="width: 100%" v-model="question.itemC" placeholder="答案C" ></el-input>
+                    </el-col>
                   </el-col>
                   <el-col :span="12">
-                    D:  <el-input v-model="question.itemD" placeholder="答案D" ></el-input>
+                    <el-col :span="4">D:</el-col>
+                    <el-col :span="20">
+                      <el-input style="width: 100%" v-model="question.itemD" placeholder="答案D" ></el-input>
+                    </el-col>
                   </el-col>
                 </el-row>
+
                 <el-row style="margin-top: 10px;font-size: 14px;">
                   <el-col :span="12">
-                    E:  <el-input v-model="question.itemE" placeholder="答案E" ></el-input>
+                    <el-col :span="4">E:</el-col>
+                    <el-col :span="20">
+                      <el-input style="width: 100%" v-model="question.itemE" placeholder="答案E" ></el-input>
+                    </el-col>
                   </el-col>
                   <el-col :span="12">
-                    F:  <el-input v-model="question.itemF" placeholder="答案F" ></el-input>
+                    <el-col :span="4">F:</el-col>
+                    <el-col :span="20">
+                      <el-input style="width: 100%" v-model="question.itemF" placeholder="答案F" ></el-input>
+                    </el-col>
                   </el-col>
                 </el-row>
+
               </el-col>
             </el-row>
           </div>

@@ -625,6 +625,3 @@
     }
   }
 </script>
-<style>
-
-</style>

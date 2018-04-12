@@ -788,7 +788,6 @@
     cursor: pointer;
     border: 1px solid #449ffb;
     border-radius: 5px 5px;
-    /*border-bottom: 4px solid #449ffb;*/
     box-shadow: 5px 3px 3px #ffffff;
     padding: 5px;
     transition: border-color 0.2s,box-shadow 0.2s;
@@ -807,9 +806,6 @@
     line-height: 25px;
     font-size: 14px
   }
-  /*.intention_btn:hover{*/
-    /*background-color: #449ffb;*/
-  /*}*/
   .intention:hover{
     border-color: #67c23a;
     .intention_btn{

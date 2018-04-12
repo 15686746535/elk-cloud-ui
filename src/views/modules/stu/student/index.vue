@@ -185,249 +185,268 @@
           </el-tabs>
         </el-col>
         <el-col style="width: 570px"  :style="{height: (client.height-105) + 'px'}" >
+          <el-form :model="student" label-position="left" label-width="80px">
+            <el-card :style="{height: (client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;z-index: 50;line-height: 50px;overflow-y: auto;box-shadow: none;">
+              <!-- 基本信息 -->
+              <el-row class="title">基本信息</el-row>
+              <el-row style="height: 260px; padding: 0 10px;margin-top: 10px">
+                <el-col :span="12">
+                  <!-- 档案号 -->
+                  <el-row style="height: 50px;">
+                    <el-form-item>
+                      <span slot="label" class="text_css">档案号：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
+                    </el-form-item>
 
-          <el-card :style="{height: (client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;z-index: 50;line-height: 50px;overflow-y: auto;box-shadow: none;">
-            <!-- 基本信息 -->
-            <el-row class="title">基本信息</el-row>
-            <el-row style="height: 260px; padding: 0 10px;margin-top: 10px">
-              <el-col :span="12">
-                <!-- 档案号 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7"><span class="text_css">档案号：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
-                  </el-col>
-                </el-row>
+                  </el-row>
 
-                <!-- 姓名 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7"><span class="text_css">姓名：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.name}}</div>
-                  </el-col>
-                </el-row>
+                  <!-- 姓名 -->
+                  <el-row style="height: 50px;">
+                    <el-form-item>
+                      <span slot="label" class="text_css">姓名：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.name}}</div>
+                    </el-form-item>
+                  </el-row>
 
-                <!-- 身份证号 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7"><span class="text_css">身份证号：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @blur="generateInfo" v-model="student.idNumber"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
-                  </el-col>
-                </el-row>
+                  <!-- 身份证号 -->
+                  <el-row style="height: 50px;">
+                    <el-form-item>
+                      <span slot="label" class="text_css">身份证号：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @blur="generateInfo" v-model="student.idNumber"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
+                    </el-form-item>
 
-                <!-- 性别 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7" ><div class="text_css">性别：</div></el-col>
-                  <el-col :span="17" >
-                    <template v-if="edit">
-                      <el-radio v-model="student.sex" label="1">男</el-radio>
-                      <el-radio v-model="student.sex" label="0">女</el-radio>
-                    </template>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
-                  </el-col>
-                </el-row>
+                  </el-row>
 
-                <!-- 生日 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7"><span class="text_css">生日：</span></el-col>
-                  <el-col :span="17">
-                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
+                  <!-- 性别 -->
+                  <el-row style="height: 50px;">
+                    <el-form-item>
+                      <span slot="label" class="text_css">性别：</span>
+                      <template v-if="edit">
+                        <el-radio v-model="student.sex" label="1">男</el-radio>
+                        <el-radio v-model="student.sex" label="0">女</el-radio>
+                      </template>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
+                    </el-form-item>
 
-                  </el-col>
-                </el-row>
+                  </el-row>
 
-              </el-col>
-              <el-col :span="12">
-                <el-row>
-                  <el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                    <img v-if="student.avatar" :src="student.avatar" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  </el-upload>
-                  <img v-else :src="student.avatar" class="avatar_img">
-                </el-row>
-              </el-col>
-            </el-row>
+                  <!-- 生日 -->
+                  <el-row style="height: 50px;">
+                    <el-form-item>
+                      <span slot="label" class="text_css">生日：</span>
+                      <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
+                    </el-form-item>
+                  </el-row>
 
-
-            <!-- 入学信息 -->
-            <el-row class="title">入学信息</el-row>
-            <el-row :gutter="10" style="height: 210px; padding: 0 10px;margin-top: 10px">
-              <el-col :span="12">
-
-                <!-- 入学日期 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">入学日期：</span></el-col>
-                  <el-col :span="17">
-                    <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
-                  </el-col>
-                </el-row>
+                </el-col>
+                <el-col :span="12">
+                  <el-row>
+                    <el-form-item>
+                    <el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                      <img v-if="student.avatar" :src="student.avatar" class="avatar">
+                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                    <img v-else :src="student.avatar" class="avatar_img">
+                    </el-form-item>
+                  </el-row>
+                </el-col>
+              </el-row>
 
 
-                <!-- 入学期数 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">入学期数：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="student.periods"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
-                  </el-col>
-                </el-row>
+              <!-- 入学信息 -->
+              <el-row class="title">入学信息</el-row>
+              <el-row :gutter="10" style="height: 260px; padding: 0 10px;margin-top: 10px">
+                <el-col :span="12">
 
-                <!-- 所学车型 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">所学车型：</span></el-col>
-                  <el-col :span="17">
-                    <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
-                  </el-col>
-                </el-row>
-
-                <!-- 场训教练 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">场训教练：</span></el-col>
-                  <el-col :span="17">
-                    <Coach v-if="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.fieldCoachName}}</div>
-                  </el-col>
-                </el-row>
-
-              </el-col>
-              <el-col :span="12">
-
-                <!-- 校区 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7"><span class="text_css">校区：</span></el-col>
-                  <el-col :span="17">
-                    <dict v-if="edit" dictType="dict_campus" v-model="student.campus" style="width: 100%;"  placeholder="校区"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.campus}}</div>
-                  </el-col>
-                </el-row>
+                  <!-- 入学日期 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">入学日期：</span>
+                      <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
+                    </el-form-item>
+                  </el-row>
 
 
-                <!-- 来源渠道 -->
-                <el-row style="height: 50px;">
-                  <el-col :span="7"><span class="text_css">来源渠道：</span></el-col>
-                  <el-col :span="17">
-                    <dict v-if="edit" dictType="dict_source" v-model="student.source" style="width: 100%;"  placeholder="来源渠道"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.source}}</div>
-                  </el-col>
-                </el-row>
+                  <!-- 入学期数 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">入学期数：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="student.periods"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
+                    </el-form-item>
+                  </el-row>
 
-                <!-- 报名点 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">报名点：</span></el-col>
-                  <el-col :span="17">
-                    <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
-                  </el-col>
-                </el-row>
+                  <!-- 所学车型 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">所学车型：</span>
+                      <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
+                    </el-form-item>
+                  </el-row>
 
-                <!-- 路训教练 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">路训教练：</span></el-col>
-                  <el-col :span="17">
-                    <Coach v-if="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.roadCoachName}}</div>
-                  </el-col>
-                </el-row>
+                  <!-- 场训教练 -->
+                  <el-row style="height: 50px">
 
-              </el-col>
-            </el-row>
-
-
-            <!-- 联系信息 -->
-            <el-row class="title">联系信息</el-row>
-            <el-row :gutter="10" style="height: 110px; padding: 0 10px;margin-top: 10px">
-              <el-col :span="12">
-
-                <!-- 联系电话 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">联系电话：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="student.mobile"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.mobile}}</div>
-                  </el-col>
-                </el-row>
-
-                <!-- 电子邮箱 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">电子邮箱：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="student.email"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.email}}</div>
-                  </el-col>
-                </el-row>
-
-              </el-col>
-              <el-col :span="12">
-                <!-- 微信 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">微信：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="微信" v-model="student.wechat"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.wechat}}</div>
-                  </el-col>
-                </el-row>
-
-                <!-- 所属职位 -->
-                <el-row style="height: 50px">
-                  <el-col :span="7"><span class="text_css">所属职位：</span></el-col>
-                  <el-col :span="17">
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="student.position"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.position}}</div>
-                  </el-col>
-                </el-row>
-
-              </el-col>
-            </el-row>
-
-            <!-- 所属单位 -->
-            <el-row style="height: 50px;margin: 0 5px">
-              <el-col :span="4"><span class="text_css">所属单位：</span></el-col>
-              <el-col :span="17">
-                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model="student.company"></el-input>
-                <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.company}}</div>
-              </el-col>
-            </el-row>
-
-
-            <!-- 联系地址 -->
-            <el-row style="height: 50px;margin: 0 5px">
-              <el-col :span="4"><span class="text_css">联系地址：</span></el-col>
-              <el-col :span="17">
-                <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
-                <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
-              </el-col>
-            </el-row>
+                    <el-form-item>
+                      <span slot="label" class="text_css">场训教练：</span>
+                      <Coach v-if="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.fieldCoachName}}</div>
+                    </el-form-item>
+                  </el-row>
 
 
 
-            <!-- 费用信息 -->
-            <!--<el-row class="title">费用信息</el-row>-->
+                  <!-- 介绍人 -->
+                  <el-row style="height: 50px">
+
+                    <el-form-item>
+                      <span slot="label"  class="text_css">介绍人：</span>
+                      <el-select v-if="edit"  v-model="student.introducerList" collapse-tags style="width: 100%" filterable multiple placeholder="请选择介绍人">
+                        <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
+                        </el-option>
+                      </el-select>
+                      <span v-for="introducer in student.introducerList" v-else>{{student.introducer}}</span>
+                    </el-form-item>
+                  </el-row>
+                </el-col>
+                <el-col :span="12">
+
+                  <!-- 校区 -->
+                  <el-row style="height: 50px;">
+                    <el-form-item>
+                      <span slot="label" class="text_css">校区：</span>
+                      <dict v-if="edit" dictType="dict_campus" v-model="student.campus" style="width: 100%;"  placeholder="校区"></dict>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.campus}}</div>
+                    </el-form-item>
+                  </el-row>
+
+
+                  <!-- 来源渠道 -->
+                  <el-row style="height: 50px;">
+                    <el-form-item>
+                      <span slot="label" class="text_css">来源渠道：</span>
+                      <dict v-if="edit" dictType="dict_source" v-model="student.source" style="width: 100%;"  placeholder="来源渠道"></dict>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.source}}</div>
+                    </el-form-item>
+                  </el-row>
+
+                  <!-- 报名点 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">报名点：</span>
+                      <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
+                    </el-form-item>
+                  </el-row>
+
+                  <!-- 路训教练 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">路训教练：</span>
+                      <Coach v-if="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.roadCoachName}}</div>
+                    </el-form-item>
+                  </el-row>
+
+                </el-col>
+              </el-row>
+
+
+              <!-- 联系信息 -->
+              <el-row class="title">联系信息</el-row>
+              <el-row :gutter="10" style="height: 110px; padding: 0 10px;margin-top: 10px">
+                <el-col :span="12">
+
+                  <!-- 联系电话 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">联系电话：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="student.mobile"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.mobile}}</div>
+                    </el-form-item>
+                  </el-row>
+
+                  <!-- 电子邮箱 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">电子邮箱：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="student.email"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.email}}</div>
+                    </el-form-item>
+                  </el-row>
+
+                </el-col>
+                <el-col :span="12">
+                  <!-- 微信 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">微信：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="微信" v-model="student.wechat"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.wechat}}</div>
+                    </el-form-item>
+                  </el-row>
+
+                  <!-- 所属职位 -->
+                  <el-row style="height: 50px">
+                    <el-form-item>
+                      <span slot="label" class="text_css">所属职位：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="student.position"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.position}}</div>
+                    </el-form-item>
+                  </el-row>
+
+                </el-col>
+              </el-row>
+
+              <!-- 所属单位 -->
+              <el-row style="height: 50px;margin: 0 5px">
+                <el-form-item>
+                  <span slot="label" class="text_css">所属单位：</span>
+                  <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model="student.company"></el-input>
+                  <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.company}}</div>
+                </el-form-item>
+              </el-row>
+
+
+              <!-- 联系地址 -->
+              <el-row style="height: 50px;margin: 0 5px">
+                <el-form-item>
+                  <span slot="label" class="text_css">联系地址：</span>
+                  <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
+                  <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
+                </el-form-item>
+              </el-row>
+
+
+
+              <!-- 费用信息 -->
+              <!--<el-row class="title">费用信息</el-row>-->
 
 
 
 
-          </el-card>
-          <el-card body-style="padding: 0;" style="height:60px; border-radius:0 0 4px 0;border-top: none;border-top: 1px solid #dcdfe6;">
-            <div v-if="edit && !addInfo" style="width: 163px;margin: 10px auto">
-              <el-button type="danger" plain  @click="cancel">取 消</el-button>
-              <el-button type="primary" @click="update">修 改</el-button>
-            </div>
-            <div v-if="edit && addInfo" style="width: 80px;margin: 10px auto">
-              <el-button type="primary" @click="add">保 存</el-button>
-            </div>
-            <div v-else style="width: 163px;margin: 10px auto">
-              <el-button type="success" @click="handleBespeak">预 约</el-button>
-              <el-button type="primary" @click="editInfo">编 辑</el-button>
-            </div>
+            </el-card>
+            <el-card body-style="padding: 0;" style="height:60px; border-radius:0 0 4px 0;border-top: none;border-top: 1px solid #dcdfe6;">
+              <div v-if="edit && !addInfo" style="width: 163px;margin: 10px auto">
+                <el-button type="danger" plain  @click="cancel">取 消</el-button>
+                <el-button type="primary" @click="update">修 改</el-button>
+              </div>
+              <div v-if="edit && addInfo" style="width: 80px;margin: 10px auto">
+                <el-button type="primary" @click="add">保 存</el-button>
+              </div>
+              <div v-else style="width: 163px;margin: 10px auto">
+                <el-button type="success" @click="handleBespeak">预 约</el-button>
+                <el-button type="primary" @click="editInfo">编 辑</el-button>
+              </div>
 
-          </el-card>
-
+            </el-card>
+          </el-form>
         </el-col>
       </el-row>
     </div>
@@ -956,6 +975,7 @@
           console.log(response.data.data)
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
+          this.getIntroducerList()
         })
         // examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
         //   console.log('====================== getExam =====================')
@@ -1002,6 +1022,10 @@
         this.showModule = 'create'
         this.edit = true
         this.addInfo = true
+        this.getIntroducerList()
+      },
+      /* 获取介绍人列表 */
+      getIntroducerList() {
         userList().then(response => {
           console.log(response.data.data)
           this.userList = response.data.data

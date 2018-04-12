@@ -133,7 +133,7 @@
       </div>
     </el-card>-->
     <el-card :style="{height: (client.height-125) + 'px',width: (client.width-570) + 'px'}" style="float: left;border-radius:4px 0 0 4px;overflow: auto;">
-        <el-table :data="questionnaireList" :height="(client.height-225)" highlight-current-row stripe v-loading="questionnaireLoading" element-loading-text="给我一点时间">
+        <el-table :data="questionnaireList" :height="(client.height-225)" @row-click="questionClick" highlight-current-row stripe v-loading="questionnaireLoading" element-loading-text="给我一点时间">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
         <el-table-column align="center" label="问卷名字">
@@ -156,7 +156,7 @@
 
         <el-table-column align="center" label="备注">
           <template slot-scope="scope">
-            <span>{{ scope.row.state }}</span>
+            <span>{{ scope.row.remark }}</span>
           </template>
         </el-table-column>
 
@@ -180,27 +180,63 @@
 
     </el-card>
 
-    <el-card :style="{height: (client.height-125) + 'px'}" body-style="padding: 0;" style="width: 570px; border-radius:0 4px 4px 0;overflow: auto;float: left">
+
+    <!-- 问卷所属题目 -->
+    <el-card :style="{height: (client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;overflow: auto;float: left">
+      <div v-if="haveQuestion">
+        <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
+          <el-row>
+            <el-col :span="2">
+              <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
+            </el-col>
+            <el-col :span="22">
+              <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
+              <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-col :span="12" v-show="question.itemA">A: {{question.itemA}}</el-col>
+                <el-col :span="12" v-show="question.itemB">B: {{question.itemB}}</el-col>
+              </el-row>
+              <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-col :span="12" v-show="question.itemC">C: {{question.itemC}}</el-col>
+                <el-col :span="12" v-show="question.itemD">D: {{question.itemD}}</el-col>
+              </el-row>
+              <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-col :span="12" v-show="question.itemE">E: {{question.itemE}}</el-col>
+                <el-col :span="12" v-show="question.itemF">F: {{question.itemF}}</el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div v-else>
+        <div v-for="question in questionList">
+          <el-row style="line-height: 25px;">
+            <el-col :span="8" ><div class="text_css">题目：</div></el-col>
+            <el-col :span="14" >
+              <el-input v-model="question.question" placeholder="题目" ></el-input>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
 
     </el-card>
 
+    <!-- 添加问卷弹窗 -->
     <el-dialog  @close="cancelQuestionnaire('revisitQuestionnaire')" title="添加问卷" :show-close="false" width="30%" :visible.sync="questionnaireOption">
 
-      <el-form :model="revisitQuestionnaire" :rules="revisitQuestionnaire" ref="revisitQuestionnaire" label-position="center" label-width="100px">
+      <el-form :model="revisitQuestionnaire" :rules="revisitQuestionnaire" ref="revisitQuestionnaire" label-position="right" label-width="100px">
         <el-form-item label="问卷名字" prop="name">
           <el-input v-model="revisitQuestionnaire.name" placeholder="问卷名字" ></el-input>
         </el-form-item>
-
-        <el-form-item label="备注" prop="state">
-          <el-input v-model="revisitQuestionnaire.state" placeholder="备注" ></el-input>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="revisitQuestionnaire.remark" placeholder="备注" ></el-input>
         </el-form-item>
-
       </el-form>
 
       <div slot="footer">
         <el-button @click="cancelQuestionnaire('revisitQuestionnaire')">取 消</el-button>
         <el-button type="primary" @click="createQuestionnaire('revisitQuestionnaire')">确 定</el-button>
       </div>
+
     </el-dialog>
 
 
@@ -229,9 +265,11 @@
         revisitQuestion: {},
         revisitQuestionnaire: {},
         questionnaireList: [],
+        questionList: [],
         total: null,
         questionnaireLoading: true,
         questionnaireOption: false,
+        haveQuestion: false,
         questionnaireListQuery: {
           page: 1,
           limit: 20,
@@ -243,6 +281,7 @@
       this.getQuestionnaireList()
     },
     methods: {
+      /* 分页插件方法 */
       handleSizeChange(val) {
         this.questionnaireListQuery.limit = val
         this.getQuestionnaireList()
@@ -264,7 +303,6 @@
       },
       /* 科目查询 */
       handleSubject() {
-        this.revisitQuestionnaire.subject = this.questionnaireListQuery.subject
         this.getQuestionnaireList()
       },
       /* 禁用启用开关 */
@@ -279,14 +317,17 @@
           this.getQuestionnaireList()
         })
       },
+      /* 打开添加问卷窗口 */
       createClick() {
         this.revisitQuestionnaire = {}
         this.questionnaireOption = true
       },
+      /* 添加问卷 */
       createQuestionnaire(formName) {
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
+            this.revisitQuestionnaire.subject = this.questionnaireListQuery.subject
             addQuestionnaireList(this.revisitQuestionnaire).then(() => {
               this.questionnaireOption = false
               this.getQuestionnaireList()
@@ -296,11 +337,45 @@
           }
         })
       },
+      /* 关闭添加问卷窗口 */
       cancelQuestionnaire(formName) {
         this.questionnaireOption = false
         const set = this.$refs
         set[formName].resetFields()
+      },
+      /* 根据问卷查题目 */
+      questionClick(row) {
+        console.log(row)
+        getQuestion(row.questionnaireId).then(response => {
+          console.log('========= 题目 ==========')
+          console.log(response.data)
+          this.questionList = response.data.data
+          if (this.questionList.length === 0) {
+            this.haveQuestion = false
+            this.questionList = [{
+              question: '',
+              itemA: '',
+              itemB: '',
+              itemC: '',
+              itemD: '',
+              itemE: '',
+              itemF: ''
+            }]
+          } else {
+            this.haveQuestion = true
+          }
+        })
       }
     }
   }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .text_css{
+    color:#495060;
+    font-size: 14px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+  }
+</style>

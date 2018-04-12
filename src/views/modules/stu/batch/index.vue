@@ -125,7 +125,7 @@
 
       <el-tabs body-style="padding:0;" type="border-card" @tab-click="handleField">
         <el-tab-pane name="all" label="申请名单">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
               <template slot-scope="scope">
@@ -177,7 +177,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="0" label="待审核">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -209,7 +209,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="1" label="待约考">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -240,7 +240,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="2" label="已约考">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -271,7 +271,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="3" label="考试名单">
-            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
+            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column align="center"  label="学员">

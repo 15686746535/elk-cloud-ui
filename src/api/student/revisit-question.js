@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function getQuestion(query) {
   return request({
-    url: '/stu/revisitquestion/getPage',
+    url: '/stu/revisitquestion/queryQuestionById',
     method: 'get',
     params: query
   })

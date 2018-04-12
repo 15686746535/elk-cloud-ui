@@ -104,14 +104,22 @@
         <div style="clear: both;width: 80%;margin: 0 auto;" v-for="(question, index) in revisitQuestion">
           <el-row>
             <el-col :span="2">
-              <span style="color: #001528;font-size: 18px;">{{index+1}}、</span>
+              <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
             </el-col>
             <el-col :span="22">
               <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-              <el-row>A: {{question.itemA}}</el-row>
-              <el-row>B: {{question.itemB}}</el-row>
-              <el-row>C: {{question.itemC}}</el-row>
-              <el-row>D: {{question.itemD}}</el-row>
+              <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-col :span="12" v-show="question.itemA">A: {{question.itemA}}</el-col>
+                <el-col :span="12" v-show="question.itemB">B: {{question.itemB}}</el-col>
+              </el-row>
+              <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-col :span="12" v-show="question.itemC">C: {{question.itemC}}</el-col>
+                <el-col :span="12" v-show="question.itemD">D: {{question.itemD}}</el-col>
+              </el-row>
+              <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-col :span="12" v-show="question.itemE">E: {{question.itemE}}</el-col>
+                <el-col :span="12" v-show="question.itemF">F: {{question.itemF}}</el-col>
+              </el-row>
             </el-col>
           </el-row>
         </div>

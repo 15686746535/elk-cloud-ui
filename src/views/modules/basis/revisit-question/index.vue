@@ -209,12 +209,48 @@
       </div>
       <div v-else>
         <div v-for="question in questionList">
-          <el-row style="line-height: 25px;">
-            <el-col :span="8" ><div class="text_css">题目：</div></el-col>
-            <el-col :span="14" >
-              <el-input v-model="question.question" placeholder="题目" ></el-input>
-            </el-col>
-          </el-row>
+          <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
+            <el-row>
+              <el-col :span="2">
+                <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
+              </el-col>
+              <el-col :span="22">
+                <el-row><span style="color: #001528;font-size: 16px;">
+                  <el-input v-model="question.question" placeholder="题目" ></el-input>
+                </span></el-row>
+                <el-row style="margin-top: 10px;font-size: 14px;">
+                  <el-col :span="12">
+                    <el-col :span="4">A:</el-col>
+                    <el-col :span="20">
+                      <el-input style="width: 100%" v-model="question.itemA" placeholder="答案A" ></el-input>
+                    </el-col>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-col :span="4">B:</el-col>
+                    <el-col :span="20">
+                      <el-input style="width: 100%" v-model="question.itemB" placeholder="答案B" ></el-input>
+                    </el-col>
+                  </el-col>
+                </el-row>
+                <el-row style="margin-top: 10px;font-size: 14px;">
+                  <el-col :span="12">
+                    C:  <el-input v-model="question.itemC" placeholder="答案C" ></el-input>
+                  </el-col>
+                  <el-col :span="12">
+                    D:  <el-input v-model="question.itemD" placeholder="答案D" ></el-input>
+                  </el-col>
+                </el-row>
+                <el-row style="margin-top: 10px;font-size: 14px;">
+                  <el-col :span="12">
+                    E:  <el-input v-model="question.itemE" placeholder="答案E" ></el-input>
+                  </el-col>
+                  <el-col :span="12">
+                    F:  <el-input v-model="question.itemF" placeholder="答案F" ></el-input>
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </div>
         </div>
       </div>
 
@@ -307,6 +343,7 @@
         this.getQuestionnaireList()
         this.questionList = []
         this.haveQuestion = true
+        this.questionLoading = false
       },
       /* 禁用启用开关 */
       questionnaireChange(row) {
@@ -349,7 +386,7 @@
       /* 根据问卷查题目 */
       questionClick(row) {
         this.questionLoading = true
-        console.log(row)
+        console.log(row.questionnaireId)
         getQuestion(row.questionnaireId).then(response => {
           console.log('========= 题目 ==========')
           console.log(response.data)

@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 // 查询集合
-export function getQuestion(query) {
+export function getQuestion(id) {
   return request({
-    url: '/stu/revisitquestion/queryQuestionById',
-    method: 'get',
-    params: query
+    url: '/stu/revisitquestion/' + id,
+    method: 'get'
   })
 }
 // 添加

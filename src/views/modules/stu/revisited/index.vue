@@ -20,7 +20,7 @@
           </el-table-column>
           <el-table-column label="主键ID">
             <template slot-scope="scope">
-              <span>{{scope.row.rvisitId}}</span>
+              <span>{{scope.row.revisitId}}</span>
             </template>
           </el-table-column>
           <el-table-column label="问题ID">

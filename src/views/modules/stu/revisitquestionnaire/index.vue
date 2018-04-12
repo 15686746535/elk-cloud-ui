@@ -90,18 +90,18 @@
 </template>
 
 <script>
-  import { getRevisitQuestionNaireList, getQuestionNaireList } from '@/api/student/revisit-questionnaire'
+  import { getRevisitQuestionnaireList, getQuestionnaireList } from '@/api/student/revisit-questionnaire'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
-    name: 'table_rvisitquestionnaire',
+    name: 'table_revisitquestionnaire',
     directives: {
       waves
     },
     data() {
       return {
-        rvisitquestionnaire: {},
+        revisitquestionnaire: {},
         list: [],
         total: null,
         listLoading: true,
@@ -118,7 +118,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        getRevisitQuestionNaireList(this.listQuery).then(response => {
+        getRevisitQuestionnaireList(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -133,13 +133,13 @@
         this.getList()
       },
       create() {
-        this.rvisitquestionnaire = {}
+        this.revisitquestionnaire = {}
         this.showModule = 'info'
       },
       update(row) {
-        getQuestionNaireList(row.roleId)
+        getQuestionnaireList(row.roleId)
           .then(response => {
-            this.rvisitquestionnaire = response.data
+            this.revisitquestionnaire = response.data
             this.showModule = 'info'
           })
       },

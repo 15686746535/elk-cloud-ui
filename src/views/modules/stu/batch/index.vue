@@ -95,7 +95,7 @@
             <!--</el-option>-->
           <!--</el-select>-->
         <!--</el-form-item>-->
-        <el-form-item label="考试场地">
+        <el-form-item label="考试场地" prop="examField">
           <!--<span v-if="batch.subject != null">-->
             <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
             <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
@@ -104,10 +104,10 @@
           <!--</span>-->
           <!--<span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>-->
         </el-form-item>
-        <el-form-item label="人数"  prop="username">
+        <el-form-item label="人数"  prop="stuCount">
           <el-input v-model="batch.stuCount" placeholder="人数" ></el-input>
         </el-form-item>
-        <el-form-item label="考试时间">
+        <el-form-item label="考试时间" prop="examTime">
           <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
         </el-form-item>
 

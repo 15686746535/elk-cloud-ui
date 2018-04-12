@@ -1,5 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+const url = 'http://192.168.1.74:8003'
+const locahostUrl = 'http://127.0.0.1:8003'
+
 
 module.exports = {
   build: {
@@ -29,49 +32,49 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/auth': {
-        target: 'http://127.0.0.1:8003',
+        target: url,
         changeOrigin: true,
         pathRewrite: {
           '^/auth' : '/auth'
         }
       },
       '/upms': {
-        target: 'http://127.0.0.1:8003',
+        target: url,
         changeOrigin: true,
         pathRewrite: {
           '^/upms' : '/upms'
         }
       },
       '/basis': {
-        target: 'http://127.0.0.1:8003',
+        target: url,
         changeOrigin: true,
         pathRewrite: {
           '^/basis' : '/basis'
         }
       },
       '/stu': {
-        target: 'http://127.0.0.1:8003',
+        target: url,
         changeOrigin: true,
         pathRewrite: {
           '^/stu' : '/stu'
         }
       },
       '/vehicle': {
-        target: 'http://127.0.0.1:8003',
+        target: url,
         changeOrigin: true,
         pathRewrite: {
           '^/vehicle' : '/vehicle'
         }
       },
       '/visit': {
-        target: 'http://127.0.0.1:8003',
+        target: url,
         changeOrigin: true,
         pathRewrite: {
           '^/visit' : '/visit'
         }
       },
       '/activiti': {
-        target: 'http://127.0.0.1:8003',
+        target: url,
         changeOrigin: true,
         pathRewrite: {
           '^/activiti' : '/activiti'

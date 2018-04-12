@@ -32,7 +32,7 @@ export function delObj(id) {
 // 更新
 export function putObj(obj) {
   return request({
-    url: '/student/rvisitquestion',
+    url: '/student/revisitquestion',
     method: 'put',
     data: obj
   })

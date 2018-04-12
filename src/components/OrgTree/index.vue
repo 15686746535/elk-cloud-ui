@@ -1,14 +1,14 @@
 <template>
-  <tree :list="orgList" :open="true" :choiceType="choiceType" @node-click="nodeClick"></tree>
+  <!--<my-tree :data="orgList" :choiceType="choiceType" @nodeList="nodeClick"></my-tree>-->
 </template>
 
 <script>
   import request from '@/utils/request'
-  import Tree from '@/components/Tree'
+  // import MyTree from '@/components/MyTree'
   export default {
     name: 'org-tree',
     components: {
-      Tree
+      // MyTree
     },
     data() {
       return {
@@ -29,6 +29,7 @@
     methods: {
       nodeClick(value) {
         this.org = value
+        console.log('----')
         console.log(value)
         this.$emit('node-click', value)
       }

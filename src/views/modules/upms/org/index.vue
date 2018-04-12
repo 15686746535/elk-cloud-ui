@@ -4,10 +4,10 @@
       <el-col class="org-tree-left">
         <el-card class="box-card">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 部门总览</span>
-          <!--<org-tree @node-click="searchByOrg" ></org-tree>-->
-          <tree :list="treeData" id="orgTree"
-                :open="true" choiceType="folder"
-                @node-click="getOrg"></tree>
+          <my-tree url="/upms/org/tree"
+                   v-model="org.orgId"
+                   choiceType="folder"
+                   @node="getOrg"></my-tree>
         </el-card>
       </el-col>
 
@@ -50,13 +50,12 @@
 <script>
   import { fetchTree, addObj, putObj, delObj } from '@/api/upms/org'
   import { mapGetters } from 'vuex'
-  import Tree from '@/components/Tree'
-  import OrgTree from '@/components/OrgTree'
+  import MyTree from '@/components/MyTree'
+
   export default {
     name: 'index',
     components: {
-      OrgTree,
-      Tree
+      MyTree
     },
     data() {
       return {
@@ -103,7 +102,6 @@
       /* 得到部门信息 */
       getOrg(data) {
         this.org = data
-        this.org.orgId = data.id
         this.assignment()
       },
       operationClick(state) {

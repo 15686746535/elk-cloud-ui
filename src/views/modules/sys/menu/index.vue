@@ -4,9 +4,10 @@
       <el-col class="org-tree-left">
         <el-card class="box-card">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 菜单树</span>
-          <tree :list="treeData" id="menuTree"
-                :open="false" choiceType="folder"
-                @node-click="getNodeData"></tree>
+          <my-tree url="/upms/menu/tree"
+                   v-model="currentId"
+                   choiceType="folder"
+                   @node="getNodeData"></my-tree>
         </el-card>
       </el-col>
 
@@ -14,7 +15,7 @@
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
             <el-button type="primary" v-if="menuManager_btn_add" @click="handlerAdd"><i class="el-icon-plus"></i>添加</el-button>
-            <el-button type="primary" v-if="menuManager_btn_edit" @click="handlerEdit"><i class="el-icon-edit"></i>编辑</el-button>
+            <el-button type="primary"  @click="handlerEdit"><i class="el-icon-edit"></i>编辑</el-button>
             <el-button type="primary" v-if="menuManager_btn_del" @click="handleDelete"><i class="el-icon-delete"></i>删除</el-button>
           </el-button-group>
         </el-card>
@@ -101,11 +102,11 @@
 <script>
   import { fetchTree, getObj, addObj, delObj, putObj } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
-  import Tree from '@/components/Tree'
+  import MyTree from '@/components/MyTree'
   export default {
     name: 'menu',
     components: {
-      Tree
+      MyTree
     },
     data() {
       return {
@@ -133,6 +134,7 @@
           generateBtn: false,
           method: undefined
         },
+        currentId: null, /* 当前选中的菜单*/
         currentMenu: null, /* 当前选中的菜单*/
         parentName: null, /* 当前选中的菜单*/
         menuManager_btn_add: true,
@@ -158,7 +160,9 @@
     },
     methods: {
       getList() {
-        fetchTree(this.listQuery).then(response => {
+        fetchTree().then(response => {
+          console.log(123)
+          console.log(response)
           this.treeData = response.data.data
         })
       },

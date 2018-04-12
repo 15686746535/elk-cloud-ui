@@ -4,6 +4,7 @@
     <div class="ran-select">
       <input class="ran-input el-input__inner hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
       <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
+      <i class="ran-select-icon el-icon-error hover" v-if="currentId != null " @click="clean" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
       <div v-show="isOpen" class="ran-arrow"></div>
       <el-collapse-transition>
         <div v-show="isOpen" class="ran-select-dropdown" :style="{minWidth:width}">
@@ -11,7 +12,11 @@
             没有数据
           </div>
           <div class="ran-data" v-show="!noData">
-            <tree :list="orgList" :open="true" id="orgSelect" v-model="value" choiceType="folder" @node-click="emitChange"></tree>
+            <my-tree :data="orgList"
+                     v-model="currentId"
+                     choiceType="folder"
+                     @node="emitChange"></my-tree>
+            <!--<my-tree :data="orgList" :open="true" id="orgSelect" v-model="value" choiceType="folder" @node-click="emitChange"></my-tree>-->
           </div>
         </div>
       </el-collapse-transition>
@@ -21,12 +26,12 @@
 
 <script>
   import request from '@/utils/request'
-  import Tree from '@/components/Tree'
+  import MyTree from '@/components/MyTree'
 
   export default {
     name: 'org-select',
     components: {
-      Tree
+      MyTree
     },
     model: {
       prop: 'value',
@@ -54,6 +59,7 @@
         noData: true,
         isOpen: false,
         orgList: [],
+        currentId: null,
         label: '',
         org: {}
       }
@@ -61,6 +67,8 @@
     // 数据请求
     watch: {
       value: function(val) {
+        this.currentId = val
+        this.choose(this.orgList, val)
       }
     },
     created() {
@@ -75,12 +83,28 @@
       })
     },
     methods: {
+      clean() {
+        this.label = ''
+        this.org = {}
+        this.currentId = null
+        this.$emit('change', null)
+        this.$emit('org-click', {})
+      },
       emitChange(value) {
         this.org = value
         this.label = value ? value.label : ''
         this.cancel()
         this.$emit('change', value ? value.id : null)
         this.$emit('org-click', this.org)
+      },
+      choose(list, id) {
+        var that = this
+        list.forEach(function(item, index) {
+          if (item.id === id) {
+            that.label = item.label
+          }
+          that.choose(item.children, id)
+        })
       },
       cancel() {
         this.isOpen = false
@@ -90,8 +114,9 @@
       }
     }
   }
+
 </script>
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
   .ran-select-icon-open{
     -webkit-transform: rotateZ(0deg);
     transform: rotateZ(0deg);
@@ -99,6 +124,17 @@
   .ran-select-icon-close{
     -webkit-transform: rotateZ(180deg);
     transform: rotateZ(180deg);
+  }
+  .el-icon-error{
+    display: none;
+  }
+  .ran-select:hover{
+    .el-icon-error{
+      display: block!important;
+    }
+    .el-icon-arrow-up{
+      display: none!important;
+    }
   }
   .ran-select-icon{
     position: absolute;

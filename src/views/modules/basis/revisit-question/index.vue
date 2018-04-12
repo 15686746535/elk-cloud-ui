@@ -182,7 +182,7 @@
 
 
     <!-- 问卷所属题目 -->
-    <el-card :style="{height: (client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;overflow: auto;float: left">
+    <el-card :style="{height: (client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;overflow: auto;float: left" v-loading="questionLoading" element-loading-text="给我一点时间">
       <div v-if="haveQuestion">
         <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
           <el-row>
@@ -268,6 +268,7 @@
         questionList: [],
         total: null,
         questionnaireLoading: true,
+        questionLoading: false,
         questionnaireOption: false,
         haveQuestion: false,
         questionnaireListQuery: {
@@ -327,11 +328,11 @@
       /* 添加问卷 */
       createQuestionnaire(formName) {
         const set = this.$refs
+        this.questionnaireOption = false
         set[formName].validate(valid => {
           if (valid) {
             this.revisitQuestionnaire.subject = this.questionnaireListQuery.subject
             addQuestionnaireList(this.revisitQuestionnaire).then(() => {
-              this.questionnaireOption = false
               this.getQuestionnaireList()
             })
           } else {
@@ -347,6 +348,7 @@
       },
       /* 根据问卷查题目 */
       questionClick(row) {
+        this.questionLoading = true
         console.log(row)
         getQuestion(row.questionnaireId).then(response => {
           console.log('========= 题目 ==========')
@@ -366,6 +368,7 @@
           } else {
             this.haveQuestion = true
           }
+          this.questionLoading = false
         })
       }
     }

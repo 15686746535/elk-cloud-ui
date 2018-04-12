@@ -304,6 +304,8 @@
       /* 科目查询 */
       handleSubject() {
         this.getQuestionnaireList()
+        this.questionList = []
+        this.haveQuestion = true
       },
       /* 禁用启用开关 */
       questionnaireChange(row) {

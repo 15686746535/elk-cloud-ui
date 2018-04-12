@@ -311,7 +311,7 @@
                         <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                         </el-option>
                       </el-select>
-                      <span v-for="introducer in student.introducerList" v-else>{{student.introducer}}</span>
+                      <span v-for="introducer in student.introducerList" v-else>{{introducer.name}}</span>
                     </el-form-item>
                   </el-row>
                 </el-col>
@@ -1033,6 +1033,7 @@
       },
       // 修改
       update() {
+        console.log(this.student)
         putObj(this.student).then(response => {
           this.edit = false
         })

@@ -11,127 +11,6 @@
         </div>
       </div>
     </el-card>
-    <!--<el-card>
-      <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                highlight-current-row style="width: 100%">
-        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-        <el-table-column label="问卷ID">
-          <template slot-scope="scope">
-            <span>{{scope.row.questionnaireId}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="问题">
-          <template slot-scope="scope">
-            <span>{{scope.row.question}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案A">
-          <template slot-scope="scope">
-            <span>{{scope.row.item1}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案B">
-          <template slot-scope="scope">
-            <span>{{scope.row.item2}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案C">
-          <template slot-scope="scope">
-            <span>{{scope.row.item3}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案D">
-          <template slot-scope="scope">
-            <span>{{scope.row.item4}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案5">
-          <template slot-scope="scope">
-            <span>{{scope.row.item5}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案6">
-          <template slot-scope="scope">
-            <span>{{scope.row.item6}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案类型">
-          <template slot-scope="scope">
-            <span>{{scope.row.itemType1}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案类型">
-          <template slot-scope="scope">
-            <span>{{scope.row.itemType2}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案类型">
-          <template slot-scope="scope">
-            <span>{{scope.row.itemType3}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案类型">
-          <template slot-scope="scope">
-            <span>{{scope.row.itemType4}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案类型">
-          <template slot-scope="scope">
-            <span>{{scope.row.itemType5}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="答案类型">
-          <template slot-scope="scope">
-            <span>{{scope.row.itemType6}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="删除标记">
-          <template slot-scope="scope">
-            <span>{{scope.row.delFlag}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作人">
-          <template slot-scope="scope">
-            <span>{{scope.row.operator}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="创建时间">
-          <template slot-scope="scope">
-            <span>{{scope.row.createTime}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="更新时间">
-          <template slot-scope="scope">
-            <span>{{scope.row.updateTime}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="排序">
-          <template slot-scope="scope">
-            <span>{{scope.row.sort}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" type="success"
-                       @click="update(scope.row)">编辑
-            </el-button>
-            <el-button size="mini" type="danger"
-                       @click="delete(scope.row)">删除
-            </el-button>
-          </template>
-        </el-table-column>
-
-      </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page.sync="listQuery.page" background
-                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                       layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-      </div>
-    </el-card>-->
     <el-card :style="{height: (client.height-125) + 'px',width: (client.width-570) + 'px'}" style="float: left;border-radius:4px 0 0 4px;overflow: auto;">
         <el-table :data="questionnaireList" :height="(client.height-225)" @row-click="questionClick" highlight-current-row stripe v-loading="questionnaireLoading" element-loading-text="给我一点时间">
         <el-table-column type="index" align="center" label="编号" width="50">
@@ -160,7 +39,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" label="状态">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.state" active-value="0" inactive-value="1" @change="questionnaireChange(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           </template>
@@ -222,12 +101,12 @@
                   </el-col>
                   <el-col :span="2">
                     <div style="margin: 0 auto;width: 32px; height: 32px">
-                      <el-button style="padding: 9px;" size="mini" type="danger" @click="delQuestion(index)" icon="el-icon-delete" plain circle></el-button>
+                      <el-button style="padding: 9px;" size="mini" type="danger" @click="removeQuestion(index)" icon="el-icon-delete" plain circle></el-button>
                     </div>
                   </el-col>
                   <el-col :span="2">
                     <div style="margin: 0 auto;width: 32px; height: 32px">
-                      <el-button v-if="index + 1 === questionList.length" style="padding: 9px;" size="mini" type="success" @click="addQuestion(index)" icon="el-icon-plus" plain circle></el-button>
+                      <el-button v-if="index + 1 === questionList.length" style="padding: 9px;" size="mini" type="success" @click="appendQuestion(index)" icon="el-icon-plus" plain circle></el-button>
                     </div>
                   </el-col>
                 </el-row>
@@ -333,6 +212,9 @@
         revisitQuestionnaire: {},
         questionnaireList: [],
         questionList: [],
+        questions: {
+          questionList: []
+        },
         questionnaireId: null,
         total: null,
         questionnaireLoading: true,
@@ -372,6 +254,7 @@
       },
       /* 科目查询 */
       handleSubject() {
+        this.questionnaireListQuery.page = 1
         this.getQuestionnaireList()
         this.questionList = []
         this.haveQuestion = true
@@ -427,14 +310,7 @@
           if (this.questionList.length === 0) {
             this.haveQuestion = false
             this.questionList = [{
-              questionnaireId: this.questionnaireId,
-              question: null,
-              itemA: null,
-              itemB: null,
-              itemC: null,
-              itemD: null,
-              itemE: null,
-              itemF: null
+              questionnaireId: this.questionnaireId
             }]
           } else {
             this.haveQuestion = true
@@ -443,27 +319,22 @@
         })
       },
       /* 添加题目 */
-      addQuestion(index) {
+      appendQuestion(index) {
         this.questionList.splice(index + 1, 0, {
-          questionnaireId: this.questionnaireId,
-          question: null,
-          itemA: null,
-          itemB: null,
-          itemC: null,
-          itemD: null,
-          itemE: null,
-          itemF: null
+          questionnaireId: this.questionnaireId
         })
       },
       /* 删除题目 */
-      delQuestion(index) {
+      removeQuestion(index) {
         if (this.questionList.length !== 1) {
           this.questionList.splice(index, 1)
         }
       },
       /* 保存题目 */
       saveQuestion() {
-        addQuestion(this.questionList).then(() => {
+        console.log(this.questionList)
+        this.questions.questionList = this.questionList
+        addQuestion(this.questions).then(() => {
           this.questionClick({ 'questionnaireId': this.questionnaireId })
         })
       }

@@ -1,164 +1,236 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div v-show="showModule=='list'">
-      <el-card style="margin-bottom: 5px;">
-        <div class="filter-container">
-          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-          <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 60px">
+      <div class="filter-container">
+        <div style="height: 40px; float: left">
+          <el-radio-group @change="handleState" v-model="vehiclePeriodListQuery.state">
+            <el-radio-button label="1">历史课时</el-radio-button>
+            <el-radio-button label="2">当前课时</el-radio-button>
+            <el-radio-button label="3">计划课时</el-radio-button>
+          </el-radio-group>
         </div>
-      </el-card>
-      <el-card>
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                  highlight-current-row style="width: 100%">
-          <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+        <div style="float: right">
+          <el-select :style="{width: (client.width/7) + 'px'}" v-model="vehiclePeriodListQuery.subject" class="filter-item" clearable placeholder="科目">
+            <el-option
+              v-for="item in subject"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="vehiclePeriodListQuery.condition"></el-input>
+          <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
+        </div>
+      </div>
+    </el-card>
+    <el-card :style="{height: (client.height - 105) + 'px'}">
+        <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="(client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="商品名称">
+                </el-form-item>
+                <el-form-item label="所属店铺">
+                </el-form-item>
+                <el-form-item label="商品 ID">
+                </el-form-item>
+                <el-form-item label="店铺 ID">
+                </el-form-item>
+                <el-form-item label="商品分类">
+                </el-form-item>
+                <el-form-item label="店铺地址">
+                </el-form-item>
+                <el-form-item label="商品描述">
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-          <el-table-column label="教练ID">
+          <el-table-column align="center" label="教练">
             <template slot-scope="scope">
               <span>{{scope.row.coachId}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="车辆ID">
+          <el-table-column align="center" label="身份证">
             <template slot-scope="scope">
-              <span>{{scope.row.vehicleId}}</span>
+              <span>{{scope.row.idNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="开始时间">
+          <el-table-column align="center" label="电话">
             <template slot-scope="scope">
-              <span>{{scope.row.beginTime}}</span>
+              <span>{{scope.row.phone}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="结束时间">
+          <el-table-column align="center" label="科目">
             <template slot-scope="scope">
-              <span>{{scope.row.endTime}}</span>
+              <span>{{scope.row.subject  | subjectFilter}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="人数限制">
+          <el-table-column align="center" label="训练场地">
             <template slot-scope="scope">
-              <span>{{scope.row.number}}</span>
+              <span>{{scope.row.fieldAddress}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="状态标记">
+          <el-table-column align="center" label="课时">
             <template slot-scope="scope">
-              <span>{{scope.row.state}}</span>
+              <span>{{scope.row.studyTime | subTime('time')}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="排序">
+          <el-table-column align="center" label="已约人数">
             <template slot-scope="scope">
-              <span>{{scope.row.sort}}</span>
+              <span>{{scope.row.count}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间">
+          <el-table-column align="center" label="课时日期">
             <template slot-scope="scope">
-              <span>{{scope.row.createTime}}</span>
+              <span>{{scope.row.studyTime | subTime}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="更新时间">
+          <el-table-column align="center" label="状态">
             <template slot-scope="scope">
-              <span>{{scope.row.updateTime}}</span>
+              <el-switch v-model="scope.row.state" active-value="0" inactive-value="1" @change="vehiclePeriodChange(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </template>
           </el-table-column>
 
-          <el-table-column label="操作">
+          <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" type="success"
-                         @click="update(scope.row)">编辑
-              </el-button>
-              <el-button size="mini" type="danger"
-                         @click="delete(scope.row)">删除
-              </el-button>
+              <el-button size="mini" type="primary" @click="update(scope.row)"><i class="el-icon-edit"></i> 编 辑</el-button>
             </template>
           </el-table-column>
 
         </el-table>
-        <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <div v-show="!vehiclePeriodListLoading" class="pagination-container" style="margin-top: 20px">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="listQuery.page" background
-                         :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                         :current-page.sync="vehiclePeriodListQuery.page" background style="float: left"
+                         :page-sizes="[10,20,30, 50]" :page-size="vehiclePeriodListQuery.limit"
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
+          <el-button style="margin-top: -8px;float: right" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
         </div>
+        <el-dialog>
+          <Coach v-model="vehiclePeriod.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
+          <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+        </el-dialog>
       </el-card>
-    </div>
-    <div v-show="showModule=='info'">
-      <el-card>
-        <!-- 这里手写 -->
-
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>
-          <el-button v-else type="primary" @click="update">修 改</el-button>
-        </div>
-      </el-card>
-    </div>
   </div>
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/bespeak/vehicleperiod'
+  import { getVehiclePeriodList, getVehiclePeriod, putVehiclePeriod } from '@/api/bespeak/vehicleperiod'
   import { removeAllSpace } from '@/utils/validate'
+  import Coach from '@/components/Coach'
+  import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
     name: 'table_vehicleperiod',
+    computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ])
+    },
+    components: {
+      Coach
+    },
     directives: {
       waves
     },
     data() {
       return {
         vehiclePeriod: {},
-        dialogStatus: '',
-        list: [],
+        vehiclePeriodList: [],
         total: null,
-        listLoading: true,
-        showModule: 'list',
-        listQuery: {
+        vehiclePeriodListLoading: true,
+        vehiclePeriodListQuery: {
           page: 1,
-          limit: 20
-        }
+          limit: 20,
+          state: 2,
+          condition: null,
+          subject: 1
+        },
+        subject: [
+          {
+            value: 1,
+            label: '科目一'
+          }, {
+            value: 2,
+            label: '科目二'
+          }, {
+            value: 3,
+            label: '科目三'
+          }, {
+            value: 4,
+            label: '科目四'
+          }
+        ]
       }
     },
     created() {
-      this.getList()
+      this.getVehiclePeriodList()
     },
     methods: {
-      getList() {
-        this.listLoading = true
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data.data.list
+      getVehiclePeriodList() {
+        this.vehiclePeriodListLoading = true
+        getVehiclePeriodList(this.vehiclePeriodListQuery).then(response => {
+          this.vehiclePeriodList = response.data.data.list
+          console.log(this.vehiclePeriodList)
           this.total = response.data.data.totalCount
-          this.listLoading = false
+          this.vehiclePeriodListLoading = false
         })
       },
       handleSizeChange(val) {
-        this.listQuery.limit = val
-        this.getList()
+        this.vehiclePeriodListQuery.limit = val
+        this.getVehiclePeriodList()
       },
       handleCurrentChange(val) {
-        this.listQuery.page = val
-        this.getList()
+        this.vehiclePeriodListQuery.page = val
+        this.getVehiclePeriodList()
       },
       create() {
         this.vehiclePeriod = {}
-        this.showModule = 'info'
       },
       update(row) {
-        getObj(row.roleId)
+        getVehiclePeriod(row.roleId)
           .then(response => {
             this.vehiclePeriod = response.data
-            this.showModule = 'info'
           })
       },
       searchClick() {
-        this.listQuery.page = 1
-        this.getList()
+        this.vehiclePeriodListQuery.page = 1
+        this.vehiclePeriodListQuery.condition = removeAllSpace(this.vehiclePeriodListQuery.condition)
+        this.getVehiclePeriodList()
       },
-      delete(id) {
-        this.getList()
+      handleState() {
+        this.vehiclePeriodListQuery.page = 1
+        this.getVehiclePeriodList()
       },
-      cancel() {
-        this.showModule = 'list'
+      /* 禁用启用开关 */
+      vehiclePeriodChange(row) {
+        this.vehiclePeriod = row
+        if (this.vehiclePeriod.state === 1) {
+          this.vehiclePeriod.state = 0
+        } else if (this.vehiclePeriod.state === 0) {
+          this.vehiclePeriod.state = 1
+        }
+        putVehiclePeriod(this.vehiclePeriod).then(() => {
+          this.getVehiclePeriodList()
+        })
       }
     }
   }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+</style>

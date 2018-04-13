@@ -20,10 +20,6 @@
               <el-radio-button label="2">科目二</el-radio-button>
               <el-radio-button label="3">科目三</el-radio-button>
             </el-radio-group>
-            <!--<div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>-->
-            <!--<div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>-->
-            <!--<div @click="handleSubject('3',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目三</div>-->
-            <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>-->
           </div>
           <div style="float: right">
             <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>

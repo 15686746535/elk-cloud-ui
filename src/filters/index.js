@@ -43,6 +43,12 @@ export function subTime(time, cFormat) {
     } catch (e) {
       return time
     }
+  } else if (cFormat === 'time') {
+    try {
+      return time.substr(10)
+    } catch (e) {
+      return parseTime(time, '{h}:{i}:{s}')
+    }
   } else if (cFormat === undefined || 'data') {
     try {
       return time.substr(0, 10)

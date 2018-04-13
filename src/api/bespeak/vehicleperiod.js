@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getVehiclePeriodList(query) {
   return request({
     url: '/bespeak/vehicleperiod/getPage',
     method: 'get',
@@ -8,7 +8,7 @@ export function fetchList(query) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function addVehiclePeriod(obj) {
   return request({
     url: '/bespeak/vehicleperiod',
     method: 'post',
@@ -16,21 +16,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getVehiclePeriod(id) {
   return request({
     url: '/bespeak/vehicleperiod/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delVehiclePeriod(id) {
   return request({
     url: '/bespeak/vehicleperiod/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putVehiclePeriod(obj) {
   return request({
     url: '/bespeak/vehicleperiod',
     method: 'put',

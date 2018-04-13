@@ -29,7 +29,7 @@
   import MyTree from '@/components/MyTree'
 
   export default {
-    name: 'org-select',
+    name: 'tree-select',
     components: {
       MyTree
     },

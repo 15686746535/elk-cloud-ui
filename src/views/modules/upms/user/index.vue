@@ -2,15 +2,13 @@
   <div class="app-container calendar-list-container"  :style="{height: $store.state.app.client.height + 'px'}">
     <el-card>
       <div style="float: left;width: 500px">
-          <my-tree url="/upms/org/tree" v-model="test" @nodeList="nodeList"></my-tree>
-        <input class="ran-input el-input__inner hover " v-model.number="test"/>
-
+          <my-tree url="/upms/org/tree" v-model="test"  @nodeList="nodeList"></my-tree>
+          <input class="ran-input el-input__inner hover " v-model.number="test"/>
         <el-button class="filter-item" type="primary" @click="searchClick">取值</el-button>
           <el-button class="filter-item" type="primary" @click="updata">修改</el-button>
       </div>
       <div style="float: left;border-left: #1f2d3d solid 2px;width: 400px;">
-        <!--<org-tree ></org-tree>-->
-        <org-select v-model="aaa"></org-select>
+        <tree-select url="/upms/org/tree" v-model="aaa"></tree-select>
       </div>
     </el-card>
   </div>
@@ -18,7 +16,7 @@
 <script>
   import request from '@/utils/request'
   import MyTree from '@/components/MyTree'
-  import OrgSelect from '@/components/OrgSelect'
+  import TreeSelect from '@/components/TreeSelect'
 
   export default {
     name: 'index',
@@ -26,7 +24,7 @@
     },
     components: {
       MyTree,
-      OrgSelect
+      TreeSelect
     },
     data() {
       return {

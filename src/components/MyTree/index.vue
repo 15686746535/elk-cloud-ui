@@ -30,11 +30,30 @@
       event: 'change'
     },
     props: {
-      data: Array,
-      url: String,
-      query: Object,
-      choiceType: String,
-      value: Number
+      data: {
+        type: Array,
+        default: null
+      },
+      url: {
+        type: String,
+        default: ''
+      },
+      query: {
+        type: Object,
+        default: null
+      },
+      checkbox: {
+        type: Boolean,
+        default: false
+      },
+      folder: {
+        type: Boolean,
+        default: true
+      },
+      value: {
+        type: Number,
+        default: null
+      }
     },
     data() {
       return {
@@ -57,12 +76,6 @@
       this.getTreeData()
     },
     computed: {
-      checkbox() {
-        return false // this.choiceType.indexOf('checkbox') !== -1
-      },
-      folder() {
-        return true// this.choiceType.indexOf('folder') !== -1
-      }
     },
     methods: {
       getTreeData() {
@@ -73,8 +86,6 @@
             params: this.query
           }).then(response => {
             this.treeList = response.data.data
-            console.log(1111111111111)
-            console.log(response)
           })
         }
       },

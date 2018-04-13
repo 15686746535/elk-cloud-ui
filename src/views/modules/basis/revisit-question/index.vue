@@ -210,57 +210,69 @@
       <div v-else>
         <div v-for="question in questionList">
           <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
-            <el-row>
+            <el-row style="line-height: 32px">
               <el-col :span="2">
                 <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
               </el-col>
               <el-col :span="22">
 
-                <el-row style="color: #001528;font-size: 16px;">
-                  <el-input v-model="question.question" placeholder="题目" ></el-input>
-                </el-row>
-
-                <el-row style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="12">
-                    <el-col :span="4">A:</el-col>
-                    <el-col :span="20">
-                      <el-input style="width: 100%" v-model="question.itemA" placeholder="答案A" ></el-input>
-                    </el-col>
+                <el-row :gutter="2" style="color: #001528;font-size: 16px;">
+                  <el-col :span="20">
+                    <el-input size="small" v-model="question.question" placeholder="题目" ></el-input>
                   </el-col>
-                  <el-col :span="12">
-                    <el-col :span="4">B:</el-col>
-                    <el-col :span="20">
-                      <el-input style="width: 100%" v-model="question.itemB" placeholder="答案B" ></el-input>
-                    </el-col>
+                  <el-col :span="2">
+                    <div style="margin: 0 auto;width: 32px; height: 32px">
+                      <el-button style="padding: 9px;" size="mini" type="success" icon="el-icon-plus" plain circle></el-button>
+                    </div>
+                  </el-col>
+                  <el-col :span="2">
+                    <div style="margin: 0 auto;width: 32px; height: 32px">
+                      <el-button style="padding: 9px;" size="mini" type="danger" icon="el-icon-delete" plain circle></el-button>
+                    </div>
                   </el-col>
                 </el-row>
 
                 <el-row style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="12">
-                    <el-col :span="4">C:</el-col>
-                    <el-col :span="20">
-                      <el-input style="width: 100%" v-model="question.itemC" placeholder="答案C" ></el-input>
+                  <el-col :span="11">
+                    <el-col :span="2">A:</el-col>
+                    <el-col :span="22">
+                      <el-input size="small" style="width: 90%" v-model="question.itemA" placeholder="答案A" ></el-input>
                     </el-col>
                   </el-col>
-                  <el-col :span="12">
-                    <el-col :span="4">D:</el-col>
-                    <el-col :span="20">
-                      <el-input style="width: 100%" v-model="question.itemD" placeholder="答案D" ></el-input>
+                  <el-col :span="11">
+                    <el-col :span="2">B:</el-col>
+                    <el-col :span="22">
+                      <el-input size="small" style="width: 90%" v-model="question.itemB" placeholder="答案B" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>
 
                 <el-row style="margin-top: 10px;font-size: 14px;">
                   <el-col :span="12">
-                    <el-col :span="4">E:</el-col>
-                    <el-col :span="20">
-                      <el-input style="width: 100%" v-model="question.itemE" placeholder="答案E" ></el-input>
+                    <el-col :span="2">C:</el-col>
+                    <el-col :span="22">
+                      <el-input size="small" style="width: 90%" v-model="question.itemC" placeholder="答案C" ></el-input>
                     </el-col>
                   </el-col>
                   <el-col :span="12">
-                    <el-col :span="4">F:</el-col>
-                    <el-col :span="20">
-                      <el-input style="width: 100%" v-model="question.itemF" placeholder="答案F" ></el-input>
+                    <el-col :span="2">D:</el-col>
+                    <el-col :span="22">
+                      <el-input size="small" style="width: 90%" v-model="question.itemD" placeholder="答案D" ></el-input>
+                    </el-col>
+                  </el-col>
+                </el-row>
+
+                <el-row style="margin-top: 10px;font-size: 14px;">
+                  <el-col :span="12">
+                    <el-col :span="2">E:</el-col>
+                    <el-col :span="22">
+                      <el-input size="small" style="width: 90%" v-model="question.itemE" placeholder="答案E" ></el-input>
+                    </el-col>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-col :span="2">F:</el-col>
+                    <el-col :span="22">
+                      <el-input size="small" style="width: 90%" v-model="question.itemF" placeholder="答案F" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>

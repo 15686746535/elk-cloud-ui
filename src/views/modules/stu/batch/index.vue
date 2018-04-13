@@ -563,7 +563,7 @@
         console.log(val)
         this.examBespeakList.studentList = []
         for (var i = 0; i < val.length; i++) {
-          this.examBespeakList.studentList.push({ 'studentId': val[i].studentId, 'makeUpExam': val[i].makeUpExam })
+          this.examBespeakList.studentList.push({ 'studentId': val[i].studentId, 'makeUpExam': val[i].makeUpExam, 'examBespeakId': val[i].examBespeakId })
         }
       },
       // 根据状态查询约考学员
@@ -580,6 +580,8 @@
           })
         } else {
           this.examBespeakList.state = state
+          console.log('==== 选择的学员 ====')
+          console.log(this.examBespeakList)
           putExamBespeak(this.examBespeakList).then(() => {
             this.see(this.studentListQuery.batchId, this.studentListQuery.state)
             this.$notify({

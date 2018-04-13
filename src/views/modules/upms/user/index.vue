@@ -9,6 +9,11 @@
       </div>
       <div style="float: left;border-left: #1f2d3d solid 2px;width: 400px;">
         <tree-select url="/upms/org/tree" v-model="aaa"></tree-select>
+        <div v-for="(user,index) in userList">
+          <input class="ran-input el-input__inner hover " v-model="user.name"/>
+          <el-button class="filter-item" type="primary" @click="del(index)">del</el-button>
+          <el-button v-if="index + 1 === userList.length" class="filter-item"  type="primary" @click="add(index)">add</el-button>
+        </div>
       </div>
     </el-card>
   </div>
@@ -30,11 +35,13 @@
       return {
         // 树形图
         treeData: [],
+        userList: [],
         aaa: null,
         test: null
       }
     },
     created() {
+      this.userList.push({ 'name': '选项_1' })
       this.getOrgList()
     },
     methods: {
@@ -44,6 +51,12 @@
       updata() {
         this.test = 13
         this.aaa = 13
+      },
+      del(index) {
+        this.userList.splice(index, 1)
+      },
+      add(index) {
+        this.userList.splice(index + 1, 0, { 'name': '选项_' + (index + 2) })
       },
       nodeList(list) {
         console.log('选中集合')

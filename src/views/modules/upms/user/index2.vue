@@ -3,8 +3,6 @@
     <el-card>
       <div style="float: left;width: 500px">
           <my-tree url="/upms/org/tree" v-model="test"  @nodeList="nodeList"></my-tree>
-
-
           <input class="ran-input el-input__inner hover " v-model.number="test"/>
         <el-button class="filter-item" type="primary" @click="searchClick">取值</el-button>
           <el-button class="filter-item" type="primary" @click="updata">修改</el-button>

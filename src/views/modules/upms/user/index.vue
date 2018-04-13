@@ -8,8 +8,7 @@
 
             <!-- 分割线 -->
            <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
-
-            <org-tree @node-click="searchByOrg" ></org-tree>
+            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
 
@@ -439,7 +438,7 @@
   import Bar from '@/components/Bar'
   import Dict from '@/components/Dict'
   import LineChart from '@/components/LineChart'
-  import OrgTree from '@/components/OrgTree'
+  import MyTree from '@/components/MyTree'
   import { fetchTree } from '@/api/upms/org'
   import OrgSelect from '@/components/OrgSelect'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
@@ -461,7 +460,7 @@
     },
     components: {
       Bar,
-      OrgTree,
+      MyTree,
       LineChart,
       Dict,
       OrgSelect
@@ -490,8 +489,6 @@
           orgId: null,
           condition: null
         },
-        // 树形图
-        treeData: [],
         defaultProps: {
           children: 'children',
           label: 'label'
@@ -503,7 +500,7 @@
       }
     },
     created() {
-      this.getOrgList()
+      this.getUserList()
     },
     methods: {
       // 新增
@@ -548,17 +545,6 @@
         this.edit = false
         this.addInfo = false
       },
-      // 查询部门集合
-      getOrgList() {
-        console.log('=====================   查询部门集合   =======================')
-        fetchTree().then(response => {
-          console.log(response.data)
-          this.listQuery.orgId = response.data.data[0].id
-          this.treeData = response.data.data
-          console.log('=====================  完成   =======================')
-          this.getUserList()
-        })
-      },
       // 查询员工集合
       getUserList() {
         console.log('=====================   查询员工集合   =======================')
@@ -572,13 +558,8 @@
         console.log('=====================   完成   =======================')
       },
       // 根据部门id查询员工
-      searchByOrg(data) {
-        if (data) {
-          console.log('=====================   根据部门id查询员工信息   =======================')
-          this.listQuery.page = 1
-          this.listQuery.orgId = data.id
-          this.getUserList()
-        }
+      searchByOrg() {
+        this.getUserList()
       },
       // 编辑
       editInfo() {

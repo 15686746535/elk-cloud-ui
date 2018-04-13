@@ -218,7 +218,7 @@
           page: 1,
           limit: 20,
           subject: 1,
-          batchId: null,
+          examId: null,
           examState: null
         },
         batchListQuery: {
@@ -314,7 +314,7 @@
           console.log(response.data)
           this.batchList = response.data.data.list
           this.batchTotal = response.data.data.totalCount
-          // if (this.batchList.length > 0) this.studentListQuery.batchId = this.batchList[0].batchId
+          // if (this.batchList.length > 0) this.studentListQuery.examId = this.batchList[0].examId
           // this.getGradeList()
           this.batchListLoading = false
         })
@@ -381,7 +381,7 @@
       },
       /* 控制批次点击样式 */
       batchClick(e, batch) {
-        this.studentListQuery.batchId = batch.batchId
+        this.studentListQuery.examId = batch.examId
         this.interval = []
         this.studentListQuery.beginTime = null
         this.studentListQuery.endTime = null
@@ -418,7 +418,7 @@
       examEdit(e, state) {
         this.examParameter.examNoteList = []
         this.examParameter.examNoteList.push({ 'examNoteId': e.examNoteId, 'studentId': e.studentId })
-        this.examParameter.batchId = e.batchId
+        this.examParameter.examId = e.examId
         if (state === 0) {
           this.$confirm('是否撤销该学员成绩?', '提示', {
             confirmButtonText: '确定',
@@ -436,7 +436,7 @@
       intervalTime() {
         console.log('================== 时间转换 ===================')
         if (this.interval.length !== 0) {
-          this.studentListQuery.batchId = null
+          this.studentListQuery.examId = null
           this.cleanBatchSelected()
           this.studentListQuery.beginTime = this.interval[0]
           this.studentListQuery.endTime = this.interval[1]

@@ -6,7 +6,7 @@
         <el-col class="org-tree-left">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-            <org-tree @node-click="searchByOrg" ></org-tree>
+            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
 
@@ -30,7 +30,7 @@
           <el-card :style="{height: (client.height-125) + 'px'}" style="overflow: hidden">
             <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
 
-              <!--<div class="intention" v-for="intention in intentionList" @click="intentionClick($event)"  @dblclick="editlist(intention)">-->
+              <!--<div class="intention" v-for="intention in intentionList" @click="intentionClick($event)"  @dblclick="editList(intention)">-->
                 <!--&lt;!&ndash;<div>&ndash;&gt;-->
 
                 <!--&lt;!&ndash;</div>&ndash;&gt;-->
@@ -39,7 +39,7 @@
                 <!--&lt;!&ndash;</div>&ndash;&gt;-->
                 <!--&lt;!&ndash;<div class="intention_btn">重新分配</div>&ndash;&gt;-->
               <!--</div>-->
-              <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editlist(intention)">
+              <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
                 <div style="width: 100%;height: 25px">
                   <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
                   <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
@@ -65,7 +65,7 @@
 
                 <el-tooltip placement="bottom" effect="dark">
                   <div slot="content">
-                    <div style="margin: 3px 0"><el-button type="primary" size="mini" @click="editlist(intention)">查  看</el-button></div>
+                    <div style="margin: 3px 0"><el-button type="primary" size="mini" @click="editList(intention)">查  看</el-button></div>
                     <div style="margin: 3px 0"><el-button type="success" size="mini" @click="updateState(intention, '1')">入 学</el-button></div>
                     <div style="margin: 3px 0"><el-button type="warning" size="mini" @click="updateState(intention, '-1')">分 配</el-button></div>
                     <div style="margin: 3px 0"><el-button type="danger" size="mini" @click="updateState(intention, '2')">关 闭</el-button></div>
@@ -449,7 +449,7 @@
 <script>
   import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
   import { followUpList, addFollowUp } from '@/api/visit/followup'
-  import OrgTree from '@/components/OrgTree'
+  import MyTree from '@/components/MyTree'
   import Dict from '@/components/Dict'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
@@ -459,7 +459,7 @@
   export default {
     name: 'table_intention',
     components: {
-      OrgTree,
+      MyTree,
       Dict
     },
     directives: {
@@ -606,15 +606,12 @@
       },
       // 根据部门id查询员工
       searchByOrg(data) {
-        if (data) {
-          console.log('=====================   根据部门id查询来访信息   =======================')
-          this.listQuery.page = 1
-          this.listQuery.orgId = data.id
-          this.getList()
-        }
+        console.log('=====================   根据部门id查询来访信息   =======================')
+        this.listQuery.page = 1
+        this.getList()
       },
       // 双击行  编辑
-      editlist(val) {
+      editList(val) {
         console.log('====================== 正在进入单个学员编辑 =====================')
         this.edit = false
         this.intention = val
@@ -624,6 +621,8 @@
       },
       getList() {
         this.listLoading = true
+        console.log('====== 查询意向 =====')
+        console.log(this.listQuery)
         fetchList(this.listQuery).then(response => {
           this.intentionList = response.data.data.list
           this.total = response.data.data.totalCount

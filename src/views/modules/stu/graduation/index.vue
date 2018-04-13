@@ -5,7 +5,7 @@
         <el-col class="org-tree-left">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-            <org-tree @node-click="searchByOrg" ></org-tree>
+            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
 
@@ -456,8 +456,7 @@
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { examFetchList, getExam } from '@/api/student/examnote'
-  import OrgSelect from '@/components/OrgSelect'
-  import OrgTree from '@/components/OrgTree'
+  import MyTree from '@/components/MyTree'
   import Coach from '@/components/Coach'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -466,9 +465,8 @@
   export default {
     name: 'table_student',
     components: {
-      OrgTree,
+      MyTree,
       Dict,
-      OrgSelect,
       Coach
     },
     directives: {
@@ -565,7 +563,6 @@
       searchByOrg(data) {
         console.log('=====================   根据部门id查询学员信息   =======================')
         this.listQuery.page = 1
-        this.listQuery.orgId = data.id
         this.getList()
       },
       // 字典

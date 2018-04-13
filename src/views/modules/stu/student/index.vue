@@ -5,7 +5,7 @@
         <el-col class="org-tree-left">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-            <org-tree @node-click="searchByOrg" ></org-tree>
+            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
 
@@ -757,8 +757,7 @@
   import { userList } from '@/api/upms/user'
   import { examFetchList, getExam } from '@/api/student/examnote'
   import { getIntentionByMobile } from '@/api/visit/intention'
-  import OrgSelect from '@/components/OrgSelect'
-  import OrgTree from '@/components/OrgTree'
+  import MyTree from '@/components/MyTree'
   import Coach from '@/components/Coach'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
@@ -769,9 +768,8 @@
   export default {
     name: 'table_student',
     components: {
-      OrgTree,
+      MyTree,
       Dict,
-      OrgSelect,
       Coach
     },
     directives: {
@@ -946,7 +944,7 @@
         examBespeak: {
           studentId: null,
           state: 0,
-          batchId: null,
+          examId: null,
           subject: null
         },
         batchListQuery: {
@@ -981,11 +979,8 @@
       // 根据部门id查询学员信息
       searchByOrg(data) {
         console.log('=====================   1根据部门id查询学员信息   =======================')
-        if (data) {
-          this.listQuery.page = 1
-          this.listQuery.orgId = data.id
-          this.getList()
-        }
+        this.listQuery.page = 1
+        this.getList()
       },
       // 字典
       getDict(val) {
@@ -1216,7 +1211,7 @@
         })
         this.dialogFormBespeak = true
         this.cleanBatchSelected()
-        this.examBespeak.batchId = null
+        this.examBespeak.examId = null
       },
       cleanBatchSelected() {
         var a = document.getElementsByClassName('batchCss')
@@ -1225,11 +1220,11 @@
         }
       },
       closeBespeak() {
-        this.examBespeak.batchId = null
+        this.examBespeak.examId = null
         this.dialogFormBespeak = false
       },
       batchClick(e, batch) {
-        this.examBespeak.batchId = batch.batchId
+        this.examBespeak.examId = batch.examId
         var a = document.getElementsByClassName('batchCss')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('batchCss_selected')
@@ -1239,7 +1234,7 @@
       createBespeak() {
         console.log('================== 这里是添加学员到批次 ====================')
         console.log(this.examBespeak)
-        if (this.examBespeak.batchId === null) {
+        if (this.examBespeak.examId === null) {
           this.$alert('请先选择报考批次', '提示', {
             confirmButtonText: '确定',
             type: 'warning'
@@ -1252,7 +1247,7 @@
               type: 'success'
             })
             this.dialogFormBespeak = false
-            this.examBespeak.batchId = null
+            this.examBespeak.examId = null
           })
         }
       },

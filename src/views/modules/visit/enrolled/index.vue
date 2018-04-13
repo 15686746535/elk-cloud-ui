@@ -7,7 +7,7 @@
         <el-col class="org-tree-left">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-            <org-tree @node-click="searchByOrg" ></org-tree>
+            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
 
@@ -73,7 +73,7 @@
 
 <script>
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
-  import OrgTree from '@/components/OrgTree'
+  import MyTree from '@/components/MyTree'
   import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js'// 水波纹指令
@@ -81,7 +81,7 @@
   export default {
     name: 'table_intention',
     components: {
-      OrgTree,
+      MyTree,
       Dict
     },
     directives: {
@@ -205,12 +205,9 @@
       },
       // 根据部门id查询员工
       searchByOrg(data) {
-        if (data) {
-          console.log('=====================   根据部门id查询来访信息   =======================')
-          this.listQuery.page = 1
-          this.listQuery.orgId = data.id
-          this.getList()
-        }
+        console.log('=====================   根据部门id查询来访信息   =======================')
+        this.listQuery.page = 1
+        this.getList()
       },
       getList() {
         this.listLoading = true

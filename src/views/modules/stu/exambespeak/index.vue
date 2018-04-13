@@ -118,7 +118,7 @@
         subject: 1,
         examBespeakList: {
           studentIds: [],
-          batchId: null
+          examId: null
         },
         dialogFormBespeak: false
       }
@@ -174,11 +174,11 @@
         this.getList()
       },
       cancel() {
-        this.examBespeakList.batchId = null
+        this.examBespeakList.examId = null
         this.dialogFormBespeak = false
       },
       create() {
-        if (this.examBespeakList.batchId === null) {
+        if (this.examBespeakList.examId === null) {
           this.$alert('请先选择报考批次', '提示', {
             confirmButtonText: '确定',
             type: 'warning'
@@ -191,7 +191,7 @@
               type: 'success'
             })
             this.dialogFormBespeak = false
-            this.examBespeakList.batchId = null
+            this.examBespeakList.examId = null
           })
         }
       },
@@ -233,7 +233,7 @@
           })
         }
         this.cleanBatchSelected()
-        this.examBespeakList.batchId = null
+        this.examBespeakList.examId = null
       },
       cleanBatchSelected() {
         var a = document.getElementsByClassName('batchCss')
@@ -244,7 +244,7 @@
       batchClick(e, batch) {
         console.log(this.examBespeakList.studentIds.length)
         if ((batch.stuCount - batch.hasReserved) >= this.examBespeakList.studentIds.length) {
-          this.examBespeakList.batchId = batch.batchId
+          this.examBespeakList.examId = batch.examId
           var a = document.getElementsByClassName('batchCss')
           for (var i = 0; i < a.length; i++) {
             a[i].classList.remove('batchCss_selected')

@@ -62,7 +62,7 @@
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
             <!--<el-button-group>-->
-              <el-button size="mini" type="success" @click="see(scope.row.batchId, studentListQuery.state)" plain>查 看</el-button>
+              <el-button size="mini" type="success" @click="see(scope.row.examId, studentListQuery.state)" plain>查 看</el-button>
               <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
             <!--</el-button-group>-->
@@ -396,10 +396,10 @@
         examBespeakList: {
           studentList: [],
           state: null,
-          batchId: null
+          examId: null
         },
         studentListQuery: {
-          batchId: null,
+          examId: null,
           state: '0'
         }
       }
@@ -444,15 +444,15 @@
         this.dialogStatus = 'update'
         this.batchOption = true
       },
-      see(batchId, state) {
+      see(examId, state) {
         this.examBespeakLoading = true
-        this.studentListQuery.batchId = batchId
+        this.studentListQuery.examId = examId
         this.studentListQuery.state = state
         getexambespeakbyid(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data
           this.examBespeakLoading = false
         })
-        this.examBespeakList.batchId = batchId
+        this.examBespeakList.examId = examId
         this.examOption = true
       },
       closeExamOption() {
@@ -519,7 +519,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            delObj(val.batchId).then(() => {
+            delObj(val.examId).then(() => {
               this.$notify({
                 title: '成功',
                 message: '删除成功',
@@ -543,7 +543,7 @@
           type: 'warning'
         }).then(() => {
           delexambespeak(val.examBespeakId).then(() => {
-            this.see(val.batchId,this.studentListQuery.state)
+            this.see(val.examId,this.studentListQuery.state)
             this.$notify({
               title: '成功',
               message: '取消成功',
@@ -570,7 +570,7 @@
       handleField(state) {
         this.studentListQuery.state = state.name
         if (state.name === 'all') this.studentListQuery.state = null
-        this.see(this.studentListQuery.batchId, this.studentListQuery.state)
+        this.see(this.studentListQuery.examId, this.studentListQuery.state)
       },
       operation(state, str) {
         if (this.examBespeakList.studentList.length === 0) {
@@ -583,7 +583,7 @@
           console.log('==== 选择的学员 ====')
           console.log(this.examBespeakList)
           putExamBespeak(this.examBespeakList).then(() => {
-            this.see(this.studentListQuery.batchId, this.studentListQuery.state)
+            this.see(this.studentListQuery.examId, this.studentListQuery.state)
             this.$notify({
               title: '成功',
               message: str,

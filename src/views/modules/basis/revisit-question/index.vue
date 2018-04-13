@@ -283,7 +283,7 @@
         </div>
       </div>
       <div style="float: right;line-height: 80px">
-        <el-button type="primary" @click="saveQuestion"><i class="el-icon-fa-save"></i> 保 存</el-button>
+        <el-button v-show="!haveQuestion" type="primary" @click="saveQuestion"><i class="el-icon-fa-save"></i> 保 存</el-button>
       </div>
     </el-card>
 

@@ -7,7 +7,7 @@ export function getQuestion(id) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function addQuestion(obj) {
   return request({
     url: '/stu/revisitquestion',
     method: 'post',
@@ -15,21 +15,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getQbj(id) {
   return request({
     url: '/stu/revisitquestion/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delQuestion(id) {
   return request({
     url: '/stu/revisitquestion/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putQuestion(obj) {
   return request({
     url: '/student/revisitquestion',
     method: 'put',

@@ -182,33 +182,33 @@
 
 
     <!-- 问卷所属题目 -->
-    <el-card :style="{height: (client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;overflow: auto;float: left" v-loading="questionLoading" element-loading-text="给我一点时间">
-      <div v-if="haveQuestion">
-        <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
-          <el-row>
-            <el-col :span="2">
-              <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
-            </el-col>
-            <el-col :span="22">
-              <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-              <el-row style="margin-top: 10px;font-size: 14px;">
-                <el-col :span="12" v-show="question.itemA">A: {{question.itemA}}</el-col>
-                <el-col :span="12" v-show="question.itemB">B: {{question.itemB}}</el-col>
-              </el-row>
-              <el-row style="margin-top: 10px;font-size: 14px;">
-                <el-col :span="12" v-show="question.itemC">C: {{question.itemC}}</el-col>
-                <el-col :span="12" v-show="question.itemD">D: {{question.itemD}}</el-col>
-              </el-row>
-              <el-row style="margin-top: 10px;font-size: 14px;">
-                <el-col :span="12" v-show="question.itemE">E: {{question.itemE}}</el-col>
-                <el-col :span="12" v-show="question.itemF">F: {{question.itemF}}</el-col>
-              </el-row>
-            </el-col>
-          </el-row>
+    <el-card :style="{height: (client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;float: left" v-loading="questionLoading" element-loading-text="给我一点时间">
+      <div :style="{height: (client.height-225) + 'px'}" style="overflow-y: auto;overflow-x: hidden;border-bottom: 1px solid rgb(235, 239, 245)">
+        <div v-if="haveQuestion">
+          <div style="clear: both;width: 100%;margin: 0 auto;" v-for="(question, index) in questionList">
+            <el-row>
+              <el-col :span="2">
+                <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
+              </el-col>
+              <el-col :span="22">
+                <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
+                <el-row style="margin-top: 10px;font-size: 14px;">
+                  <el-col :span="12" v-show="question.itemA">A: {{question.itemA}}</el-col>
+                  <el-col :span="12" v-show="question.itemB">B: {{question.itemB}}</el-col>
+                </el-row>
+                <el-row style="margin-top: 10px;font-size: 14px;">
+                  <el-col :span="12" v-show="question.itemC">C: {{question.itemC}}</el-col>
+                  <el-col :span="12" v-show="question.itemD">D: {{question.itemD}}</el-col>
+                </el-row>
+                <el-row style="margin-top: 10px;font-size: 14px;">
+                  <el-col :span="12" v-show="question.itemE">E: {{question.itemE}}</el-col>
+                  <el-col :span="12" v-show="question.itemF">F: {{question.itemF}}</el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </div>
         </div>
-      </div>
-      <div v-else>
-        <div v-for="question in questionList">
+        <div v-else>
           <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
             <el-row style="line-height: 32px">
               <el-col :span="2">
@@ -222,57 +222,57 @@
                   </el-col>
                   <el-col :span="2">
                     <div style="margin: 0 auto;width: 32px; height: 32px">
-                      <el-button style="padding: 9px;" size="mini" type="success" icon="el-icon-plus" plain circle></el-button>
+                      <el-button style="padding: 9px;" size="mini" type="danger" @click="delQuestion(index)" icon="el-icon-delete" plain circle></el-button>
                     </div>
                   </el-col>
                   <el-col :span="2">
                     <div style="margin: 0 auto;width: 32px; height: 32px">
-                      <el-button style="padding: 9px;" size="mini" type="danger" icon="el-icon-delete" plain circle></el-button>
+                      <el-button v-if="index + 1 === questionList.length" style="padding: 9px;" size="mini" type="success" @click="addQuestion(index)" icon="el-icon-plus" plain circle></el-button>
                     </div>
                   </el-col>
                 </el-row>
 
                 <el-row style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="11">
+                  <el-col :span="10">
                     <el-col :span="2">A:</el-col>
-                    <el-col :span="22">
-                      <el-input size="small" style="width: 90%" v-model="question.itemA" placeholder="答案A" ></el-input>
+                    <el-col :span="21">
+                      <el-input size="small" style="width: 100%" v-model="question.itemA" placeholder="答案A" ></el-input>
                     </el-col>
                   </el-col>
-                  <el-col :span="11">
+                  <el-col :span="10">
                     <el-col :span="2">B:</el-col>
-                    <el-col :span="22">
-                      <el-input size="small" style="width: 90%" v-model="question.itemB" placeholder="答案B" ></el-input>
+                    <el-col :span="21">
+                      <el-input size="small" style="width: 100%" v-model="question.itemB" placeholder="答案B" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>
 
                 <el-row style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="12">
+                  <el-col :span="10">
                     <el-col :span="2">C:</el-col>
-                    <el-col :span="22">
-                      <el-input size="small" style="width: 90%" v-model="question.itemC" placeholder="答案C" ></el-input>
+                    <el-col :span="21">
+                      <el-input size="small" style="width: 100%" v-model="question.itemC" placeholder="答案C" ></el-input>
                     </el-col>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="10">
                     <el-col :span="2">D:</el-col>
-                    <el-col :span="22">
-                      <el-input size="small" style="width: 90%" v-model="question.itemD" placeholder="答案D" ></el-input>
+                    <el-col :span="21">
+                      <el-input size="small" style="width: 100%" v-model="question.itemD" placeholder="答案D" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>
 
                 <el-row style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="12">
+                  <el-col :span="10">
                     <el-col :span="2">E:</el-col>
-                    <el-col :span="22">
-                      <el-input size="small" style="width: 90%" v-model="question.itemE" placeholder="答案E" ></el-input>
+                    <el-col :span="21">
+                      <el-input size="small" style="width: 100%" v-model="question.itemE" placeholder="答案E" ></el-input>
                     </el-col>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="10">
                     <el-col :span="2">F:</el-col>
-                    <el-col :span="22">
-                      <el-input size="small" style="width: 90%" v-model="question.itemF" placeholder="答案F" ></el-input>
+                    <el-col :span="21">
+                      <el-input size="small" style="width: 100%" v-model="question.itemF" placeholder="答案F" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>
@@ -282,7 +282,9 @@
           </div>
         </div>
       </div>
-
+      <div style="float: right;line-height: 80px">
+        <el-button type="primary" @click="saveQuestion"><i class="el-icon-fa-save"></i> 保 存</el-button>
+      </div>
     </el-card>
 
     <!-- 添加问卷弹窗 -->
@@ -309,7 +311,7 @@
 </template>
 
 <script>
-  import { getQuestion, getObj, addObj } from '@/api/student/revisit-question'
+  import { getQuestion, addQuestion } from '@/api/student/revisit-question'
   import { mapGetters } from 'vuex'
   import { getRevisitQuestionnaireList, addQuestionnaireList, getQuestionnaireList, putQuestionnaireList } from '@/api/student/revisit-questionnaire'
   import waves from '@/directive/waves/index.js'// 水波纹指令
@@ -331,6 +333,7 @@
         revisitQuestionnaire: {},
         questionnaireList: [],
         questionList: [],
+        questionnaireId: null,
         total: null,
         questionnaireLoading: true,
         questionLoading: false,
@@ -415,6 +418,7 @@
       /* 根据问卷查题目 */
       questionClick(row) {
         this.questionLoading = true
+        this.questionnaireId = row.questionnaireId
         console.log(row.questionnaireId)
         getQuestion(row.questionnaireId).then(response => {
           console.log('========= 题目 ==========')
@@ -423,18 +427,44 @@
           if (this.questionList.length === 0) {
             this.haveQuestion = false
             this.questionList = [{
-              question: '',
-              itemA: '',
-              itemB: '',
-              itemC: '',
-              itemD: '',
-              itemE: '',
-              itemF: ''
+              questionnaireId: this.questionnaireId,
+              question: null,
+              itemA: null,
+              itemB: null,
+              itemC: null,
+              itemD: null,
+              itemE: null,
+              itemF: null
             }]
           } else {
             this.haveQuestion = true
           }
           this.questionLoading = false
+        })
+      },
+      /* 添加题目 */
+      addQuestion(index) {
+        this.questionList.splice(index + 1, 0, {
+          questionnaireId: this.questionnaireId,
+          question: null,
+          itemA: null,
+          itemB: null,
+          itemC: null,
+          itemD: null,
+          itemE: null,
+          itemF: null
+        })
+      },
+      /* 删除题目 */
+      delQuestion(index) {
+        if (this.questionList.length !== 1) {
+          this.questionList.splice(index, 1)
+        }
+      },
+      /* 保存题目 */
+      saveQuestion() {
+        addQuestion(this.questionList).then(() => {
+          this.questionClick({ 'questionnaireId': this.questionnaireId })
         })
       }
     }

@@ -80,6 +80,13 @@ module.exports = {
         pathRewrite: {
           '^/activiti' : '/activiti'
         }
+      },
+      '/bespeak': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bespeak' : '/bespeak'
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

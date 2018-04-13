@@ -9,7 +9,7 @@
         </div>
       </el-card>
       <el-card>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
                   highlight-current-row style="width: 100%">
           <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -96,8 +96,8 @@
 
 <script>
   import { fetchList, getObj } from '@/api/bespeak/vehicleperiod'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
+  import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
     name: 'table_vehicleperiod',
@@ -106,7 +106,8 @@
     },
     data() {
       return {
-        vehicleperiod: {},
+        vehiclePeriod: {},
+        dialogStatus: '',
         list: [],
         total: null,
         listLoading: true,
@@ -138,13 +139,13 @@
         this.getList()
       },
       create() {
-        this.vehicleperiod = {}
+        this.vehiclePeriod = {}
         this.showModule = 'info'
       },
       update(row) {
         getObj(row.roleId)
           .then(response => {
-            this.vehicleperiod = response.data
+            this.vehiclePeriod = response.data
             this.showModule = 'info'
           })
       },

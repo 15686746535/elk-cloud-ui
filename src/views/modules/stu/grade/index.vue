@@ -9,12 +9,6 @@
           <el-radio-button label="3">科目三</el-radio-button>
           <el-radio-button label="4">科目四</el-radio-button>
         </el-radio-group>
-        <!--<div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">-->
-          <!--<div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>-->
-          <!--<div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>-->
-          <!--<div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>-->
-          <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0;" class="subjectBtn" >科目四</div>-->
-        <!--</div>-->
         <div style="float: right">
           <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="right" style="margin-bottom: 0px;" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
           </el-date-picker>
@@ -124,7 +118,14 @@
 
             <el-table-column align="center" fixed="right" label="操作" width="160">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" @click="examEdit(scope.row, null)" plain>编 辑</el-button>
+                <el-tooltip placement="bottom" effect="dark">
+                  <div slot="content">
+                    <div style="margin: 3px 0"><el-button type="success" size="mini" @click="examEdit(scope.row, 1)">通过</el-button></div>
+                    <div style="margin: 3px 0"><el-button type="danger" size="mini" @click="examEdit(scope.row, 2)">失败</el-button></div>
+                    <div style="margin: 3px 0"><el-button type="warning" size="mini" @click="examEdit(scope.row, 3)">缺考</el-button></div>
+                  </div>
+                  <el-button size="mini" type="primary" plain>编 辑</el-button>
+                </el-tooltip>
                 <el-button size="mini" type="danger"  @click="examEdit(scope.row, 0)" >撤 销</el-button>
               </template>
             </el-table-column>
@@ -140,9 +141,10 @@
             <el-button style="float:right;"  @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
           </div>
         </el-card>
+
         <el-dialog @close="getGradeList" width="30%" title="成绩修改" :visible.sync="gradeEdit">
           <el-button-group>
-            <el-button type="success" @click="examOperation(1)">通 过</el-button>
+            <el-button type="success" @click="passExam">通 过</el-button>
             <el-button type="danger" @click="examOperation(2)">失 败</el-button>
             <el-button type="warning"  @click="examOperation(3)">缺 考</el-button>
           </el-button-group>
@@ -153,6 +155,7 @@
             </el-button-group>
           </div>
         </el-dialog>
+
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
 
           <el-table :data="notGradeStudentList" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
@@ -178,13 +181,34 @@
             </el-table-column>
 
           </el-table>
+          <el-dialog width="30%" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
 
+            <Coach v-show="batchListQuery.subject === 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+            <Coach v-show="batchListQuery.subject === 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
+
+            <div slot="footer">
+              <el-button type="danger" @click="innerGradeOption = false">取 消</el-button>
+              <el-button type="success" @click="examOperation(1)">确 定</el-button>
+            </div>
+          </el-dialog>
           <div slot="footer">
-            <el-button type="success" @click="examOperation(1)">通 过</el-button>
+            <el-button type="success" @click="passExam">通 过</el-button>
             <el-button type="danger" @click="examOperation(2)">失 败</el-button>
             <el-button type="warning"  @click="examOperation(3)">缺 考</el-button>
           </div>
         </el-dialog>
+
+        <el-dialog width="30%" title="选择教练" :visible.sync="innerGradeOption1" append-to-body>
+
+          <Coach v-show="batchListQuery.subject === 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+          <Coach v-show="batchListQuery.subject === 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
+
+          <div slot="footer">
+            <el-button type="danger" @click="innerGradeOption1 = false">取 消</el-button>
+            <el-button type="success" @click="examOperation(1)">确 定</el-button>
+          </div>
+        </el-dialog>
+
       </el-col>
     </el-row>
   </div>
@@ -198,10 +222,12 @@
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
+  import Coach from '@/components/Coach'
 
-  export default {
+export default {
     name: 'table_batch',
     components: {
+      Coach,
       Dict
     },
     directives: {
@@ -231,6 +257,8 @@
         studentListLoading: false,
         batchListLoading: true,
         gradeOption: false,
+        innerGradeOption: false,
+        innerGradeOption1: false,
         gradeEdit: false,
         gradeOptionLoading: false,
         pickerOptions: {
@@ -314,8 +342,6 @@
           console.log(response.data)
           this.batchList = response.data.data.list
           this.batchTotal = response.data.data.totalCount
-          // if (this.batchList.length > 0) this.studentListQuery.examId = this.batchList[0].examId
-          // this.getGradeList()
           this.batchListLoading = false
         })
       },
@@ -338,14 +364,8 @@
         this.cleanBatchSelected()
         this.studentListQuery.page = 1
         this.studentListQuery.subject = this.batchListQuery.subject
-        // this.batchListQuery.subject = field
         this.gradeStudentList = []
         this.notGradeStudentList = []
-        // var a = document.getElementsByClassName('subjectBtn')
-        // for (var i = 0; i < a.length; i++) {
-        //   a[i].classList.remove('subjectBtn_selected')
-        // }
-        // e.currentTarget.classList.add('subjectBtn_selected')
         this.getBatchList()
       },
       /* 搜索方法 */
@@ -400,25 +420,30 @@
           a[i].classList.remove('batchCss_selected')
         }
       },
+      passExam() {
+        if (this.batchListQuery.subject === 3 || this.batchListQuery.subject === 4) {
+          this.examOperation(1)
+        } else {
+          console.log('==========')
+          this.innerGradeOption = true
+        }
+      },
       examOperation(state) {
         this.examParameter.examState = state
+        this.examParameter.subject = this.batchListQuery.subject
         console.log(this.examParameter)
-        putExamNote(this.examParameter).then(response => {
+        putExamNote(this.examParameter).then(() => {
           this.getGradeList()
-          this.$notify({
-            title: '成功',
-            message: '修改成功',
-            type: 'success',
-            duration: 2000
-          })
           this.gradeOption = false
+          this.innerGradeOption = false
+          this.innerGradeOption1 = false
           this.gradeEdit = false
         })
       },
-      examEdit(e, state) {
+      examEdit(row, state) {
         this.examParameter.examNoteList = []
-        this.examParameter.examNoteList.push({ 'examNoteId': e.examNoteId, 'studentId': e.studentId })
-        this.examParameter.examId = e.examId
+        this.examParameter.examNoteList.push({ 'examNoteId': row.examNoteId, 'studentId': row.studentId })
+        this.examParameter.examId = row.examId
         if (state === 0) {
           this.$confirm('是否撤销该学员成绩?', '提示', {
             confirmButtonText: '确定',
@@ -427,10 +452,11 @@
           }).then(() => {
             this.examOperation(state)
           })
+        } else if (state === 1) {
+          this.innerGradeOption1 = true
         } else {
-          this.gradeEdit = true
+          this.examOperation(state)
         }
-        console.log(e)
       },
       /* 时间转换方法 */
       intervalTime() {

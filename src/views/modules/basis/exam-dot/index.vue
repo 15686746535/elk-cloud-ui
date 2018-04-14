@@ -143,7 +143,7 @@
         })
       },
       // 根据科目查询场地
-      handleField() {
+      handleSubject() {
         this.listQuery.page = 1
         this.getList()
       },

@@ -109,11 +109,11 @@
         </div>
         <el-dialog>
           <Coach v-model="vehiclePeriod.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
-          <Coach v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field3" placeholder="培训地址"></Coach>
+          <Dict v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field3" placeholder="培训地址"></Dict>
 
           <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
-          <Coach v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field2" placeholder="培训地址"></Coach>
-          
+          <Dict v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field2" placeholder="培训地址"></Dict>
+
         </el-dialog>
       </el-card>
   </div>
@@ -151,23 +151,17 @@
         vehiclePeriodListQuery: {
           page: 1,
           limit: 20,
-          state: 2,
+          state: 1,
           condition: null,
-          subject: 1
+          subject: 2
         },
         subject: [
           {
-            value: 1,
-            label: '科目一'
-          }, {
             value: 2,
             label: '科目二'
           }, {
             value: 3,
             label: '科目三'
-          }, {
-            value: 4,
-            label: '科目四'
           }
         ]
       }

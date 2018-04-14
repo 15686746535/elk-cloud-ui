@@ -64,22 +64,22 @@
     <el-card :style="{height: (client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;float: left" v-loading="questionLoading" element-loading-text="给我一点时间">
       <div :style="{height: (client.height-225) + 'px'}" style="overflow-y: auto;overflow-x: hidden;border-bottom: 1px solid rgb(235, 239, 245)">
         <div v-if="haveQuestion">
-          <div style="clear: both;width: 100%;margin: 0 auto;" v-for="(question, index) in questionList">
+          <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
             <el-row>
               <el-col :span="2">
                 <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
               </el-col>
               <el-col :span="22">
                 <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-                <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-row v-show="question.itemA !==null && question.itemB !==null" style="margin-top: 10px;font-size: 14px;">
                   <el-col :span="12" v-show="question.itemA">A: {{question.itemA}}</el-col>
                   <el-col :span="12" v-show="question.itemB">B: {{question.itemB}}</el-col>
                 </el-row>
-                <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-row v-show="question.itemC !==null && question.itemD !==null" style="margin-top: 10px;font-size: 14px;">
                   <el-col :span="12" v-show="question.itemC">C: {{question.itemC}}</el-col>
                   <el-col :span="12" v-show="question.itemD">D: {{question.itemD}}</el-col>
                 </el-row>
-                <el-row style="margin-top: 10px;font-size: 14px;">
+                <el-row v-show="question.itemE !==null && question.itemF !==null" style="margin-top: 10px;font-size: 14px;">
                   <el-col :span="12" v-show="question.itemE">E: {{question.itemE}}</el-col>
                   <el-col :span="12" v-show="question.itemF">F: {{question.itemF}}</el-col>
                 </el-row>

@@ -177,11 +177,113 @@
           <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px 0 0 4px;">
             <el-tab-pane label="最近信息" name="1">
             </el-tab-pane>
-            <el-tab-pane label="科目情况" name="2">
+            <el-tab-pane label="考试情况" name="2">
+
+              <el-table :data="examNoteList" stripe style="width: 100%">
+                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+
+                <el-table-column align="center"  label="考试日期">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.examTime | subTime}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="考试科目">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.subject | subjectFilter}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="考试批次">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.batch}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="考试结果">
+                  <template slot-scope="scope">
+                    <el-tag v-show="scope.row.examState === '1'" type="info" style="color: #fff;" color="#67C23A">通 过</el-tag>
+                    <el-tag v-show="scope.row.examState === '2'" type="info" style="color: #fff;" color="#F56C6C">失 败</el-tag>
+                    <el-tag v-show="scope.row.examState === '3'" type="info" style="color: #fff;" color="#E6A23C">缺 考</el-tag>
+                  </template>
+                </el-table-column>
+
+              </el-table>
+
             </el-tab-pane>
-            <el-tab-pane label="费用情况" name="3">角色管理</el-tab-pane>
-            <el-tab-pane label="来访跟进信息" name="4">定时任务补偿</el-tab-pane>
-            <el-tab-pane label="约车日志" name="5">定时任务补偿</el-tab-pane>
+            <el-tab-pane label="费用情况" name="3">
+
+
+            </el-tab-pane>
+            <el-tab-pane label="来访跟进信息" name="4">
+
+
+            </el-tab-pane>
+            <el-tab-pane label="约车日志" name="5">
+
+              <el-table :data="vehiclePeriodList" stripe style="width: 100%">
+                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+                <el-table-column align="center"  label="科目">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.subject | subjectFilter}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="教练">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.name}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="车牌">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.plateNumber}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="场地">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.fieldAddress}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="时间">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.studyTime}}</span>
+                  </template>
+                </el-table-column>
+
+              </el-table>
+
+
+            </el-tab-pane>
+            <el-tab-pane label="接送日志" name="6">
+
+              <el-table :data="shuttleLogList" stripe style="width: 100%">
+
+                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+                <el-table-column align="center"  label="接送地址">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.deliveryAddress}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="接送教练">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.name}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="接送时间">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.shuttleTime | subTime}} {{ scope.row.relayTime}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="接送状态">
+                  <template slot-scope="scope">
+                    <el-tag v-show="scope.row.state === '0'" type="info" style="color: #fff;" color="#E6A23C">未接送</el-tag>
+                    <el-tag v-show="scope.row.state === '1'" type="info" style="color: #fff;" color="#67C23A">已接送</el-tag>
+                    <el-tag v-show="scope.row.state === '2'" type="info" style="color: #fff;" color="#F56C6C">已取消</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="未接送原因">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.undeliveredReason}}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
           </el-tabs>
         </el-col>
         <el-col style="width: 570px"  :style="{height: (client.height-105) + 'px'}" >
@@ -361,7 +463,7 @@
 
                         <el-form-item>
                           <span slot="label"  class="text_css">介绍人：</span>
-                          <el-select v-if="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" filterable multiple placeholder="请选择介绍人">
+                          <el-select v-if="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
                             <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                             </el-option>
                           </el-select>
@@ -756,10 +858,13 @@
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { userList } from '@/api/upms/user'
   import { examFetchList, getExam } from '@/api/student/examnote'
+  import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
+  import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { getIntentionByMobile } from '@/api/visit/intention'
   import MyTree from '@/components/MyTree'
   import Coach from '@/components/Coach'
   import Dict from '@/components/Dict'
+
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
@@ -870,6 +975,9 @@
           updateTime: null
         },
         stuList: [],
+        examNoteList: [],
+        vehiclePeriodList: [],
+        shuttleLogList: [],
         total: 1,
         listLoading: true,
         showModule: 'list',
@@ -994,11 +1102,21 @@
           this.examBespeak.studentId = this.student.studentId
           this.getIntroducerList()
         })
-        // examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
-        //   console.log('====================== getExam =====================')
-        //   console.log(response.data)
-        //   console.log('====================== getExam =====================')
-        // })
+        examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
+          console.log('====================== 考试日志 =====================')
+          console.log(response.data)
+          this.examNoteList = response.data.data.list
+        })
+        getVehiclePeriodByStudentId(val.studentId).then(response => {
+          console.log('====================== 约车日志 =====================')
+          console.log(response.data)
+          this.vehiclePeriodList = response.data.list
+        })
+        getShuttleLogByStudentId(val.studentId).then(response => {
+          console.log('====================== 接送日志 =====================')
+          console.log(response.data)
+          this.shuttleLogList = response.data.list
+        })
         this.showModule = 'info'
       },
       // 获取所有学员

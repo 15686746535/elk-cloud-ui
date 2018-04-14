@@ -22,6 +22,13 @@ export function getVehiclePeriod(id) {
     method: 'get'
   })
 }
+// 根据ID获取约车日志
+export function getVehiclePeriodByStudentId(id) {
+  return request({
+    url: '/bespeak/vehicleperiod/queryVehiclePeriodByStudentId/' + id,
+    method: 'get'
+  })
+}
 // 删除
 export function delVehiclePeriod(id) {
   return request({

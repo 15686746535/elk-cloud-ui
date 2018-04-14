@@ -109,7 +109,11 @@
         </div>
         <el-dialog>
           <Coach v-model="vehiclePeriod.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
+          <Coach v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field3" placeholder="培训地址"></Coach>
+
           <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+          <Coach v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field2" placeholder="培训地址"></Coach>
+          
         </el-dialog>
       </el-card>
   </div>
@@ -119,6 +123,7 @@
   import { getVehiclePeriodList, getVehiclePeriod, putVehiclePeriod } from '@/api/bespeak/vehicleperiod'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
+  import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
   import waves from '@/directive/waves/index.js' // 水波纹指令
 
@@ -131,7 +136,8 @@
       ])
     },
     components: {
-      Coach
+      Coach,
+      Dict
     },
     directives: {
       waves
@@ -171,7 +177,7 @@
     },
     methods: {
       getVehiclePeriodList() {
-        this.vehiclePeriodListLoading = true
+        this.vehiclePeriodListLoading = false
         getVehiclePeriodList(this.vehiclePeriodListQuery).then(response => {
           this.vehiclePeriodList = response.data.data.list
           console.log(this.vehiclePeriodList)

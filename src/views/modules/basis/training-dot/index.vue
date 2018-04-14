@@ -2,19 +2,15 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <el-card style="margin-bottom: 5px;height: 80px">
       <el-radio-group @change="handleSubject" v-model="listQuery.type">
-        <el-radio-button label="dict_exam_field1">科目一</el-radio-button>
-        <el-radio-button label="dict_exam_field2">科目二</el-radio-button>
-        <el-radio-button label="dict_exam_field3">科目三</el-radio-button>
-        <el-radio-button label="dict_exam_field4">科目四</el-radio-button>
+        <el-radio-button label="dict_training_field2">科目二</el-radio-button>
+        <el-radio-button label="dict_training_field3">科目三</el-radio-button>
       </el-radio-group>
-
-
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
       <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
-        <el-table-column align="center"  label="考试场地">
+        <el-table-column align="center"  label="培训场地">
           <template slot-scope="scope">
             <span>{{ scope.row.label }}</span>
           </template>
@@ -100,7 +96,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          type: 'dict_exam_field1'
+          type: 'dict_training_field2'
         },
         rules: {},
         dict: {},
@@ -125,9 +121,9 @@
     },
     created() {
       this.getList()
-      this.menu_add = this.permissions['basis_exam_dot_add']
-      this.menu_upd = this.permissions['basis_exam_dot_update']
-      this.menu_del = this.permissions['basis_exam_dot_del']
+      this.menu_add = this.permissions['basis_training_dot_add']
+      this.menu_upd = this.permissions['basis_training_dot_update']
+      this.menu_del = this.permissions['basis_training_dot_del']
     },
     methods: {
       getList() {

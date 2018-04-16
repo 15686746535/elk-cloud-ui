@@ -237,7 +237,7 @@
     },
     methods: {
       getVehiclePeriodList() {
-        this.vehiclePeriodListLoading = false
+        this.vehiclePeriodListLoading = true
         getVehiclePeriodList(this.vehiclePeriodListQuery).then(response => {
           this.vehiclePeriodList = response.data.data.list
           console.log(this.vehiclePeriodList)

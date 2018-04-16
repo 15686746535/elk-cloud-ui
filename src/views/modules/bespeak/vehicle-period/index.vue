@@ -51,7 +51,7 @@
               <span>{{scope.row.coachId}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="身份证">
+          <el-table-column align="center" label="身份证" width="170">
             <template slot-scope="scope">
               <span>{{scope.row.idNumber}}</span>
             </template>
@@ -107,12 +107,77 @@
           </el-pagination>
           <el-button style="margin-top: -8px;float: right" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
         </div>
-        <el-dialog>
-          <Coach v-model="vehiclePeriod.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
-          <Dict v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field3" placeholder="培训地址"></Dict>
+      <el-dialog  width="40%" title="录入意向" :visible.sync="addOption">
 
-          <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
-          <Dict v-model="vehiclePeriod.fieldCoach" coachType="dict_training_field2" placeholder="培训地址"></Dict>
+        <el-form :model="vehiclePeriod" label-position="left" label-width="80px">
+
+          <el-row>
+
+            <el-row>
+              <el-col :span="12">
+                <el-form-item prop="coach">
+                  <span slot="label" class="text_css">教练：</span>
+                  <span v-show="vehiclePeriodListQuery.subject === 2">
+                    <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+                  </span>
+
+                  <span v-show="vehiclePeriodListQuery.subject === 3">
+                    <Coach v-model="vehiclePeriod.roadCoach" coachType="road" placeholder="路训教练"></Coach>
+                  </span>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="12">
+                <el-form-item prop="fieldAddress">
+                  <span slot="label" class="text_css">场地：</span>
+                  <span v-show="vehiclePeriodListQuery.subject === 2">
+                    <Dict v-model="vehiclePeriod.fieldAddress" coachType="dict_training_field2" placeholder="训练场地"></Dict>
+                  </span>
+
+                  <span v-show="vehiclePeriodListQuery.subject === 3">
+                    <Dict v-model="vehiclePeriod.fieldAddress" coachType="dict_training_field3" placeholder="训练场地"></Dict>
+                  </span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="12">
+                <el-form-item prop="idNumber">
+                  <span slot="label" class="text_css">场地：</span>
+                  <Dict v-model="vehiclePeriod.idNumber" coachType="dict_training_field2" placeholder="训练场地"></Dict>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="12">
+
+              </el-col>
+              <el-col :span="12">
+
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col>
+                <el-form-item prop="fieldAddress">
+                  <span slot="label" class="text_css">课时：</span>
+                  <el-time-select placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
+                  </el-time-select>
+                  <el-time-select placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: startTime }">
+                  </el-time-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+
+          </el-row>
+
+        </el-form>
 
         </el-dialog>
       </el-card>
@@ -148,6 +213,7 @@
         vehiclePeriodList: [],
         total: null,
         vehiclePeriodListLoading: true,
+        addOption: false,
         vehiclePeriodListQuery: {
           page: 1,
           limit: 20,
@@ -189,6 +255,7 @@
       },
       create() {
         this.vehiclePeriod = {}
+        this.addOption = true
       },
       update(row) {
         getVehiclePeriod(row.roleId)
@@ -216,6 +283,9 @@
         putVehiclePeriod(this.vehiclePeriod).then(() => {
           this.getVehiclePeriodList()
         })
+      },
+      asd() {
+        console.log()
       }
     }
   }
@@ -232,5 +302,13 @@
     margin-right: 0;
     margin-bottom: 0;
     width: 50%;
+  }
+  .text_css{
+    color:#495060;
+    font-size: 16px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
   }
 </style>

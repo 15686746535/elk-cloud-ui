@@ -64,7 +64,7 @@
             <!--<el-table-column align="center" width="210px" label="是否回访">
               <template slot-scope="scope">
                 <el-tag class="subject">
-                  <el-tag v-if="scope.row.rvisitFlag == 1" class="pass">已回访</el-tag>
+                  <el-tag v-if="scope.row.revisitFlag == 1" class="pass">已回访</el-tag>
                   <el-tag v-else class="noPass">未回访</el-tag>
                 </el-tag>
               </template>
@@ -94,34 +94,57 @@
       </el-col>
     </el-row>
 
-    <el-dialog @close="getList" title="回访登记" width="40%" :visible.sync="visitStudentOption">
+    <el-dialog title="选择问卷" width="20%" :visible.sync="questionnaireOption">
+      <div style="width:80%;margin: 0 auto" >
+        <el-select style="width: 100%" v-model="questionnaireId" placeholder="请选择">
+          <el-option
+            v-for="item in questionnaireList"
+            :key="item.questionnaireId"
+            :label="item.name"
+            :value="item.questionnaireId">
+          </el-option>
+        </el-select>
+      </div>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="questionnaireOption = false">取 消</el-button>
+        <el-button type="primary" @click="getRevisitQuestion">确 定</el-button>
+      </div>
+
+    </el-dialog>
+
+    <el-dialog @close="closeDialog" title="回访登记" width="40%" :visible.sync="visitStudentOption">
       <div :style="{height: (client.height)/2 +'px'}" style="overflow: auto">
 
-        <div style="clear: both;width: 80%;margin: 0 auto;" v-for="(question, index) in revisitQuestion">
+        <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in revisitQuestionList">
           <el-row>
             <el-col :span="2">
               <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
             </el-col>
             <el-col :span="22">
               <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-              <el-row style="margin-top: 10px;font-size: 14px;">
-                <el-col :span="12" v-show="question.itemA">A: {{question.itemA}}</el-col>
-                <el-col :span="12" v-show="question.itemB">B: {{question.itemB}}</el-col>
-              </el-row>
-              <el-row style="margin-top: 10px;font-size: 14px;">
-                <el-col :span="12" v-show="question.itemC">C: {{question.itemC}}</el-col>
-                <el-col :span="12" v-show="question.itemD">D: {{question.itemD}}</el-col>
-              </el-row>
-              <el-row style="margin-top: 10px;font-size: 14px;">
-                <el-col :span="12" v-show="question.itemE">E: {{question.itemE}}</el-col>
-                <el-col :span="12" v-show="question.itemF">F: {{question.itemF}}</el-col>
-              </el-row>
+              <el-radio-group v-model="answerList[index].answer">
+                <el-row style="font-size: 14px;">
+                  <el-radio :span="12" v-show="question.itemA" :label="question.itemA" style="margin-top: 10px;">A: {{question.itemA}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemB" :label="question.itemB" style="margin-top: 10px;">B: {{question.itemB}}</el-radio>
+                </el-row>
+                <el-row style="font-size: 14px;">
+                  <el-radio :span="12" v-show="question.itemC" :label="question.itemC" style="margin-top: 10px;">C: {{question.itemC}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemD" :label="question.itemD" style="margin-top: 10px;">D: {{question.itemD}}</el-radio>
+                </el-row>
+                <el-row style="font-size: 14px;">
+                  <el-radio :span="12" v-show="question.itemE" :label="question.itemE" style="margin-top: 10px;">E: {{question.itemE}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemF" :label="question.itemF" style="margin-top: 10px;">F: {{question.itemF}}</el-radio>
+                </el-row>
+              </el-radio-group>
             </el-col>
           </el-row>
         </div>
+
+
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button >取 消</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
         <el-button type="primary" >确 定</el-button>
       </div>
     </el-dialog>
@@ -130,6 +153,7 @@
 
 <script>
   import { fetchList, getObj } from '@/api/student/revisit'
+  import { getRevisitQuestionnaireList } from '@/api/student/revisit-questionnaire'
   import { getQuestion } from '@/api/student/revisit-question'
   import { removeAllSpace } from '@/utils/validate'
   import MyTree from '@/components/MyTree'
@@ -148,20 +172,36 @@
       return {
         revisitStudent: {},
         list: [],
+        questionnaireList: [],
+        answerList: [],
         total: null,
         listLoading: true,
         showModule: 'list',
         listQuery: {
           page: 1,
           limit: 20,
-          subject: '1',
+          subject: 1,
           examState: 'exam_note_pass',
-          rvisitFlag: '0'
+          revisitFlag: '0'
         },
         dialogStatus: '',
         visitStudentOption: false,
-        revisitQuestion: [],
-        subject: '1'
+        questionnaireOption: false,
+        revisitQuestionList: [],
+        subject: '1',
+        questionnaireListQuery: {
+          page: 1,
+          limit: 0,
+          state: 0,
+          subject: 1
+        },
+        questionnaireId: null,
+        examNoteId: null,
+        questionListQuery: {
+          page: 1,
+          limit: 0,
+          subject: 1
+        }
       }
     },
     created() {
@@ -235,12 +275,37 @@
       },
       /* 回访 */
       visitStudent(val) {
-        console.log(this.subject)
-        getQuestion({ subject: this.subject }).then(response => {
+        this.examNoteId = val.examNoteId
+        this.questionnaireListQuery.subject = this.listQuery.subject
+        getRevisitQuestionnaireList(this.questionnaireListQuery).then(response => {
+          console.log('=================== 问卷 -=============')
+          console.log(response.data.data)
+          this.questionnaireOption = true
+          this.questionnaireList = response.data.data.list
+          this.questionnaireId = this.questionnaireList[0].questionnaireId
+          console.log(this.questionnaireList)
+        })
+      },
+      getRevisitQuestion() {
+        getQuestion(this.questionnaireId).then(response => {
           console.log(response.data)
-          this.revisitQuestion = response.data.data
+          this.revisitQuestionList = response.data.data
+          for (var i = 0; i < this.revisitQuestionList.length; i++) {
+            this.answerList.push({
+              examNoteId: this.examNoteId,
+              questionId: this.revisitQuestionList[i].questionId,
+              answer: this.revisitQuestionList[i].itemA
+            })
+          }
+          console.log(this.revisitQuestionList.length)
+          console.log(this.answerList.length)
           this.visitStudentOption = true
         })
+      },
+      closeDialog() {
+        this.visitStudentOption = false
+        this.questionnaireOption = false
+        this.getList()
       }
     }
   }

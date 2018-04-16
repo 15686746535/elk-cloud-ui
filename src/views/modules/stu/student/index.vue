@@ -1170,6 +1170,7 @@
       update() {
         console.log(this.student)
         putObj(this.student).then(response => {
+          this.editList(this.student)
           this.edit = false
         })
       },

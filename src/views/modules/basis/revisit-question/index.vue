@@ -71,17 +71,17 @@
               </el-col>
               <el-col :span="22">
                 <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-                <el-row v-show="question.itemA !==null && question.itemB !==null" style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="12" v-show="question.itemA">A: {{question.itemA}}</el-col>
-                  <el-col :span="12" v-show="question.itemB">B: {{question.itemB}}</el-col>
+                <el-row style="font-size: 14px;">
+                  <el-col :span="12" v-show="question.itemA" style="margin-top: 10px;">A: {{question.itemA}}</el-col>
+                  <el-col :span="12" v-show="question.itemB" style="margin-top: 10px;">B: {{question.itemB}}</el-col>
                 </el-row>
-                <el-row v-show="question.itemC !==null && question.itemD !==null" style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="12" v-show="question.itemC">C: {{question.itemC}}</el-col>
-                  <el-col :span="12" v-show="question.itemD">D: {{question.itemD}}</el-col>
+                <el-row style="font-size: 14px;">
+                  <el-col :span="12" v-show="question.itemC" style="margin-top: 10px;">C: {{question.itemC}}</el-col>
+                  <el-col :span="12" v-show="question.itemD" style="margin-top: 10px;">D: {{question.itemD}}</el-col>
                 </el-row>
-                <el-row v-show="question.itemE !==null && question.itemF !==null" style="margin-top: 10px;font-size: 14px;">
-                  <el-col :span="12" v-show="question.itemE">E: {{question.itemE}}</el-col>
-                  <el-col :span="12" v-show="question.itemF">F: {{question.itemF}}</el-col>
+                <el-row style="font-size: 14px;">
+                  <el-col :span="12" v-show="question.itemE" style="margin-top: 10px;">E: {{question.itemE}}</el-col>
+                  <el-col :span="12" v-show="question.itemF" style="margin-top: 10px;">F: {{question.itemF}}</el-col>
                 </el-row>
               </el-col>
             </el-row>

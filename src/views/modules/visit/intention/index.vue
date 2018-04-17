@@ -12,9 +12,9 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" size="mini" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select v-model="listQuery.operator" clearable placeholder="负责人">
+            <el-select :style="{width: (client.width/9) + 'px'}" size="mini" v-model="listQuery.operator" clearable placeholder="负责人">
               <el-option
                 v-for="item in operators"
                 :key="item"
@@ -22,23 +22,14 @@
                 :value="item">
               </el-option>
             </el-select>
-            <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
-            <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-            <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+            <dict :style="{width: (client.width/10) + 'px'}" size="mini" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
+            <dict :style="{width: (client.width/8) + 'px'}" size="mini" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
+            <el-input :style="{width: (client.width/8) + 'px'}" size="mini" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+            <el-button class="filter-item" type="primary" size="mini" v-waves icon="search" @click="searchClick">搜索</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}" style="overflow: hidden">
             <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
 
-              <!--<div class="intention" v-for="intention in intentionList" @click="intentionClick($event)"  @dblclick="editList(intention)">-->
-                <!--&lt;!&ndash;<div>&ndash;&gt;-->
-
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;<div>&ndash;&gt;-->
-
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;<div class="intention_btn">重新分配</div>&ndash;&gt;-->
-              <!--</div>-->
               <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
                 <div style="width: 100%;height: 25px">
                   <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
@@ -105,7 +96,7 @@
                       <div style="padding: 0 5px;">
                         <el-row :gutter="5">
                           <el-col :span="19" >
-                            <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                            <el-input type="textarea" maxlength="200" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                           </el-col>
                           <el-col :span="5" ><el-button style="width: 100%;height: 96px;" type="primary" @click="addFollowUp">跟进</el-button></el-col>
                         </el-row>
@@ -137,7 +128,7 @@
 
 
         <!--:rules="rules"-->
-        <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm">
+        <el-form :model="intention" :rules="rules" ref="intention" label-width="100px" class="demo-ruleForm">
 
           <el-row :gutter="5">
             <el-col :span="12">

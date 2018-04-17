@@ -12,9 +12,9 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" size="mini" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select :style="{width: (client.width/9) + 'px'}" size="mini" v-model="listQuery.operator" clearable placeholder="负责人">
+            <el-select :style="{width: (client.width/10) + 'px'}" v-model="listQuery.operator" clearable placeholder="负责人">
               <el-option
                 v-for="item in operators"
                 :key="item"
@@ -22,10 +22,10 @@
                 :value="item">
               </el-option>
             </el-select>
-            <dict :style="{width: (client.width/10) + 'px'}" size="mini" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
-            <dict :style="{width: (client.width/8) + 'px'}" size="mini" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-            <el-input :style="{width: (client.width/8) + 'px'}" size="mini" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" size="mini" v-waves icon="search" @click="searchClick">搜索</el-button>
+            <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
+            <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
+            <el-input :style="{width: (client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+            <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}" style="overflow: hidden">
             <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
@@ -43,7 +43,7 @@
                   <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
                 </div>
 
-                <div class="intention_text" style="width: 100%;float: left">电话：{{intention.mobile}}</div>
+                <div class="intention_text" style="width: 100%;float: left">电话{{client.width}}：{{intention.mobile}}</div>
 
                 <div class="intention_text" style="width: 100%;float: left">微信：{{intention.wechat}}</div>
 
@@ -124,11 +124,11 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-dialog :close-on-click-modal="false" @close="back" width="40%" title="录入意向" :visible.sync="addOption">
+      <el-dialog width="35%" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
 
 
         <!--:rules="rules"-->
-        <el-form :model="intention" :rules="rules" ref="intention" label-width="100px" class="demo-ruleForm">
+        <el-form :model="intention" :rules="rules" ref="intention" label-width="100px" class="demo-ruleForm"  size="small">
 
           <el-row :gutter="5">
             <el-col :span="12">
@@ -140,8 +140,10 @@
             <el-col :span="12">
               <el-form-item prop="sex">
                 <span slot="label" class="text_css">性别：</span>
-                <el-radio v-model="intention.sex" label="1">男</el-radio>
-                <el-radio v-model="intention.sex" label="0">女</el-radio>
+                <el-radio-group v-model="intention.sex">
+                  <el-radio label="1">男</el-radio>
+                  <el-radio label="0">女</el-radio>
+                </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
@@ -150,13 +152,13 @@
             <el-col :span="12">
               <el-form-item prop="mobile">
                 <span slot="label" class="text_css">电话：</span>
-                <el-input v-model="intention.mobile" placeholder="电话"></el-input>
+                <el-input  v-model="intention.mobile" placeholder="电话"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="wechat">
                 <span slot="label" class="text_css">微信：</span>
-                <el-input v-model="intention.wechat" placeholder="微信"></el-input>
+                <el-input  v-model="intention.wechat" placeholder="微信"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -165,13 +167,13 @@
             <el-col :span="12">
               <el-form-item prop="contactAddress">
                 <span slot="label" class="text_css">住址：</span>
-                <el-input v-model="intention.contactAddress" placeholder="住址"></el-input>
+                <el-input  v-model="intention.contactAddress" placeholder="住址"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="customerType">
                 <span slot="label" class="text_css">客户类型：</span>
-                <dict v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
+                <dict  v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
               </el-form-item>
             </el-col>
           </el-row>
@@ -180,7 +182,7 @@
             <el-col :span="12">
               <el-form-item prop="source">
                 <span slot="label" class="text_css">来源渠道：</span>
-                <dict dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
+                <dict  dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -195,13 +197,13 @@
             <el-col :span="12">
               <el-form-item prop="visitTime">
                 <span slot="label" class="text_css">来访时间：</span>
-                <el-date-picker type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
+                <el-date-picker  type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="applyType">
                 <span slot="label" class="text_css">车型：</span>
-                <dict v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+                <dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
               </el-form-item>
             </el-col>
           </el-row>
@@ -210,7 +212,7 @@
             <el-col>
               <el-form-item prop="content">
                 <span slot="label" class="text_css">咨询内容：</span>
-                <el-input type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
+                <el-input  type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
               </el-form-item>
             </el-col>
           </el-row>

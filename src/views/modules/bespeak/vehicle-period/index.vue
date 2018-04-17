@@ -27,28 +27,13 @@
         <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="(client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="商品名称">
-                </el-form-item>
-                <el-form-item label="所属店铺">
-                </el-form-item>
-                <el-form-item label="商品 ID">
-                </el-form-item>
-                <el-form-item label="店铺 ID">
-                </el-form-item>
-                <el-form-item label="商品分类">
-                </el-form-item>
-                <el-form-item label="店铺地址">
-                </el-form-item>
-                <el-form-item label="商品描述">
-                </el-form-item>
-              </el-form>
+
             </template>
           </el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
           <el-table-column align="center" label="教练">
             <template slot-scope="scope">
-              <span>{{scope.row.coachId}}</span>
+              <span>{{scope.row.name}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="身份证" width="170">
@@ -58,7 +43,7 @@
           </el-table-column>
           <el-table-column align="center" label="电话">
             <template slot-scope="scope">
-              <span>{{scope.row.phone}}</span>
+              <span>{{scope.row.mobile}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="科目">
@@ -71,19 +56,14 @@
               <span>{{scope.row.fieldAddress}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="课时">
+          <el-table-column align="center" label="课时" width="250">
             <template slot-scope="scope">
-              <span>{{scope.row.studyTime | subTime('time')}}</span>
+              <span>{{scope.row.beginTime | subTime('dateTime')}} - {{scope.row.endTime | subTime('time')}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="已约人数">
             <template slot-scope="scope">
               <span>{{scope.row.count}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="课时日期">
-            <template slot-scope="scope">
-              <span>{{scope.row.studyTime | subTime}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="状态">
@@ -107,16 +87,16 @@
           </el-pagination>
           <el-button style="margin-top: -8px;float: right" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
         </div>
-      <el-dialog  width="40%" title="录入意向" :visible.sync="addOption">
+      <el-dialog  width="40%" title="录入课时" :visible.sync="addOption">
 
         <el-form :model="vehiclePeriod" label-position="left" label-width="80px">
 
           <el-row>
 
-            <el-row>
+            <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item prop="coach">
-                  <span slot="label" class="text_css">教练：</span>
+                  <span slot="label" class="text_css">教学教练：</span>
                   <span v-show="vehiclePeriodListQuery.subject === 2">
                     <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
                   </span>
@@ -129,7 +109,7 @@
 
               <el-col :span="12">
                 <el-form-item prop="fieldAddress">
-                  <span slot="label" class="text_css">场地：</span>
+                  <span slot="label" class="text_css">训练场地：</span>
                   <span v-show="vehiclePeriodListQuery.subject === 2">
                     <Dict v-model="vehiclePeriod.fieldAddress" coachType="dict_training_field2" placeholder="训练场地"></Dict>
                   </span>
@@ -141,21 +121,12 @@
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item prop="idNumber">
-                  <span slot="label" class="text_css">场地：</span>
-                  <Dict v-model="vehiclePeriod.idNumber" coachType="dict_training_field2" placeholder="训练场地"></Dict>
+                  <span slot="label" class="text_css">人数上限：</span>
+                  <el-input v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
                 </el-form-item>
-              </el-col>
-              <el-col :span="12">
-
-              </el-col>
-            </el-row>
-
-            <el-row>
-              <el-col :span="12">
-
               </el-col>
               <el-col :span="12">
 
@@ -164,13 +135,19 @@
 
             <el-row>
               <el-col>
+
                 <el-form-item prop="fieldAddress">
-                  <span slot="label" class="text_css">课时：</span>
-                  <el-time-select placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
+                  <span slot="label" class="text_css">学习课时：</span>
+                  <el-time-select style="width: 35%" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
                   </el-time-select>
-                  <el-time-select placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: startTime }">
+                  <el-time-select style="width: 35%" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
                   </el-time-select>
                 </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col>
               </el-col>
             </el-row>
 
@@ -297,11 +274,6 @@
   .demo-table-expand label {
     width: 90px;
     color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
   }
   .text_css{
     color:#495060;

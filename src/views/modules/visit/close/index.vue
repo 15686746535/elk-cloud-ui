@@ -13,9 +13,9 @@
 
         <el-col :style="{width: (client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select v-model="listQuery.operator" clearable placeholder="负责人">
+            <el-select :style="{width: (client.width/10) + 'px'}" v-model="listQuery.operator" clearable placeholder="负责人">
               <el-option
                 v-for="item in operators"
                 :key="item"
@@ -23,11 +23,10 @@
                 :value="item">
               </el-option>
             </el-select>
-            <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
-            <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-            <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
-            <el-button class="filter-item" style="margin-left: 10px;" @click="open" type="success" icon="plus">重新分配</el-button>
+            <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
+            <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
+            <el-input :style="{width: (client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+            <el-button class="filter-item" type="primary" v-waves  @click="searchClick">搜 索</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}">
             <div class="intentions"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
@@ -58,10 +57,11 @@
             <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;clear: both">
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
-                             background
+                             background style="float: left"
                              :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
+              <el-button class="filter-item" style="float: right" @click="open" type="success" icon="plus">重新分配</el-button>
             </div>
 
           </el-card>

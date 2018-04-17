@@ -170,11 +170,11 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
+            this.dialogFormVisible = false
             this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
-                this.dialogFormVisible = false
                 this.getList()
                 this.$notify({
                   title: '成功',

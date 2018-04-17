@@ -1,11 +1,7 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
-    <el-card style="margin-bottom: 5px;height: 80px">
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加
-      </el-button>
-    </el-card>
-    <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-205) + 'px'}" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+    <el-card :style="{height: (client.height - 40) + 'px'}">
+      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :style="{height: (client.height-130) + 'px'}" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
         <el-table-column align="center"  label="顾虑问题">
@@ -32,10 +28,10 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button v-if="sys_dict_upd" size="small" type="success"
+            <el-button v-if="basis_worry_update" size="small" type="success"
                        @click="handleUpdate(scope.row)">编辑
             </el-button>
-            <el-button v-if="sys_dict_del" size="mini" type="danger"
+            <el-button v-if="basis_worry_del" size="mini" type="danger"
                        @click="handleDelete(scope.row)">删除
             </el-button>
           </template>
@@ -44,9 +40,11 @@
       <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page" background
+                       style="float: left"
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
+        <el-button v-if="basis_worry_add" class="filter-item" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
@@ -116,9 +114,9 @@
     },
     created() {
       this.getList()
-      this.sys_dict_add = this.permissions['basis_dict_add']
-      this.sys_dict_upd = this.permissions['basis_dict_update']
-      this.sys_dict_del = this.permissions['basis_dict_del']
+      this.basis_worry_add = this.permissions['basis_worry_add']
+      this.basis_worry_update = this.permissions['basis_worry_update']
+      this.basis_worry_del = this.permissions['basis_worry_del']
     },
     methods: {
       getList() {
@@ -169,11 +167,11 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
+            this.dialogFormVisible = false
             this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
-                this.dialogFormVisible = false
                 this.getList()
                 this.$notify({
                   title: '成功',

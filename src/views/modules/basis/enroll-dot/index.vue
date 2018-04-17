@@ -45,8 +45,7 @@
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
-        <el-button v-if="menu_add" class="filter-item" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加
-      </el-button>
+        <el-button v-if="menu_add" class="filter-item" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
@@ -181,11 +180,11 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
+            this.dialogFormVisible = false
             this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
-                this.dialogFormVisible = false
                 this.getList()
                 this.$notify({
                   title: '成功',

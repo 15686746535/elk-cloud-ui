@@ -27,7 +27,10 @@
         <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="(client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
-
+              <div v-for="student in props.row.studentList">
+                {{student.name}}
+                {{student.mobile}}
+              </div>
             </template>
           </el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -63,7 +66,7 @@
           </el-table-column>
           <el-table-column align="center" label="已约人数">
             <template slot-scope="scope">
-              <span>{{scope.row.count}}</span>
+              <span>{{scope.row.studentList.length}} 人</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="状态">

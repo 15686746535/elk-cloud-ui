@@ -13,13 +13,16 @@
               <el-table :data="list"  :height="(client.height-195)"  v-loading="listLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
-
+                    <div v-for="student in props.row.studentList">
+                      {{student.studentName}}
+                      {{student.mobile}}
+                    </div>
                   </template>
                 </el-table-column>
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
                 <el-table-column align="center" label="接送人">
                     <template slot-scope="scope">
-                        <span>{{scope.row.vehicleId}}</span>
+                        <span>{{scope.row.name}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="接送区域">

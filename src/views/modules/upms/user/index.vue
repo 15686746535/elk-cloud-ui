@@ -403,7 +403,6 @@
   import LineChart from '@/components/LineChart'
   import MyTree from '@/components/MyTree'
   import TreeSelect from '@/components/TreeSelect'
-  import OrgSelect from '@/components/OrgSelect'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
 
   export default {
@@ -426,8 +425,7 @@
       MyTree,
       LineChart,
       Dict,
-      TreeSelect,
-      OrgSelect
+      TreeSelect
     },
     directives: {
       waves

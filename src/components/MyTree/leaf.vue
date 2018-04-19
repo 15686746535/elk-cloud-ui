@@ -122,7 +122,7 @@
     line-height: 21px;
   }
   li ul.line {
-    background: url(../img/line_conn.png) 0 0 repeat-y;
+    background: url(img/line_conn.png) 0 0 repeat-y;
   }
   li ul {
     height: auto;
@@ -169,7 +169,7 @@
     background-color: transparent;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    background-image: url(../img/bootstrap.png);
+    background-image: url(img/bootstrap.png);
   }
   li a.node{
     margin-left: -7px;
@@ -220,7 +220,7 @@
     background-position: -126px -42px;
   }
   li ul.line {
-    background: url(../img/line_conn.png) 0 0 repeat-y;
+    background: url(img/line_conn.png) 0 0 repeat-y;
   }
   li span.button.center_docu {
     background-position: -84px -21px;

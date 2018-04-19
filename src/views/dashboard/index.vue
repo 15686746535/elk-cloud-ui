@@ -10,6 +10,7 @@
       <el-col :span="6">
         <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px"></div>
       </el-col>
+
       <el-col :span="6">
         <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px">
           <barTickAlign :data="[12,21,32,22,12,54,42]"></barTickAlign>
@@ -24,7 +25,17 @@
         <div style="height: 320px;width: 100%;background-color: crimson;border-radius: 5px"></div>
       </el-col>
     </el-row>
-    <el-row></el-row>
+    <el-row>
+      <tree-select url="/upms/org/tree"  v-model="select" ></tree-select>
+      <div style="background-color: #fff">
+
+        <my-tree url="/upms/org/tree" v-model="dict"></my-tree>
+      </div>
+
+     <!-- <dict dictType="dict_customer_type" v-model="dict" ></dict>
+      {{dict}}
+      <el-button @click="dict = 'A类'">修改</el-button>-->
+    </el-row>
   </div>
 </template>
 
@@ -47,6 +58,8 @@ export default {
   },
   data() {
     return {
+      select: null,
+      dict: null
     }
   },
   methods: {

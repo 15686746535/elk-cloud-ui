@@ -65,6 +65,7 @@
     },
     watch: {
       value: function(val) {
+        console.log(val)
         backfill(this.nodeList, val)
       },
       data: function(val) {

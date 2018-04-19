@@ -3,6 +3,7 @@ const getters = {
   visitedViews: state => state.app.visitedViews,
   loading: state => state.app.loading,
   client: state => state.app.client,
+  spread: state => state.app.spread,
   cachedViews: state => state.tagsView.cachedViews,
   token: state => state.user.token,
   avatar: state => state.user.avatar,

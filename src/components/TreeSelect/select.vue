@@ -1,13 +1,13 @@
 <template>
   <div :style="{width:width}">
-    <div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>
+    <!--<div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>-->
     <div class="ran-select">
-      <input class="ran-input el-input__inner hover " :class="isOpen?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
-      <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
-      <i class="ran-select-icon el-icon-error hover" v-if="currentId != null " @click="clean" :class="isOpen?'ran-select-icon-open':'ran-select-icon-close'"></i>
-      <div v-show="isOpen" class="ran-arrow"></div>
+      <input class="ran-input el-input__inner hover " :class="$store.state.app.spread?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
+      <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="$store.state.app.spread?'ran-select-icon-open':'ran-select-icon-close'"></i>
+      <i class="ran-select-icon el-icon-error hover" v-if="currentId != null " @click="clean" :class="$store.state.app.spread?'ran-select-icon-open':'ran-select-icon-close'"></i>
+      <div v-show="$store.state.app.spread" class="ran-arrow"></div>
       <el-collapse-transition>
-        <div v-show="isOpen" class="ran-select-dropdown" :style="{minWidth:width}">
+        <div v-show="$store.state.app.spread" class="ran-select-dropdown" :style="{minWidth:width}">
           <div class="not-data" v-show="noData">
             没有数据
           </div>
@@ -26,13 +26,9 @@
 
 <script>
   import request from '@/utils/request'
-  import MyTree from '@/components/MyTree'
 
   export default {
     name: 'tree-select',
-    components: {
-      MyTree
-    },
     model: {
       prop: 'value',
       event: 'change'
@@ -120,10 +116,10 @@
         })
       },
       cancel() {
-        this.isOpen = false
+        this.$store.dispatch('setSpread', false)
       },
       choice() {
-        this.isOpen = !this.isOpen
+        this.$store.dispatch('setSpread', !this.$store.state.app.spread)
       }
     }
   }

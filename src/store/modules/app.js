@@ -7,6 +7,7 @@ const app = {
     },
     visitedViews: [],
     loading: false,
+    spread: false,
     client: {
       height: 0, /* 页面高度*/
       width: 0 /* 页面宽度*/
@@ -20,6 +21,9 @@ const app = {
         Cookies.set('sidebarStatus', 0)
       }
       state.sidebar.opened = !state.sidebar.opened
+    },
+    SET_SPREAD: (state, spread) => {
+      state.spread = spread
     },
     SET_LOADING: (state, loading) => {
       state.loading = loading
@@ -54,6 +58,9 @@ const app = {
     },
     setLoading: ({ commit }, loading) => {
       commit('SET_LOADING', loading)
+    },
+    setSpread: ({ commit }, spread) => {
+      commit('SET_SPREAD', spread)
     },
     setClientHeight: ({ commit }, height) => {
       commit('SET_CLIENT_HEIGHT', height)

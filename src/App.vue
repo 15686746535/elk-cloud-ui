@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="app">
     <router-view></router-view>
     <!--加载框-->
     <div v-loading.fullscreen.lock="$store.state.app.loading"
@@ -22,6 +22,9 @@ export default {
     }
   },
   methods: {
+    app() {
+      this.$store.dispatch('setSpread', false)
+    },
     setClientSize() {
       var height = document.documentElement.clientHeight - 84 || document.body.clientHeight - 84
       var width = document.documentElement.clientWidth - 220 || document.body.clientWidth - 220

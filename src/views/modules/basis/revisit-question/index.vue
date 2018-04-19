@@ -193,13 +193,9 @@
   import { getQuestion, addQuestion } from '@/api/student/revisit-question'
   import { mapGetters } from 'vuex'
   import { getRevisitQuestionnaireList, addQuestionnaireList, getQuestionnaireList, putQuestionnaireList } from '@/api/student/revisit-questionnaire'
-  import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {
     name: 'table_revisitQuestion',
-    directives: {
-      waves
-    },
     computed: {
       ...mapGetters([
         'permissions',

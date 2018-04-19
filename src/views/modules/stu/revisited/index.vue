@@ -23,7 +23,7 @@
           </div>
           <div style="float: right">
             <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
+            <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
           </div>
         </el-card>
           <el-card :style="{height: (client.height-115) + 'px',width: (client.width-690) + 'px'}" style="float: left;border-radius:4px 0 0 4px;margin-top: 5px">
@@ -114,13 +114,9 @@
   import { removeAllSpace } from '@/utils/validate'
   import MyTree from '@/components/MyTree'
   import { mapGetters } from 'vuex'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
     name: 'table_revisited',
-    directives: {
-      waves
-    },
     components: {
       MyTree
     },

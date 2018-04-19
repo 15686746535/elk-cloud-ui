@@ -25,7 +25,7 @@
             <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
             <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
             <el-input :style="{width: (client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+            <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}" style="overflow: hidden">
             <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
@@ -446,17 +446,12 @@
   import Dict from '@/components/Dict'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-  import waves from '@/directive/waves/index.js'
-  // 水波纹指令
 
   export default {
     name: 'table_intention',
     components: {
       MyTree,
       Dict
-    },
-    directives: {
-      waves
     },
     data() {
       return {
@@ -717,7 +712,7 @@
         this.getOperators()
       },
       // 来访信息点击事件
-      intentionClick(e,val) {
+      intentionClick(e, val) {
         this.alertFollowEntity = val
         this.getFollowUp(val)
         console.log(e)

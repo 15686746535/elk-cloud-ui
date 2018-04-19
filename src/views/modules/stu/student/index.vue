@@ -27,7 +27,7 @@
               <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: (client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
               <dict v-model="listQuery.source" dictType="dict_source" :style="{width: (client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
+              <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
           </el-card>
 
           <el-card :style="{height: (client.height-170) + 'px'}">
@@ -932,7 +932,7 @@
   import Coach from '@/components/Coach'
   import Dict from '@/components/Dict'
 
-  import waves from '@/directive/waves/index.js' // 水波纹指令
+
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
   import { getBatchList, getBatch } from '@/api/student/batch'
@@ -943,9 +943,6 @@
       MyTree,
       Dict,
       Coach
-    },
-    directives: {
-      waves
     },
     data() {
       return {

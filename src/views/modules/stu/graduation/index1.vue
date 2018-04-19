@@ -24,7 +24,7 @@
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="车型筛选"  ></dict>
                 <dict dictType="dict_sex" style="width: 200px;"  placeholder="来源渠道"  ></dict>
                 <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-                <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+                <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
               </div>
             </el-card>
           <el-card :style="{height: (client.height-175) + 'px'}">
@@ -343,7 +343,7 @@
   import MyTree from '@/components/MyTree'
   import { removeAllSpace } from '@/utils/validate'
   import Dict from '@/components/Dict'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
+
   import { mapGetters } from 'vuex'
 
   export default {
@@ -351,9 +351,6 @@
     components: {
       MyTree,
       Dict
-    },
-    directives: {
-      waves
     },
     data() {
       return {

@@ -24,7 +24,7 @@
           <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
           <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
 
-          <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
+          <el-button type="primary"  @click="searchClick" >搜索</el-button>
         </div>
       </div>
     </el-card>
@@ -345,7 +345,7 @@
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
   import Dict from '@/components/Dict'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
+
   import { parseTime } from '@/utils/index'
   import { removeAllSpace } from '@/utils/validate'
 
@@ -353,9 +353,6 @@
     name: 'table_batch',
     components: {
       Dict
-    },
-    directives: {
-      waves
     },
     data() {
       return {

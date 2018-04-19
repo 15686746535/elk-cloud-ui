@@ -3,7 +3,7 @@
 
     <el-card  style="margin-bottom: 5px;height: 80px;">
       <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+      <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
     </el-card>
 
@@ -121,16 +121,13 @@
   import { fetchTree } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
   import TreeSelect from '@/components/TreeSelect'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
+
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_role',
     components: {
       TreeSelect
-    },
-    directives: {
-      waves
     },
     data() {
       return {

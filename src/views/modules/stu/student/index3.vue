@@ -26,7 +26,7 @@
               <dict v-model="listQuery.roadCoach" dictType="dict_sex" style="width: 200px;"  placeholder="路训教练"  ></dict>
               <dict v-model="listQuery.source" dictType="dict_source" style="width: 200px;"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+              <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
           </el-card>
 
@@ -339,16 +339,13 @@
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { examFetchList, getExam } from '@/api/student/examnote'
   import Dict from '@/components/Dict'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
+
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
     components: {
       Dict
-    },
-    directives: {
-      waves
     },
     data() {
       return {

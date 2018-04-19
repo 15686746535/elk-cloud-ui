@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
     <el-card style="margin-bottom: 5px;height: 80px">
       <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+      <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
     </el-card>
     <el-card :style="{height: (client.height - 125) + 'px'}">
@@ -68,14 +68,11 @@
 <script>
 import { fetchList, addObj, putObj, getObj ,delObj } from '@/api/basis/affiche'
 import { removeAllSpace } from '@/utils/validate'
-import waves from '@/directive/waves/index.js' // 水波纹指令
+
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'table_affiche',
-  directives: {
-    waves
-  },
   data() {
     return {
       affiche: {},

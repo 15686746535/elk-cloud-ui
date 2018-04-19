@@ -19,7 +19,7 @@
             </div>
             <div style="float: right">
               <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
+              <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
 
             </div>
           </el-card>
@@ -394,7 +394,6 @@
 
 </template>
 <script>
-  import waves from '@/directive/waves/index.js' // 水波纹指令
   import { mapGetters } from 'vuex'
   import { roleList } from '@/api/upms/role'
   import { removeAllSpace } from '@/utils/validate'
@@ -426,9 +425,6 @@
       LineChart,
       Dict,
       TreeSelect
-    },
-    directives: {
-      waves
     },
     data() {
       return {

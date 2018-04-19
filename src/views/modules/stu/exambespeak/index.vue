@@ -11,7 +11,7 @@
             <div @click="handleField(3,$event)" class="subjectBtn" >科目三</div>
             <div @click="handleField(4,$event)" class="subjectBtn" >科目四</div>
             <el-input v-model="studentListQuery.condition"  @keyup.enter.native="searchClick" :style="{width: (client.width/7) + 'px'}" placeholder="姓名/身份证/电话" ></el-input>
-            <el-button type="primary" v-waves @click="searchClick" >搜索</el-button>
+            <el-button type="primary"  @click="searchClick" >搜索</el-button>
             可预约：{{studentOld.length}}人
           </div>
           <el-table @row-click="clickOld" :data="studentOld" :height="(client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
@@ -42,7 +42,7 @@
         <el-card>
           <div style="line-height: 50px;height: 50px;margin-bottom:5px;">
             已选择：{{studentNew.length}}人
-            <el-button v-waves @click="handleBespeak" type="primary" style=" float: right;">预 约</el-button>
+            <el-button  @click="handleBespeak" type="primary" style=" float: right;">预 约</el-button>
           </div>
           <el-table  @row-click="clickNew" :data="studentNew" :height="(client.height-205)" border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
@@ -90,17 +90,13 @@
 </template>
 
 <script>
-  import waves from '@/directive/waves/index.js'
   import { fetchList } from '@/api/student/student'
   import { batchsSave } from '@/api/student/exambespeak'
   import { getBatchList, getBatch } from '@/api/student/batch'
-  import { mapGetters } from 'vuex'// 水波纹指令
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_exambespeak',
-    directives: {
-      waves
-    },
     data() {
       return {
         studentOld: [],

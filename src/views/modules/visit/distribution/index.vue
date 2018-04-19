@@ -8,7 +8,7 @@
           <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类别"></dict>
           <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
-          <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜 索</el-button>
+          <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜 索</el-button>
           <el-button class="filter-item" style="margin-left: 10px;" type="primary">上 传</el-button>
           <el-button class="filter-item" style="margin-left: 10px;" @click="distribution" type="success" icon="plus">分 配</el-button>
         </el-card>
@@ -86,16 +86,12 @@
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
   import TreeSelect from '@/components/TreeSelect'
   import Dict from '@/components/Dict'
-  import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {
     name: 'table_intention',
     components: {
       Dict,
       TreeSelect
-    },
-    directives: {
-      waves
     },
     data() {
       return {

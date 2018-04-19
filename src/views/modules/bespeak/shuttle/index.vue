@@ -5,7 +5,7 @@
             <div class="filter-container">
               <div style="float: right">
                 <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="接送人/接送名单" v-model="listQuery.condition"></el-input>
-                <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
+                <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
               </div>
             </div>
           </el-card>
@@ -59,15 +59,12 @@
 
 <script>
 import { fetchList, getObj } from '@/api/bespeak/shuttle'
-import waves from '@/directive/waves/index.js' // 水波纹指令
+
 import { mapGetters } from 'vuex'
 import { removeAllSpace } from '@/utils/validate'
 
 export default {
   name: 'table_shuttle',
-  directives: {
-    waves
-  },
   computed: {
     ...mapGetters([
       'permissions',

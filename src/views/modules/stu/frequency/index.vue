@@ -4,7 +4,7 @@
       <el-card style="margin-bottom: 5px;">
         <div class="filter-container">
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-          <el-button class="filter-item" type="primary" v-waves icon="search" @click="searchClick">搜索</el-button>
+          <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
           <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
         </div>
       </el-card>
@@ -67,13 +67,9 @@
 <script>
   import { fetchList, getObj } from '@/api/student/frequency'
   import { removeAllSpace } from '@/utils/validate'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
     name: 'table_frequency',
-    directives: {
-      waves
-    },
     data() {
       return {
         frequency: {},

@@ -26,7 +26,7 @@
             <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
             <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
             <el-input :style="{width: (client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary" v-waves  @click="searchClick">搜 索</el-button>
+            <el-button class="filter-item" type="primary"   @click="searchClick">搜 索</el-button>
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}">
             <div class="intentions"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
@@ -76,16 +76,12 @@
   import MyTree from '@/components/MyTree'
   import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
-  import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {
     name: 'table_intention',
     components: {
       MyTree,
       Dict
-    },
-    directives: {
-      waves
     },
     data() {
       return {

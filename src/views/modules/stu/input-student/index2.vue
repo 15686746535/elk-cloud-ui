@@ -108,15 +108,12 @@
   import { addObj } from '@/api/student/student'
   import Dict from '@/components/Dict'
   import { removeAllSpace } from '@/utils/validate'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
+
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
     components: {
       Dict
-    },
-    directives: {
-      waves
     },
     data() {
       return {

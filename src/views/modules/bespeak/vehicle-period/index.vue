@@ -19,7 +19,7 @@
             </el-option>
           </el-select>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="vehiclePeriodListQuery.condition"></el-input>
-          <el-button class="filter-item" type="primary" v-waves @click="searchClick">搜索</el-button>
+          <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
         </div>
       </div>
     </el-card>
@@ -170,7 +170,6 @@
   import Coach from '@/components/Coach'
   import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
-  import waves from '@/directive/waves/index.js' // 水波纹指令
 
   export default {
     name: 'table_vehicleperiod',
@@ -183,9 +182,6 @@
     components: {
       Coach,
       Dict
-    },
-    directives: {
-      waves
     },
     data() {
       return {

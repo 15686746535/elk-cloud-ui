@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
 
-    <el-row :gutter="5" :style="{height: (client.height - 45) + 'px'}">
+    <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 45) + 'px'}">
 
       <el-col :span="12">
         <el-card>
@@ -14,7 +14,7 @@
             <el-button type="primary"  @click="searchClick" >搜索</el-button>
             可预约：{{studentOld.length}}人
           </div>
-          <el-table @row-click="clickOld" :data="studentOld" :height="(client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+          <el-table @row-click="clickOld" :data="studentOld" :height="($store.state.app.client.height-205)" v-loading="listOldLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column label="姓名">
@@ -44,7 +44,7 @@
             已选择：{{studentNew.length}}人
             <el-button  @click="handleBespeak" type="primary" style=" float: right;">预 约</el-button>
           </div>
-          <el-table  @row-click="clickNew" :data="studentNew" :height="(client.height-205)" border fit highlight-current-row style="width: 100%">
+          <el-table  @row-click="clickNew" :data="studentNew" :height="($store.state.app.client.height-205)" border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column label="姓名">
@@ -67,7 +67,7 @@
           </el-table>
 
           <el-dialog @close="cancel" title="选择批次" width="30%" :visible.sync="dialogFormBespeak">
-            <div :style="{height: (client.height)/3 +'px'}" style="overflow: auto">
+            <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
               <div v-for="batch in batchList"  style="float: left;margin: 5px">
                 <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
                   {{batch.examTime | subTime}}&nbsp;{{batch.examField}}

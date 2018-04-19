@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'"  style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
@@ -12,7 +12,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
           <el-card style="height: 80px">
             <div class="filter-container" style="float: left">
               |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
@@ -24,9 +24,9 @@
             </div>
           </el-card>
 
-          <el-card style="margin-top: 5px;"  :style="{height: (client.height-125) + 'px'}">
+          <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-125) + 'px'}">
             <!-- 身份卡循环 -->
-            <el-table :data="userList" :height="(client.height-220)"  border highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
+            <el-table :data="userList" :height="($store.state.app.client.height-220)"  border highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
               <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
               <el-table-column label="员工信息">
                 <template slot-scope="scope">

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
@@ -31,8 +31,8 @@
               <!--<el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>-->
           </el-card>
 
-          <el-card :style="{height: (client.height-170) + 'px'}">
-              <el-table :data="stuList" :height="(client.height-260)" highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
+          <el-card :style="{height: ($store.state.app.client.height-170) + 'px'}">
+              <el-table :data="stuList" :height="($store.state.app.client.height-260)" highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="头像" min-width="170px">
                   <template slot-scope="scope">
                     <!-- 头像 -->
@@ -187,8 +187,8 @@
         录入详细信息
         <div style="float: right"><el-button type="primary" @click="backClick">返  回</el-button></div>
       </el-card>
-      <el-row :style="{height: (client.height-105) + 'px'}">
-        <el-col :style="{height: (client.height-105) + 'px',width: (client.width-570) + 'px'}">
+      <el-row :style="{height: ($store.state.app.client.height-105) + 'px'}">
+        <el-col :style="{height: ($store.state.app.client.height-105) + 'px',width: ($store.state.app.client.width-570) + 'px'}">
           <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px 0 0 4px;">
             <el-tab-pane label="最近信息" name="1">
             </el-tab-pane>
@@ -199,9 +199,9 @@
             <el-tab-pane label="约车日志" name="5">定时任务补偿</el-tab-pane>
           </el-tabs>
         </el-col>
-        <el-col style="width: 570px"  :style="{height: (client.height-105) + 'px'}" >
+        <el-col style="width: 570px"  :style="{height: ($store.state.app.client.height-105) + 'px'}" >
 
-          <el-card :style="{height: (client.height-105) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 4px 0;line-height: 50px;overflow-y: auto;">
+          <el-card :style="{height: ($store.state.app.client.height-105) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 4px 0;line-height: 50px;overflow-y: auto;">
             <!-- 基本信息 -->
             <el-row class="title">基本信息</el-row>
             <el-row style="height: 260px; padding: 0 10px;margin-top: 10px">

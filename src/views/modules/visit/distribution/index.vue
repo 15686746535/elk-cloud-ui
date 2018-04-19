@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
 
-    <el-col :style="{width: (client.width) + 'px'}">
+    <el-col :style="{width: ($store.state.app.client.width) + 'px'}">
         <el-card style="margin-bottom: 5px;height: 80px;">
           <!--<el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
           <!--</el-date-picker>-->
@@ -13,8 +13,8 @@
           <el-button class="filter-item" style="margin-left: 10px;" @click="distribution" type="success" icon="plus">分 配</el-button>
         </el-card>
 
-        <el-card :style="{height: (client.height-125) + 'px'}">
-          <el-table :data="list" :height="(client.height-205)" @selection-change="handleSelectionChange"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}">
+          <el-table :data="list" :height="($store.state.app.client.height-205)" @selection-change="handleSelectionChange"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column  align="center" label="姓名">

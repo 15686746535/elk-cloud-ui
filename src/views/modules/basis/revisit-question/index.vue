@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
         <div style="float:left;margin-top: 8px">
@@ -11,8 +11,8 @@
         </div>
       </div>
     </el-card>
-    <el-card :style="{height: (client.height-125) + 'px',width: (client.width-570) + 'px'}" style="float: left;border-radius:4px 0 0 4px;overflow: auto;">
-        <el-table :data="questionnaireList" :height="(client.height-225)" @row-click="questionClick" highlight-current-row stripe v-loading="questionnaireLoading" element-loading-text="给我一点时间">
+    <el-card :style="{height: ($store.state.app.client.height-125) + 'px',width: ($store.state.app.client.width-570) + 'px'}" style="float: left;border-radius:4px 0 0 4px;overflow: auto;">
+        <el-table :data="questionnaireList" :height="($store.state.app.client.height-225)" @row-click="questionClick" highlight-current-row stripe v-loading="questionnaireLoading" element-loading-text="给我一点时间">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
         <el-table-column align="center" label="问卷名字">
@@ -61,8 +61,8 @@
 
 
     <!-- 问卷所属题目 -->
-    <el-card :style="{height: (client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;float: left" v-loading="questionLoading" element-loading-text="给我一点时间">
-      <div :style="{height: (client.height-225) + 'px'}" style="overflow-y: auto;overflow-x: hidden;border-bottom: 1px solid rgb(235, 239, 245)">
+    <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}" style="width: 570px; border-radius:0 4px 4px 0;float: left" v-loading="questionLoading" element-loading-text="给我一点时间">
+      <div :style="{height: ($store.state.app.client.height-225) + 'px'}" style="overflow-y: auto;overflow-x: hidden;border-bottom: 1px solid rgb(235, 239, 245)">
         <div v-if="haveQuestion">
           <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
             <el-row>

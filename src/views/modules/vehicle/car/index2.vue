@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'">
 
       <el-card style="margin-bottom: 5px;height: 80px">
@@ -25,10 +25,10 @@
             <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
           </el-form>
       </el-card>
-      <el-card :style="{height: (client.height - 125) + 'px'}">
+      <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
 
         <!-- 身份卡循环 -->
-        <el-table :data="list" :height="(client.height - 215)" border style="width: 100%"  highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
+        <el-table :data="list" :height="$store.state.app.client.height - 215" border style="width: 100%"  highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
           <el-table-column label="编号" width="100px">
               <template slot-scope="scope">
               <span>{{scope.row.vehicleEntity.vehicleId}}</span>

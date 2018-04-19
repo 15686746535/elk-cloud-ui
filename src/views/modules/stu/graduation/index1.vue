@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
@@ -27,7 +27,7 @@
                 <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
               </div>
             </el-card>
-          <el-card :style="{height: (client.height-175) + 'px'}">
+          <el-card :style="{height: ($store.state.app.client.height-175) + 'px'}">
               <el-table :data="stuList.length == 0?null:stuList" max-height="500" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">

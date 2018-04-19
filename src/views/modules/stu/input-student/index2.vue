@@ -1,9 +1,9 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='basic'">
-      <el-card :style="{height: (client.height-45) + 'px'}">
+      <el-card :style="{height: ($store.state.app.client.height-45) + 'px'}">
         <div style="width:145px;font-size: 36px;font-weight: 500;margin: 0 auto;">学员录入</div>
-        <div style="width:400px;margin: 0 auto; line-height: 50px;" :style="{marginTop: ((client.height-45)/4) + 'px'}">
+        <div style="width:400px;margin: 0 auto; line-height: 50px;" :style="{marginTop: (($store.state.app.client.height-45)/4) + 'px'}">
 
           <el-form label-position="left" :model="student" :rules="student" ref="student" label-width="80px">
             <el-form-item>
@@ -49,7 +49,7 @@
         录入详细信息
         <div style="float: right"><el-button type="primary" @click="convertClick('basic')">返  回</el-button></div>
       </el-card>
-      <el-row :gutter="5" :style="{height: (client.height - 110) + 'px'}">
+      <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 110) + 'px'}">
         <el-col :span="12">
           <el-card>
 

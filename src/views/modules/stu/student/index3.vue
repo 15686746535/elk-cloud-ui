@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
@@ -8,7 +8,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
               <el-date-picker value-format="timestamp" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
@@ -30,8 +30,8 @@
               <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
           </el-card>
 
-          <el-card :style="{height: (client.height-170) + 'px'}">
-              <el-table :data="stuList.length == 0?null:stuList" :height="(client.height-260)" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
+          <el-card :style="{height: ($store.state.app.client.height-170) + 'px'}">
+              <el-table :data="stuList.length == 0?null:stuList" :height="($store.state.app.client.height-260)" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">
                     <!-- 头像 -->

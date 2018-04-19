@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
     <el-card style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
 
@@ -17,11 +17,11 @@
         </div>
       </div>
     </el-card>
-    <el-row :gutter="5" :style="{height: (client.height - 125) + 'px'}">
+    <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 125) + 'px'}">
       <el-col :span="3">
         <el-card>
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
-          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (client.height - 250) + 'px'}">
+          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 250) + 'px'}">
             <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
                 {{batch.batch}}
@@ -42,7 +42,7 @@
       </el-col>
       <el-col :span="21">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -158,7 +158,7 @@
 
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
 
-          <el-table :data="notGradeStudentList" :height="(client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="notGradeStudentList" :height="($store.state.app.client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 

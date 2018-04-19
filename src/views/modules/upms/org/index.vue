@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-row :gutter="10">
       <el-col class="org-tree-left">
         <el-card class="box-card">
@@ -19,7 +19,7 @@
             <el-button type="primary" icon="delete" @click="deleteClick">删除</el-button>
           </el-button-group>
         </el-card>
-        <el-card class="box-card" :style="{height: (client.height-130) + 'px'}" style="overflow: auto">
+        <el-card class="box-card" :style="{height: ($store.state.app.client.height-130) + 'px'}" style="overflow: auto">
           <el-form label-position="right" label-width="80px" :model="form" ref="form">
             <el-form-item label="上级部门">
               <el-input v-model="form.parentName" disabled placeholder="请选择上级部门"></el-input>

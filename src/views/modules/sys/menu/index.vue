@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-row :gutter="10">
       <el-col class="org-tree-left">
         <el-card class="box-card">
@@ -11,7 +11,7 @@
         </el-card>
       </el-col>
 
-      <el-col :style="{width: (client.width-250) + 'px'}">
+      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
             <el-button type="primary" v-if="menuManager_btn_add" @click="handlerAdd"><i class="el-icon-plus"></i>添加</el-button>
@@ -19,7 +19,7 @@
             <el-button type="primary" v-if="menuManager_btn_del" @click="handleDelete"><i class="el-icon-delete"></i>删除</el-button>
           </el-button-group>
         </el-card>
-        <el-card class="box-card" :style="{height: (client.height-130) + 'px'}" style="overflow: auto">
+        <el-card class="box-card" :style="{height: ($store.state.app.client.height-130) + 'px'}" style="overflow: auto">
           <el-form label-position="right" label-width="80px" :model="form" ref="form">
             <el-form-item label="父级节点" prop="parentId">
               <el-input v-model="parentName" disabled placeholder="请选择父级节点"></el-input>

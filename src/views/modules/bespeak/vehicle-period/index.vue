@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 60px">
       <div class="filter-container">
         <div style="height: 40px; float: left">
@@ -10,7 +10,7 @@
           </el-radio-group>
         </div>
         <div style="float: right">
-          <el-select :style="{width: (client.width/7) + 'px'}" v-model="vehiclePeriodListQuery.subject" class="filter-item" clearable placeholder="科目">
+          <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="vehiclePeriodListQuery.subject" class="filter-item" clearable placeholder="科目">
             <el-option
               v-for="item in subject"
               :key="item.value"
@@ -23,8 +23,8 @@
         </div>
       </div>
     </el-card>
-    <el-card :style="{height: (client.height - 105) + 'px'}">
-        <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="(client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+    <el-card :style="{height: ($store.state.app.client.height - 105) + 'px'}">
+        <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="($store.state.app.client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <div v-for="student in props.row.studentList">

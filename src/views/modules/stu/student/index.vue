@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
@@ -9,11 +9,11 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
-              <el-date-picker value-format="timestamp"  :style="{width: (client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              <el-date-picker value-format="timestamp"  :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
-              <el-select :style="{width: (client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
+              <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
                 <el-option
                   v-for="item in subject"
                   :key="item.value"
@@ -21,17 +21,17 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict v-model="listQuery.motorcycleType" dictType="dict_motorcycle_type" :style="{width: (client.width/7) + 'px'}"  placeholder="车型"  ></dict>
-              <dict v-model="listQuery.source" dictType="dict_enrolSite" :style="{width: (client.width/7) + 'px'}"  placeholder="报名点"  ></dict>
-              <Coach v-model="listQuery.fieldCoach" coachType="field":style="{width: (client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>
-              <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: (client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
-              <dict v-model="listQuery.source" dictType="dict_source" :style="{width: (client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
+              <dict v-model="listQuery.motorcycleType" dictType="dict_motorcycle_type" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.source" dictType="dict_enrolSite" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="报名点"  ></dict>
+              <Coach v-model="listQuery.fieldCoach" coachType="field":style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>
+              <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
+              <dict v-model="listQuery.source" dictType="dict_source" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
               <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
           </el-card>
 
-          <el-card :style="{height: (client.height-170) + 'px'}">
-              <el-table :data="stuList" :height="(client.height-260)" highlight-current-row stripe @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
+          <el-card :style="{height: ($store.state.app.client.height-170) + 'px'}">
+              <el-table :data="stuList" :height="($store.state.app.client.height-260)" highlight-current-row stripe @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="头像" min-width="150px">
                   <template slot-scope="scope">
                     <!-- 头像 -->
@@ -172,8 +172,8 @@
         录入详细信息
         <div style="float: right"><el-button type="primary" @click="backClick">返  回</el-button></div>
       </el-card>
-      <el-row :style="{height: (client.height-105) + 'px'}">
-        <el-col :style="{height: (client.height-105) + 'px',width: (client.width-570) + 'px'}">
+      <el-row :style="{height: ($store.state.app.client.height-105) + 'px'}">
+        <el-col :style="{height: ($store.state.app.client.height-105) + 'px',width: ($store.state.app.client.width-570) + 'px'}">
           <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px 0 0 4px;">
             <el-tab-pane label="最近信息" name="1">
             </el-tab-pane>
@@ -286,9 +286,9 @@
             </el-tab-pane>
           </el-tabs>
         </el-col>
-        <el-col style="width: 570px"  :style="{height: (client.height-105) + 'px'}" >
+        <el-col style="width: 570px"  :style="{height: ($store.state.app.client.height-105) + 'px'}" >
           <el-form :model="student" label-position="left" label-width="80px">
-            <el-card :style="{height: (client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;z-index: 50;line-height: 50px;overflow-y: auto;box-shadow: none;">
+            <el-card :style="{height: ($store.state.app.client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;z-index: 50;line-height: 50px;overflow-y: auto;box-shadow: none;">
               <!-- 基本信息 -->
               <el-row>
                 <el-row class="title">基本信息</el-row>
@@ -637,7 +637,7 @@
       </el-card>
       <el-row :gutter="5">
         <el-col :span="12">
-          <el-card :style="{height: (client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
+          <el-card :style="{height: ($store.state.app.client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
             <el-form :model="studentEntity" label-width="100px">
               <el-row>
                 <el-row :gutter="20">
@@ -884,7 +884,7 @@
           </el-card>
         </el-col>
         <el-col :span="12">
-          <el-card :style="{height: (client.height - 110) + 'px'}" style="overflow: auto">
+          <el-card :style="{height: ($store.state.app.client.height - 110) + 'px'}" style="overflow: auto">
 
 
 
@@ -900,7 +900,7 @@
     </div>
 
     <el-dialog @close="cancel" title="选择批次" width="40%" :visible.sync="dialogFormBespeak">
-      <div :style="{height: (client.height)/3 +'px'}" style="overflow: auto">
+      <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
         <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
           无可预约场次
         </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-row :gutter="5">
       <el-col class="org-tree-left">
         <el-card>
@@ -8,7 +8,7 @@
         </el-card>
       </el-col>
 
-      <el-col :style="{width: (client.width-250) + 'px'}">
+      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
         <el-card body-style="padding:10px 20px;" style="height: 70px;line-height: 50px">
           <!--<div style="float: left">-->
             <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>-->
@@ -26,9 +26,9 @@
             <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
           </div>
         </el-card>
-        <el-card style="margin-top: 5px;"  :style="{height: (client.height-115) + 'px'}">
+        <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-115) + 'px'}">
 
-          <el-table  :height="(client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+          <el-table  :height="($store.state.app.client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column align="center" label="姓名">
@@ -114,7 +114,7 @@
     </el-dialog>
 
     <el-dialog @close="closeDialog" title="回访登记" width="40%" :visible.sync="visitStudentOption">
-      <div :style="{height: (client.height)/2 +'px'}" style="overflow: auto">
+      <div :style="{height: ($store.state.app.client.height)/2 +'px'}" style="overflow: auto">
 
         <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in revisitQuestionList">
           <el-row>

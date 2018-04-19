@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}" >
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 80px">
       <div class="filter-container">
         <div style="float:left;margin-top: 8px">
@@ -28,8 +28,8 @@
         </div>
       </div>
     </el-card>
-    <el-card :style="{height: (client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
+    <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
+      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
         <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
@@ -125,7 +125,7 @@
 
       <el-tabs body-style="padding:0;" type="border-card" @tab-click="handleField">
         <el-tab-pane name="all" label="申请名单">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
               <template slot-scope="scope">
@@ -177,7 +177,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="0" label="待审核">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -209,7 +209,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="1" label="待约考">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -240,7 +240,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="2" label="已约考">
-          <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -271,7 +271,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="3" label="考试名单">
-            <el-table :data="examBespeak" :height="(client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+            <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column align="center"  label="学员">

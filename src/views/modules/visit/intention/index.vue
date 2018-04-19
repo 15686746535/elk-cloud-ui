@@ -10,11 +10,11 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: (client.width-250) + 'px'}">
+        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker :style="{width: (client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-date-picker :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select :style="{width: (client.width/10) + 'px'}" v-model="listQuery.operator" clearable placeholder="负责人">
+            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.operator" clearable placeholder="负责人">
               <el-option
                 v-for="item in operators"
                 :key="item"
@@ -22,12 +22,12 @@
                 :value="item">
               </el-option>
             </el-select>
-            <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
-            <dict :style="{width: (client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-            <el-input :style="{width: (client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+            <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
+            <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
+            <el-input :style="{width: ($store.state.app.client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
             <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
           </el-card>
-          <el-card :style="{height: (client.height-125) + 'px'}" style="overflow: hidden">
+          <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}" style="overflow: hidden">
             <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
 
               <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
@@ -43,7 +43,7 @@
                   <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
                 </div>
 
-                <div class="intention_text" style="width: 100%;float: left">电话{{client.width}}：{{intention.mobile}}</div>
+                <div class="intention_text" style="width: 100%;float: left">电话：{{intention.mobile}}</div>
 
                 <div class="intention_text" style="width: 100%;float: left">微信：{{intention.wechat}}</div>
 

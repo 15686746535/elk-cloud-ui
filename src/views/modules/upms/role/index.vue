@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
 
     <el-card  style="margin-bottom: 5px;height: 80px;">
       <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
@@ -8,8 +8,8 @@
     </el-card>
 
 
-    <el-card :style="{height: (client.height-125) + 'px'}">
-      <el-table :key='tableKey'  :height="(client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
+    <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}">
+      <el-table :key='tableKey'  :height="($store.state.app.client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
         <!--<el-table-column type="selection" class="selection" prop='uuid'></el-table-column>-->
 
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -105,7 +105,7 @@
         ref="menuTree"
         :filter-node-method="filterNode"
         default-expand-all
-        :style="{height: (client.height)/2 +'px'}"
+        :style="{height: ($store.state.app.client.height)/2 +'px'}"
         style="overflow: auto"
       >
       </el-tree>

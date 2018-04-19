@@ -1,13 +1,13 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <transition name="el-zoom-in-center">
       <div v-show="isShow('list')">
-        <el-card :style="{height: (client.height - 40) + 'px'}">
+        <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
           <div class="filter-container" style="padding-bottom: 20px;">
             <el-input @keyup.enter.native="search" style="width: 200px;margin: 0" class="filter-item" placeholder="关键字" v-model="listQuery.condition"></el-input>
             <el-button type="primary" @click="search" >搜索</el-button>
           </div>
-          <el-table :data="modelList"  v-loading="tableLoading" border :height="client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="modelList"  v-loading="tableLoading" border :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column prop="name" label="流程名字" align="center" width="250"></el-table-column>
             <el-table-column align="center"  label="是否部署" width="80">
@@ -53,12 +53,12 @@
       <span @click="openList">
         <svg-icon class="close-iframe" icon-class="close" ></svg-icon>
       </span>
-        <iframe ref="iframe" :src="url" frameborder="0" style="border:0;" :height="(client.height-60)+'px'" width="100%"></iframe>
+        <iframe ref="iframe" :src="url" frameborder="0" style="border:0;" :height="($store.state.app.client.height-60)+'px'" width="100%"></iframe>
       </div>
     </transition>
     <transition name="el-zoom-in-center">
       <div v-show="isShow('img')">
-        <el-card :style="{height: (client.height - 40) + 'px'}" style="overflow: auto">
+        <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}" style="overflow: auto">
           <span @click="openList">
             <svg-icon class="close-iframe" icon-class="close" ></svg-icon>
           </span>

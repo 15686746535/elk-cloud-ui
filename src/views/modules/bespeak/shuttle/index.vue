@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
         <div v-show="showModule=='list'">
           <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 60px">
             <div class="filter-container">
@@ -9,8 +9,8 @@
               </div>
             </div>
           </el-card>
-            <el-card :style="{height: (client.height - 105) + 'px'}">
-              <el-table :data="list"  :height="(client.height-195)"  v-loading="listLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+            <el-card :style="{height: ($store.state.app.client.height - 105) + 'px'}">
+              <el-table :data="list"  :height="($store.state.app.client.height-195)"  v-loading="listLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <div v-for="student in props.row.studentList">

@@ -1,62 +1,60 @@
 <template>
-  <div class="dashboard-container">
-    <el-row>
-      <div class="dashboard-text">欢迎登陆</div>
+  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+    <el-row :gutter="20" style="height: 200px;">
+      <el-col :span="6">
+        <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px"></div>
+      </el-col>
+      <el-col :span="6">
+        <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px"></div>
+      </el-col>
+      <el-col :span="6">
+        <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px"></div>
+      </el-col>
+      <el-col :span="6">
+        <div style="height: 180px;width: 100%;background-color: crimson;border-radius: 5px">
+          <barTickAlign :data="[12,21,32,22,12,54,42]"></barTickAlign>
+        </div>
+      </el-col>
     </el-row>
-      <!--
-        参数：
-        dictType:字典类型
-        方法：
-        selectDict ：字典发生改变是触发，返回字典对象
-       {{dict}}
-      -->
-      <dict dictType="dict_customer_type" v-model="dict" ></dict>
-    {{dict}}
-    <el-button @click="toggle">修改</el-button>
+    <el-row :gutter="20" style="height: 340px;">
+      <el-col :span="16">
+        <div style="height: 320px;width: 100%;background-color: crimson;border-radius: 5px"></div>
+      </el-col>
+      <el-col :span="8">
+        <div style="height: 320px;width: 100%;background-color: crimson;border-radius: 5px"></div>
+      </el-col>
+    </el-row>
+    <el-row></el-row>
   </div>
 </template>
 
 <script>
-import Dict from '@/components/Dict'
+import { mapGetters } from 'vuex'
+import barTickAlign from '@/components/barTickAlign'
 
 export default {
-  components: {
-    Dict
-  },
   name: 'dashboard',
   computed: {
+    ...mapGetters([
+      'name',
+      'roles',
+      'permissions',
+      'client'
+    ])
+  },
+  components: {
+    barTickAlign
   },
   data() {
     return {
-      dict: 'B类'
     }
   },
   methods: {
-    toggle() {
-      this.dict = 'D类'
-    }
   }
 }
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-
-
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-active {
-  opacity: 0
-}
 
 </style>

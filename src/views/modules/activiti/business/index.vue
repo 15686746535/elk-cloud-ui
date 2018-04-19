@@ -69,9 +69,6 @@
 
       <el-dialog  @close="getList" :title="dialogType === 'create'?'添加':'编辑'" :show-close="false" width="30%" :visible.sync="option">
         <el-form :model="bus"  ref="bus" :rules="rules" label-width="100px">
-          <el-form-item label="组织"  prop="orgId">
-            <org-select v-model="bus.orgId"></org-select>
-          </el-form-item>
           <el-form-item label="业务"  prop="name">
             <el-input v-model="bus.name" placeholder="业务名称" ></el-input>
           </el-form-item>

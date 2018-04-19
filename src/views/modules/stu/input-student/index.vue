@@ -178,7 +178,7 @@
 
               <el-row style="height: 50px">
                 <el-col :span="3"><span class="text_css">介绍人1：</span></el-col>
-                <el-col :span="5"><org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select></el-col>
+                <el-col :span="5"><!--<org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select>--></el-col>
                 <el-col :span="1"><div class="text_css" style="float: none;margin: 0 auto;text-align:center;">--</div></el-col>
                 <el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model.number="studentEntity.introducer"></el-input></el-col>
               </el-row>
@@ -211,14 +211,12 @@
 <script>
   import { addObj } from '@/api/student/student'
   import Dict from '@/components/Dict'
-  import OrgSelect from '@/components/OrgSelect'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
     components: {
-      Dict,
-      OrgSelect
+      Dict
     },
     directives: {
       waves

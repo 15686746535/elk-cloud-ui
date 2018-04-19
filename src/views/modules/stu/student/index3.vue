@@ -5,7 +5,6 @@
         <el-col class="org-tree-left">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-            <org-tree @node-click="searchByOrg" ></org-tree>
           </el-card>
         </el-col>
 
@@ -339,7 +338,6 @@
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { examFetchList, getExam } from '@/api/student/examnote'
-  import OrgTree from '@/components/OrgTree'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
@@ -347,7 +345,6 @@
   export default {
     name: 'table_student',
     components: {
-      OrgTree,
       Dict
     },
     directives: {

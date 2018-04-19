@@ -70,7 +70,7 @@
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="所属部门" prop="roleName">
-          <org-select style="width: 100%" v-model="form.orgId"></org-select>
+          <tree-select url="/upms/org/tree" v-model="form.orgId"></tree-select>
         </el-form-item>
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="角色名称"></el-input>
@@ -120,14 +120,14 @@
   import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/upms/role'
   import { fetchTree } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
-  import OrgSelect from '@/components/OrgSelect'
+  import TreeSelect from '@/components/TreeSelect'
   import waves from '@/directive/waves/index.js' // 水波纹指令
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_role',
     components: {
-      OrgSelect
+      TreeSelect
     },
     directives: {
       waves

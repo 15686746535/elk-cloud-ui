@@ -1,7 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-const url2 = 'http://192.168.1.46:8003'
-const url = 'http://192.168.1.74:8003'
+const url = 'http://127.0.0.1:8003'
 const url1 = 'http://192.168.1.189:8003'
 const locahostUrl = 'http://127.0.0.1:8003'
 

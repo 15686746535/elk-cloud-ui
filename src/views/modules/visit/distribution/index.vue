@@ -61,7 +61,8 @@
 
         </el-card>
         <el-dialog @close="getList" title="选择负责人" width="40%" :visible.sync="dialogIntentionList">
-          <org-select v-model="orgId" @org-click="orgClick"></org-select>
+          <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
+
           <el-select v-model="intentionList.userId" clearable placeholder="负责人">
             <el-option
               v-for="item in userList"
@@ -83,17 +84,15 @@
   import { mapGetters } from 'vuex'
   import { userList } from '@/api/upms/user'
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
-  import OrgTree from '@/components/OrgTree'
-  import OrgSelect from '@/components/OrgSelect'
+  import TreeSelect from '@/components/TreeSelect'
   import Dict from '@/components/Dict'
   import waves from '@/directive/waves/index.js'// 水波纹指令
 
   export default {
     name: 'table_intention',
     components: {
-      OrgTree,
       Dict,
-      OrgSelect
+      TreeSelect
     },
     directives: {
       waves
@@ -120,8 +119,6 @@
         intentionList: {
           intentionIds: [],
           state: 0,
-          oCondition: 'yes',
-          uCondition: 'yes',
           orgId: null,
           userId: null
         },
@@ -179,16 +176,11 @@
           this.intentionList.intentionIds.push(val[i].intentionId)
         }
       },
-      orgClick(val) {
-        console.log('====== =====')
-        console.log(val)
-        if (val) {
-          this.intentionList.orgId = val.id
-          userList({ orgId: val.id }).then(response => {
-            console.log(response.data.data)
-            this.userList = response.data.data
-          })
-        }
+      orgClick() {
+        userList({ orgId: this.intentionList.orgId }).then(response => {
+          console.log(response.data.data)
+          this.userList = response.data.data
+        })
       },
       redistribution() {
         this.$confirm('是否将选择信息重新分配', '提示', {

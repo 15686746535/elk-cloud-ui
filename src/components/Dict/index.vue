@@ -30,21 +30,17 @@
         type: String,
         default: null
       },
-      value: {
-        type: String,
-        default: null
-      },
-      result: {
-        type: String,
-        default: null
-      },
       size: {
         type: String,
         default: ''
+      },
+      value: {
+        type: String,
+        default: null
       }
     },
     watch: {
-      result(val) {
+      value(val) {
         this.dict = val
       }
     },
@@ -67,11 +63,6 @@
     },
     methods: {
       emitChange(value) {
-        for (var i = 0; i < this.dictList.length; i++) {
-          if (this.dictList[i].value === value) {
-            this.$emit('selectDict', this.dictList[i])
-          }
-        }
         this.$emit('change', value)
       }
     }

@@ -25,9 +25,8 @@
 
             <el-table-column align="left" label="操作" >
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" @click="dialogOpen(scope.row)" plain >编 辑</el-button>
-                <el-button size="mini" type="primary" @click="designFlow(scope.row.modelId)" plain>设计流程图</el-button>
-                <el-button size="mini" type="primary" @click="showFlowImg(scope.row.modelId)" plain>查看流程图</el-button>
+                <el-button size="mini" type="primary" @click="designFlow(scope.row.modelId)" plain >编 辑</el-button>
+                <!--<el-button size="mini" type="primary" @click="showFlowImg(scope.row.modelId)" plain>查看流程图</el-button>-->
                 <el-button v-if="scope.row.status === '0'" size="mini" @click="deploy(scope.row.modelId)" type="primary" plain>部署</el-button>
                 <el-button v-if="scope.row.status === '0'" size="mini"  @click="delModel(scope.row.modelId)" type="danger" plain>删除</el-button>
               </template>
@@ -42,7 +41,7 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
             <div class="" style="float: right;">
-              <el-button  type="primary" @click="dialogOpen(null)"><i class="el-icon-plus"></i>添加</el-button>
+              <el-button  type="primary" @click="designFlow(-1)"><i class="el-icon-plus"></i>添加</el-button>
             </div>
           </div>
 
@@ -67,26 +66,6 @@
         </el-card>
       </div>
     </transition>
-
-    <el-dialog  @close="getList" title="添加" :show-close="false" width="30%" :visible.sync="option">
-      <el-form :model="model"  ref="model" :rules="rules" label-width="100px">
-        <el-form-item label="组织"  prop="name">
-          <org-select v-model="model.orgId"></org-select>
-        </el-form-item>
-        <el-form-item label="名称"  prop="name">
-          <el-input v-model="model.name" placeholder="流程名称" ></el-input>
-        </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="model.description" placeholder="描述" ></el-input>
-        </el-form-item>
-      </el-form>
-
-      <div slot="footer">
-        <el-button @click="cancel('model')">取 消</el-button>
-        <el-button v-if="dialogType === 'create'" type="primary" @click="create('model')" >确 定</el-button>
-        <el-button v-else type="primary" @click="update('model')">修 改</el-button>
-      </div>
-    </el-dialog>
   </div>
 
 </template>
@@ -95,12 +74,10 @@
   import { modelPage, modelSave, flowTree, modelUpdate, modelDeploy, showFlowImg, modelDel } from '@/api/activiti/model'
   import { mapGetters } from 'vuex'
   import { getToken } from '@/utils/auth'
-  import OrgSelect from '@/components/OrgSelect'
 
   export default {
     name: 'active_model',
     components: {
-      OrgSelect
     },
     data() {
       return {
@@ -285,6 +262,7 @@
       }
     }
   }
+
 </script>
 
 <style scoped>

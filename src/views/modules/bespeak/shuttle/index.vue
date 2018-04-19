@@ -37,7 +37,7 @@
                 <!--</el-table-column>-->
                 <el-table-column align="center" label="接送日期">
                     <template slot-scope="scope">
-                        <span>{{scope.row.state}}</span>
+                        <span>{{scope.row.shuttleTime | subTime}}</span>
                     </template>
                 </el-table-column>
 

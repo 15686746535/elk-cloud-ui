@@ -886,6 +886,14 @@
         <el-col :span="12">
           <el-card :style="{height: (client.height - 110) + 'px'}" style="overflow: auto">
 
+
+
+
+
+
+
+
+
           </el-card>
         </el-col>
       </el-row>

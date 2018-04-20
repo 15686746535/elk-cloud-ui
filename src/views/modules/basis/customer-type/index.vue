@@ -89,7 +89,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          type: 'dict_visit_type'
+          type: 'dict_customer_type'
         },
         rules: {},
         dict: {},
@@ -114,9 +114,9 @@
     },
     created() {
       this.getList()
-      this.menu_add = this.permissions['basis_visit_type_add']
-      this.menu_upd = this.permissions['basis_visit_type_update']
-      this.menu_del = this.permissions['basis_visit_type_del']
+      this.menu_add = this.permissions['basis_customer_type_add']
+      this.menu_upd = this.permissions['basis_customer_type_update']
+      this.menu_del = this.permissions['basis_customer_type_del']
     },
     methods: {
       getList() {

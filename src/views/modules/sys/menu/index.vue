@@ -102,12 +102,8 @@
 <script>
   import { fetchTree, getObj, addObj, delObj, putObj } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
-  import MyTree from '@/components/MyTree'
   export default {
     name: 'menu',
-    components: {
-      MyTree
-    },
     data() {
       return {
         formStatus: '', /* 编辑状态update/create*/

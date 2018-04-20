@@ -50,13 +50,9 @@
 <script>
   import { fetchTree, addObj, putObj, delObj } from '@/api/upms/org'
   import { mapGetters } from 'vuex'
-  import MyTree from '@/components/MyTree'
 
   export default {
     name: 'index',
-    components: {
-      MyTree
-    },
     data() {
       return {
         treeData: [], /* 树形图数据*/

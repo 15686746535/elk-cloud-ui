@@ -20,7 +20,6 @@
 </template>
 <script>
   import request from '@/utils/request'
-  import MyTree from '@/components/MyTree'
   import TreeSelect from '@/components/TreeSelect'
 
   export default {
@@ -28,7 +27,6 @@
     computed: {
     },
     components: {
-      MyTree,
       TreeSelect
     },
     data() {

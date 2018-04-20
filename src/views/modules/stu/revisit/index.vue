@@ -156,14 +156,10 @@
   import { getRevisitQuestionnaireList } from '@/api/student/revisit-questionnaire'
   import { getQuestion } from '@/api/student/revisit-question'
   import { removeAllSpace } from '@/utils/validate'
-  import MyTree from '@/components/MyTree'
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_revisitStudent',
-    components: {
-      MyTree
-    },
     data() {
       return {
         revisitStudent: {},

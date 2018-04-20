@@ -73,14 +73,10 @@
 
 <script>
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
-  import MyTree from '@/components/MyTree'
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_intention',
-    components: {
-      MyTree
-    },
     data() {
       return {
         list: [],

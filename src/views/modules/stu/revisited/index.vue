@@ -112,14 +112,10 @@
   import { getQuestion, addQuestion } from '@/api/student/revisit-question'
   import { fetchList, getObj } from '@/api/student/revisit'
   import { removeAllSpace } from '@/utils/validate'
-  import MyTree from '@/components/MyTree'
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_revisited',
-    components: {
-      MyTree
-    },
     computed: {
       ...mapGetters([
         'permissions',

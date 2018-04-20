@@ -928,9 +928,7 @@
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { getIntentionByMobile } from '@/api/visit/intention'
-  import MyTree from '@/components/MyTree'
   import Coach from '@/components/Coach'
-  import Dict from '@/components/Dict'
 
 
   import { removeAllSpace } from '@/utils/validate'
@@ -940,8 +938,6 @@
   export default {
     name: 'table_student',
     components: {
-      MyTree,
-      Dict,
       Coach
     },
     data() {

@@ -85,16 +85,6 @@
     <el-dialog  @close="cancel('batch')" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch"  ref="batch" label-width="100px">
-        <!--<el-form-item v-show="dialogStatus=='create'" label="考试科目">-->
-          <!--<el-select @blur="setDictType" v-model="batch.subject"  style="width: 100%"  clearable placeholder="考试科目">-->
-            <!--<el-option-->
-              <!--v-for="item in subject"-->
-              <!--:key="item.value"-->
-              <!--:label="item.label"-->
-              <!--:value="item.value">-->
-            <!--</el-option>-->
-          <!--</el-select>-->
-        <!--</el-form-item>-->
         <el-form-item label="考试场地" prop="examField">
           <!--<span v-if="batch.subject != null">-->
             <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
@@ -344,16 +334,11 @@
   import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
-  import Dict from '@/components/Dict'
-
   import { parseTime } from '@/utils/index'
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_batch',
-    components: {
-      Dict
-    },
     data() {
       return {
         batch: {
@@ -420,8 +405,6 @@
           this.listLoading = false
         })
       },
-      setDictType() {
-      },
       handleSizeChange(val) {
         this.listQuery.limit = val
         this.getList()
@@ -464,12 +447,6 @@
               .then(() => {
                 this.batchOption = false
                 this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
               })
           } else {
             return false
@@ -492,12 +469,6 @@
               console.log(response.data)
               this.batchOption = false
               this.getList()
-              // this.$notify({
-              //   title: '成功',
-              //   message: '修改成功',
-              //   type: 'success',
-              //   duration: 2000
-              // })
             })
           } else {
             return false

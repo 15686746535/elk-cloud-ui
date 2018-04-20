@@ -168,7 +168,6 @@
   import { getVehiclePeriodList, getVehiclePeriod, putVehiclePeriod } from '@/api/bespeak/vehicleperiod'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
-  import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -180,8 +179,7 @@
       ])
     },
     components: {
-      Coach,
-      Dict
+      Coach
     },
     data() {
       return {

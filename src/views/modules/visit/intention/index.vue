@@ -442,17 +442,11 @@
 <script>
   import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
   import { followUpList, addFollowUp } from '@/api/visit/followup'
-  import MyTree from '@/components/MyTree'
-  import Dict from '@/components/Dict'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_intention',
-    components: {
-      MyTree,
-      Dict
-    },
     data() {
       return {
         intentionList: [],

@@ -340,18 +340,11 @@
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { examFetchList, getExam } from '@/api/student/examnote'
-  import MyTree from '@/components/MyTree'
   import { removeAllSpace } from '@/utils/validate'
-  import Dict from '@/components/Dict'
-
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_student',
-    components: {
-      MyTree,
-      Dict
-    },
     data() {
       return {
         student: {},

@@ -210,14 +210,9 @@
 
 <script>
   import { addObj } from '@/api/student/student'
-  import Dict from '@/components/Dict'
-
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
-    components: {
-      Dict
-    },
     data() {
       return {
         studentEntity: {

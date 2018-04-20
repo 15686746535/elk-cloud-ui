@@ -85,12 +85,10 @@
   import { userList } from '@/api/upms/user'
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
   import TreeSelect from '@/components/TreeSelect'
-  import Dict from '@/components/Dict'
 
   export default {
     name: 'table_intention',
     components: {
-      Dict,
       TreeSelect
     },
     data() {

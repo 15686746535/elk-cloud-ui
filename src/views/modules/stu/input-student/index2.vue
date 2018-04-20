@@ -106,15 +106,11 @@
 
 <script>
   import { addObj } from '@/api/student/student'
-  import Dict from '@/components/Dict'
   import { removeAllSpace } from '@/utils/validate'
 
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
-    components: {
-      Dict
-    },
     data() {
       return {
         student: {

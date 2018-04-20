@@ -1675,14 +1675,10 @@
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/vehicle/vehicle'
   import { removeAllSpace } from '@/utils/validate'
-  import Dict from '@/components/Dict'
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'table_vehicle',
-    components: {
-      Dict
-    },
     data() {
       return {
         // 车牌集合

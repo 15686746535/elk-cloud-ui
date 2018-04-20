@@ -17,12 +17,8 @@
 </template>
 
 <script>
-import Dict from '@/components/Dict'
 
 export default {
-  components: {
-    Dict
-  },
   name: 'dashboard',
   computed: {
   },

@@ -6,8 +6,8 @@
           <el-card>
             <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
 
-            <!-- 分割线 -->
-           <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+              <!-- 分割线 -->
+              <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
             <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
@@ -398,9 +398,7 @@
   import { roleList } from '@/api/upms/role'
   import { removeAllSpace } from '@/utils/validate'
   import Bar from '@/components/Bar'
-  import Dict from '@/components/Dict'
   import LineChart from '@/components/LineChart'
-  import MyTree from '@/components/MyTree'
   import TreeSelect from '@/components/TreeSelect'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
 
@@ -421,9 +419,7 @@
     },
     components: {
       Bar,
-      MyTree,
       LineChart,
-      Dict,
       TreeSelect
     },
     data() {
@@ -635,7 +631,7 @@
 </script>
 
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
   .img{
     width: 150px;
     height: 150px;

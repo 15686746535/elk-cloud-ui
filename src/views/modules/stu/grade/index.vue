@@ -219,16 +219,13 @@
   import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
-  import Dict from '@/components/Dict'
-
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
 
 export default {
     name: 'table_batch',
     components: {
-      Coach,
-      Dict
+      Coach
     },
     data() {
       return {

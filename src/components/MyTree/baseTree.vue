@@ -6,6 +6,7 @@
             :model="node"
             :list="treeList"
             :index="index"
+            :leafWidth="leafWidth"
             :folder="folder"
             :checkbox="checkbox"
             :length="treeList.length"
@@ -33,6 +34,10 @@
       data: {
         type: Array,
         default: null
+      },
+      leafWidth: {
+        type: String,
+        default: ''
       },
       url: {
         type: String,

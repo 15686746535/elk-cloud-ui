@@ -1,8 +1,8 @@
 <template>
-  <div :style="{width:width}">
+  <div :style="{width:width}" class="spread-true">
     <!--<div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>-->
     <div class="ran-select">
-      <input class="ran-input el-input__inner hover " :class="$store.state.app.spread?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
+      <input class="ran-input el-input__inner hover  spread-true" :class="$store.state.app.spread?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
       <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="$store.state.app.spread?'ran-select-icon-open':'ran-select-icon-close'"></i>
       <i class="ran-select-icon el-icon-error hover" v-if="currentId != null " @click="clean" :class="$store.state.app.spread?'ran-select-icon-open':'ran-select-icon-close'"></i>
       <div v-show="$store.state.app.spread" class="ran-arrow"></div>
@@ -13,10 +13,10 @@
           </div>
           <div class="ran-data" v-show="!noData">
             <my-tree :data="orgList"
+                     leafWidth="100%"
                      v-model="currentId"
                      choiceType="folder"
                      @node="emitChange"></my-tree>
-            <!--<my-tree :data="orgList" :open="true" id="orgSelect" v-model="value" choiceType="folder" @node-click="emitChange"></my-tree>-->
           </div>
         </div>
       </el-collapse-transition>
@@ -177,7 +177,7 @@
     width: 0px;
     height: 0px;
     left: 30px;
-    top: 50px;
+    top: 40px;
     border-style: solid;
     border-color: rgb(255, 255, 255) transparent;
     border-width: 0px 6px 7px 6px;
@@ -186,7 +186,8 @@
   .ran-data{
     padding: 0 15px;
     max-height: 250px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   input.selected{
     border-color: #419dff!important;

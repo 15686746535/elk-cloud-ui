@@ -1,12 +1,12 @@
 <template>
-  <li>
+  <li class="" >
     <!--展开 收缩图标-->
-    <span class="button switch " :class="clazz" @click="isOpen = !isOpen"></span>
+    <span class="button switch" :class="leafWidth?clazz + ' spread-true' : clazz" @click="isOpen = !isOpen"></span>
     <!--复选框-->
     <span v-if="checkbox" class="button chk "  @click="clickCheckbox" :class="model.selected?'checkbox_true_full':'checkbox_false_full'" ></span>
-    <a class="node " @click="emit(model)" :class="selected === model.id?'selected':''">
+    <a class="node" @click="emit(model)" :class="selected === model.id?'selected':''" :style="{width:leafWidth}">
       <!--文件夹图标-->
-      <span v-if="folder" class="button ico " :class="model.children.length > 0 ? isOpen ? 'ico_open' : 'ico_close' : 'ico_docu'"></span>
+      <span v-if="folder" class="button ico" :class="model.children.length > 0 ? isOpen ? 'ico_open' : 'ico_close' : 'ico_docu'"></span>
       <!--节点名字-->
       <span class="node_name" >{{model.name}}</span>
     </a>
@@ -18,6 +18,7 @@
                  :index="i"
                  :list="list"
                  :folder="folder"
+                 :leafWidth="leafWidth"
                  :checkbox="checkbox"
                  :length="model.children.length"
                  @node="emit"
@@ -35,6 +36,7 @@
       model: Object,
       index: Number,
       length: Number,
+      leafWidth: String,
       folder: Boolean,
       checkbox: Boolean,
       list: Array,
@@ -129,6 +131,7 @@
     margin: 0;
     padding: 0 0 0 12px;
   }
+
   li {
     padding: 0;
     margin: 0;
@@ -174,7 +177,11 @@
   li a.node{
     margin-left: -7px;
   }
-  li a.node.selected{
+  li a.node:hover{
+    background-color: #dcdfe6;
+  }
+  li .node.selected{
+    color: #409eff;
     background-color: #dcdfe6;
   }
   li span.button.ico {

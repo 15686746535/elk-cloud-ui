@@ -527,7 +527,6 @@
         })
       },
       handleSelectionChange(val) {
-        console.log('====123321')
         console.log(val)
         this.examBespeakList.studentList = []
         for (var i = 0; i < val.length; i++) {

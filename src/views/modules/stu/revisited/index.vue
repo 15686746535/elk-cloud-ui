@@ -35,7 +35,7 @@
                   <span>{{scope.row.name}}</span>
                 </template>
               </el-table-column>
-              <el-table-column align="center" label="身份证">
+              <el-table-column align="center" label="身份证" width="170">
                 <template slot-scope="scope">
                   <span>{{scope.row.idNumber}}</span>
                 </template>
@@ -191,7 +191,8 @@
       /* 根据问卷查题目 */
       questionClick(row) {
         this.questionLoading = true
-        getQuestion(row.questionnaireId).then(response => {
+        console.log(row)
+        getQuestion(row.examNoteId).then(response => {
           console.log('========= 题目 ==========')
           console.log(response.data)
           this.questionList = response.data.data

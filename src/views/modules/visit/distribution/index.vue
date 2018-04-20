@@ -84,13 +84,9 @@
   import { mapGetters } from 'vuex'
   import { userList } from '@/api/upms/user'
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
-  import TreeSelect from '@/components/TreeSelect'
 
   export default {
     name: 'table_intention',
-    components: {
-      TreeSelect
-    },
     data() {
       return {
         list: [],

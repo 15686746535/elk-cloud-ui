@@ -120,15 +120,10 @@
   import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/upms/role'
   import { fetchTree } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
-  import TreeSelect from '@/components/TreeSelect'
-
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_role',
-    components: {
-      TreeSelect
-    },
     data() {
       return {
         change: 1,

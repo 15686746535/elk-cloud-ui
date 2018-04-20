@@ -191,8 +191,8 @@
 
                       <el-form-item prop="orgId">
                         <span slot="label" class="text_css">所属部门：</span>
-                        <tree-select v-if="edit" url="/upms/org/tree" v-model="userEdit.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.orgName}}</span>
+                        <tree-select v-show="edit" url="/upms/org/tree" v-model="userEdit.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
+                        <span style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{userEdit.orgName}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -349,6 +349,24 @@
 
                     <el-col :span="12">&nbsp;</el-col>
                   </el-row>
+
+
+                  <el-row v-if="edit" style="height: 40px;margin-top: 70px">
+                    <div style="float: right;" >
+                      <el-button v-if="addInfo"  type="success"  @click="add"><i class="el-icon-fa-save"></i> 保存</el-button>
+                      <el-button v-if="!addInfo" type="info" @click="cancel"><i class="el-icon-close"></i> 取消</el-button>
+                      <el-button v-if="!addInfo" type="success" @click="update"><i class="el-icon-fa-save"></i> 保存</el-button>
+                    </div>
+                  </el-row>
+
+
+                  <el-row v-else style="height: 40px;margin-top: 70px">
+                    <div style="float: right;" >
+                      <el-button type="primary" @click="editInfo"><i class="el-icon-edit"></i> 编辑</el-button>
+                    </div>
+                  </el-row>
+
+
                 </el-card>
               </el-row>
             </el-col>
@@ -399,7 +417,6 @@
   import { removeAllSpace } from '@/utils/validate'
   import Bar from '@/components/Bar'
   import LineChart from '@/components/LineChart'
-  import TreeSelect from '@/components/TreeSelect'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
 
   export default {
@@ -419,8 +436,7 @@
     },
     components: {
       Bar,
-      LineChart,
-      TreeSelect
+      LineChart
     },
     data() {
       return {
@@ -523,9 +539,8 @@
           this.userEdit = response.data.data
           console.log(this.userEdit.orgId)
           roleList(this.userEdit.orgId).then(response => {
-            console.log('321123321123654')
             console.log(response.data)
-            this.roleList = response.data.data.list
+            this.roleList = response.data.data
             console.log(this.roleList)
           })
           this.infoLoading = false

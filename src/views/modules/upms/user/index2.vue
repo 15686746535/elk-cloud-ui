@@ -20,14 +20,10 @@
 </template>
 <script>
   import request from '@/utils/request'
-  import TreeSelect from '@/components/TreeSelect'
 
   export default {
     name: 'index',
     computed: {
-    },
-    components: {
-      TreeSelect
     },
     data() {
       return {

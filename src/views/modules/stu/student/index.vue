@@ -317,7 +317,7 @@
                     <el-row style="height: 50px;">
                       <el-form-item>
                         <span slot="label" class="text_css">身份证号：</span>
-                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @blur="generateInfo" v-model="student.idNumber"></el-input>
+                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18"  @keyup.enter.native="generateInfo"  @blur="generateInfo" v-model="student.idNumber"></el-input>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
                       </el-form-item>
 

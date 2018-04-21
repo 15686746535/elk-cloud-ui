@@ -443,9 +443,9 @@
         this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
         set[formName].validate(valid => {
           if (valid) {
+            this.batchOption = false
             addObj(this.batch)
               .then(() => {
-                this.batchOption = false
                 this.getList()
               })
           } else {

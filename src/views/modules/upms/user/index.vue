@@ -96,7 +96,15 @@
                 <el-card shadow="hover" style="height: 200px" >
                   <el-row>
                     <el-col :span="6">
-                      &nbsp;
+
+                      <el-form-item>
+                        <el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                          <img v-if="userEdit.avatar" :src="userEdit.avatar" class="avatar">
+                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                        <img v-else :src="userEdit.avatar" class="avatar_img">
+                      </el-form-item>
+
                     </el-col>
                     <el-col :span="18">
 
@@ -111,7 +119,7 @@
                         <el-col :span="12">
                           <el-form-item prop="idNumber">
                             <span slot="label" class="text_css">身份证号：</span>
-                            <el-input v-if="edit" @blur="generateInfo"  v-model="userEdit.idNumber" placeholder="身份证号"></el-input>
+                            <el-input v-if="edit" @blur="generateInfo" :maxlength="18"  @keyup.enter.native="generateInfo" v-model="userEdit.idNumber" placeholder="身份证号"></el-input>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.idNumber}}</span>
                           </el-form-item>
                         </el-col>
@@ -128,11 +136,10 @@
                         <el-col :span="12">
                           <el-form-item prop="sex">
                             <span slot="label" class="text_css">性别：</span>
-                            <el-radio-group v-if="edit" disabled v-model="userEdit.sex">
-                              <el-radio label="1">男</el-radio>
-                              <el-radio label="0">女</el-radio>
+                            <el-radio-group v-if="edit" v-model="userEdit.sex">
+                              <el-radio :label="1">男</el-radio>
+                              <el-radio :label="0">女</el-radio>
                             </el-radio-group>
-                            <!--<el-input v-if="edit" disabled v-model="sexVO" placeholder="性别"></el-input>-->
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.sex | sexFilter}}</span>
                           </el-form-item>
                         </el-col>
@@ -636,10 +643,31 @@
       },
       // 根据身份证号生成信息
       generateInfo() {
+        var date
         if (this.userEdit.idNumber.length === 18) {
-          this.userEdit.birthday = this.userEdit.idNumber.substring(6, 10) + '-' + this.userEdit.idNumber.substring(10, 12) + '-' + this.userEdit.idNumber.substring(12, 14)
+          if (!this.userEdit.birthday) {
+            date = this.userEdit.idNumber.substring(6, 10) + '-' + this.userEdit.idNumber.substring(10, 12) + '-' + this.userEdit.idNumber.substring(12, 14)
+            date = date.substring(0, 10)
+            date = date.replace(/-/g, '/')
+            this.userEdit.birthday = new Date(date).getTime()
+          }
           this.userEdit.sex = this.userEdit.idNumber.substr(16, 1) % 2
         }
+      },
+      handleAvatarSuccess(res, file) {
+        this.student.avatar = URL.createObjectURL(file.raw)
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 / 1024 < 2
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!')
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isJPG && isLt2M
       }
     }
   }
@@ -672,5 +700,38 @@
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
     text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 120px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+  }
+  .avatar {
+    width: 120px;
+    height: 150px;
+    display: block;
+  }
+  .avatar_img {
+    line-height: 150px;
+    position: relative;
+    margin: auto;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    width: 120px;
+    height: 150px;
+    display: block;
   }
 </style>

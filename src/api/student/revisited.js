@@ -12,7 +12,7 @@ export function addRevisited(obj) {
   return request({
     url: '/stu/revisited',
     method: 'post',
-    params: obj
+    data: obj
   })
 }
 // 根据ID获取

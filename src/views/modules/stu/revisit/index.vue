@@ -308,6 +308,7 @@
           // this.backClick()
         })
         console.log(this.answerList)
+        this.closeDialog()
       }
     }
   }

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getRevisitedList(query) {
   return request({
     url: '/stu/revisited/getPage',
     method: 'get',
@@ -8,22 +8,22 @@ export function fetchList(query) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function addRevisited(obj) {
   return request({
     url: '/stu/revisited',
     method: 'post',
-    data: obj
+    params: obj
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getRevisited(id) {
   return request({
     url: '/stu/revisited/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delRevisited(id) {
   return request({
     url: '/stu/revisited/' + id,
     method: 'delete'

@@ -108,7 +108,7 @@
 </template>
 
 <script>
-  // import { fetchList, getObj } from '@/api/student/revisited'
+  import { getRevisitedList, getRevisited } from '@/api/student/revisited'
   import { getQuestion, addQuestion } from '@/api/student/revisit-question'
   import { fetchList, getObj } from '@/api/student/revisit'
   import { removeAllSpace } from '@/utils/validate'

@@ -116,25 +116,27 @@
     <el-dialog @close="closeDialog" title="回访登记" width="40%" :visible.sync="visitStudentOption">
       <div :style="{height: ($store.state.app.client.height)/2 +'px'}" style="overflow: auto">
 
-        <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in revisitQuestionList">
+        <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in answerList.revisitQuestionList">
           <el-row>
             <el-col :span="2">
               <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
+              <!--style="display: none"-->
+              <!--<el-input v-model="answerList[index].question">question.question</el-input>-->
             </el-col>
             <el-col :span="22">
               <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-              <el-radio-group v-model="answerList[index].answer">
+              <el-radio-group v-model="question.answer">
                 <el-row style="font-size: 14px;">
-                  <el-radio :span="12" v-show="question.itemA" :label="question.itemA" style="margin-top: 10px;">A: {{question.itemA}}</el-radio>
-                  <el-radio :span="12" v-show="question.itemB" :label="question.itemB" style="margin-top: 10px;">B: {{question.itemB}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemA" label="16" style="margin-top: 10px;">A: {{question.itemA}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemB" label="32" style="margin-top: 10px;">B: {{question.itemB}}</el-radio>
                 </el-row>
                 <el-row style="font-size: 14px;">
-                  <el-radio :span="12" v-show="question.itemC" :label="question.itemC" style="margin-top: 10px;">C: {{question.itemC}}</el-radio>
-                  <el-radio :span="12" v-show="question.itemD" :label="question.itemD" style="margin-top: 10px;">D: {{question.itemD}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemC" label="64" style="margin-top: 10px;">C: {{question.itemC}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemD" label="128" style="margin-top: 10px;">D: {{question.itemD}}</el-radio>
                 </el-row>
                 <el-row style="font-size: 14px;">
-                  <el-radio :span="12" v-show="question.itemE" :label="question.itemE" style="margin-top: 10px;">E: {{question.itemE}}</el-radio>
-                  <el-radio :span="12" v-show="question.itemF" :label="question.itemF" style="margin-top: 10px;">F: {{question.itemF}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemE" label="256" style="margin-top: 10px;">E: {{question.itemE}}</el-radio>
+                  <el-radio :span="12" v-show="question.itemF" label="512" style="margin-top: 10px;">F: {{question.itemF}}</el-radio>
                 </el-row>
               </el-radio-group>
             </el-col>
@@ -145,13 +147,14 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
-        <el-button type="primary" >确 定</el-button>
+        <el-button @click="saveQuestion" type="primary" >确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+  import { addRevisited } from '@/api/student/revisited'
   import { fetchList, getObj } from '@/api/student/revisit'
   import { getRevisitQuestionnaireList } from '@/api/student/revisit-questionnaire'
   import { getQuestion } from '@/api/student/revisit-question'
@@ -165,7 +168,10 @@
         revisitStudent: {},
         list: [],
         questionnaireList: [],
-        answerList: [],
+        answerList: {
+          revisitQuestionList: [],
+          examNoteId: null
+        },
         total: null,
         listLoading: true,
         showModule: 'list',
@@ -179,7 +185,6 @@
         dialogStatus: '',
         visitStudentOption: false,
         questionnaireOption: false,
-        revisitQuestionList: [],
         subject: '1',
         questionnaireListQuery: {
           page: 1,
@@ -188,7 +193,6 @@
           subject: 1
         },
         questionnaireId: null,
-        examNoteId: null,
         questionListQuery: {
           page: 1,
           limit: 0,
@@ -267,7 +271,7 @@
       },
       /* 回访 */
       visitStudent(val) {
-        this.examNoteId = val.examNoteId
+        this.answerList.examNoteId = val.examNoteId
         this.questionnaireListQuery.subject = this.listQuery.subject
         getRevisitQuestionnaireList(this.questionnaireListQuery).then(response => {
           console.log('=================== 问卷 -=============')
@@ -281,16 +285,16 @@
       getRevisitQuestion() {
         getQuestion(this.questionnaireId).then(response => {
           console.log(response.data)
-          this.revisitQuestionList = response.data.data
-          for (var i = 0; i < this.revisitQuestionList.length; i++) {
-            this.answerList.push({
-              examNoteId: this.examNoteId,
-              questionId: this.revisitQuestionList[i].questionId,
-              answer: this.revisitQuestionList[i].itemA
-            })
-          }
-          console.log(this.revisitQuestionList.length)
-          console.log(this.answerList.length)
+          this.answerList.revisitQuestionList = response.data.data
+          // for (var i = 0; i < this.revisitQuestionList.length; i++) {
+          //   this.answerList.push({
+          //     examNoteId: this.examNoteId,
+          //     questionId: this.revisitQuestionList[i].questionId,
+          //     answer: null
+          //   })
+          // }
+          // console.log(this.revisitQuestionList.length)
+          // console.log(this.answerList.length)
           this.visitStudentOption = true
         })
       },
@@ -298,6 +302,12 @@
         this.visitStudentOption = false
         this.questionnaireOption = false
         this.getList()
+      },
+      saveQuestion() {
+        addRevisited(this.answerList).then(response => {
+          // this.backClick()
+        })
+        console.log(this.answerList)
       }
     }
   }

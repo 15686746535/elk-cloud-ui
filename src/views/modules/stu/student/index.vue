@@ -439,8 +439,8 @@
 
                         <el-form-item>
                           <span slot="label" class="text_css">场训教练：</span>
-                          <Coach v-if="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.fieldCoachName}}</div>
+                          <Coach  v-show="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
+                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.fieldCoachName}}</div>
                         </el-form-item>
                       </el-row>
                     </el-col>
@@ -449,8 +449,8 @@
                       <el-row style="height: 50px">
                         <el-form-item>
                           <span slot="label" class="text_css">路训教练：</span>
-                          <Coach v-if="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.roadCoachName}}</div>
+                          <Coach  v-show="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
+                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.roadCoachName}}</div>
                         </el-form-item>
                       </el-row>
 
@@ -463,11 +463,11 @@
 
                         <el-form-item>
                           <span slot="label"  class="text_css">介绍人：</span>
-                          <el-select v-if="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
+                          <el-select v-show="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
                             <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                             </el-option>
                           </el-select>
-                          <span v-for="introducerName in student.introducerNameList" v-else>{{introducerName}}、</span>
+                          <span v-for="introducerName in student.introducerNameList"  v-show="!edit" >{{introducerName}}、</span>
                         </el-form-item>
                       </el-row>
                     </el-col>
@@ -1094,19 +1094,21 @@
             }
           }]
         },
-        subject: [{
-          value: 1,
-          label: '科目一'
-        }, {
-          value: 2,
-          label: '科目二'
-        }, {
-          value: 3,
-          label: '科目三'
-        }, {
-          value: 4,
-          label: '科目四'
-        }],
+        subject: [
+          {
+            value: 1,
+            label: '科目一'
+          }, {
+            value: 2,
+            label: '科目二'
+          }, {
+            value: 3,
+            label: '科目三'
+          }, {
+            value: 4,
+            label: '科目四'
+          }
+        ],
         dialogFormBespeak: false,
         batchList: [],
         examBespeak: {
@@ -1146,7 +1148,7 @@
     methods: {
       // 根据部门id查询学员信息
       searchByOrg(data) {
-        console.log('=====================   1根据部门id查询学员信息   =======================')
+        console.log('=====================   根据部门id查询学员信息   =======================')
         this.listQuery.page = 1
         this.getList()
       },
@@ -1155,11 +1157,12 @@
       },
       // 双击行  编辑
       editList(val) {
-        console.log('====================== 正在进入单个学员编辑 =====================')
+        console.log('====================== 进入单个学员编辑 =====================')
         getObj(val.studentId).then(response => {
           console.log(response.data.data)
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
+          if (this.student.introducerIdList === null) this.student.introducerIdList = [] // 防止介绍人为null
           this.getIntroducerList()
         })
         examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
@@ -1228,8 +1231,9 @@
       },
       // 修改
       update() {
+        console.log('=========== 修改之后的值 =========')
         console.log(this.student)
-        putObj(this.student).then(response => {
+        putObj(this.student).then(() => {
           this.editList(this.student)
           this.edit = false
         })
@@ -1238,6 +1242,7 @@
       searchClick() {
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
+        this.examTimeBlur()
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         console.log(this.listQuery)
         this.getList()
@@ -1372,9 +1377,6 @@
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }
-        console.log(this.listQuery.interval)
-        console.log(this.listQuery.beginTime)
-        console.log(this.listQuery.endTime)
         console.log('=============  完成 ================')
       },
       handleBespeak() {

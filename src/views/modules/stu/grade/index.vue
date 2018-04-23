@@ -357,6 +357,7 @@ export default {
       handleSubject() {
         this.cleanBatchSelected()
         this.studentListQuery.page = 1
+        this.studentListQuery.examId = null
         this.studentListQuery.subject = this.batchListQuery.subject
         this.gradeStudentList = []
         this.notGradeStudentList = []
@@ -370,20 +371,27 @@ export default {
       },
       /* 添加学员方法 */
       createClick() {
-        this.gradeOption = true
-        this.gradeOptionLoading = true
-        this.studentListQuery.examState = 'exam_note_false'
-        getGrade(this.studentListQuery).then(response => {
-          console.log('========== 数据 ==========')
-          console.log(response.data)
-          if (response.data.code === 0) {
-            this.notGradeStudentList = response.data.data.list
-            this.studentTotal = response.data.data.totalCount
-            this.gradeOptionLoading = false
-          } else {
-            console.log('这里是错误信息：' + response.data.msg)
-          }
-        })
+        if (this.studentListQuery.examId) {
+          this.gradeOption = true
+          this.gradeOptionLoading = true
+          this.studentListQuery.examState = 'exam_note_false'
+          getGrade(this.studentListQuery).then(response => {
+            console.log('========== 数据 ==========')
+            console.log(response.data)
+            if (response.data.code === 0) {
+              this.notGradeStudentList = response.data.data.list
+              this.studentTotal = response.data.data.totalCount
+              this.gradeOptionLoading = false
+            } else {
+              console.log('这里是错误信息：' + response.data.msg)
+            }
+          })
+        } else {
+          this.$alert('请先选择批次', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        }
       },
       handleSelectionChange(val) {
         this.examParameter.examNoteList = []

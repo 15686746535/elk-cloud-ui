@@ -14,7 +14,7 @@
           <el-card style="margin-bottom: 5px;height: 80px;">
             <el-date-picker :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.userId" clearable placeholder="负责人">
+            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.introducer" clearable placeholder="负责人">
               <el-option
                 v-for="item in userList"
                 :key="item.userId"
@@ -474,7 +474,7 @@
           beginTime: null,
           endTime: null,
           state: 0,
-          userList: null,
+          introducer: null,
           followUp: true
         },
         alertFollowEntity: {},

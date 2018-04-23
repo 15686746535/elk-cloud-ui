@@ -440,7 +440,7 @@
                         <el-form-item>
                           <span slot="label" class="text_css">场训教练：</span>
                           <Coach  v-show="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.fieldCoachName}}</div>
+                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.fieldName}}</div>
                         </el-form-item>
                       </el-row>
                     </el-col>
@@ -450,7 +450,7 @@
                         <el-form-item>
                           <span slot="label" class="text_css">路训教练：</span>
                           <Coach  v-show="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.roadCoachName}}</div>
+                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.roadName}}</div>
                         </el-form-item>
                       </el-row>
 

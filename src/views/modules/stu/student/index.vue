@@ -1441,9 +1441,8 @@
             if (this.studentEntity.source === null || this.studentEntity.source === '') this.studentEntity.source = response.data.data.source
             if (this.studentEntity.wechat === null || this.studentEntity.wechat === '') this.studentEntity.wechat = response.data.data.wechat
             if (this.studentEntity.contactAddress === null || this.studentEntity.contactAddress === '') this.studentEntity.contactAddress = response.data.data.contactAddress
-            if (this.studentEntity.userId === null || this.studentEntity.userId === '') this.studentEntity.userId = response.data.data.userId
-            if (this.studentEntity.operator === null || this.studentEntity.operator === '') this.studentEntity.operator = response.data.data.operator
-            if (this.studentEntity.applyType === null || this.studentEntity.applyType === '') this.studentEntity.applyType = response.data.data.applyType
+            this.studentEntity.introducerList.push(response.data.data.userId)
+            if (this.studentEntity.motorcycleType === null || this.studentEntity.motorcycleType === '') this.studentEntity.motorcycleType = response.data.data.applyType
           }
           this.createLoading = false
         })
@@ -1508,10 +1507,6 @@
     background: none;
     border: none;
     font-size: 14px;
-  }
-  .image {
-    max-width: 200px;
-    max-height: 200px;
   }
   .title{
     height: 40px;

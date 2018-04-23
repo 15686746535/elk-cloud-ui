@@ -679,6 +679,7 @@
       searchClick() {
         this.intervalTime()
         this.listQuery.page = 1
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.getList()
       },
       // 删除

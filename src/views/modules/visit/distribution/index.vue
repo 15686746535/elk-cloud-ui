@@ -83,6 +83,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { userList } from '@/api/upms/user'
+  import { removeAllSpace } from '@/utils/validate'
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
 
   export default {
@@ -155,6 +156,7 @@
       // 搜索
       searchClick() {
         this.listQuery.page = 1
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.getList()
       },
       distribution() {

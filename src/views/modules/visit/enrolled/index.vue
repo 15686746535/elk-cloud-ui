@@ -74,6 +74,7 @@
 <script>
   import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
   import { mapGetters } from 'vuex'
+  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_intention',
@@ -219,6 +220,7 @@
       searchClick() {
         this.intervalTime()
         this.listQuery.page = 1
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.getList()
       },
       // 来访信息点击事件

@@ -232,7 +232,8 @@
         this.addOption = true
       },
       update(row) {
-        getVehiclePeriod(row.roleId)
+        console.log(row)
+        getVehiclePeriod(row.periodId)
           .then(response => {
             this.vehiclePeriod = response.data
           })
@@ -257,9 +258,6 @@
         putVehiclePeriod(this.vehiclePeriod).then(() => {
           this.getVehiclePeriodList()
         })
-      },
-      asd() {
-        console.log()
       }
     }
   }

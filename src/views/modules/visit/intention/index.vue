@@ -607,6 +607,8 @@
         console.log(this.listQuery)
         fetchList(this.listQuery).then(response => {
           this.intentionList = response.data.data.list
+          console.log('====== 意向信息 =====')
+          console.log(this.intentionList)
           this.total = response.data.data.totalCount
           this.listLoading = false
           this.cleanIntentionSelected()

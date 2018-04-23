@@ -204,6 +204,8 @@
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
           this.list = response.data.data.list
+          console.log('====== 意向信息 =====')
+          console.log(this.list)
           this.total = response.data.data.totalCount
           this.listLoading = false
         })

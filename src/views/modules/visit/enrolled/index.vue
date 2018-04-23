@@ -15,12 +15,12 @@
           <el-card style="margin-bottom: 5px;height: 80px;">
             <el-date-picker :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.operator" clearable placeholder="负责人">
+            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.userId" clearable placeholder="负责人">
               <el-option
-                v-for="item in operators"
-                :key="item"
-                :label="item"
-                :value="item">
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.name"
+                :value="item.userId">
               </el-option>
             </el-select>
             <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
@@ -72,8 +72,9 @@
 </template>
 
 <script>
-  import { fetchList, addObj, getObj, putObj, getOperator, putIntention } from '@/api/visit/intention'
+  import { fetchList, putIntention } from '@/api/visit/intention'
   import { mapGetters } from 'vuex'
+  import { userList } from '@/api/upms/user'
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
@@ -96,7 +97,7 @@
           beginTime: null,
           endTime: null,
           state: '1',
-          operator: null,
+          userId: null,
           followUp: true
         },
         stateLabel: '',
@@ -140,7 +141,7 @@
             }
           }]
         },
-        operators: [],
+        userList: [],
         state: [{
           value: '0',
           label: '跟进中'
@@ -161,7 +162,7 @@
     },
     created() {
       this.getList()
-      this.getOperators()
+      this.getUserList()
     },
     computed: {
       ...mapGetters([
@@ -187,15 +188,15 @@
           this.listQuery.endTime = null
         }
       },
-      getOperators() {
-        getOperator().then(response => {
+      getUserList() {
+        userList().then(response => {
           console.log('================== 所有负责人 ===================')
           console.log(response.data)
           this.operators = response.data.data
         })
       },
       // 根据部门id查询员工
-      searchByOrg(data) {
+      searchByOrg() {
         console.log('=====================   根据部门id查询来访信息   =======================')
         this.listQuery.page = 1
         this.getList()

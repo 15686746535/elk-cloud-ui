@@ -924,16 +924,14 @@
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { userList } from '@/api/upms/user'
-  import { examFetchList, getExam } from '@/api/student/examnote'
+  import { examFetchList } from '@/api/student/examnote'
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { getIntentionByMobile } from '@/api/visit/intention'
   import Coach from '@/components/Coach'
-
-
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-  import { getBatchList, getBatch } from '@/api/student/batch'
+  import { getBatchList } from '@/api/student/batch'
   import { batchSave } from '@/api/student/exambespeak'
   export default {
     name: 'table_student',

@@ -14,12 +14,12 @@
           <el-card style="margin-bottom: 5px;height: 80px;">
             <el-date-picker :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.operator" clearable placeholder="负责人">
+            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.userId" clearable placeholder="负责人">
               <el-option
-                v-for="item in operators"
-                :key="item"
-                :label="item"
-                :value="item">
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.name"
+                :value="item.userId">
               </el-option>
             </el-select>
             <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
@@ -127,7 +127,6 @@
       <el-dialog width="35%" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
 
 
-        <!--:rules="rules"-->
         <el-form :model="intention" :rules="rules" ref="intention" label-width="100px" class="demo-ruleForm"  size="small">
 
           <el-row :gutter="5">
@@ -270,10 +269,10 @@
 
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
-                  <el-form-item prop="operator">
+                  <el-form-item prop="userName">
                     <span slot="label" class="text_css">负责人：</span>
-                    <el-input v-if="edit" disabled v-model="intention.operator" placeholder="负责人"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.operator}}</div>
+                    <el-input v-if="edit" disabled v-model="intention.userName" placeholder="负责人"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.userName}}</div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -440,10 +439,11 @@
 </template>
 
 <script>
-  import { fetchList, addObj, getObj, putObj, getOperator } from '@/api/visit/intention'
+  import { fetchList, addObj, getObj, putObj } from '@/api/visit/intention'
   import { followUpList, addFollowUp } from '@/api/visit/followup'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
+  import { userList } from '@/api/upms/user'
 
   export default {
     name: 'table_intention',
@@ -474,7 +474,7 @@
           beginTime: null,
           endTime: null,
           state: 0,
-          operator: null,
+          userList: null,
           followUp: true
         },
         alertFollowEntity: {},
@@ -519,7 +519,7 @@
           }]
         },
         customerType: [],
-        operators: [],
+        userList: [],
         edit: true,
         followShow: false,
         addOption: false,
@@ -550,7 +550,7 @@
     },
     created() {
       this.getList()
-      this.getOperators()
+      this.getUserList()
     },
     computed: {
       ...mapGetters([
@@ -576,18 +576,15 @@
           this.listQuery.endTime = null
         }
       },
-      getState(val) {
-        this.stateLabel = val.value
-      },
-      getOperators() {
-        getOperator().then(response => {
+      getUserList() {
+        userList().then(response => {
           console.log('================== 所有负责人 ===================')
           console.log(response.data)
-          this.operators = response.data.data
+          this.userList = response.data.data
         })
       },
       // 根据部门id查询员工
-      searchByOrg(data) {
+      searchByOrg() {
         console.log('=====================   根据部门id查询来访信息   =======================')
         this.listQuery.page = 1
         this.getList()
@@ -706,7 +703,7 @@
         this.followShow = false
         this.addOption = false
         this.getList()
-        this.getOperators()
+        this.getUserList()
       },
       // 来访信息点击事件
       intentionClick(e, val) {

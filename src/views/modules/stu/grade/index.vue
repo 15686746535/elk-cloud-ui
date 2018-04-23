@@ -183,8 +183,8 @@
           </el-table>
           <el-dialog width="30%" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
 
-            <Coach v-show="batchListQuery.subject === 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
-            <Coach v-show="batchListQuery.subject === 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
+            <Coach v-show="batchListQuery.subject == 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+            <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
 
             <div slot="footer">
               <el-button type="danger" @click="innerGradeOption = false">取 消</el-button>
@@ -200,8 +200,8 @@
 
         <el-dialog width="30%" title="选择教练" :visible.sync="innerGradeOption1" append-to-body>
 
-          <Coach v-show="batchListQuery.subject === 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
-          <Coach v-show="batchListQuery.subject === 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
+          <Coach v-show="batchListQuery.subject == 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+          <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
 
           <div slot="footer">
             <el-button type="danger" @click="innerGradeOption1 = false">取 消</el-button>
@@ -427,6 +427,7 @@ export default {
           this.examOperation(1)
         } else {
           console.log('==========')
+          console.log(this.batchListQuery.subject)
           this.innerGradeOption = true
         }
       },

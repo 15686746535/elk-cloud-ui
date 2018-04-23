@@ -9,10 +9,6 @@
             <el-radio-button label="3">科目三</el-radio-button>
             <el-radio-button label="4">科目四</el-radio-button>
           </el-radio-group>
-          <!--<div @click="handleSubject('1',$event)" style="border-radius: 4px 0 0 4px;" class="subjectBtn subjectBtn_selected" >科目一</div>-->
-          <!--<div @click="handleSubject('2',$event)" style="border-radius: 0;" class="subjectBtn" >科目二</div>-->
-          <!--<div @click="handleSubject('3',$event)" style="border-radius: 0;" class="subjectBtn" >科目三</div>-->
-          <!--<div @click="handleSubject('4',$event)" style="border-radius: 0 4px 4px 0; margin-right: 10px;" class="subjectBtn" >科目四</div>-->
         </div>
         <div style="float:right;">
           <el-date-picker value-format="timestamp" style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -478,6 +474,7 @@
       searchClick() {
         this.listQuery.page = 1
         this.examTimeBlur()
+        console.log(this.listQuery)
         this.getList()
       },
       handleDelete(val) {

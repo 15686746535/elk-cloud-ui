@@ -19,7 +19,8 @@
             </el-option>
           </el-select>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="vehiclePeriodListQuery.condition"></el-input>
-          <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
+          <el-button class="filter-item" type="primary"  @click="getDateList">搜索</el-button>
+          <!--<el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>-->
         </div>
       </div>
     </el-card>
@@ -110,6 +111,15 @@
                 </el-col>
 
                 <el-col :span="12">
+                  <el-form-item prop="idNumber">
+                    <span slot="label" class="text_css">人数上限：</span>
+                    <el-input type="number" v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col>
                   <el-form-item prop="fieldAddress">
                     <span slot="label" class="text_css">训练场地：</span>
                     <span v-show="vehiclePeriodListQuery.subject === 2">
@@ -123,35 +133,51 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="20">
-                <el-col :span="12">
-                  <el-form-item prop="fieldAddress">
-                    <span slot="label" class="text_css">学习课时：</span>
-                    <el-time-select style="width: 49%" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
-                    </el-time-select>
-                    <el-time-select style="width: 49%" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
-                    </el-time-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item prop="idNumber">
-                    <span slot="label" class="text_css">人数上限：</span>
-                    <el-input type="number" v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
-                  </el-form-item>
-                </el-col>
+
+              <el-row>
+                <el-form-item prop="fieldAddress">
+                  <span slot="label" class="text_css">学习课时：</span>
+                  <el-row :gutter="2">
+                    <el-col :span="11">
+                      <el-time-select style="width: 100%;" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
+                      </el-time-select>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-time-select style="width: 100%;" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
+                      </el-time-select>
+                    </el-col>
+                  </el-row>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-form-item prop="idNumber">
+                  <span slot="label" class="text_css">培训日期：</span>
+                  <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择日期">
+                    <el-option
+                      v-for="item in dateList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
               </el-row>
 
               <el-row>
-                <el-col></el-col>
-              </el-row>
-
-              <el-row>
-                <el-col></el-col>
+                <el-form-item prop="idNumber">
+                  <span slot="label" class="text_css">训练车辆：</span>
+                  <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择日期">
+                    <el-option
+                      v-for="item in dateList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
               </el-row>
 
             </el-row>
-
-
 
           </el-form>
           <div slot="footer">
@@ -169,6 +195,7 @@
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
   import { mapGetters } from 'vuex'
+  import { parseTime } from '@/utils/index'
 
   export default {
     name: 'table_vehicle_period',
@@ -233,6 +260,7 @@
       createClick() {
         this.vehiclePeriod = {}
         this.addOption = true
+        this.getDateList()
       },
       create(formName) {
         const set = this.$refs
@@ -295,6 +323,20 @@
         putVehiclePeriod(this.vehiclePeriod).then(() => {
           this.getVehiclePeriodList()
         })
+      },
+      /* 根据当前时间获取可发布课时日期 */
+      getDateList() {
+        this.dateList = []
+        var date = new Date(new Date().setHours(0, 0, 0, 0))
+        var now = new Date(new Date().setHours(0, 0, 0, 0))
+        for (var i = 0; i < 7; i++) {
+          date = now.setTime(now.getTime() + 3600 * 1000 * 24 * 1)
+          this.dateList.push({
+            label: parseTime(date, '{y}-{m}-{d}'),
+            value: date
+          })
+        }
+        console.log(this.dateList)
       }
     }
   }

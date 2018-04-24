@@ -620,7 +620,7 @@
                 <el-button type="primary" @click="add">保 存</el-button>
               </div>
               <div v-else style="width: 163px;margin: 10px auto">
-                <el-button type="success" @click="handleBespeak">预 约</el-button>
+                <el-button type="success" @click="handleBespeak">约 考</el-button>
                 <el-button type="primary" @click="editInfo">编 辑</el-button>
               </div>
 
@@ -1419,7 +1419,7 @@
             type: 'warning'
           })
         } else {
-          batchSave(this.examBespeak).then(response => {
+          batchSave(this.examBespeak).then(() => {
             this.$notify({
               title: '成功',
               message: '预约成功',

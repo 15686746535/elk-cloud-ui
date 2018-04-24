@@ -9,8 +9,6 @@
           <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
           <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜 索</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary">上 传</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" @click="distribution" type="success" icon="plus">分 配</el-button>
         </el-card>
 
         <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}">
@@ -55,7 +53,16 @@
             </el-table-column>
 
           </el-table>
-
+          <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;clear: both">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page.sync="listQuery.page"
+                           background style="float: left"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+            <el-button class="filter-item" style="float: right;" @click="distribution" type="success" icon="plus">分 配</el-button>
+            <el-button class="filter-item" style="float: right;" type="primary">上 传</el-button>
+          </div>
 
 
 
@@ -200,6 +207,14 @@
       },
       closeIntention() {
         this.dialogIntentionList = false
+      },
+      handleSizeChange(val) {
+        this.listQuery.limit = val
+        this.getList()
+      },
+      handleCurrentChange(val) {
+        this.listQuery.page = val
+        this.getList()
       }
     }
   }

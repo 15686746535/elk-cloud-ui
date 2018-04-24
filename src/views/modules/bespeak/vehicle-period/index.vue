@@ -87,27 +87,27 @@
           </el-pagination>
           <el-button style="margin-top: -8px;float: right" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
         </div>
-        <el-dialog  width="40%" title="录入课时" :visible.sync="addOption">
+        <el-dialog  @close="cancel('vehiclePeriod')" width="40%" title="录入课时" :visible.sync="addOption">
 
-          <el-form :model="vehiclePeriod" ref="vehiclePeriod" label-position="left" label-width="80px">
+          <el-form :model="vehiclePeriod" :rules="vehiclePeriodRules"  ref="vehiclePeriod" label-position="left" label-width="100px">
 
             <el-row>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item prop="coach">
+                  <el-form-item prop="coachId">
                     <span slot="label" class="text_css">教学教练：</span>
                     <span v-show="vehiclePeriodListQuery.subject === 2">
-                      <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+                      <Coach v-model="vehiclePeriod.coachId" coachType="field" placeholder="场训教练"></Coach>
                     </span>
 
                     <span v-show="vehiclePeriodListQuery.subject === 3">
-                      <Coach v-model="vehiclePeriod.roadCoach" coachType="road" placeholder="路训教练"></Coach>
+                      <Coach v-model="vehiclePeriod.coachId" coachType="road" placeholder="路训教练"></Coach>
                     </span>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="12">
-                  <el-form-item prop="idNumber">
+                  <el-form-item prop="count">
                     <span slot="label" class="text_css">人数上限：</span>
                     <el-input type="number" v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
                   </el-form-item>
@@ -131,24 +131,28 @@
 
 
               <el-row>
-                <el-form-item prop="fieldAddress">
+                <el-form-item required>
                   <span slot="label" class="text_css">学习课时：</span>
                   <el-row :gutter="2">
                     <el-col :span="11">
-                      <el-time-select style="width: 100%;" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
-                      </el-time-select>
+                      <el-form-item prop="beginTime">
+                        <el-time-select style="width: 100%;" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
+                        </el-time-select>
+                      </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                      <el-time-select style="width: 100%;" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
-                      </el-time-select>
+                      <el-form-item prop="endTime">
+                        <el-time-select style="width: 100%;" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
+                        </el-time-select>
+                      </el-form-item>
                     </el-col>
                   </el-row>
                 </el-form-item>
               </el-row>
               <el-row>
-                <el-form-item prop="idNumber">
+                <el-form-item prop="dateList">
                   <span slot="label" class="text_css">培训日期：</span>
-                  <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择日期">
+                  <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择培训日期">
                     <el-option
                       v-for="item in dateList"
                       :key="item.value"
@@ -160,14 +164,14 @@
               </el-row>
 
               <el-row>
-                <el-form-item prop="idNumber">
+                <el-form-item prop="vehicleList">
                   <span slot="label" class="text_css">训练车辆：</span>
-                  <el-select v-model="vehiclePeriod.vehicleList" style="width: 100%" multiple collapse-tags placeholder="请选择日期">
+                  <el-select v-model="vehiclePeriod.vehicleList" style="width: 100%" multiple collapse-tags placeholder="请选择训练车辆">
                     <el-option
                       v-for="item in vehicleList"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                      :key="item.vehicleId"
+                      :label="item.plateNumber"
+                      :value="item.vehicleId">
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -207,7 +211,15 @@
     },
     data() {
       return {
-        vehiclePeriod: {},
+        vehiclePeriod: {
+          coachId: null,
+          count: null,
+          fieldAddress: null,
+          beginTime: null,
+          endTime: null,
+          dateList: [],
+          vehicleList: []
+        },
         vehicleList: [],
         vehiclePeriodList: [],
         dateList: [],
@@ -222,6 +234,29 @@
           condition: null,
           subject: 2,
           interval: []
+        },
+        vehiclePeriodRules: {
+          coachId: [
+            { required: true, message: '请选择教练', trigger: 'change' }
+          ],
+          count: [
+            { required: true, message: '请输入上限', trigger: 'change' }
+          ],
+          fieldAddress: [
+            { required: true, message: '请选择场地', trigger: 'change' }
+          ],
+          beginTime: [
+            { required: true, message: '请选择开始时间', trigger: 'change' }
+          ],
+          endTime: [
+            { required: true, message: '请选择结束时间', trigger: 'change' }
+          ],
+          dateList: [
+            { required: true, message: '请选择培训日期', trigger: 'change' }
+          ],
+          vehicleList: [
+            { required: true, message: '请选择培训车辆', trigger: 'change' }
+          ]
         }
       }
     },
@@ -237,6 +272,8 @@
           console.log(this.vehiclePeriodList)
           this.total = response.data.data.totalCount
           this.vehiclePeriodListLoading = false
+          this.getDateList()
+          this.getVehicleList()
         })
       },
       /* 获取车辆数据 */
@@ -256,10 +293,16 @@
       },
       /* 添加点击 */
       createClick() {
-        this.vehiclePeriod = {}
+        this.vehiclePeriod = {
+          coachId: null,
+          count: null,
+          fieldAddress: null,
+          beginTime: null,
+          endTime: null,
+          dateList: [],
+          vehicleList: []
+        }
         this.addOption = true
-        this.getDateList()
-        this.getVehicleList()
       },
       /* 添加操作 */
       create(formName) {
@@ -267,6 +310,7 @@
         set[formName].validate(valid => {
           if (valid) {
             this.addOption = false
+            console.log(this.vehiclePeriod)
             addVehiclePeriod(this.vehiclePeriod)
               .then(() => {
                 this.getVehiclePeriodList()
@@ -279,7 +323,15 @@
       /* 取消操作 */
       cancel(formName) {
         this.addOption = false
-        this.vehiclePeriod = {}
+        this.vehiclePeriod = {
+          coachId: null,
+          count: null,
+          fieldAddress: null,
+          beginTime: null,
+          endTime: null,
+          dateList: [],
+          vehicleList: []
+        }
         const set = this.$refs
         set[formName].resetFields()
         this.getVehiclePeriodList()

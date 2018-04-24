@@ -27,14 +27,15 @@
       </el-card>
       <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
 
+
         <el-table :data="list" :height="($store.state.app.client.height - 215)" border style="width: 100%"  highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
-          <el-table-column align="center" label="编号" width="50px">
-              <template slot-scope="scope">
-              <span>{{scope.row.vehicleEntity.vehicleId}}</span>
-            </template>
-          </el-table-column>
+          <!--<el-table-column align="center" label="编号" width="50px">-->
+              <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.vehicleEntity.vehicleId}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-          <!-- 基本信息 -->
+            <!-- 基本信息 -->
           <el-table-column align="center" label="基本信息">
             <template slot-scope="scope">
               <el-row :gutter="10">

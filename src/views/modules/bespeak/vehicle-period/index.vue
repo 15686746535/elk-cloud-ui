@@ -217,6 +217,7 @@
           fieldAddress: null,
           beginTime: null,
           endTime: null,
+          subject: null,
           dateList: [],
           vehicleList: []
         },
@@ -299,6 +300,7 @@
           fieldAddress: null,
           beginTime: null,
           endTime: null,
+          subject: null,
           dateList: [],
           vehicleList: []
         }
@@ -307,6 +309,7 @@
       /* 添加操作 */
       create(formName) {
         const set = this.$refs
+        this.vehiclePeriod.subject = this.vehiclePeriodListQuery.subject
         set[formName].validate(valid => {
           if (valid) {
             this.addOption = false

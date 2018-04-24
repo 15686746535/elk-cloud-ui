@@ -6,6 +6,12 @@ export function fetchList(query) {
     method: 'get',
     params: query
   })
+}// 查询集合
+export function queryVehicleList() {
+  return request({
+    url: '/vehicle/car/queryVehicleList',
+    method: 'get'
+  })
 }
 // 添加车辆信息
 export function addObj(key, obj) {

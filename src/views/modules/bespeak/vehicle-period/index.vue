@@ -3,24 +3,19 @@
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 60px">
       <div class="filter-container">
         <div style="height: 40px; float: left">
-          <!--<el-radio-group @change="handleState" v-model="vehiclePeriodListQuery.state">-->
-            <!--<el-radio-button label="1">历史课时</el-radio-button>-->
-            <!--<el-radio-button label="2">当前课时</el-radio-button>-->
-            <!--<el-radio-button label="3">计划课时</el-radio-button>-->
-          <!--</el-radio-group>-->
+          <el-radio-group @change="searchClick" v-model="vehiclePeriodListQuery.subject">
+            <el-radio-button :label="2">科目二</el-radio-button>
+            <el-radio-button :label="3">科目三</el-radio-button>
+          </el-radio-group>
         </div>
-        <div style="float: right">
-          <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="vehiclePeriodListQuery.subject" class="filter-item" clearable placeholder="科目">
-            <el-option
-              v-for="item in subject"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="vehiclePeriodListQuery.condition"></el-input>
-          <el-button class="filter-item" type="primary"  @click="getDateList">搜索</el-button>
-          <!--<el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>-->
+        <div style="height: 40px; float: right">
+
+          <el-date-picker value-format="timestamp" v-model="vehiclePeriodListQuery.interval" type="daterange" align="right" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+          </el-date-picker>
+
+          <el-input @keyup.enter.native="searchClick" style="width: 200px;" placeholder="关键词" v-model="vehiclePeriodListQuery.condition"></el-input>
+          <!--<el-button class="filter-item" type="primary"  @click="getDateList">搜索</el-button>-->
+          <el-button type="primary"  @click="searchClick">搜索</el-button>
         </div>
       </div>
     </el-card>
@@ -28,10 +23,11 @@
         <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="($store.state.app.client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
-              <div v-for="student in props.row.studentList">
-                {{student.name}}
-                {{student.mobile}}
-              </div>
+              <span style="margin-left: 5px;" v-for="student in props.row.studentList">
+                <el-tag>
+                  {{student.name}}&nbsp;&nbsp;({{student.mobile}})
+                </el-tag>
+              </span>
             </template>
           </el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -166,9 +162,9 @@
               <el-row>
                 <el-form-item prop="idNumber">
                   <span slot="label" class="text_css">训练车辆：</span>
-                  <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择日期">
+                  <el-select v-model="vehiclePeriod.vehicleList" style="width: 100%" multiple collapse-tags placeholder="请选择日期">
                     <el-option
-                      v-for="item in dateList"
+                      v-for="item in vehicleList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
@@ -192,6 +188,7 @@
 
 <script>
   import { getVehiclePeriodList, getVehiclePeriod, putVehiclePeriod, addVehiclePeriod } from '@/api/bespeak/vehicleperiod'
+  import { queryVehicleList } from '@/api/vehicle/vehicle'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
   import { mapGetters } from 'vuex'
@@ -211,6 +208,7 @@
     data() {
       return {
         vehiclePeriod: {},
+        vehicleList: [],
         vehiclePeriodList: [],
         dateList: [],
         total: null,
@@ -222,17 +220,9 @@
           limit: 20,
           state: 1,
           condition: null,
-          subject: 2
-        },
-        subject: [
-          {
-            value: 2,
-            label: '科目二'
-          }, {
-            value: 3,
-            label: '科目三'
-          }
-        ]
+          subject: 2,
+          interval: []
+        }
       }
     },
     created() {
@@ -249,6 +239,13 @@
           this.vehiclePeriodListLoading = false
         })
       },
+      /* 获取车辆数据 */
+      getVehicleList() {
+        queryVehicleList().then(response => {
+          console.log(response.data)
+          this.vehicleList = response.data.list
+        })
+      },
       handleSizeChange(val) {
         this.vehiclePeriodListQuery.limit = val
         this.getVehiclePeriodList()
@@ -257,11 +254,14 @@
         this.vehiclePeriodListQuery.page = val
         this.getVehiclePeriodList()
       },
+      /* 添加点击 */
       createClick() {
         this.vehiclePeriod = {}
         this.addOption = true
         this.getDateList()
+        this.getVehicleList()
       },
+      /* 添加操作 */
       create(formName) {
         const set = this.$refs
         set[formName].validate(valid => {
@@ -276,6 +276,7 @@
           }
         })
       },
+      /* 取消操作 */
       cancel(formName) {
         this.addOption = false
         this.vehiclePeriod = {}
@@ -283,12 +284,14 @@
         set[formName].resetFields()
         this.getVehiclePeriodList()
       },
+      /* 修改点击 */
       updateClick(row) {
         getVehiclePeriod(row.periodId).then(response => {
           this.vehiclePeriod = response.data
           this.addOption = true
         })
       },
+      /* 修改操作 */
       update(formName) {
         const set = this.$refs
         set[formName].validate(valid => {
@@ -306,10 +309,6 @@
       searchClick() {
         this.vehiclePeriodListQuery.page = 1
         this.vehiclePeriodListQuery.condition = removeAllSpace(this.vehiclePeriodListQuery.condition)
-        this.getVehiclePeriodList()
-      },
-      handleState() {
-        this.vehiclePeriodListQuery.page = 1
         this.getVehiclePeriodList()
       },
       /* 禁用启用开关 */

@@ -3,11 +3,11 @@
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 60px">
       <div class="filter-container">
         <div style="height: 40px; float: left">
-          <el-radio-group @change="handleState" v-model="vehiclePeriodListQuery.state">
-            <el-radio-button label="1">历史课时</el-radio-button>
-            <el-radio-button label="2">当前课时</el-radio-button>
-            <el-radio-button label="3">计划课时</el-radio-button>
-          </el-radio-group>
+          <!--<el-radio-group @change="handleState" v-model="vehiclePeriodListQuery.state">-->
+            <!--<el-radio-button label="1">历史课时</el-radio-button>-->
+            <!--<el-radio-button label="2">当前课时</el-radio-button>-->
+            <!--<el-radio-button label="3">计划课时</el-radio-button>-->
+          <!--</el-radio-group>-->
         </div>
         <div style="float: right">
           <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="vehiclePeriodListQuery.subject" class="filter-item" clearable placeholder="科目">
@@ -61,7 +61,7 @@
           </el-table-column>
           <el-table-column align="center" label="课时" width="250">
             <template slot-scope="scope">
-              <span>{{scope.row.beginTime | subTime('dateTime')}} - {{scope.row.endTime | subTime('time')}}</span>
+              <span>{{scope.row.beginTime | parseTime('{y}-{m}-{d} {h}:{i}')}} - {{scope.row.endTime | parseTime('{h}:{i}')}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="已约人数">
@@ -77,7 +77,7 @@
 
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" type="primary" @click="update(scope.row)"><i class="el-icon-edit"></i> 编 辑</el-button>
+              <el-button size="mini" type="primary" @click="updateClick(scope.row)"><i class="el-icon-edit"></i> 编 辑</el-button>
             </template>
           </el-table-column>
 
@@ -88,90 +88,90 @@
                          :page-sizes="[10,20,30, 50]" :page-size="vehiclePeriodListQuery.limit"
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
-          <el-button style="margin-top: -8px;float: right" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
+          <el-button style="margin-top: -8px;float: right" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
         </div>
-      <el-dialog  width="40%" title="录入课时" :visible.sync="addOption">
+        <el-dialog  width="40%" title="录入课时" :visible.sync="addOption">
 
-        <el-form :model="vehiclePeriod" label-position="left" label-width="80px">
-
-          <el-row>
-
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item prop="coach">
-                  <span slot="label" class="text_css">教学教练：</span>
-                  <span v-show="vehiclePeriodListQuery.subject === 2">
-                    <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
-                  </span>
-
-                  <span v-show="vehiclePeriodListQuery.subject === 3">
-                    <Coach v-model="vehiclePeriod.roadCoach" coachType="road" placeholder="路训教练"></Coach>
-                  </span>
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="12">
-                <el-form-item prop="fieldAddress">
-                  <span slot="label" class="text_css">训练场地：</span>
-                  <span v-show="vehiclePeriodListQuery.subject === 2">
-                    <Dict v-model="vehiclePeriod.fieldAddress" coachType="dict_training_field2" placeholder="训练场地"></Dict>
-                  </span>
-
-                  <span v-show="vehiclePeriodListQuery.subject === 3">
-                    <Dict v-model="vehiclePeriod.fieldAddress" coachType="dict_training_field3" placeholder="训练场地"></Dict>
-                  </span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item prop="idNumber">
-                  <span slot="label" class="text_css">人数上限：</span>
-                  <el-input v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-
-              </el-col>
-            </el-row>
+          <el-form :model="vehiclePeriod" ref="vehiclePeriod" label-position="left" label-width="80px">
 
             <el-row>
-              <el-col>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item prop="coach">
+                    <span slot="label" class="text_css">教学教练：</span>
+                    <span v-show="vehiclePeriodListQuery.subject === 2">
+                      <Coach v-model="vehiclePeriod.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+                    </span>
 
-                <el-form-item prop="fieldAddress">
-                  <span slot="label" class="text_css">学习课时：</span>
-                  <el-time-select style="width: 35%" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
-                  </el-time-select>
-                  <el-time-select style="width: 35%" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
-                  </el-time-select>
-                </el-form-item>
-              </el-col>
+                    <span v-show="vehiclePeriodListQuery.subject === 3">
+                      <Coach v-model="vehiclePeriod.roadCoach" coachType="road" placeholder="路训教练"></Coach>
+                    </span>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item prop="fieldAddress">
+                    <span slot="label" class="text_css">训练场地：</span>
+                    <span v-show="vehiclePeriodListQuery.subject === 2">
+                      <dict v-model="vehiclePeriod.fieldAddress" dictType="dict_training_field2" placeholder="训练场地"></dict>
+                    </span>
+
+                    <span v-show="vehiclePeriodListQuery.subject === 3">
+                      <dict v-model="vehiclePeriod.fieldAddress" dictType="dict_training_field3" placeholder="训练场地"></dict>
+                    </span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item prop="fieldAddress">
+                    <span slot="label" class="text_css">学习课时：</span>
+                    <el-time-select style="width: 49%" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
+                    </el-time-select>
+                    <el-time-select style="width: 49%" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
+                    </el-time-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item prop="idNumber">
+                    <span slot="label" class="text_css">人数上限：</span>
+                    <el-input type="number" v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col></el-col>
+              </el-row>
+
+              <el-row>
+                <el-col></el-col>
+              </el-row>
+
             </el-row>
 
-            <el-row>
-              <el-col>
-              </el-col>
-            </el-row>
 
 
-          </el-row>
-
-        </el-form>
-
+          </el-form>
+          <div slot="footer">
+            <el-button @click="cancel('vehiclePeriod')">取 消</el-button>
+            <el-button v-if="dialogStatus=='create'" type="primary" @click="create('vehiclePeriod')">确 定</el-button>
+            <el-button v-else type="primary" @click="update('vehiclePeriod')">修 改</el-button>
+          </div>
         </el-dialog>
       </el-card>
   </div>
 </template>
 
 <script>
-  import { getVehiclePeriodList, getVehiclePeriod, putVehiclePeriod } from '@/api/bespeak/vehicleperiod'
+  import { getVehiclePeriodList, getVehiclePeriod, putVehiclePeriod, addVehiclePeriod } from '@/api/bespeak/vehicleperiod'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'table_vehicleperiod',
+    name: 'table_vehicle_period',
     computed: {
       ...mapGetters([
         'permissions',
@@ -185,9 +185,11 @@
       return {
         vehiclePeriod: {},
         vehiclePeriodList: [],
+        dateList: [],
         total: null,
         vehiclePeriodListLoading: true,
         addOption: false,
+        dialogStatus: 'create',
         vehiclePeriodListQuery: {
           page: 1,
           limit: 20,
@@ -210,6 +212,7 @@
       this.getVehiclePeriodList()
     },
     methods: {
+      /* 获取数据 */
       getVehiclePeriodList() {
         this.vehiclePeriodListLoading = true
         getVehiclePeriodList(this.vehiclePeriodListQuery).then(response => {
@@ -227,17 +230,51 @@
         this.vehiclePeriodListQuery.page = val
         this.getVehiclePeriodList()
       },
-      create() {
+      createClick() {
         this.vehiclePeriod = {}
         this.addOption = true
       },
-      update(row) {
-        console.log(row)
-        getVehiclePeriod(row.periodId)
-          .then(response => {
-            this.vehiclePeriod = response.data
-          })
+      create(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            this.addOption = false
+            addVehiclePeriod(this.vehiclePeriod)
+              .then(() => {
+                this.getVehiclePeriodList()
+              })
+          } else {
+            return false
+          }
+        })
       },
+      cancel(formName) {
+        this.addOption = false
+        this.vehiclePeriod = {}
+        const set = this.$refs
+        set[formName].resetFields()
+        this.getVehiclePeriodList()
+      },
+      updateClick(row) {
+        getVehiclePeriod(row.periodId).then(response => {
+          this.vehiclePeriod = response.data
+          this.addOption = true
+        })
+      },
+      update(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            putVehiclePeriod(this.vehiclePeriod).then(() => {
+              this.addOption = false
+              this.getVehiclePeriodList()
+            })
+          } else {
+            return false
+          }
+        })
+      },
+      /* 搜索 */
       searchClick() {
         this.vehiclePeriodListQuery.page = 1
         this.vehiclePeriodListQuery.condition = removeAllSpace(this.vehiclePeriodListQuery.condition)

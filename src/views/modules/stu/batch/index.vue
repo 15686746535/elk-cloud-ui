@@ -26,7 +26,6 @@
     </el-card>
     <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
       <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
-        <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
           <template slot-scope="scope">
@@ -49,11 +48,11 @@
           </template>
         </el-table-column>
 
-        <!--<el-table-column align="center" label="批次">-->
-          <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.batch}}</span>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
+        <el-table-column align="center" label="批次">
+          <template slot-scope="scope">
+            <span>{{scope.row.batch}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
@@ -331,7 +330,6 @@
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
   import { parseTime } from '@/utils/index'
-  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_batch',

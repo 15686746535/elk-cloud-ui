@@ -182,7 +182,7 @@
           </el-form>
           <div slot="footer">
             <el-button @click="cancel('vehiclePeriod')">取 消</el-button>
-            <el-button v-if="dialogStatus=='create'" type="primary" @click="create('vehiclePeriod')">确 定</el-button>
+            <el-button v-if="dialogStatus=='create'" type="primary" :loading="loading"  @click="create('vehiclePeriod')">确 定</el-button>
             <el-button v-else type="primary" @click="update('vehiclePeriod')">修 改</el-button>
           </div>
         </el-dialog>
@@ -227,6 +227,7 @@
         total: null,
         vehiclePeriodListLoading: true,
         addOption: false,
+        loading: false,
         dialogStatus: 'create',
         vehiclePeriodListQuery: {
           page: 1,
@@ -308,14 +309,16 @@
       },
       /* 添加操作 */
       create(formName) {
+        console.log(this.vehiclePeriod)
         const set = this.$refs
         this.vehiclePeriod.subject = this.vehiclePeriodListQuery.subject
         set[formName].validate(valid => {
           if (valid) {
-            this.addOption = false
-            console.log(this.vehiclePeriod)
+            this.loading = true
             addVehiclePeriod(this.vehiclePeriod)
               .then(() => {
+                this.addOption = false
+                this.loading = false
                 this.getVehiclePeriodList()
               })
           } else {
@@ -388,7 +391,7 @@
           date = now.setTime(now.getTime() + 3600 * 1000 * 24 * 1)
           this.dateList.push({
             label: parseTime(date, '{y}-{m}-{d}'),
-            value: date
+            value: parseTime(date, '{y}-{m}-{d}')
           })
         }
         console.log(this.dateList)

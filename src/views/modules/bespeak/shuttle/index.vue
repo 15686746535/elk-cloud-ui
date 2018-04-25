@@ -106,8 +106,8 @@
                   <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>-->
                 <!--</div>-->
                 <div style="float: right">
-                  <el-input @keyup.enter.native="searchClick" size="mini" style="width: 200px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
-                  <el-button class="filter-item" type="primary" size="mini" @click="backClick">搜索</el-button>
+                  <el-input @keyup.enter.native="getNotShuttleList" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
+                  <el-button class="filter-item" type="primary" size="mini" @click="getNotShuttleList">搜索</el-button>
                 </div>
               </div>
               <el-table :data="notShuttleList" :height="($store.state.app.client.height - 260)" border style="width: 100%"
@@ -147,18 +147,22 @@
                   :total="notShuttleTotal"
                 >
                 </el-pagination>
-                <!--<el-pagination @size-change="notShuttleHandleSizeChange" @current-change="notShuttleHandleCurrentChange"-->
-                               <!--:current-page.sync="notShuttleListQuery.page" background-->
-                               <!--style="float: left"-->
-                               <!--:page-size="notShuttleListQuery.limit"-->
-                               <!--layout="total, sizes, prev, next" :total="notShuttleTotal">-->
-                <!--</el-pagination>-->
                 <div style="float: right;" >
                   <el-button type="primary" size="mini"><i class="el-icon-plus"></i> 添 加</el-button>
-                  <el-button type="primary" size="mini"><i class="el-icon-fa-bus"></i> 接 送</el-button>
+                  <el-button type="primary" size="mini" @click="shuttleClick"><i class="el-icon-fa-bus"></i> 接 送</el-button>
                 </div>
-              </div>
 
+              </div>
+              <el-dialog width="15%" title="请选择接送人" :visible.sync="userListOption">
+                <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
+                  <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
+                  </el-option>
+                </el-select>
+                <div slot="footer">
+                  <el-button @click="userListOption = false">取 消</el-button>
+                  <el-button type="primary" @click="asd">确 定</el-button>
+                </div>
+              </el-dialog>
             </el-card>
           </el-col>
           <el-col :span="16">
@@ -282,8 +286,13 @@
         shuttledList: [],
         shuttledTotal: null,
         shuttledListLoading: false,
+        userListOption: false,
         showModule: 'list',
         userList: [],
+        shuttle: {
+          userId: null,
+          studentList: []
+        },
         shuttleLogQuery: {
           page: 1,
           limit: 20
@@ -378,7 +387,7 @@
         this.showModule = 'list'
       },
       /* 获取介绍人列表 */
-      getIntroducerList() {
+      getUserList() {
         userList().then(response => {
           console.log(response.data.data)
           this.userList = response.data.data
@@ -387,6 +396,14 @@
       /* 被接送人集合 */
       handleSelectionChange(val) {
         console.log(val)
+        this.shuttle.studentList = val
+      },
+      shuttleClick() {
+        this.getUserList()
+        this.userListOption = true
+      },
+      asd() {
+        console.log(this.shuttle)
       }
     }
   }

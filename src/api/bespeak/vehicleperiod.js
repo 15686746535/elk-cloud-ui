@@ -7,6 +7,14 @@ export function getVehiclePeriodList(query) {
     params: query
   })
 }
+// 查询集合
+export function getShuttledList(query) {
+  return request({
+    url: '/bespeak/vehicleperiod/tomorrow',
+    method: 'get',
+    params: query
+  })
+}
 // 添加
 export function addVehiclePeriod(obj) {
   return request({

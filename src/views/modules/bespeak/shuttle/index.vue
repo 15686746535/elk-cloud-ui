@@ -209,12 +209,12 @@
                 </el-table-column>
                 <el-table-column align="center" label="电话">
                   <template slot-scope="scope">
-                    <span>{{scope.row.region}}</span>
+                    <span>{{scope.row.mobile}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="人数">
+                <el-table-column align="center" label="已安排人数">
                   <template slot-scope="scope">
-                    <span>{{scope.row.region}}</span>
+                    <span>{{scope.row.count}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center" label="接送日期">
@@ -255,7 +255,9 @@
 
 <script>
   import { fetchList, getObj, queryUndelivered } from '@/api/bespeak/shuttle'
+  import { getShuttledList } from '@/api/bespeak/vehicleperiod'
   import { mapGetters } from 'vuex'
+  import { userList } from '@/api/upms/user'
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
@@ -281,6 +283,7 @@
         shuttledTotal: null,
         shuttledListLoading: false,
         showModule: 'list',
+        userList: [],
         shuttleLogQuery: {
           page: 1,
           limit: 20
@@ -310,15 +313,26 @@
           this.shuttleLogLoading = false
         })
       },
-      /* 获取查看页面接送名单 */
+      /* 获取未安排接送名单 */
       getNotShuttleList() {
         this.notShuttleListLoading = true
         queryUndelivered(this.notShuttleListQuery).then(response => {
-          console.log('=========== 接送名单 ==========')
+          console.log('=========== 获取未安排接送名单 ==========')
           console.log(response.data)
-          this.notShuttleList = response.data.data
+          this.notShuttleList = response.data.data.list
           this.notShuttleTotal = response.data.data.totalCount
           this.notShuttleListLoading = false
+        })
+      },
+      /* 获取已安排接送名单 */
+      getShuttledList() {
+        this.shuttledListLoading = true
+        getShuttledList(this.shuttledListQuery).then(response => {
+          console.log('=========== 获取已安排接送名单 ==========')
+          console.log(response.data)
+          this.shuttledList = response.data.data.list
+          this.shuttledTotal = response.data.data.totalCount
+          this.shuttledListLoading = false
         })
       },
       /* 接送名单 */
@@ -342,15 +356,16 @@
       /* 已安排接送名单 */
       shuttledHandleSizeChange(val) {
         this.shuttledListQuery.limit = val
-        this.getShuttleLog()
+        this.getShuttledList()
       },
       shuttledHandleCurrentChange(val) {
         this.shuttledListQuery.page = val
-        this.getShuttleLog()
+        this.getShuttledList()
       },
       /* 转到管理页面 */
       create() {
         this.getNotShuttleList()
+        this.getShuttledList()
         this.showModule = 'info'
       },
       /* 搜索 */
@@ -361,6 +376,13 @@
       /* 返回list */
       backClick() {
         this.showModule = 'list'
+      },
+      /* 获取介绍人列表 */
+      getIntroducerList() {
+        userList().then(response => {
+          console.log(response.data.data)
+          this.userList = response.data.data
+        })
       },
       /* 被接送人集合 */
       handleSelectionChange(val) {

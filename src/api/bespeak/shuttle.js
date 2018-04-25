@@ -7,6 +7,14 @@ export function fetchList(query) {
     params: query
   })
 }
+// 查询集合
+export function queryUndelivered(query) {
+  return request({
+    url: '/bespeak/shuttle/queryUndelivered',
+    method: 'get',
+    params: query
+  })
+}
 // 添加
 export function addObj(obj) {
   return request({

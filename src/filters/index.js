@@ -15,6 +15,7 @@ export function timeAgo(time) {
     return pluralize(~~(between / 86400), ' day')
   }
 }
+
 export function sexFilter(sex) {
   const typeMap = {
     1: '男',

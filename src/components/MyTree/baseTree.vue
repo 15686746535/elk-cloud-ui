@@ -2,7 +2,7 @@
   <ul class="tree" style="padding: 0;">
     <template v-for="(node,index) in treeList">
       <leaf
-            :selected="value"
+            :selected="selected"
             :model="node"
             :list="treeList"
             :index="index"
@@ -56,28 +56,32 @@
         default: true
       },
       value: {
-        type: Number,
         default: null
       }
     },
     data() {
       return {
         node: null,
+        selected: null,
         isOpen: true,
-        treeList: [],
-        nodeList: []
+        treeList: []
       }
     },
     watch: {
       value: function(val) {
-        console.log(val)
-        backfill(this.nodeList, val)
+        if (!this.checkbox) {
+          this.selected = val
+        }
       },
       data: function(val) {
         this.treeList = val
+        this.nodeList()
       }
     },
     created() {
+      if (!this.checkbox) {
+        this.selected = this.value
+      }
       this.isOpen = this.open
       this.getTreeData()
     },
@@ -92,6 +96,7 @@
             params: this.query
           }).then(response => {
             this.treeList = response.data.data
+            this.nodeList()
           })
         }
       },
@@ -99,25 +104,25 @@
         this.$emit('node', ogj)
         this.$emit('change', ogj.id)
       },
-      nodeCheckbox(nodeList) {
-        // this.$emit('node-checkbox', this.model.id, !this.model.selected)
-        this.$emit('nodeList', nodeList)
-      },
-      delNodeId(id) {
-        for (var i = 0; i < this.nodeList.length; i++) {
-          if (this.nodeList[i] === id) this.nodeList.splice(i, 1)
+      nodeList() {
+        var nodeList = []
+        if (this.checkbox) {
+          getNodeList(this.treeList, nodeList)
+          this.$emit('change', nodeList)
         }
+      },
+      nodeCheckbox(nodeList) {
+        this.$emit('change', nodeList)
       }
     }
   }
 
-  export function backfill(list, id) {
+  export function getNodeList(list, nodeList) {
     list.forEach(function(item, index) {
-      item.click = false
-      if (item.id === id) {
-        item.click = true
+      if (item.selected) {
+        nodeList.push(item.id)
       }
-      backfill(item.children, id)
+      getNodeList(item.children, nodeList)
     })
   }
 

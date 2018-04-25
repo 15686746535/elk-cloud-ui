@@ -14,9 +14,9 @@
       <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
-            <el-button type="primary" v-if="menuManager_btn_add" @click="handlerAdd"><i class="el-icon-plus"></i>添加</el-button>
+            <el-button type="primary"  @click="handlerAdd"><i class="el-icon-plus"></i>添加</el-button>
             <el-button type="primary"  @click="handlerEdit"><i class="el-icon-edit"></i>编辑</el-button>
-            <el-button type="primary" v-if="menuManager_btn_del" @click="handleDelete"><i class="el-icon-delete"></i>删除</el-button>
+            <el-button type="primary"  @click="handleDelete"><i class="el-icon-delete"></i>删除</el-button>
           </el-button-group>
         </el-card>
         <el-card class="box-card" :style="{height: ($store.state.app.client.height-130) + 'px'}" style="overflow: auto">

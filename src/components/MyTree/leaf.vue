@@ -3,8 +3,8 @@
     <!--展开 收缩图标-->
     <span class="button switch" :class="leafWidth?clazz + ' spread-true' : clazz" @click="isOpen = !isOpen"></span>
     <!--复选框-->
-    <span v-if="checkbox" class="button chk "  @click="clickCheckbox" :class="model.selected?'checkbox_true_full':'checkbox_false_full'" ></span>
-    <a class="node" @click="emit(model)" :class="selected === model.id?'selected':''" :style="{width:leafWidth}">
+    <span v-if="checkbox" class="button chk "  @click="emit(model)" :class="model.selected?'checkbox_true_full':'checkbox_false_full'" ></span>
+    <a class="node" @click="emit(model)" :class="(selected === model.id )&& !checkbox?'selected':''" :style="{width:leafWidth}">
       <!--文件夹图标-->
       <span v-if="folder" class="button ico" :class="model.children.length > 0 ? isOpen ? 'ico_open' : 'ico_close' : 'ico_docu'"></span>
       <!--节点名字-->
@@ -91,17 +91,18 @@
         this.emit(this.model)
       },
       emit(node) {
-        this.$emit('node', node)
+        if (this.checkbox) {
+          var nodeList = []
+          var selected = !node.selected
+          node.selected = selected
+          selectedAll(this.list, node.id, selected, nodeList)
+          this.nodeCheckbox(nodeList)
+        } else {
+          this.$emit('node', node)
+        }
       },
       nodeCheckbox(nodeList) {
         this.$emit('node-checkbox', nodeList)
-      },
-      clickCheckbox() {
-        var nodeList = []
-        var selected = !this.model.selected
-        this.model.selected = selected
-        selectedAll(this.list, this.model.id, selected, nodeList)
-        this.nodeCheckbox(nodeList)
       }
     }
   }

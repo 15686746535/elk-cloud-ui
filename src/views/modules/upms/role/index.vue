@@ -1,71 +1,73 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+    <el-row :gutter="5">
+      <el-col class="org-tree-left">
+        <el-card>
+          <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
+            <!-- 分割线 -->
+            <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col>
+          </el-row>
+          <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="getList"></my-tree>
+        </el-card >
+      </el-col>
+      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+        <el-card>
+          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
+          <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="getList">搜索</el-button>
+          <el-table :key='tableKey'  :height="($store.state.app.client.height-215)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
+            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+            <el-table-column align="center" label="职位名称">
+              <template slot-scope="scope">
+                <span>{{scope.row.roleName}}</span>
+              </template>
+            </el-table-column>
 
-    <el-card  style="margin-bottom: 5px;height: 80px;">
-      <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
-      <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
-    </el-card>
+            <el-table-column align="center" label="职位标识">
+              <template slot-scope="scope">
+                <span>{{scope.row.roleKey}}</span>
+              </template>
+            </el-table-column>
 
+            <el-table-column align="center" label="职位描述">
+              <template slot-scope="scope">
+                <span>{{scope.row.roleDesc }}</span>
+              </template>
+            </el-table-column>
 
-    <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}">
-      <el-table :key='tableKey'  :height="($store.state.app.client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
-        <!--<el-table-column type="selection" class="selection" prop='uuid'></el-table-column>-->
+            <el-table-column align="center" label="创建时间">
+              <template slot-scope="scope">
+                <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+              </template>
+            </el-table-column>
 
-        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+            <el-table-column  align="center" label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" type="success"
+                           @click="handleUpdate(scope.row)">编辑
+                </el-button>
+                <el-button size="mini" type="danger"
+                           @click="handleDelete(scope.row)">删除
+                </el-button>
+                 <el-button size="mini" type="info" plain
+                            @click="handlePermission(scope.row)">权限
+                 </el-button>
+              </template>
+            </el-table-column>
 
-
-        <el-table-column label="职位名称">
-          <template slot-scope="scope">
-            <span>{{scope.row.roleName}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="职位标识">
-          <template slot-scope="scope">
-            <span>{{scope.row.roleKey}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="职位描述">
-          <template slot-scope="scope">
-            <span>{{scope.row.roleDesc }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="创建时间">
-          <template slot-scope="scope">
-            <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column  align="center" label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" type="success"
-                       @click="handleUpdate(scope.row)">编辑
-            </el-button>
-            <el-button size="mini" type="danger"
-                       @click="handleDelete(scope.row)">删除
-            </el-button>
-            <el-button size="mini" type="info" plain
-                       @click="handlePermission(scope.row)">权限
-            </el-button>
-          </template>
-        </el-table-column>
-
-      </el-table>
-
-
-
-
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page.sync="listQuery.page" background
-                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                       layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-      </div>
-    </el-card>
+          </el-table>
+          <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float: left"
+                           :current-page.sync="listQuery.page" background
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+            <div class="" style="float: right;">
+              <el-button  type="primary" icon="el-icon-plus" @click="createClick()">添加</el-button>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
@@ -89,26 +91,8 @@
       </div>
     </el-dialog>
 
-
-
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible">
-      <el-tree
-        class="filter-tree"
-        :data="treeData"
-        :default-checked-keys="checkedKeys"
-        check-strictly
-        node-key="id"
-        highlight-current
-        :props="defaultProps"
-        show-checkbox
-        ref="menuTree"
-        :filter-node-method="filterNode"
-        default-expand-all
-        :style="{height: ($store.state.app.client.height)/2 +'px'}"
-        style="overflow: auto"
-      >
-      </el-tree>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission">
+      <my-tree v-if="url" :url="url" v-model="permissionList" :checkbox="true" ></my-tree>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="updatePermession(roleId, roleKey)">更 新</el-button>
       </div>
@@ -120,7 +104,6 @@
   import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/upms/role'
   import { fetchTree } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
-  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_role',
@@ -147,6 +130,8 @@
           roleKey: undefined,
           roleDesc: undefined
         },
+        permissionList: [],
+        url: undefined,
         roleId: undefined,
         roleKey: undefined,
         rules: {
@@ -167,19 +152,6 @@
             {
               required: true,
               message: '角色标识',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
-              trigger: 'blur'
-            }
-          ],
-          roleDesc: [
-            {
-              required: true,
-              message: '角色备注',
               trigger: 'blur'
             },
             {
@@ -235,6 +207,9 @@
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
       },
+      closePermission() {
+        this.url = ''
+      },
       handleUpdate(row) {
         getObj(row.roleId)
           .then(response => {
@@ -245,23 +220,16 @@
           })
       },
       searchClick() {
-        this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
         this.listQuery.page = 1
         this.getList()
       },
       handlePermission(row) {
-        fetchRoleTree(row.roleKey).then(response => {
-          this.checkedKeys = response.data.data
-        })
-
-        fetchTree()
-          .then(response => {
-            this.treeData = response.data.data
-            this.dialogStatus = 'permission'
-            this.dialogPermissionVisible = true
-            this.roleId = row.roleId
-            this.roleKey = row.roleKey
-          })
+        console.log(row.roleId)
+        this.dialogStatus = 'permission'
+        this.dialogPermissionVisible = true
+        this.roleId = row.roleId
+        this.url = '/upms/menu/tree?roleId=' + row.roleId
+        this.roleKey = row.roleKey
       },
       filterNode(value, data) {
         if (!value) return true
@@ -274,12 +242,6 @@
           .then(response => {
             this.dialogFormVisible = false
             this.getList()
-            this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
-              duration: 2000
-            })
           })
       },
       create(formName) {
@@ -290,12 +252,6 @@
               .then(() => {
                 this.dialogFormVisible = false
                 this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
               })
           } else {
             return false
@@ -316,12 +272,6 @@
             putObj(this.form).then(() => {
               this.dialogFormVisible = false
               this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
             })
           } else {
             return false
@@ -329,23 +279,9 @@
         })
       },
       updatePermession(roleId, roleKey) {
-        permissionUpd(roleId, this.$refs.menuTree.getCheckedKeys())
-          .then(() => {
-            this.dialogPermissionVisible = false
-            fetchTree()
-              .then(response => {
-                this.treeData = response.data
-              })
-            fetchRoleTree(roleKey).then(response => {
-              this.checkedKeys = response.data
-            })
-            this.$notify({
-              title: '成功',
-              message: '修改成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
+        permissionUpd(roleId, this.permissionList).then(() => {
+          this.dialogPermissionVisible = false
+        })
       },
       resetTemp() {
         this.form = {

@@ -15,7 +15,8 @@
             <my-tree :data="orgList"
                      leafWidth="100%"
                      v-model="currentId"
-                     choiceType="folder"
+                     :folder="folder"
+                     :checkbox="checkbox"
                      @node="emitChange"></my-tree>
           </div>
         </div>
@@ -50,12 +51,20 @@
         type: String,
         default: ''
       },
+      checkbox: {
+        type: Boolean,
+        default: false
+      },
+      folder: {
+        type: Boolean,
+        default: true
+      },
       data: {
         type: Array,
         default: null
       },
       value: {
-        type: Number
+        default: null
       }
     },
     data() {
@@ -63,7 +72,7 @@
         noData: true,
         isOpen: false,
         orgList: [],
-        currentId: null,
+        currentId: this.value,
         label: '',
         org: {}
       }
@@ -71,8 +80,10 @@
     // 数据请求
     watch: {
       value: function(val) {
-        this.currentId = val
-        this.choose(this.orgList, val)
+        if (!this.checkbox) {
+          this.currentId = val
+          this.choose(this.orgList, val)
+        }
       }
     },
     created() {
@@ -84,11 +95,17 @@
           if (response.data.data) {
             this.noData = false
             this.orgList = response.data.data
+            if (!this.checkbox) {
+              this.choose(this.orgList, this.value)
+            }
           }
         })
       } else if (this.data) {
         this.noData = false
         this.orgList = this.data
+        if (!this.checkbox) {
+          this.choose(this.orgList, this.value)
+        }
       }
     },
     methods: {

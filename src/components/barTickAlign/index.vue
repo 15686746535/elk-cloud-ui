@@ -30,7 +30,7 @@
         default: '#3398DB'
       },
       data: {
-        type: Array
+        type: Object
       }
     },
     data() {
@@ -41,8 +41,8 @@
       }
     },
     created() {
-      this.mon = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-      this.pos = this.data
+      this.mon = this.data.mon
+      this.pos = this.data.pos
     },
     mounted() {
       this.initChart()

@@ -1,8 +1,8 @@
 <template>
   <scroll-pane class='tags-view-container' ref='scrollPane'>
     <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
-      {{tag.title}}
-      <span class='el-icon-close' v-if="tag.title!='首页'" @click='closeViewTags(tag,$event)'></span>
+      {{tag.name}}
+      <span class='el-icon-close' v-if="tag.path!='/dashboard'" @click='closeViewTags(tag,$event)'></span>
     </router-link>
   </scroll-pane>
 </template>

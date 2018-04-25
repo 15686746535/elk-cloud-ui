@@ -1,10 +1,24 @@
 .app-container {
   padding: 20px;
 }
-
+.bg-white{
+  background-color:#fff;
+}
+.bg-blue{
+  background-color:$BgBlue;
+}
+.bg-success{
+  background-color:$BgSuccess;
+}
+.bg-warning{
+  background-color:$BgWarning;
+}
+.bg-danger{
+  background-color:$BgDanger;
+}
 .app-container.calendar-list-container{
   overflow: auto;
-  background: url(../static/img/backgroundImg.png);
+  background: url($BackGroundImg);
 }
 .el-row{
   height: 100%;
@@ -19,7 +33,7 @@
   width: 230px;
 }
 .org-tree-left .el-card{
-  background-image:url(../static/img/treeBg.png);
+  background-image:url($TreeBg);
   /* 背景图片不重复显示*/
   background-repeat: no-repeat;
   /* 背景图片横向及纵向重复*/

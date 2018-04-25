@@ -2,8 +2,8 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-card>
-        <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-        <el-button class="filter-item" type="primary" style="margin-bottom: 15px"  icon="search" @click="searchClick">搜索</el-button>
+        <el-input @keyup.enter.native="getList" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+        <el-button class="filter-item" type="primary" style="margin-bottom: 15px"  icon="search" @click="getList">搜索</el-button>
         <el-table :data="list" v-loading="listLoading" :height="($store.state.app.client.height-215)" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
           <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -39,7 +39,7 @@
           </el-table-column>
           <el-table-column label="任务状态">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @change="update(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @change="save(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </template>
           </el-table-column>
           <el-table-column label="备注">
@@ -53,11 +53,14 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="操作" width="180">
+          <el-table-column label="操作" width="150">
             <template slot-scope="scope">
               <el-button size="mini" type="success"
-                         @click="update(scope.row)">编辑
+                         @click="info(scope.row)">编辑
               </el-button>
+             <!-- <el-button size="mini" type="danger"
+                         @click="runNow(scope.row.jobId)">立即执行
+              </el-button>-->
               <el-button size="mini" type="danger"
                          @click="delete(scope.row)">删除
               </el-button>
@@ -71,8 +74,7 @@
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
           <div class="" style="float: right;">
-            <el-button  type="primary" icon="el-icon-plus" @click="create()">添加</el-button>
-            <el-button  type="primary" icon="el-icon-plus" @click="create()">添加</el-button>
+            <el-button  type="primary" icon="el-icon-plus" @click="info()">添加</el-button>
           </div>
         </div>
       </el-card>
@@ -96,7 +98,7 @@
           <el-form-item label="参数" prop="params">
             <el-input v-model="form.params" placeholder="参数"></el-input>
           </el-form-item>
-          <el-form-item label="cron表达式" prop="params">
+          <el-form-item label="cron表达式" prop="cronExpression">
             <el-input v-model="form.cronExpression" placeholder="cron表达式"></el-input>
           </el-form-item>
           <el-form-item label="任务状态" prop="status">
@@ -106,11 +108,9 @@
             <el-input type="textarea" v-model="form.remark" placeholder="描述"></el-input>
           </el-form-item>
         </el-form>
-
-        <div slot="footer" class="dialog-footer">
+        <div>
           <el-button @click="cancel">取 消</el-button>
-          <el-button v-if="showModule=='create'" type="primary" @click="create">确 定</el-button>
-          <el-button v-else type="primary" @click="update">修 改</el-button>
+          <el-button type="primary" @click="update('form')">保存</el-button>
         </div>
       </el-card>
     </div>
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj, putObj } from '@/api/quartz/job'
+  import { fetchList, addObj, delObj, putObj, run } from '@/api/quartz/job'
 
   export default {
     name: 'table_schedulejob',
@@ -131,6 +131,23 @@
         showModule: 'list',
         form: {
           status: '0'
+        },
+        rules: {
+          orgId: [
+            { required: true, message: '所属部门', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '任务名称', trigger: 'blur' }
+          ],
+          beanName: [
+            { required: true, message: 'bean名称', trigger: 'blur' }
+          ],
+          methodName: [
+            { required: true, message: '方法名', trigger: 'blur' }
+          ],
+          cronExpression: [
+            { required: true, message: 'cron表达式', trigger: 'blur' }
+          ]
         },
         listQuery: {
           page: 1,
@@ -151,11 +168,18 @@
           this.listLoading = false
         })
       },
-      update(obj) {
-        // 修改定时任务
-        putObj(obj).then(response => {
-          this.getList()
-        })
+      save(obj) {
+        if (obj.jobId) {
+          putObj(obj).then(response => {
+            this.showModule = 'list'
+            this.getList()
+          })
+        } else {
+          addObj(obj).then(response => {
+            this.showModule = 'list'
+            this.getList()
+          })
+        }
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
@@ -165,23 +189,40 @@
         this.listQuery.page = val
         this.getList()
       },
-      create() {
-        this.schedulejob = {}
+      update(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            this.save(this.form)
+          } else {
+            return false
+          }
+        })
+      },
+      info(obj) {
+        this.form = {
+          status: '0'
+        }
+        if (obj) {
+          this.form = obj
+        }
         this.showModule = 'info'
       },
-      // update(row) {
-      //   getObj(row.roleId)
-      //     .then(response => {
-      //       this.schedulejob = response.data
-      //       this.showModule = 'info'
-      //     })
-      // },
-      searchClick() {
-        this.listQuery.page = 1
-        this.getList()
+      runNow(id) {
+        run(id).then(response => {
+          this.getList()
+        })
       },
       delete(id) {
-        this.getList()
+        this.$confirm('是否删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delObj(id).then(() => {
+            this.getList()
+          })
+        })
       },
       cancel() {
         this.showModule = 'list'

@@ -3,8 +3,8 @@
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index)  in levelList" :key="item.path" v-if='item.meta.title'>
         <!--<span v-if='item.redirect==="noredirect"||index==levelList.length-1' class="no-redirect">{{item.meta.title}}</span>-->
-        <router-link v-if="item.meta.title == '首页'" :to="item.redirect||item.path">{{item.meta.title}}</router-link> <!-- 可点击的面包屑 -->
-        <span v-else :to="item.redirect||item.path">{{item.meta.title}}</span> <!-- 不点击的面包屑 -->
+        <!--<router-link v-if="item.meta.title == '首页'" :to="item.redirect||item.path">{{item.meta.title}}</router-link>--> <!-- 可点击的面包屑 -->
+        <span :to="item.redirect||item.path">{{item.meta.title}}</span> <!-- 不点击的面包屑 -->
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -27,12 +27,7 @@
     },
     methods: {
       getBreadcrumb() {
-        let matched = this.$route.matched.filter(item => item.name)
-        const first = matched[0]
-        if (first && first.name !== 'dashboard') {
-          matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
-        }
-        this.levelList = matched
+        this.levelList = this.$route.matched.filter(item => item.name)
       }
     }
   }

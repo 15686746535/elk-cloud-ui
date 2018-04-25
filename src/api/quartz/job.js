@@ -10,7 +10,7 @@ export function fetchList(query) {
 // 添加
 export function addObj(obj) {
   return request({
-    url: '/quartz/schedulejob',
+    url: '/quartz/job',
     method: 'post',
     data: obj
   })
@@ -25,7 +25,7 @@ export function getObj(id) {
 // 删除
 export function delObj(id) {
   return request({
-    url: '/quartz/schedulejob/' + id,
+    url: '/quartz/job/' + id,
     method: 'delete'
   })
 }
@@ -35,5 +35,12 @@ export function putObj(obj) {
     url: '/quartz/job/update',
     method: 'put',
     data: obj
+  })
+}
+// 立即执行任务
+export function run(jobId) {
+  return request({
+    url: '/quartz/job/' + jobId,
+    method: 'put'
   })
 }

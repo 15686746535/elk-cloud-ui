@@ -928,6 +928,7 @@
         this.listQuery.page = 1
         console.log('============== 搜索方法 ===============')
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
+        this.examTimeBlur()
         console.log(this.listQuery)
         this.getList()
       },

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getShuttleList(query) {
   return request({
     url: '/bespeak/shuttle/getPage',
     method: 'get',

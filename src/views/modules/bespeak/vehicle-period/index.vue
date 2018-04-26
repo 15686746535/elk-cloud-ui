@@ -20,173 +20,173 @@
       </div>
     </el-card>
     <el-card :style="{height: ($store.state.app.client.height - 105) + 'px'}">
-        <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="($store.state.app.client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <span style="margin-left: 5px;" v-for="student in props.row.studentList">
-                <el-tag>
-                  {{student.name}}&nbsp;&nbsp;({{student.mobile}})
-                </el-tag>
-              </span>
-            </template>
-          </el-table-column>
-          <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-          <el-table-column align="center" label="教练">
-            <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="身份证" width="170">
-            <template slot-scope="scope">
-              <span>{{scope.row.idNumber}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="电话">
-            <template slot-scope="scope">
-              <span>{{scope.row.mobile}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="科目">
-            <template slot-scope="scope">
-              <span>{{scope.row.subject  | subjectFilter}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="训练场地">
-            <template slot-scope="scope">
-              <span>{{scope.row.fieldAddress}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="课时" width="250">
-            <template slot-scope="scope">
-              <span>{{scope.row.beginTime | parseTime('{y}-{m}-{d} {h}:{i}')}} - {{scope.row.endTime | parseTime('{h}:{i}')}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="已约人数">
-            <template slot-scope="scope">
-              <span>{{scope.row.studentList.length}}/{{scope.row.count}} 人</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="状态">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.state" active-value="0" inactive-value="1" @change="vehiclePeriodChange(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </template>
-          </el-table-column>
+      <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="($store.state.app.client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <span style="margin-left: 5px;" v-for="student in props.row.studentList">
+              <el-tag>
+                {{student.name}}&nbsp;&nbsp;({{student.mobile}})
+              </el-tag>
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <el-table-column align="center" label="教练">
+          <template slot-scope="scope">
+            <span>{{scope.row.name}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="身份证" width="170">
+          <template slot-scope="scope">
+            <span>{{scope.row.idNumber}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="电话">
+          <template slot-scope="scope">
+            <span>{{scope.row.mobile}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="科目">
+          <template slot-scope="scope">
+            <span>{{scope.row.subject  | subjectFilter}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="训练场地">
+          <template slot-scope="scope">
+            <span>{{scope.row.fieldAddress}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="课时" width="250">
+          <template slot-scope="scope">
+            <span>{{scope.row.beginTime | parseTime('{y}-{m}-{d} {h}:{i}')}} - {{scope.row.endTime | parseTime('{h}:{i}')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="已约人数">
+          <template slot-scope="scope">
+            <span>{{scope.row.studentList.length}}/{{scope.row.count}} 人</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="状态">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.state" active-value="0" inactive-value="1" @change="vehiclePeriodChange(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          </template>
+        </el-table-column>
 
-          <el-table-column align="center" label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" type="primary" @click="updateClick(scope.row)"><i class="el-icon-edit"></i> 编 辑</el-button>
-            </template>
-          </el-table-column>
+        <el-table-column align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="updateClick(scope.row)"><i class="el-icon-edit"></i> 编 辑</el-button>
+          </template>
+        </el-table-column>
 
-        </el-table>
-        <div v-show="!vehiclePeriodListLoading" class="pagination-container" style="margin-top: 20px">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="vehiclePeriodListQuery.page" background style="float: left"
-                         :page-sizes="[10,20,30, 50]" :page-size="vehiclePeriodListQuery.limit"
-                         layout="total, sizes, prev, pager, next, jumper" :total="total">
-          </el-pagination>
-          <el-button style="margin-top: -8px;float: right" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
-        </div>
-        <el-dialog  @close="cancel('vehiclePeriod')" width="40%" title="录入课时" :visible.sync="addOption">
+      </el-table>
+      <div v-show="!vehiclePeriodListLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="vehiclePeriodListQuery.page" background style="float: left"
+                       :page-sizes="[10,20,30, 50]" :page-size="vehiclePeriodListQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+        <el-button style="margin-top: -8px;float: right" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
+      </div>
+      <el-dialog  @close="cancel('vehiclePeriod')" width="40%" title="录入课时" :visible.sync="addOption">
 
-          <el-form :model="vehiclePeriod" :rules="vehiclePeriodRules"  ref="vehiclePeriod" label-position="left" label-width="100px">
+        <el-form :model="vehiclePeriod" :rules="vehiclePeriodRules"  ref="vehiclePeriod" label-position="left" label-width="100px">
 
-            <el-row>
-              <el-row :gutter="20">
-                <el-col :span="12">
-                  <el-form-item prop="coachId">
-                    <span slot="label" class="text_css">教学教练：</span>
-                    <span v-show="vehiclePeriodListQuery.subject === 2">
-                      <Coach v-model="vehiclePeriod.coachId" coachType="field" placeholder="场训教练"></Coach>
-                    </span>
+          <el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item prop="coachId">
+                  <span slot="label" class="text_css">教学教练：</span>
+                  <span v-show="vehiclePeriodListQuery.subject === 2">
+                    <Coach v-model="vehiclePeriod.coachId" coachType="field" placeholder="场训教练"></Coach>
+                  </span>
 
-                    <span v-show="vehiclePeriodListQuery.subject === 3">
-                      <Coach v-model="vehiclePeriod.coachId" coachType="road" placeholder="路训教练"></Coach>
-                    </span>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                  <el-form-item prop="count">
-                    <span slot="label" class="text_css">人数上限：</span>
-                    <el-input type="number" v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="20">
-                <el-col>
-                  <el-form-item prop="fieldAddress">
-                    <span slot="label" class="text_css">训练场地：</span>
-                    <span v-show="vehiclePeriodListQuery.subject === 2">
-                      <dict v-model="vehiclePeriod.fieldAddress" dictType="dict_training_field2" placeholder="训练场地"></dict>
-                    </span>
-
-                    <span v-show="vehiclePeriodListQuery.subject === 3">
-                      <dict v-model="vehiclePeriod.fieldAddress" dictType="dict_training_field3" placeholder="训练场地"></dict>
-                    </span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-
-              <el-row>
-                <el-form-item required>
-                  <span slot="label" class="text_css">学习课时：</span>
-                  <el-row :gutter="2">
-                    <el-col :span="11">
-                      <el-form-item prop="beginTime">
-                        <el-time-select style="width: 100%;" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
-                        </el-time-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item prop="endTime">
-                        <el-time-select style="width: 100%;" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
-                        </el-time-select>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
+                  <span v-show="vehiclePeriodListQuery.subject === 3">
+                    <Coach v-model="vehiclePeriod.coachId" coachType="road" placeholder="路训教练"></Coach>
+                  </span>
                 </el-form-item>
-              </el-row>
-              <el-row>
-                <el-form-item prop="dateList">
-                  <span slot="label" class="text_css">培训日期：</span>
-                  <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择培训日期">
-                    <el-option
-                      v-for="item in dateList"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-row>
+              </el-col>
 
-              <el-row>
-                <el-form-item prop="vehicleList">
-                  <span slot="label" class="text_css">训练车辆：</span>
-                  <el-select v-model="vehiclePeriod.vehicleList" style="width: 100%" multiple collapse-tags placeholder="请选择训练车辆">
-                    <el-option
-                      v-for="item in vehicleList"
-                      :key="item.vehicleId"
-                      :label="item.plateNumber"
-                      :value="item.vehicleId">
-                    </el-option>
-                  </el-select>
+              <el-col :span="12">
+                <el-form-item prop="count">
+                  <span slot="label" class="text_css">人数上限：</span>
+                  <el-input type="number" v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
                 </el-form-item>
-              </el-row>
-
+              </el-col>
             </el-row>
 
-          </el-form>
-          <div slot="footer">
-            <el-button @click="cancel('vehiclePeriod')">取 消</el-button>
-            <el-button v-if="dialogStatus=='create'" type="primary" :loading="loading"  @click="create('vehiclePeriod')">确 定</el-button>
-            <el-button v-else type="primary" @click="update('vehiclePeriod')">修 改</el-button>
-          </div>
-        </el-dialog>
-      </el-card>
+            <el-row :gutter="20">
+              <el-col>
+                <el-form-item prop="fieldAddress">
+                  <span slot="label" class="text_css">训练场地：</span>
+                  <span v-show="vehiclePeriodListQuery.subject === 2">
+                    <dict v-model="vehiclePeriod.fieldAddress" dictType="dict_training_field2" placeholder="训练场地"></dict>
+                  </span>
+
+                  <span v-show="vehiclePeriodListQuery.subject === 3">
+                    <dict v-model="vehiclePeriod.fieldAddress" dictType="dict_training_field3" placeholder="训练场地"></dict>
+                  </span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+
+            <el-row>
+              <el-form-item required>
+                <span slot="label" class="text_css">学习课时：</span>
+                <el-row :gutter="2">
+                  <el-col :span="11">
+                    <el-form-item prop="beginTime">
+                      <el-time-select style="width: 100%;" placeholder="起始时间" v-model="vehiclePeriod.beginTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30' }">
+                      </el-time-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item prop="endTime">
+                      <el-time-select style="width: 100%;" placeholder="结束时间" v-model="vehiclePeriod.endTime" :picker-options="{ start: '07:00', step: '00:30', end: '20:30', minTime: vehiclePeriod.beginTime }">
+                      </el-time-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item prop="dateList">
+                <span slot="label" class="text_css">培训日期：</span>
+                <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择培训日期">
+                  <el-option
+                    v-for="item in dateList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-row>
+
+            <el-row>
+              <el-form-item prop="vehicleList">
+                <span slot="label" class="text_css">训练车辆：</span>
+                <el-select v-model="vehiclePeriod.vehicleList" style="width: 100%" multiple collapse-tags placeholder="请选择训练车辆">
+                  <el-option
+                    v-for="item in vehicleList"
+                    :key="item.vehicleId"
+                    :label="item.plateNumber"
+                    :value="item.vehicleId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-row>
+
+          </el-row>
+
+        </el-form>
+        <div slot="footer">
+          <el-button @click="cancel('vehiclePeriod')">取 消</el-button>
+          <el-button v-if="dialogStatus=='create'" type="primary" :loading="loading"  @click="create('vehiclePeriod')">确 定</el-button>
+          <el-button v-else type="primary" @click="update('vehiclePeriod')">修 改</el-button>
+        </div>
+      </el-dialog>
+    </el-card>
   </div>
 </template>
 

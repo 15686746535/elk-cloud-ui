@@ -493,7 +493,6 @@
           fiveInsuranceTime: null,
           providentFundTime: null,
           workMobile: null
-
         },
         // 添加 标记
         addInfo: false,

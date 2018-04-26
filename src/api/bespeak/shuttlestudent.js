@@ -42,6 +42,6 @@ export function putObj(obj) {
   return request({
     url: '/bespeak/shuttlestudent',
     method: 'put',
-    data: obj
+    params: obj
   })
 }

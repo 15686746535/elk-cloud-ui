@@ -148,19 +148,39 @@
                 >
                 </el-pagination>
                 <div style="float: right;" >
-                  <el-button type="primary" size="mini"><i class="el-icon-plus"></i> 添 加</el-button>
+                  <el-button type="primary" size="mini" @click="getStudentList"><i class="el-icon-plus"></i> 添 加</el-button>
                   <el-button type="primary" size="mini" @click="shuttleClick"><i class="el-icon-fa-bus"></i> 接 送</el-button>
                 </div>
 
               </div>
-              <el-dialog width="15%" title="请选择接送人" :visible.sync="userListOption">
+
+              <el-dialog :close-on-click-modal="false" width="30%" title="添加接送学员" :visible.sync="addStudentOption">
+                <el-row>
+                  <el-select v-model="shuttle.studentList" collapse-tags style="width: 100%" multiple placeholder="请选择学员">
+                    <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
+                    </el-option>
+                  </el-select>
+                </el-row>
+                <el-row style="margin-top: 10px;">
+                  <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
+                    <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
+                    </el-option>
+                  </el-select>
+                </el-row>
+                <div slot="footer">
+                  <el-button @click="addStudentOption = false">取 消</el-button>
+                  <el-button type="primary" @click="addStudent">确 定</el-button>
+                </div>
+              </el-dialog>
+
+              <el-dialog :close-on-click-modal="false" width="30%" title="请选择接送人" :visible.sync="userListOption">
                 <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
                   <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                   </el-option>
                 </el-select>
                 <div slot="footer">
                   <el-button @click="userListOption = false">取 消</el-button>
-                  <el-button type="primary" @click="asd">确 定</el-button>
+                  <el-button type="primary" @click="addStudent">确 定</el-button>
                 </div>
               </el-dialog>
             </el-card>
@@ -258,7 +278,9 @@
 </template>
 
 <script>
-  import { fetchList, getObj, queryUndelivered } from '@/api/bespeak/shuttle'
+  import { getShuttleList, getObj, queryUndelivered } from '@/api/bespeak/shuttle'
+  import { putObj } from '@/api/bespeak/shuttlestudent'
+  import { fetchList } from '@/api/student/student'
   import { getShuttledList } from '@/api/bespeak/vehicleperiod'
   import { mapGetters } from 'vuex'
   import { userList } from '@/api/upms/user'
@@ -287,8 +309,10 @@
         shuttledTotal: null,
         shuttledListLoading: false,
         userListOption: false,
+        addStudentOption: false,
         showModule: 'list',
         userList: [],
+        studentList: [],
         shuttle: {
           userId: null,
           studentList: []
@@ -304,6 +328,10 @@
         shuttledListQuery: {
           page: 1,
           limit: 20
+        },
+        studentListQuery: {
+          page: 1,
+          limit: 0
         }
       }
     },
@@ -314,7 +342,7 @@
       /* 获取查看页面接送名单 */
       getShuttleLog() {
         this.shuttleLogLoading = true
-        fetchList(this.shuttleLogQuery).then(response => {
+        getShuttleList(this.shuttleLogQuery).then(response => {
           console.log('=========== 接送名单 ==========')
           console.log(response.data)
           this.shuttleLog = response.data.data.list
@@ -342,6 +370,23 @@
           this.shuttledList = response.data.data.list
           this.shuttledTotal = response.data.data.totalCount
           this.shuttledListLoading = false
+        })
+      },
+      /* 获取接送人人列表 */
+      getUserList() {
+        userList().then(response => {
+          console.log(response.data.data)
+          this.userList = response.data.data
+        })
+      },
+      /* 获取学员名单 */
+      getStudentList() {
+        this.getUserList()
+        fetchList(this.studentListQuery).then(response => {
+          console.log('=========== 获取学员名单 ==========')
+          console.log(response.data)
+          this.studentList = response.data.data.list
+          this.addStudentOption = true
         })
       },
       /* 接送名单 */
@@ -386,13 +431,6 @@
       backClick() {
         this.showModule = 'list'
       },
-      /* 获取介绍人列表 */
-      getUserList() {
-        userList().then(response => {
-          console.log(response.data.data)
-          this.userList = response.data.data
-        })
-      },
       /* 被接送人集合 */
       handleSelectionChange(val) {
         console.log(val)
@@ -402,8 +440,17 @@
         this.getUserList()
         this.userListOption = true
       },
-      asd() {
-        console.log(this.shuttle)
+      addStudent() {
+        if (this.shuttle.userId === null) {
+          this.$message.error('请选择接送人')
+        } else if (this.shuttle.studentList.length === 0) {
+          this.$message.error('请选择学员')
+        } else {
+          console.log(this.shuttle)
+          putObj(this.shuttle).then(response => {
+            this.userListOption = false
+          })
+        }
       }
     }
   }

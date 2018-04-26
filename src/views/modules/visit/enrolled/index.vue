@@ -54,7 +54,7 @@
                 <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
               </div>
             </div>
-            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;clear: both">
+            <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px;clear: both">
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
                              background style="float: left;"

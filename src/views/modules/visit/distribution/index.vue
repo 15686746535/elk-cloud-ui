@@ -53,24 +53,26 @@
             </el-table-column>
 
           </el-table>
-          <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;clear: both">
+          <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px;clear: both">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page.sync="listQuery.page"
                            background style="float: left"
                            :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
-            <el-button class="filter-item" style="float: right;" @click="distribution" type="success" icon="plus">分 配</el-button>
-            <el-button class="filter-item" style="float: right;" type="primary">上 传</el-button>
+            <div style="float: right;">
+              <el-button class="filter-item" type="primary">上 传</el-button>
+              <el-button class="filter-item" @click="distribution" type="success" icon="plus">分 配</el-button>
+            </div>
           </div>
 
 
 
         </el-card>
-        <el-dialog @close="getList" title="选择负责人" width="40%" :visible.sync="dialogIntentionList">
+        <el-dialog @close="getList" title="选择负责人" width="20%" :visible.sync="dialogIntentionList">
           <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
 
-          <el-select v-model="intentionList.userId" clearable placeholder="负责人">
+          <el-select v-model="intentionList.userId" clearable style="width: 100%;margin-top: 20px;" placeholder="负责人">
             <el-option
               v-for="item in userList"
               :key="item.userId"
@@ -183,11 +185,12 @@
         })
       },
       redistribution() {
-        this.$confirm('是否将选择信息重新分配', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'info'
-        }).then(() => {
+        if (this.intentionList.userId) {
+          // this.$confirm('是否将选择信息重新分配', '提示', {
+          //   confirmButtonText: '确定',
+          //   cancelButtonText: '取消',
+          //   type: 'info'
+          // }).then(() => {
           console.log('------- 分配信息 -------')
           console.log(this.intentionList)
           putIntention(this.intentionList).then(() => {
@@ -197,12 +200,22 @@
             })
             this.dialogIntentionList = false
           })
-        }).catch(() => {
+          // }).catch(() => {
+          //   this.$message({
+          //     type: 'info',
+          //     message: '已取消分配'
+          //   })
+          // })
+        } else {
+          // this.$alert('请先选择学员', '提示', {
+          //   confirmButtonText: '确定',
+          //   type: 'warning'
+          // })
           this.$message({
-            type: 'info',
-            message: '已取消分配'
+            type: 'warning',
+            message: '请选择负责人'
           })
-        })
+        }
         console.log(this.orgId)
       },
       closeIntention() {

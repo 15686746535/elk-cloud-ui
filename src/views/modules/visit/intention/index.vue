@@ -172,7 +172,7 @@
             <el-col :span="12">
               <el-form-item prop="customerType">
                 <span slot="label" class="text_css">客户类型：</span>
-                <dict  v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
+                <dict v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
               </el-form-item>
             </el-col>
           </el-row>
@@ -181,7 +181,7 @@
             <el-col :span="12">
               <el-form-item prop="source">
                 <span slot="label" class="text_css">来源渠道：</span>
-                <dict  dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
+                <dict dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -260,7 +260,7 @@
                 <el-col :span="12">
                   <el-form-item prop="mobile">
                     <span slot="label" class="text_css">电话：</span>
-                    <el-input v-if="edit"  v-model="intention.mobile" placeholder="电话"></el-input>
+                    <el-input v-if="edit" :maxlength="11" v-model="intention.mobile" placeholder="电话"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.mobile}}</div>
                   </el-form-item>
                 </el-col>
@@ -528,22 +528,34 @@
             { required: true, message: '请输入名字', trigger: 'blur' }
           ],
           sex: [
-            { required: true, message: '请输入名字', trigger: 'blur' }
+            { required: true, message: '请选择性别', trigger: 'blur' }
           ],
           mobile: [
-            { required: true, message: '请输入名字', trigger: 'blur' }
+            { required: true, message: '请输入手机号', trigger: 'blur' },
+            { pattern: /^1[34578]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: 'blur' }
           ],
           wechat: [
-            { required: true, message: '请输入名字', trigger: 'blur' }
-          ],
+            { required: true, message: '请输入客户微信', trigger: 'blur' }],
           contactAddress: [
-            { required: true, message: '请输入名字', trigger: 'blur' }
+            { required: true, message: '请输入住址', trigger: 'blur' }
           ],
           customerType: [
-            { required: true, message: '请输入名字', trigger: 'blur' }
+            { required: true, message: '请选择客户类型', trigger: 'blur' }
           ],
           source: [
-            { required: true, message: '请输入名字', trigger: 'blur' }
+            { required: true, message: '请选择来源渠道', trigger: 'blur' }
+          ],
+          worry: [
+            { required: true, message: '请选择客户顾虑', trigger: 'blur' }
+          ],
+          applyType: [
+            { required: true, message: '请选择所学车型', trigger: 'blur' }
+          ],
+          visitTime: [
+            { required: true, message: '请选择来访时间', trigger: 'blur' }
+          ],
+          content: [
+            { required: true, message: '请输入资讯内容', trigger: 'blur' }
           ]
         }
       }

@@ -67,7 +67,9 @@
 
                       <el-row :gutter="10">
                         <el-col :span="7" class="table_text">介绍人：</el-col>
-                        <el-col :span="17" class="table_text"><span v-for="introducer in scope.row.introducerList">{{introducer}}、</span></el-col>
+                        <el-col :span="17" class="table_text">
+                          <span v-for="(introducer,index) in scope.row.introducerList">{{introducer}}<span v-if="scope.row.introducerList.length !== (index+1)">、</span></span>
+                        </el-col>
                       </el-row>
                     </el-col>
                   </template>
@@ -467,7 +469,7 @@
                             <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                             </el-option>
                           </el-select>
-                          <span v-for="introducerName in student.introducerNameList"  v-show="!edit" >{{introducerName}}、</span>
+                          <span v-for="(introducerName,index) in student.introducerNameList"  v-show="!edit" >{{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span></span>
                         </el-form-item>
                       </el-row>
                     </el-col>
@@ -1304,7 +1306,7 @@
             console.log('======================= 添加的数据 ======')
             console.log(this.studentEntity)
             addObj(this.studentEntity).then(response => {
-              // this.backClick()
+              this.backClick()
             })
           }
         })

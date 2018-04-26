@@ -638,14 +638,14 @@
       <el-row :gutter="5">
         <el-col :span="12">
           <el-card :style="{height: ($store.state.app.client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
-            <el-form :model="studentEntity" label-width="100px">
+            <el-form :model="studentEntity" :rules="studentEntityRules" :ref="studentEntity" label-width="100px">
               <el-row>
                 <el-row :gutter="20">
                   <el-col :span="12" >
 
                     <!-- 联系电话 -->
-                    <el-row style="height: 50px">
-                      <el-form-item >
+                    <el-row >
+                      <el-form-item prop="mobile">
                         <span slot="label" class="text_css">联系电话：</span>
                         <el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
                       </el-form-item>
@@ -653,25 +653,25 @@
                     </el-row>
 
                     <!-- 身份证号 -->
-                    <el-row style="height: 50px">
-                      <el-form-item >
+                    <el-row >
+                      <el-form-item prop="idNumber">
                         <span slot="label" class="text_css">身份证号：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
                       </el-form-item>
                     </el-row>
 
                     <!-- 档案号 -->
-                    <el-row style="height: 50px">
-                      <el-form-item >
+                    <el-row >
+                      <el-form-item prop="archivesNumber">
                         <span slot="label" class="text_css">档案号：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model="studentEntity.archivesNumber"></el-input>
                       </el-form-item>
                     </el-row>
 
                     <!-- 姓名 -->
-                    <el-row style="height: 50px">
+                    <el-row >
 
-                      <el-form-item >
+                      <el-form-item prop="name">
                         <span slot="label" class="text_css">姓名：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="姓名" clearable v-model="studentEntity.name"></el-input>
                       </el-form-item>
@@ -680,8 +680,8 @@
 
 
                     <!-- 微信 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="wechat">
                         <span slot="label"  class="text_css">微信：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input>
                       </el-form-item>
@@ -689,16 +689,16 @@
 
 
                     <!-- 校区 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="campus">
                         <span slot="label"  class="text_css">校区：</span>
-                        <dict v-model="studentEntity.homeAddress" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict>
+                        <dict v-model="studentEntity.campus" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict>
                       </el-form-item>
                     </el-row>
 
                     <!-- 联系地址 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="contactAddress">
                         <span slot="label"  class="text_css">联系地址：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input>
                       </el-form-item>
@@ -706,8 +706,8 @@
 
 
                     <!-- 入学期数 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="periods">
                         <span slot="label"  class="text_css">入学期数：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input>
                       </el-form-item>
@@ -717,24 +717,24 @@
 
 
                     <!-- 生日 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="birthday">
                         <span slot="label" class="text_css">生日：</span>
                         <el-date-picker value-format="timestamp"  type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
                       </el-form-item>
                     </el-row>
 
                     <!-- 所学车型 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="motorcycleType">
                         <span slot="label"  class="text_css">所学车型：</span>
                         <dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
                       </el-form-item>
                     </el-row>
 
                     <!-- 来源渠道 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="source">
                         <span slot="label" class="text_css">来源渠道：</span>
                         <dict v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict>
                       </el-form-item>
@@ -742,8 +742,8 @@
 
 
                     <!-- 入学日期 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="enrolTime">
                         <span slot="label"  class="text_css">入学日期：</span>
                         <el-date-picker value-format="timestamp" type="date" placeholder="入学日期" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
                       </el-form-item>
@@ -768,8 +768,8 @@
 
 
                     <!-- 性别 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="sex">
                         <span slot="label" class="text_css">性别：</span>
                         <el-col :span="18">
                           <el-radio-group v-model="studentEntity.sex">
@@ -782,8 +782,8 @@
 
 
                     <!-- 是否体检 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="physicalExamination">
                         <span slot="label" class="text_css">是否体检：</span>
                         <el-col :span="18">
                           <el-radio-group v-model="studentEntity.physicalExamination">
@@ -796,8 +796,8 @@
 
 
                     <!-- 是否增驾 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="addDrive">
                         <span slot="label" class="text_css">是否增驾：</span>
                         <el-col :span="18">
                           <el-radio-group v-model="studentEntity.addDrive">
@@ -809,8 +809,8 @@
                     </el-row>
 
                     <!-- 是否有车 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="haveCar">
                         <span slot="label" class="text_css">是否有车：</span>
                         <el-col :span="18">
                           <el-radio-group v-model="studentEntity.haveCar">
@@ -822,8 +822,8 @@
                     </el-row>
 
                     <!-- 电子邮箱 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="email">
                         <span slot="label"  class="text_css">电子邮箱：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="studentEntity.email"></el-input>
                       </el-form-item>
@@ -831,8 +831,8 @@
 
 
                     <!-- 所在单位 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="company">
                         <span slot="label"  class="text_css">所在单位：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.company"></el-input>
                       </el-form-item>
@@ -840,25 +840,25 @@
                     </el-row>
 
                     <!-- 所属职位 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="position">
                         <span slot="label"  class="text_css">所属职位：</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="studentEntity.position"></el-input>
                       </el-form-item>
                     </el-row>
                     <!-- 报名点 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="enrolSite">
                         <span slot="label"  class="text_css">报名点：</span>
                         <dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
                       </el-form-item>
                     </el-row>
 
                     <!-- 介绍人 -->
-                    <el-row style="height: 50px">
-                      <el-form-item>
+                    <el-row >
+                      <el-form-item prop="idNumber">
                         <span slot="label"  class="text_css">介绍人：</span>
-                        <el-select v-model="studentEntity.introducerList" collapse-tags style="width: 100%" filterable multiple placeholder="请选择介绍人">
+                        <el-select v-model="studentEntity.introducerList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
                           <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                           </el-option>
                         </el-select>
@@ -874,8 +874,8 @@
               <el-row>
                 <el-col>
                   <div style="width: 163px;margin: 0 auto">
-                    <el-button type="primary"  @click="add">建 档</el-button>
-                    <el-button plain @click="reset">重  置</el-button>
+                    <el-button type="primary"  @click="add('studentEntity')">建 档</el-button>
+                    <el-button plain @click="reset('studentEntity')">重  置</el-button>
                   </div>
                 </el-col>
               </el-row>
@@ -939,6 +939,34 @@
       Coach
     },
     data() {
+      var idNumberReg = (rule, value, callback) => {
+        /* 台湾 */
+        var TaiwanReg = /^[A-Z][0-9]{9}$/
+        /* 香港 */
+        var HongKongReg = /^[A-Z][0-9]{6}\([0-9A]\)$/
+        /* 澳门 */
+        var MacaoReg = /^[157][0-9]{6}\([0-9]\)$/
+        /* 大陆 */
+        var userCardReg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31|)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2})((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$/
+        if (userCardReg.test(value)) {
+          callback()
+        } else if (TaiwanReg.test(value)) {
+          callback()
+        } else if (HongKongReg.test(value)) {
+          callback()
+        } else if (MacaoReg.test(value)) {
+          callback()
+        } else {
+          callback(new Error('请输入正确的身份证号码'))
+        }
+      }
+      var introducerListReg = (rule, value, callback) => {
+        if (value.length > 0) {
+          callback()
+        } else {
+          callback(new Error('请选择介绍人'))
+        }
+      }
       return {
         student: {
           studentId: null,
@@ -1031,6 +1059,71 @@
           operator: null,
           createTime: null,
           updateTime: null
+        },
+        studentEntityRules: {
+          mobile: [
+            { required: true, message: '请输入手机号', trigger: 'blur' },
+            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: 'blur' }
+          ],
+          idNumber: [
+            { required: true, message: '请输入身份证', trigger: 'blur' },
+            { validator: idNumberReg, trigger: 'blur' }
+          ],
+          archivesNumber: [
+            { required: true, message: '请输入档案号', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '请输入姓名', trigger: 'blur' }
+          ],
+          wechat: [
+            { required: true, message: '请输入微信', trigger: 'blur' }
+          ],
+          campus: [
+            { required: true, message: '请输入校区地址', trigger: 'blur' }
+          ],
+          contactAddress: [
+            { required: true, message: '请输入住址', trigger: 'blur' }
+          ],
+          periods: [
+            { required: true, message: '请输入入学期数', trigger: 'blur' }
+          ],
+          birthday: [
+            { required: true, message: '请选择生日', trigger: 'blur' }
+          ],
+          motorcycleType: [
+            { required: true, message: '请选择所学车型', trigger: 'blur' }
+          ],
+          source: [
+            { required: true, message: '请选择来源渠道', trigger: 'blur' }
+          ],
+          enrolTime: [
+            { required: true, message: '请选择入学日期', trigger: 'blur' }
+          ],
+          sex: [
+            { required: true, message: '请选择性别', trigger: 'blur' }
+          ],
+          physicalExamination: [
+            { required: true, message: '请选择是否体检', trigger: 'blur' }
+          ],
+          addDrive: [
+            { required: true, message: '请选择是否增加', trigger: 'blur' }
+          ],
+          haveCar: [
+            { required: true, message: '请选择是否有车', trigger: 'blur' }
+          ],
+          email: [
+            { required: true, message: '请输入邮箱', trigger: 'blur' },
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: 'blur' }
+          ],
+          company: [],
+          position: [],
+          enrolSite: [
+            { required: true, message: '请选择报名点', trigger: 'blur' }
+          ],
+          introducerList: [
+            { required: true, message: '请选择介绍人', trigger: 'blur' },
+            { validator: introducerListReg, trigger: 'blur' }
+          ]
         },
         stuList: [],
         examNoteList: [],
@@ -1205,11 +1298,15 @@
         this.addInfo = false
       },
       // 添加
-      add() {
-        console.log('======================= 添加的数据 ======')
-        console.log(this.studentEntity)
-        addObj(this.studentEntity).then(response => {
-          // this.backClick()
+      add(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            console.log('======================= 添加的数据 ======')
+            console.log(this.studentEntity)
+            addObj(this.studentEntity).then(response => {
+              // this.backClick()
+            })
+          }
         })
       },
       // 新增
@@ -1263,15 +1360,17 @@
       },
       generateInfo() {
         var date
-        if (this.student.idNumber.length === 18) {
-          if (!this.student.birthday) {
-            date = this.student.idNumber.substring(6, 10) + '-' + this.student.idNumber.substring(10, 12) + '-' + this.student.idNumber.substring(12, 14)
-            date = date.substring(0, 10)
-            date = date.replace(/-/g, '/')
-            this.student.birthday = new Date(date).getTime()
+        if (this.student.idNumber !== null) {
+          if (this.student.idNumber.length === 18) {
+            if (!this.student.birthday) {
+              date = this.student.idNumber.substring(6, 10) + '-' + this.student.idNumber.substring(10, 12) + '-' + this.student.idNumber.substring(12, 14)
+              date = date.substring(0, 10)
+              date = date.replace(/-/g, '/')
+              this.student.birthday = new Date(date).getTime()
+            }
+            if (this.student.idNumber.substr(16, 1) % 2 === 1 && this.student.sex === null) this.student.sex = '1'
+            if (this.student.idNumber.substr(16, 1) % 2 === 0 && this.student.sex === null) this.student.sex = '0'
           }
-          if (this.student.idNumber.substr(16, 1) % 2 === 1 && this.student.sex === null) this.student.sex = '1'
-          if (this.student.idNumber.substr(16, 1) % 2 === 0 && this.student.sex === null) this.student.sex = '0'
         }
       },
       handleAvatarSuccess(res, file) {
@@ -1295,18 +1394,21 @@
       },
       AddGenerateInfo() {
         var date
-        if (this.studentEntity.idNumber.length === 18) {
-          if (!this.studentEntity.birthday) {
-            date = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
-            date = date.substring(0, 10)
-            date = date.replace(/-/g, '/')
-            this.studentEntity.birthday = new Date(date).getTime()
+        if (this.studentEntity.idNumber !== null) {
+          if (this.studentEntity.idNumber.length === 18) {
+            if (!this.studentEntity.birthday) {
+              date = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
+              date = date.substring(0, 10)
+              date = date.replace(/-/g, '/')
+              this.studentEntity.birthday = new Date(date).getTime()
+            }
+            if (this.studentEntity.idNumber.substr(16, 1) % 2 === 1 && this.studentEntity.sex === null) this.studentEntity.sex = '1'
+            if (this.studentEntity.idNumber.substr(16, 1) % 2 === 0 && this.studentEntity.sex === null) this.studentEntity.sex = '0'
           }
-          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 1 && this.studentEntity.sex === null) this.studentEntity.sex = '1'
-          if (this.studentEntity.idNumber.substr(16, 1) % 2 === 0 && this.studentEntity.sex === null) this.studentEntity.sex = '0'
         }
       },
-      reset() {
+      reset(formName) {
+        this.$refs[formName].resetFields()
         this.studentEntity = {
           studentId: null,
           orgId: null,

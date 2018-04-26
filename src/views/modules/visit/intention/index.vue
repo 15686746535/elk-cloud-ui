@@ -645,7 +645,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.intention.state = 0
-            addObj(this.intention).then(response => {
+            addObj(this.intention).then(() => {
               console.log('这里是添加方法===========================')
               this.closeAlert(formName)
               this.addOption = false

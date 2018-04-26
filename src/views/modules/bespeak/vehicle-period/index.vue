@@ -368,6 +368,7 @@
       searchClick() {
         this.vehiclePeriodListQuery.page = 1
         this.vehiclePeriodListQuery.condition = removeAllSpace(this.vehiclePeriodListQuery.condition)
+        this.examTimeBlur()
         this.getVehiclePeriodList()
       },
       /* 禁用启用开关 */
@@ -395,6 +396,18 @@
           })
         }
         console.log(this.dateList)
+      },
+      /* 时间段分解 */
+      examTimeBlur() {
+        if (this.vehiclePeriodListQuery.interval === null) {
+          this.vehiclePeriodListQuery.interval = []
+          this.vehiclePeriodListQuery.beginTime = null
+          this.vehiclePeriodListQuery.endTime = null
+        }
+        if (this.vehiclePeriodListQuery.interval.length !== 0) {
+          this.vehiclePeriodListQuery.beginTime = this.vehiclePeriodListQuery.interval[0]
+          this.vehiclePeriodListQuery.endTime = this.vehiclePeriodListQuery.interval[1]
+        }
       }
     }
   }

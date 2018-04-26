@@ -104,6 +104,7 @@
   import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/upms/role'
   import { fetchTree } from '@/api/upms/menu'
   import { mapGetters } from 'vuex'
+  import { removeAllSpace } from '@/utils/validate'
 
   export default {
     name: 'table_role',
@@ -187,6 +188,7 @@
     methods: {
       getList() {
         this.listLoading = true
+        this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
         fetchList(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount

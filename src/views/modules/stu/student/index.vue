@@ -638,7 +638,7 @@
       <el-row :gutter="5">
         <el-col :span="12">
           <el-card :style="{height: ($store.state.app.client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
-            <el-form :model="studentEntity" :rules="studentEntityRules" :ref="studentEntity" label-width="100px">
+            <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="100px">
               <el-row>
                 <el-row :gutter="20">
                   <el-col :span="12" >
@@ -856,7 +856,7 @@
 
                     <!-- 介绍人 -->
                     <el-row >
-                      <el-form-item prop="idNumber">
+                      <el-form-item prop="introducerList">
                         <span slot="label"  class="text_css">介绍人：</span>
                         <el-select v-model="studentEntity.introducerList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
                           <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
@@ -1311,7 +1311,52 @@
       },
       // 新增
       create() {
-        this.reset()
+        this.studentEntity = {
+          studentId: null,
+          orgId: null,
+          openId: null,
+          archivesNumber: null,
+          name: null,
+          sex: null,
+          age: null,
+          idNumber: null,
+          birthday: null,
+          mobile: null,
+          phone: null,
+          email: null,
+          wechat: null,
+          avatar: null,
+          contactAddress: null,
+          campus: null,
+          company: null,
+          position: null,
+          enrolTime: null,
+          periods: null,
+          studyTime: null,
+          latitude: null,
+          longitude: null,
+          physicalExamination: null,
+          haveCar: null,
+          addDrive: null,
+          state: null,
+          graduationTime: null,
+          periodOfValidity: null,
+          aboardTime: null,
+          roadCoach: null,
+          fieldCoach: null,
+          incrementList: [],
+          introducerList: [],
+          serviceType: null,
+          arrearage: null,
+          enrolSite: null,
+          source: null,
+          motorcycleType: null,
+          delFlag: null,
+          remark: null,
+          operator: null,
+          createTime: null,
+          updateTime: null
+        }
         this.showModule = 'create'
         this.edit = true
         this.addInfo = true

@@ -665,7 +665,7 @@
         console.log('================= 修改 ==================')
         console.log(this.intention)
         putObj(this.intention)
-          .then(response => {
+          .then(() => {
             this.edit = false
             this.getList()
           })

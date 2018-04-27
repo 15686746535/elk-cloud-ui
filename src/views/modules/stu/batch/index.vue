@@ -79,15 +79,12 @@
 
     <el-dialog  @close="cancel('batch')" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
-      <el-form :model="batch"  ref="batch" label-width="100px">
+      <el-form :model="batch" :rules="batchRules" ref="batch" label-width="100px">
         <el-form-item label="考试场地" prop="examField">
-          <!--<span v-if="batch.subject != null">-->
-            <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
-            <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
-            <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
-            <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
-          <!--</span>-->
-          <!--<span v-else><dict dictType="null" style="width: 100%;"  placeholder="考试场地"  ></dict></span>-->
+          <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
+          <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
+          <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
+          <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
         </el-form-item>
         <el-form-item label="人数"  prop="stuCount">
           <el-input v-model="batch.stuCount" placeholder="人数" ></el-input>
@@ -100,8 +97,8 @@
 
       <div slot="footer">
         <el-button @click="cancel('batch')">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('batch')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('batch')">修 改</el-button>
+        <el-button v-if="dialogStatus=='create'" :loading="btnLoading" type="primary" @click="create('batch')">确 定</el-button>
+        <el-button v-else type="primary" :loading="btnLoading" @click="update('batch')">修 改</el-button>
       </div>
     </el-dialog>
 
@@ -368,6 +365,7 @@
         }],
         batchOption: false,
         examOption: false,
+        btnLoading: false,
         examBespeak: [],
         examBespeakList: {
           studentList: [],
@@ -377,6 +375,17 @@
         studentListQuery: {
           examId: null,
           state: '0'
+        },
+        batchRules: {
+          examField: [
+            { required: true, message: '请选择考试场地', trigger: 'blur' }
+          ],
+          stuCount: [
+            { required: true, type: 'number', message: '请输入人数', trigger: 'blur' }
+          ],
+          examTime: [
+            { required: true, message: '请选择考试时间', trigger: 'blur' }
+          ]
         }
       }
     },
@@ -434,13 +443,15 @@
       },
       create(formName) {
         const set = this.$refs
-        this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
         set[formName].validate(valid => {
           if (valid) {
-            this.batchOption = false
+            this.btnLoading = true
+            this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
             addObj(this.batch)
               .then(() => {
                 this.getList()
+                this.batchOption = false
+                this.btnLoading = false
               })
           } else {
             return false

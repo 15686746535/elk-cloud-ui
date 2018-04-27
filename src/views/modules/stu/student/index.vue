@@ -171,7 +171,7 @@
 
     <div v-show="showModule=='info'" style="height: 100%">
       <el-card body-style="padding:5px 20px;" style="margin-bottom: 5px;height: 60px;line-height: 50px">
-        录入详细信息
+        学员详细信息
         <div style="float: right"><el-button type="primary" @click="backClick">返  回</el-button></div>
       </el-card>
       <el-row :style="{height: ($store.state.app.client.height-105) + 'px'}">

@@ -201,9 +201,9 @@
 
                     <el-col :span="8">
 
-                      <el-form-item prop="roleId">
+                      <el-form-item prop="roleIdList">
                         <span slot="label" class="text_css">职位：</span>
-                        <el-select v-if="edit" v-model="userEntity.roleId" style="width: 100%" filterable placeholder="职位" @change="roleChange">
+                        <el-select v-if="edit" v-model="userEntity.roleIdList" style="width: 100%" collapse-tags multiple placeholder="职位" @change="roleChange">
                           <el-option
                             v-for="item in roleList"
                             :key="item.roleId"
@@ -266,7 +266,7 @@
 
                       <el-form-item prop="joinedTime">
                         <span slot="label" class="text_css">入职日期：</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEntity.joinedTime"></el-date-picker>
+                        <el-date-picker value-format="timestamp" v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEntity.joinedTime"></el-date-picker>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.joinedTime | subTime}}</span>
                       </el-form-item>
 
@@ -463,6 +463,13 @@
           callback(new Error('请输入正确的身份证号码'))
         }
       }
+      var roleListReg = (rule, value, callback) => {
+        if (value.length > 0) {
+          callback()
+        } else {
+          callback(new Error('请选择职位'))
+        }
+      }
       return {
         // 编辑标记
         edit: false,
@@ -496,7 +503,7 @@
           contactAddress: null,
           orgId: null,
           orgName: null,
-          roleId: null,
+          roleIdList: [],
           roleName: null,
           homeAddress: null,
           education: null,
@@ -548,8 +555,9 @@
           orgId: [
             { required: true, message: '请选择部门', trigger: 'blur' }
           ],
-          roleId: [
-            { required: true, message: '请选择职位', trigger: 'blur' }
+          roleIdList: [
+            { required: true, message: '请选择职位', trigger: 'blur' },
+            { validator: roleListReg, trigger: 'blur' }
           ],
           homeAddress: [
             { required: true, message: '请输入家庭地址', trigger: 'blur' }
@@ -589,7 +597,7 @@
           contactAddress: null,
           orgId: null,
           orgName: null,
-          roleId: null,
+          roleIdList: [],
           roleName: null,
           homeAddress: null,
           education: null,
@@ -710,7 +718,8 @@
         this.userEntity.orgName = org.name
         roleList(org.id).then(response => {
           console.log(response.data)
-          this.userEntity.roleId = response.data.data[0].roleId
+          // this.userEntity.roleIdList = []
+          // this.userEntity.roleIdList.push(response.data.data[0].roleId)
           this.roleList = response.data.data
         })
       },

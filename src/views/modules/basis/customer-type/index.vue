@@ -6,7 +6,7 @@
       <el-table :key='tableKey' :data="list" v-loading="listLoading"  :height="$store.state.app.client.height-125"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
-        <el-table-column align="center"  label="校区">
+        <el-table-column align="center"  label="客户类型">
           <template slot-scope="scope">
             <span>{{ scope.row.label }}</span>
           </template>
@@ -52,13 +52,13 @@
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="校区"  prop="username">
-          <el-input v-model="dict.label" placeholder="校区" ></el-input>
+        <el-form-item label="客户类型"  prop="label">
+          <el-input v-model="dict.label" placeholder="客户类型" ></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="username">
+        <el-form-item label="描述" prop="description">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
         </el-form-item>
-        <el-form-item label="排序（升序）" prop="username">
+        <el-form-item label="排序（升序）" prop="sort">
           <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
           </el-popover>
           <el-input type="number" v-popover:popover v-model="dict.sort" placeholder="排序（升序）" ></el-input>
@@ -74,7 +74,6 @@
 </template>
 <script>
   import { fetchList, addObj, putObj, delObj } from '@/api/basis/dict'
-
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 

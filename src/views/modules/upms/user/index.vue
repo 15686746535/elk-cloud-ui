@@ -203,16 +203,22 @@
 
                       <el-form-item prop="roleIdList">
                         <span slot="label" class="text_css">职位：</span>
-                        <el-select v-if="edit" v-model="userEntity.roleIdList" style="width: 100%" collapse-tags multiple placeholder="职位" @change="roleChange">
-                          <el-option
-                            v-for="item in roleList"
-                            :key="item.roleId"
-                            :label="item.roleName"
-                            :value="item.roleId"
-                          >
+                        <el-select v-show="edit" v-model="userEntity.roleIdList" collapse-tags style="width: 100%" multiple placeholder="请选择职位">
+                          <el-option v-for="role in roleList" :key="role.roleId" :label="role.roleName" :value="role.roleId">
                           </el-option>
                         </el-select>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.roleName}}</span>
+                        <!--<span v-for="(introducerName,index) in student.introducerNameList"  v-show="!edit" >{{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span></span>-->
+
+                        <!--<el-select v-if="edit" v-model="userEntity.roleIdList" style="width: 100%" collapse-tags multiple placeholder="职位" @change="roleChange">-->
+                          <!--<el-option-->
+                            <!--v-for="item in roleList"-->
+                            <!--:key="item.roleId"-->
+                            <!--:label="item.roleName"-->
+                            <!--:value="item.roleId"-->
+                          <!--&gt;-->
+                          <!--</el-option>-->
+                        <!--</el-select>-->
+                        <!--<span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.roleName}}</span>-->
                       </el-form-item>
 
                     </el-col>

@@ -30,7 +30,7 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button v-if="menu_upd" size="small" type="success"
+            <el-button v-if="menu_upd" size="mini" type="success"
                        @click="handleUpdate(scope.row)">编辑
             </el-button>
             <el-button v-if="menu_del" size="mini" type="danger"
@@ -51,23 +51,23 @@
       </div>
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
-      <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="校区"  prop="username">
+      <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="120px">
+        <el-form-item label="校区"  prop="label">
           <el-input v-model="dict.label" placeholder="校区" ></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="username">
+        <el-form-item label="描述" prop="description">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
         </el-form-item>
-        <el-form-item label="排序（升序）" prop="username">
+        <el-form-item label="排序（升序）" prop="sort">
           <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
           </el-popover>
-          <el-input type="number" v-popover:popover v-model="dict.sort" placeholder="排序（升序）" ></el-input>
+          <el-input type="number" v-popover:popover v-model.number="dict.sort" placeholder="排序(升序)" ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel('dict')">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('dict')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('dict')">修 改</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" :loading="btnLoading" @click="create('dict')">确 定</el-button>
+        <el-button v-else type="primary" :loading="btnLoading" @click="update('dict')">修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -86,12 +86,23 @@
         lists: [],
         total: null,
         listLoading: true,
+        btnLoading: false,
         listQuery: {
           page: 1,
           limit: 20,
           type: 'dict_campus'
         },
-        rules: {},
+        rules: {
+          label: [
+            { required: true, message: '请填写校区名字', trigger: 'blur' }
+          ],
+          description: [
+            { required: true, message: '请填写校区描述', trigger: 'blur' }
+          ],
+          sort: [
+            { required: true, type: 'number', message: '请填写校区排序等级', trigger: 'blur' }
+          ]
+        },
         dict: {},
         enrolSite: {},
         dialogFormVisible: false,
@@ -145,12 +156,6 @@
           .then(response => {
             this.dialogFormVisible = false
             this.getList()
-            this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
-              duration: 2000
-            })
           })
       },
       createClick() {
@@ -168,17 +173,14 @@
         set[formName].validate(valid => {
           if (valid) {
             this.dialogFormVisible = false
+            this.btnLoading = true
             this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
                 this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
+                this.btnLoading = false
+                set[formName].resetFields()
               })
           } else {
             return false
@@ -196,16 +198,13 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
+            this.btnLoading = true
             this.dict.value = this.dict.label
             putObj(this.dict).then(() => {
               this.dialogFormVisible = false
               this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
+              set[formName].resetFields()
+              this.btnLoading = false
             })
           } else {
             return false

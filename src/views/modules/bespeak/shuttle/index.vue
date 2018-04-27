@@ -45,9 +45,9 @@
                 </el-table-column>
                 <el-table-column align="center" label="状态">
                   <template slot-scope="scope">
-                    <span v-show="scope.row.state === '0'" style="color:#E6A23C">未接送</span>
+                    <span v-show="scope.row.state === '0'" style="color:#E6A23C">待接送</span>
                     <span v-show="scope.row.state === '1'" style="color:#67c23a">已接送</span>
-                    <span v-show="scope.row.state === '2'" style="color:#f56c6c">已取消</span>
+                    <span v-show="scope.row.state === '2'" style="color:#f56c6c">未接送</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center" label="未接送原因">
@@ -201,10 +201,10 @@
               <el-table :data="shuttledList"  :height="($store.state.app.client.height-260)"  v-loading="notShuttleListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
-                    <el-table :data="props.row.studentList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+                    <el-table :data="props.row.studentEntityList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                       <el-table-column align="center" label="学员">
                         <template slot-scope="scope">
-                          <span>{{scope.row.studentName}}</span>
+                          <span>{{scope.row.name}}</span>
                         </template>
                       </el-table-column>
                       <el-table-column align="center" label="电话">
@@ -386,6 +386,8 @@
           console.log('=========== 获取学员名单 ==========')
           console.log(response.data)
           this.studentList = response.data.data.list
+          this.shuttle.userId = null
+          this.shuttle.studentList = []
           this.addStudentOption = true
         })
       },
@@ -438,6 +440,7 @@
       },
       shuttleClick() {
         this.getUserList()
+        this.shuttle.userId = null
         this.userListOption = true
       },
       addStudent() {
@@ -449,6 +452,9 @@
           console.log(this.shuttle)
           putObj(this.shuttle).then(response => {
             this.userListOption = false
+            this.addStudentOption = false
+            this.getNotShuttleList()
+            this.getShuttledList()
           })
         }
       }

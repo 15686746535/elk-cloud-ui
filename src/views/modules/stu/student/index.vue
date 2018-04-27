@@ -909,6 +909,7 @@
 <script>
   import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
   import { userList } from '@/api/upms/user'
+  import { autoProduce } from '@/utils/index'
   import { examFetchList } from '@/api/student/examnote'
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
@@ -1458,18 +1459,15 @@
         this.getList()
       },
       generateInfo() {
-        var date
-        if (this.student.idNumber !== null) {
-          if (this.student.idNumber.length === 18) {
-            if (!this.student.birthday) {
-              date = this.student.idNumber.substring(6, 10) + '-' + this.student.idNumber.substring(10, 12) + '-' + this.student.idNumber.substring(12, 14)
-              date = date.substring(0, 10)
-              date = date.replace(/-/g, '/')
-              this.student.birthday = new Date(date).getTime()
-            }
-            if (this.student.idNumber.substr(16, 1) % 2 === 1 && this.student.sex === null) this.student.sex = '1'
-            if (this.student.idNumber.substr(16, 1) % 2 === 0 && this.student.sex === null) this.student.sex = '0'
+        var value = autoProduce(this.student.idNumber)
+        if (value) {
+          if (!this.student.jobNumber) {
+            this.student.jobNumber = value[0]
           }
+          if (!this.student.birthday) {
+            this.student.birthday = value[1]
+          }
+          this.student.sex = value[2].toString()
         }
       },
       handleAvatarSuccess(res, file) {
@@ -1492,18 +1490,15 @@
         this.studentEntity.avatar = URL.createObjectURL(file.raw)
       },
       AddGenerateInfo() {
-        var date
-        if (this.studentEntity.idNumber !== null) {
-          if (this.studentEntity.idNumber.length === 18) {
-            if (!this.studentEntity.birthday) {
-              date = this.studentEntity.idNumber.substring(6, 10) + '-' + this.studentEntity.idNumber.substring(10, 12) + '-' + this.studentEntity.idNumber.substring(12, 14)
-              date = date.substring(0, 10)
-              date = date.replace(/-/g, '/')
-              this.studentEntity.birthday = new Date(date).getTime()
-            }
-            if (this.studentEntity.idNumber.substr(16, 1) % 2 === 1 && this.studentEntity.sex === null) this.studentEntity.sex = '1'
-            if (this.studentEntity.idNumber.substr(16, 1) % 2 === 0 && this.studentEntity.sex === null) this.studentEntity.sex = '0'
+        var value = autoProduce(this.studentEntity.idNumber)
+        if (value) {
+          if (!this.studentEntity.jobNumber) {
+            this.studentEntity.jobNumber = value[0]
           }
+          if (!this.studentEntity.birthday) {
+            this.studentEntity.birthday = value[1]
+          }
+          this.studentEntity.sex = value[2].toString()
         }
       },
       reset(formName) {

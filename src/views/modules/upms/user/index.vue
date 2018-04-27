@@ -422,6 +422,7 @@
   import { mapGetters } from 'vuex'
   import { roleList } from '@/api/upms/role'
   import { removeAllSpace } from '@/utils/validate'
+  import { autoProduce } from '@/utils/index'
   import Bar from '@/components/Bar'
   import LineChart from '@/components/LineChart'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
@@ -642,15 +643,15 @@
       },
       // 根据身份证号生成信息
       generateInfo() {
-        var date
-        if (this.userEdit.idNumber.length === 18) {
-          if (!this.userEdit.birthday) {
-            date = this.userEdit.idNumber.substring(6, 10) + '-' + this.userEdit.idNumber.substring(10, 12) + '-' + this.userEdit.idNumber.substring(12, 14)
-            date = date.substring(0, 10)
-            date = date.replace(/-/g, '/')
-            this.userEdit.birthday = new Date(date).getTime()
+        var value = autoProduce(this.userEdit.idNumber)
+        if (value) {
+          if (!this.userEdit.jobNumber) {
+            this.userEdit.jobNumber = value[0]
           }
-          this.userEdit.sex = this.userEdit.idNumber.substr(16, 1) % 2
+          if (!this.userEdit.birthday) {
+            this.userEdit.birthday = value[1]
+          }
+          this.userEdit.sex = value[2]
         }
       },
       handleAvatarSuccess(res, file) {

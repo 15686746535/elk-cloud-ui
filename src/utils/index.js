@@ -270,3 +270,37 @@ export function deepClone(source) {
   }
   return targetObj
 }
+/* 自动生成工号和档案号 */
+export function autoProduce(idNumber) {
+  if (!idNumber) {
+    return null
+  }
+  if (idNumber.length !== 18) {
+    return null
+  }
+  var val = []
+  var date
+  var number
+  var birthday
+  var sex
+  var nowDate = new Date()
+  var caps = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  var lowercase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+  number = nowDate.getFullYear().toString() + idNumber.substring(14) + caps[randomNumBoth(0, 25)] + lowercase[randomNumBoth(0, 25)] + randomNumBoth(0, 9)
+  date = idNumber.substring(6, 10) + '-' + idNumber.substring(10, 12) + '-' + idNumber.substring(12, 14)
+  date = date.substring(0, 10)
+  date = date.replace(/-/g, '/')
+  birthday = new Date(date).getTime()
+  sex = idNumber.substr(16, 1) % 2
+  val.push(number)
+  val.push(birthday)
+  val.push(sex)
+  return val
+}
+/* 生成随机数 */
+export function randomNumBoth(Min, Max) {
+  var Range = Max - Min
+  var Rand = Math.random()
+  var num = Min + Math.round(Rand * Range) //四舍五入
+  return num
+}

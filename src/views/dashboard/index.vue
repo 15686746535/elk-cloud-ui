@@ -112,7 +112,7 @@
               <i class="el-icon-fa-line-chart"> 本周意向展示</i>
             </div>
             <div class="chart-body">
-              <bar-tick-align :data="weekData"></bar-tick-align>
+              <bar-pile-chart :data="weekData" ></bar-pile-chart>
             </div>
           </div>
         </el-col>
@@ -122,7 +122,6 @@
 </template>
 
 <script>
-import BarTickAlign from '@/components/BarTickAlign'
 import PieChart from '@/components/PieChart'
 import BarPileChart from '@/components/BarPileChart'
 import { queryIndex } from '@/api/visualization/api'
@@ -131,7 +130,6 @@ import { busPage } from '@/api/activiti/agency'
 export default {
   name: 'dashboard',
   components: {
-    BarTickAlign,
     BarPileChart,
     PieChart
   },
@@ -152,21 +150,15 @@ export default {
       },
       // 本周意向展示
       weekData: {
-        legend: [],
-        name: '',
-        value: []
+        colors: [],
+        xAxis: [],
+        seriesList: []
       },
       // 本年意向展示
       yuarData: {
-        legend: [],
-        upper: {
-          name: '',
-          list: []
-        },
-        lower: {
-          name: '',
-          list: []
-        }
+        colors: [],
+        xAxis: [],
+        seriesList: []
       },
       listQuery: {
         page: 1,
@@ -187,27 +179,21 @@ export default {
       queryIndex().then(response => {
         var data = response.data
         this.weekData = {
-          legend: ['日', '一', '二', '三', '四', '五', '六'],
-          name: '意向',
-          value: data.week
+          colors: ['#e6a23c'],
+          xAxis: ['日', '一', '二', '三', '四', '五', '六'],
+          seriesList: data.week
         }
         this.pieData = {
           legend: ['跟进中', '已入学', '已关闭'],
           value: data.contractRate
         }
         this.yuarData = {
-          legend: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-          upper: {
-            name: data.yuar.upper.name,
-            value: data.yuar.upper.list
-          },
-          lower: {
-            name: data.yuar.lower.name,
-            value: data.yuar.lower.list
-          }
+          xAxis: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          seriesList: data.year
         }
         this.intentionCount = data.intentionCount
       })
+      // 查询代办 、提醒
       busPage(this.listQuery).then(response => {
         this.noticeList = response.data.data.list
       })

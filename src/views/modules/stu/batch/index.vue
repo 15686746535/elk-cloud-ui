@@ -87,7 +87,7 @@
           <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
         </el-form-item>
         <el-form-item label="人数"  prop="stuCount">
-          <el-input v-model="batch.stuCount" placeholder="人数" ></el-input>
+          <el-input v-model.number="batch.stuCount" placeholder="人数" ></el-input>
         </el-form-item>
         <el-form-item label="考试时间" prop="examTime">
           <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>

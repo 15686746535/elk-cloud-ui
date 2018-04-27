@@ -7,7 +7,7 @@ import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts 主题
 import { debounce } from '@/utils'
 
-const animationDuration = 6000
+const animationDuration = 3000
 
 export default {
   props: {
@@ -26,15 +26,9 @@ export default {
     data: {
       type: Object,
       default: {
-        legend: [],
-        upper: {
-          name: '',
-          value: []
-        },
-        lower: {
-          name: '',
-          value: []
-        }
+        colors: [],
+        xAxis: [],
+        seriesList: []
       }
     }
   },
@@ -46,6 +40,24 @@ export default {
   watch: {
     data: function(val) {
       this.initChart()
+    }
+  },
+  computed: {
+    getSeries() {
+      var seriesList = []
+      var series = {}
+      this.data.seriesList.forEach(function(item) {
+        series = {
+          name: item.name,
+          type: 'bar',
+          stack: 'vistors',
+          barWidth: '40%',
+          data: item.value,
+          animationDuration
+        }
+        seriesList.push(series)
+      })
+      return seriesList
     }
   },
   mounted() {
@@ -70,6 +82,7 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
+        color: this.data.colors,
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -85,7 +98,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: this.data.legend,
+          data: this.data.xAxis,
           axisTick: {
             alignWithLabel: true
           }
@@ -93,24 +106,10 @@ export default {
         yAxis: [{
           type: 'value',
           axisTick: {
-            show: false
+            show: true
           }
         }],
-        series: [{
-          name: this.data.upper.name,
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '40%',
-          data: this.data.upper.value,
-          animationDuration
-        }, {
-          name: this.data.lower.name,
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '40%',
-          data: this.data.lower.value,
-          animationDuration
-        }]
+        series: this.getSeries
       })
     }
   }

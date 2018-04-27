@@ -50,8 +50,8 @@
         </el-button>
       </div>
     </el-card>
-    <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
-      <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="120px">
+    <el-dialog @close="cancel('dict')" :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
+      <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="110px">
         <el-form-item label="校区"  prop="label">
           <el-input v-model="dict.label" placeholder="校区" ></el-input>
         </el-form-item>

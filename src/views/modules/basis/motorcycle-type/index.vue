@@ -47,18 +47,18 @@
         <el-button v-if="basis_motorcycle_type_add" class="filter-item" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
-    <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
-      <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="报名点"  prop="username">
+    <el-dialog @close="cancel('dict')" :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
+      <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="110px">
+        <el-form-item label="报名点"  prop="label">
           <el-input v-model="dict.label" placeholder="车型" ></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="username">
+        <el-form-item label="描述" prop="description">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
         </el-form-item>
-        <el-form-item label="排序（升序）" prop="username">
+        <el-form-item label="排序（升序）" prop="sort">
           <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
           </el-popover>
-          <el-input type="number" v-popover:popover v-model="dict.sort" placeholder="排序（升序）" ></el-input>
+          <el-input type="number" v-popover:popover v-model.number="dict.sort" placeholder="排序（升序）" ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

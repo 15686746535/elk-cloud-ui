@@ -80,77 +80,72 @@
       <el-card style="overflow: auto">
         <div slot="header" class="clearfix">
           <div style="float: left">
-            |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事信息</span>
+            |&nbsp;<span style="font-size: 20px;font-weight: 600;line-height:40px;font-family: '微软雅黑 Light'">同事信息</span>
           </div>
           <div style="float: right">
             <el-button type="primary" style="float: right" @click="back">返回</el-button>
           </div>
         </div>
 
-        <!--:model="dict" :rules="rules" ref="dict"-->
-        <el-form label-position="left" label-width="80px">
+        <el-form :model="userEntity" :rules="userEntityRules" ref="userEntity" label-position="left" label-width="80px">
 
           <el-row :gutter="5">
             <el-col :span="14">
               <el-row>
-                <el-card shadow="hover" style="height: 200px" >
+                <el-card body-style="padding:15px 15px 0 15px;" shadow="hover">
                   <el-row>
                     <el-col :span="6">
-
-                      <el-form-item>
-                        <el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                          <img v-if="userEdit.avatar" :src="userEdit.avatar" class="avatar">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
-                        <img v-else :src="userEdit.avatar" class="avatar_img">
-                      </el-form-item>
-
+                      <el-upload v-if="edit" style="width: 60%; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <img v-if="userEntity.avatar" :src="userEntity.avatar" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                      <img v-else :src="userEntity.avatar" class="avatar_img">
                     </el-col>
                     <el-col :span="18">
 
-                      <el-row :gutter="10" style="height: 40px;margin: 10px 0">
+                      <el-row :gutter="10" style="height: 60px">
                         <el-col :span="12">
                           <el-form-item prop="jobNumber">
                             <span slot="label" class="text_css">工号：</span>
-                            <el-input v-if="edit"  v-model="userEdit.jobNumber" placeholder="工号"></el-input>
-                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.jobNumber}}</span>
+                            <el-input v-if="edit"  v-model="userEntity.jobNumber" placeholder="工号"></el-input>
+                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.jobNumber}}</span>
                           </el-form-item>
                         </el-col>
                         <el-col :span="12">
                           <el-form-item prop="idNumber">
                             <span slot="label" class="text_css">身份证号：</span>
-                            <el-input v-if="edit" @blur="generateInfo" :maxlength="18"  @keyup.enter.native="generateInfo" v-model="userEdit.idNumber" placeholder="身份证号"></el-input>
-                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.idNumber}}</span>
+                            <el-input v-if="edit" @blur="generateInfo" :maxlength="18"  @keyup.enter.native="generateInfo" v-model="userEntity.idNumber" placeholder="身份证号"></el-input>
+                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.idNumber}}</span>
                           </el-form-item>
                         </el-col>
                       </el-row>
 
-                      <el-row :gutter="10" style="height: 40px;margin: 10px 0">
+                      <el-row :gutter="10" style="height: 60px">
                         <el-col :span="12">
                           <el-form-item prop="name">
                             <span slot="label" class="text_css">姓名：</span>
-                            <el-input v-if="edit"  v-model="userEdit.name" placeholder="员工姓名"></el-input>
-                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.name}}</span>
+                            <el-input v-if="edit"  v-model="userEntity.name" placeholder="员工姓名"></el-input>
+                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.name}}</span>
                           </el-form-item>
                         </el-col>
                         <el-col :span="12">
                           <el-form-item prop="sex">
                             <span slot="label" class="text_css">性别：</span>
-                            <el-radio-group v-if="edit" v-model="userEdit.sex">
+                            <el-radio-group v-if="edit" v-model="userEntity.sex">
                               <el-radio :label="1">男</el-radio>
                               <el-radio :label="0">女</el-radio>
                             </el-radio-group>
-                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.sex | sexFilter}}</span>
+                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.sex | sexFilter}}</span>
                           </el-form-item>
                         </el-col>
                       </el-row>
 
-                      <el-row :gutter="10" style="height: 40px;margin: 10px 0">
+                      <el-row :gutter="10" style="height: 60px">
                         <el-col :span="12">
                           <el-form-item prop="birthday">
                             <span slot="label" class="text_css">生日：</span>
-                            <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userEdit.birthday"></el-date-picker>
-                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.birthday | subTime}}</span>
+                            <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userEntity.birthday"></el-date-picker>
+                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.birthday | subTime}}</span>
                           </el-form-item>
                         </el-col>
                       </el-row>
@@ -160,14 +155,14 @@
                 </el-card>
               </el-row>
               <el-row>
-                <el-card shadow="hover" style="margin-top: 5px;height: 500px" >
-                  <el-row :gutter="10" style="height: 40px;margin: 10px 0">
+                <el-card body-style="padding:10px;" shadow="hover" style="margin-top: 5px;" >
+                  <el-row :gutter="10" style="height: 60px">
                     <el-col :span="8">
 
                       <el-form-item prop="mobile">
                         <span slot="label" class="text_css">联系电话：</span>
-                        <el-input v-if="edit"  v-model="userEdit.mobile" placeholder="联系电话"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.mobile}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.mobile" placeholder="联系电话"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.mobile}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -176,8 +171,8 @@
 
                       <el-form-item prop="wechat">
                         <span slot="label" class="text_css">微信：</span>
-                        <el-input v-if="edit"  v-model="userEdit.wechat" placeholder="微信" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.wechat}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.wechat" placeholder="微信" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.wechat}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -186,20 +181,20 @@
 
                       <el-form-item prop="contactAddress">
                         <span slot="label" class="text_css">联系地址：</span>
-                        <el-input v-if="edit"  v-model="userEdit.contactAddress" placeholder="联系地址"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.contactAddress}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.contactAddress" placeholder="联系地址"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.contactAddress}}</span>
                       </el-form-item>
 
                     </el-col>
                   </el-row>
 
-                  <el-row :gutter="10" style="height: 40px;margin: 10px 0">
+                  <el-row :gutter="10" style="height: 60px">
                     <el-col :span="8">
 
                       <el-form-item prop="orgId">
                         <span slot="label" class="text_css">所属部门：</span>
-                        <tree-select v-show="edit" url="/upms/org/tree" v-model="userEdit.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
-                        <span style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{userEdit.orgName}}</span>
+                        <tree-select v-show="edit" url="/upms/org/tree" v-model="userEntity.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
+                        <span style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{userEntity.orgName}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -208,7 +203,7 @@
 
                       <el-form-item prop="roleId">
                         <span slot="label" class="text_css">职位：</span>
-                        <el-select v-if="edit" v-model="userEdit.roleId" style="width: 100%" filterable placeholder="职位" @change="roleChange">
+                        <el-select v-if="edit" v-model="userEntity.roleId" style="width: 100%" filterable placeholder="职位" @change="roleChange">
                           <el-option
                             v-for="item in roleList"
                             :key="item.roleId"
@@ -217,7 +212,7 @@
                           >
                           </el-option>
                         </el-select>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.roleName}}</span>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.roleName}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -226,20 +221,20 @@
 
                       <el-form-item prop="homeAddress">
                         <span slot="label" class="text_css">家庭住址：</span>
-                        <el-input v-if="edit"  v-model="userEdit.homeAddress" placeholder="家庭住址"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.homeAddress}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.homeAddress" placeholder="家庭住址"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.homeAddress}}</span>
                       </el-form-item>
 
                     </el-col>
                   </el-row>
 
-                  <el-row :gutter="10" style="height: 40px;margin: 10px 0">
+                  <el-row :gutter="10" style="height: 60px">
                     <el-col :span="8">
 
                       <el-form-item prop="education">
                         <span slot="label" class="text_css">学历：</span>
-                        <el-input v-if="edit"  v-model="userEdit.education" placeholder="学历" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.education}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.education" placeholder="学历" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.education}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -248,8 +243,8 @@
 
                       <el-form-item prop="major">
                         <span slot="label" class="text_css">专业：</span>
-                        <el-input v-if="edit"  v-model="userEdit.major" placeholder="专业" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.major}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.major" placeholder="专业" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.major}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -258,21 +253,21 @@
 
                       <el-form-item prop="qq">
                         <span slot="label" class="text_css">QQ：</span>
-                        <el-input v-if="edit"  v-model="userEdit.qq" placeholder="QQ" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.qq}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.qq" placeholder="QQ" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.qq}}</span>
                       </el-form-item>
 
                     </el-col>
                   </el-row>
 
-                  <el-row :gutter="10" style="height: 40px;margin: 10px 0">
+                  <el-row :gutter="10" style="height: 60px">
                     <el-col :span="8">
 
 
                       <el-form-item prop="joinedTime">
                         <span slot="label" class="text_css">入职日期：</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEdit.joinedTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.joinedTime | subTime}}</span>
+                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEntity.joinedTime"></el-date-picker>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.joinedTime | subTime}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -281,8 +276,8 @@
 
                       <el-form-item prop="positiveTime">
                         <span slot="label" class="text_css">转正日期：</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEdit.positiveTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.positiveTime | subTime}}</span>
+                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEntity.positiveTime"></el-date-picker>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.positiveTime | subTime}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -291,21 +286,21 @@
 
                       <el-form-item prop="email">
                         <span slot="label" class="text_css">E-mail：</span>
-                        <el-input v-if="edit"  v-model="userEdit.email" placeholder="E-mail"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.email}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.email" placeholder="E-mail"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.email}}</span>
                       </el-form-item>
 
                     </el-col>
                   </el-row>
 
 
-                  <el-row :gutter="20" style="height: 40px;margin: 10px 0">
+                  <el-row :gutter="20" style="height: 60px">
                     <el-col :span="12">
 
                       <el-form-item label-width="130px" prop="emergencyContact">
                         <span slot="label" class="text_css">紧急联系人姓名：</span>
-                        <el-input v-if="edit"  v-model="userEdit.emergencyContact" placeholder="紧急联系人" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.emergencyContact}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.emergencyContact" placeholder="紧急联系人" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyContact}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -314,20 +309,20 @@
 
                       <el-form-item label-width="130px" prop="emergencyMobile">
                         <span slot="label" class="text_css">紧急联系人电话：</span>
-                        <el-input v-if="edit"  v-model="userEdit.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.emergencyMobile}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyMobile}}</span>
                       </el-form-item>
 
                     </el-col>
                   </el-row>
 
-                  <el-row :gutter="20" style="height: 40px;margin: 10px 0">
+                  <el-row :gutter="20" style="height: 60px">
                     <el-col :span="12">
 
                       <el-form-item label-width="130px" prop="fiveInsuranceTime">
                         <span slot="label" class="text_css">五险购买时间：</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险购买时间"  style="width: 100%" v-model="userEdit.fiveInsuranceTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.fiveInsuranceTime | subTime}}</span>
+                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险购买时间"  style="width: 100%" v-model="userEntity.fiveInsuranceTime"></el-date-picker>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.fiveInsuranceTime | subTime}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -336,20 +331,20 @@
 
                       <el-form-item label-width="130px" prop="providentFundTime">
                         <span slot="label" class="text_css">公积金购买时间：</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金购买时间"  style="width: 100%" v-model="userEdit.providentFundTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.providentFundTime | subTime}}</span>
+                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金购买时间"  style="width: 100%" v-model="userEntity.providentFundTime"></el-date-picker>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.providentFundTime | subTime}}</span>
                       </el-form-item>
 
                     </el-col>
                   </el-row>
 
-                  <el-row :gutter="20" style="height: 40px;margin: 10px 0">
+                  <el-row :gutter="20" style="height: 60px">
                     <el-col :span="12">
 
                       <el-form-item label-width="130px" prop="workMobile">
                         <span slot="label" class="text_css">工作电话：</span>
-                        <el-input v-if="edit"  v-model="userEdit.workMobile" placeholder="工作电话" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEdit.workMobile}}</span>
+                        <el-input v-if="edit"  v-model="userEntity.workMobile" placeholder="工作电话" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.workMobile}}</span>
                       </el-form-item>
 
                     </el-col>
@@ -358,16 +353,16 @@
                   </el-row>
 
 
-                  <el-row v-if="edit" style="height: 40px;margin-top: 70px">
+                  <el-row v-if="edit">
                     <div style="float: right;" >
-                      <el-button v-if="addInfo"  type="success"  @click="add"><i class="el-icon-fa-save"></i> 保存</el-button>
-                      <el-button v-if="!addInfo" type="info" @click="cancel"><i class="el-icon-close"></i> 取消</el-button>
-                      <el-button v-if="!addInfo" type="success" @click="update"><i class="el-icon-fa-save"></i> 保存</el-button>
+                      <el-button v-if="addInfo"  type="success"  @click="add('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
+                      <el-button v-if="!addInfo" type="info" @click="cancel('userEntity')"><i class="el-icon-close"></i> 取消</el-button>
+                      <el-button v-if="!addInfo" type="success" @click="update('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
                     </div>
                   </el-row>
 
 
-                  <el-row v-else style="height: 40px;margin-top: 70px">
+                  <el-row v-else>
                     <div style="float: right;" >
                       <el-button type="primary" @click="editInfo"><i class="el-icon-edit"></i> 编辑</el-button>
                     </div>
@@ -439,7 +434,7 @@
           1: '男',
           0: '女'
         }
-        return typeMap[this.userEdit.sex]
+        return typeMap[this.userEntity.sex]
       }
     },
     components: {
@@ -447,6 +442,27 @@
       LineChart
     },
     data() {
+      var idNumberReg = (rule, value, callback) => {
+        /* 台湾 */
+        var TaiwanReg = /^[A-Z][0-9]{9}$/
+        /* 香港 */
+        var HongKongReg = /^[A-Z][0-9]{6}\([0-9A]\)$/
+        /* 澳门 */
+        var MacaoReg = /^[157][0-9]{6}\([0-9]\)$/
+        /* 大陆 */
+        var userCardReg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31|)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2})((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$/
+        if (userCardReg.test(value)) {
+          callback()
+        } else if (TaiwanReg.test(value)) {
+          callback()
+        } else if (HongKongReg.test(value)) {
+          callback()
+        } else if (MacaoReg.test(value)) {
+          callback()
+        } else {
+          callback(new Error('请输入正确的身份证号码'))
+        }
+      }
       return {
         // 编辑标记
         edit: false,
@@ -469,7 +485,7 @@
           children: 'children',
           label: 'label'
         },
-        userEdit: {
+        userEntity: {
           jobNumber: null,
           idNumber: null,
           name: null,
@@ -497,7 +513,63 @@
         },
         // 添加 标记
         addInfo: false,
-        roleList: []
+        roleList: [],
+        userEntityRules: {
+          mobile: [
+            { required: true, message: '请输入手机号', trigger: 'blur' },
+            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: 'blur' }
+          ],
+          idNumber: [
+            { required: true, message: '请输入身份证', trigger: 'blur' },
+            { validator: idNumberReg, trigger: 'blur' }
+          ],
+          jobNumber: [
+            { required: true, message: '请输入档案号', trigger: 'blur' }
+          ],
+          email: [
+            { required: true, message: '请输入邮箱', trigger: 'blur' },
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '请输入姓名', trigger: 'blur' }
+          ],
+          sex: [
+            { required: true, message: '请选择性别', trigger: 'blur' }
+          ],
+          birthday: [
+            { required: true, message: '请选择生日', trigger: 'blur' }
+          ],
+          wechat: [
+            { required: true, message: '请输入微信', trigger: 'blur' }
+          ],
+          contactAddress: [
+            { required: true, message: '请输入联系地址', trigger: 'blur' }
+          ],
+          orgId: [
+            { required: true, message: '请选择部门', trigger: 'blur' }
+          ],
+          roleId: [
+            { required: true, message: '请选择职位', trigger: 'blur' }
+          ],
+          homeAddress: [
+            { required: true, message: '请输入家庭地址', trigger: 'blur' }
+          ],
+          qq: [
+            { required: true, message: '请输入qq', trigger: 'blur' }
+          ],
+          joinedTime: [
+            { required: true, message: '请选择入职日期', trigger: 'blur' }
+          ],
+          positiveTime: [
+            { required: true, message: '请选择转正日期', trigger: 'blur' }
+          ],
+          emergencyContact: [
+            { required: true, message: '请输入紧急联系人', trigger: 'blur' }
+          ],
+          emergencyMobile: [
+            { required: true, message: '请输入紧急联系人电话', trigger: 'blur' }
+          ]
+        }
       }
     },
     created() {
@@ -506,7 +578,7 @@
     methods: {
       // 新增
       create() {
-        this.userEdit = {
+        this.userEntity = {
           jobNumber: null,
           idNumber: null,
           name: null,
@@ -543,9 +615,9 @@
         console.log('====================== 正在进入单个员工编辑 =====================')
         getObj(val.userId).then(response => {
           console.log(response.data)
-          this.userEdit = response.data.data
-          console.log(this.userEdit.orgId)
-          roleList(this.userEdit.orgId).then(response => {
+          this.userEntity = response.data.data
+          console.log(this.userEntity.orgId)
+          roleList(this.userEntity.orgId).then(response => {
             console.log(response.data)
             this.roleList = response.data.data
             console.log(this.roleList)
@@ -568,6 +640,8 @@
       back() {
         this.showModule = 'list'
         this.getUserList()
+        const set = this.$refs
+        set['userEntity'].resetFields()
         this.edit = false
         this.addInfo = false
       },
@@ -595,42 +669,54 @@
         console.log('=====================     完成    ===================')
       },
       // 取消编辑
-      cancel() {
+      cancel(formName) {
         console.log('=================== 正在完成取消操作 ===================')
-        this.doubleClickRow(this.userEdit)
+        const set = this.$refs
+        set[formName].resetFields()
+        this.doubleClickRow(this.userEntity)
         this.edit = false
         console.log('=================== 完成 ===================')
       },
       // 添加
-      add() {
-        console.log('这里是添加方法===========================')
-        console.log(this.userEdit)
-        addObj(this.userEdit).then(response => {
-          this.userEdit.userId = response.data.data
+      add(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            console.log('这里是添加方法===========================')
+            console.log(this.userEntity)
+            addObj(this.userEntity).then(response => {
+              this.userEntity.userId = response.data.data
+              this.back()
+            })
+          }
         })
-        this.edit = false
       },
       // 修改
-      update() {
-        console.log('这里是修改方法===========================')
-        console.log(this.userEdit)
-        putObj(this.userEdit).then(response => {
-          console.log(response.data)
-          this.doubleClickRow(this.userEdit)
+      update(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            console.log('这里是修改方法===========================')
+            console.log(this.userEntity)
+            putObj(this.userEntity).then(response => {
+              console.log(response.data)
+              this.doubleClickRow(this.userEntity)
+              this.edit = false
+            })
+          }
         })
-        this.edit = false
       },
       orgClick(org) {
-        this.userEdit.orgName = org.name
+        this.userEntity.orgName = org.name
         roleList(org.id).then(response => {
           console.log(response.data)
-          this.userEdit.roleId = response.data.data[0].roleId
+          this.userEntity.roleId = response.data.data[0].roleId
           this.roleList = response.data.data
         })
       },
       roleChange(val) {
         console.log(val)
-        // this.userEdit.roleName = val.roleName
+        // this.userEntity.roleName = val.roleName
       },
       filterNode(value, data) {
         if (!value) return true
@@ -643,15 +729,15 @@
       },
       // 根据身份证号生成信息
       generateInfo() {
-        var value = autoProduce(this.userEdit.idNumber)
+        var value = autoProduce(this.userEntity.idNumber)
         if (value) {
-          if (!this.userEdit.jobNumber) {
-            this.userEdit.jobNumber = value[0]
+          if (!this.userEntity.jobNumber) {
+            this.userEntity.jobNumber = value[0]
           }
-          if (!this.userEdit.birthday) {
-            this.userEdit.birthday = value[1]
+          if (!this.userEntity.birthday) {
+            this.userEntity.birthday = value[1]
           }
-          this.userEdit.sex = value[2]
+          this.userEntity.sex = value[2]
         }
       },
       handleAvatarSuccess(res, file) {
@@ -714,14 +800,14 @@
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 120px;
-    height: 150px;
+    width: 60%;
+    height: 100%;
     line-height: 150px;
     text-align: center;
   }
   .avatar {
-    width: 120px;
-    height: 150px;
+    width: 60%;
+    height: 100%;
     display: block;
   }
   .avatar_img {
@@ -730,8 +816,8 @@
     margin: auto;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
-    width: 120px;
-    height: 150px;
+    width: 60%;
+    height: 100%;
     display: block;
   }
 </style>

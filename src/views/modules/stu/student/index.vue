@@ -1461,8 +1461,8 @@
       generateInfo() {
         var value = autoProduce(this.student.idNumber)
         if (value) {
-          if (!this.student.jobNumber) {
-            this.student.jobNumber = value[0]
+          if (!this.student.archivesNumber) {
+            this.student.archivesNumber = value[0]
           }
           if (!this.student.birthday) {
             this.student.birthday = value[1]
@@ -1492,8 +1492,8 @@
       AddGenerateInfo() {
         var value = autoProduce(this.studentEntity.idNumber)
         if (value) {
-          if (!this.studentEntity.jobNumber) {
-            this.studentEntity.jobNumber = value[0]
+          if (!this.studentEntity.archivesNumber) {
+            this.studentEntity.archivesNumber = value[0]
           }
           if (!this.studentEntity.birthday) {
             this.studentEntity.birthday = value[1]

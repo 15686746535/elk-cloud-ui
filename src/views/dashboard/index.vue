@@ -4,46 +4,54 @@
       <el-row class="panel-group" :gutter="20">
         <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
           <div class="index-box top-group bg-warning">
-            <div class="left">
-              <i class="el-icon-fa-user"></i>
-            </div>
-            <div class="right">
-              <div class="number">500</div>
-              <div>个人意向</div>
-            </div>
+            <el-col :xs="0" :sm="6" :lg="6" style="line-height: 118px;text-align: center">
+                <i class="el-icon-fa-tree"></i>
+            </el-col>
+            <el-col :xs="24" :sm="18" :lg="18" class="right" style="text-align: center">
+              <div style="text-align: left;padding: 0 25px;">
+                <el-row><el-col class="number">{{intentionCount.depIntention}}</el-col></el-row>
+                <el-row ><el-col class="text">部门意向客户</el-col></el-row>
+              </div>
+            </el-col>
           </div>
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
           <div class="index-box top-group bg-success">
-            <div class="left">
-              <i class="el-icon-fa-user"></i>
-            </div>
-            <div class="right">
-              <div class="number">500</div>
-              <div>个人意向</div>
-            </div>
+            <el-col :xs="0" :sm="6" :lg="6" style="line-height: 118px;text-align: center">
+              <i class="el-icon-fa-file-text"></i>
+            </el-col>
+            <el-col :xs="24" :sm="18" :lg="18" class="right" style="text-align: center">
+              <div style="text-align: left;padding: 0 25px;">
+                <el-row><el-col class="number">{{intentionCount.depStudent}}</el-col></el-row>
+                <el-row ><el-col class="text">部门签约客户</el-col></el-row>
+              </div>
+            </el-col>
           </div>
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
           <div class="index-box top-group bg-danger">
-            <div class="left">
+            <el-col :xs="0" :sm="6" :lg="6" style="line-height: 118px;text-align: center">
               <i class="el-icon-fa-user"></i>
-            </div>
-            <div class="right">
-              <div class="number">500</div>
-              <div>个人意向</div>
-            </div>
+            </el-col>
+            <el-col :xs="24" :sm="18" :lg="18" class="right" style="text-align: center">
+              <div style="text-align: left;padding: 0 25px;">
+                <el-row><el-col class="number">{{intentionCount.myIntention}}</el-col></el-row>
+                <el-row ><el-col class="text">个人意向客户</el-col></el-row>
+              </div>
+            </el-col>
           </div>
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
           <div class="index-box top-group bg-blue">
-            <div class="left">
-              <i class="el-icon-fa-user"></i>
-            </div>
-            <div class="right">
-              <div class="number">500</div>
-              <div>个人意向</div>
-            </div>
+            <el-col :xs="0" :sm="6" :lg="6" style="line-height: 118px;text-align: center">
+              <i class="el-icon-fa-edit"></i>
+            </el-col>
+            <el-col :xs="24" :sm="18" :lg="18" class="right" style="text-align: center">
+              <div style="text-align: left;padding: 0 25px;">
+                <el-row><el-col class="number">{{intentionCount.myStudent}}</el-col></el-row>
+                <el-row ><el-col class="text">个人签约客户</el-col></el-row>
+              </div>
+            </el-col>
           </div>
         </el-col>
       </el-row>
@@ -51,12 +59,12 @@
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
           <div class="notice-title">
-            <i class="el-icon-fa-bell"> 我的代办</i>
+              <i class="el-icon-fa-volume-up"> 我的代办 ({{evenNoticeList('1').length}})</i>
           </div>
           <div class="notice-body">
             <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('1')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg">{{index + 1}}.{{notice.message}}</div>
+              <div class="msg" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>
@@ -65,12 +73,12 @@
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
           <div class="notice-title">
-            <i class="el-icon-fa-bell"> 提醒</i>
+              <i class="el-icon-fa-bell"> 提醒 ({{evenNoticeList('2').length}})</i>
           </div>
           <div class="notice-body">
             <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('2')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg">{{index + 1}}.{{notice.message}}</div>
+              <div class="msg" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>
@@ -78,19 +86,34 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
-          <pie-chart></pie-chart>
+          <div class="notice-title">
+            <i class="el-icon-fa-pie-chart"> 本月意向转换率</i>
+          </div>
+          <div class="chart-body">
+            <pie-chart :data="pieData"></pie-chart>
+          </div>
         </div>
       </el-col>
     </el-row>
       <el-row class="panel-group" :gutter="20">
         <el-col :xs="24" :sm="24" :lg="16" class="card-panel-col">
-          <div class="index-box center-group bg-white">
-            <bar-tick-align :data="month"></bar-tick-align>
+          <div class="index-box foot-group bg-white">
+            <div class="chart-title">
+              <i class="el-icon-fa-bar-chart"> 本年意向展示</i>
+            </div>
+            <div class="chart-body">
+              <bar-pile-chart :data="yuarData" ></bar-pile-chart>
+            </div>
           </div>
         </el-col>
         <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
-          <div class="index-box center-group bg-white">
-            <bar-tick-align :data="week"></bar-tick-align>
+          <div class="index-box foot-group bg-white">
+            <div class="chart-title">
+              <i class="el-icon-fa-line-chart"> 本周意向展示</i>
+            </div>
+            <div class="chart-body">
+              <bar-tick-align :data="weekData"></bar-tick-align>
+            </div>
           </div>
         </el-col>
       </el-row>
@@ -101,24 +124,49 @@
 <script>
 import BarTickAlign from '@/components/BarTickAlign'
 import PieChart from '@/components/PieChart'
+import BarPileChart from '@/components/BarPileChart'
+import { queryIndex } from '@/api/visualization/api'
 import { busPage } from '@/api/activiti/agency'
 
 export default {
   name: 'dashboard',
   components: {
     BarTickAlign,
+    BarPileChart,
     PieChart
   },
   data() {
     return {
       noticeList: [],
-      week: {
-        mon: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        pos: [1, 2, 3, 4, 5, 7, 9]
+      // 部门 个人（签约，意向）总数
+      intentionCount: {
+        myStudent: 0,
+        myIntention: 0,
+        depStudent: 0,
+        depIntention: 0
       },
-      month: {
-        mon: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        pos: [1, 2, 3, 4, 5, 7, 9, 9, 9, 9, 9, 9]
+      // 本月转换率
+      pieData: {
+        legend: [],
+        value: []
+      },
+      // 本周意向展示
+      weekData: {
+        legend: [],
+        name: '',
+        value: []
+      },
+      // 本年意向展示
+      yuarData: {
+        legend: [],
+        upper: {
+          name: '',
+          list: []
+        },
+        lower: {
+          name: '',
+          list: []
+        }
       },
       listQuery: {
         page: 1,
@@ -129,8 +177,6 @@ export default {
   created() {
     this.getList()
   },
-  computed: {
-  },
   methods: {
     evenNoticeList(type) {
       return this.noticeList.filter(function(notice) {
@@ -138,30 +184,36 @@ export default {
       })
     },
     getList() {
+      queryIndex().then(response => {
+        var data = response.data
+        this.weekData = {
+          legend: ['日', '一', '二', '三', '四', '五', '六'],
+          name: '意向',
+          value: data.week
+        }
+        this.pieData = {
+          legend: ['跟进中', '已入学', '已关闭'],
+          value: data.contractRate
+        }
+        this.yuarData = {
+          legend: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          upper: {
+            name: data.yuar.upper.name,
+            value: data.yuar.upper.list
+          },
+          lower: {
+            name: data.yuar.lower.name,
+            value: data.yuar.lower.list
+          }
+        }
+        this.intentionCount = data.intentionCount
+      })
       busPage(this.listQuery).then(response => {
         this.noticeList = response.data.data.list
-        console.log(response)
       })
     }
   }
 }
-
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' },
-// { time: new Date(), msg: '阿水电费水电费水电费奥术大师多撒多撒多撒多水电费水电费水电费', operator: '张大炮' }
 
 </script>
 
@@ -176,12 +228,6 @@ export default {
       /*-webkit-box-shadow: 5px 5px 10px #888;
       box-shadow: 5px 5px 10px #888;*/
     }
-    .index-box.top-group{
-      height: 108px;
-    }
-    .index-box.center-group{
-      height: 300px;
-    }
     .top-group:hover{
       /*cursor: pointer;*/
       i{
@@ -191,9 +237,10 @@ export default {
       }
     }
     .top-group{
+      height: 108px;
       i{
         color: #fff;
-        font: normal normal normal 40px/1 FontAwesome !important;
+        font-size:40px !important;
         width: 60px;
         height: 60px;
         border: 2px solid darkgray;
@@ -202,30 +249,38 @@ export default {
         text-align: center;
         padding-top: 8px;
       }
-      .left{
-        float: left;
-        padding: 24px;
+      .text{
+        overflow: hidden;
+        word-break:keep-all;/* 不换行 */
+        white-space:nowrap;/* 不换行 */
+        padding: 10px 0;
       }
       .right{
         color: #fff;
         font-size: 16px;
-        float: left;
         padding: 30px 0;
         .number{
           font-size: 18px;
-          padding-bottom: 8px;
           font-weight: 600;
+          word-break:keep-all;/* 不换行 */
+          white-space:nowrap;/* 不换行 */
         }
       }
     }
-
     .center-group{
+      height: 300px;
       .notice-title{
+        color: #409eff;
+        padding: 10px;
         i{
-          font: normal normal normal 20px/1 FontAwesome !important;
-          color: #409eff;
-          padding: 10px;
+          font-size:16px !important;
+          padding-right: 10px;
         }
+      }
+      .chart-body{
+        height: 264px;
+        width: 100%;
+        border-radius: 5px;
       }
       .notice-body{
         padding: 10px 0;
@@ -233,6 +288,13 @@ export default {
         overflow: auto;
         height: 80%;
         position: relative;
+        .message:hover{
+          cursor: pointer;
+          .msg{
+            color: #409eff;
+            text-decoration:underline;
+          }
+        }
         .message{
           position: absolute;
           width: 100%;
@@ -258,6 +320,21 @@ export default {
             right: 15px;
           }
         }
+      }
+    }
+    .foot-group{
+      height: 300px;
+      .chart-title{
+        i{
+          font-size:16px !important;
+          color: #409eff;
+          padding: 10px;
+        }
+      }
+      .chart-body{
+        height: 264px;
+        width: 100%;
+        border-radius: 5px;
       }
     }
   }

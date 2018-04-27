@@ -94,6 +94,13 @@ module.exports = {
         pathRewrite: {
           '^/quartz' : '/quartz'
         }
+      },
+      '/visualization': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/visualization' : '/visualization'
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

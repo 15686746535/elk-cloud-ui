@@ -62,3 +62,10 @@ export function getOperator(id) {
   })
 }
 
+// 获取负责人
+export function queryIndex() {
+  return request({
+    url: '/visit/intention/index',
+    method: 'get'
+  })
+}

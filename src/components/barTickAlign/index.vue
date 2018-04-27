@@ -30,19 +30,23 @@
         default: '#3398DB'
       },
       data: {
-        type: Object
+        type: Object,
+        default: {
+          legend: [],
+          name: '',
+          value: []
+        }
       }
     },
     data() {
       return {
-        chart: null,
-        mon: [],
-        pos: []
+        chart: null
       }
     },
-    created() {
-      this.mon = this.data.mon
-      this.pos = this.data.pos
+    watch: {
+      data: function(val) {
+        this.initChart()
+      }
     },
     mounted() {
       this.initChart()
@@ -83,7 +87,7 @@
           xAxis: [
             {
               type: 'category',
-              data: this.mon,
+              data: this.data.legend,
               axisTick: {
                 alignWithLabel: true
               }
@@ -96,10 +100,10 @@
           ],
           series: [
             {
-              name: '直接访问',
+              name: this.data.name,
               type: 'bar',
-              barWidth: '60%',
-              data: this.pos
+              barWidth: '40%',
+              data: this.data.value
             }
           ]
         })

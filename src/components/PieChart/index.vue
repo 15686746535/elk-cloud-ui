@@ -19,13 +19,27 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '100%'
+    },
+    data: {
+      type: Object,
+      default: {
+        legend: [],
+        value: []
+      }
     }
   },
   data() {
     return {
       chart: null
     }
+  },
+  watch: {
+    data: function(val) {
+      this.initChart()
+    }
+  },
+  created() {
   },
   mounted() {
     this.initChart()
@@ -55,24 +69,18 @@ export default {
         },
         legend: {
           left: 'center',
-          bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          bottom: '8',
+          data: this.data.legend
         },
         calculable: true,
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '转换率',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
-            center: ['50%', '38%'],
-            data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
-            ],
+            center: ['50%', '45%'],
+            data: this.data.value,
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }

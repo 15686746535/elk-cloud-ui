@@ -66,8 +66,8 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel('dict')">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('dict')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('dict')">修 改</el-button>
+        <el-button v-if="dialogStatus=='create'" :loading="btnLoading" type="primary" @click="create('dict')">确 定</el-button>
+        <el-button v-else type="primary" :loading="btnLoading" @click="update('dict')">修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -85,12 +85,23 @@
         lists: [],
         total: null,
         listLoading: true,
+        btnLoading: false,
         listQuery: {
           page: 1,
           limit: 20,
           type: 'dict_customer_type'
         },
-        rules: {},
+        rules: {
+          label: [
+            { required: true, message: '请填写客户类型', trigger: 'blur' }
+          ],
+          description: [
+            { required: true, message: '请填写客户类型描述', trigger: 'blur' }
+          ],
+          sort: [
+            { required: true, type: 'number', message: '请填写客户类型排序等级', trigger: 'blur' }
+          ]
+        },
         dict: {},
         enrolSite: {},
         dialogFormVisible: false,
@@ -139,18 +150,17 @@
         this.getList()
       },
       handleDelete(row) {
-        console.log(row)
-        delObj(row.dictId)
-          .then(response => {
+        this.$confirm('是否删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(row)
+          delObj(row.dictId).then(() => {
             this.dialogFormVisible = false
             this.getList()
-            this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
-              duration: 2000
-            })
           })
+        })
       },
       createClick() {
         this.dict = {}
@@ -166,18 +176,15 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false
+            this.btnLoading = true
             this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
                 this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
+                set[formName].resetFields()
+                this.btnLoading = false
+                this.dialogFormVisible = false
               })
           } else {
             return false
@@ -195,16 +202,13 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false
+            this.btnLoading = true
             this.dict.value = this.dict.label
             putObj(this.dict).then(() => {
               this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
+              set[formName].resetFields()
+              this.btnLoading = false
+              this.dialogFormVisible = false
             })
           } else {
             return false

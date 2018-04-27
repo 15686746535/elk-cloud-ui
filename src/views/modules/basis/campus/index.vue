@@ -74,7 +74,6 @@
 </template>
 <script>
   import { fetchList, addObj, putObj, delObj } from '@/api/basis/dict'
-
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
@@ -151,12 +150,17 @@
         this.getList()
       },
       handleDelete(row) {
-        console.log(row)
-        delObj(row.dictId)
-          .then(response => {
+        this.$confirm('是否删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(row)
+          delObj(row.dictId).then(() => {
             this.dialogFormVisible = false
             this.getList()
           })
+        })
       },
       createClick() {
         this.dict = {}
@@ -172,7 +176,6 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false
             this.btnLoading = true
             this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
@@ -180,6 +183,7 @@
               .then(() => {
                 this.getList()
                 this.btnLoading = false
+                this.dialogFormVisible = false
                 set[formName].resetFields()
               })
           } else {

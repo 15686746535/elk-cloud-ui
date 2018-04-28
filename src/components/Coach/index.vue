@@ -1,5 +1,6 @@
 <template>
-  <el-select class="filter-item" style="margin-bottom: 0px;" :style="{height:height,width:width}" :size="size" clearable :placeholder=placeholder v-model="coach" @change="emitChange(coach)">
+  <el-select class="filter-item " style="margin-bottom: 0px;" :style="{height:height,width:width}" @blur="testaaaa" :size="size" clearable :placeholder=placeholder v-model="coach"
+             @change="emitChange(coach)">
     <el-option v-for="item in coachList" :key="item.userId" :label="item.name" :value="item.userId"></el-option>
   </el-select>
 </template>
@@ -44,7 +45,7 @@
       }
     },
     watch: {
-      result(val) {
+      value(val) {
         this.coach = val
       }
     },
@@ -77,6 +78,10 @@
         }).then(response => {
           this.coachList = response.data.data
         })
+      },
+      testaaaa() {
+        console.log('===============aaa=============')
+        this.$emit('blur', true)
       },
       emitChange(value) {
         if (value === '') value = null

@@ -126,11 +126,12 @@ import PieChart from '@/components/PieChart'
 import BarPileChart from '@/components/BarPileChart'
 import { queryIndex } from '@/api/visualization/api'
 import { busPage } from '@/api/activiti/agency'
-
+import Coach from '@/components/Coach'
 export default {
   name: 'dashboard',
   components: {
     BarPileChart,
+    Coach,
     PieChart
   },
   data() {

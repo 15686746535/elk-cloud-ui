@@ -161,12 +161,12 @@
                     <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>-->
                     <!--</div>-->
                     <div style="float: right">
-                      <el-input @keyup.enter.native="getNotShuttleList" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
+                      <el-input @keyup.enter.native="getNotShuttleList" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="studentListQuery.condition"></el-input>
                       <el-button class="filter-item" type="primary" size="mini" @click="getNotShuttleList">搜索</el-button>
                     </div>
                   </div>
                   <el-table :data="studentList" :height="($store.state.app.client.height - 420)" border style="width: 100%"
-                            @selection-change="handleSelectionChange" highlight-current-row v-loading="notShuttleListLoading" element-loading-text="给我一点时间">
+                            @selection-change="handleSelectionChange" highlight-current-row v-loading="studentListLoading" element-loading-text="给我一点时间">
                     <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
                     <el-table-column type="index" align="center" label="编号" width="50">
                     </el-table-column>
@@ -192,21 +192,17 @@
                     </el-table-column>
                   </el-table>
 
-                  <div v-show="!notShuttleListLoading" class="pagination-container" style="margin-top: 12px;">
+                  <div v-show="!studentListLoading" class="pagination-container" style="margin-top: 12px;">
                     <el-pagination
-                      @current-change="notShuttleHandleCurrentChange"
+                      @current-change="studentHandleCurrentChange"
                       layout="prev, pager, next"
                       style="float: left"
-                      :current-page="notShuttleListQuery.page"
-                      :page-size="notShuttleListQuery.limit"
+                      :current-page="studentListQuery.page"
+                      :page-size="studentListQuery.limit"
                       :total="notShuttleTotal"
                     >
                     </el-pagination>
                   </div>
-                  <!--<el-select v-model="shuttle.studentList" collapse-tags style="width: 100%" multiple placeholder="请选择学员">-->
-                    <!--<el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">-->
-                    <!--</el-option>-->
-                  <!--</el-select>-->
                 </el-row>
                 <el-row style="margin-top: 10px;">
                   <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
@@ -220,6 +216,7 @@
                 </div>
               </el-dialog>
 
+              <!-- 添加接送信息 -->
               <el-dialog :close-on-click-modal="false" width="30%" title="请选择接送人" :visible.sync="userListOption">
                 <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
                   <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
@@ -232,6 +229,8 @@
               </el-dialog>
             </el-card>
           </el-col>
+
+          <!-- 已安排名单 -->
           <el-col :span="16">
             <el-card :style="{height: ($store.state.app.client.height - 145) + 'px'}" shadow="never">
 
@@ -245,7 +244,7 @@
                 </div>
               </div>
 
-              <el-table :data="shuttledList"  :height="($store.state.app.client.height-260)"  v-loading="notShuttleListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+              <el-table :data="shuttledList"  :height="($store.state.app.client.height-260)"  v-loading="shuttledListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-table :data="props.row.studentEntityList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
@@ -356,6 +355,7 @@
         shuttledTotal: null,
         shuttledListLoading: false,
         userListOption: false,
+        studentListLoading: false,
         addStudentOption: false,
         showModule: 'list',
         userList: [],

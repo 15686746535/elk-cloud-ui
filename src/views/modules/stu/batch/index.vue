@@ -77,6 +77,7 @@
       </div>
     </el-card>
 
+    <!-- 考试设置 -->
     <el-dialog @close="cancel('batch')" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch" :rules="batchRules" ref="batch" label-width="100px">

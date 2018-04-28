@@ -215,7 +215,7 @@
 </template>
 
 <script>
-  import { getGrade, getObj, putExamNote } from '@/api/student/grade'
+  import { examFetchList, getObj, putExamNote } from '@/api/student/examnote'
   import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
@@ -316,7 +316,7 @@ export default {
         console.log('==========  查询学员条件  =-=======')
         console.log(this.studentListQuery)
         this.studentListQuery.examState = 'exam_note_true'
-        getGrade(this.studentListQuery).then(response => {
+        examFetchList(this.studentListQuery).then(response => {
           console.log('========== 数据 ==========')
           console.log(response.data)
           if (response.data.code === 0) {
@@ -375,7 +375,7 @@ export default {
           this.gradeOption = true
           this.gradeOptionLoading = true
           this.studentListQuery.examState = 'exam_note_false'
-          getGrade(this.studentListQuery).then(response => {
+          examFetchList(this.studentListQuery).then(response => {
             console.log('========== 数据 ==========')
             console.log(response.data)
             if (response.data.code === 0) {

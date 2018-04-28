@@ -30,7 +30,7 @@ export function delExam(id) {
   })
 }
 // 更新
-export function putExam(obj) {
+export function putExamNote(obj) {
   return request({
     url: '/stu/examnote',
     method: 'put',

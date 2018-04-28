@@ -154,12 +154,59 @@
 
               </div>
 
-              <el-dialog :close-on-click-modal="false" width="30%" title="添加接送学员" :visible.sync="addStudentOption">
+              <el-dialog :close-on-click-modal="false" width="700px" title="添加接送学员" :visible.sync="addStudentOption">
                 <el-row>
-                  <el-select v-model="shuttle.studentList" collapse-tags style="width: 100%" multiple placeholder="请选择学员">
-                    <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
-                    </el-option>
-                  </el-select>
+                  <div class="filter-container">
+                    <!--<div style="float: left;line-height: 28px">-->
+                    <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>-->
+                    <!--</div>-->
+                    <div style="float: right">
+                      <el-input @keyup.enter.native="getNotShuttleList" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
+                      <el-button class="filter-item" type="primary" size="mini" @click="getNotShuttleList">搜索</el-button>
+                    </div>
+                  </div>
+                  <el-table :data="studentList" :height="($store.state.app.client.height - 420)" border style="width: 100%"
+                            @selection-change="handleSelectionChange" highlight-current-row v-loading="notShuttleListLoading" element-loading-text="给我一点时间">
+                    <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+                    <el-table-column type="index" align="center" label="编号" width="50">
+                    </el-table-column>
+                    <el-table-column align="center" label="姓名">
+                      <template slot-scope="scope">
+                        <span>{{scope.row.name}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="电话" width="120">
+                      <template slot-scope="scope">
+                        <span>{{scope.row.mobile}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="详细地址">
+                      <template slot-scope="scope">
+                        <span>{{scope.row.relayAddress}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="常接送人">
+                      <template slot-scope="scope">
+                        <span>{{scope.row.studentName}}</span>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+
+                  <div v-show="!notShuttleListLoading" class="pagination-container" style="margin-top: 12px;">
+                    <el-pagination
+                      @current-change="notShuttleHandleCurrentChange"
+                      layout="prev, pager, next"
+                      style="float: left"
+                      :current-page="notShuttleListQuery.page"
+                      :page-size="notShuttleListQuery.limit"
+                      :total="notShuttleTotal"
+                    >
+                    </el-pagination>
+                  </div>
+                  <!--<el-select v-model="shuttle.studentList" collapse-tags style="width: 100%" multiple placeholder="请选择学员">-->
+                    <!--<el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">-->
+                    <!--</el-option>-->
+                  <!--</el-select>-->
                 </el-row>
                 <el-row style="margin-top: 10px;">
                   <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
@@ -418,6 +465,19 @@
         this.shuttledListQuery.page = val
         this.getShuttledList()
       },
+      /* 学员名单 */
+      studentHandleSizeChange(val) {
+        this.studentListQuery.limit = val
+        fetchList(this.studentListQuery).then(response => {
+          this.studentList = response.data.data.list
+        })
+      },
+      studentHandleCurrentChange(val) {
+        this.studentListQuery.page = val
+        fetchList(this.studentListQuery).then(response => {
+          this.studentList = response.data.data.list
+        })
+      },
       /* 转到管理页面 */
       create() {
         this.getNotShuttleList()
@@ -439,9 +499,16 @@
         this.shuttle.studentList = val
       },
       shuttleClick() {
-        this.getUserList()
-        this.shuttle.userId = null
-        this.userListOption = true
+        if (this.shuttle.studentList.length === 0) {
+          this.$alert('请先选择学员', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        } else {
+          this.getUserList()
+          this.shuttle.userId = null
+          this.userListOption = true
+        }
       },
       addStudent() {
         if (this.shuttle.userId === null) {

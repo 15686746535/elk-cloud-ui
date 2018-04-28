@@ -77,7 +77,7 @@
       </div>
     </el-card>
 
-    <el-dialog  @close="cancel('batch')" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
+    <el-dialog @close="cancel('batch')" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
       <el-form :model="batch" :rules="batchRules" ref="batch" label-width="100px">
         <el-form-item label="考试场地" prop="examField">
@@ -460,6 +460,7 @@
       },
       cancel(formName) {
         this.batchOption = false
+        this.btnLoading = false
         this.batch = {}
         const set = this.$refs
         set[formName].resetFields()
@@ -467,12 +468,14 @@
       },
       update(formName) {
         const set = this.$refs
-        this.batch.batch = this.batch.examTime
         set[formName].validate(valid => {
           if (valid) {
+            this.btnLoading = true
+            this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
             putObj(this.batch).then(response => {
               console.log(response.data)
               this.batchOption = false
+              this.btnLoading = false
               this.getList()
             })
           } else {

@@ -29,7 +29,7 @@
 
         <el-table-column align="center" label="创建人">
           <template slot-scope="scope">
-            <span>{{ scope.row.name }}</span>
+            <span>{{ scope.row.operator }}</span>
           </template>
         </el-table-column>
 
@@ -169,7 +169,7 @@
     <!-- 添加问卷弹窗 -->
     <el-dialog  @close="cancelQuestionnaire('revisitQuestionnaire')" title="添加问卷" :show-close="false" width="30%" :visible.sync="questionnaireOption">
 
-      <el-form :model="revisitQuestionnaire" :rules="revisitQuestionnaire" ref="revisitQuestionnaire" label-position="right" label-width="100px">
+      <el-form :model="revisitQuestionnaire" :rules="revisitQuestionnaireRules" ref="revisitQuestionnaire" label-position="right" label-width="100px">
         <el-form-item label="问卷名字" prop="name">
           <el-input v-model="revisitQuestionnaire.name" placeholder="问卷名字" ></el-input>
         </el-form-item>
@@ -180,7 +180,7 @@
 
       <div slot="footer">
         <el-button @click="cancelQuestionnaire('revisitQuestionnaire')">取 消</el-button>
-        <el-button type="primary" @click="createQuestionnaire('revisitQuestionnaire')">确 定</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="createQuestionnaire('revisitQuestionnaire')">确 定</el-button>
       </div>
 
     </el-dialog>
@@ -211,11 +211,20 @@
         questions: {
           questionList: []
         },
+        revisitQuestionnaireRules: {
+          name: [
+            { required: true, message: '请填写问卷名字', trigger: 'blur' }
+          ],
+          remark: [
+            { required: true, message: '请填写备注', trigger: 'blur' }
+          ]
+        },
         questionnaireId: null,
         total: null,
         questionnaireLoading: true,
         questionLoading: false,
         questionnaireOption: false,
+        btnLoading: false,
         haveQuestion: false,
         questionnaireListQuery: {
           page: 1,
@@ -276,12 +285,14 @@
       /* 添加问卷 */
       createQuestionnaire(formName) {
         const set = this.$refs
-        this.questionnaireOption = false
         set[formName].validate(valid => {
           if (valid) {
+            this.btnLoading = true
             this.revisitQuestionnaire.subject = this.questionnaireListQuery.subject
             addQuestionnaireList(this.revisitQuestionnaire).then(() => {
               this.getQuestionnaireList()
+              this.questionnaireOption = false
+              this.btnLoading = false
             })
           } else {
             return false

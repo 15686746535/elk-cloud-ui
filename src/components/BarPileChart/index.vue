@@ -50,7 +50,7 @@ export default {
         series = {
           name: item.name,
           type: 'bar',
-          stack: 'vistors',
+          stack: item.stack,
           barWidth: '40%',
           data: item.value,
           animationDuration

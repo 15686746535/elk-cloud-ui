@@ -25,7 +25,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     const res = response.data
-    console.log('-------------------------------')
+    console.log('response-------------------------------')
     console.log(res)
     if (res.code === 500) {
       Message.error(res.msg)
@@ -42,6 +42,8 @@ service.interceptors.response.use(
   },
   error => {
     const res = error.response
+    console.log('error---------------------')
+    console.log(res)
     if (res.status === 478 || res.status === 403) {
       Message.error('您没有权限！')
     } else if (res.status === 400) {

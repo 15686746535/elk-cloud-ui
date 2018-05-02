@@ -83,7 +83,7 @@
                           <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
                             <img width="100%" height="100%" :src="followUps.avatar">
                           </el-tag>
-                          <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
+                          <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.userName}}</div>
                           <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dateTime')}}</div>
                           <div style="clear: both;white-space:normal;width: 100%">
                             <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
@@ -410,7 +410,7 @@
                   <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
                     <img width="100%" height="100%" :src="followUps.avatar">
                   </el-tag>
-                  <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.operator}}</div>
+                  <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.userName}}</div>
                   <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dateTime')}}</div>
                   <div style="clear: both;white-space:normal;width: 100%">
                     <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>

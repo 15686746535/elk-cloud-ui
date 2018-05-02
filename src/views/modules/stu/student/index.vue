@@ -891,7 +891,7 @@
         </div>
         <div v-else v-for="batch in batchList"  style="float: left;margin: 5px">
           <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
-            {{batch.batch}}
+            <{{batch.examTime | subTime}}> {{batch.examField}}
             <span>【{{batch.hasReserved}}/{{batch.stuCount}}】</span>
           </div>
 

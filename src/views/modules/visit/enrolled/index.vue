@@ -30,7 +30,7 @@
           </el-card>
           <el-card :style="{height: (client.height-125) + 'px'}">
             <div class="intentions"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
-              <div class="intention" v-for="intention in list" @click="intentionClick(intention.intentionId,$event)" ><!--@dblclick="editlist(intention) "-->
+              <div class="intention" v-for="intention in list" @click="intentionClick(intention.intentionId,$event)" ><!--@dblclick="editList(intention) "-->
                 <div style="width: 100%;height: 25px">
                   <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
                   <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>

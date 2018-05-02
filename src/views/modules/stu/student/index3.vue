@@ -31,7 +31,7 @@
           </el-card>
 
           <el-card :style="{height: ($store.state.app.client.height-170) + 'px'}">
-              <el-table :data="stuList.length == 0?null:stuList" :height="($store.state.app.client.height-260)" highlight-current-row @row-dblclick="editlist"  v-loading="listLoading" element-loading-text="给我一点时间">
+              <el-table :data="stuList.length == 0?null:stuList" :height="($store.state.app.client.height-260)" highlight-current-row @row-dblclick="editList"  v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="基础信息" min-width="390">
                   <template slot-scope="scope">
                     <!-- 头像 -->
@@ -445,7 +445,7 @@
       getDict(val) {
       },
       // 双击行  编辑
-      editlist(val) {
+      editList(val) {
         console.log('====================== 正在进入单个学员编辑 =====================')
         console.log(val)
         getObj(val.studentId).then(response => {

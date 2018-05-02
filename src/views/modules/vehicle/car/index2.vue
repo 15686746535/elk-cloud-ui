@@ -28,7 +28,7 @@
       <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
 
         <!-- 身份卡循环 -->
-        <el-table :data="list" :height="$store.state.app.client.height - 215" border style="width: 100%"  highlight-current-row @row-dblclick="editlist" v-loading="listLoading" element-loading-text="给我一点时间">
+        <el-table :data="list" :height="$store.state.app.client.height - 215" border style="width: 100%"  highlight-current-row @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
           <el-table-column label="编号" width="100px">
               <template slot-scope="scope">
               <span>{{scope.row.vehicleEntity.vehicleId}}</span>
@@ -1208,12 +1208,12 @@
       // 取消
       cancel() {
         console.log('=================== 正在完成取消操作 ===================')
-        this.editlist(this.vehicle)
+        this.editList(this.vehicle)
         this.showModule = 'info'
         console.log('=================== 完成 ===================')
       },
       // 双击编辑
-      editlist(val) {
+      editList(val) {
         // this.car.vehicleEntity = val.vehicleEntity
         // this.car.technicalInfo = val.technicalEntity
         // this.car.safetyEntity = val.safetyEntity
@@ -1248,7 +1248,7 @@
         } else if (this.edit === 'certificate') {
           this.update(this.edit, this.vehicle.certificateEntity)
         }
-        this.editlist(this.vehicle)
+        this.editList(this.vehicle)
         this.edit = key
       },
       handleClick(tab, event) {

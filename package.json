@@ -14,7 +14,7 @@
     "axios": "0.17.1",
     "clipboard": "1.7.1",
     "echarts": "^3.8.5",
-    "element-ui": "^2.3.2",
+    "element-ui": "^2.3.7",
     "es6-promise": "^4.2.4",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",

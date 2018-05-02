@@ -50,7 +50,7 @@
 
         <el-table-column align="center" label="批次">
           <template slot-scope="scope">
-            <span>{{scope.row.batch}}</span>
+            <{{scope.row.examTime | subTime}}> {{scope.row.examField}}
           </template>
         </el-table-column>
 
@@ -447,7 +447,7 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
+            // this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
             addObj(this.batch)
               .then(() => {
                 this.getList()
@@ -472,7 +472,7 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
+            // this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
             putObj(this.batch).then(response => {
               console.log(response.data)
               this.batchOption = false

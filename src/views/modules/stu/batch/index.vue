@@ -520,15 +520,18 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          delexambespeak(val.examBespeakId).then(() => {
-            this.see(val.examId,this.studentListQuery.state)
-            this.$notify({
-              title: '成功',
-              message: '取消成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
+          this.examBespeakList.studentList = []
+          this.examBespeakList.studentList.push(val.examBespeakId)
+          this.operation('6', '已取消约考')
+          // delexambespeak(val.examBespeakId).then(() => {
+          //   this.see(val.examId, this.studentListQuery.state)
+          //   this.$notify({
+          //     title: '成功',
+          //     message: '取消成功',
+          //     type: 'success',
+          //     duration: 2000
+          //   })
+          // })
         }).catch(() => {
           this.$message({
             type: 'info',

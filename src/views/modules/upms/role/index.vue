@@ -140,26 +140,26 @@
             {
               required: true,
               message: '角色名称',
-              trigger: 'blur'
+              trigger: 'blur,change'
             },
             {
               min: 3,
               max: 20,
               message: '长度在 3 到 20 个字符',
-              trigger: 'blur'
+              trigger: 'blur,change'
             }
           ],
           roleKey: [
             {
               required: true,
               message: '角色标识',
-              trigger: 'blur'
+              trigger: 'blur,change'
             },
             {
               min: 3,
               max: 20,
               message: '长度在 3 到 20 个字符',
-              trigger: 'blur'
+              trigger: 'blur,change'
             }
           ]
         },

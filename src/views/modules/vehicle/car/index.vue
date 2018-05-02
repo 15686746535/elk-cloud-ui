@@ -2,28 +2,30 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'">
 
-      <el-card style="margin-bottom: 5px;height: 80px">
-          <el-form ref="listQuery" :model="listQuery" inline label-width="80px">
-            <el-form-item label="车牌">
-              <el-select v-model="listQuery.plate" placeholder="请选择车牌">
-                <el-option v-for="item in plates" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="负责人">
-              <el-select v-model="listQuery.username" placeholder="请选择负责人">
-                <el-option v-for="item in userNames" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="车辆来源">
-              <dict dictType="dict_source" v-model="listQuery.vehicleState" ></dict>
-            </el-form-item>
-            <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
-
-            <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
-            <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
-          </el-form>
+      <el-card style="margin-bottom: 5px;">
+        <el-row :gutter="20">
+          <el-col :xs="6" :sm="5" :md="4" :lg="4">
+            <el-select style="width: 100%" v-model="listQuery.plate" placeholder="请选择车牌">
+              <el-option v-for="item in plates" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :xs="6" :sm="5" :md="4" :lg="4">
+            <el-select style="width: 100%" v-model="listQuery.username" placeholder="请选择负责人">
+              <el-option v-for="item in userNames" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :xs="0" :sm="5" :md="4" :lg="4">
+            <dict dictType="dict_source"  style="width: 100%" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>
+          </el-col>
+          <el-col :xs="6" :sm="5" :md="4" :lg="4">
+            <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-button class="filter-item" type="primary" icon="search" @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
+          </el-col>
+        </el-row>
       </el-card>
       <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
 
@@ -102,8 +104,10 @@
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                          :current-page.sync="listQuery.page" background
                          :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
+                         style="float: left"
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
+          <el-button style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
         </div>
       </el-card>
     </div>
@@ -135,160 +139,160 @@
               </div>
             </div>
             <div style="padding:20px;">
-                <el-row>
-                  <el-col style="width: 300px;margin-right: 22px">
-                    <el-row>
-                      <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                      </el-upload>
-                    </el-row>
-                    <el-row style="height: 62px;">
-                      <el-form-item prop="vehicleEntity.plateColor">
-                        <span slot="label" class="text_css">车牌颜色：</span>
-                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.plateColor"  placeholder="车牌颜色"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.plateColor}}</span>
+              <el-row>
+                <el-col style="width: 300px;margin-right: 22px">
+                  <el-row style="margin-bottom: 4px;">
+                    <el-upload :disabled="!edit" class="avatar-uploader" style="width: 128px;height: 128px;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                      <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar"  style="width: 128px;height: 128px;" >
+                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                  </el-row>
+                  <el-row style="height: 62px;">
+                    <el-form-item prop="plateColor">
+                      <span slot="label" class="text_css">车牌颜色：</span>
+                      <el-input v-if="edit" v-model="vehicle.vehicleEntity.plateColor"  placeholder="车牌颜色"></el-input>
+                      <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.plateColor}}</span>
+                    </el-form-item>
+                  </el-row>
+                  <el-row style="height: 62px;">
+                    <el-form-item prop="carColor">
+                      <span slot="label" class="text_css">车身颜色：</span>
+                      <el-input v-if="edit" v-model="vehicle.vehicleEntity.carColor" placeholder="车身颜色"></el-input>
+                      <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.carColor}}</span>
+                    </el-form-item>
+                  </el-row>
+                  <el-row style="height: 62px;">
+                    <el-form-item prop="vehicleEntity.number">
+                      <span slot="label" class="text_css">自编号：</span>
+                      <el-input v-if="edit"  v-model="vehicle.vehicleEntity.number" placeholder="自编号"></el-input>
+                      <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.number}}</span>
+                    </el-form-item>
+                  </el-row>
+                </el-col>
+                <el-col :style="{width: ($store.state.app.client.width - 400) + 'px'}">
+
+                  <el-row :gutter="10" style="height: 62px;">
+                    <el-col :span="8">
+                      <el-form-item prop="vehicleType">
+                        <span slot="label" class="text_css">车辆类别：</span>
+                        <el-input v-if="edit"  v-model="vehicle.vehicleEntity.vehicleType" placeholder="车辆类别"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.vehicleType}}</span>
                       </el-form-item>
-                    </el-row>
-                    <el-row style="height: 62px;">
-                      <el-form-item prop="vehicleEntity.carColor">
-                        <span slot="label" class="text_css">车身颜色：</span>
-                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.carColor" placeholder="车身颜色"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.carColor}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="vehicleState">
+                        <span slot="label" class="text_css">车辆来源：</span>
+                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.vehicleState" placeholder="车辆来源" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.vehicleState}}</span>
                       </el-form-item>
-                    </el-row>
-                    <el-row style="height: 62px;">
-                      <el-form-item prop="vehicleEntity.number">
-                        <span slot="label" class="text_css">自编号：</span>
-                        <el-input v-if="edit"  v-model="vehicle.vehicleEntity.number" placeholder="自编号"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.number}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="plateNumber">
+                        <span slot="label" class="text_css">车辆牌照：</span>
+                        <el-input v-if="edit"  v-model="vehicle.vehicleEntity.plateNumber" placeholder="车辆牌照"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.plateNumber}}</span>
                       </el-form-item>
-                    </el-row>
-                  </el-col>
-                  <el-col :style="{width: ($store.state.app.client.width - 400) + 'px'}">
+                    </el-col>
+                  </el-row>
 
-                    <el-row :gutter="10" style="height: 62px;">
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.vehicleType">
-                          <span slot="label" class="text_css">车辆类别：</span>
-                          <el-input v-if="edit"  v-model="vehicle.vehicleEntity.vehicleType" placeholder="车辆类别"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.vehicleType}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.vehicleState">
-                          <span slot="label" class="text_css">车辆来源：</span>
-                          <el-input v-if="edit" v-model="vehicle.vehicleEntity.vehicleState" placeholder="车辆来源" ></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.vehicleState}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.plateNumber">
-                          <span slot="label" class="text_css">车辆牌照：</span>
-                          <el-input v-if="edit"  v-model="vehicle.vehicleEntity.plateNumber" placeholder="车辆牌照"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.plateNumber}}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
+                  <el-row :gutter="10" style="height: 62px;">
+                    <el-col :span="8">
+                      <el-form-item prop="factoryTime">
+                        <span slot="label" class="text_css">出厂日期：</span>
+                        <el-date-picker value-format="timestamp" style="width: 100%" v-if="edit" type="date" placeholder="出厂日期" v-model="vehicle.vehicleEntity.factoryTime"></el-date-picker>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.factoryTime | subTime}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="registerTime">
+                        <span slot="label" class="text_css">注册登记日期：</span>
+                        <el-date-picker value-format="timestamp" style="width: 100%" v-if="edit" type="date" placeholder="注册登记日期" v-model="vehicle.vehicleEntity.registerTime"></el-date-picker>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.registerTime | subTime}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="oldPlateNumber">
+                        <span slot="label" class="text_css">原车辆牌照：</span>
+                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.oldPlateNumber" placeholder="原车辆牌照"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.oldPlateNumber}}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
 
-                    <el-row :gutter="10" style="height: 62px;">
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.factoryTime">
-                          <span slot="label" class="text_css">出厂日期：</span>
-                          <el-date-picker value-format="timestamp" style="width: 100%" v-if="edit" type="date" placeholder="出厂日期" v-model="vehicle.vehicleEntity.factoryTime"></el-date-picker>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.factoryTime | subTime}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.registerTime">
-                          <span slot="label" class="text_css">注册登记日期：</span>
-                          <el-date-picker value-format="timestamp" style="width: 100%" v-if="edit" type="date" placeholder="注册登记日期" v-model="vehicle.vehicleEntity.registerTime"></el-date-picker>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.registerTime | subTime}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.oldPlateNumber">
-                          <span slot="label" class="text_css">原车辆牌照：</span>
-                          <el-input v-if="edit" v-model="vehicle.vehicleEntity.oldPlateNumber" placeholder="原车辆牌照"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.oldPlateNumber}}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
+                  <el-row :gutter="10" style="height: 62px;">
+                    <el-col :span="8">
+                      <el-form-item prop="vinNo">
+                        <span slot="label" class="text_css">车架号：</span>
+                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.vinNo" placeholder="车架号"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.vinNo}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="engineNo">
+                        <span slot="label" class="text_css">发动机号：</span>
+                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.engineNo" placeholder="发动机号"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.engineNo}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="motorcycleType">
+                        <span slot="label" class="text_css">型号：</span>
+                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.motorcycleType" placeholder="型号"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.motorcycleType}}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
 
-                    <el-row :gutter="10" style="height: 62px;">
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.vinNo">
-                          <span slot="label" class="text_css">车架号：</span>
-                          <el-input v-if="edit" v-model="vehicle.vehicleEntity.vinNo" placeholder="车架号"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.vinNo}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.engineNo">
-                          <span slot="label" class="text_css">发动机号：</span>
-                          <el-input v-if="edit" v-model="vehicle.vehicleEntity.engineNo" placeholder="发动机号"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.engineNo}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.motorcycleType">
-                          <span slot="label" class="text_css">型号：</span>
-                          <el-input v-if="edit" v-model="vehicle.vehicleEntity.motorcycleType" placeholder="型号"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.motorcycleType}}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
+                  <el-row :gutter="10" style="height: 62px;">
+                    <el-col :span="8">
+                      <el-form-item prop="fuelType">
+                        <span slot="label" class="text_css">燃料类别：</span>
+                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.fuelType" placeholder="燃料类别" ></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.fuelType}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="allowNumber">
+                        <span slot="label" class="text_css">核定载客人：</span>
+                        <el-input v-if="edit"  v-model="vehicle.vehicleEntity.allowNumber" placeholder="核定载客人"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.allowNumber}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="brand">
+                        <span slot="label" class="text_css">厂牌：</span>
+                        <el-input v-if="edit" v-model="vehicle.vehicleEntity.brand" placeholder="厂牌"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.brand}}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
 
-                    <el-row :gutter="10" style="height: 62px;">
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.fuelType">
-                          <span slot="label" class="text_css">燃料类别：</span>
-                          <el-input v-if="edit" v-model="vehicle.vehicleEntity.fuelType" placeholder="燃料类别" ></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicle.vehicleEntity.fuelType}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.allowNumber">
-                          <span slot="label" class="text_css">核定载客人：</span>
-                          <el-input v-if="edit"  v-model="vehicle.vehicleEntity.allowNumber" placeholder="核定载客人"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.allowNumber}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.brand">
-                          <span slot="label" class="text_css">厂牌：</span>
-                          <el-input v-if="edit" v-model="vehicle.vehicleEntity.brand" placeholder="厂牌"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.brand}}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
+                  <el-row :gutter="10" style="height: 62px;">
+                    <el-col :span="8">
+                      <el-form-item prop="technicalLevel">
+                        <span slot="label" class="text_css">技术等级：</span>
+                        <el-input v-if="edit"  v-model="vehicle.vehicleEntity.technicalLevel" placeholder="技术等级"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.technicalLevel}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="userId">
+                        <span slot="label" class="text_css">使用责任人：</span>
+                        <el-input v-if="edit"  v-model="vehicle.vehicleEntity.userId" placeholder="使用责任人"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.name}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item prop="affiliation">
+                        <span slot="label" class="text_css">所属机构：</span>
+                        <el-input v-if="edit"  v-model="vehicle.vehicleEntity.affiliation" placeholder="所属机构"></el-input>
+                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.affiliation}}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
 
-                    <el-row :gutter="10" style="height: 62px;">
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.technicalLevel">
-                          <span slot="label" class="text_css">技术等级：</span>
-                          <el-input v-if="edit"  v-model="vehicle.vehicleEntity.technicalLevel" placeholder="技术等级"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.technicalLevel}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.userId">
-                          <span slot="label" class="text_css">使用责任人：</span>
-                          <el-input v-if="edit"  v-model="vehicle.vehicleEntity.userId" placeholder="使用责任人"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.name}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item prop="vehicleEntity.orgId">
-                          <span slot="label" class="text_css">所属机构：</span>
-                          <el-input v-if="edit"  v-model="vehicle.vehicleEntity.orgId" placeholder="所属机构"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicle.vehicleEntity.orgName}}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-
-                  </el-col>
-                </el-row>
+                </el-col>
+              </el-row>
             </div>
           </el-card>
 
@@ -627,28 +631,28 @@
             <el-row class="panel-group" :gutter="20">
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
                 <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">行驶证</div>
-                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-col>
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
                 <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">登记证书</div>
-                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-col>
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
                 <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">保单</div>
-                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-col>
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
                 <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">二维检测</div>
-                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -656,21 +660,21 @@
 
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
                 <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">气瓶证</div>
-                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-col>
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
                 <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">标识卡</div>
-                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-col>
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
                 <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">道路运输证</div>
-                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img v-if="vehicle.vehicleEntity.vehiclePhoto" :src="vehicle.vehicleEntity.vehiclePhoto" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -708,12 +712,12 @@
           </el-card>
           <el-row>
             <div v-if="edit" style="padding:20px;float: right">
-              <el-button v-if="!addInfo" type="info" @click="cancel"><i class="el-icon-fa-close"></i> 取 消</el-button>
-              <el-button v-if="addInfo" type="success" @click="add()"><i class="el-icon-fa-save"></i> 保 存</el-button>
-              <el-button v-if="!addInfo" type="success" @click="update()"><i class="el-icon-edit"></i> 修 改</el-button>
+              <el-button v-if="!addInfo" type="info" @click="cancel('vehicle')"><i class="el-icon-fa-close"></i> 取 消</el-button>
+              <el-button v-if="addInfo" :loading="btnLoading" type="success" @click="add('vehicle')"><i class="el-icon-fa-save"></i> 保 存</el-button>
+              <el-button v-if="!addInfo" :loading="btnLoading" type="success" @click="update('vehicle')"><i class="el-icon-edit"></i> 修 改</el-button>
             </div>
             <div v-else style="padding:20px;float: right">
-              <el-button type="primary" @click="editInfo('vehicle')"><i class="el-icon-edit"></i> 编 辑</el-button>
+              <el-button type="primary" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
             </div>
           </el-row>
 
@@ -803,11 +807,34 @@
         // 车辆信息集合
         list: [],
         // 总条数
-        vehicleRules: {},
+        vehicleRules: {
+          // number: [
+          //   { required: true, message: '请输入自编号', trigger: 'blur,change' }
+          // ],
+          // plateNumber: [
+          //   { required: true, message: '请输入车牌', trigger: 'blur,change' }
+          // ],
+          // engineNo: [
+          //   { required: true, message: '请输入发动机号', trigger: 'blur,change' }
+          // ],
+          // factoryTime: [
+          //   { required: true, message: '请输入出厂日期', trigger: 'blur,change' }
+          // ],
+          // allowNumber: [
+          //   { required: true, message: '请输入核定载客人', trigger: 'blur,change' }
+          // ],
+          // affiliation: [
+          //   { required: true, message: '请输入所属机构', trigger: 'blur,change' }
+          // ],
+          // registerTime: [
+          //   { required: true, message: '请输入注册登记日期', trigger: 'blur,change' }
+          // ]
+        },
         total: null,
-        listLoading: true,
+        listLoading: false,
+        btnLoading: false,
         // 模块标记
-        showModule: 'info',
+        showModule: 'list',
         // 分页数据
         listQuery: {
           page: 1,
@@ -921,45 +948,64 @@
           repairList: []
         }
         this.addInfo = true
-        this.edit = 'vehicle'
+        this.edit = true
         this.showModule = 'info'
       },
       // 返回列表
       back() {
         this.getList()
-        this.edit = ''
+        this.edit = false
         this.showModule = 'list'
       },
       // 添加
-      add(key, obj) {
-        addObj(key, obj).then(response => {
-          console.log('这里是===========================')
-          this.vehicle.vehicleEntity.vehicleId = response.data.data
-          console.log(this.vehicle.vehicleEntity.vehicleId)
+      add(formName) {
+        var key, obj
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            this.btnLoading = true
+            addObj(key, obj).then(response => {
+              console.log('这里是===========================')
+              // this.vehicle.vehicleEntity.vehicleId = response.data.data
+              // console.log(this.vehicle.vehicleEntity.vehicleId)
+              this.edit = false
+              this.btnLoading = false
+              this.getList
+              this.showModule = 'list'
+            })
+          } else {
+            this.$message.error('输入内容错误，请检查后保存！')
+          }
         })
-        this.edit = ''
       },
       // 修改
-      update(key, obj) {
-        putObj(key, obj).then(response => {
-          console.log(response.data)
+      update(formName) {
+        var key, obj
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            this.btnLoading = true
+            putObj(key, obj).then(response => {
+              console.log(response.data)
+              this.edit = false
+              this.btnLoading = false
+            })
+          } else {
+            this.$message.error('输入内容错误，请检查后保存！')
+          }
         })
-        this.edit = ''
       },
       // 搜索
       searchClick() {
         this.listQuery.page = 1
         this.getList()
       },
-      // 删除
-      delete(id) {
-        this.getList()
-      },
       // 取消
-      cancel() {
+      cancel(formName) {
+        const set = this.$refs
+        set[formName].resetFields()
         console.log('=================== 正在完成取消操作 ===================')
         this.editList(this.vehicle)
-        this.showModule = 'info'
         console.log('=================== 完成 ===================')
       },
       // 双击编辑
@@ -984,22 +1030,22 @@
             this.timeGroup()
           })
         this.showModule = 'info'
-        this.edit = ''
+        this.edit = false
         this.addInfo = false
       },
       // 所有编辑方法
-      editInfo(key) {
-        if (this.edit) {
-          this.update(this.edit, this.vehicle.vehicleEntity)
-        } else if (this.edit === 'technical') {
-          this.update(this.edit, this.vehicle.technicalEntity)
-        } else if (this.edit === 'safety') {
-          this.update(this.edit, this.vehicle.safetyEntity)
-        } else if (this.edit) {
-          this.update(this.edit, this.vehicle.certificateEntity)
-        }
-        this.editList(this.vehicle)
-        this.edit = key
+      editInfo() {
+        // if (this.edit) {
+        //   this.update(this.edit, this.vehicle.vehicleEntity)
+        // } else if (this.edit === 'technical') {
+        //   this.update(this.edit, this.vehicle.technicalEntity)
+        // } else if (this.edit === 'safety') {
+        //   this.update(this.edit, this.vehicle.safetyEntity)
+        // } else if (this.edit) {
+        //   this.update(this.edit, this.vehicle.certificateEntity)
+        // }
+        // this.editList(this.vehicle)
+        this.edit = true
       },
       handleClick(tab, event) {
         console.log(tab)

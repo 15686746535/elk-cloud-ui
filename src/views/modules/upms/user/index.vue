@@ -529,59 +529,59 @@
         roleList: [],
         userEntityRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: 'blur' },
-            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: 'blur' }
+            { required: true, message: '请输入手机号', trigger: 'blur,change' },
+            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: 'blur,change' }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: 'blur' },
-            { validator: idNumberReg, trigger: 'blur' }
+            { required: true, message: '请输入身份证', trigger: 'blur,change' },
+            { validator: idNumberReg, trigger: 'blur,change' }
           ],
           jobNumber: [
-            { required: true, message: '请输入档案号', trigger: 'blur' }
+            { required: true, message: '请输入档案号', trigger: 'blur,change' }
           ],
           email: [
-            { required: true, message: '请输入邮箱', trigger: 'blur' },
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: 'blur' }
+            { required: true, message: '请输入邮箱', trigger: 'blur,change' },
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: 'blur,change' }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: 'blur' }
+            { required: true, message: '请输入姓名', trigger: 'blur,change' }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: 'blur' }
+            { required: true, message: '请选择性别', trigger: 'blur,change' }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: 'blur' }
+            { required: true, message: '请选择生日', trigger: 'blur,change' }
           ],
           wechat: [
-            { required: true, message: '请输入微信', trigger: 'blur' }
+            { required: true, message: '请输入微信', trigger: 'blur,change' }
           ],
           contactAddress: [
-            { required: true, message: '请输入联系地址', trigger: 'blur' }
+            { required: true, message: '请输入联系地址', trigger: 'blur,change' }
           ],
           orgId: [
-            { required: true, message: '请选择部门', trigger: 'blur' }
+            { required: true, message: '请选择部门', trigger: 'blur,change' }
           ],
           roleIdList: [
-            { required: true, message: '请选择职位', trigger: 'blur' },
-            { validator: roleListReg, trigger: 'blur' }
+            { required: true, message: '请选择职位', trigger: 'blur,change' },
+            { validator: roleListReg, trigger: 'blur,change' }
           ],
           homeAddress: [
-            { required: true, message: '请输入家庭地址', trigger: 'blur' }
+            { required: true, message: '请输入家庭地址', trigger: 'blur,change' }
           ],
           qq: [
-            { required: true, message: '请输入qq', trigger: 'blur' }
+            { required: true, message: '请输入qq', trigger: 'blur,change' }
           ],
           joinedTime: [
-            { required: true, message: '请选择入职日期', trigger: 'blur' }
+            { required: true, message: '请选择入职日期', trigger: 'blur,change' }
           ],
           positiveTime: [
-            { required: true, message: '请选择转正日期', trigger: 'blur' }
+            { required: true, message: '请选择转正日期', trigger: 'blur,change' }
           ],
           emergencyContact: [
-            { required: true, message: '请输入紧急联系人', trigger: 'blur' }
+            { required: true, message: '请输入紧急联系人', trigger: 'blur,change' }
           ],
           emergencyMobile: [
-            { required: true, message: '请输入紧急联系人电话', trigger: 'blur' }
+            { required: true, message: '请输入紧急联系人电话', trigger: 'blur,change' }
           ]
         }
       }

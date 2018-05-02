@@ -18,13 +18,13 @@
       </div>
     </el-card>
     <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 125) + 'px'}">
-      <el-col :span="3">
+      <el-col style="width: 200px;">
         <el-card>
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 250) + 'px'}">
             <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
-                {{batch.batch}}
+                <{{batch.examTime | subTime}}> {{batch.examField}}
               </div>
             </div>
           </div>

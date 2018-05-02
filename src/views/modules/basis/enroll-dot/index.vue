@@ -92,13 +92,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写报名点', trigger: 'blur' }
+            { required: true, message: '请填写报名点', trigger: 'blur,change' }
           ],
           description: [
-            { required: true, message: '请填写报名点描述', trigger: 'blur' }
+            { required: true, message: '请填写报名点描述', trigger: 'blur,change' }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写报名点排序等级', trigger: 'blur' }
+            { required: true, type: 'number', message: '请填写报名点排序等级', trigger: 'blur,change' }
           ]
         },
         dict: {},

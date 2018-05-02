@@ -11,7 +11,7 @@
           </el-radio-group>
         </div>
         <div style="float:right;">
-          <el-date-picker value-format="timestamp" style="width: 360px;" v-model="listQuery.interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker value-format="timestamp" style="width: 360px;" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
 
 
@@ -54,7 +54,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" label="操作" width="240">
           <template slot-scope="scope">
             <!--<el-button-group>-->
               <el-button size="mini" type="success" @click="see(scope.row.examId, studentListQuery.state)" plain>查 看</el-button>

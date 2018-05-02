@@ -10,7 +10,7 @@
         </div>
         <div style="height: 40px; float: right">
 
-          <el-date-picker value-format="timestamp" v-model="vehiclePeriodListQuery.interval" type="daterange" align="right" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker value-format="timestamp" v-model="vehiclePeriodListQuery.interval" type="daterange" align="left" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
 
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" placeholder="关键词" v-model="vehiclePeriodListQuery.condition"></el-input>

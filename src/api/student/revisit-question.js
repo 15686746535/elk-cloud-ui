@@ -21,6 +21,13 @@ export function getQbj(id) {
     method: 'get'
   })
 }
+// 根据ID获取
+export function queryExamNoted(id) {
+  return request({
+    url: '/stu/revisitquestion/queryExamNoted/' + id,
+    method: 'get'
+  })
+}
 // 删除
 export function delQuestion(id) {
   return request({

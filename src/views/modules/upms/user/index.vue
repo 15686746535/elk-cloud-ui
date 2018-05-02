@@ -5,9 +5,8 @@
         <el-col class="org-tree-left">
           <el-card>
             <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-
-              <!-- 分割线 -->
-              <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
+            <!-- 分割线 -->
+            <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
             <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
@@ -38,7 +37,9 @@
                     <br/>
                     工号：{{scope.row.jobNumber}}
                     <br/>
-                    职位：{{scope.row.roleName}}
+                    职位：
+                    <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}<span v-if="scope.row.roleList.length !== (index+1)">、</span></span>
+                    <!--{{scope.row.roleName}}-->
                     <br/>
                     生日：{{scope.row.birthday | subTime}}
                     <br/>
@@ -76,8 +77,8 @@
       </el-row>
     </div>
 
-    <div v-show="showModule=='info'" v-loading="infoLoading"  style="height: 100%">
-      <el-card style="overflow: auto">
+    <div v-show="showModule=='info'" v-loading="infoLoading" >
+      <el-card>
         <div slot="header" class="clearfix">
           <div style="float: left">
             |&nbsp;<span style="font-size: 20px;font-weight: 600;line-height:40px;font-family: '微软雅黑 Light'">同事信息</span>
@@ -626,13 +627,13 @@
       // 双击行  编辑
       doubleClickRow(val) {
         this.infoLoading = true
-        console.log('====================== 正在进入单个员工编辑 =====================')
         getObj(val.userId).then(response => {
+          console.log('====================== 单个员工信息 =====================')
           console.log(response.data)
           this.userEntity = response.data.data
           console.log(this.userEntity.orgId)
           roleList(this.userEntity.orgId).then(response => {
-            console.log(response.data)
+            console.log('====================== 职位 =====================')
             this.roleList = response.data.data
             console.log(this.roleList)
           })
@@ -662,7 +663,7 @@
       // 查询员工集合
       getUserList() {
         console.log('=====================   查询员工集合   =======================')
-        this.listLoading = false
+        this.listLoading = true
         fetchList(this.listQuery).then(response => {
           console.log(response.data)
           this.userList = response.data.data.list

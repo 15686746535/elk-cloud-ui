@@ -77,7 +77,7 @@
             </div>
 
           </el-card>
-          <el-card :style="{height: ($store.state.app.client.height-115) + 'px'}" style="width: 435px; border-radius:0 4px 4px 0;float: left;margin-top: 5px" v-loading="questionLoading" element-loading-text="给我一点时间">
+          <el-card :style="{height: ($store.state.app.client.height-115) + 'px'}" style="width: 435px; border-radius:0 4px 4px 0;float: left;margin-top: 5px;overflow: auto" v-loading="questionLoading" element-loading-text="给我一点时间">
             <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
               <el-row>
                 <el-col :span="2">
@@ -86,16 +86,16 @@
                 <el-col :span="22">
                   <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
                   <el-row style="font-size: 14px;">
-                    <el-col :span="12" v-show="question.itemA" style="margin-top: 10px;">A: {{question.itemA}}</el-col>
-                    <el-col :span="12" v-show="question.itemB" style="margin-top: 10px;">B: {{question.itemB}}</el-col>
+                    <el-col :span="12" v-show="question.itemA" style="margin-top: 10px;" :style="question.answer === '16'?'color: #F56C6C':''">A: {{question.itemA}}</el-col>
+                    <el-col :span="12" v-show="question.itemB" style="margin-top: 10px;" :style="question.answer === '32'?'color: #F56C6C':''">B: {{question.itemB}}</el-col>
                   </el-row>
                   <el-row style="font-size: 14px;">
-                    <el-col :span="12" v-show="question.itemC" style="margin-top: 10px;">C: {{question.itemC}}</el-col>
-                    <el-col :span="12" v-show="question.itemD" style="margin-top: 10px;">D: {{question.itemD}}</el-col>
+                    <el-col :span="12" v-show="question.itemC" style="margin-top: 10px;" :style="question.answer === '64'?'color: #F56C6C':''">C: {{question.itemC}}</el-col>
+                    <el-col :span="12" v-show="question.itemD" style="margin-top: 10px;" :style="question.answer === '128'?'color: #F56C6C':''">D: {{question.itemD}}</el-col>
                   </el-row>
                   <el-row style="font-size: 14px;">
-                    <el-col :span="12" v-show="question.itemE" style="margin-top: 10px;">E: {{question.itemE}}</el-col>
-                    <el-col :span="12" v-show="question.itemF" style="margin-top: 10px;">F: {{question.itemF}}</el-col>
+                    <el-col :span="12" v-show="question.itemE" style="margin-top: 10px;" :style="question.answer === '256'?'color: #F56C6C':''">E: {{question.itemE}}</el-col>
+                    <el-col :span="12" v-show="question.itemF" style="margin-top: 10px;" :style="question.answer === '512'?'color: #F56C6C':''">F: {{question.itemF}}</el-col>
                   </el-row>
                 </el-col>
               </el-row>
@@ -109,7 +109,7 @@
 
 <script>
   import { getRevisitedList, getRevisited } from '@/api/student/revisited'
-  import { getQuestion, addQuestion } from '@/api/student/revisit-question'
+  import { queryExamNoted, addQuestion } from '@/api/student/revisit-question'
   import { fetchList, getObj } from '@/api/student/revisit'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
@@ -192,7 +192,7 @@
       questionClick(row) {
         this.questionLoading = true
         console.log(row)
-        getQuestion(row.examNoteId).then(response => {
+        queryExamNoted(row.examNoteId).then(response => {
           console.log('========= 题目 ==========')
           console.log(response.data)
           this.questionList = response.data.data

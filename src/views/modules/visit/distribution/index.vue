@@ -3,7 +3,7 @@
 
     <el-col :style="{width: ($store.state.app.client.width) + 'px'}">
         <el-card style="margin-bottom: 5px;height: 80px;">
-          <!--<el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="right" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
+          <!--<el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
           <!--</el-date-picker>-->
           <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类别"></dict>
           <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>

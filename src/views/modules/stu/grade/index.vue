@@ -10,7 +10,7 @@
           <el-radio-button label="4">科目四</el-radio-button>
         </el-radio-group>
         <div style="float: right">
-          <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="right" style="margin-bottom: 0px;" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+          <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" style="margin-bottom: 0px;" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
           </el-date-picker>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition"></el-input>
           <el-button type="primary"  @click="searchClick" ><i class="el-icon-search"></i>搜索</el-button>

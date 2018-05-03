@@ -192,7 +192,7 @@
         userList().then(response => {
           console.log('================== 所有负责人 ===================')
           console.log(response.data)
-          this.operators = response.data.data
+          this.userList = response.data.data
         })
       },
       // 根据部门id查询员工

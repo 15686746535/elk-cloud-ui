@@ -25,39 +25,90 @@
 
           <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-125) + 'px'}">
             <!-- 身份卡循环 -->
-            <el-table :data="userList" :height="($store.state.app.client.height-220)"  border highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
+            <el-table :data="userList" :height="($store.state.app.client.height-220)" highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
               <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
-              <el-table-column label="员工信息">
+              <el-table-column align="center" label="头像" width="200">
                 <template slot-scope="scope">
                   <!-- 头像 -->
-                  <img :src="scope.row.avatar" class="img">
-                  <!-- 员工信息 -->
-                  <div class="userInfo">
-                    姓名：{{scope.row.name}}
-                    <br/>
-                    工号：{{scope.row.jobNumber}}
-                    <br/>
-                    职位：
-                    <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}<span v-if="scope.row.roleList.length !== (index+1)">、</span></span>
-                    <!--{{scope.row.roleName}}-->
-                    <br/>
-                    生日：{{scope.row.birthday | subTime}}
-                    <br/>
-                    私人电话：{{scope.row.mobile}}
-                    <br/>
-                    工作电话：{{scope.row.workMobile}}
-                  </div>
+                  <el-row>
+                    <el-tag class="img">
+                      <img :src="scope.row.avatar" class="img">
+                    </el-tag>
+                  </el-row>
+                  <el-row>
+                    <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.name}}</el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.mobile}}</el-col>
+                  </el-row>
                 </template>
               </el-table-column>
+              <el-table-column align="center" label="个人信息" width="300">
+                <template slot-scope="scope" >
+                  <!-- 个人信息 -->
+                  <el-col style=" line-height: 25px">
+                    <el-row :gutter="10">
+                      <el-col :span="7" class="table_text">工号：</el-col>
+                      <el-col :span="17" class="table_text">{{scope.row.jobNumber}}</el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="7" class="table_text">职位：</el-col>
+                      <el-col :span="17" class="table_text">
+                        <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}<span v-if="scope.row.roleList.length !== (index+1)">、</span></span>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="7" class="table_text">生日：</el-col>
+                      <el-col :span="17" class="table_text">{{scope.row.birthday | subTime}}</el-col>
+                    </el-row>
+
+                    <el-row :gutter="10">
+                      <el-col :span="7" class="table_text">工作电话：</el-col>
+                      <el-col :span="17" class="table_text">
+                        {{scope.row.workMobile}}
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                </template>
+              </el-table-column>
+
+              <!--<el-table-column label="员工信息">
+                <template slot-scope="scope">
+                  &lt;!&ndash; 头像 &ndash;&gt;
+                  <el-row :gutter="20">
+                    <el-col :span="4">
+                      <el-tag class="img">
+                        <img :src="scope.row.avatar" class="img">
+                      </el-tag>
+                    </el-col>
+                    <el-col :span="20">
+                      &lt;!&ndash; 员工信息 &ndash;&gt;
+                      &lt;!&ndash;<div class="userInfo">&ndash;&gt;
+                        <br/>
+                        工号：{{scope.row.jobNumber}}
+                        <br/>
+                        职位：
+                        <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}<span v-if="scope.row.roleList.length !== (index+1)">、</span></span>
+                        &lt;!&ndash;{{scope.row.roleName}}&ndash;&gt;
+                        <br/>
+                        生日：{{scope.row.birthday | subTime}}
+                        <br/>
+                        <br/>
+                        工作电话：{{scope.row.workMobile}}
+                      &lt;!&ndash;</div>&ndash;&gt;
+                    </el-col>
+                  </el-row>
+                </template>
+              </el-table-column>-->
               <el-table-column label="招生记录">
                 <template slot-scope="scope">
-                  <bar style="height: 180px" :data="scope.row.recruits"></bar>
+                  <bar :data="scope.row.recruits"></bar>
                 </template>
               </el-table-column>
 
               <el-table-column label="来访信息">
                 <template slot-scope="scope">
-                  <LineChart style="height: 180px" :chart-data="scope.row.visits"></LineChart>
+                  <LineChart :chart-data="scope.row.visits"></LineChart>
                 </template>
               </el-table-column>
             </el-table>
@@ -778,9 +829,19 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .img{
-    width: 150px;
-    height: 150px;
-    float: left;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: 150px;
+    overflow: hidden;
+  }
+
+  .table_text{
+    color: #7c7c7c;font-size: 14px;text-align: left;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
   }
   .userInfo{
     float: left;

@@ -5,10 +5,20 @@
         <el-card style="margin-bottom: 5px;height: 80px;">
           <!--<el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
           <!--</el-date-picker>-->
-          <dict dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类别"></dict>
-          <dict dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
-          <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜 索</el-button>
+          <el-row :gutter="10">
+            <el-col :xs="6" :sm="6" :md="5" :lg="4">
+              <dict dictType="dict_customer_type" v-model="listQuery.customerType" placeholder="类别"></dict>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="5" :lg="4">
+              <dict dictType="dict_source" v-model="listQuery.source" placeholder="来源渠道"></dict>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="5" :lg="4">
+              <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="5" :lg="4">
+              <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜 索</el-button>
+            </el-col>
+          </el-row>
         </el-card>
 
         <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}">
@@ -72,7 +82,7 @@
         <el-dialog @close="getList" title="选择负责人" width="20%" :visible.sync="dialogIntentionList">
           <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
 
-          <el-select v-model="intentionList.userId" clearable style="width: 100%;margin-top: 20px;" placeholder="负责人">
+          <el-select :loading="selectLoading" v-model="intentionList.userId" clearable style="width: 100%;margin-top: 20px;" placeholder="负责人">
             <el-option
               v-for="item in userList"
               :key="item.userId"
@@ -123,6 +133,7 @@
         },
         userList: [],
         dialogIntentionList: false,
+        selectLoading: false,
         orgId: null
       }
     },
@@ -170,7 +181,11 @@
         this.getList()
       },
       distribution() {
-        this.dialogIntentionList = true
+        if (this.intentionList.intentionIds.length === 0) {
+          this.$message.warning('请选择意向')
+        } else {
+          this.dialogIntentionList = true
+        }
       },
       handleSelectionChange(val) {
         this.intentionList.intentionIds = []
@@ -179,9 +194,12 @@
         }
       },
       orgClick() {
+        console.log('..........')
+        this.selectLoading = true
         userList({ orgId: this.intentionList.orgId }).then(response => {
           console.log(response.data.data)
           this.userList = response.data.data
+          this.selectLoading = false
         })
       },
       redistribution() {

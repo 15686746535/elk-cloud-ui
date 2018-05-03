@@ -19,7 +19,7 @@ export default {
     },
     height: {
       type: String,
-      default: '170px'
+      default: '100%'
     },
     autoResize: {
       type: Boolean,
@@ -84,8 +84,8 @@ export default {
         grid: {
           left: 10,
           right: 10,
-          bottom: 20,
-          top: 30,
+          bottom: 2,
+          top: 2,
           containLabel: true
         },
         tooltip: {

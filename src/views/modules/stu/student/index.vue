@@ -641,7 +641,7 @@
                     <el-row >
                       <el-form-item prop="mobile">
                         <span slot="label" class="text_css">联系电话：</span>
-                        <el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
+                        <el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" @blur="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
                       </el-form-item>
 
                     </el-row>
@@ -1503,53 +1503,6 @@
       reset(formName) {
         this.$refs[formName].resetFields()
         console.log(this.studentEntity)
-        // this.studentEntity = {
-        //   studentId: null,
-        //   intentionId: null,
-        //   orgId: null,
-        //   openId: null,
-        //   archivesNumber: null,
-        //   name: null,
-        //   sex: null,
-        //   age: null,
-        //   idNumber: null,
-        //   birthday: null,
-        //   mobile: null,
-        //   phone: null,
-        //   email: null,
-        //   wechat: null,
-        //   avatar: null,
-        //   contactAddress: null,
-        //   campus: null,
-        //   company: null,
-        //   position: null,
-        //   enrolTime: null,
-        //   periods: null,
-        //   studyTime: null,
-        //   latitude: null,
-        //   longitude: null,
-        //   physicalExamination: null,
-        //   haveCar: null,
-        //   addDrive: null,
-        //   state: null,
-        //   graduationTime: null,
-        //   periodOfValidity: null,
-        //   aboardTime: null,
-        //   roadCoach: null,
-        //   fieldCoach: null,
-        //   incrementList: [],
-        //   introducerList: [],
-        //   serviceType: null,
-        //   arrearage: null,
-        //   enrolSite: null,
-        //   source: null,
-        //   motorcycleType: null,
-        //   delFlag: null,
-        //   remark: null,
-        //   operator: null,
-        //   createTime: null,
-        //   updateTime: null
-        // }
       },
       getFieldCoach(coach) {
         console.log('============ 教练 =============')
@@ -1615,11 +1568,6 @@
           })
         } else {
           batchSave(this.examBespeak).then(() => {
-            this.$notify({
-              title: '成功',
-              message: '预约成功',
-              type: 'success'
-            })
             this.dialogFormBespeak = false
             this.examBespeak.examId = null
           })
@@ -1632,13 +1580,13 @@
           console.log(response.data)
           if (response.data.data) {
             this.studentEntity.intentionId = response.data.data.intentionId
-            if (this.studentEntity.name === null || this.studentEntity.name === '') this.studentEntity.name = response.data.data.name
-            if (this.studentEntity.sex === null || this.studentEntity.sex === '') this.studentEntity.sex = response.data.data.sex
-            if (this.studentEntity.source === null || this.studentEntity.source === '') this.studentEntity.source = response.data.data.source
-            if (this.studentEntity.wechat === null || this.studentEntity.wechat === '') this.studentEntity.wechat = response.data.data.wechat
-            if (this.studentEntity.contactAddress === null || this.studentEntity.contactAddress === '') this.studentEntity.contactAddress = response.data.data.contactAddress
+            if (!this.studentEntity.name) this.studentEntity.name = response.data.data.name
+            if (!this.studentEntity.sex) this.studentEntity.sex = response.data.data.sex
+            if (!this.studentEntity.source) this.studentEntity.source = response.data.data.source
+            if (!this.studentEntity.wechat) this.studentEntity.wechat = response.data.data.wechat
+            if (!this.studentEntity.contactAddress) this.studentEntity.contactAddress = response.data.data.contactAddress
             this.studentEntity.introducerList.push(response.data.data.userId)
-            if (this.studentEntity.motorcycleType === null || this.studentEntity.motorcycleType === '') this.studentEntity.motorcycleType = response.data.data.applyType
+            if (!this.studentEntity.motorcycleType) this.studentEntity.motorcycleType = response.data.data.applyType
           }
           this.createLoading = false
         })

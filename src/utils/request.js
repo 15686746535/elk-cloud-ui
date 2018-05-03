@@ -25,8 +25,6 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     const res = response.data
-    console.log('response-------------------------------')
-    console.log(res)
     if (res.code === 500) {
       Message.error(res.msg)
     }

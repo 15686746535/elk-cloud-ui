@@ -11,7 +11,7 @@
           </el-radio-group>
         </div>
         <div style="float:right;">
-          <el-date-picker value-format="timestamp" style="width: 360px;" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker value-format="timestamp" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
 
 
@@ -48,9 +48,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="批次">
+        <el-table-column align="center" label="预约截至日期">
           <template slot-scope="scope">
-            <{{scope.row.examTime | subTime}}> {{scope.row.examField}}
+            {{scope.row.expiryTime | subTime}}
           </template>
         </el-table-column>
 
@@ -80,7 +80,7 @@
     <!-- 考试设置 -->
     <el-dialog @close="cancel('batch')" title="考试设置" :show-close="false" width="30%" :visible.sync="batchOption">
 
-      <el-form :model="batch" :rules="batchRules" ref="batch" label-width="100px">
+      <el-form :model="batch" :rules="batchRules" ref="batch" label-width="120px">
         <el-form-item label="考试场地" prop="examField">
           <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
           <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
@@ -92,6 +92,9 @@
         </el-form-item>
         <el-form-item label="考试时间" prop="examTime">
           <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="预约截止日期" prop="expiryTime">
+          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="预约截止日期" v-model="batch.expiryTime"></el-date-picker>
         </el-form-item>
 
       </el-form>
@@ -386,6 +389,9 @@
           ],
           examTime: [
             { required: true, message: '请选择考试时间', trigger: 'blur,change' }
+          ],
+          expiryTime: [
+            { required: true, message: '请选择预约截止日期', trigger: 'blur,change' }
           ]
         }
       }
@@ -554,22 +560,19 @@
       },
       operation(state, str) {
         if (this.examBespeakList.studentList.length === 0) {
-          this.$alert('请先选择学员', '提示', {
-            confirmButtonText: '确定',
-            type: 'warning'
-          })
+          this.$message.warning('请先选择学员')
         } else {
           this.examBespeakList.state = state
           console.log('==== 选择的学员 ====')
           console.log(this.examBespeakList)
           putExamBespeak(this.examBespeakList).then(() => {
             this.see(this.studentListQuery.examId, this.studentListQuery.state)
-            this.$notify({
-              title: '成功',
-              message: str,
-              type: 'success',
-              duration: 2000
-            })
+            // this.$notify({
+            //   title: '成功',
+            //   message: str,
+            //   type: 'success',
+            //   duration: 2000
+            // })
           })
         }
       },

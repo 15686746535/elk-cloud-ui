@@ -63,7 +63,7 @@
         </el-table-column>
         <el-table-column align="center" label="已约人数">
           <template slot-scope="scope">
-            <span>{{scope.row.studentList.length}}/{{scope.row.count}} 人</span>
+            <span>{{scope.row.number}}/{{scope.row.count}} 人</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="状态">
@@ -87,7 +87,91 @@
         </el-pagination>
         <el-button style="margin-top: -8px;float: right" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
       </div>
-      <el-dialog  @close="cancel('vehiclePeriod')" width="40%" title="录入课时" :visible.sync="addOption">
+      <el-dialog @close="cancel('carPeriod')" width="700px" title="编辑课时" :visible.sync="editOption">
+
+        <el-form :model="carPeriod" :rules="carPeriodRules"  ref="carPeriod" label-position="left" label-width="100px">
+
+          <el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item prop="coachId">
+                  <span slot="label" class="text_css">教学教练：</span>
+                  <span v-show="vehiclePeriodListQuery.subject === 2">
+                    <Coach v-model="carPeriod.coachId" coachType="field" placeholder="场训教练"></Coach>
+                  </span>
+
+                  <span v-show="vehiclePeriodListQuery.subject === 3">
+                    <Coach v-model="carPeriod.coachId" coachType="road" placeholder="路训教练"></Coach>
+                  </span>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="12">
+                <el-form-item prop="count">
+                  <span slot="label" class="text_css">人数上限：</span>
+                  <el-input type="number" v-model.number="carPeriod.count" placeholder="人数上限"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col>
+                <el-form-item prop="fieldAddress">
+                  <span slot="label" class="text_css">训练场地：</span>
+                  <span v-show="vehiclePeriodListQuery.subject === 2">
+                    <dict v-model="carPeriod.fieldAddress" dictType="dict_training_field2" placeholder="训练场地"></dict>
+                  </span>
+
+                  <span v-show="vehiclePeriodListQuery.subject === 3">
+                    <dict v-model="carPeriod.fieldAddress" dictType="dict_training_field3" placeholder="训练场地"></dict>
+                  </span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+
+            <el-row>
+              <el-form-item required>
+                <span slot="label" class="text_css">学习课时：</span>
+                <el-date-picker
+                  v-model="carPeriod.interval"
+                  value-format="timestamp"
+                  type="datetimerange"
+                  align="left"
+                  range-separator="—"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
+                <!--<el-date-picker value-format="timestamp" style="width: 100%;" v-model="carPeriod.interval" type="datetimerange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">-->
+                <!--</el-date-picker>-->
+              </el-form-item>
+            </el-row>
+
+            <el-row>
+              <el-form-item prop="vehicleId">
+                <span slot="label" class="text_css">训练车辆：</span>
+                <el-select v-model="carPeriod.vehicleId" style="width: 100%" collapse-tags placeholder="请选择训练车辆">
+                  <el-option
+                    v-for="item in vehicleList"
+                    :key="item.vehicleId"
+                    :label="item.plateNumber"
+                    :value="item.vehicleId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-row>
+
+          </el-row>
+
+        </el-form>
+
+
+        <div slot="footer">
+          <el-button @click="editOption = false">取 消</el-button>
+          <el-button type="primary" @click="update('carPeriod')">修 改</el-button>
+        </div>
+      </el-dialog>
+      <el-dialog  @close="cancel('vehiclePeriod')" width="700px" title="录入课时" :visible.sync="addOption">
 
         <el-form :model="vehiclePeriod" :rules="vehiclePeriodRules"  ref="vehiclePeriod" label-position="left" label-width="100px">
 
@@ -181,9 +265,8 @@
 
         </el-form>
         <div slot="footer">
-          <el-button @click="cancel('vehiclePeriod')">取 消</el-button>
-          <el-button v-if="dialogStatus=='create'" type="primary" :loading="loading"  @click="create('vehiclePeriod')">确 定</el-button>
-          <el-button v-else type="primary" @click="update('vehiclePeriod')">修 改</el-button>
+          <el-button @click="addOption = false">取 消</el-button>
+          <el-button type="primary" :loading="loading"  @click="create('vehiclePeriod')">确 定</el-button>
         </div>
       </el-dialog>
     </el-card>
@@ -221,14 +304,25 @@
           dateList: [],
           vehicleList: []
         },
+        carPeriod: {
+          interval: [],
+          periodId: null,
+          coachId: null,
+          count: null,
+          fieldAddress: null,
+          beginTime: null,
+          endTime: null,
+          subject: null,
+          vehicleId: null
+        },
         vehicleList: [],
         vehiclePeriodList: [],
         dateList: [],
         total: null,
         vehiclePeriodListLoading: true,
         addOption: false,
+        editOption: false,
         loading: false,
-        dialogStatus: 'create',
         vehiclePeriodListQuery: {
           page: 1,
           limit: 20,
@@ -239,25 +333,39 @@
         },
         vehiclePeriodRules: {
           coachId: [
-            { required: true, message: '请选择教练', trigger: 'change' }
+            { required: true, message: '请选择教练', trigger: 'blur,change' }
           ],
           count: [
-            { required: true, message: '请输入上限', trigger: 'change' }
+            { required: true, message: '请输入上限', trigger: 'blur,change' }
           ],
           fieldAddress: [
-            { required: true, message: '请选择场地', trigger: 'change' }
+            { required: true, message: '请选择场地', trigger: 'blur,change' }
           ],
           beginTime: [
-            { required: true, message: '请选择开始时间', trigger: 'change' }
+            { required: true, message: '请选择开始时间', trigger: 'blur,change' }
           ],
           endTime: [
-            { required: true, message: '请选择结束时间', trigger: 'change' }
+            { required: true, message: '请选择结束时间', trigger: 'blur,change' }
           ],
           dateList: [
-            { required: true, message: '请选择培训日期', trigger: 'change' }
+            { required: true, message: '请选择培训日期', trigger: 'blur,change' }
           ],
           vehicleList: [
-            { required: true, message: '请选择培训车辆', trigger: 'change' }
+            { required: true, message: '请选择培训车辆', trigger: 'blur,change' }
+          ]
+        },
+        carPeriodRules: {
+          coachId: [
+            { required: true, message: '请选择教练', trigger: 'blur,change' }
+          ],
+          count: [
+            { required: true, message: '请输入上限', trigger: 'blur,change' }
+          ],
+          fieldAddress: [
+            { required: true, message: '请选择场地', trigger: 'blur,change' }
+          ],
+          vehicleId: [
+            { required: true, message: '请选择培训车辆', trigger: 'blur,change' }
           ]
         }
       }
@@ -271,6 +379,7 @@
         this.vehiclePeriodListLoading = true
         getVehiclePeriodList(this.vehiclePeriodListQuery).then(response => {
           this.vehiclePeriodList = response.data.data.list
+          console.log('============================')
           console.log(this.vehiclePeriodList)
           this.total = response.data.data.totalCount
           this.vehiclePeriodListLoading = false
@@ -329,40 +438,54 @@
       /* 取消操作 */
       cancel(formName) {
         this.addOption = false
-        this.vehiclePeriod = {
-          coachId: null,
-          count: null,
-          fieldAddress: null,
-          beginTime: null,
-          endTime: null,
-          dateList: [],
-          vehicleList: []
-        }
+        this.editOption = false
+        console.log('--------------------------------------------------')
         const set = this.$refs
         set[formName].resetFields()
         this.getVehiclePeriodList()
       },
       /* 修改点击 */
       updateClick(row) {
-        getVehiclePeriod(row.periodId).then(response => {
-          this.vehiclePeriod = response.data
-          console.log(response.data)
-          // this.addOption = true
-        })
+        this.editOption = true
+        this.carPeriod = {
+          interval: [row.beginTime, row.endTime],
+          periodId: row.periodId,
+          coachId: row.coachId,
+          count: row.count,
+          fieldAddress: row.fieldAddress,
+          beginTime: row.beginTime,
+          endTime: row.endTime,
+          subject: row.subject,
+          vehicleId: row.vehicleId
+        }
+        console.log('===-=-=-=-=-=-=-')
+        console.log(this.carPeriod)
       },
       /* 修改操作 */
       update(formName) {
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            putVehiclePeriod(this.vehiclePeriod).then(() => {
-              this.addOption = false
+            this.intervalTime()
+            putVehiclePeriod(this.carPeriod).then(() => {
+              this.editOption = false
               this.getVehiclePeriodList()
             })
           } else {
             return false
           }
         })
+      },
+      intervalTime() {
+        if (this.carPeriod.interval === null) {
+          this.carPeriod.interval = []
+          this.carPeriod.beginTime = null
+          this.carPeriod.endTime = null
+        }
+        if (this.carPeriod.interval.length !== 0) {
+          this.carPeriod.beginTime = this.carPeriod.interval[0]
+          this.carPeriod.endTime = this.carPeriod.interval[1]
+        }
       },
       /* 搜索 */
       searchClick() {
@@ -374,11 +497,6 @@
       /* 禁用启用开关 */
       vehiclePeriodChange(row) {
         this.vehiclePeriod = row
-        if (this.vehiclePeriod.state === 1) {
-          this.vehiclePeriod.state = 0
-        } else if (this.vehiclePeriod.state === 0) {
-          this.vehiclePeriod.state = 1
-        }
         putVehiclePeriod(this.vehiclePeriod).then(() => {
           this.getVehiclePeriodList()
         })

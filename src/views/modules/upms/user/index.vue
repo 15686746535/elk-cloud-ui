@@ -147,11 +147,10 @@
                 <el-card body-style="padding:15px 15px 0 15px;" shadow="hover">
                   <el-row>
                     <el-col :span="6">
-                      <el-upload v-if="edit" style="width: 60%; margin: 5px auto 0" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                      <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="userEntity.avatar" :src="userEntity.avatar" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
-                      <img v-else :src="userEntity.avatar" class="avatar_img">
                     </el-col>
                     <el-col :span="18">
 
@@ -864,37 +863,30 @@
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
     text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
   }
-  .avatar-uploader .el-upload {
+  .avatar-uploader{
     border: 1px dashed #d9d9d9;
+    width: 120px;
+    height: 160px;
+    margin: 0 auto 20px;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
   }
-  .avatar-uploader .el-upload:hover {
+  .avatar-uploader:hover {
     border-color: #409EFF;
   }
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 60%;
-    height: 100%;
-    line-height: 150px;
+    width: 120px;
+    height: 160px;
+    line-height: 160px;
     text-align: center;
   }
   .avatar {
-    width: 60%;
-    height: 100%;
-    display: block;
-  }
-  .avatar_img {
-    line-height: 150px;
-    position: relative;
-    margin: auto;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    width: 60%;
-    height: 100%;
+    width: 120px;
+    height: 180px;
     display: block;
   }
 </style>

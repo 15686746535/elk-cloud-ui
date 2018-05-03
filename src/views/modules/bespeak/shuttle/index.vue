@@ -64,11 +64,11 @@
               <span>{{scope.row.name}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="接送区域">
-            <template slot-scope="scope">
-              <span>{{scope.row.region}}</span>
-            </template>
-          </el-table-column>
+          <!--<el-table-column align="center" label="接送区域">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{scope.row.region}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
           <el-table-column align="center" label="接送日期">
             <template slot-scope="scope">
               <span>{{scope.row.shuttleTime | subTime}}</span>

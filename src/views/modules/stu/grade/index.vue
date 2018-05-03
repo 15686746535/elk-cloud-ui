@@ -72,7 +72,7 @@
 
             <el-table-column align="center" label="批次" width="195">
               <template slot-scope="scope">
-                <span>{{scope.row.batch}}</span>
+                <span><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>
               </template>
             </el-table-column>
 

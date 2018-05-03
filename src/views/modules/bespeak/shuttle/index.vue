@@ -161,8 +161,8 @@
                     <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>-->
                     <!--</div>-->
                     <div style="float: right">
-                      <el-input @keyup.enter.native="getNotShuttleList" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="studentListQuery.condition"></el-input>
-                      <el-button class="filter-item" type="primary" size="mini" @click="getNotShuttleList">搜索</el-button>
+                      <el-input @keyup.enter.native="studentHandleCurrentChange(1)" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="studentListQuery.condition"></el-input>
+                      <el-button class="filter-item" type="primary" size="mini" @click="studentHandleCurrentChange(1)">搜索</el-button>
                     </div>
                   </div>
                   <el-table :data="studentList" :height="($store.state.app.client.height - 420)" border style="width: 100%"
@@ -192,14 +192,14 @@
                     </el-table-column>
                   </el-table>
 
-                  <div v-show="!studentListLoading" class="pagination-container" style="margin-top: 12px;">
+                  <div class="pagination-container" style="margin-top: 12px;">
                     <el-pagination
                       @current-change="studentHandleCurrentChange"
                       layout="prev, pager, next"
                       style="float: left"
                       :current-page="studentListQuery.page"
                       :page-size="studentListQuery.limit"
-                      :total="notShuttleTotal"
+                      :total="studentListTotal"
                     >
                     </el-pagination>
                   </div>
@@ -354,12 +354,13 @@
         shuttledList: [],
         shuttledTotal: null,
         shuttledListLoading: false,
+        userList: [],
         userListOption: false,
         studentListLoading: false,
+        studentList: [],
+        studentListTotal: null,
         addStudentOption: false,
         showModule: 'list',
-        userList: [],
-        studentList: [],
         shuttle: {
           userId: null,
           studentList: []
@@ -378,7 +379,7 @@
         },
         studentListQuery: {
           page: 1,
-          limit: 0
+          limit: 20
         }
       }
     },
@@ -433,6 +434,7 @@
           console.log('=========== 获取学员名单 ==========')
           console.log(response.data)
           this.studentList = response.data.data.list
+          this.studentListTotal = response.data.data.totalCount
           this.shuttle.userId = null
           this.shuttle.studentList = []
           this.addStudentOption = true
@@ -448,10 +450,6 @@
         this.getShuttleLog()
       },
       /* 未安排接送名单 */
-      notShuttleHandleSizeChange(val) {
-        this.notShuttleListQuery.limit = val
-        this.getNotShuttleList()
-      },
       notShuttleHandleCurrentChange(val) {
         this.notShuttleListQuery.page = val
         this.getNotShuttleList()
@@ -466,16 +464,13 @@
         this.getShuttledList()
       },
       /* 学员名单 */
-      studentHandleSizeChange(val) {
-        this.studentListQuery.limit = val
-        fetchList(this.studentListQuery).then(response => {
-          this.studentList = response.data.data.list
-        })
-      },
       studentHandleCurrentChange(val) {
         this.studentListQuery.page = val
+        this.studentListLoading = true
         fetchList(this.studentListQuery).then(response => {
           this.studentList = response.data.data.list
+          this.studentListTotal = response.data.data.totalCount
+          this.studentListLoading = false
         })
       },
       /* 转到管理页面 */
@@ -500,10 +495,7 @@
       },
       shuttleClick() {
         if (this.shuttle.studentList.length === 0) {
-          this.$alert('请先选择学员', '提示', {
-            confirmButtonText: '确定',
-            type: 'warning'
-          })
+          this.$message.warning('请选择学员')
         } else {
           this.getUserList()
           this.shuttle.userId = null
@@ -511,10 +503,10 @@
         }
       },
       addStudent() {
-        if (this.shuttle.userId === null) {
-          this.$message.error('请选择接送人')
-        } else if (this.shuttle.studentList.length === 0) {
-          this.$message.error('请选择学员')
+        if (this.shuttle.studentList.length === 0) {
+          this.$message.warning('请选择学员')
+        } else if (this.shuttle.userId === null) {
+          this.$message.warning('请选择接送人')
         } else {
           console.log(this.shuttle)
           putObj(this.shuttle).then(response => {

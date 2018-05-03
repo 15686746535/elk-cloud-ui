@@ -16,7 +16,7 @@
           </div>
           <div style="float: right">
             <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="接送人/接送名单" v-model="shuttleLogQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
+            <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
           </div>
         </div>
         <el-table :data="shuttleLog"  :height="($store.state.app.client.height-195)"  v-loading="shuttleLogLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
@@ -95,7 +95,7 @@
             |&nbsp;<span style="font-size: 18px;font-weight: 600;font-family: '微软雅黑 Light'">接送列表</span>
           </div>
           <div style="float: right">
-            <el-button class="filter-item" type="primary"  @click="backClick">返 回</el-button>
+            <el-button class="filter-item" type="primary"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button>
           </div>
         </el-row>
         <el-row :gutter="5">
@@ -107,7 +107,7 @@
                 <!--</div>-->
                 <div style="float: right">
                   <el-input @keyup.enter.native="getNotShuttleList" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
-                  <el-button class="filter-item" type="primary" size="mini" @click="getNotShuttleList">搜索</el-button>
+                  <el-button class="filter-item" type="primary" size="mini" @click="getNotShuttleList"><i class="el-icon-search"></i>搜索</el-button>
                 </div>
               </div>
               <el-table :data="notShuttleList" :height="($store.state.app.client.height - 260)" border style="width: 100%"
@@ -162,7 +162,7 @@
                     <!--</div>-->
                     <div style="float: right">
                       <el-input @keyup.enter.native="studentHandleCurrentChange(1)" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="studentListQuery.condition"></el-input>
-                      <el-button class="filter-item" type="primary" size="mini" @click="studentHandleCurrentChange(1)">搜索</el-button>
+                      <el-button class="filter-item" type="primary" size="mini" @click="studentHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>
                     </div>
                   </div>
                   <el-table :data="studentList" :height="($store.state.app.client.height - 420)" border style="width: 100%"
@@ -239,8 +239,8 @@
                   <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">已安排名单</span>-->
                 <!--</div>-->
                 <div style="float: right">
-                  <el-input @keyup.enter.native="searchClick" size="mini" style="width: 200px" class="filter-item" placeholder="接送人/接送名单" v-model="shuttledListQuery.condition"></el-input>
-                  <el-button class="filter-item" type="primary" size="mini" @click="backClick">搜索</el-button>
+                  <el-input @keyup.enter.native="shuttledHandleCurrentChange(1)" size="mini" style="width: 200px" class="filter-item" placeholder="接送人/接送名单" v-model="shuttledListQuery.condition"></el-input>
+                  <el-button class="filter-item" type="primary" size="mini" @click="shuttledHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>
                 </div>
               </div>
 

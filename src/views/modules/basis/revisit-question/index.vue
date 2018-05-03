@@ -225,7 +225,7 @@
         questionLoading: false,
         questionnaireOption: false,
         btnLoading: false,
-        haveQuestion: false,
+        haveQuestion: true,
         questionnaireListQuery: {
           page: 1,
           limit: 20,

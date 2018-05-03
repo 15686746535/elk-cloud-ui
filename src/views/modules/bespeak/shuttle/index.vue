@@ -106,8 +106,8 @@
                   <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>-->
                 <!--</div>-->
                 <div style="float: right">
-                  <el-input @keyup.enter.native="getNotShuttleList" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
-                  <el-button class="filter-item" type="primary" size="mini" @click="getNotShuttleList"><i class="el-icon-search"></i>搜索</el-button>
+                  <el-input @keyup.enter.native="notShuttleHandleCurrentChange(1)" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
+                  <el-button class="filter-item" type="primary" size="mini" @click="notShuttleHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>
                 </div>
               </div>
               <el-table :data="notShuttleList" :height="($store.state.app.client.height - 260)" border style="width: 100%"
@@ -430,6 +430,8 @@
       /* 获取学员名单 */
       getStudentList() {
         this.getUserList()
+        this.studentListLoading = true
+        this.addStudentOption = true
         fetchList(this.studentListQuery).then(response => {
           console.log('=========== 获取学员名单 ==========')
           console.log(response.data)
@@ -437,7 +439,7 @@
           this.studentListTotal = response.data.data.totalCount
           this.shuttle.userId = null
           this.shuttle.studentList = []
-          this.addStudentOption = true
+          this.studentListLoading = false
         })
       },
       /* 接送名单 */

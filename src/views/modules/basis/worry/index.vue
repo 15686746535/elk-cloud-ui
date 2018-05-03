@@ -37,7 +37,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page" background
                        style="float: left"
@@ -87,7 +87,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          type: 'dict_source'
+          type: 'dict_worry'
         },
         rules: {
           label: [

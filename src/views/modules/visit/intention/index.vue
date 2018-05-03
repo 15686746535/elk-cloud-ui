@@ -127,7 +127,7 @@
       <el-dialog width="35%" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
 
 
-        <el-form :model="intention" :rules="rules" ref="intention" label-width="100px" class="demo-ruleForm"  size="small">
+        <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm"  size="small">
 
           <el-row :gutter="5">
             <el-col :span="12">

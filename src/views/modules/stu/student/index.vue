@@ -632,7 +632,7 @@
       <el-row :gutter="5">
         <el-col :span="12">
           <el-card :style="{height: ($store.state.app.client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
-            <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="100px">
+            <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="120px">
               <el-row>
                 <el-row :gutter="20">
                   <el-col :span="12" >
@@ -858,9 +858,9 @@
               </el-row>
               <el-row>
                 <el-col>
-                  <div style="width: 163px;margin: 0 auto">
-                    <el-button type="primary"  @click="add('studentEntity')">建 档</el-button>
-                    <el-button plain @click="reset('studentEntity')">重  置</el-button>
+                  <div style="width: 200px;margin: 0 auto">
+                    <el-button style="float: left" type="primary"  @click="add('studentEntity')">建 档</el-button>
+                    <el-button style="float: right" plain @click="reset('studentEntity')">重  置</el-button>
                   </div>
                 </el-col>
               </el-row>

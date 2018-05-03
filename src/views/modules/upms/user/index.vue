@@ -13,7 +13,7 @@
 
         <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
           <el-card style="height: 80px">
-            <div class="filter-container" style="float: left">
+            <div class="filter-container" style="float: left;line-height: 40px">
               |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
             </div>
             <div style="float: right">
@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <el-form :model="userEntity" :rules="userEntityRules" ref="userEntity" label-position="left" label-width="80px">
+        <el-form :model="userEntity" :rules="userEntityRules" ref="userEntity" label-position="left" label-width="120px">
 
           <el-row :gutter="5">
             <el-col :span="14">
@@ -165,7 +165,7 @@
                         </el-col>
                         <el-col :span="12">
                           <el-form-item prop="idNumber">
-                            <span slot="label" class="text_css">身份证号：</span>
+                            <span slot="label" class="text_css">身份证：</span>
                             <el-input v-if="edit" @blur="generateInfo" :maxlength="18"  @keyup.enter.native="generateInfo" v-model="userEntity.idNumber" placeholder="身份证号"></el-input>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.idNumber}}</span>
                           </el-form-item>
@@ -355,7 +355,7 @@
                   <el-row :gutter="20" style="height: 60px">
                     <el-col :span="12">
 
-                      <el-form-item label-width="130px" prop="emergencyContact">
+                      <el-form-item label-width="150px" prop="emergencyContact">
                         <span slot="label" class="text_css">紧急联系人姓名：</span>
                         <el-input v-if="edit"  v-model="userEntity.emergencyContact" placeholder="紧急联系人" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyContact}}</span>
@@ -365,7 +365,7 @@
 
                     <el-col :span="12">
 
-                      <el-form-item label-width="130px" prop="emergencyMobile">
+                      <el-form-item label-width="150px" prop="emergencyMobile">
                         <span slot="label" class="text_css">紧急联系人电话：</span>
                         <el-input v-if="edit"  v-model="userEntity.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyMobile}}</span>
@@ -377,7 +377,7 @@
                   <el-row :gutter="20" style="height: 60px">
                     <el-col :span="12">
 
-                      <el-form-item label-width="130px" prop="fiveInsuranceTime">
+                      <el-form-item label-width="150px" prop="fiveInsuranceTime">
                         <span slot="label" class="text_css">五险购买时间：</span>
                         <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险购买时间"  style="width: 100%" v-model="userEntity.fiveInsuranceTime"></el-date-picker>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.fiveInsuranceTime | subTime}}</span>
@@ -387,7 +387,7 @@
 
                     <el-col :span="12">
 
-                      <el-form-item label-width="130px" prop="providentFundTime">
+                      <el-form-item label-width="150px" prop="providentFundTime">
                         <span slot="label" class="text_css">公积金购买时间：</span>
                         <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金购买时间"  style="width: 100%" v-model="userEntity.providentFundTime"></el-date-picker>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.providentFundTime | subTime}}</span>
@@ -399,7 +399,7 @@
                   <el-row :gutter="20" style="height: 60px">
                     <el-col :span="12">
 
-                      <el-form-item label-width="130px" prop="workMobile">
+                      <el-form-item label-width="150px" prop="workMobile">
                         <span slot="label" class="text_css">工作电话：</span>
                         <el-input v-if="edit"  v-model="userEntity.workMobile" placeholder="工作电话" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.workMobile}}</span>

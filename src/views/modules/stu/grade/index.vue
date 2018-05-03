@@ -40,7 +40,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="21">
+      <el-col :style="{width: (client.width-195) + 'px'}">
         <el-card>
           <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->

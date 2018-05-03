@@ -693,10 +693,6 @@
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.getList()
       },
-      // 删除
-      delete(id) {
-        this.getList()
-      },
       // 取消
       cancel() {
         getObj(this.intention.intentionId).then(response => {

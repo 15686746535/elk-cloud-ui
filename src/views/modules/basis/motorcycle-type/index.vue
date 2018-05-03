@@ -49,7 +49,7 @@
     </el-card>
     <el-dialog @close="cancel('dict')" :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="110px">
-        <el-form-item label="报名点"  prop="label">
+        <el-form-item label="车型"  prop="label">
           <el-input v-model="dict.label" placeholder="车型" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">

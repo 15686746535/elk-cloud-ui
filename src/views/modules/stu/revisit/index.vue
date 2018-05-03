@@ -143,7 +143,10 @@
           </el-row>
         </div>
 
+      </div>
 
+      <div>
+        <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="answerList.remark" placeholder="备注"></el-input>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -170,7 +173,8 @@
         questionnaireList: [],
         answerList: {
           revisitQuestionList: [],
-          examNoteId: null
+          examNoteId: null,
+          remark: null
         },
         total: null,
         listLoading: true,

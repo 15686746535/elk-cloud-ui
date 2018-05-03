@@ -121,7 +121,7 @@
                   <el-col :span="10">
                     <el-col :span="2">B:</el-col>
                     <el-col :span="21">
-                      <el-input size="small" style="width: 100%" v-model="question.itemB" placeholder="答案B" ></el-input>
+                      <el-input size="small" style="width: 100%" :disabled="!question.itemA && !question.itemB" v-model="question.itemB" placeholder="答案B" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>
@@ -130,13 +130,13 @@
                   <el-col :span="10">
                     <el-col :span="2">C:</el-col>
                     <el-col :span="21">
-                      <el-input size="small" style="width: 100%" v-model="question.itemC" placeholder="答案C" ></el-input>
+                      <el-input size="small" style="width: 100%" :disabled="!question.itemB && !question.itemC" v-model="question.itemC" placeholder="答案C" ></el-input>
                     </el-col>
                   </el-col>
                   <el-col :span="10">
                     <el-col :span="2">D:</el-col>
                     <el-col :span="21">
-                      <el-input size="small" style="width: 100%" v-model="question.itemD" placeholder="答案D" ></el-input>
+                      <el-input size="small" style="width: 100%" :disabled="!question.itemC && !question.itemD" v-model="question.itemD" placeholder="答案D" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>
@@ -145,13 +145,13 @@
                   <el-col :span="10">
                     <el-col :span="2">E:</el-col>
                     <el-col :span="21">
-                      <el-input size="small" style="width: 100%" v-model="question.itemE" placeholder="答案E" ></el-input>
+                      <el-input size="small" style="width: 100%" :disabled="!question.itemD && !question.itemE" v-model="question.itemE" placeholder="答案E" ></el-input>
                     </el-col>
                   </el-col>
                   <el-col :span="10">
                     <el-col :span="2">F:</el-col>
                     <el-col :span="21">
-                      <el-input size="small" style="width: 100%" v-model="question.itemF" placeholder="答案F" ></el-input>
+                      <el-input size="small" style="width: 100%" :disabled="!question.itemE && !question.itemF" v-model="question.itemF" placeholder="答案F" ></el-input>
                     </el-col>
                   </el-col>
                 </el-row>

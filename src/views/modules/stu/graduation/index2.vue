@@ -305,8 +305,8 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">场训教练：</span></el-col>
                   <el-col :span="17">
-                    <Coach v-if="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.fieldCoachName}}</div>
+                    <Coach v-show="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
+                    <div style="padding-left: 16px;font-size: 12px;" v-show="!edit">{{student.fieldCoachName}}</div>
                   </el-col>
                 </el-row>
 
@@ -345,8 +345,8 @@
                 <el-row style="height: 50px">
                   <el-col :span="7"><span class="text_css">路训教练：</span></el-col>
                   <el-col :span="17">
-                    <Coach v-if="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.roadCoachName}}</div>
+                    <Coach v-show="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
+                    <div style="padding-left: 16px;font-size: 12px;" v-show="!edit">{{student.roadCoachName}}</div>
                   </el-col>
                 </el-row>
 

@@ -114,7 +114,7 @@
     </el-dialog>
 
     <el-dialog @close="closeDialog" title="回访登记" width="40%" :visible.sync="visitStudentOption">
-      <div :style="{height: ($store.state.app.client.height)/2 +'px'}" style="overflow: auto">
+      <div :style="{height: ($store.state.app.client.height)/2 +'px'}" style="overflow: auto;margin-bottom: 10px">
 
         <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in answerList.revisitQuestionList">
           <el-row>
@@ -298,7 +298,7 @@
           //   })
           // }
           // console.log(this.revisitQuestionList.length)
-          // console.log(this.answerList.length)
+          console.log(this.answerList)
           this.visitStudentOption = true
         })
       },
@@ -308,11 +308,19 @@
         this.getList()
       },
       saveQuestion() {
-        addRevisited(this.answerList).then(response => {
-          // this.backClick()
-        })
+        var flag = true
+        for (var i = 0; i < this.answerList.revisitQuestionList.length; i++){
+          if (!this.answerList.revisitQuestionList[i].answer) {
+            flag = false
+            this.$message.warning('问题未答完')
+            break
+          }
+        }
+        if (!flag) return
         console.log(this.answerList)
-        this.closeDialog()
+        addRevisited(this.answerList).then(() => {
+          this.closeDialog()
+        })
       }
     }
   }

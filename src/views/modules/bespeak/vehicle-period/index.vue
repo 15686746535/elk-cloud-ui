@@ -63,7 +63,7 @@
         </el-table-column>
         <el-table-column align="center" label="已约人数">
           <template slot-scope="scope">
-            <span>{{scope.row.number}}/{{scope.row.count}} 人</span>
+            <span>{{scope.row.studentList.length}}/{{scope.row.count}} 人</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="状态">

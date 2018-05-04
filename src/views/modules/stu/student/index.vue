@@ -859,7 +859,7 @@
               <el-row>
                 <el-col>
                   <div style="width: 200px;margin: 0 auto">
-                    <el-button style="float: left" type="primary"  @click="add('studentEntity')">建 档</el-button>
+                    <el-button style="float: left" type="primary" :loading="btnLoading" @click="add('studentEntity')">建 档</el-button>
                     <el-button style="float: right" plain @click="reset('studentEntity')">重  置</el-button>
                   </div>
                 </el-col>
@@ -884,7 +884,7 @@
       </el-row>
     </div>
 
-    <el-dialog @close="cancel" title="选择批次" width="40%" :visible.sync="dialogFormBespeak">
+    <el-dialog @close="closeBespeak" title="选择批次" width="40%" :visible.sync="dialogFormBespeak">
       <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
         <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
           无可预约场次
@@ -899,7 +899,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeBespeak">取 消</el-button>
-        <el-button type="primary" @click="createBespeak">确 定</el-button>
+        <el-button :loading="btnLoading" type="primary" @click="createBespeak">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -1294,9 +1294,6 @@
         this.listQuery.page = 1
         this.getList()
       },
-      // 字典
-      getDict(val) {
-      },
       // 双击行  编辑
       editList(val) {
         console.log('====================== 进入单个学员编辑 =====================')
@@ -1353,8 +1350,10 @@
           if (valid) {
             console.log('======================= 添加的数据 ======')
             console.log(this.studentEntity)
+            this.btnLoading = true
             addObj(this.studentEntity).then(response => {
               this.backClick()
+              this.btnLoading = false
             })
           }
         })
@@ -1547,6 +1546,7 @@
         }
       },
       closeBespeak() {
+        this.editList(this.student)
         this.examBespeak.examId = null
         this.dialogFormBespeak = false
       },
@@ -1567,8 +1567,10 @@
             type: 'warning'
           })
         } else {
+          this.btnLoading = true
           batchSave(this.examBespeak).then(() => {
             this.dialogFormBespeak = false
+            this.btnLoading = false
             this.examBespeak.examId = null
           })
         }
@@ -1578,6 +1580,7 @@
         getIntentionByMobile(this.studentEntity.mobile).then(response => {
           console.log('======== 匹配到的值 =========')
           console.log(response.data)
+          var flag = true
           if (response.data.data) {
             this.studentEntity.intentionId = response.data.data.intentionId
             if (!this.studentEntity.name) this.studentEntity.name = response.data.data.name
@@ -1585,7 +1588,14 @@
             if (!this.studentEntity.source) this.studentEntity.source = response.data.data.source
             if (!this.studentEntity.wechat) this.studentEntity.wechat = response.data.data.wechat
             if (!this.studentEntity.contactAddress) this.studentEntity.contactAddress = response.data.data.contactAddress
-            this.studentEntity.introducerList.push(response.data.data.userId)
+            for (var i = 0; i < this.studentEntity.introducerList.length; i++) {
+              if (this.studentEntity.introducerList[i] === response.data.data.userId) {
+                flag = false
+                break
+              }
+            }
+            if (flag) this.studentEntity.introducerList.push(response.data.data.userId)
+            console.log(this.studentEntity.introducerList)
             if (!this.studentEntity.motorcycleType) this.studentEntity.motorcycleType = response.data.data.applyType
           }
           this.createLoading = false

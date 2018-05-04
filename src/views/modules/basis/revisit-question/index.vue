@@ -340,10 +340,38 @@
       /* 保存题目 */
       saveQuestion() {
         console.log(this.questionList)
+        if (!this.questionVerification()) {
+          this.$message.warning('问题设置有错误')
+          return
+        }
         this.questions.questionList = this.questionList
         addQuestion(this.questions).then(() => {
           this.questionClick({ 'questionnaireId': this.questionnaireId })
         })
+      },
+      /* 问题填写验证 */
+      questionVerification() {
+        for (var i = 0; i < this.questionList.length; i++) {
+          if (!(this.questionList[i].question && this.questionList[i].itemA && this.questionList[i].itemB)) {
+            return false
+          }
+          if (this.questionList[i].itemD) {
+            if (!this.questionList[i].itemC) {
+              return false
+            }
+          }
+          if (this.questionList[i].itemE) {
+            if (!this.questionList[i].itemD) {
+              return false
+            }
+          }
+          if (this.questionList[i].itemF) {
+            if (!this.questionList[i].itemE) {
+              return false
+            }
+          }
+          return true
+        }
       }
     }
   }

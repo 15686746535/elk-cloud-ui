@@ -390,6 +390,8 @@
       /* 获取查看页面接送名单 */
       getShuttleLog() {
         this.shuttleLogLoading = true
+        console.log('------ 获取查看页面接送名单查询条件 -------')
+        console.log(this.shuttleLogQuery)
         getShuttleList(this.shuttleLogQuery).then(response => {
           console.log('=========== 接送名单 ==========')
           console.log(response.data)
@@ -401,6 +403,8 @@
       /* 获取未安排接送名单 */
       getNotShuttleList() {
         this.notShuttleListLoading = true
+        console.log('------ 获取未安排接送名单查询条件 -------')
+        console.log(this.notShuttleListQuery)
         queryUndelivered(this.notShuttleListQuery).then(response => {
           console.log('=========== 获取未安排接送名单 ==========')
           console.log(response.data)
@@ -412,6 +416,8 @@
       /* 获取已安排接送名单 */
       getShuttledList() {
         this.shuttledListLoading = true
+        console.log('------ 获取已安排接送名单查询条件 -------')
+        console.log(this.shuttledListQuery)
         getShuttledList(this.shuttledListQuery).then(response => {
           console.log('=========== 获取已安排接送名单 ==========')
           console.log(response.data)

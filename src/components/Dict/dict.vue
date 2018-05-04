@@ -57,7 +57,9 @@
           url: '/basis/dict/getByType/' + this.dictType,
           method: 'get'
         }).then(response => {
-          this.dictList = response.data.data.list
+          console.log('============= == 字典 = ===')
+          console.log(response.data)
+          this.dictList = response.data.data
         })
       }
     },

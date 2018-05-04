@@ -188,13 +188,13 @@
 
             <div slot="footer">
               <el-button type="danger" @click="innerGradeOption = false">取 消</el-button>
-              <el-button type="success" @click="examOperation('1')">确 定</el-button>
+              <el-button type="success" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
             </div>
           </el-dialog>
           <div slot="footer">
-            <el-button type="success" @click="passExam">通 过</el-button>
-            <el-button type="danger" @click="examOperation('2')">失 败</el-button>
-            <el-button type="warning"  @click="examOperation('3')">缺 考</el-button>
+            <el-button type="success" :loading="btnLoading" @click="passExam">通 过</el-button>
+            <el-button type="danger" :loading="btnLoading" @click="examOperation('2')">失 败</el-button>
+            <el-button type="warning" :loading="btnLoading" @click="examOperation('3')">缺 考</el-button>
           </div>
         </el-dialog>
 
@@ -205,7 +205,7 @@
 
           <div slot="footer">
             <el-button type="danger" @click="innerGradeOption1 = false">取 消</el-button>
-            <el-button type="success" @click="examOperation('1')">确 定</el-button>
+            <el-button type="success" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -255,6 +255,7 @@ export default {
         innerGradeOption1: false,
         gradeEdit: false,
         gradeOptionLoading: false,
+        btnLoading: false,
         pickerOptions: {
           shortcuts: [{
             text: '昨天',
@@ -425,7 +426,7 @@ export default {
         }
       },
       passExam() {
-        if (this.batchListQuery.subject === 3 || this.batchListQuery.subject === 4) {
+        if (this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4') {
           this.examOperation('1')
         } else {
           console.log('==========')
@@ -437,10 +438,12 @@ export default {
         this.examParameter.examState = state
         this.examParameter.subject = this.batchListQuery.subject
         console.log(this.examParameter)
+        this.btnLoading = true
         putExamNote(this.examParameter).then(() => {
           this.getGradeList()
           this.gradeOption = false
           this.innerGradeOption = false
+          this.btnLoading = false
           this.innerGradeOption1 = false
           this.gradeEdit = false
         })

@@ -54,7 +54,7 @@
                     <el-row :gutter="10">
                       <el-col :span="7" class="table_text">职位：</el-col>
                       <el-col :span="17" class="table_text">
-                       <!-- <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}&lt;!&ndash;<span v-if="scope.row.roleList.length !== (index+1)">、</span>&ndash;&gt;</span>-->
+                        <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}<span v-if="scope.row.roleList.length !== (index+1)">、</span></span>
                       </el-col>
                     </el-row>
                     <el-row :gutter="10">
@@ -258,7 +258,7 @@
                           <el-option v-for="role in roleList" :key="role.roleId" :label="role.roleName" :value="role.roleId">
                           </el-option>
                         </el-select>
-                        <!--<span v-for="(introducerName,index) in student.introducerNameList"  v-show="!edit" >{{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span></span>-->
+                        <span class="text_css" v-for="(roleName,index) in userEntity.roleNameList"  v-show="!edit" >{{roleName}}<span v-if="userEntity.roleNameList.length !== (index+1)">、</span></span>
 
                         <!--<el-select v-if="edit" v-model="userEntity.roleIdList" style="width: 100%" collapse-tags multiple placeholder="职位" @change="roleChange">-->
                           <!--<el-option-->
@@ -783,14 +783,8 @@
         this.userEntity.orgName = org.name
         roleList(org.id).then(response => {
           console.log(response.data)
-          // this.userEntity.roleIdList = []
-          // this.userEntity.roleIdList.push(response.data.data[0].roleId)
           this.roleList = response.data.data
         })
-      },
-      roleChange(val) {
-        console.log(val)
-        // this.userEntity.roleName = val.roleName
       },
       filterNode(value, data) {
         if (!value) return true

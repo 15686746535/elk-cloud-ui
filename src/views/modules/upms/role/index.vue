@@ -77,9 +77,6 @@
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="角色名称"></el-input>
         </el-form-item>
-        <el-form-item label="角色标识" prop="roleKey">
-          <el-input v-model="form.roleKey" placeholder="角色标识"></el-input>
-        </el-form-item>
         <el-form-item label="描述" prop="roleDesc">
           <el-input v-model="form.roleDesc" placeholder="描述"></el-input>
         </el-form-item>
@@ -140,19 +137,6 @@
             {
               required: true,
               message: '角色名称',
-              trigger: ['blur', 'change']
-            },
-            {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
-              trigger: ['blur', 'change']
-            }
-          ],
-          roleKey: [
-            {
-              required: true,
-              message: '角色标识',
               trigger: ['blur', 'change']
             },
             {

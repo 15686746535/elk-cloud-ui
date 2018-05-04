@@ -525,37 +525,37 @@
         addOption: false,
         rules: {
           name: [
-            { required: true, message: '请输入名字', trigger: 'blur,change' }
+            { required: true, message: '请输入名字', trigger: ['blur', 'change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: 'blur,change' }
+            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           mobile: [
-            { required: true, message: '请输入手机号', trigger: 'blur,change' },
-            { pattern: /^1[34578]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: 'blur,change' }
+            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+            { pattern: /^1[34578]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change'] }
           ],
           wechat: [
-            { required: true, message: '请输入客户微信', trigger: 'blur,change' }],
+            { required: true, message: '请输入客户微信', trigger: ['blur', 'change'] }],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: 'blur,change' }
+            { required: true, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
           customerType: [
-            { required: true, message: '请选择客户类型', trigger: 'blur,change' }
+            { required: true, message: '请选择客户类型', trigger: ['blur', 'change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: 'blur,change' }
+            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
           ],
           worry: [
-            { required: true, message: '请选择客户顾虑', trigger: 'blur,change' }
+            { required: true, message: '请选择客户顾虑', trigger: ['blur', 'change'] }
           ],
           applyType: [
-            { required: true, message: '请选择所学车型', trigger: 'blur,change' }
+            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
           ],
           visitTime: [
-            { required: true, message: '请选择来访时间', trigger: 'blur,change' }
+            { required: true, message: '请选择来访时间', trigger: ['blur', 'change'] }
           ],
           content: [
-            { required: true, message: '请输入资讯内容', trigger: 'blur,change' }
+            { required: true, message: '请输入资讯内容', trigger: ['blur', 'change'] }
           ]
         }
       }

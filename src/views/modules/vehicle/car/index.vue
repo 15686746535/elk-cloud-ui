@@ -809,25 +809,25 @@
         // 总条数
         vehicleRules: {
           // number: [
-          //   { required: true, message: '请输入自编号', trigger: 'blur,change' }
+          //   { required: true, message: '请输入自编号', trigger: ['blur', 'change'] }
           // ],
           // plateNumber: [
-          //   { required: true, message: '请输入车牌', trigger: 'blur,change' }
+          //   { required: true, message: '请输入车牌', trigger: ['blur', 'change'] }
           // ],
           // engineNo: [
-          //   { required: true, message: '请输入发动机号', trigger: 'blur,change' }
+          //   { required: true, message: '请输入发动机号', trigger: ['blur', 'change'] }
           // ],
           // factoryTime: [
-          //   { required: true, message: '请输入出厂日期', trigger: 'blur,change' }
+          //   { required: true, message: '请输入出厂日期', trigger: ['blur', 'change'] }
           // ],
           // allowNumber: [
-          //   { required: true, message: '请输入核定载客人', trigger: 'blur,change' }
+          //   { required: true, message: '请输入核定载客人', trigger: ['blur', 'change'] }
           // ],
           // affiliation: [
-          //   { required: true, message: '请输入所属机构', trigger: 'blur,change' }
+          //   { required: true, message: '请输入所属机构', trigger: ['blur', 'change'] }
           // ],
           // registerTime: [
-          //   { required: true, message: '请输入注册登记日期', trigger: 'blur,change' }
+          //   { required: true, message: '请输入注册登记日期', trigger: ['blur', 'change'] }
           // ]
         },
         total: null,

@@ -93,13 +93,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写客户类型', trigger: 'blur,change' }
+            { required: true, message: '请填写客户类型', trigger: ['blur', 'change'] }
           ],
           description: [
-            { required: true, message: '请填写客户类型描述', trigger: 'blur,change' }
+            { required: true, message: '请填写客户类型描述', trigger: ['blur', 'change'] }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写客户类型排序等级', trigger: 'blur,change' }
+            { required: true, type: 'number', message: '请填写客户类型排序等级', trigger: ['blur', 'change'] }
           ]
         },
         dict: {},

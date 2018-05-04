@@ -64,9 +64,9 @@ export default {
         randomStr: Math.ceil(Math.random() * 100000) + '_' + Date.now()
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur,change' }],
-        password: [{ required: true, trigger: 'blur,change', validator: validatePass }],
-        code: [{ required: true, trigger: 'blur,change' }]
+        username: [{ required: true, trigger: ['blur', 'change'] }],
+        password: [{ required: true, trigger: ['blur', 'change'], validator: validatePass }],
+        code: [{ required: true, trigger: ['blur', 'change'] }]
       },
       loading: false,
       pwdType: 'password'

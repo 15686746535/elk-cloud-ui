@@ -120,13 +120,13 @@
               <template slot-scope="scope">
                 <el-tooltip placement="bottom" effect="dark">
                   <div slot="content">
-                    <div style="margin: 3px 0"><el-button type="success" size="mini" @click="examEdit(scope.row, 1)">通过</el-button></div>
-                    <div style="margin: 3px 0"><el-button type="danger" size="mini" @click="examEdit(scope.row, 2)">失败</el-button></div>
-                    <div style="margin: 3px 0"><el-button type="warning" size="mini" @click="examEdit(scope.row, 3)">缺考</el-button></div>
+                    <div style="margin: 3px 0"><el-button v-show="!(scope.row.examState == 1)" type="success" size="mini" @click="examEdit(scope.row, '1')">通过</el-button></div>
+                    <div style="margin: 3px 0"><el-button v-show="!(scope.row.examState == 2)" type="danger" size="mini" @click="examEdit(scope.row, '2')">失败</el-button></div>
+                    <div style="margin: 3px 0"><el-button v-show="!(scope.row.examState == 3)" type="warning" size="mini" @click="examEdit(scope.row, '3')">缺考</el-button></div>
                   </div>
                   <el-button size="mini" type="primary" plain>编 辑</el-button>
                 </el-tooltip>
-                <el-button size="mini" type="danger"  @click="examEdit(scope.row, 0)" >撤 销</el-button>
+                <el-button size="mini" type="danger"  @click="examEdit(scope.row, '0')" >撤 销</el-button>
               </template>
             </el-table-column>
 
@@ -145,8 +145,8 @@
         <el-dialog @close="getGradeList" width="30%" title="成绩修改" :visible.sync="gradeEdit">
           <el-button-group>
             <el-button type="success" @click="passExam">通 过</el-button>
-            <el-button type="danger" @click="examOperation(2)">失 败</el-button>
-            <el-button type="warning"  @click="examOperation(3)">缺 考</el-button>
+            <el-button type="danger" @click="examOperation('2')">失 败</el-button>
+            <el-button type="warning"  @click="examOperation('3')">缺 考</el-button>
           </el-button-group>
           <div slot="footer">
             <el-button-group>
@@ -183,18 +183,18 @@
           </el-table>
           <el-dialog width="30%" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
 
-            <Coach v-show="batchListQuery.subject == 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+            <Coach v-show="batchListQuery.subject == 1" v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
             <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
 
             <div slot="footer">
               <el-button type="danger" @click="innerGradeOption = false">取 消</el-button>
-              <el-button type="success" @click="examOperation(1)">确 定</el-button>
+              <el-button type="success" @click="examOperation('1')">确 定</el-button>
             </div>
           </el-dialog>
           <div slot="footer">
             <el-button type="success" @click="passExam">通 过</el-button>
-            <el-button type="danger" @click="examOperation(2)">失 败</el-button>
-            <el-button type="warning"  @click="examOperation(3)">缺 考</el-button>
+            <el-button type="danger" @click="examOperation('2')">失 败</el-button>
+            <el-button type="warning"  @click="examOperation('3')">缺 考</el-button>
           </div>
         </el-dialog>
 
@@ -205,7 +205,7 @@
 
           <div slot="footer">
             <el-button type="danger" @click="innerGradeOption1 = false">取 消</el-button>
-            <el-button type="success" @click="examOperation(1)">确 定</el-button>
+            <el-button type="success" @click="examOperation('1')">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -297,6 +297,7 @@ export default {
         /* 修改状态的参数 */
         examParameter: {
           examNoteList: [],
+          examStateOld: null,
           examState: null
         }
       }
@@ -381,6 +382,7 @@ export default {
             if (response.data.code === 0) {
               this.notGradeStudentList = response.data.data.list
               this.studentTotal = response.data.data.totalCount
+              this.examParameter.examStateOld = '0'
               this.gradeOptionLoading = false
             } else {
               console.log('这里是错误信息：' + response.data.msg)
@@ -424,7 +426,7 @@ export default {
       },
       passExam() {
         if (this.batchListQuery.subject === 3 || this.batchListQuery.subject === 4) {
-          this.examOperation(1)
+          this.examOperation('1')
         } else {
           console.log('==========')
           console.log(this.batchListQuery.subject)
@@ -447,7 +449,8 @@ export default {
         this.examParameter.examNoteList = []
         this.examParameter.examNoteList.push({ 'examNoteId': row.examNoteId, 'studentId': row.studentId })
         this.examParameter.examId = row.examId
-        if (state === 0) {
+        this.examParameter.examStateOld = row.examState
+        if (state === '0') {
           this.$confirm('是否撤销该学员成绩?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -455,7 +458,7 @@ export default {
           }).then(() => {
             this.examOperation(state)
           })
-        } else if (state === 1) {
+        } else if (state === '1') {
           this.innerGradeOption1 = true
         } else {
           this.examOperation(state)

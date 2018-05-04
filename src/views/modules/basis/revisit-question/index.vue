@@ -213,10 +213,10 @@
         },
         revisitQuestionnaireRules: {
           name: [
-            { required: true, message: '请填写问卷名字', trigger: 'blur,change' }
+            { required: true, message: '请填写问卷名字', trigger: ['blur', 'change'] }
           ],
           remark: [
-            { required: true, message: '请填写备注', trigger: 'blur,change' }
+            { required: true, message: '请填写备注', trigger: ['blur', 'change'] }
           ]
         },
         questionnaireId: null,

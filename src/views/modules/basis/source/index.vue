@@ -92,13 +92,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写来源渠道', trigger: 'blur,change' }
+            { required: true, message: '请填写来源渠道', trigger: ['blur', 'change'] }
           ],
           description: [
-            { required: true, message: '请填写来源渠道描述', trigger: 'blur,change' }
+            { required: true, message: '请填写来源渠道描述', trigger: ['blur', 'change'] }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写来源渠道排序等级', trigger: 'blur,change' }
+            { required: true, type: 'number', message: '请填写来源渠道排序等级', trigger: ['blur', 'change'] }
           ]
         },
         dict: {},

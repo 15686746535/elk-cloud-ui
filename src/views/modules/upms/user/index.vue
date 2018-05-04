@@ -54,7 +54,7 @@
                     <el-row :gutter="10">
                       <el-col :span="7" class="table_text">职位：</el-col>
                       <el-col :span="17" class="table_text">
-                        <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}<span v-if="scope.row.roleList.length !== (index+1)">、</span></span>
+                       <!-- <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}&lt;!&ndash;<span v-if="scope.row.roleList.length !== (index+1)">、</span>&ndash;&gt;</span>-->
                       </el-col>
                     </el-row>
                     <el-row :gutter="10">
@@ -147,9 +147,9 @@
                 <el-card body-style="padding:15px 15px 0 15px;" shadow="hover">
                   <el-row>
                     <el-col :span="6">
-                      <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="userEntity.avatar" :src="userEntity.avatar" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                                  :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <img :src="userEntity.avatar" class="avatar">
                       </el-upload>
                     </el-col>
                     <el-col :span="18">
@@ -478,6 +478,7 @@
   import Bar from '@/components/Bar'
   import LineChart from '@/components/LineChart'
   import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
+  import { getToken } from '@/utils/auth'
 
   export default {
     name: 'index',
@@ -492,6 +493,11 @@
           0: '女'
         }
         return typeMap[this.userEntity.sex]
+      },
+      headers() {
+        return {
+          'Authorization': 'Bearer ' + getToken()
+        }
       }
     },
     components: {
@@ -550,6 +556,7 @@
           label: 'label'
         },
         userEntity: {
+          avatar: 'http://p84u3sabi.bkt.clouddn.com/elk/20180504/870ffb6238ad4b569c7b7a2f7daf1013.jpg',
           jobNumber: null,
           idNumber: null,
           name: null,
@@ -644,6 +651,7 @@
       // 新增
       create() {
         this.userEntity = {
+          avatar: 'http://p84u3sabi.bkt.clouddn.com/elk/20180504/870ffb6238ad4b569c7b7a2f7daf1013.jpg',
           jobNumber: null,
           idNumber: null,
           name: null,
@@ -807,19 +815,21 @@
         }
       },
       handleAvatarSuccess(res, file) {
-        this.student.avatar = URL.createObjectURL(file.raw)
+        this.userEntity.avatar = res.data
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg'
+        const type = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
         const isLt2M = file.size / 1024 / 1024 < 2
+        const isImages = file.type && type.indexOf(file.type) > -1
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
+        if (!isImages) {
+          this.$message.error('只支持jpg、png、gif格式的图片！')
         }
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!')
         }
-        return isJPG && isLt2M
+
+        return isImages && isLt2M
       }
     }
   }

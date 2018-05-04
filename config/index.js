@@ -95,6 +95,13 @@ module.exports = {
           '^/quartz' : '/quartz'
         }
       },
+      '/oss': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/oss' : '/oss'
+        }
+      },
       '/visualization': {
         target: url,
         changeOrigin: true,

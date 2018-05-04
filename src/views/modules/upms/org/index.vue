@@ -4,14 +4,14 @@
       <el-col class="org-tree-left">
         <el-card class="box-card">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 部门总览</span>
-          <my-tree url="/upms/org/tree"
+          <my-tree :data="treeData"
                    v-model="org.orgId"
                    choiceType="folder"
                    @node="getOrg"></my-tree>
         </el-card>
       </el-col>
 
-      <el-col :style="{width: (client.width-250) + 'px'}">
+      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
             <el-button type="primary" @click="operationClick('create')"><i class="el-icon-plus"></i>添加</el-button>
@@ -20,24 +20,26 @@
           </el-button-group>
         </el-card>
         <el-card class="box-card" :style="{height: ($store.state.app.client.height-130) + 'px'}" style="overflow: auto">
-          <el-form label-position="right" label-width="80px" :model="form" ref="form">
-            <el-form-item label="上级部门">
-              <el-input v-model="form.parentName" disabled placeholder="请选择上级部门"></el-input>
+          <el-form label-position="right" label-width="80px"  :rules="rules" :model="form" ref="form">
+            <el-form-item label="上级部门" prop="parentName">
+              <el-input v-model="form.parentName" readonly :disabled="option ===''" placeholder="请选择上级部门"></el-input>
             </el-form-item>
 
-            <el-form-item label="部门名字">
-              <el-input v-model="form.name" :disabled="option ===''" placeholder="请输入部门名字"></el-input>
+            <el-form-item label="部门名字" prop="orgName">
+              <el-input v-model="form.orgName" :disabled="option ===''" placeholder="请输入部门名字"></el-input>
             </el-form-item>
-
-            <el-form-item label="备注">
-              <el-input v-model="form.remark" :disabled="option ===''" placeholder="请输入备注"></el-input>
+            <el-form-item label="排序"  prop="sort">
+              <el-input type="number" :min="0"  v-model.number="form.sort" :disabled="option ===''" placeholder="排序"></el-input>
+            </el-form-item>
+            <el-form-item label="备注"  prop="remark">
+              <el-input  v-model="form.remark" :disabled="option ===''" placeholder="请输入备注"></el-input>
             </el-form-item>
 
           </el-form>
           <el-row :gutter="10">
             <el-col v-if="option !== ''">
-              <el-button type="primary" icon="edit" @click="back">取消</el-button>
-              <el-button type="primary" icon="delete" @click="save">确定</el-button>
+              <el-button type="primary" icon="edit" @click="back('form')">取消</el-button>
+              <el-button type="primary" icon="delete" @click="save('form')">确定</el-button>
             </el-col>
           </el-row>
         </el-card>
@@ -49,7 +51,6 @@
 
 <script>
   import { fetchTree, addObj, putObj, delObj } from '@/api/upms/org'
-  import { mapGetters } from 'vuex'
 
   export default {
     name: 'index',
@@ -72,6 +73,36 @@
           remark: null,
           orgType: null
         },
+        rules: {
+          parentName: [
+            {
+              required: true,
+              message: '父级部门',
+              trigger: ['blur', 'change']
+            }
+          ],
+          sort: [
+            {
+              required: true,
+              message: '排序',
+              trigger: ['blur', 'change']
+            }
+          ],
+          orgName: [
+            {
+              required: true,
+              message: '部门名称',
+              trigger: ['blur', 'change']
+            }
+          ],
+          remark: [
+            {
+              required: false,
+              message: '备注',
+              trigger: ''
+            }
+          ]
+        },
         defaultProps: {
           children: 'children',
           label: 'name'
@@ -87,9 +118,6 @@
       }
     },
     computed: {
-      ...mapGetters([
-        'client'
-      ])
     },
     created() {
       this.getOrgList()
@@ -106,8 +134,10 @@
       },
       assignment() {
         if (this.option === 'create') {
-          this.form = {}
+          console.log('create')
           this.form.parentId = this.org.orgId
+          this.form.groupId = this.org.groupId
+          this.form.companyId = this.org.companyId
           this.form.parentName = this.org.name
           if (this.org.orgType === '-') {
             this.form.orgType = '1'
@@ -116,122 +146,38 @@
           } else if (this.org.orgType === '2' || this.org.orgType === '0') {
             this.form.orgType = '0'
           }
-        } else if (this.option === 'update' || this.option === '') {
+        } else if (this.option === 'update') {
+          console.log('update')
           this.form = this.org
           if (this.org.parentName === null) this.form.parentName = '无'
         }
       },
-      /*getOrg(data) {
-        console.log('=====================   点击   =======================')
-        console.log(data)
-
-        if (this.option === 'add') {
-          this.org.parentName = data.name
-          this.org.parentId = data.id
-          if (data.orgType === '-') {
-            this.org.orgType = '1'
-          } else if (data.orgType === '1') {
-            this.org.orgType = '2'
-          } else if (data.orgType === '2' || data.orgType === '0') {
-            this.org.orgType = '0'
-          }
-          console.log('==============================')
-          console.log(this.org)
-        } else if (this.option === 'edit') {
-          if (data.parentId === -1) {
-            this.org.parentName = '无'
-          } else {
-            getObj(data.parentId).then(response => {
-              this.org.parentName = response.data.data.name
-            })
-          }
-          if (data.orgType === '-') {
-            this.org.orgType = '1'
-          } else if (data.orgType === '1') {
-            this.org.orgType = '2'
-          } else if (data.orgType === '2' || data.orgType === '0') {
-            this.org.orgType = '0'
-          }
-          this.org.parentId = data.parentId
-          this.org.orgId = data.id
-          this.org.name = data.name
-          console.log('==============================')
-          console.log(this.org)
-        } else if (this.option === 'del') {
-          console.log('============ 删除 ================')
-        } else if (this.option === '') {
-          if (data.parentId === -1) {
-            this.org.parentName = null
-          } else {
-            getObj(data.parentId).then(response => {
-              this.org.parentName = response.data.data.name
-            })
-          }
-          if (data.orgType === '-') {
-            this.org.orgType = '1'
-          } else if (data.orgType === '1') {
-            this.org.orgType = '2'
-          } else if (data.orgType === '2' || data.orgType === '0') {
-            this.org.orgType = '0'
-          }
-          this.org.parentId = data.parentId
-          this.org.orgId = data.id
-          this.org.name = data.name
-          this.org.remark = data.remark
-          console.log('==============================')
-          console.log(this.org)
-        }
-      },*/
-      // getNodeData(data) {
-      //   this.currentMenu = data
-      //   this.setForm()
-      // },
-      // filterNode(value, data) {
-      //   if (!value) return true
-      //   return data.label.indexOf(value) !== -1
-      // },
       getOrgList() {
         fetchTree().then(response => {
-          // this.org = response.data.data
           this.treeData = response.data.data
         })
       },
-      back() {
+      back(formName) {
         this.option = ''
-        this.form = {
-          orgId: null,
-          name: null,
-          parentId: null,
-          parentName: null,
-          remark: null,
-          orgType: null
-        }
+        this.$refs[formName].resetFields()
       },
-      save() {
-        if (this.option === 'create') {
-          addObj(this.form).then(response => {
-            console.log('....................')
-            this.option = ''
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-            this.getOrgList()
-          })
-        } else if (this.option === 'update') {
-          putObj(this.form).then(response => {
-            this.option = ''
-            this.$notify({
-              title: '成功',
-              message: '修改成功',
-              type: 'success',
-              duration: 2000
-            })
-            this.getOrgList()
-          })
-        }
+      save(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            if (this.option === 'create') {
+              addObj(this.form).then(response => {
+                this.option = ''
+                this.getOrgList()
+              })
+            } else if (this.option === 'update') {
+              putObj(this.form).then(response => {
+                this.option = ''
+                this.getOrgList()
+              })
+            }
+          }
+        })
       },
       deleteClick() {
         if (this.org.orgId === null) {

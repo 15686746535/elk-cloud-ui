@@ -157,14 +157,14 @@
               </el-col>
               <el-col :span="14"  style="line-height: 50px;">
                 <el-row>
-                  <el-col :span="8" ><div class="text_css">姓名：</div></el-col>
+                  <el-col :span="8" ><div class="text_css">姓名</div></el-col>
                   <el-col :span="14" >
                     <el-input v-if="edit"  v-model="student.name" placeholder="姓名"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.name}}</div>
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="8" ><div class="text_css">性别：</div></el-col>
+                  <el-col :span="8" ><div class="text_css">性别</div></el-col>
                   <el-col :span="14" >
                     <el-input disabled v-if="edit" v-model="sexVO" placeholder="性别"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
@@ -172,7 +172,7 @@
                 </el-row>
 
                 <el-row>
-                  <el-col :span="8"><div class="text_css">出生日期：</div></el-col>
+                  <el-col :span="8"><div class="text_css">出生日期</div></el-col>
                   <el-col :span="14">
                     <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="出生日期"  style="width: 100%" v-model="student.birthday"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
@@ -180,7 +180,7 @@
                 </el-row>
 
                 <el-row>
-                  <el-col :span="8"><div class="text_css">档案号：</div></el-col>
+                  <el-col :span="8"><div class="text_css">档案号</div></el-col>
                   <el-col :span="14">
                     <el-input v-if="edit"  v-model="student.archivesNumber" placeholder="档案号"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
@@ -197,14 +197,14 @@
 
               <el-col :span="12" style="line-height: 50px;">
                 <el-row>
-                  <el-col :span="8" ><div class="text_css">入学日期：</div></el-col>
+                  <el-col :span="8" ><div class="text_css">入学日期</div></el-col>
                   <el-col :span="14" >
                     <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="8" ><div class="text_css">所学车型：</div></el-col>
+                  <el-col :span="8" ><div class="text_css">所学车型</div></el-col>
                   <el-col :span="14" >
                     <dict v-if="edit" v-model="student.archivesNumber" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
@@ -212,7 +212,7 @@
                 </el-row>
 
                 <el-row>
-                  <el-col :span="8"><div class="text_css">来源渠道：</div></el-col>
+                  <el-col :span="8"><div class="text_css">来源渠道</div></el-col>
                   <el-col :span="14">
                     <dict v-if="edit" dictType="dict_source" style="width: 100%;" v-model="student.source"  placeholder="来源渠道"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.source}}</div>
@@ -224,21 +224,21 @@
 
               <el-col :span="12" style="line-height: 50px;">
                 <el-row>
-                  <el-col :span="8"><div class="text_css">入学期数：</div></el-col>
+                  <el-col :span="8"><div class="text_css">入学期数</div></el-col>
                   <el-col :span="14">
                     <dict dictType="dict_sex" v-if="edit"  placeholder="入学期数"  ></dict>
                   </el-col>
                 </el-row>
 
                 <el-row>
-                  <el-col :span="8"><div class="text_css">场训教练：</div></el-col>
+                  <el-col :span="8"><div class="text_css">场训教练</div></el-col>
                   <el-col :span="14">
                     <dict dictType="dict_sex" v-if="edit"  placeholder="场训教练"  ></dict>
                   </el-col>
                 </el-row>
 
                 <el-row>
-                  <el-col :span="8"><div class="text_css">报名点：</div></el-col>
+                  <el-col :span="8"><div class="text_css">报名点</div></el-col>
                   <el-col :span="14">
                     <dict dictType="dict_enrolSite" v-model="student.enrolSite" v-if="edit"  placeholder="报名点"  ></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
@@ -259,7 +259,7 @@
             <el-row style="line-height: 50px;">
 
               <el-row>
-                <el-col :span="4" ><div class="text_css">身份证号：</div></el-col>
+                <el-col :span="4" ><div class="text_css">身份证号</div></el-col>
                 <el-col :span="10" >
                   <el-input v-if="edit" @blur="generateInfo"  v-model="student.idNumber" placeholder="身份证号"></el-input>
                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
@@ -267,7 +267,7 @@
               </el-row>
 
               <el-row>
-                <el-col :span="4" ><div class="text_css">联系电话：</div></el-col>
+                <el-col :span="4" ><div class="text_css">联系电话</div></el-col>
                 <el-col :span="10" >
                   <el-input v-if="edit"  v-model="student.mobile" placeholder="联系电话"></el-input>
                   <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.mobile}}</div>

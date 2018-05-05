@@ -53,20 +53,20 @@
                     <!-- 个人信息 -->
                     <el-col style=" line-height: 25px">
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">身份证：</el-col>
+                        <el-col :span="7" class="table_text">身份证</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.idNumber}}</el-col>
                       </el-row>
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">性别：</el-col>
+                        <el-col :span="7" class="table_text">性别</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
                       </el-row>
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">状态：</el-col>
+                        <el-col :span="7" class="table_text">状态</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.state | subjectFilter}}</el-col>
                       </el-row>
 
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">介绍人：</el-col>
+                        <el-col :span="7" class="table_text">介绍人</el-col>
                         <el-col :span="17" class="table_text"><span v-for="introducer in scope.row.introducerList">{{introducer}}、</span></el-col>
                       </el-row>
                     </el-col>
@@ -77,19 +77,19 @@
                   <template slot-scope="scope">
                     <el-col style=" line-height: 25px">
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">档案号：</el-col>
+                        <el-col :span="7" class="table_text">档案号</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.archivesNumber}}</el-col>
                       </el-row>
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">入学日期：</el-col>
+                        <el-col :span="7" class="table_text">入学日期</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.enrolTime | subTime}}</el-col>
                       </el-row>
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">期数：</el-col>
+                        <el-col :span="7" class="table_text">期数</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.periods}}</el-col>
                       </el-row>
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">车型：</el-col>
+                        <el-col :span="7" class="table_text">车型</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.motorcycleType}}</el-col>
                       </el-row>
                     </el-col>
@@ -101,21 +101,21 @@
 
                     <el-col style=" line-height: 25px">
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">校区：</el-col>
+                        <el-col :span="7" class="table_text">校区</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.campus}}</el-col>
                       </el-row>
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">来源渠道：</el-col>
+                        <el-col :span="7" class="table_text">来源渠道</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.source}}</el-col>
                       </el-row>
 
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">场训教练：</el-col>
+                        <el-col :span="7" class="table_text">场训教练</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.fieldName}}</el-col>
                       </el-row>
 
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">路训教练：</el-col>
+                        <el-col :span="7" class="table_text">路训教练</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.roadName}}</el-col>
                       </el-row>
                     </el-col>
@@ -126,22 +126,22 @@
                   <template slot-scope="scope">
                     <el-col style=" line-height: 25px">
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">服务类别：</el-col>
+                        <el-col :span="7" class="table_text">服务类别</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.roadName}}</el-col>
                       </el-row>
 
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">增值服务：</el-col>
+                        <el-col :span="7" class="table_text">增值服务</el-col>
                         <el-col :span="17" class="table_text"><span v-for="increment in scope.row.incrementList">{{increment}}、</span></el-col>
                       </el-row>
 
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">应收金额：</el-col>
+                        <el-col :span="7" class="table_text">应收金额</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.receivable}}</el-col>
                       </el-row>
 
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">欠费金额：</el-col>
+                        <el-col :span="7" class="table_text">欠费金额</el-col>
                         <el-col :span="17" class="table_text">{{scope.row.arrearage}}</el-col>
                       </el-row>
                     </el-col>
@@ -296,7 +296,7 @@
                     <!-- 档案号 -->
                     <el-row style="height: 50px;">
                       <el-form-item>
-                        <span slot="label" class="text_css">档案号：</span>
+                        <span slot="label" class="text_css">档案号</span>
                         <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
                       </el-form-item>
@@ -306,7 +306,7 @@
                     <!-- 姓名 -->
                     <el-row style="height: 50px;">
                       <el-form-item>
-                        <span slot="label" class="text_css">姓名：</span>
+                        <span slot="label" class="text_css">姓名</span>
                         <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.name}}</div>
                       </el-form-item>
@@ -315,7 +315,7 @@
                     <!-- 身份证号 -->
                     <el-row style="height: 50px;">
                       <el-form-item>
-                        <span slot="label" class="text_css">身份证号：</span>
+                        <span slot="label" class="text_css">身份证号</span>
                         <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @blur="generateInfo" v-model="student.idNumber"></el-input>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
                       </el-form-item>
@@ -325,7 +325,7 @@
                     <!-- 性别 -->
                     <el-row style="height: 50px;">
                       <el-form-item>
-                        <span slot="label" class="text_css">性别：</span>
+                        <span slot="label" class="text_css">性别</span>
                         <template v-if="edit">
                           <el-radio v-model="student.sex" label="1">男</el-radio>
                           <el-radio v-model="student.sex" label="0">女</el-radio>
@@ -338,7 +338,7 @@
                     <!-- 生日 -->
                     <el-row style="height: 50px;">
                       <el-form-item>
-                        <span slot="label" class="text_css">生日：</span>
+                        <span slot="label" class="text_css">生日</span>
                         <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
                       </el-form-item>
@@ -369,7 +369,7 @@
                       <!-- 入学日期 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">入学日期：</span>
+                          <span slot="label" class="text_css">入学日期</span>
                           <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
                         </el-form-item>
@@ -379,7 +379,7 @@
                       <!-- 校区 -->
                       <el-row style="height: 50px;">
                         <el-form-item>
-                          <span slot="label" class="text_css">校区：</span>
+                          <span slot="label" class="text_css">校区</span>
                           <dict v-if="edit" dictType="dict_campus" v-model="student.campus" style="width: 100%;"  placeholder="校区"></dict>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.campus}}</div>
                         </el-form-item>
@@ -391,7 +391,7 @@
                       <!-- 入学期数 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">入学期数：</span>
+                          <span slot="label" class="text_css">入学期数</span>
                           <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="student.periods"></el-input>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
                         </el-form-item>
@@ -401,7 +401,7 @@
                       <!-- 来源渠道 -->
                       <el-row style="height: 50px;">
                         <el-form-item>
-                          <span slot="label" class="text_css">来源渠道：</span>
+                          <span slot="label" class="text_css">来源渠道</span>
                           <dict v-if="edit" dictType="dict_source" v-model="student.source" style="width: 100%;"  placeholder="来源渠道"></dict>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.source}}</div>
                         </el-form-item>
@@ -414,7 +414,7 @@
                       <!-- 所学车型 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">所学车型：</span>
+                          <span slot="label" class="text_css">所学车型</span>
                           <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                         </el-form-item>
@@ -424,7 +424,7 @@
                       <!-- 报名点 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">报名点：</span>
+                          <span slot="label" class="text_css">报名点</span>
                           <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
                         </el-form-item>
@@ -437,7 +437,7 @@
                       <el-row style="height: 50px">
 
                         <el-form-item>
-                          <span slot="label" class="text_css">场训教练：</span>
+                          <span slot="label" class="text_css">场训教练</span>
                           <Coach v-if="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.fieldCoachName}}</div>
                         </el-form-item>
@@ -447,7 +447,7 @@
                       <!-- 路训教练 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">路训教练：</span>
+                          <span slot="label" class="text_css">路训教练</span>
                           <Coach v-if="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.roadCoachName}}</div>
                         </el-form-item>
@@ -461,7 +461,7 @@
                       <el-row style="height: 50px">
 
                         <el-form-item>
-                          <span slot="label"  class="text_css">介绍人：</span>
+                          <span slot="label"  class="text_css">介绍人</span>
                           <el-select v-if="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
                             <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                             </el-option>
@@ -484,7 +484,7 @@
                       <!-- 联系电话 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">联系电话：</span>
+                          <span slot="label" class="text_css">联系电话</span>
                           <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="student.mobile"></el-input>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.mobile}}</div>
                         </el-form-item>
@@ -494,7 +494,7 @@
                       <!-- 微信 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">微信：</span>
+                          <span slot="label" class="text_css">微信</span>
                           <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="微信" v-model="student.wechat"></el-input>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.wechat}}</div>
                         </el-form-item>
@@ -509,7 +509,7 @@
                       <!-- 电子邮箱 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">电子邮箱：</span>
+                          <span slot="label" class="text_css">电子邮箱</span>
                           <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="student.email"></el-input>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.email}}</div>
                         </el-form-item>
@@ -519,7 +519,7 @@
                       <!-- 所属职位 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">所属职位：</span>
+                          <span slot="label" class="text_css">所属职位</span>
                           <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="student.position"></el-input>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.position}}</div>
                         </el-form-item>
@@ -535,7 +535,7 @@
                       <!-- 是否体检 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">是否体检：</span>
+                          <span slot="label" class="text_css">是否体检</span>
                           <el-col :span="18">
                             <el-radio-group v-if="edit" v-model="student.physicalExamination">
                               <el-radio label="1">是</el-radio>
@@ -550,7 +550,7 @@
                       <!-- 是否增驾 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">是否增驾：</span>
+                          <span slot="label" class="text_css">是否增驾</span>
                           <el-col :span="18">
                             <el-radio-group v-if="edit" v-model="student.addDrive">
                               <el-radio label="1">是</el-radio>
@@ -570,7 +570,7 @@
                       <!-- 是否有车 -->
                       <el-row style="height: 50px">
                         <el-form-item>
-                          <span slot="label" class="text_css">是否有车：</span>
+                          <span slot="label" class="text_css">是否有车</span>
                           <el-col :span="18">
                             <el-radio-group v-if="edit" v-model="student.haveCar">
                               <el-radio label="1">是</el-radio>
@@ -587,7 +587,7 @@
                 <!-- 所属单位 -->
                 <el-row style="height: 50px;margin: 0 10px">
                   <el-form-item>
-                    <span slot="label" class="text_css">所属单位：</span>
+                    <span slot="label" class="text_css">所属单位</span>
                     <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model="student.company"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.company}}</div>
                   </el-form-item>
@@ -597,7 +597,7 @@
                 <!-- 联系地址 -->
                 <el-row style="height: 50px;margin: 0 10px">
                   <el-form-item>
-                    <span slot="label" class="text_css">联系地址：</span>
+                    <span slot="label" class="text_css">联系地址</span>
                     <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
                   </el-form-item>

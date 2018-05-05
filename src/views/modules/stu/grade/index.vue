@@ -246,7 +246,7 @@ export default {
           limit: 16,
           /* 今天以前传 before   今天之后传 after */
           scope: 'before',
-          subject: 1
+          subject: '1'
         },
         studentListLoading: false,
         batchListLoading: true,
@@ -426,6 +426,7 @@ export default {
         }
       },
       passExam() {
+        console.log(this.batchListQuery.subject)
         if (this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4') {
           this.examOperation('1')
         } else {
@@ -461,7 +462,7 @@ export default {
           }).then(() => {
             this.examOperation(state)
           })
-        } else if (state === '1') {
+        } else if (state === '1' && !(this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4')) {
           this.innerGradeOption1 = true
         } else {
           this.examOperation(state)

@@ -95,7 +95,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item prop="coachId">
-                  <span slot="label" class="text_css">教学教练：</span>
+                  <span slot="label" class="text_css">教学教练</span>
                   <span v-show="vehiclePeriodListQuery.subject === 2">
                     <Coach v-model="carPeriod.coachId" coachType="field" placeholder="场训教练"></Coach>
                   </span>
@@ -108,7 +108,7 @@
 
               <el-col :span="12">
                 <el-form-item prop="count">
-                  <span slot="label" class="text_css">人数上限：</span>
+                  <span slot="label" class="text_css">人数上限</span>
                   <el-input type="number" v-model.number="carPeriod.count" placeholder="人数上限"></el-input>
                 </el-form-item>
               </el-col>
@@ -117,7 +117,7 @@
             <el-row :gutter="20">
               <el-col>
                 <el-form-item prop="fieldAddress">
-                  <span slot="label" class="text_css">训练场地：</span>
+                  <span slot="label" class="text_css">训练场地</span>
                   <span v-show="vehiclePeriodListQuery.subject === 2">
                     <dict v-model="carPeriod.fieldAddress" dictType="dict_training_field2" placeholder="训练场地"></dict>
                   </span>
@@ -132,7 +132,7 @@
 
             <el-row>
               <el-form-item required>
-                <span slot="label" class="text_css">学习课时：</span>
+                <span slot="label" class="text_css">学习课时</span>
                 <el-date-picker
                   v-model="carPeriod.interval"
                   value-format="timestamp"
@@ -149,7 +149,7 @@
 
             <el-row>
               <el-form-item prop="vehicleId">
-                <span slot="label" class="text_css">训练车辆：</span>
+                <span slot="label" class="text_css">训练车辆</span>
                 <el-select v-model="carPeriod.vehicleId" style="width: 100%" collapse-tags placeholder="请选择训练车辆">
                   <el-option
                     v-for="item in vehicleList"
@@ -179,7 +179,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item prop="coachId">
-                  <span slot="label" class="text_css">教学教练：</span>
+                  <span slot="label" class="text_css">教学教练</span>
                   <span v-show="vehiclePeriodListQuery.subject === 2">
                     <Coach v-model="vehiclePeriod.coachId" coachType="field" placeholder="场训教练"></Coach>
                   </span>
@@ -192,7 +192,7 @@
 
               <el-col :span="12">
                 <el-form-item prop="count">
-                  <span slot="label" class="text_css">人数上限：</span>
+                  <span slot="label" class="text_css">人数上限</span>
                   <el-input type="number" v-model.number="vehiclePeriod.count" placeholder="人数上限"></el-input>
                 </el-form-item>
               </el-col>
@@ -201,7 +201,7 @@
             <el-row :gutter="20">
               <el-col>
                 <el-form-item prop="fieldAddress">
-                  <span slot="label" class="text_css">训练场地：</span>
+                  <span slot="label" class="text_css">训练场地</span>
                   <span v-show="vehiclePeriodListQuery.subject === 2">
                     <dict v-model="vehiclePeriod.fieldAddress" dictType="dict_training_field2" placeholder="训练场地"></dict>
                   </span>
@@ -216,7 +216,7 @@
 
             <el-row>
               <el-form-item required>
-                <span slot="label" class="text_css">学习课时：</span>
+                <span slot="label" class="text_css">学习课时</span>
                 <el-row :gutter="2">
                   <el-col :span="11">
                     <el-form-item prop="beginTime">
@@ -235,7 +235,7 @@
             </el-row>
             <el-row>
               <el-form-item prop="dateList">
-                <span slot="label" class="text_css">培训日期：</span>
+                <span slot="label" class="text_css">培训日期</span>
                 <el-select v-model="vehiclePeriod.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择培训日期">
                   <el-option
                     v-for="item in dateList"
@@ -249,7 +249,7 @@
 
             <el-row>
               <el-form-item prop="vehicleList">
-                <span slot="label" class="text_css">训练车辆：</span>
+                <span slot="label" class="text_css">训练车辆</span>
                 <el-select v-model="vehiclePeriod.vehicleList" style="width: 100%" multiple collapse-tags placeholder="请选择训练车辆">
                   <el-option
                     v-for="item in vehicleList"

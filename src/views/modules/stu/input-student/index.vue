@@ -5,12 +5,12 @@
         <div style="width:145px;font-size: 36px;font-weight: 500;margin: 0 auto;">学员录入</div>
         <div style="width:400px;margin: 0 auto; line-height: 50px;" :style="{marginTop: (($store.state.app.client.height-45)/4) + 'px'}">
           <el-row>
-            <el-col :span="6"><span class="text_css">姓名：</span></el-col>
+            <el-col :span="6"><span class="text_css">姓名</span></el-col>
             <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="studentEntity.name"></el-input>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
+            <el-col :span="6"><span class="text_css">身份证号</span></el-col>
             <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="身份证号" v-model="studentEntity.idNumber"></el-input></el-col>
           </el-row>
           <el-row :gutter="20" style="margin-top: 30px;">
@@ -40,19 +40,19 @@
 
                   <!-- 档案号 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">档案号：</span></el-col>
+                    <el-col :span="6"><span class="text_css">档案号</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model.number="studentEntity.archivesNumber"></el-input></el-col>
                   </el-row>
 
                   <!-- 姓名 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">姓名：</span></el-col>
+                    <el-col :span="6"><span class="text_css">姓名</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="studentEntity.name"></el-input></el-col>
                   </el-row>
 
                   <!-- 身份证号 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
+                    <el-col :span="6"><span class="text_css">身份证号</span></el-col>
                     <el-col :span="18">
                       <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @change="generateInfo" v-model="studentEntity.idNumber"></el-input>
                     </el-col>
@@ -60,13 +60,13 @@
 
                   <!-- 联系电话 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
+                    <el-col :span="6"><span class="text_css">联系电话</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="studentEntity.mobile"></el-input></el-col>
                   </el-row>
 
                   <!-- 性别 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">性别：</span></el-col>
+                    <el-col :span="6"><span class="text_css">性别</span></el-col>
                     <el-col :span="18">
                       <el-radio v-model="studentEntity.sex" label="1">男</el-radio>
                       <el-radio v-model="studentEntity.sex" label="0">女</el-radio>
@@ -75,40 +75,40 @@
 
                   <!-- 生日 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">生日：</span></el-col>
+                    <el-col :span="6"><span class="text_css">生日</span></el-col>
                     <el-col :span="18"><el-date-picker value-format="timestamp" type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker></el-col>
                   </el-row>
 
                   <!-- 所学车型 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">所学车型：</span></el-col>
+                    <el-col :span="6"><span class="text_css">所学车型</span></el-col>
                     <el-col :span="18"><dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
                   </el-row>
 
                   <!-- 来源渠道 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">来源渠道：</span></el-col>
+                    <el-col :span="6"><span class="text_css">来源渠道</span></el-col>
                     <el-col :span="18"><dict v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict></el-col>
                   </el-row>
 
 
                   <!-- 入学日期 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">入学日期：</span></el-col>
+                    <el-col :span="6"><span class="text_css">入学日期</span></el-col>
                     <el-col :span="18"><el-date-picker value-format="timestamp" type="date" placeholder="入学日期"  style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker></el-col>
                   </el-row>
 
 
                   <!-- 报名点 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">报名点：</span></el-col>
+                    <el-col :span="6"><span class="text_css">报名点</span></el-col>
                     <el-col :span="18"><dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict></el-col>
                   </el-row>
 
 
                   <!-- 所在单位 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">所在单位：</span></el-col>
+                    <el-col :span="6"><span class="text_css">所在单位</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model.number="studentEntity.company"></el-input></el-col>
 
                   </el-row>
@@ -136,39 +136,39 @@
 
                   <!-- 微信 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">微信：</span></el-col>
+                    <el-col :span="6"><span class="text_css">微信</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="微信" :maxlength="11" v-model.number="studentEntity.wechat"></el-input></el-col>
                   </el-row>
 
 
                   <!-- 校区 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">校区：</span></el-col>
+                    <el-col :span="6"><span class="text_css">校区</span></el-col>
                     <el-col :span="18"><dict v-model="studentEntity.homeAddress" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict></el-col>
                   </el-row>
 
                   <!-- 联系地址 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">联系地址：</span></el-col>
+                    <el-col :span="6"><span class="text_css">联系地址</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model.number="studentEntity.contactAddress"></el-input></el-col>
                   </el-row>
 
 
                   <!-- 入学期数 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">入学期数：</span></el-col>
+                    <el-col :span="6"><span class="text_css">入学期数</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model.number="studentEntity.periods"></el-input></el-col>
                   </el-row>
 
                   <!-- 电子邮箱 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">电子邮箱：</span></el-col>
+                    <el-col :span="6"><span class="text_css">电子邮箱</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model.number="studentEntity.email"></el-input></el-col>
                   </el-row>
 
                   <!-- 所属职位 -->
                   <el-row style="height: 50px">
-                    <el-col :span="6"><span class="text_css">所属职位：</span></el-col>
+                    <el-col :span="6"><span class="text_css">所属职位</span></el-col>
                     <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model.number="studentEntity.position"></el-input></el-col>
                   </el-row>
 
@@ -177,14 +177,14 @@
               </el-row>
 
               <el-row style="height: 50px">
-                <el-col :span="3"><span class="text_css">介绍人1：</span></el-col>
+                <el-col :span="3"><span class="text_css">介绍人1</span></el-col>
                 <el-col :span="5"><!--<org-select style="width: 100%" v-model="studentEntity.introducer" @org-click="orgClick"></org-select>--></el-col>
                 <el-col :span="1"><div class="text_css" style="float: none;margin: 0 auto;text-align:center;">--</div></el-col>
                 <el-col :span="6"><el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model.number="studentEntity.introducer"></el-input></el-col>
               </el-row>
 
               <el-row style="height: 50px">
-                <el-col :span="3"><span class="text_css">介绍人2：</span></el-col>
+                <el-col :span="3"><span class="text_css">介绍人2</span></el-col>
                 <el-col :span="16"></el-col>
               </el-row>
             </el-row>

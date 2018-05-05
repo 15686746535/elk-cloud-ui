@@ -132,13 +132,13 @@
           <el-row :gutter="5">
             <el-col :span="12">
               <el-form-item prop="name">
-                <span slot="label" class="text_css">姓名：</span>
+                <span slot="label" class="text_css">姓名</span>
                 <el-input v-model="intention.name" placeholder="姓名"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="sex">
-                <span slot="label" class="text_css">性别：</span>
+                <span slot="label" class="text_css">性别</span>
                 <el-radio-group v-model="intention.sex">
                   <el-radio label="1">男</el-radio>
                   <el-radio label="0">女</el-radio>
@@ -150,13 +150,13 @@
           <el-row>
             <el-col :span="12">
               <el-form-item prop="mobile">
-                <span slot="label" class="text_css">电话：</span>
+                <span slot="label" class="text_css">电话</span>
                 <el-input  v-model="intention.mobile" placeholder="电话"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="wechat">
-                <span slot="label" class="text_css">微信：</span>
+                <span slot="label" class="text_css">微信</span>
                 <el-input  v-model="intention.wechat" placeholder="微信"></el-input>
               </el-form-item>
             </el-col>
@@ -165,13 +165,13 @@
           <el-row>
             <el-col :span="12">
               <el-form-item prop="contactAddress">
-                <span slot="label" class="text_css">住址：</span>
+                <span slot="label" class="text_css">住址</span>
                 <el-input  v-model="intention.contactAddress" placeholder="住址"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="customerType">
-                <span slot="label" class="text_css">客户类型：</span>
+                <span slot="label" class="text_css">客户类型</span>
                 <dict v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
               </el-form-item>
             </el-col>
@@ -180,13 +180,13 @@
           <el-row>
             <el-col :span="12">
               <el-form-item prop="source">
-                <span slot="label" class="text_css">来源渠道：</span>
+                <span slot="label" class="text_css">来源渠道</span>
                 <dict dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="worry">
-                <span slot="label" class="text_css">客户顾虑：</span>
+                <span slot="label" class="text_css">客户顾虑</span>
                 <dict v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户顾虑"></dict>
               </el-form-item>
             </el-col>
@@ -195,13 +195,13 @@
           <el-row>
             <el-col :span="12">
               <el-form-item prop="visitTime">
-                <span slot="label" class="text_css">来访时间：</span>
+                <span slot="label" class="text_css">来访时间</span>
                 <el-date-picker  type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="applyType">
-                <span slot="label" class="text_css">车型：</span>
+                <span slot="label" class="text_css">车型</span>
                 <dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
               </el-form-item>
             </el-col>
@@ -210,7 +210,7 @@
           <el-row>
             <el-col>
               <el-form-item prop="content">
-                <span slot="label" class="text_css">咨询内容：</span>
+                <span slot="label" class="text_css">咨询内容</span>
                 <el-input  type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
               </el-form-item>
             </el-col>
@@ -252,14 +252,14 @@
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
                   <el-form-item prop="name">
-                    <span slot="label" class="text_css">姓名：</span>
+                    <span slot="label" class="text_css">姓名</span>
                     <el-input v-if="edit"  v-model="intention.name" placeholder="姓名"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.name}}</div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="mobile">
-                    <span slot="label" class="text_css">电话：</span>
+                    <span slot="label" class="text_css">电话</span>
                     <el-input v-if="edit" :maxlength="11" v-model="intention.mobile" placeholder="电话"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.mobile}}</div>
                   </el-form-item>
@@ -270,14 +270,14 @@
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
                   <el-form-item prop="userName">
-                    <span slot="label" class="text_css">负责人：</span>
+                    <span slot="label" class="text_css">负责人</span>
                     <el-input v-if="edit" disabled v-model="intention.userName" placeholder="负责人"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.userName}}</div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="wechat">
-                    <span slot="label" class="text_css">微信：</span>
+                    <span slot="label" class="text_css">微信</span>
                     <el-input v-if="edit"  v-model="intention.wechat" placeholder="微信"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.wechat}}</div>
                   </el-form-item>
@@ -288,7 +288,7 @@
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
                   <el-form-item prop="sex">
-                    <span slot="label" class="text_css">性别：</span>
+                    <span slot="label" class="text_css">性别</span>
                     <template v-if="edit">
                       <el-radio v-model="intention.sex" label="1">男</el-radio>
                       <el-radio v-model="intention.sex" label="0">女</el-radio>
@@ -298,7 +298,7 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="source">
-                    <span slot="label" class="text_css">来源渠道：</span>
+                    <span slot="label" class="text_css">来源渠道</span>
                     <dict v-if="edit" dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.source}}</div>
                   </el-form-item>
@@ -309,14 +309,14 @@
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
                   <el-form-item prop="customerType">
-                    <span slot="label" class="text_css">客户类型：</span>
+                    <span slot="label" class="text_css">客户类型</span>
                     <dict v-if="edit" v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.customerType}}</div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="contactAddress">
-                    <span slot="label" class="text_css">住址：</span>
+                    <span slot="label" class="text_css">住址</span>
                     <el-input v-if="edit"  v-model="intention.contactAddress" placeholder="住址"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.contactAddress}}</div>
                   </el-form-item>
@@ -326,14 +326,14 @@
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
                   <el-form-item prop="worry">
-                    <span slot="label" class="text_css">客户顾虑：</span>
+                    <span slot="label" class="text_css">客户顾虑</span>
                     <dict v-if="edit" v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户顾虑"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.worry}}</div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="applyType">
-                    <span slot="label" class="text_css">车型：</span>
+                    <span slot="label" class="text_css">车型</span>
                     <dict v-if="edit" v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.applyType}}</div>
                   </el-form-item>
@@ -343,7 +343,7 @@
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
                   <el-form-item prop="visitTime">
-                    <span slot="label" class="text_css">来访时间：</span>
+                    <span slot="label" class="text_css">来访时间</span>
                     <el-date-picker v-if="edit" type="date" placeholder="来访时间"  value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | subTime('data')}}</div>
                   </el-form-item>
@@ -355,7 +355,7 @@
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col>
                   <el-form-item prop="content">
-                    <span slot="label" class="text_css">咨询内容：</span>
+                    <span slot="label" class="text_css">咨询内容</span>
                     <el-input v-if="edit" type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="intention.content" placeholder="咨询内容"></el-input>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
                   </el-form-item>

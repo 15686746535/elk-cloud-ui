@@ -7,12 +7,12 @@
 
           <el-form label-position="left" :model="student" :rules="student" ref="student" label-width="80px">
             <el-form-item>
-              <label slot="label"><span class="text_css">姓名：</span></label>
+              <label slot="label"><span class="text_css">姓名</span></label>
               <el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
             </el-form-item>
 
             <el-form-item>
-              <label slot="label"><span class="text_css">身份证号：</span></label>
+              <label slot="label"><span class="text_css">身份证号</span></label>
               <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" v-model="student.idNumber"></el-input>
             </el-form-item>
 
@@ -23,12 +23,12 @@
 
           </el-form>
           <!--<el-row>
-            <el-col :span="6"><span class="text_css">姓名：</span></el-col>
+            <el-col :span="6"><span class="text_css">姓名</span></el-col>
             <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="stu.name"></el-input>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="6"><span class="text_css">身份证号：</span></el-col>
+            <el-col :span="6"><span class="text_css">身份证号</span></el-col>
             <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="身份证号" v-model="stu.idNumber"></el-input></el-col>
           </el-row>
           <el-row :gutter="20" style="margin-top: 70px;">
@@ -58,13 +58,13 @@
 
                 <!-- 姓名 -->
                 <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">姓名：</span></el-col>
+                  <el-col :span="6"><span class="text_css">姓名</span></el-col>
                   <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input></el-col>
                 </el-row>
 
                 <!-- 性别 -->
                 <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">性别：</span></el-col>
+                  <el-col :span="6"><span class="text_css">性别</span></el-col>
                   <el-col :span="18">
                     <el-radio v-model="student.sex" label="1">男</el-radio>
                     <el-radio v-model="student.sex" label="0">女</el-radio>
@@ -73,13 +73,13 @@
 
                 <!-- 生日 -->
                 <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">生日：</span></el-col>
+                  <el-col :span="6"><span class="text_css">生日</span></el-col>
                   <el-col :span="18"><el-date-picker value-format="timestamp" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker></el-col>
                 </el-row>
 
                 <!-- 联系电话 -->
                 <el-row style="height: 50px">
-                  <el-col :span="6"><span class="text_css">联系电话：</span></el-col>
+                  <el-col :span="6"><span class="text_css">联系电话</span></el-col>
                   <el-col :span="18"><el-input style="width: 100%;" class="filter-item" placeholder="姓名" v-model.number="student.mobile"></el-input></el-col>
                 </el-row>
 

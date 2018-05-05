@@ -48,22 +48,22 @@
                   <!-- 个人信息 -->
                   <el-col style=" line-height: 25px">
                     <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">工号</el-col>
+                      <el-col :span="7" class="table_text">工号:</el-col>
                       <el-col :span="17" class="table_text">{{scope.row.jobNumber}}</el-col>
                     </el-row>
                     <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">职位</el-col>
+                      <el-col :span="7" class="table_text">职位:</el-col>
                       <el-col :span="17" class="table_text">
                         <span v-for="(role,index) in scope.row.roleList">{{role.roleName}}<span v-if="scope.row.roleList.length !== (index+1)">、</span></span>
                       </el-col>
                     </el-row>
                     <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">生日</el-col>
+                      <el-col :span="7" class="table_text">生日:</el-col>
                       <el-col :span="17" class="table_text">{{scope.row.birthday | subTime}}</el-col>
                     </el-row>
 
                     <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">工作电话</el-col>
+                      <el-col :span="7" class="table_text">工作电话:</el-col>
                       <el-col :span="17" class="table_text">
                         {{scope.row.workMobile}}
                       </el-col>
@@ -157,14 +157,14 @@
                       <el-row :gutter="10" style="height: 60px">
                         <el-col :span="12">
                           <el-form-item prop="jobNumber">
-                            <span slot="label" class="text_css">工号</span>
+                            <span slot="label" class="text_css">工号:</span>
                             <el-input v-if="edit"  v-model="userEntity.jobNumber" placeholder="工号"></el-input>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.jobNumber}}</span>
                           </el-form-item>
                         </el-col>
                         <el-col :span="12">
                           <el-form-item prop="idNumber">
-                            <span slot="label" class="text_css">身份证</span>
+                            <span slot="label" class="text_css">身份证:</span>
                             <el-input v-if="edit" @blur="generateInfo" :maxlength="18"  @keyup.enter.native="generateInfo" v-model="userEntity.idNumber" placeholder="身份证号"></el-input>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.idNumber}}</span>
                           </el-form-item>
@@ -174,14 +174,14 @@
                       <el-row :gutter="10" style="height: 60px">
                         <el-col :span="12">
                           <el-form-item prop="name">
-                            <span slot="label" class="text_css">姓名</span>
+                            <span slot="label" class="text_css">姓名:</span>
                             <el-input v-if="edit"  v-model="userEntity.name" placeholder="员工姓名"></el-input>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.name}}</span>
                           </el-form-item>
                         </el-col>
                         <el-col :span="12">
                           <el-form-item prop="sex">
-                            <span slot="label" class="text_css">性别</span>
+                            <span slot="label" class="text_css">性别:</span>
                             <el-radio-group v-if="edit" v-model="userEntity.sex">
                               <el-radio :label="1">男</el-radio>
                               <el-radio :label="0">女</el-radio>
@@ -194,7 +194,7 @@
                       <el-row :gutter="10" style="height: 60px">
                         <el-col :span="12">
                           <el-form-item prop="birthday">
-                            <span slot="label" class="text_css">生日</span>
+                            <span slot="label" class="text_css">生日:</span>
                             <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userEntity.birthday"></el-date-picker>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.birthday | subTime}}</span>
                           </el-form-item>
@@ -211,7 +211,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="mobile">
-                        <span slot="label" class="text_css">联系电话</span>
+                        <span slot="label" class="text_css">联系电话:</span>
                         <el-input v-if="edit"  v-model="userEntity.mobile" placeholder="联系电话"></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.mobile}}</span>
                       </el-form-item>
@@ -221,7 +221,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="wechat">
-                        <span slot="label" class="text_css">微信</span>
+                        <span slot="label" class="text_css">微信:</span>
                         <el-input v-if="edit"  v-model="userEntity.wechat" placeholder="微信" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.wechat}}</span>
                       </el-form-item>
@@ -231,7 +231,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="contactAddress">
-                        <span slot="label" class="text_css">联系地址</span>
+                        <span slot="label" class="text_css">联系地址:</span>
                         <el-input v-if="edit"  v-model="userEntity.contactAddress" placeholder="联系地址"></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.contactAddress}}</span>
                       </el-form-item>
@@ -243,7 +243,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="orgId">
-                        <span slot="label" class="text_css">所属部门</span>
+                        <span slot="label" class="text_css">所属部门:</span>
                         <tree-select v-show="edit" url="/upms/org/tree" v-model="userEntity.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
                         <span style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{userEntity.orgName}}</span>
                       </el-form-item>
@@ -253,7 +253,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="roleIdList">
-                        <span slot="label" class="text_css">职位</span>
+                        <span slot="label" class="text_css">职位:</span>
                         <el-select v-show="edit" v-model="userEntity.roleIdList" collapse-tags style="width: 100%" multiple placeholder="请选择职位">
                           <el-option v-for="role in roleList" :key="role.roleId" :label="role.roleName" :value="role.roleId">
                           </el-option>
@@ -268,7 +268,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="homeAddress">
-                        <span slot="label" class="text_css">家庭住址</span>
+                        <span slot="label" class="text_css">家庭住址:</span>
                         <el-input v-if="edit"  v-model="userEntity.homeAddress" placeholder="家庭住址"></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.homeAddress}}</span>
                       </el-form-item>
@@ -280,7 +280,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="education">
-                        <span slot="label" class="text_css">学历</span>
+                        <span slot="label" class="text_css">学历:</span>
                         <el-input v-if="edit"  v-model="userEntity.education" placeholder="学历" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.education}}</span>
                       </el-form-item>
@@ -290,7 +290,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="major">
-                        <span slot="label" class="text_css">专业</span>
+                        <span slot="label" class="text_css">专业:</span>
                         <el-input v-if="edit"  v-model="userEntity.major" placeholder="专业" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.major}}</span>
                       </el-form-item>
@@ -300,7 +300,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="qq">
-                        <span slot="label" class="text_css">QQ</span>
+                        <span slot="label" class="text_css">QQ:</span>
                         <el-input v-if="edit"  v-model="userEntity.qq" placeholder="QQ" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.qq}}</span>
                       </el-form-item>
@@ -313,7 +313,7 @@
 
 
                       <el-form-item prop="joinedTime">
-                        <span slot="label" class="text_css">入职日期</span>
+                        <span slot="label" class="text_css">入职日期:</span>
                         <el-date-picker value-format="timestamp" v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEntity.joinedTime"></el-date-picker>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.joinedTime | subTime}}</span>
                       </el-form-item>
@@ -323,7 +323,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="positiveTime">
-                        <span slot="label" class="text_css">转正日期</span>
+                        <span slot="label" class="text_css">转正日期:</span>
                         <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEntity.positiveTime"></el-date-picker>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.positiveTime | subTime}}</span>
                       </el-form-item>
@@ -333,7 +333,7 @@
                     <el-col :span="8">
 
                       <el-form-item prop="email">
-                        <span slot="label" class="text_css">E-mail</span>
+                        <span slot="label" class="text_css">E-mail:</span>
                         <el-input v-if="edit"  v-model="userEntity.email" placeholder="E-mail"></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.email}}</span>
                       </el-form-item>
@@ -346,7 +346,7 @@
                     <el-col :span="12">
 
                       <el-form-item label-width="150px" prop="emergencyContact">
-                        <span slot="label" class="text_css">紧急联系人姓名</span>
+                        <span slot="label" class="text_css">紧急联系人姓名:</span>
                         <el-input v-if="edit"  v-model="userEntity.emergencyContact" placeholder="紧急联系人" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyContact}}</span>
                       </el-form-item>
@@ -356,7 +356,7 @@
                     <el-col :span="12">
 
                       <el-form-item label-width="150px" prop="emergencyMobile">
-                        <span slot="label" class="text_css">紧急联系人电话</span>
+                        <span slot="label" class="text_css">紧急联系人电话:</span>
                         <el-input v-if="edit"  v-model="userEntity.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyMobile}}</span>
                       </el-form-item>
@@ -368,7 +368,7 @@
                     <el-col :span="12">
 
                       <el-form-item label-width="150px" prop="fiveInsuranceTime">
-                        <span slot="label" class="text_css">五险购买时间</span>
+                        <span slot="label" class="text_css">五险购买时间:</span>
                         <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险购买时间"  style="width: 100%" v-model="userEntity.fiveInsuranceTime"></el-date-picker>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.fiveInsuranceTime | subTime}}</span>
                       </el-form-item>
@@ -378,7 +378,7 @@
                     <el-col :span="12">
 
                       <el-form-item label-width="150px" prop="providentFundTime">
-                        <span slot="label" class="text_css">公积金购买时间</span>
+                        <span slot="label" class="text_css">公积金购买时间:</span>
                         <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金购买时间"  style="width: 100%" v-model="userEntity.providentFundTime"></el-date-picker>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.providentFundTime | subTime}}</span>
                       </el-form-item>
@@ -390,7 +390,7 @@
                     <el-col :span="12">
 
                       <el-form-item label-width="150px" prop="workMobile">
-                        <span slot="label" class="text_css">工作电话</span>
+                        <span slot="label" class="text_css">工作电话:</span>
                         <el-input v-if="edit"  v-model="userEntity.workMobile" placeholder="工作电话" ></el-input>
                         <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.workMobile}}</span>
                       </el-form-item>
@@ -631,6 +631,10 @@
           ],
           emergencyMobile: [
             { required: true, message: '请输入紧急联系人电话', trigger: ['blur', 'change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change']}
+          ],
+          workMobile: [
+            { required: false, message: '请输入工作电话', trigger: ['blur', 'change'] },
             { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change']}
           ]
         }

@@ -18,19 +18,19 @@ export function timeAgo(time) {
 
 export function sexFilter(sex) {
   const typeMap = {
-    1: '男',
-    0: '女'
+    '1': '男',
+    '0': '女'
   }
   return typeMap[sex]
 }
 export function subjectFilter(subject) {
   const typeMap = {
-    1: '科目一',
-    2: '科目二',
-    3: '科目三',
-    4: '科目四',
-    5: '科目一',
-    6: '科目二'
+    '1': '科目一',
+    '2': '科目二',
+    '3': '科目三',
+    '4': '科目四',
+    '5': '毕业',
+    '-1': '退学'
   }
   return typeMap[subject]
 }

@@ -265,7 +265,7 @@
                       </el-table-column>
                       <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                          <el-button type="danger" size="mini"><i class="el-icon-delete"></i> 撤 销</el-button>
+                          <el-button type="danger" size="mini"><i class="el-icon-fa-undo"></i> 撤 销</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -292,11 +292,11 @@
                     <span>{{scope.row.shuttleTime | subTime}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="操作">
-                  <template slot-scope="scope">
-                    <el-button type="danger" size="mini"><i class="el-icon-delete"></i> 删 除</el-button>
-                  </template>
-                </el-table-column>
+                <!--<el-table-column align="center" label="操作">-->
+                  <!--<template slot-scope="scope">-->
+                    <!--<el-button type="danger" size="mini"><i class="el-icon-delete"></i> 删 除</el-button>-->
+                  <!--</template>-->
+                <!--</el-table-column>-->
 
 
               </el-table>

@@ -169,13 +169,13 @@
       </el-row>
     </div>
 
-    <el-card body-style="padding:0;" v-loading="infoLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力匹配中..." v-show="showModule=='info'">
+    <el-card body-style="padding:0;" v-show="showModule=='info'">
       <div slot="header"  style="line-height: 30px;" class="clearfix">
         学员详细信息
         <div style="float: right"><el-button type="primary" size="mini"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button></div>
       </div>
-      <el-row :style="{height: ($store.state.app.client.height-115) + 'px'}">
-        <el-col :style="{height: ($store.state.app.client.height-115) + 'px',width: ($store.state.app.client.width-555) + 'px'}">
+      <el-row :style="{height: ($store.state.app.client.height-110) + 'px'}">
+        <el-col :style="{height: ($store.state.app.client.height-110) + 'px',width: ($store.state.app.client.width-555) + 'px'}">
           <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px 0 0 4px;">
             <el-tab-pane label="最近信息" name="1">
             </el-tab-pane>
@@ -289,9 +289,11 @@
           </el-tabs>
         </el-col>
 
-        <el-col style="width: 550px"  :style="{height: ($store.state.app.client.height-115) + 'px'}" >
+        <el-col style="width: 550px"  :style="{height: ($store.state.app.client.height-110) + 'px'}" >
           <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="90px">
-            <el-card :style="{height: ($store.state.app.client.height-165) + 'px'}" body-style="padding: 0;" shadow="never" style="border-radius:0 4px 0 0;line-height: 50px;overflow-y: auto;">
+            <el-card :style="{height: ($store.state.app.client.height-160) + 'px'}" body-style="padding: 0;"
+                     v-loading="infoLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力匹配中..."
+                     shadow="never" style="border-radius:0 4px 0 0;line-height: 50px;overflow-y: auto;">
               <!-- 基本信息 -->
               <el-row>
                 <el-row class="title">基本信息</el-row>
@@ -448,7 +450,7 @@
                         <el-form-item prop="fieldName">
                           <span slot="label" class="text_css">场训教练</span>
                           <Coach  v-show="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.fieldName}}</div>
+                          <div style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{student.fieldName === null?'未安排':student.fieldName}}</div>
                         </el-form-item>
                       </el-row>
                     </el-col>
@@ -458,7 +460,7 @@
                         <el-form-item prop="roadName">
                           <span slot="label" class="text_css">路训教练</span>
                           <Coach  v-show="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.roadName}}</div>
+                          <div style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{student.roadName === null?'未安排':student.roadName}}</div>
                         </el-form-item>
                       </el-row>
 

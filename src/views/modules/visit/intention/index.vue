@@ -218,7 +218,7 @@
         </el-form>
 
         <div slot="footer">
-          <el-button @click="closeAlert('intention')">取 消</el-button>
+          <el-button @click="closeAlert('intention')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
           <el-button @click="add('intention')" type="primary">录 入</el-button>
         </div>
 
@@ -370,20 +370,20 @@
                   <el-row v-if="edit">
                     <el-row  v-if="!addInfo" :gutter="10">
                       <el-col :span="6">&nbsp;</el-col>
-                      <el-col :span="6"><el-button type="info" style="width: 100%;" @click="cancel">取消</el-button></el-col>
-                      <el-col :span="6"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update">确认修改</el-button></el-col>
+                      <el-col :span="6"><el-button type="info" style="width: 100%;" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button></el-col>
+                      <el-col :span="6"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
                       <el-col :span="6">&nbsp;</el-col>
                     </el-row>
                     <el-row v-if="addInfo">
                       <el-col :span="8">&nbsp;</el-col>
-                      <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="add">确认保存</el-button></el-col>
+                      <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="add"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
                       <el-col :span="8">&nbsp;</el-col>
                     </el-row>
                   </el-row>
 
                   <el-row v-else :gutter="10">
                     <el-col :span="8">&nbsp;</el-col>
-                    <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="editInfo">编辑信息</el-button></el-col>
+                    <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button></el-col>
                     <el-col :span="8">&nbsp;</el-col>
                   </el-row>
 

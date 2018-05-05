@@ -187,7 +187,7 @@
             <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
 
             <div slot="footer">
-              <el-button type="danger" @click="innerGradeOption = false">取 消</el-button>
+              <el-button type="danger" @click="innerGradeOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
               <el-button type="success" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
             </div>
           </el-dialog>
@@ -204,7 +204,7 @@
           <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
 
           <div slot="footer">
-            <el-button type="danger" @click="innerGradeOption1 = false">取 消</el-button>
+            <el-button type="danger" @click="innerGradeOption1 = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
             <el-button type="success" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
           </div>
         </el-dialog>

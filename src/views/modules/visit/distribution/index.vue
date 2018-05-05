@@ -91,7 +91,7 @@
             </el-option>
           </el-select>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="closeIntention">取 消</el-button>
+            <el-button @click="closeIntention"><i class="el-icon-fa-undo"></i> 取 消</el-button>
             <el-button type="primary" @click="redistribution">确 定</el-button>
           </div>
         </el-dialog>

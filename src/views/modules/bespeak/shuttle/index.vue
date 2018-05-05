@@ -102,13 +102,13 @@
           <el-col :span="8">
             <el-card :style="{height: ($store.state.app.client.height - 145) + 'px'}" shadow="never">
               <div class="filter-container">
-                <!--<div style="float: left;line-height: 28px">-->
-                  <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>-->
-                <!--</div>-->
-                <div style="float: right">
-                  <el-input @keyup.enter.native="notShuttleHandleCurrentChange(1)" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>
-                  <el-button class="filter-item" type="primary" size="mini" @click="notShuttleHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>
+                <div style="line-height: 28px">
+                  |&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>
                 </div>
+                <!--<div style="float: right">-->
+                  <!--<el-input @keyup.enter.native="notShuttleHandleCurrentChange(1)" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="notShuttleListQuery.condition"></el-input>-->
+                  <!--<el-button class="filter-item" type="primary" size="mini" @click="notShuttleHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>-->
+                <!--</div>-->
               </div>
               <el-table :data="notShuttleList" :height="($store.state.app.client.height - 260)" border style="width: 100%"
                         @selection-change="handleSelectionChange" highlight-current-row v-loading="notShuttleListLoading" element-loading-text="给我一点时间">
@@ -132,7 +132,7 @@
                 </el-table-column>
                 <el-table-column align="center" label="常接送人">
                   <template slot-scope="scope">
-                    <span>{{scope.row.studentName}}</span>
+                    <span>{{scope.row.bespeakName}}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -148,7 +148,7 @@
                 >
                 </el-pagination>
                 <div style="float: right;" >
-                  <el-button type="primary" size="mini" @click="getStudentList"><i class="el-icon-plus"></i> 添 加</el-button>
+                  <!--<el-button type="primary" size="mini" @click="getStudentList"><i class="el-icon-plus"></i> 添 加</el-button>-->
                   <el-button type="primary" size="mini" @click="shuttleClick"><i class="el-icon-fa-bus"></i> 接 送</el-button>
                 </div>
 
@@ -211,7 +211,7 @@
                   </el-select>
                 </el-row>
                 <div slot="footer">
-                  <el-button @click="addStudentOption = false">取 消</el-button>
+                  <el-button @click="addStudentOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
                   <el-button type="primary" @click="addStudent">确 定</el-button>
                 </div>
               </el-dialog>
@@ -223,7 +223,7 @@
                   </el-option>
                 </el-select>
                 <div slot="footer">
-                  <el-button @click="userListOption = false">取 消</el-button>
+                  <el-button @click="userListOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
                   <el-button type="primary" @click="addStudent">确 定</el-button>
                 </div>
               </el-dialog>
@@ -235,13 +235,13 @@
             <el-card :style="{height: ($store.state.app.client.height - 145) + 'px'}" shadow="never">
 
               <div class="filter-container">
-                <!--<div style="float: left;line-height: 28px">-->
-                  <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">已安排名单</span>-->
-                <!--</div>-->
-                <div style="float: right">
-                  <el-input @keyup.enter.native="shuttledHandleCurrentChange(1)" size="mini" style="width: 200px" class="filter-item" placeholder="接送人/接送名单" v-model="shuttledListQuery.condition"></el-input>
-                  <el-button class="filter-item" type="primary" size="mini" @click="shuttledHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>
+                <div style="float: left;line-height: 28px">
+                  |&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">已安排名单</span>
                 </div>
+                <!--<div style="float: right">-->
+                  <!--<el-input @keyup.enter.native="shuttledHandleCurrentChange(1)" size="mini" style="width: 200px" class="filter-item" placeholder="接送人/接送名单" v-model="shuttledListQuery.condition"></el-input>-->
+                  <!--<el-button class="filter-item" type="primary" size="mini" @click="shuttledHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>-->
+                <!--</div>-->
               </div>
 
               <el-table :data="shuttledList"  :height="($store.state.app.client.height-260)"  v-loading="shuttledListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">

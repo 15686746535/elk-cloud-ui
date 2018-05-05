@@ -81,7 +81,7 @@
         </el-form>
 
         <div slot="footer">
-          <el-button @click="cancel('bus')">取 消</el-button>
+          <el-button @click="cancel('bus')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
           <el-button v-if="dialogType === 'create'" type="primary" @click="create('bus')" >确 定</el-button>
           <el-button v-else @click="update('bus')" type="primary">修 改</el-button>
         </div>

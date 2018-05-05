@@ -63,7 +63,7 @@
       </el-form>
 
       <div slot="footer">
-        <el-button @click="cancel('msgModel')">取 消</el-button>
+        <el-button @click="cancel('msgModel')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('msgModel')">确 定</el-button>
         <el-button v-else type="primary" @click="update('msgModel')">修 改</el-button>
       </div>

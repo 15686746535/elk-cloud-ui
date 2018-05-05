@@ -315,7 +315,7 @@
               <el-tab-pane label="最近信息" name="1">
 
                 <div>
-                  <el-button @click="cancel">取 消</el-button>
+                  <el-button @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
                   <el-button v-if="addInfo=='create'" type="primary" @click="create">确 定</el-button>
                   <el-button v-else type="primary" @click="update">修 改</el-button>
                 </div>

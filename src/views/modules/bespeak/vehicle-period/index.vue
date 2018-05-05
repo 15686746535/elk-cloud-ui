@@ -167,7 +167,7 @@
 
 
         <div slot="footer">
-          <el-button @click="editOption = false">取 消</el-button>
+          <el-button @click="editOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
           <el-button type="primary" @click="update('carPeriod')">修 改</el-button>
         </div>
       </el-dialog>
@@ -265,7 +265,7 @@
 
         </el-form>
         <div slot="footer">
-          <el-button @click="addOption = false">取 消</el-button>
+          <el-button @click="addOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
           <el-button type="primary" :loading="loading"  @click="create('vehiclePeriod')">确 定</el-button>
         </div>
       </el-dialog>

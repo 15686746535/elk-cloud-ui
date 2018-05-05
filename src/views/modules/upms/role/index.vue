@@ -82,7 +82,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel('form')">取 消</el-button>
+        <el-button @click="cancel('form')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
         <el-button v-else type="primary" @click="update('form')">修 改</el-button>
       </div>
@@ -140,7 +140,7 @@
               trigger: ['blur', 'change']
             },
             {
-              min: 3,
+              min: 1,
               max: 20,
               message: '长度在 3 到 20 个字符',
               trigger: ['blur', 'change']

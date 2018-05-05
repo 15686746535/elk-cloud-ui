@@ -100,7 +100,7 @@
       </el-form>
 
       <div slot="footer">
-        <el-button @click="cancel('batch')">取 消</el-button>
+        <el-button @click="cancel('batch')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button v-if="dialogStatus=='create'" :loading="btnLoading" type="primary" @click="create('batch')">确 定</el-button>
         <el-button v-else type="primary" :loading="btnLoading" @click="update('batch')">修 改</el-button>
       </div>

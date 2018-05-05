@@ -107,7 +107,7 @@
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="questionnaireOption = false">取 消</el-button>
+        <el-button @click="questionnaireOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button type="primary" @click="getRevisitQuestion">确 定</el-button>
       </div>
 
@@ -149,7 +149,7 @@
         <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="answerList.remark" placeholder="备注"></el-input>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="closeDialog"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button @click="saveQuestion" type="primary" >确 定</el-button>
       </div>
     </el-dialog>

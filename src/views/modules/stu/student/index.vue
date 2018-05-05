@@ -169,363 +169,195 @@
       </el-row>
     </div>
 
-    <div v-show="showModule=='info'" style="height: 100%">
-      <el-card body-style="padding:5px 20px;" style="margin-bottom: 5px;height: 60px;line-height: 50px">
-        学员详细信息
-        <div style="float: right"><el-button type="primary" @click="backClick">返  回</el-button></div>
-      </el-card>
-      <el-row :style="{height: ($store.state.app.client.height-105) + 'px'}">
-        <el-col :style="{height: ($store.state.app.client.height-105) + 'px',width: ($store.state.app.client.width-570) + 'px'}">
-          <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px 0 0 4px;">
-            <el-tab-pane label="最近信息" name="1">
-            </el-tab-pane>
-            <el-tab-pane label="考试情况" name="2">
+    <div v-show="showModule=='info'">
+      <el-card body-style="padding:0;">
+        <div slot="header"  style="line-height: 30px;" class="clearfix">
+          学员详细信息
+          <div style="float: right"><el-button type="primary" size="mini"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button></div>
+        </div>
+        <el-row :style="{height: ($store.state.app.client.height-115) + 'px'}">
+          <el-col :style="{height: ($store.state.app.client.height-115) + 'px',width: ($store.state.app.client.width-555) + 'px'}">
+            <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px 0 0 4px;">
+              <el-tab-pane label="最近信息" name="1">
+              </el-tab-pane>
+              <el-tab-pane label="考试情况" name="2">
 
-              <el-table :data="examNoteList" stripe style="width: 100%">
-                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+                <el-table :data="examNoteList" stripe style="width: 100%">
+                  <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
 
-                <el-table-column align="center"  label="考试日期">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.examTime | subTime}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="考试科目">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.subject | subjectFilter}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="考试批次">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.batch}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="考试结果">
-                  <template slot-scope="scope">
-                    <el-tag v-show="scope.row.examState === '1'" type="info" style="color: #fff;" color="#67C23A">通 过</el-tag>
-                    <el-tag v-show="scope.row.examState === '2'" type="info" style="color: #fff;" color="#F56C6C">失 败</el-tag>
-                    <el-tag v-show="scope.row.examState === '3'" type="info" style="color: #fff;" color="#E6A23C">缺 考</el-tag>
-                  </template>
-                </el-table-column>
+                  <el-table-column align="center"  label="考试日期">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.examTime | subTime}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="考试科目">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.subject | subjectFilter}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="考试批次">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.batch}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="考试结果">
+                    <template slot-scope="scope">
+                      <el-tag v-show="scope.row.examState === '1'" type="info" style="color: #fff;" color="#67C23A">通 过</el-tag>
+                      <el-tag v-show="scope.row.examState === '2'" type="info" style="color: #fff;" color="#F56C6C">失 败</el-tag>
+                      <el-tag v-show="scope.row.examState === '3'" type="info" style="color: #fff;" color="#E6A23C">缺 考</el-tag>
+                    </template>
+                  </el-table-column>
 
-              </el-table>
+                </el-table>
 
-            </el-tab-pane>
-            <el-tab-pane label="费用情况" name="3">
-
-
-            </el-tab-pane>
-            <el-tab-pane label="来访跟进信息" name="4">
+              </el-tab-pane>
+              <el-tab-pane label="费用情况" name="3">
 
 
-            </el-tab-pane>
-            <el-tab-pane label="约车日志" name="5">
-
-              <el-table :data="vehiclePeriodList" stripe style="width: 100%">
-                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                <el-table-column align="center"  label="科目">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.subject | subjectFilter}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="教练">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.name}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="车牌">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.plateNumber}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="场地">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.fieldAddress}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="时间">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.studyTime}}</span>
-                  </template>
-                </el-table-column>
-
-              </el-table>
+              </el-tab-pane>
+              <el-tab-pane label="来访跟进信息" name="4">
 
 
-            </el-tab-pane>
-            <el-tab-pane label="接送日志" name="6">
+              </el-tab-pane>
+              <el-tab-pane label="约车日志" name="5">
 
-              <el-table :data="shuttleLogList" stripe style="width: 100%">
+                <el-table :data="vehiclePeriodList" stripe style="width: 100%">
+                  <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+                  <el-table-column align="center"  label="科目">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.subject | subjectFilter}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="教练">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.name}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="车牌">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.plateNumber}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="场地">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.fieldAddress}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="时间">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.studyTime}}</span>
+                    </template>
+                  </el-table-column>
 
-                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                <el-table-column align="center"  label="接送地址">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.deliveryAddress}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="接送教练">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.name}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="接送时间">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.shuttleTime | subTime}} {{ scope.row.relayTime}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="接送状态">
-                  <template slot-scope="scope">
-                    <el-tag v-show="scope.row.state === '0'" type="info" style="color: #fff;" color="#E6A23C">未接送</el-tag>
-                    <el-tag v-show="scope.row.state === '1'" type="info" style="color: #fff;" color="#67C23A">已接送</el-tag>
-                    <el-tag v-show="scope.row.state === '2'" type="info" style="color: #fff;" color="#F56C6C">已取消</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="未接送原因">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.undeliveredReason}}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
-          </el-tabs>
-        </el-col>
-
-        <el-col style="width: 570px"  :style="{height: ($store.state.app.client.height-105) + 'px'}" >
-          <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px">
-            <el-card :style="{height: ($store.state.app.client.height-165) + 'px'}" body-style="padding: 0;" style="border-bottom: none; border-radius:0 4px 0 0;z-index: 50;line-height: 50px;overflow-y: auto;box-shadow: none;">
-              <!-- 基本信息 -->
-              <el-row>
-                <el-row class="title">基本信息</el-row>
-                <el-row style="padding: 0 10px;margin-top: 10px">
-                  <el-col :span="12">
-                    <!-- 档案号 -->
-                    <el-row>
-                      <el-form-item prop="archivesNumber">
-                        <span slot="label" class="text_css">档案号：</span>
-                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
-                        <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
-                      </el-form-item>
-
-                    </el-row>
-
-                    <!-- 姓名 -->
-                    <el-row>
-                      <el-form-item prop="name">
-                        <span slot="label" class="text_css">姓名：</span>
-                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
-                        <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.name}}</div>
-                      </el-form-item>
-                    </el-row>
-
-                    <!-- 身份证号 -->
-                    <el-row>
-                      <el-form-item prop="idNumber">
-                        <span slot="label" class="text_css">身份证号：</span>
-                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18"  @keyup.enter.native="generateInfo"  @blur="generateInfo" v-model="student.idNumber"></el-input>
-                        <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
-                      </el-form-item>
-
-                    </el-row>
-
-                    <!-- 性别 -->
-                    <el-row>
-                      <el-form-item prop="sex">
-                        <span slot="label" class="text_css">性别：</span>
-                        <template v-if="edit">
-                          <el-radio v-model="student.sex" label="1">男</el-radio>
-                          <el-radio v-model="student.sex" label="0">女</el-radio>
-                        </template>
-                        <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
-                      </el-form-item>
-
-                    </el-row>
-
-                    <!-- 生日 -->
-                    <el-row>
-                      <el-form-item prop="birthday">
-                        <span slot="label" class="text_css">生日：</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
-                        <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
-                      </el-form-item>
-                    </el-row>
-
-                  </el-col>
-                  <el-col :span="12">
-                    <el-row>
-                      <el-form-item prop="avatar">
-                        <el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="/oss/oss/upload/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                          <img v-if="student.avatar" :src="student.avatar" class="avatar">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
-                        <img v-else :src="student.avatar" class="avatar_img">
-                      </el-form-item>
-                    </el-row>
-                  </el-col>
-                </el-row>
-              </el-row>
+                </el-table>
 
 
-              <!-- 入学信息 -->
-              <el-row>
-                <el-row class="title">入学信息</el-row>
+              </el-tab-pane>
+              <el-tab-pane label="接送日志" name="6">
+
+                <el-table :data="shuttleLogList" stripe style="width: 100%">
+
+                  <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+                  <el-table-column align="center"  label="接送地址">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.deliveryAddress}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="接送教练">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.name}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="接送时间">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.shuttleTime | subTime}} {{ scope.row.relayTime}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="接送状态">
+                    <template slot-scope="scope">
+                      <el-tag v-show="scope.row.state === '0'" type="info" style="color: #fff;" color="#E6A23C">未接送</el-tag>
+                      <el-tag v-show="scope.row.state === '1'" type="info" style="color: #fff;" color="#67C23A">已接送</el-tag>
+                      <el-tag v-show="scope.row.state === '2'" type="info" style="color: #fff;" color="#F56C6C">已取消</el-tag>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center"  label="未接送原因">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.undeliveredReason}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-tab-pane>
+            </el-tabs>
+          </el-col>
+
+          <el-col style="width: 550px"  :style="{height: ($store.state.app.client.height-115) + 'px'}" >
+            <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px">
+              <el-card :style="{height: ($store.state.app.client.height-165) + 'px'}" body-style="padding: 0;" shadow="never" style="border-radius:0 4px 0 0;line-height: 50px;overflow-y: auto;">
+                <!-- 基本信息 -->
+                <el-row>
+                  <el-row class="title">基本信息</el-row>
                   <el-row style="padding: 0 10px;margin-top: 10px">
-                  <el-row :gutter="10">
                     <el-col :span="12">
-                      <!-- 入学日期 -->
+                      <!-- 档案号 -->
                       <el-row>
-                        <el-form-item prop="enrolTime">
-                          <span slot="label" class="text_css">入学日期：</span>
-                          <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
+                        <el-form-item prop="archivesNumber">
+                          <span slot="label" class="text_css">档案号：</span>
+                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
+                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
                         </el-form-item>
-                      </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                      <!-- 校区 -->
-                      <el-row>
-                        <el-form-item prop="campus">
-                          <span slot="label" class="text_css">校区：</span>
-                          <dict v-if="edit" dictType="dict_campus" v-model="student.campus" style="width: 100%;"  placeholder="校区"></dict>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.campus}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <!-- 入学期数 -->
-                      <el-row>
-                        <el-form-item prop="periods">
-                          <span slot="label" class="text_css">入学期数：</span>
-                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="student.periods"></el-input>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                      <!-- 来源渠道 -->
-                      <el-row>
-                        <el-form-item prop="source">
-                          <span slot="label" class="text_css">来源渠道：</span>
-                          <dict v-if="edit" dictType="dict_source" v-model="student.source" style="width: 100%;"  placeholder="来源渠道"></dict>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.source}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="12">
 
-                      <!-- 所学车型 -->
-                      <el-row>
-                        <el-form-item prop="motorcycleType">
-                          <span slot="label" class="text_css">所学车型：</span>
-                          <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
-                        </el-form-item>
                       </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                      <!-- 报名点 -->
-                      <el-row>
-                        <el-form-item prop="enrolSite">
-                          <span slot="label" class="text_css">报名点：</span>
-                          <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <!-- 场训教练 -->
-                      <el-row >
 
-                        <el-form-item prop="fieldName">
-                          <span slot="label" class="text_css">场训教练：</span>
-                          <Coach  v-show="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.fieldName}}</div>
+                      <!-- 姓名 -->
+                      <el-row>
+                        <el-form-item prop="name">
+                          <span slot="label" class="text_css">姓名：</span>
+                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
+                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.name}}</div>
                         </el-form-item>
                       </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                      <!-- 路训教练 -->
+
+                      <!-- 身份证号 -->
                       <el-row>
-                        <el-form-item prop="roadName">
-                          <span slot="label" class="text_css">路训教练：</span>
-                          <Coach  v-show="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
-                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.roadName}}</div>
+                        <el-form-item prop="idNumber">
+                          <span slot="label" class="text_css">身份证号：</span>
+                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18"  @keyup.enter.native="generateInfo"  @blur="generateInfo" v-model="student.idNumber"></el-input>
+                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
+                        </el-form-item>
+
+                      </el-row>
+
+                      <!-- 性别 -->
+                      <el-row>
+                        <el-form-item prop="sex">
+                          <span slot="label" class="text_css">性别：</span>
+                          <template v-if="edit">
+                            <el-radio v-model="student.sex" label="1">男</el-radio>
+                            <el-radio v-model="student.sex" label="0">女</el-radio>
+                          </template>
+                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
+                        </el-form-item>
+
+                      </el-row>
+
+                      <!-- 生日 -->
+                      <el-row>
+                        <el-form-item prop="birthday">
+                          <span slot="label" class="text_css">生日：</span>
+                          <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="student.birthday"></el-date-picker>
+                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.birthday | subTime}}</div>
                         </el-form-item>
                       </el-row>
 
                     </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col>
-                      <!-- 介绍人 -->
-                      <el-row>
-
-                        <el-form-item prop="introducerNameList">
-                          <span slot="label"  class="text_css">介绍人：</span>
-                          <el-select v-show="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
-                            <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
-                            </el-option>
-                          </el-select>
-                          <span v-for="(introducerName,index) in student.introducerNameList"  v-show="!edit" >{{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span></span>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                  </el-row>
-                </el-row>
-              </el-row>
-
-
-              <!-- 联系信息 -->
-              <el-row>
-                <el-row class="title">联系信息</el-row>
-                <el-row style="padding: 0 10px;margin-top: 10px">
-                  <el-row :gutter="10">
                     <el-col :span="12">
-                      <!-- 联系电话 -->
                       <el-row>
-                        <el-form-item prop="mobile">
-                          <span slot="label" class="text_css">联系电话：</span>
-                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="student.mobile"></el-input>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.mobile}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                      <!-- 微信 -->
-                      <el-row>
-                        <el-form-item prop="wechat">
-                          <span slot="label" class="text_css">微信：</span>
-                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="微信" v-model="student.wechat"></el-input>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.wechat}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                  </el-row>
-                </el-row>
-
-                <el-row style="padding: 0 10px;margin-top: 10px">
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <!-- 电子邮箱 -->
-                      <el-row>
-                        <el-form-item prop="email">
-                          <span slot="label" class="text_css">电子邮箱：</span>
-                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="student.email"></el-input>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.email}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                      <!-- 所属职位 -->
-                      <el-row>
-                        <el-form-item prop="position">
-                          <span slot="label" class="text_css">所属职位：</span>
-                          <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="student.position"></el-input>
-                          <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.position}}</div>
+                        <el-form-item prop="avatar">
+                          <el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="/oss/oss/upload/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                            <img v-if="student.avatar" :src="student.avatar" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                          </el-upload>
+                          <img v-else :src="student.avatar" class="avatar_img">
                         </el-form-item>
                       </el-row>
                     </el-col>
@@ -533,95 +365,267 @@
                 </el-row>
 
 
-                <el-row style="padding: 0 10px;margin-top: 10px">
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <!-- 是否体检 -->
-                      <el-row >
-                        <el-form-item prop="physicalExamination">
-                          <span slot="label" class="text_css">是否体检：</span>
+                <!-- 入学信息 -->
+                <el-row>
+                  <el-row class="title">入学信息</el-row>
+                  <el-row style="padding: 0 10px;margin-top: 10px">
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <!-- 入学日期 -->
+                        <el-row>
+                          <el-form-item prop="enrolTime">
+                            <span slot="label" class="text_css">入学日期：</span>
+                            <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="入学日期"  style="width: 100%" v-model="student.enrolTime"></el-date-picker>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolTime | subTime}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <!-- 校区 -->
+                        <el-row>
+                          <el-form-item prop="campus">
+                            <span slot="label" class="text_css">校区：</span>
+                            <dict v-if="edit" dictType="dict_campus" v-model="student.campus" style="width: 100%;"  placeholder="校区"></dict>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.campus}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <!-- 入学期数 -->
+                        <el-row>
+                          <el-form-item prop="periods">
+                            <span slot="label" class="text_css">入学期数：</span>
+                            <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="student.periods"></el-input>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.periods}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <!-- 来源渠道 -->
+                        <el-row>
+                          <el-form-item prop="source">
+                            <span slot="label" class="text_css">来源渠道：</span>
+                            <dict v-if="edit" dictType="dict_source" v-model="student.source" style="width: 100%;"  placeholder="来源渠道"></dict>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.source}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+
+                        <!-- 所学车型 -->
+                        <el-row>
+                          <el-form-item prop="motorcycleType">
+                            <span slot="label" class="text_css">所学车型：</span>
+                            <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <!-- 报名点 -->
+                        <el-row>
+                          <el-form-item prop="enrolSite">
+                            <span slot="label" class="text_css">报名点：</span>
+                            <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <!-- 场训教练 -->
+                        <el-row >
+
+                          <el-form-item prop="fieldName">
+                            <span slot="label" class="text_css">场训教练：</span>
+                            <Coach  v-show="edit" v-model="student.fieldCoach" coachType="field" style="width: 100%;"  placeholder="场训教练" @selectCoach="getFieldCoach" ></Coach>
+                            <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.fieldName}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <!-- 路训教练 -->
+                        <el-row>
+                          <el-form-item prop="roadName">
+                            <span slot="label" class="text_css">路训教练：</span>
+                            <Coach  v-show="edit" v-model="student.roadCoach" coachType="road" style="width: 100%;"  placeholder="路训教练"  @selectCoach="getRoadCoach"></Coach>
+                            <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >{{student.roadName}}</div>
+                          </el-form-item>
+                        </el-row>
+
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col>
+                        <!-- 介绍人 -->
+                        <el-row>
+
+                          <el-form-item prop="introducerNameList">
+                            <span slot="label"  class="text_css">介绍人：</span>
+                            <el-select v-show="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
+                              <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
+                              </el-option>
+                            </el-select>
+                            <span v-for="(introducerName,index) in student.introducerNameList"  v-show="!edit" >{{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span></span>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                  </el-row>
+                </el-row>
+
+
+                <!-- 联系信息 -->
+                <el-row>
+                  <el-row class="title">联系信息</el-row>
+                  <el-row style="padding: 0 10px;margin-top: 10px">
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <!-- 联系电话 -->
+                        <el-row>
+                          <el-form-item prop="mobile">
+                            <span slot="label" class="text_css">联系电话：</span>
+                            <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系电话" :maxlength="11" v-model.number="student.mobile"></el-input>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.mobile}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <!-- 微信 -->
+                        <el-row>
+                          <el-form-item prop="wechat">
+                            <span slot="label" class="text_css">微信：</span>
+                            <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="微信" v-model="student.wechat"></el-input>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.wechat}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                  </el-row>
+
+                  <el-row style="padding: 0 10px;margin-top: 10px">
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <!-- 电子邮箱 -->
+                        <el-row>
+                          <el-form-item prop="email">
+                            <span slot="label" class="text_css">电子邮箱：</span>
+                            <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="student.email"></el-input>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.email}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <!-- 所属职位 -->
+                        <el-row>
+                          <el-form-item prop="position">
+                            <span slot="label" class="text_css">所属职位：</span>
+                            <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="student.position"></el-input>
+                            <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.position}}</div>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                  </el-row>
+
+
+                  <el-row style="padding: 0 10px;margin-top: 10px">
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <!-- 是否体检 -->
+                        <el-row >
+                          <el-form-item prop="physicalExamination">
+                            <span slot="label" class="text_css">是否体检：</span>
                             <el-radio-group v-if="edit" v-model="student.physicalExamination">
                               <el-radio label="1">是</el-radio>
                               <el-radio label="0">否</el-radio>
                             </el-radio-group>
                             <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.physicalExamination === '1'?'是':'否'}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                      <!-- 是否增驾 -->
-                      <el-row>
-                        <el-form-item prop="addDrive">
-                          <span slot="label" class="text_css">是否增驾：</span>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <!-- 是否增驾 -->
+                        <el-row>
+                          <el-form-item prop="addDrive">
+                            <span slot="label" class="text_css">是否增驾：</span>
                             <el-radio-group v-if="edit" v-model="student.addDrive">
                               <el-radio label="1">是</el-radio>
                               <el-radio label="0">否</el-radio>
                             </el-radio-group>
                             <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.addDrive === '1'?'是':'否'}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
                   </el-row>
-                </el-row>
 
-                <el-row style="padding: 0 10px;margin-top: 10px">
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <!-- 是否有车 -->
-                      <el-row>
-                        <el-form-item prop="haveCar">
-                          <span slot="label" class="text_css">是否有车：</span>
+                  <el-row style="padding: 0 10px;margin-top: 10px">
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <!-- 是否有车 -->
+                        <el-row>
+                          <el-form-item prop="haveCar">
+                            <span slot="label" class="text_css">是否有车：</span>
                             <el-radio-group v-if="edit" v-model="student.haveCar">
                               <el-radio label="1">是</el-radio>
                               <el-radio label="0">否</el-radio>
                             </el-radio-group>
                             <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.haveCar === '1'?'是':'否'}}</div>
-                        </el-form-item>
-                      </el-row>
-                    </el-col>
+                          </el-form-item>
+                        </el-row>
+                      </el-col>
+                    </el-row>
                   </el-row>
+
+                  <!-- 所属单位 -->
+                  <el-row style="margin: 0 10px">
+                    <el-form-item prop="company">
+                      <span slot="label" class="text_css">所属单位：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model="student.company"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.company}}</div>
+                    </el-form-item>
+                  </el-row>
+
+
+                  <!-- 联系地址 -->
+                  <el-row style="margin: 0 10px">
+                    <el-form-item prop="contactAddress">
+                      <span slot="label" class="text_css">联系地址：</span>
+                      <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
+                    </el-form-item>
+                  </el-row>
+
                 </el-row>
 
-                <!-- 所属单位 -->
-                <el-row style="margin: 0 10px">
-                  <el-form-item prop="company">
-                    <span slot="label" class="text_css">所属单位：</span>
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="所属单位" v-model="student.company"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.company}}</div>
-                  </el-form-item>
-                </el-row>
-
-
-                <!-- 联系地址 -->
-                <el-row style="margin: 0 10px">
-                  <el-form-item prop="contactAddress">
-                    <span slot="label" class="text_css">联系地址：</span>
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
-                  </el-form-item>
-                </el-row>
-
-              </el-row>
 
 
 
 
+              </el-card>
+              <el-card body-style="padding: 10px 20px;"  shadow="never" style="height:50px; border-radius:0 0 4px 0;">
+                <div v-if="edit" style="float: right;">
+                  <el-button type="info" size="mini" @click="cancel('student')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+                  <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
+                </div>
+                <div v-else style="float: right;">
+                  <el-button type="primary" size="mini" @click="handleBespeakCar"><i class="el-icon-fa-car"></i> 约 车</el-button>
+                  <el-button type="primary" size="mini" @click="handleBespeakExam"><i class="el-icon-edit"></i> 约 考</el-button>
+                  <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
+                </div>
 
-            </el-card>
-            <el-card body-style="padding: 0;" style="height:60px; border-radius:0 0 4px 0;border-top: none;border-top: 1px solid #dcdfe6;">
-              <div v-if="edit" style="float: right;margin: 10px 20px">
-                <el-button type="danger" plain  @click="cancel('student')">取 消</el-button>
-                <el-button type="primary" :loading="btnLoading" @click="update('student')">修 改</el-button>
-              </div>
-              <div v-else style="float: right;margin: 10px 20px">
-                <el-button type="success" @click="handleBespeak">约 考</el-button>
-                <el-button type="primary" @click="editInfo">编 辑</el-button>
-              </div>
+              </el-card>
+            </el-form>
+          </el-col>
+        </el-row>
+      </el-card>
 
-            </el-card>
-          </el-form>
-        </el-col>
-      </el-row>
     </div>
 
     <div v-show="showModule=='create'"  v-loading="createLoading" element-loading-text="匹配中...">
@@ -898,7 +902,7 @@
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="closeBespeak">取 消</el-button>
+        <el-button @click="closeBespeak"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button :loading="btnLoading" type="primary" @click="createBespeak">确 定</el-button>
       </div>
     </el-dialog>
@@ -1526,7 +1530,7 @@
         }
         console.log('=============  完成 ================')
       },
-      handleBespeak() {
+      handleBespeakExam() {
         console.log(this.student.state)
         this.examBespeak.subject = this.student.state
         this.batchListQuery.subject = this.student.state
@@ -1600,7 +1604,8 @@
           }
           this.createLoading = false
         })
-      }
+      },
+      handleBespeakCar() {}
     }
   }
 </script>

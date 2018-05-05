@@ -179,7 +179,7 @@
       </el-form>
 
       <div slot="footer">
-        <el-button @click="cancelQuestionnaire('revisitQuestionnaire')">取 消</el-button>
+        <el-button @click="cancelQuestionnaire('revisitQuestionnaire')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button type="primary" :loading="btnLoading" @click="createQuestionnaire('revisitQuestionnaire')">确 定</el-button>
       </div>
 

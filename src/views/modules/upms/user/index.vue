@@ -258,18 +258,9 @@
                           <el-option v-for="role in roleList" :key="role.roleId" :label="role.roleName" :value="role.roleId">
                           </el-option>
                         </el-select>
-                        <span class="text_css" v-for="(roleName,index) in userEntity.roleNameList"  v-show="!edit" >{{roleName}}<span v-if="userEntity.roleNameList.length !== (index+1)">、</span></span>
-
-                        <!--<el-select v-if="edit" v-model="userEntity.roleIdList" style="width: 100%" collapse-tags multiple placeholder="职位" @change="roleChange">-->
-                          <!--<el-option-->
-                            <!--v-for="item in roleList"-->
-                            <!--:key="item.roleId"-->
-                            <!--:label="item.roleName"-->
-                            <!--:value="item.roleId"-->
-                          <!--&gt;-->
-                          <!--</el-option>-->
-                        <!--</el-select>-->
-                        <!--<span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.roleName}}</span>-->
+                        <div class="text_css" >
+                          <span v-for="(roleName,index) in userEntity.roleNameList"  v-show="!edit" >{{roleName}}<span v-if="userEntity.roleNameList.length !== (index+1)">、</span></span>
+                        </div>
                       </el-form-item>
 
                     </el-col>
@@ -639,7 +630,8 @@
             { required: true, message: '请输入紧急联系人', trigger: ['blur', 'change'] }
           ],
           emergencyMobile: [
-            { required: true, message: '请输入紧急联系人电话', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入紧急联系人电话', trigger: ['blur', 'change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change']}
           ]
         }
       }

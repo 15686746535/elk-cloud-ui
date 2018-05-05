@@ -109,7 +109,7 @@
           </el-form-item>
         </el-form>
         <div>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
           <el-button type="primary" @click="update('form')">保存</el-button>
         </div>
       </el-card>

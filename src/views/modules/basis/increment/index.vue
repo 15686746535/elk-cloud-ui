@@ -72,7 +72,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel('dict')">取 消</el-button>
+        <el-button @click="cancel('dict')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('dict')">确 定</el-button>
         <el-button v-else type="primary" @click="update('dict')">修 改</el-button>
       </div>

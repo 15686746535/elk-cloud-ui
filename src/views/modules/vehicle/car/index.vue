@@ -712,7 +712,7 @@
           </el-card>
           <el-row>
             <div v-if="edit" style="padding:20px;float: right">
-              <el-button v-if="!addInfo" type="info" @click="cancel('vehicle')"><i class="el-icon-fa-close"></i> 取 消</el-button>
+              <el-button v-if="!addInfo" type="info" @click="cancel('vehicle')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
               <el-button v-if="addInfo" :loading="btnLoading" type="success" @click="add('vehicle')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               <el-button v-if="!addInfo" :loading="btnLoading" type="success" @click="update('vehicle')"><i class="el-icon-edit"></i> 修 改</el-button>
             </div>

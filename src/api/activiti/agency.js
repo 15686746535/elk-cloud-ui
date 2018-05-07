@@ -7,4 +7,11 @@ export function busPage(query) {
     params: query
   })
 }
+export function updateAgency(obj) {
+  return request({
+    url: '/activiti/agency',
+    method: 'put',
+    data: obj
+  })
+}
 

@@ -59,17 +59,27 @@
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
           <div class="notice-title">
-              <i class="el-icon-fa-volume-up"> 我的代办 ({{evenNoticeList('1').length}})</i>
+              <i class="el-icon-fa-volume-up"> 我的待办 ({{evenNoticeList('1').length}})</i>
           </div>
           <div class="notice-body">
             <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('1')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
+              <div class="msg" @click="evenNoticeListDialog(notice,'未办理')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>
         </div>
       </el-col>
+
+      <el-dialog :title="evenNotice.flag" width="450px" :visible.sync="evenNoticeListOption">
+        <div style="min-height: 150px">
+          {{evenNotice.message}}
+        </div>
+        <div v-show="evenNotice.flag === '通知'" slot="footer">
+          <el-button type="primary" @click="updateAgency"> 已 办</el-button>
+        </div>
+      </el-dialog>
+
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
           <div class="notice-title">
@@ -78,7 +88,7 @@
           <div class="notice-body">
             <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('2')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
+              <div class="msg"  @click="evenNoticeListDialog(notice,'通知')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>
@@ -125,7 +135,7 @@
 import PieChart from '@/components/PieChart'
 import BarPileChart from '@/components/BarPileChart'
 import { queryIndex } from '@/api/visualization/api'
-import { busPage } from '@/api/activiti/agency'
+import { busPage,updateAgency } from '@/api/activiti/agency'
 import Coach from '@/components/Coach'
 export default {
   name: 'dashboard',
@@ -164,6 +174,10 @@ export default {
       listQuery: {
         page: 1,
         limit: 0
+      },
+      evenNoticeListOption: false,
+      evenNotice: {
+        flag: '',
       }
     }
   },
@@ -197,6 +211,21 @@ export default {
       // 查询代办 、提醒
       busPage(this.listQuery).then(response => {
         this.noticeList = response.data.data.list
+      })
+    },
+    evenNoticeListDialog(val, str) {
+      this.evenNoticeListOption = true
+      this.evenNotice = val
+      this.evenNotice.flag = str
+    },
+    updateAgency() {
+      this.evenNotice.status = '1'
+      updateAgency(this.evenNotice).then(() => {
+        // 查询代办 、提醒
+        busPage(this.listQuery).then(response => {
+          this.noticeList = response.data.data.list
+        })
+        this.evenNoticeListOption = false
       })
     }
   }

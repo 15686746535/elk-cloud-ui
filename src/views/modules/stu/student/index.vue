@@ -928,20 +928,22 @@
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
-  import { userList } from '@/api/upms/user'
   import { autoProduce } from '@/utils/index'
+  import Coach from '@/components/Coach'
+  import { removeAllSpace } from '@/utils/validate'
+  import { getToken } from '@/utils/auth'
+  import { mapGetters } from 'vuex'
+
+  import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
+  import { batchSave } from '@/api/student/exambespeak'
   import { examFetchList } from '@/api/student/examnote'
+  import { getBatchList } from '@/api/student/batch'
+
+  import { userList } from '@/api/upms/user'
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { followUpList } from '@/api/visit/followup'
   import { getIntentionByMobile } from '@/api/visit/intention'
-  import Coach from '@/components/Coach'
-  import { removeAllSpace } from '@/utils/validate'
-  import { mapGetters } from 'vuex'
-  import { getBatchList } from '@/api/student/batch'
-  import { batchSave } from '@/api/student/exambespeak'
-  import { getToken } from '@/utils/auth'
 
   export default {
     name: 'table_student',

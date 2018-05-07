@@ -19,10 +19,10 @@
 
 <script>
   import BarPileChart from '@/components/BarPileChart'
-  import { queryWorry } from '@/api/visualization/api'
+  import { querySource } from '@/api/visualization/api'
 
   export default {
-    name: 'query_worry',
+    name: 'source',
     components: {
       BarPileChart
     },
@@ -51,7 +51,7 @@
           this.listQuery.beginTime = this.interval[0]
           this.listQuery.endTime = this.interval[1]
         }
-        queryWorry(this.listQuery).then(response => {
+        querySource(this.listQuery).then(response => {
           var data = response.data.data
           this.data = {
             colors: ['#409eff'],

@@ -37,3 +37,11 @@ export function putObj(obj) {
     data: obj
   })
 }
+
+export function userList(query) {
+  return request({
+    url: '/stu/upms/user/userList',
+    method: 'get',
+    params: query
+  })
+}

@@ -79,14 +79,14 @@
                     <div style="width: 100%;height: 100%;">
 
                       <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
-                        <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 25px;" v-for="followUps in followUps">
-                          <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
+                        <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 15px;" v-for="followUps in followUps">
+                          <el-tag class="avatar">
                             <img width="100%" height="100%" :src="followUps.avatar">
                           </el-tag>
-                          <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.userName}}</div>
-                          <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dateTime')}}</div>
+                          <div class="username">{{followUps.userName}}</div>
+                          <div class="time">{{followUps.createTime | subTime('dateTime')}}</div>
                           <div style="clear: both;white-space:normal;width: 100%">
-                            <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
+                            <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUps.content}}</p>
                           </div>
                         </div>
                       </div>
@@ -836,11 +836,33 @@
     position: fixed;
     top: 85px;
     right: 0;
-    width: 400px;
+    width: 350px;
     background-color: #fff;
     border-left: 1px solid #449ffb;
     z-index: 10000;
     transition: left 0.2s;
+    .avatar{
+      float: left;
+      width: 40px;
+      height: 40px;
+      border-radius: 1000px;
+      margin-left: -21px;
+      margin-top: -14px;
+      padding: 0px;
+      overflow: hidden;
+    }
+    .username{
+      float: left;
+      color: rgb(73, 80, 96);
+      font-size: 12px;
+      margin-left: 10px;
+      font-weight: 600;
+    }
+    .time{
+      float: right;
+      color: rgb(73, 80, 96);
+      font-size: 12px;
+    }
   }
 </style>
 

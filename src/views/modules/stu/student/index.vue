@@ -1187,7 +1187,7 @@
             { required: true, message: '请选择是否有车', trigger: ['blur', 'change'] }
           ],
           email: [
-            { required: true, message: '请输入邮箱', trigger: ['blur', 'change'] },
+            { required: false, message: '请输入邮箱', trigger: ['blur', 'change'] },
             { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] }
           ],
           company: [],

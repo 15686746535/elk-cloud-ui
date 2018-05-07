@@ -372,7 +372,7 @@
         btnLoading: false,
         examBespeak: [],
         examBespeakList: {
-          studentList: [],
+          examBespeakList: [],
           state: null,
           examId: null
         },
@@ -526,8 +526,8 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.examBespeakList.studentList = []
-          this.examBespeakList.studentList.push(val.examBespeakId)
+          this.examBespeakList.examBespeakList = []
+          this.examBespeakList.examBespeakList.push({ 'studentId': val.studentId, 'makeUpExam': val.makeUpExam, 'examBespeakId': val.examBespeakId })
           this.operation('6', '已取消约考')
           // delexambespeak(val.examBespeakId).then(() => {
           //   this.see(val.examId, this.studentListQuery.state)
@@ -547,9 +547,9 @@
       },
       handleSelectionChange(val) {
         console.log(val)
-        this.examBespeakList.studentList = []
+        this.examBespeakList.examBespeakList = []
         for (var i = 0; i < val.length; i++) {
-          this.examBespeakList.studentList.push({ 'studentId': val[i].studentId, 'makeUpExam': val[i].makeUpExam, 'examBespeakId': val[i].examBespeakId })
+          this.examBespeakList.examBespeakList.push({ 'studentId': val[i].studentId, 'makeUpExam': val[i].makeUpExam, 'examBespeakId': val[i].examBespeakId })
         }
       },
       // 根据状态查询约考学员
@@ -559,7 +559,7 @@
         this.see(this.studentListQuery.examId, this.studentListQuery.state)
       },
       operation(state, str) {
-        if (this.examBespeakList.studentList.length === 0) {
+        if (this.examBespeakList.examBespeakList.length === 0) {
           this.$message.warning('请先选择学员')
         } else {
           this.examBespeakList.state = state

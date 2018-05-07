@@ -27,10 +27,10 @@
           </el-col>
         </el-row>
       </el-card>
-      <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
+      <el-card :style="{height: ($store.state.app.client.height - 130) + 'px'}">
 
 
-        <el-table :data="list" :height="($store.state.app.client.height - 215)" border style="width: 100%"  highlight-current-row @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
+        <el-table :data="list" :height="($store.state.app.client.height - 220)" border style="width: 100%"  highlight-current-row @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
           <!--<el-table-column align="center" label="编号" width="50px">-->
           <!--<template slot-scope="scope">-->
           <!--<span>{{scope.row.vehicleEntity.vehicleId}}</span>-->
@@ -42,23 +42,25 @@
             <template slot-scope="scope">
               <el-row :gutter="10">
                 <el-col :span="10">
-                  <el-row><img width="100%" height="100%" :src="scope.row.vehicleEntity.vehiclePhoto"></el-row>  <!-- 车辆图片 -->
+                  <el-tag class="img">
+                    <img :src="scope.row.vehicleEntity.vehiclePhoto" class="img">
+                  </el-tag>
                 </el-col>
 
                 <el-col style="line-height: 25px" :span="14">
                   <el-row :gutter="10">
-                    <el-col :span="7" class="table_text">车辆牌照：</el-col>
-                    <el-col :span="14" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.plateNumber}}</el-col>
+                    <el-col :span="8" class="table_text">车辆牌照：</el-col>
+                    <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.plateNumber}}</el-col>
                   </el-row>
                   <el-row :gutter="10">
-                    <el-col :span="7" class="table_text">责任人：</el-col>
-                    <el-col :span="14" class="table_text">
+                    <el-col :span="8" class="table_text">责任人：</el-col>
+                    <el-col :span="16" class="table_text">
                       {{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.name}}
                     </el-col>
                   </el-row>
                   <el-row :gutter="10">
-                    <el-col :span="9" class="table_text">所属机构：</el-col>
-                    <el-col :span="15" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.affiliation}}</el-col>
+                    <el-col :span="8" class="table_text">所属机构：</el-col>
+                    <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.affiliation}}</el-col>
                   </el-row>
                   <el-row :gutter="10">
                     <el-col :span="8" class="table_text">车辆状态：</el-col>
@@ -118,13 +120,23 @@
           </el-table-column>
 
           <!-- 安全信息 -->
-          <el-table-column align="center" label="证件信息">
+          <el-table-column align="center" label="安全信息">
             <template slot-scope="scope">
-              <el-col style="text-align: left;color: #868686;">
-                <el-row style="margin: 12px 0;">安装GPS：{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.gps}}</el-row>
-
-                <el-row style="margin: 12px 0;">三角架：{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.tripod}}</el-row>
-                <el-row style="margin: 12px 0;">发动机灭火器：{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.extinguisher}}</el-row>
+              <el-col style="line-height: 25px">
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">安装GPS：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.gps}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">三角架：</el-col>
+                  <el-col :span="17" class="table_text">
+                    {{scope.row.safetyEntity==null?null:scope.row.safetyEntity.tripod}}
+                  </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">发动机灭火器：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.extinguisher}}</el-col>
+                </el-row>
               </el-col>
 
             </template>
@@ -141,7 +153,7 @@
                          style="float: left"
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
-          <el-button style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+          <el-button style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
         </div>
       </el-card>
     </div>
@@ -151,15 +163,15 @@
 
         <div slot="header" class="clearfix">
           |&nbsp;<span style="font-weight: 600">基础信息</span>
-          <el-button type="primary" style="float: right" @click="back"><i class="el-icon-back"></i> 返 回</el-button>
+          <el-button type="primary" size="mini" style="float: right" @click="back"><i class="el-icon-back"></i> 返 回</el-button>
         </div>
 
-        <el-form :model="vehicleEntity" :rules="vehicleEntityRules" ref="vehicleEntity"  label-width="100px">
+        <el-form :model="vehicleEntity" :rules="vehicleEntityRules" ref="vehicleEntity"  label-width="100px" size="mini">
           <el-row>
             <el-col style="width: 300px;margin-right: 22px">
               <el-row style="margin-bottom: 4px;">
 
-                <el-upload :disabled="!edit === 'car'" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                <el-upload :disabled="!(edit === 'car')" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
                            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                   <img :src="vehicleEntity.vehiclePhoto" class="avatar">
                 </el-upload>
@@ -169,22 +181,25 @@
                   <!--<i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
                 <!--</el-upload>-->
               </el-row>
-              <el-row style="height: 62px;">
+              <el-row style="height: 50px">
                 <el-form-item prop="plateColor">
                   <span slot="label" class="text_css">车牌颜色:</span>
-                  <el-input v-if="edit === 'car'" v-model="vehicleEntity.plateColor"  placeholder="车牌颜色"></el-input>
+                  <el-select style="width: 100%" v-if="edit === 'car'" v-model="vehicleEntity.plateColor" placeholder="请选择车牌颜色">
+                    <el-option v-for="item in plateColors" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicleEntity.plateColor}}</span>
                 </el-form-item>
               </el-row>
-              <el-row style="height: 62px;">
+              <el-row style="height: 50px">
                 <el-form-item prop="carColor">
                   <span slot="label" class="text_css">车身颜色:</span>
                   <el-input v-if="edit === 'car'" v-model="vehicleEntity.carColor" placeholder="车身颜色"></el-input>
                   <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicleEntity.carColor}}</span>
                 </el-form-item>
               </el-row>
-              <el-row style="height: 62px;">
-                <el-form-item prop="vehicleEntity.number">
+              <el-row style="height: 50px">
+                <el-form-item prop="number">
                   <span slot="label" class="text_css">自编号:</span>
                   <el-input v-if="edit === 'car'"  v-model="vehicleEntity.number" placeholder="自编号"></el-input>
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicleEntity.number}}</span>
@@ -193,18 +208,24 @@
             </el-col>
             <el-col :style="{width: ($store.state.app.client.width - 423) + 'px'}">
 
-              <el-row :gutter="10" style="height: 62px;">
+              <el-row :gutter="10" style="height: 50px">
                 <el-col :span="8">
                   <el-form-item prop="vehicleType">
                     <span slot="label" class="text_css">车辆类别:</span>
-                    <el-input v-if="edit === 'car'"  v-model="vehicleEntity.vehicleType" placeholder="车辆类别"></el-input>
+                    <el-select style="width: 100%" v-if="edit === 'car'" v-model="vehicleEntity.vehicleType" placeholder="请选择车辆类别">
+                      <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value">
+                      </el-option>
+                    </el-select>
                     <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicleEntity.vehicleType}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item prop="vehicleState">
                     <span slot="label" class="text_css">车辆来源:</span>
-                    <el-input v-if="edit === 'car'" v-model="vehicleEntity.vehicleState" placeholder="车辆来源" ></el-input>
+                    <el-select style="width: 100%" v-if="edit === 'car'" v-model="vehicleEntity.vehicleState" placeholder="请选择车辆来源">
+                      <el-option v-for="item in vehicleStates" :key="item.value" :label="item.label" :value="item.value">
+                      </el-option>
+                    </el-select>
                     <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicleEntity.vehicleState}}</span>
                   </el-form-item>
                 </el-col>
@@ -217,7 +238,7 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="10" style="height: 62px;">
+              <el-row :gutter="10" style="height: 50px">
                 <el-col :span="8">
                   <el-form-item prop="factoryTime">
                     <span slot="label" class="text_css">出厂日期:</span>
@@ -241,7 +262,7 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="10" style="height: 62px;">
+              <el-row :gutter="10" style="height: 50px">
                 <el-col :span="8">
                   <el-form-item prop="vinNo">
                     <span slot="label" class="text_css">车架号:</span>
@@ -265,7 +286,7 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="10" style="height: 62px;">
+              <el-row :gutter="10" style="height: 50px">
                 <el-col :span="8">
                   <el-form-item prop="fuelType">
                     <span slot="label" class="text_css">燃料类别:</span>
@@ -289,7 +310,7 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="10" style="height: 62px;">
+              <el-row :gutter="10" style="height: 50px">
                 <el-col :span="8">
                   <el-form-item prop="technicalLevel">
                     <span slot="label" class="text_css">技术等级:</span>
@@ -300,7 +321,7 @@
                 <el-col :span="8">
                   <el-form-item prop="userId">
                     <span slot="label" class="text_css">使用责任人:</span>
-                    <el-select v-if="edit === 'car'" v-model="vehicleEntity.userId" clearable placeholder="使用责任人">
+                    <el-select v-if="edit === 'car'" style="width: 100%;" v-model="vehicleEntity.userId" clearable placeholder="使用责任人">
                       <el-option
                         v-for="item in userList"
                         :key="item.userId"
@@ -325,12 +346,12 @@
 
 
             <el-row v-if="edit === 'car'" style="float: right;">
-              <el-button v-if="!addInfo" type="info" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-              <el-button v-if="addInfo" :loading="btnLoading"  type="success" @click="add('car',vehicleEntity)"><i class="el-icon-fa-save"></i> 保 存</el-button>
-              <el-button v-if="!addInfo" :loading="btnLoading"  type="success" @click="update('car',vehicleEntity)"><i class="el-icon-fa-save"></i> 保 存</el-button>
+              <el-button v-if="!addInfo"  size="mini" type="info" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+              <el-button v-if="addInfo"  size="mini" :loading="btnLoading"  type="success" @click="add('car',vehicleEntity)"><i class="el-icon-fa-save"></i> 保 存</el-button>
+              <el-button v-if="!addInfo"  size="mini" :loading="btnLoading"  type="success" @click="update('car',vehicleEntity)"><i class="el-icon-fa-save"></i> 保 存</el-button>
             </el-row>
             <el-row v-else style="float: right;">
-              <el-button type="primary" @click="editInfo('car')"><i class="el-icon-edit"></i> 编 辑</el-button>
+              <el-button type="primary"  size="mini" @click="editInfo('car')"><i class="el-icon-edit"></i> 编 辑</el-button>
             </el-row>
           </el-row>
         </el-form>
@@ -341,9 +362,9 @@
 
         <el-tab-pane label="证件信息" name="1" style="line-height: 50px;">
 
-          <el-form :model="certificateEntity" :rules="certificateEntityRules" ref="certificateEntity"  label-width="140px">
+          <el-form :model="certificateEntity" :rules="certificateEntityRules" ref="certificateEntity"  label-width="140px" size="mini">
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item label-width="140px" prop="identificationEnd">
                   <span slot="label" class="text_css">标识卡有效期:</span>
@@ -367,7 +388,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item label-width="140px" prop="clivtaTime">
                   <span slot="label" class="text_css">交强险有效期:</span>
@@ -406,7 +427,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item label-width="140px" prop="twoDimensionalStart">
                   <span slot="label" class="text_css">二维检测日期:</span>
@@ -433,7 +454,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item label-width="140px" prop="roadTransport">
                   <span slot="label" class="text_css">道路运输证号:</span>
@@ -457,7 +478,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="6">
                 <el-form-item label-width="140px" prop="drivingLicenseEnroll">
                   <span slot="label" class="text_css">行驶证注册日期:</span>
@@ -494,11 +515,11 @@
 
             <!-- 按钮 -->
             <el-row v-if="edit === 'certificate'" style="float: right;">
-              <el-button type="info" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-              <el-button type="success" @click="update('certificate',certificateEntity)"><i class="el-icon-fa-save"></i> 确 认</el-button>
+              <el-button type="info" size="mini"  @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+              <el-button type="success" size="mini"  @click="update('certificate',certificateEntity)"><i class="el-icon-fa-save"></i> 确 认</el-button>
             </el-row>
             <el-row v-else style="float: right;">
-              <el-button type="primary" @click="editInfo('certificate')"><i class="el-icon-edit"></i> 编 辑</el-button>
+              <el-button type="primary" size="mini"  @click="editInfo('certificate')"><i class="el-icon-edit"></i> 编 辑</el-button>
             </el-row>
           </el-form>
 
@@ -506,8 +527,8 @@
 
         <el-tab-pane label="技术信息" name="2" style="line-height: 50px;">
 
-          <el-form :model="technicalEntity" :rules="technicalEntityRules" ref="technicalEntity"  label-width="100px">
-            <el-row :gutter="10" style="height: 62px;">
+          <el-form :model="technicalEntity" :rules="technicalEntityRules" ref="technicalEntity"  label-width="100px" size="mini">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item prop="wheelbase">
                   <span slot="label" class="text_css">轴距:</span>
@@ -531,7 +552,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item label-width="130px" prop="length">
                   <span slot="label" class="text_css">车长(外)mm:</span>
@@ -555,7 +576,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item prop="displacement">
                   <span slot="label" class="text_css">排量/功率:</span>
@@ -579,7 +600,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item prop="weight">
                   <span slot="label" class="text_css">总质量:</span>
@@ -604,13 +625,13 @@
             </el-row>
             <el-row>
               <el-form-item v-if="edit === 'technical'" style="float: right">
-                <el-button type="primary" @click="cancel">取消</el-button>
-                <el-button type="primary" @click="update('technical',technicalEntity)">确认</el-button>
+                <el-button type="primary" size="mini" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+                <el-button type="primary" size="mini" @click="update('technical',technicalEntity)"><i class="el-icon-fa-save"></i> 确 认</el-button>
               </el-form-item>
 
 
               <el-form-item v-else style="float: right">
-                <el-button type="primary" @click="editInfo('technical')">编辑</el-button>
+                <el-button type="primary" size="mini" @click="editInfo('technical')"><i class="el-icon-edit"></i> 编 辑</el-button>
               </el-form-item>
             </el-row>
           </el-form>
@@ -618,8 +639,8 @@
 
         <el-tab-pane label="安全信息" name="3" style="line-height: 50px;">
 
-          <el-form :model="safetyEntity" :rules="safetyEntityRules" ref="safetyEntity"  label-width="100px">
-            <el-row :gutter="10" style="height: 62px;">
+          <el-form :model="safetyEntity" :rules="safetyEntityRules" ref="safetyEntity"  label-width="100px" size="mini">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item prop="gps">
                   <span slot="label" class="text_css">安装GPS:</span>
@@ -643,7 +664,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" style="height: 62px;">
+            <el-row :gutter="10" style="height: 50px">
               <el-col :span="8">
                 <el-form-item prop="rearView">
                   <span slot="label" class="text_css">副后视境:</span>
@@ -669,12 +690,12 @@
           </el-form>
 
           <el-row v-if="edit === 'safety'" style="float: right">
-            <el-button type="primary" @click="cancel">取消</el-button>
-            <el-button type="primary" @click="update('safety',safetyEntity)">确认</el-button>
+            <el-button type="primary" size="mini" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+            <el-button type="primary" size="mini" @click="update('safety',safetyEntity)"><i class="el-icon-fa-save"></i> 确 认</el-button>
           </el-row>
 
           <el-row v-else style="float: right">
-            <el-button type="primary" @click="editInfo('safety')">编辑</el-button>
+            <el-button type="primary" size="mini" @click="editInfo('safety')"><i class="el-icon-edit"></i> 编 辑</el-button>
           </el-row>
 
 
@@ -900,12 +921,91 @@
           ],
           registerTime: [
             { required: true, message: '请输入注册登记日期', trigger: ['blur', 'change'] }
+          ],
+          vehicleType: [
+            { required: true, message: '请输入车辆类别', trigger: ['blur', 'change'] }
+          ],
+          vehicleState: [
+            { required: true, message: '请输入车辆来源', trigger: ['blur', 'change'] }
+          ],
+          userId: [
+            { required: true, message: '请输入使用责任人', trigger: ['blur', 'change'] }
+          ],
+          vinNo: [
+            { required: true, message: '请输入车架号', trigger: ['blur', 'change'] }
+          ],
+          plateColor: [
+            { required: true, message: '请输入车牌颜色', trigger: ['blur', 'change'] }
           ]
         },
         certificateEntityRules: {},
         safetyEntityRules: {},
         technicalEntityRules: {},
-        addInfo: false
+        addInfo: false,
+        plateColors: [{
+          value: '黄色',
+          label: '黄色'
+        }, {
+          value: '绿色',
+          label: '绿色'
+        }, {
+          value: '蓝色',
+          label: '蓝色'
+        }],
+        vehicleTypes: [{
+          value: '教练车',
+          label: '教练车'
+        }, {
+          value: '公交',
+          label: '公交'
+        }, {
+          value: '挂车',
+          label: '挂车'
+        }, {
+          value: '普货车',
+          label: '普货车'
+        }, {
+          value: '特种',
+          label: '特种'
+        }, {
+          value: '公务车',
+          label: '公务车'
+        }, {
+          value: '出租',
+          label: '出租'
+        }],
+        vehicleStates: [{
+          value: '新增',
+          label: '新增'
+        }, {
+          value: '内部转入',
+          label: '内部转入'
+        }, {
+          value: '外部转入',
+          label: '外部转入'
+        }, {
+          value: '报废更新',
+          label: '报废更新'
+        }, {
+          value: '租用',
+          label: '租用'
+        }],
+        fuelTypes: [{
+          value: '柴油',
+          label: '柴油'
+        }, {
+          value: '汽油',
+          label: '汽油'
+        }, {
+          value: 'CNG天然气',
+          label: 'CNG天然气'
+        }, {
+          value: '油电混合',
+          label: '油电混合'
+        }, {
+          value: '纯电动',
+          label: '纯电动'
+        }]
       }
     },
     created() {
@@ -953,16 +1053,16 @@
           bottleTime: [],
           twoDimensionalTime: []
         }
-        this.daterange.viTime.push(this.certificateEntity.viStart)
-        this.daterange.viTime.push(this.certificateEntity.viEnd)
-        this.daterange.clivtaTime.push(this.certificateEntity.clivtaStart)
-        this.daterange.clivtaTime.push(this.certificateEntity.clivtaEnd)
-        this.daterange.maintenanceTime.push(this.certificateEntity.maintenanceStart)
-        this.daterange.maintenanceTime.push(this.certificateEntity.maintenanceEnd)
-        this.daterange.bottleTime.push(this.certificateEntity.bottleStart)
-        this.daterange.bottleTime.push(this.certificateEntity.bottleEnd)
-        this.daterange.twoDimensionalTime.push(this.certificateEntity.twoDimensionalStart)
-        this.daterange.twoDimensionalTime.push(this.certificateEntity.twoDimensionalEnd)
+        if (this.certificateEntity.viStart) this.daterange.viTime.push(this.certificateEntity.viStart)
+        if (this.certificateEntity.viEnd) this.daterange.viTime.push(this.certificateEntity.viEnd)
+        if (this.certificateEntity.clivtaStart) this.daterange.clivtaTime.push(this.certificateEntity.clivtaStart)
+        if (this.certificateEntity.clivtaEnd) this.daterange.clivtaTime.push(this.certificateEntity.clivtaEnd)
+        if (this.certificateEntity.maintenanceStart) this.daterange.maintenanceTime.push(this.certificateEntity.maintenanceStart)
+        if (this.certificateEntity.maintenanceEnd) this.daterange.maintenanceTime.push(this.certificateEntity.maintenanceEnd)
+        if (this.certificateEntity.bottleStart) this.daterange.bottleTime.push(this.certificateEntity.bottleStart)
+        if (this.certificateEntity.bottleEnd) this.daterange.bottleTime.push(this.certificateEntity.bottleEnd)
+        if (this.certificateEntity.twoDimensionalStart) this.daterange.twoDimensionalTime.push(this.certificateEntity.twoDimensionalStart)
+        if (this.certificateEntity.twoDimensionalEnd) this.daterange.twoDimensionalTime.push(this.certificateEntity.twoDimensionalEnd)
         console.log(this.daterange.twoDimensionalTime)
         console.log('=============  结束  ================')
       },
@@ -1081,6 +1181,34 @@
       handleAvatarSuccess(res, file) {
         this.vehicleEntity.vehiclePhoto = res.data
       },
+      /* 二维 */
+      handleTwoDimensionalPhotoSuccess(res, file) {
+        this.vehicleEntity.vehiclePhoto = res.data
+      },
+      /* 道路运输证 */
+      handleRoadTransportPhotoSuccess(res, file) {
+        this.vehicleEntity.vehiclePhoto = res.data
+      },
+      /* 标识卡 */
+      handleIdentificationPhotoSuccess(res, file) {
+        this.vehicleEntity.vehiclePhoto = res.data
+      },
+      /* 气瓶证 */
+      handleBottlePhotoSuccess(res, file) {
+        this.vehicleEntity.vehiclePhoto = res.data
+      },
+      /* 保单 */
+      handlePolicyPhotoSuccess(res, file) {
+        this.vehicleEntity.vehiclePhoto = res.data
+      },
+      /* 登记证书 */
+      handleCertificatePhotoSuccess(res, file) {
+        this.vehicleEntity.vehiclePhoto = res.data
+      },
+      /* 行驶证照片 */
+      handleDrivingLicensePhotoSuccess(res, file) {
+        this.vehicleEntity.vehiclePhoto = res.data
+      },
       beforeAvatarUpload(file) {
         const type = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
         const isLt2M = file.size / 1024 / 1024 < 2
@@ -1106,11 +1234,11 @@
   }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-
   .img{
-    width: 150px;
-    height: 150px;
-    float: left;
+    width: 100px;
+    height: 100px;
+    padding: 0;
+    overflow: hidden;
   }
 
   .table_text{

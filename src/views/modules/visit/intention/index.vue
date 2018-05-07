@@ -241,13 +241,13 @@
       </el-row>
       <el-row :gutter="5">
         <el-col :span="12">
-          <el-card :style="{height: (client.height-105) + 'px'}">
+          <el-card :style="{height: (client.height-105) + 'px'}" style="overflow: auto">
             <div slot="header" class="clearfix">
               <div style="float: left">
                 |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">基本信息</span>
               </div>
             </div>
-            <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm">
+            <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" size="mini" class="demo-ruleForm">
 
               <el-row :gutter="5"  style="line-height: 50px;">
                 <el-col :span="12">
@@ -370,20 +370,20 @@
                   <el-row v-if="edit">
                     <el-row  v-if="!addInfo" :gutter="10">
                       <el-col :span="6">&nbsp;</el-col>
-                      <el-col :span="6"><el-button type="info" style="width: 100%;" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button></el-col>
-                      <el-col :span="6"><el-button v-if="!addInfo" type="primary" style="width: 100%;" @click="update"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
+                      <el-col :span="6"><el-button type="info" size="mini" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button></el-col>
+                      <el-col :span="6"><el-button v-if="!addInfo" type="primary" size="mini" @click="update"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
                       <el-col :span="6">&nbsp;</el-col>
                     </el-row>
                     <el-row v-if="addInfo">
                       <el-col :span="8">&nbsp;</el-col>
-                      <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="add"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
+                      <el-col :span="8"><el-button type="primary" size="mini" @click="add"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
                       <el-col :span="8">&nbsp;</el-col>
                     </el-row>
                   </el-row>
 
                   <el-row v-else :gutter="10">
                     <el-col :span="8">&nbsp;</el-col>
-                    <el-col :span="8"><el-button type="primary" style="width: 100%;" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button></el-col>
+                    <el-col :span="8"><el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button></el-col>
                     <el-col :span="8">&nbsp;</el-col>
                   </el-row>
 
@@ -395,7 +395,7 @@
         </el-col>
 
         <el-col :span="12">
-          <el-card :style="{height: (client.height-105) + 'px'}">
+          <el-card body-style="padding:0;" :style="{height: (client.height-105) + 'px'}">
               <div slot="header" class="clearfix">
                 <div style="float: left">
                   |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">跟进信息</span>
@@ -405,15 +405,15 @@
                 <!--</div>-->
               </div>
 
-              <div :style="{height: (client.height-315) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
+              <div :style="{height: (client.height-275) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
                 <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 25px;" v-for="followUps in followUps">
                   <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
                     <img width="100%" height="100%" :src="followUps.avatar">
                   </el-tag>
-                  <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUps.userName}}</div>
-                  <div style="float:right;color:#495060;font-size: 14px;">{{followUps.createTime | subTime('dateTime')}}</div>
+                  <div class="username">{{followUps.userName}}</div>
+                  <div class="time">{{followUps.createTime | subTime('dateTime')}}</div>
                   <div style="clear: both;white-space:normal;width: 100%">
-                    <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal">{{followUps.content}}</p>
+                    <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUps.content}}</p>
                   </div>
                 </div>
               </div>
@@ -841,28 +841,29 @@
     border-left: 1px solid #449ffb;
     z-index: 10000;
     transition: left 0.2s;
-    .avatar{
-      float: left;
-      width: 40px;
-      height: 40px;
-      border-radius: 1000px;
-      margin-left: -21px;
-      margin-top: -14px;
-      padding: 0px;
-      overflow: hidden;
-    }
-    .username{
-      float: left;
-      color: rgb(73, 80, 96);
-      font-size: 12px;
-      margin-left: 10px;
-      font-weight: 600;
-    }
-    .time{
-      float: right;
-      color: rgb(73, 80, 96);
-      font-size: 12px;
-    }
+
+  }
+  .avatar{
+     float: left;
+     width: 40px;
+     height: 40px;
+     border-radius: 1000px;
+     margin-left: -21px;
+     margin-top: -14px;
+     padding: 0px;
+     overflow: hidden;
+   }
+  .username{
+    float: left;
+    color: rgb(73, 80, 96);
+    font-size: 12px;
+    margin-left: 10px;
+    font-weight: 600;
+  }
+  .time{
+    float: right;
+    color: rgb(73, 80, 96);
+    font-size: 12px;
   }
 </style>
 

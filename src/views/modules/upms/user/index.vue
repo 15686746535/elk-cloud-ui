@@ -18,7 +18,7 @@
             </div>
             <div style="float: right">
               <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
+              <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
 
             </div>
           </el-card>
@@ -36,17 +36,17 @@
                     </el-tag>
                   </el-row>
                   <el-row>
-                    <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.name}}</el-col>
+                    <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.name}}</el-col>
                   </el-row>
                   <el-row>
-                    <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.mobile}}</el-col>
+                    <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.mobile}}</el-col>
                   </el-row>
                 </template>
               </el-table-column>
               <el-table-column align="center" label="个人信息" width="300">
                 <template slot-scope="scope" >
                   <!-- 个人信息 -->
-                  <el-col style=" line-height: 25px">
+                  <el-col style="line-height: 25px">
                     <el-row :gutter="10">
                       <el-col :span="7" class="table_text">工号:</el-col>
                       <el-col :span="17" class="table_text">{{scope.row.jobNumber}}</el-col>
@@ -118,10 +118,11 @@
                              :current-page.sync="listQuery.page"
                              background
                              style="float: left"
+                             size="mini"
                              :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
-              <el-button class="filter-item" style="margin-left: 10px; float: right" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
+              <el-button class="filter-item" style="float: right" size="small" @click="create" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
             </div>
           </el-card>
         </el-col>
@@ -132,14 +133,14 @@
       <el-card>
         <div slot="header" class="clearfix">
           <div style="float: left">
-            |&nbsp;<span style="font-size: 20px;font-weight: 600;line-height:40px;font-family: '微软雅黑 Light'">同事信息</span>
+            |&nbsp;<span style="font-size: 16px;font-weight: 600;line-height:29px;font-family: '微软雅黑 Light'">同事信息</span>
           </div>
           <div style="float: right">
-            <el-button type="primary" style="float: right" @click="back">返回</el-button>
+            <el-button type="primary" size="mini" @click="back"><i class="el-icon-back"></i> 返 回</el-button>
           </div>
         </div>
 
-        <el-form :model="userEntity" :rules="userEntityRules" ref="userEntity" label-position="left" label-width="120px">
+        <el-form :model="userEntity" :rules="userEntityRules" ref="userEntity" label-width="80px" size="mini">
 
           <el-row :gutter="5">
             <el-col :span="14">
@@ -154,7 +155,7 @@
                     </el-col>
                     <el-col :span="18">
 
-                      <el-row :gutter="10" style="height: 60px">
+                      <el-row :gutter="10" style="height: 50px">
                         <el-col :span="12">
                           <el-form-item prop="jobNumber">
                             <span slot="label" class="text_css">工号:</span>
@@ -171,7 +172,7 @@
                         </el-col>
                       </el-row>
 
-                      <el-row :gutter="10" style="height: 60px">
+                      <el-row :gutter="10" style="height: 50px">
                         <el-col :span="12">
                           <el-form-item prop="name">
                             <span slot="label" class="text_css">姓名:</span>
@@ -191,13 +192,22 @@
                         </el-col>
                       </el-row>
 
-                      <el-row :gutter="10" style="height: 60px">
+                      <el-row :gutter="10"style="height: 50px">
                         <el-col :span="12">
                           <el-form-item prop="birthday">
                             <span slot="label" class="text_css">生日:</span>
                             <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="生日"  style="width: 100%" v-model="userEntity.birthday"></el-date-picker>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.birthday | subTime}}</span>
                           </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+
+                          <el-form-item prop="workMobile">
+                            <span slot="label" class="text_css">工作电话:</span>
+                            <el-input v-if="edit"  v-model="userEntity.workMobile" placeholder="工作电话" ></el-input>
+                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.workMobile}}</span>
+                          </el-form-item>
+
                         </el-col>
                       </el-row>
 
@@ -206,224 +216,212 @@
                 </el-card>
               </el-row>
               <el-row>
-                <el-card body-style="padding:10px;" shadow="hover" style="margin-top: 5px;" >
-                  <el-row :gutter="10" style="height: 60px">
-                    <el-col :span="8">
+                <el-card shadow="hover" style="margin-top: 5px;">
+                  <el-card body-style="padding:10px;" :style="{height: ($store.state.app.client.height-423) + 'px'}" shadow="never" style="border: none;min-height: 300px;" >
+                    <el-row :gutter="10" style="height: 50px">
+                      <el-col :span="8">
 
-                      <el-form-item prop="mobile">
-                        <span slot="label" class="text_css">联系电话:</span>
-                        <el-input v-if="edit"  v-model="userEntity.mobile" placeholder="联系电话"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.mobile}}</span>
-                      </el-form-item>
+                        <el-form-item prop="mobile">
+                          <span slot="label" class="text_css">联系电话:</span>
+                          <el-input v-if="edit"  v-model="userEntity.mobile" placeholder="联系电话"></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.mobile}}</span>
+                        </el-form-item>
 
-                    </el-col>
+                      </el-col>
 
-                    <el-col :span="8">
+                      <el-col :span="8">
 
-                      <el-form-item prop="wechat">
-                        <span slot="label" class="text_css">微信:</span>
-                        <el-input v-if="edit"  v-model="userEntity.wechat" placeholder="微信" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.wechat}}</span>
-                      </el-form-item>
+                        <el-form-item prop="wechat">
+                          <span slot="label" class="text_css">微信:</span>
+                          <el-input v-if="edit"  v-model="userEntity.wechat" placeholder="微信" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.wechat}}</span>
+                        </el-form-item>
 
-                    </el-col>
+                      </el-col>
 
-                    <el-col :span="8">
+                      <el-col :span="8">
 
-                      <el-form-item prop="contactAddress">
-                        <span slot="label" class="text_css">联系地址:</span>
-                        <el-input v-if="edit"  v-model="userEntity.contactAddress" placeholder="联系地址"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.contactAddress}}</span>
-                      </el-form-item>
+                        <el-form-item prop="contactAddress">
+                          <span slot="label" class="text_css">联系地址:</span>
+                          <el-input v-if="edit"  v-model="userEntity.contactAddress" placeholder="联系地址"></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.contactAddress}}</span>
+                        </el-form-item>
 
-                    </el-col>
-                  </el-row>
+                      </el-col>
+                    </el-row>
 
-                  <el-row :gutter="10" style="height: 60px">
-                    <el-col :span="8">
+                    <el-row :gutter="10" style="height: 50px">
+                      <el-col :span="8">
 
-                      <el-form-item prop="orgId">
-                        <span slot="label" class="text_css">所属部门:</span>
-                        <tree-select v-show="edit" url="/upms/org/tree" v-model="userEntity.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
-                        <span style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{userEntity.orgName}}</span>
-                      </el-form-item>
+                        <el-form-item prop="orgId">
+                          <span slot="label" class="text_css">所属部门:</span>
+                          <tree-select height="28px" style="font-size: 12px" v-show="edit" url="/upms/org/tree" v-model="userEntity.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
+                          <span style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{userEntity.orgName}}</span>
+                        </el-form-item>
 
-                    </el-col>
+                      </el-col>
 
-                    <el-col :span="8">
+                      <el-col :span="8">
 
-                      <el-form-item prop="roleIdList">
-                        <span slot="label" class="text_css">职位:</span>
-                        <el-select v-show="edit" v-model="userEntity.roleIdList" collapse-tags style="width: 100%" multiple placeholder="请选择职位">
-                          <el-option v-for="role in roleList" :key="role.roleId" :label="role.roleName" :value="role.roleId">
-                          </el-option>
-                        </el-select>
-                        <div class="text_css" >
-                          <span v-for="(roleName,index) in userEntity.roleNameList"  v-show="!edit" >{{roleName}}<span v-if="userEntity.roleNameList.length !== (index+1)">、</span></span>
-                        </div>
-                      </el-form-item>
+                        <el-form-item prop="roleIdList">
+                          <span slot="label" class="text_css">职位:</span>
+                          <el-select v-show="edit" v-model="userEntity.roleIdList" collapse-tags style="width: 100%" multiple placeholder="请选择职位">
+                            <el-option v-for="role in roleList" :key="role.roleId" :label="role.roleName" :value="role.roleId">
+                            </el-option>
+                          </el-select>
+                          <span style="padding-left: 16px;font-size: 12px;" v-show="!edit">
+                          <span v-for="(roleName,index) in userEntity.roleNameList" >{{roleName}}<span v-if="userEntity.roleNameList.length !== (index+1)">、</span></span>
+                        </span>
+                        </el-form-item>
 
-                    </el-col>
+                      </el-col>
 
-                    <el-col :span="8">
+                      <el-col :span="8">
 
-                      <el-form-item prop="homeAddress">
-                        <span slot="label" class="text_css">家庭住址:</span>
-                        <el-input v-if="edit"  v-model="userEntity.homeAddress" placeholder="家庭住址"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.homeAddress}}</span>
-                      </el-form-item>
+                        <el-form-item prop="homeAddress">
+                          <span slot="label" class="text_css">家庭住址:</span>
+                          <el-input v-if="edit"  v-model="userEntity.homeAddress" placeholder="家庭住址"></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.homeAddress}}</span>
+                        </el-form-item>
 
-                    </el-col>
-                  </el-row>
+                      </el-col>
+                    </el-row>
 
-                  <el-row :gutter="10" style="height: 60px">
-                    <el-col :span="8">
+                    <el-row :gutter="10" style="height: 50px">
+                      <el-col :span="8">
 
-                      <el-form-item prop="education">
-                        <span slot="label" class="text_css">学历:</span>
-                        <el-input v-if="edit"  v-model="userEntity.education" placeholder="学历" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.education}}</span>
-                      </el-form-item>
+                        <el-form-item prop="education">
+                          <span slot="label" class="text_css">学历:</span>
+                          <el-input v-if="edit"  v-model="userEntity.education" placeholder="学历" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.education}}</span>
+                        </el-form-item>
 
-                    </el-col>
+                      </el-col>
 
-                    <el-col :span="8">
+                      <el-col :span="8">
 
-                      <el-form-item prop="major">
-                        <span slot="label" class="text_css">专业:</span>
-                        <el-input v-if="edit"  v-model="userEntity.major" placeholder="专业" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.major}}</span>
-                      </el-form-item>
+                        <el-form-item prop="major">
+                          <span slot="label" class="text_css">专业:</span>
+                          <el-input v-if="edit"  v-model="userEntity.major" placeholder="专业" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.major}}</span>
+                        </el-form-item>
 
-                    </el-col>
+                      </el-col>
 
-                    <el-col :span="8">
+                      <el-col :span="8">
 
-                      <el-form-item prop="qq">
-                        <span slot="label" class="text_css">QQ:</span>
-                        <el-input v-if="edit"  v-model="userEntity.qq" placeholder="QQ" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.qq}}</span>
-                      </el-form-item>
+                        <el-form-item prop="qq">
+                          <span slot="label" class="text_css">QQ:</span>
+                          <el-input v-if="edit"  v-model="userEntity.qq" placeholder="QQ" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.qq}}</span>
+                        </el-form-item>
 
-                    </el-col>
-                  </el-row>
+                      </el-col>
+                    </el-row>
 
-                  <el-row :gutter="10" style="height: 60px">
-                    <el-col :span="8">
-
-
-                      <el-form-item prop="joinedTime">
-                        <span slot="label" class="text_css">入职日期:</span>
-                        <el-date-picker value-format="timestamp" v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEntity.joinedTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.joinedTime | subTime}}</span>
-                      </el-form-item>
-
-                    </el-col>
-
-                    <el-col :span="8">
-
-                      <el-form-item prop="positiveTime">
-                        <span slot="label" class="text_css">转正日期:</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEntity.positiveTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.positiveTime | subTime}}</span>
-                      </el-form-item>
-
-                    </el-col>
-
-                    <el-col :span="8">
-
-                      <el-form-item prop="email">
-                        <span slot="label" class="text_css">E-mail:</span>
-                        <el-input v-if="edit"  v-model="userEntity.email" placeholder="E-mail"></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.email}}</span>
-                      </el-form-item>
-
-                    </el-col>
-                  </el-row>
+                    <el-row :gutter="10" style="height: 50px">
+                      <el-col :span="8">
 
 
-                  <el-row :gutter="20" style="height: 60px">
-                    <el-col :span="12">
+                        <el-form-item prop="joinedTime">
+                          <span slot="label" class="text_css">入职日期:</span>
+                          <el-date-picker value-format="timestamp" v-if="edit" type="date" placeholder="入职日期"  style="width: 100%" v-model="userEntity.joinedTime"></el-date-picker>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.joinedTime | subTime}}</span>
+                        </el-form-item>
 
-                      <el-form-item label-width="150px" prop="emergencyContact">
-                        <span slot="label" class="text_css">紧急联系人姓名:</span>
-                        <el-input v-if="edit"  v-model="userEntity.emergencyContact" placeholder="紧急联系人" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyContact}}</span>
-                      </el-form-item>
+                      </el-col>
 
-                    </el-col>
+                      <el-col :span="8">
 
-                    <el-col :span="12">
+                        <el-form-item prop="positiveTime">
+                          <span slot="label" class="text_css">转正日期:</span>
+                          <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="转正日期"  style="width: 100%" v-model="userEntity.positiveTime"></el-date-picker>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.positiveTime | subTime}}</span>
+                        </el-form-item>
 
-                      <el-form-item label-width="150px" prop="emergencyMobile">
-                        <span slot="label" class="text_css">紧急联系人电话:</span>
-                        <el-input v-if="edit"  v-model="userEntity.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyMobile}}</span>
-                      </el-form-item>
+                      </el-col>
 
-                    </el-col>
-                  </el-row>
+                      <el-col :span="8">
 
-                  <el-row :gutter="20" style="height: 60px">
-                    <el-col :span="12">
+                        <el-form-item prop="email">
+                          <span slot="label" class="text_css">E-mail:</span>
+                          <el-input v-if="edit"  v-model="userEntity.email" placeholder="E-mail"></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.email}}</span>
+                        </el-form-item>
 
-                      <el-form-item label-width="150px" prop="fiveInsuranceTime">
-                        <span slot="label" class="text_css">五险购买时间:</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险购买时间"  style="width: 100%" v-model="userEntity.fiveInsuranceTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.fiveInsuranceTime | subTime}}</span>
-                      </el-form-item>
-
-                    </el-col>
-
-                    <el-col :span="12">
-
-                      <el-form-item label-width="150px" prop="providentFundTime">
-                        <span slot="label" class="text_css">公积金购买时间:</span>
-                        <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金购买时间"  style="width: 100%" v-model="userEntity.providentFundTime"></el-date-picker>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.providentFundTime | subTime}}</span>
-                      </el-form-item>
-
-                    </el-col>
-                  </el-row>
-
-                  <el-row :gutter="20" style="height: 60px">
-                    <el-col :span="12">
-
-                      <el-form-item label-width="150px" prop="workMobile">
-                        <span slot="label" class="text_css">工作电话:</span>
-                        <el-input v-if="edit"  v-model="userEntity.workMobile" placeholder="工作电话" ></el-input>
-                        <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.workMobile}}</span>
-                      </el-form-item>
-
-                    </el-col>
-
-                    <el-col :span="12">&nbsp;</el-col>
-                  </el-row>
+                      </el-col>
+                    </el-row>
 
 
-                  <el-row v-if="edit">
-                    <div style="float: right;" >
-                      <el-button v-if="addInfo"  type="success"  @click="add('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
-                      <el-button v-if="!addInfo" type="info" @click="cancel('userEntity')"><i class="el-icon-close"></i> 取消</el-button>
-                      <el-button v-if="!addInfo" type="success" @click="update('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
-                    </div>
-                  </el-row>
+                    <el-row :gutter="20" style="height: 50px">
+                      <el-col :span="12">
+
+                        <el-form-item label-width="120px" prop="emergencyContact">
+                          <span slot="label" class="text_css">紧急联系人姓名:</span>
+                          <el-input v-if="edit"  v-model="userEntity.emergencyContact" placeholder="紧急联系人" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyContact}}</span>
+                        </el-form-item>
+
+                      </el-col>
+
+                      <el-col :span="12">
+
+                        <el-form-item label-width="120px" prop="emergencyMobile">
+                          <span slot="label" class="text_css">紧急联系人电话:</span>
+                          <el-input v-if="edit"  v-model="userEntity.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyMobile}}</span>
+                        </el-form-item>
+
+                      </el-col>
+                    </el-row>
+
+                    <el-row :gutter="20" style="height: 50px">
+                      <el-col :span="12">
+
+                        <el-form-item label-width="120px" prop="fiveInsuranceTime">
+                          <span slot="label" class="text_css">五险购买时间:</span>
+                          <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险购买时间"  style="width: 100%" v-model="userEntity.fiveInsuranceTime"></el-date-picker>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.fiveInsuranceTime | subTime}}</span>
+                        </el-form-item>
+
+                      </el-col>
+
+                      <el-col :span="12">
+
+                        <el-form-item label-width="120px" prop="providentFundTime">
+                          <span slot="label" class="text_css">公积金购买时间:</span>
+                          <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金购买时间"  style="width: 100%" v-model="userEntity.providentFundTime"></el-date-picker>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.providentFundTime | subTime}}</span>
+                        </el-form-item>
+
+                      </el-col>
+                    </el-row>
+
+                  </el-card>
+                  <el-card shadow="never" body-style="padding:0;" style="border: none;">
+                    <el-row v-if="edit">
+                      <div style="float: right;" >
+                        <el-button v-if="addInfo" size="mini" type="success"  @click="add('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
+                        <el-button v-if="!addInfo" size="mini" type="info" @click="cancel('userEntity')"><i class="el-icon-close"></i> 取消</el-button>
+                        <el-button v-if="!addInfo" size="mini" type="success" @click="update('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
+                      </div>
+                    </el-row>
 
 
-                  <el-row v-else>
-                    <div style="float: right;" >
-                      <el-button type="primary" @click="editInfo"><i class="el-icon-edit"></i> 编辑</el-button>
-                    </div>
-                  </el-row>
-
-
+                    <el-row v-else>
+                      <div style="float: right;" >
+                        <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编辑</el-button>
+                      </div>
+                    </el-row>
+                  </el-card>
                 </el-card>
               </el-row>
             </el-col>
 
             <el-col :span="10">
               <el-row>
-                <el-card shadow="hover" body-style="padding:0" style="height: 350px">
+                <el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-150) + 'px'}" style="min-height: 573px;">
+                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 284px;">-->
                   <div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">
                     <div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">
                       招生信息
@@ -434,18 +432,21 @@
 
                 </el-card>
               </el-row>
-              <el-row>
-                <el-card shadow="hover" body-style="padding:0" style="height: 350px;margin-top: 5px">
-                  <div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">
-                    <div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">
-                      操作日志
-                    </div>
-                  </div>
+
+              <!--  操作日志  -->
+
+              <!--<el-row>-->
+                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 284px;margin-top: 5px">-->
+                  <!--<div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">-->
+                    <!--<div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">-->
+                      <!--操作日志-->
+                    <!--</div>-->
+                  <!--</div>-->
 
 
 
-                </el-card>
-              </el-row>
+                <!--</el-card>-->
+              <!--</el-row>-->
             </el-col>
 
           </el-row>
@@ -836,7 +837,7 @@
   }
 
   .table_text{
-    color: #7c7c7c;font-size: 14px;text-align: left;
+    color: #7c7c7c;font-size: 12px;text-align: left;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
@@ -857,7 +858,7 @@
   }
   .text_css{
     color:#495060;
-    font-size: 16px;
+    font-size: 12px;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */

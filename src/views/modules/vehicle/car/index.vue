@@ -17,13 +17,13 @@
             </el-select>
           </el-col>
           <el-col :xs="0" :sm="5" :md="4" :lg="4">
-            <dict dictType="dict_source"  style="width: 100%" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>
+            <dict dictType="dict_source" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>
           </el-col>
           <el-col :xs="6" :sm="5" :md="4" :lg="4">
             <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
           </el-col>
           <el-col :span="4">
-            <el-button class="filter-item" type="primary" icon="search" @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
+            <el-button class="filter-item" type="primary" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -44,12 +44,28 @@
                 <el-col :span="10">
                   <el-row><img width="100%" height="100%" :src="scope.row.vehicleEntity.vehiclePhoto"></el-row>  <!-- 车辆图片 -->
                 </el-col>
-                <el-col style="text-align: left;color: #868686;" :span="14">
-                  <el-row style="margin: 12px 0;">车辆牌照：{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.plateNumber}}</el-row>
-                  <el-row style="margin: 12px 0;">使用责任人：{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.name}}</el-row>
-                  <el-row style="margin: 12px 0;">所属机构：{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.affiliation}}</el-row>
-                  <el-row style="margin: 12px 0;">车辆状态：{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.vehicleState}}</el-row>
+
+                <el-col style="line-height: 25px" :span="14">
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">车辆牌照：</el-col>
+                    <el-col :span="14" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.plateNumber}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">责任人：</el-col>
+                    <el-col :span="14" class="table_text">
+                      {{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.name}}
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="9" class="table_text">所属机构：</el-col>
+                    <el-col :span="15" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.affiliation}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="8" class="table_text">车辆状态：</el-col>
+                    <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.vehicleState}}</el-col>
+                  </el-row>
                 </el-col>
+
               </el-row>
 
             </template>
@@ -58,11 +74,21 @@
           <!-- 证件信息 -->
           <el-table-column align="center" label="证件信息">
             <template slot-scope="scope">
-              <el-col style="text-align: left;color: #868686;">
-                <el-row style="margin: 12px 0;">标识卡到期日期：{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.identificationEnd | subTime}}</el-row>
-
-                <el-row style="margin: 12px 0;">评定日期：{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.evaluation | subTime}}</el-row>
-                <el-row style="margin: 12px 0;">强制报销日期：{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.scrap | subTime}}</el-row>
+              <el-col style="line-height: 25px">
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">标识卡到期日期：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.identificationEnd | subTime}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">评定日期：</el-col>
+                  <el-col :span="17" class="table_text">
+                    {{scope.row.certificateEntity==null?null:scope.row.certificateEntity.evaluation | subTime}}
+                  </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">强制报销日期：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.scrap | subTime}}</el-col>
+                </el-row>
               </el-col>
 
             </template>
@@ -71,14 +97,22 @@
           <!-- 技术信息 -->
           <el-table-column align="center" label="技术信息">
             <template slot-scope="scope">
-
-              <el-col style="text-align: left;color: #868686;">
-                <el-row style="margin: 12px 0;">排量/功率：{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.displacement}}</el-row>
-
-                <el-row style="margin: 12px 0;">总质量：{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.weight}}</el-row>
-                <el-row style="margin: 12px 0;">制造厂商名称：{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.manufacturer}}</el-row>
+              <el-col style="line-height: 25px">
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">排量/功率：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.displacement}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">总质量：</el-col>
+                  <el-col :span="17" class="table_text">
+                    {{scope.row.technicalEntity==null?null:scope.row.technicalEntity.weight}}
+                  </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">制造厂商名称：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.manufacturer}}</el-col>
+                </el-row>
               </el-col>
-
 
             </template>
           </el-table-column>
@@ -1079,6 +1113,13 @@
     float: left;
   }
 
+  .table_text{
+    color: #7c7c7c;font-size: 12px;text-align: left;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+  }
   .clearfix:before,
   .clearfix:after {
     display: table;

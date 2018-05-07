@@ -41,10 +41,10 @@
                       </el-tag>
                     </el-row>
                     <el-row>
-                      <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.name}}</el-col>
+                      <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.name}}</el-col>
                     </el-row>
                     <el-row>
-                      <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;">{{scope.row.mobile}}</el-col>
+                      <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.mobile}}</el-col>
                     </el-row>
                   </template>
                 </el-table-column>
@@ -134,7 +134,9 @@
 
                       <el-row :gutter="10">
                         <el-col :span="7" class="table_text">增值服务:</el-col>
-                        <el-col :span="17" class="table_text"><span v-for="increment in scope.row.incrementList">{{increment}}、</span></el-col>
+                        <el-col :span="17" class="table_text">
+                          <span v-for="(increment,index) in scope.row.incrementList">{{increment}}<span v-if="scope.row.incrementList.length !== (index+1)">、</span></span>
+                        </el-col>
                       </el-row>
 
                       <el-row :gutter="10">
@@ -174,12 +176,12 @@
         学员详细信息
         <div style="float: right"><el-button type="primary" size="mini"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button></div>
       </div>
-      <el-row :style="{height: ($store.state.app.client.height-110) + 'px'}">
+      <el-row >
         <el-col :style="{height: ($store.state.app.client.height-110) + 'px',width: ($store.state.app.client.width-555) + 'px'}">
-          <el-tabs v-model="activeName" type="border-card" style="height: 100%;border-radius: 4px 0 0 4px;">
-            <el-tab-pane label="最近信息" name="1">
-            </el-tab-pane>
-            <el-tab-pane label="考试情况" name="2">
+          <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" style="height: 100%;border-radius: 4px 0 0 4px;">
+            <!--<el-tab-pane label="最近信息" name="1">-->
+            <!--</el-tab-pane>-->
+            <el-tab-pane label="考试情况" name="1">
 
               <el-table :data="examNoteList" stripe style="width: 100%">
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -210,12 +212,23 @@
               </el-table>
 
             </el-tab-pane>
-            <el-tab-pane label="费用情况" name="3">
+            <!--<el-tab-pane label="费用情况" name="3">-->
 
 
-            </el-tab-pane>
+            <!--</el-tab-pane>-->
             <el-tab-pane label="来访跟进信息" name="4">
-
+              <div :style="{height: (client.height-175) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
+                <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 25px;" v-for="followUp in followUpList">
+                  <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
+                    <img width="100%" height="100%" :src="followUp.avatar">
+                  </el-tag>
+                  <div style="float:left;color:#495060;font-size: 18px;margin-left: 10px;">{{followUp.userName}}</div>
+                  <div style="float:right;color:#495060;font-size: 14px;">{{followUp.createTime | subTime('dateTime')}}</div>
+                  <div style="clear: both;white-space:normal;width: 100%">
+                    <p style="font-size: 14px;margin-left: 35px;border-radius: 10px;white-space:normal;width:80%;">{{followUp.content}}</p>
+                  </div>
+                </div>
+              </div>
 
             </el-tab-pane>
             <el-tab-pane label="约车日志" name="5">
@@ -290,20 +303,20 @@
         </el-col>
 
         <el-col style="width: 550px"  :style="{height: ($store.state.app.client.height-110) + 'px'}" >
-          <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="90px">
+          <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px" size="mini" >
             <el-card :style="{height: ($store.state.app.client.height-160) + 'px'}" body-style="padding: 0;"
                      v-loading="infoLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力匹配中..."
                      shadow="never" style="border-radius:0 4px 0 0;line-height: 50px;overflow-y: auto;">
               <!-- 基本信息 -->
               <el-row>
                 <el-row class="title">基本信息</el-row>
-                <el-row style="padding: 0 10px;margin-top: 10px">
+                <el-row style="padding: 0 10px">
                   <el-col :span="12">
                     <!-- 档案号 -->
                     <el-row>
                       <el-form-item prop="archivesNumber">
                         <span slot="label" class="text_css">档案号:</span>
-                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
+                        <el-input v-if="edit" size="mini" class="filter-item" placeholder="档案号" v-model="student.archivesNumber"></el-input>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.archivesNumber}}</div>
                       </el-form-item>
 
@@ -313,7 +326,7 @@
                     <el-row>
                       <el-form-item prop="name">
                         <span slot="label" class="text_css">姓名:</span>
-                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
+                        <el-input v-if="edit" size="mini" class="filter-item" placeholder="姓名" v-model="student.name"></el-input>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.name}}</div>
                       </el-form-item>
                     </el-row>
@@ -322,7 +335,7 @@
                     <el-row>
                       <el-form-item prop="idNumber">
                         <span slot="label" class="text_css">身份证号:</span>
-                        <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18"  @keyup.enter.native="generateInfo"  @blur="generateInfo" v-model="student.idNumber"></el-input>
+                        <el-input v-if="edit" size="mini" class="filter-item" placeholder="身份证号" :maxlength="18"  @keyup.enter.native="generateInfo"  @blur="generateInfo" v-model="student.idNumber"></el-input>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.idNumber}}</div>
                       </el-form-item>
 
@@ -333,8 +346,8 @@
                       <el-form-item prop="sex">
                         <span slot="label" class="text_css">性别:</span>
                         <template v-if="edit">
-                          <el-radio v-model="student.sex" label="1">男</el-radio>
-                          <el-radio v-model="student.sex" label="0">女</el-radio>
+                          <el-radio size="mini" v-model="student.sex" label="1">男</el-radio>
+                          <el-radio size="mini" v-model="student.sex" label="0">女</el-radio>
                         </template>
                         <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
                       </el-form-item>
@@ -353,17 +366,12 @@
                   </el-col>
                   <el-col :span="12">
                     <el-row>
+                      <!-- 头像 -->
                       <el-form-item prop="avatar">
                         <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
                                    :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                           <img :src="student.avatar" class="avatar">
                         </el-upload>
-
-                        <!--<el-upload v-if="edit" style="width: 140px; margin: 5px auto 0" class="avatar-uploader" action="/oss/oss/upload/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">-->
-                          <!--<img v-if="student.avatar" :src="student.avatar" class="avatar">-->
-                          <!--<i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-                        <!--</el-upload>-->
-                        <!--<img v-else :src="student.avatar" class="avatar_img">-->
                       </el-form-item>
                     </el-row>
                   </el-col>
@@ -374,7 +382,7 @@
               <!-- 入学信息 -->
               <el-row>
                 <el-row class="title">入学信息</el-row>
-                <el-row style="padding: 0 10px;margin-top: 10px">
+                <el-row style="padding: 0 10px">
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <!-- 入学日期 -->
@@ -489,7 +497,7 @@
               <!-- 联系信息 -->
               <el-row>
                 <el-row class="title">联系信息:</el-row>
-                <el-row style="padding: 0 10px;margin-top: 10px">
+                <el-row style="padding: 0 10px">
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <!-- 联系电话 -->
@@ -514,7 +522,7 @@
                   </el-row>
                 </el-row>
 
-                <el-row style="padding: 0 10px;margin-top: 10px">
+                <el-row style="padding: 0 10px">
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <!-- 电子邮箱 -->
@@ -540,7 +548,7 @@
                 </el-row>
 
 
-                <el-row style="padding: 0 10px;margin-top: 10px">
+                <el-row style="padding: 0 10px">
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <!-- 是否体检 -->
@@ -571,7 +579,7 @@
                   </el-row>
                 </el-row>
 
-                <el-row style="padding: 0 10px;margin-top: 10px">
+                <el-row style="padding: 0 10px">
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <!-- 是否有车 -->
@@ -641,7 +649,7 @@
       <el-row :gutter="5">
         <el-col :span="12">
           <el-card :style="{height: ($store.state.app.client.height - 110) + 'px'}" style="overflow: auto;line-height: 50px">
-            <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="120px">
+            <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="80px" size="mini" >
               <el-row>
                 <el-row :gutter="20">
                   <el-col :span="12" >
@@ -650,7 +658,7 @@
                     <el-row >
                       <el-form-item prop="mobile">
                         <span slot="label" class="text_css">联系电话</span>
-                        <el-input style="width: 100%;" class="filter-item" @keyup.enter.native="matchingStudents" @blur="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
+                        <el-input size="mini" class="filter-item" @keyup.enter.native="matchingStudents" @blur="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
                       </el-form-item>
 
                     </el-row>
@@ -659,7 +667,7 @@
                     <el-row >
                       <el-form-item prop="idNumber">
                         <span slot="label" class="text_css">身份证号</span>
-                        <el-input style="width: 100%;" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
+                        <el-input size="mini" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
                       </el-form-item>
                     </el-row>
 
@@ -667,7 +675,7 @@
                     <el-row >
                       <el-form-item prop="archivesNumber">
                         <span slot="label" class="text_css">档案号</span>
-                        <el-input style="width: 100%;" class="filter-item" placeholder="档案号" v-model="studentEntity.archivesNumber"></el-input>
+                        <el-input size="mini" class="filter-item" placeholder="档案号" v-model="studentEntity.archivesNumber"></el-input>
                       </el-form-item>
                     </el-row>
 
@@ -676,7 +684,7 @@
 
                       <el-form-item prop="name">
                         <span slot="label" class="text_css">姓名</span>
-                        <el-input style="width: 100%;" class="filter-item" placeholder="姓名" clearable v-model="studentEntity.name"></el-input>
+                        <el-input size="mini" class="filter-item" placeholder="姓名" clearable v-model="studentEntity.name"></el-input>
                       </el-form-item>
 
                     </el-row>
@@ -686,7 +694,7 @@
                     <el-row >
                       <el-form-item prop="wechat">
                         <span slot="label"  class="text_css">微信</span>
-                        <el-input style="width: 100%;" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input>
+                        <el-input size="mini" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input>
                       </el-form-item>
                     </el-row>
 
@@ -695,7 +703,7 @@
                     <el-row >
                       <el-form-item prop="campus">
                         <span slot="label"  class="text_css">校区</span>
-                        <dict v-model="studentEntity.campus" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict>
+                        <dict size="mini" v-model="studentEntity.campus" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict>
                       </el-form-item>
                     </el-row>
 
@@ -703,7 +711,7 @@
                     <el-row >
                       <el-form-item prop="contactAddress">
                         <span slot="label"  class="text_css">联系地址</span>
-                        <el-input style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input>
+                        <el-input size="mini" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input>
                       </el-form-item>
                     </el-row>
 
@@ -712,7 +720,7 @@
                     <el-row >
                       <el-form-item prop="periods">
                         <span slot="label"  class="text_css">入学期数</span>
-                        <el-input style="width: 100%;" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input>
+                        <el-input size="mini" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input>
                       </el-form-item>
                     </el-row>
 
@@ -723,7 +731,7 @@
                     <el-row >
                       <el-form-item prop="birthday">
                         <span slot="label" class="text_css">生日</span>
-                        <el-date-picker value-format="timestamp"  type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
+                        <el-date-picker size="mini" value-format="timestamp"  type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
                       </el-form-item>
                     </el-row>
 
@@ -731,7 +739,7 @@
                     <el-row >
                       <el-form-item prop="motorcycleType">
                         <span slot="label"  class="text_css">所学车型</span>
-                        <dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                        <dict size="mini" v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
                       </el-form-item>
                     </el-row>
 
@@ -739,7 +747,7 @@
                     <el-row >
                       <el-form-item prop="source">
                         <span slot="label" class="text_css">来源渠道</span>
-                        <dict v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict>
+                        <dict size="mini" v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict>
                       </el-form-item>
                     </el-row>
 
@@ -748,7 +756,7 @@
                     <el-row >
                       <el-form-item prop="enrolTime">
                         <span slot="label"  class="text_css">入学日期</span>
-                        <el-date-picker value-format="timestamp" type="date" placeholder="入学日期" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
+                        <el-date-picker size="mini" value-format="timestamp" type="date" placeholder="入学日期" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
                       </el-form-item>
                     </el-row>
 
@@ -777,7 +785,7 @@
                     <el-row >
                       <el-form-item prop="sex">
                         <span slot="label" class="text_css">性别</span>
-                        <el-radio-group v-model="studentEntity.sex">
+                        <el-radio-group size="mini" v-model="studentEntity.sex">
                           <el-radio label="1">男</el-radio>
                           <el-radio label="0">女</el-radio>
                         </el-radio-group>
@@ -926,6 +934,7 @@
   import { examFetchList } from '@/api/student/examnote'
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
+  import { followUpList } from '@/api/visit/followup'
   import { getIntentionByMobile } from '@/api/visit/intention'
   import Coach from '@/components/Coach'
   import { removeAllSpace } from '@/utils/validate'
@@ -1195,6 +1204,7 @@
         examNoteList: [],
         vehiclePeriodList: [],
         shuttleLogList: [],
+        followUpList: [],
         total: 1,
         listLoading: true,
         btnLoading: false,
@@ -1325,24 +1335,58 @@
           this.examBespeak.studentId = this.student.studentId
           if (this.student.introducerIdList === null) this.student.introducerIdList = [] // 防止介绍人为null
           this.getIntroducerList()
+          this.getExam()
           this.infoLoading = false
         })
-        examFetchList({ studentId: val.studentId, examState: 'exam_note_true' }).then(response => {
+        this.showModule = 'info'
+      },
+      /* 切换标签 */
+      handleClick(tab, event) {
+        console.log(tab.name)
+        if (tab.label === '考试情况') {
+          this.getExam()
+        } else if (tab.label === '费用情况') {
+          // this.getExam()
+        } else if (tab.label === '来访跟进信息') {
+          this.getFollowUpList()
+        } else if (tab.label === '约车日志') {
+          this.getVehiclePeriod()
+        } else if (tab.label === '接送日志') {
+          this.getShuttleLog()
+        }
+      },
+      /* 考试日志 */
+      getExam() {
+        examFetchList({ studentId: this.student.studentId, examState: 'exam_note_true' }).then(response => {
           console.log('====================== 考试日志 =====================')
           console.log(response.data)
           this.examNoteList = response.data.data.list
         })
-        getVehiclePeriodByStudentId(val.studentId).then(response => {
+      },
+      /* 约车日志 */
+      getVehiclePeriod() {
+        getVehiclePeriodByStudentId(this.student.studentId).then(response => {
           console.log('====================== 约车日志 =====================')
           console.log(response.data)
           this.vehiclePeriodList = response.data.list
         })
-        getShuttleLogByStudentId(val.studentId).then(response => {
+      },
+      /* 接送日志 */
+      getShuttleLog() {
+        getShuttleLogByStudentId(this.student.studentId).then(response => {
           console.log('====================== 接送日志 =====================')
           console.log(response.data)
           this.shuttleLogList = response.data.list
         })
-        this.showModule = 'info'
+      },
+      /* 跟进信息 */
+      getFollowUpList() {
+        console.log(this.student.mobile)
+        followUpList({ 'mobile': this.student.mobile }).then(response => {
+          console.log('====================== 跟进信息 =====================')
+          console.log(response.data)
+          this.followUpList = response.data.data
+        })
       },
       // 获取所有学员
       getList() {
@@ -1655,17 +1699,19 @@
     background-color: #f5f7fa;
     text-align: center;
     font-size: 16px;
+    margin-bottom: 10px;
   }
   .text_css{
     color:#495060;
-    font-size: 16px;
+    font-size: 12px;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
     text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
   }
   .table_text{
-    color: #7c7c7c;font-size: 14px;text-align: left;
+    color: #7c7c7c;font-size: 12px;
+    text-align: left;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */

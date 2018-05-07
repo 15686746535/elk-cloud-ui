@@ -6,3 +6,12 @@ export function queryIndex() {
     method: 'get'
   })
 }
+
+export function queryWorry(params) {
+  return request({
+    url: '/visualization/queryWorry',
+    method: 'get',
+    params: params
+  })
+}
+

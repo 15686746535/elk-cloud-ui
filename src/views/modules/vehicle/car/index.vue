@@ -350,7 +350,7 @@
 
             <el-row v-if="edit === 'car'" style="float: right;">
               <el-button v-if="!addInfo"  size="mini" type="info" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-              <el-button v-if="addInfo"  size="mini" :loading="btnLoading" type="success" @click="add('car',vehicleEntity)"><i class="el-icon-fa-save"></i> 保 存</el-button>
+              <el-button v-if="addInfo"  size="mini" :loading="btnLoading" type="success" @click="add('vehicleEntity','car',vehicleEntity)"><i class="el-icon-fa-save"></i> 保 存</el-button>
               <el-button v-if="!addInfo"  size="mini" :loading="btnLoading" type="success" @click="update('car',vehicleEntity)"><i class="el-icon-fa-save"></i> 保 存</el-button>
             </el-row>
             <el-row v-else style="float: right;">
@@ -768,56 +768,115 @@
           </el-row>
 
         </el-tab-pane>
-        <el-tab-pane label="维修日志" name="5">
 
-          <el-table :data="repairList" stripe style="width: 100%">
-            <el-table-column prop="date" label="维修事项" width="180">
+        <el-tab-pane label="维修日志" name="5">
+          <el-table v-loading="repairListLoading" element-loading-text="= = 我已经全速加载了..." :data="repairList" stripe border fit highlight-current-row style="width: 100%">
+            <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
+            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+            <el-table-column prop="description" label="维修事项" width="180">
             </el-table-column>
-            <el-table-column prop="name" label="维修时间" width="180">
+            <el-table-column prop="repairTime" label="维修时间" width="180">
             </el-table-column>
-            <el-table-column prop="address" label="维修费用">
+            <el-table-column prop="cost" label="维修费用（￥）">
             </el-table-column>
-            <el-table-column prop="address" label="维修人">
+            <el-table-column prop="operator" label="维修人">
             </el-table-column>
-            <el-table-column prop="address" label="备注">
+            <el-table-column prop="remark" label="备注">
             </el-table-column>
           </el-table>
+          <div v-show="!repairListLoading" class="pagination-container" style="margin-top: 20px">
+            <el-button style="margin-top: -8px;float: right" @click="createClick('repair')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+          </div>
 
         </el-tab-pane>
         <el-tab-pane label="保养日志" name="6">
-
-          <el-table :data="maintainList" stripe style="width: 100%">
-            <el-table-column prop="date" label="保养事项" width="180">
+          <el-table v-loading="maintainListLoading" element-loading-text="= = 我已经全速加载了..." :data="maintainList" stripe border fit highlight-current-row style="width: 100%">
+            <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
+            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+            <el-table-column prop="description" label="保养内容" width="180">
             </el-table-column>
-            <el-table-column prop="name" label="保养时间" width="180">
+            <el-table-column prop="maintainTime" label="保养时间" width="180">
             </el-table-column>
-            <el-table-column prop="address" label="保养费用">
+            <el-table-column prop="cost" label="保养费用">
             </el-table-column>
-            <el-table-column prop="address" label="保养人">
+            <el-table-column prop="operator" label="保养人">
             </el-table-column>
-            <el-table-column prop="address" label="备注">
-            </el-table-column>
-          </el-table>
-
-        </el-tab-pane>
-        <el-tab-pane label="费用日志" name="7">
-
-          <el-table :data="maintainList" stripe style="width: 100%">
-            <el-table-column prop="date" label="费用事项" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="记录时间" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="费用">
-            </el-table-column>
-            <el-table-column prop="address" label="记录人">
-            </el-table-column>
-            <el-table-column prop="address" label="备注">
+            <el-table-column prop="remark" label="备注">
             </el-table-column>
           </el-table>
+          <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
+            <el-button style="margin-top: -8px;float: right" @click="createClick('maintain')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+          </div>
 
         </el-tab-pane>
+        <!--<el-tab-pane label="费用日志" name="7">-->
+
+          <!--<el-table :height="($store.state.app.client.height-205)" v-loading="maintainListLoading" element-loading-text="= = 我已经全速加载了..." :data="maintainList" stripe border fit highlight-current-row style="width: 100%">-->
+            <!--&lt;!&ndash;<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>&ndash;&gt;-->
+            <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
+            <!--<el-table-column prop="date" label="费用事项" width="180">-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="name" label="记录时间" width="180">-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="address" label="费用">-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="address" label="记录人">-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="address" label="备注">-->
+            <!--</el-table-column>-->
+          <!--</el-table>-->
+
+        <!--</el-tab-pane>-->
 
       </el-tabs>
+
+      <el-dialog @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加保养日志'" width="550px" :visible.sync="repairListOption">
+        <div v-show="flag === 'repair'">
+
+          <el-form label-position="left" :model="repair" :rules="repairRules" ref="repair" label-width="100px">
+            <el-form-item label="维修事项" prop="description">
+              <el-input v-model="repair.description" placeholder="维修事项" ></el-input>
+            </el-form-item>
+            <el-form-item label="维修时间" prop="repairTime">
+              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="维修时间" v-model="repair.repairTime"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="维修费用" prop="cost">
+              <el-input v-model="repair.cost" placeholder="维修费用" ></el-input>
+            </el-form-item>
+            <el-form-item label="备注" prop="remark">
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model.number="repair.remark" placeholder="备注" ></el-input>
+            </el-form-item>
+          </el-form>
+
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" :loading="btnLoading" @click="createRepair('repair', repair)">确 定</el-button>
+          </div>
+        </div>
+
+        <div v-show="flag === 'maintain'">
+
+          <el-form label-position="left" :model="maintain" :rules="maintainRules" ref="maintain" label-width="100px">
+            <el-form-item label="保养内容" prop="description">
+              <el-input v-model="maintain.description" placeholder="保养内容" ></el-input>
+            </el-form-item>
+            <el-form-item label="保养时间" prop="maintainTime">
+              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="保养时间" v-model="maintain.maintainTime"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="保养费用" prop="cost">
+              <el-input v-model="maintain.cost" placeholder="保养费用" ></el-input>
+            </el-form-item>
+            <el-form-item label="备注" prop="remark">
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model.number="maintain.remark" placeholder="备注" ></el-input>
+            </el-form-item>
+          </el-form>
+
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" :loading="btnLoading" @click="createRepair('maintain', maintain)">确 定</el-button>
+          </div>
+
+
+        </div>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -879,6 +938,18 @@
         },
         maintainList: [],
         repairList: [],
+        maintain: {
+          description: null,
+          maintainTime: null,
+          cost: null,
+          remark:null
+        },
+        repair: {
+          description: null,
+          repairTime: null,
+          cost: null,
+          remark:null
+        },
         // 负责人集合
         userList: [],
         // 车辆信息集合
@@ -886,6 +957,10 @@
         // 总条数
         total: null,
         listLoading: true,
+        repairListLoading: true,
+        maintainListLoading: true,
+        repairListOption: false,
+        flag: 'repairList',
         btnLoading: false,
         infoLoading: false,
         // 模块标记
@@ -953,70 +1028,100 @@
         safetyEntityRules: {},
         technicalEntityRules: {},
         addInfo: false,
-        plateColors: [{
-          value: '黄色',
-          label: '黄色'
-        }, {
-          value: '绿色',
-          label: '绿色'
-        }, {
-          value: '蓝色',
-          label: '蓝色'
-        }],
-        vehicleTypes: [{
-          value: '教练车',
-          label: '教练车'
-        }, {
-          value: '公交',
-          label: '公交'
-        }, {
-          value: '挂车',
-          label: '挂车'
-        }, {
-          value: '普货车',
-          label: '普货车'
-        }, {
-          value: '特种',
-          label: '特种'
-        }, {
-          value: '公务车',
-          label: '公务车'
-        }, {
-          value: '出租',
-          label: '出租'
-        }],
-        vehicleStates: [{
-          value: '新增',
-          label: '新增'
-        }, {
-          value: '内部转入',
-          label: '内部转入'
-        }, {
-          value: '外部转入',
-          label: '外部转入'
-        }, {
-          value: '报废更新',
-          label: '报废更新'
-        }, {
-          value: '租用',
-          label: '租用'
-        }],
-        fuelTypes: [{
-          value: '柴油',
-          label: '柴油'
-        }, {
-          value: '汽油',
-          label: '汽油'
-        }, {
-          value: 'CNG天然气',
-          label: 'CNG天然气'
-        }, {
-          value: '油电混合',
-          label: '油电混合'
-        }, {
-          value: '纯电动',
-          label: '纯电动'
-        }]
+        plateColors: [
+          {
+            value: '黄色',
+            label: '黄色'
+          }, {
+            value: '绿色',
+            label: '绿色'
+          }, {
+            value: '蓝色',
+            label: '蓝色'
+          }
+        ],
+        vehicleTypes: [
+          {
+            value: '教练车',
+            label: '教练车'
+          }, {
+            value: '公交',
+            label: '公交'
+          }, {
+            value: '挂车',
+            label: '挂车'
+          }, {
+            value: '普货车',
+            label: '普货车'
+          }, {
+            value: '特种',
+            label: '特种'
+          }, {
+            value: '公务车',
+            label: '公务车'
+          }, {
+            value: '出租',
+            label: '出租'
+          }
+        ],
+        vehicleStates: [
+          {
+            value: '新增',
+            label: '新增'
+          }, {
+            value: '内部转入',
+            label: '内部转入'
+          }, {
+            value: '外部转入',
+            label: '外部转入'
+          }, {
+            value: '报废更新',
+            label: '报废更新'
+          }, {
+            value: '租用',
+            label: '租用'
+          }
+        ],
+        fuelTypes: [
+          {
+            value: '柴油',
+            label: '柴油'
+          }, {
+            value: '汽油',
+            label: '汽油'
+          }, {
+            value: 'CNG天然气',
+            label: 'CNG天然气'
+          }, {
+            value: '油电混合',
+            label: '油电混合'
+          }, {
+            value: '纯电动',
+            label: '纯电动'
+          }
+        ],
+        repairRules: {
+          description: [
+            { required: true, message: '请填写维修内容', trigger: ['blur', 'change'] },
+          ],
+          repairTime: [
+            { required: true, message: '请选择维修时间', trigger: ['blur', 'change'] },
+          ],
+          cost: [
+            { required: true, message: '请填写维修费用', trigger: ['blur', 'change'] },
+          ]
+        },
+        maintainRules: {
+          description: [
+            { required: true, message: '请填写保养内容', trigger: ['blur', 'change'] },
+          ],
+          maintainTime: [
+            { required: true, message: '请选择保养时间', trigger: ['blur', 'change'] },
+          ],
+          cost: [
+            { required: true, message: '请填写保养费用', trigger: ['blur', 'change'] },
+          ]
+        }
       }
     },
     created() {
@@ -1117,21 +1222,26 @@
         this.getList()
         this.edit = ''
         this.showModule = 'list'
+        this.$refs['vehicleEntity'].resetFields()
       },
       // 添加
-      add(key, obj) {
+      add(formName, key, obj) {
         console.log('这里是车辆===========================')
         console.log(obj)
-        this.btnLoading = true
-        this.infoLoading = true
-        addObj(key, obj).then(response => {
-          this.vehicleEntity.vehicleId = response.data.data
-          this.btnLoading = false
-          this.infoLoading = false
-          console.log(this.vehicleEntity.vehicleId)
-          this.editList({ 'vehicleEntity': this.vehicleEntity })
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.btnLoading = true
+            this.infoLoading = true
+            addObj(key, obj).then(response => {
+              this.vehicleEntity.vehicleId = response.data.data
+              this.btnLoading = false
+              this.infoLoading = false
+              console.log(this.vehicleEntity.vehicleId)
+              this.editList({ 'vehicleEntity': this.vehicleEntity })
+            })
+            this.edit = ''
+          }
         })
-        this.edit = ''
       },
       // 修改
       update(key, obj) {
@@ -1171,6 +1281,8 @@
             this.certificateEntity = response.data.data.certificateEntity === null ? {} : response.data.data.certificateEntity
             this.maintainList = response.data.data.maintainEntityList === null ? [] : response.data.data.maintainEntityList
             this.repairList = response.data.data.repairEntityList === null ? [] : response.data.data.repairEntityList
+            this.repairListLoading = false
+            this.maintainListLoading = false
             this.timeGroup()
           })
         this.showModule = 'info'
@@ -1247,6 +1359,7 @@
           this.$message.error('上传头像图片大小不能超过 2MB!')
         }
 
+        if (isImages && isLt2M) this.infoLoading = true
         return isImages && isLt2M
       },
       getUserList() {
@@ -1254,6 +1367,33 @@
           console.log('================== 所有负责人 ===================')
           console.log(response.data)
           this.userList = response.data.data
+        })
+      },
+      createClick(key) {
+        this.repairListOption = true
+        this.flag = key
+        this.$refs[key].resetFields()
+        // if (this.edit === 'repair') {
+        //   console.log('repair')
+        //   this.update(this.edit, this.repair)
+        // } else if (this.edit === 'maintain') {
+        //   console.log('maintain')
+        //   this.update(this.edit, this.maintain)
+        // }
+      },
+      createRepair(key, obj) {
+        this.$refs[key].validate((valid) => {
+          if (valid) {
+            this.btnLoading = true
+            this.infoLoading = true
+            obj.vehicleId = this.vehicleEntity.vehicleId
+            addObj(key, obj).then(() => {
+              this.btnLoading = false
+              this.infoLoading = false
+              this.repairListOption = false
+              this.editList({ 'vehicleEntity': this.vehicleEntity })
+            })
+          }
         })
       }
     }

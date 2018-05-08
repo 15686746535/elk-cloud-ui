@@ -54,7 +54,7 @@
         </el-pagination>
       </div>
     </el-card>
-    <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
         <el-form-item label="增值包名字"  prop="username">
           <el-input v-model="increment.name" placeholder="增值包名字" ></el-input>

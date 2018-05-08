@@ -69,7 +69,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="所属部门" prop="roleName">
           <tree-select url="/upms/org/tree" v-model="form.orgId"></tree-select>

@@ -13,7 +13,7 @@
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
             <el-date-picker value-format="timestamp"  :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
             </el-date-picker>
-            <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
+            <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.subject" placeholder="科目">
               <el-option
                 v-for="item in subject"
                 :key="item.value"
@@ -718,17 +718,11 @@
         },
         subject: [
           {
-            value: 1,
-            label: '科目一'
+            value: '5',
+            label: '毕业'
           }, {
-            value: 2,
-            label: '科目二'
-          }, {
-            value: 3,
-            label: '科目三'
-          }, {
-            value: 4,
-            label: '科目四'
+            value: '-1',
+            label: '退学'
           }
         ],
         dialogFormBespeak: false,

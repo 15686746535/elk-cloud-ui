@@ -67,9 +67,7 @@
 
                       <el-row :gutter="10">
                         <el-col :span="7" class="table_text">介绍人:</el-col>
-                        <el-col :span="17" class="table_text">
-                          <span v-for="(introducer,index) in scope.row.introducerList">{{introducer}}<span v-if="scope.row.introducerList.length !== (index+1)">、</span></span>
-                        </el-col>
+                        <el-col :span="17" class="table_text">{{scope.row.introducers}}</el-col>
                       </el-row>
                     </el-col>
                   </template>

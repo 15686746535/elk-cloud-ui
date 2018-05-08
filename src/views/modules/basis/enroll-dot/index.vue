@@ -48,7 +48,7 @@
         <el-button v-if="menu_add" class="filter-item" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
-    <el-dialog @close="cancel('dict')" :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
+    <el-dialog @close="cancel('dict')" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="110px">
         <el-form-item label="报名点"  prop="label">
           <el-input v-model="dict.label" placeholder="报名点" ></el-input>

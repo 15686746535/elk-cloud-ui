@@ -63,7 +63,7 @@
 
               <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="revoke(scope.row)">撤 销</el-button>
+                  <el-button size="mini" type="danger" @click="revoke(scope.row.examNoteId)">撤 销</el-button>
                 </template>
               </el-table-column>
 
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-  import { getRevisitedList, getRevisited } from '@/api/student/revisited'
+  import { getRevisitedList, delRevisited } from '@/api/student/revisited'
   import { queryExamNoted, addQuestion } from '@/api/student/revisit-question'
   import { fetchList, getObj } from '@/api/student/revisit'
   import { removeAllSpace } from '@/utils/validate'
@@ -174,6 +174,9 @@
         this.getList()
       },
       revoke(id) {
+        console.log(id)
+        delRevisited(id).then(() => {
+        })
         this.getList()
       },
       // 根据部门id查询员工

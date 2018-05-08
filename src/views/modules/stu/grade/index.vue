@@ -143,7 +143,7 @@
           </div>
         </el-card>
 
-        <el-dialog @close="getGradeList" width="30%" title="成绩修改" :visible.sync="gradeEdit">
+        <el-dialog @close="getGradeList" width="550px" title="成绩修改" :visible.sync="gradeEdit">
           <el-button-group>
             <el-button type="success" @click="passExam">通 过</el-button>
             <el-button type="danger" @click="examOperation('2')">失 败</el-button>
@@ -182,7 +182,7 @@
             </el-table-column>
 
           </el-table>
-          <el-dialog width="30%" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
+          <el-dialog width="550px" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
 
             <Coach v-show="batchListQuery.subject == 1" v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
             <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
@@ -199,7 +199,7 @@
           </div>
         </el-dialog>
 
-        <el-dialog width="30%" title="选择教练" :visible.sync="innerGradeOption1" append-to-body>
+        <el-dialog width="550px" title="选择教练" :visible.sync="innerGradeOption1" append-to-body>
 
           <Coach v-show="batchListQuery.subject == 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
           <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>

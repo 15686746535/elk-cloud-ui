@@ -55,7 +55,7 @@
               </div>
           </el-card>
       </div>
-      <el-dialog :title="textMap[dialogStatus]" width="30%" :visible.sync="dialogFormVisible">
+      <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
         <el-form label-position="left" :model="affiche" :rules="rules" ref="affiche" label-width="100px">
           <el-form-item label="公告内容">
             <el-input type="text" v-model="affiche.content" placeholder="公告内容" ></el-input>

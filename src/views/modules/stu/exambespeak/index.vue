@@ -66,7 +66,7 @@
             </el-table-column>
           </el-table>
 
-          <el-dialog @close="cancel" title="选择批次" width="30%" :visible.sync="dialogFormBespeak">
+          <el-dialog @close="cancel" title="选择批次" width="550px" :visible.sync="dialogFormBespeak">
             <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
               <div v-for="batch in batchList"  style="float: left;margin: 5px">
                 <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">

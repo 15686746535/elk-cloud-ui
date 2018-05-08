@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function fetchStudentList(query) {
   return request({
     url: '/stu/student/getPage',
     method: 'get',
@@ -8,7 +8,7 @@ export function fetchList(query) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function saveStudent(obj) {
   return request({
     url: '/stu/student',
     method: 'post',
@@ -16,21 +16,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getStudent(id) {
   return request({
     url: '/stu/student/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delStudent(id) {
   return request({
     url: '/stu/student/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putStudent(obj) {
   return request({
     url: '/stu/student',
     method: 'put',
@@ -38,9 +38,9 @@ export function putObj(obj) {
   })
 }
 
-export function userList(query) {
+export function fetchUserList(query) {
   return request({
-    url: '/stu/upms/user/userList',
+    url: '/stu_upms/user/userList',
     method: 'get',
     params: query
   })

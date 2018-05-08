@@ -934,7 +934,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
 
-  import { fetchList, getObj, addObj, putObj } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent } from '@/api/student/student'
   import { batchSave } from '@/api/student/exambespeak'
   import { examFetchList } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
@@ -1326,7 +1326,7 @@
       editList(val) {
         console.log('====================== 进入单个学员编辑 =====================')
         this.infoLoading = true
-        getObj(val.studentId).then(response => {
+        getStudent(val.studentId).then(response => {
           console.log(response.data.data)
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
@@ -1395,7 +1395,7 @@
       // 获取所有学员
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        fetchStudentList(this.listQuery).then(response => {
           console.log(' ====== =============  这是所有学员信息  ==================')
           console.log(response.data)
           this.stuList = response.data.data.list
@@ -1422,7 +1422,7 @@
             console.log('======================= 添加的数据 ======')
             console.log(this.studentEntity)
             this.btnLoading = true
-            addObj(this.studentEntity).then(response => {
+            saveStudent(this.studentEntity).then(response => {
               this.backClick()
               this.btnLoading = false
             })
@@ -1496,7 +1496,7 @@
             this.btnLoading = true
             console.log('=========== 修改之后的值 =========')
             console.log(this.student)
-            putObj(this.student).then(() => {
+            putStudent(this.student).then(() => {
               this.editList(this.student)
               this.btnLoading = false
               this.$refs[formName].resetFields()

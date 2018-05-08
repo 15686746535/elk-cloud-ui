@@ -8,7 +8,7 @@
       <!--文件夹图标-->
       <span v-if="folder" class="button ico" :class="model.children.length > 0 ? isOpen ? 'ico_open' : 'ico_close' : 'ico_docu'"></span>
       <!--节点名字-->
-      <span class="node_name" >{{model.name}}</span>
+      <span class="node_name" >{{model.name}}<!--{{model.parentId}}--></span>
     </a>
     <el-collapse-transition>
       <ul :class="length > 1 && length !== index + 1 ? 'line' : ''" v-show="isOpen">
@@ -45,6 +45,7 @@
     data() {
       return {
         node: null,
+        parent: null,
         isOpen: true
       }
     },
@@ -95,7 +96,9 @@
           var nodeList = []
           var selected = !node.selected
           node.selected = selected
-          selectedAll(this.list, node.id, selected, nodeList)
+          selectedAll(node.children, node.id, selected)
+          this.selectedParent(this.list, node.parentId, selected)
+          getNodeList(this.list, nodeList)
           this.nodeCheckbox(nodeList)
         } else {
           this.$emit('node', node)
@@ -103,22 +106,48 @@
       },
       nodeCheckbox(nodeList) {
         this.$emit('node-checkbox', nodeList)
+      },
+      selectedParent(list, pid, selected) {
+        for (var i = 0; i < 3; i++) {
+          if (this.parent && this.parent.parentId > 0) {
+            this.getParent(list, this.parent.parentId, selected)
+          } else {
+            this.getParent(list, pid, selected)
+          }
+        }
+      },
+      getParent(list, pid, selected) {
+        var that = this
+        list.forEach(function(item, index) {
+          if (item.id === pid) {
+            item.selected = selected
+            that.parent = item
+          } else {
+            that.getParent(item.children, pid, selected)
+          }
+        })
       }
     }
   }
 
-  export function selectedAll(list, id, selected, nodeList) {
+  export function selectedAll(list, id, selected) {
     list.forEach(function(item, index) {
       if (item.parentId === id) {
         item.selected = selected
-        selectedAll(item.children, item.id, selected, nodeList)
+        selectedAll(item.children, item.id, selected)
       }
+    })
+  }
+
+  export function getNodeList(list, nodeList) {
+    list.forEach(function(item, index) {
       if (item.selected) {
         nodeList.push(item.id)
       }
-      selectedAll(item.children, id, selected, nodeList)
+      getNodeList(item.children, nodeList)
     })
   }
+
 </script>
 <style scoped>
   .node_name{

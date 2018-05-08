@@ -216,9 +216,8 @@
 </template>
 
 <script>
-  import { examFetchList, getObj, putExamNote } from '@/api/student/examnote'
-  import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
-  import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
+  import { examFetchList, putExamNote } from '@/api/student/examnote'
+  import { getBatchList } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'

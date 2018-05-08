@@ -324,9 +324,9 @@
 </template>
 
 <script>
-  import { getShuttleList, getObj, queryUndelivered } from '@/api/bespeak/shuttle'
+  import { getShuttleList, queryUndelivered } from '@/api/bespeak/shuttle'
   import { putObj } from '@/api/bespeak/shuttlestudent'
-  import { fetchList } from '@/api/student/student'
+  // import { fetchList } from '@/api/student/student'
   import { getShuttledList } from '@/api/bespeak/vehicleperiod'
   import { mapGetters } from 'vuex'
   import { userList } from '@/api/upms/user'
@@ -434,20 +434,20 @@
         })
       },
       /* 获取学员名单 */
-      getStudentList() {
-        this.getUserList()
-        this.studentListLoading = true
-        this.addStudentOption = true
-        fetchList(this.studentListQuery).then(response => {
-          console.log('=========== 获取学员名单 ==========')
-          console.log(response.data)
-          this.studentList = response.data.data.list
-          this.studentListTotal = response.data.data.totalCount
-          this.shuttle.userId = null
-          this.shuttle.studentList = []
-          this.studentListLoading = false
-        })
-      },
+      // getStudentList() {
+      //   this.getUserList()
+      //   this.studentListLoading = true
+      //   this.addStudentOption = true
+      //   fetchList(this.studentListQuery).then(response => {
+      //     console.log('=========== 获取学员名单 ==========')
+      //     console.log(response.data)
+      //     this.studentList = response.data.data.list
+      //     this.studentListTotal = response.data.data.totalCount
+      //     this.shuttle.userId = null
+      //     this.shuttle.studentList = []
+      //     this.studentListLoading = false
+      //   })
+      // },
       /* 接送名单 */
       handleSizeChange(val) {
         this.shuttleLogQuery.limit = val

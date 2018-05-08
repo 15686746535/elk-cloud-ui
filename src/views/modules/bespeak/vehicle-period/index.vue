@@ -274,7 +274,7 @@
 </template>
 
 <script>
-  import { getVehiclePeriodList, getVehiclePeriod, putVehiclePeriod, addVehiclePeriod } from '@/api/bespeak/vehicleperiod'
+  import { getVehiclePeriodList, putVehiclePeriod, addVehiclePeriod } from '@/api/bespeak/vehicleperiod'
   import { queryVehicleList } from '@/api/vehicle/vehicle'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'

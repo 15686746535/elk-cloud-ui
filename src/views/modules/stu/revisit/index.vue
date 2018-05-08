@@ -158,7 +158,7 @@
 
 <script>
   import { addRevisited } from '@/api/student/revisited'
-  import { fetchList, getObj } from '@/api/student/revisit'
+  import { fetchList } from '@/api/student/examnote'
   import { getRevisitQuestionnaireList } from '@/api/student/revisit-questionnaire'
   import { getQuestion } from '@/api/student/revisit-question'
   import { removeAllSpace } from '@/utils/validate'
@@ -238,23 +238,6 @@
       handleCurrentChange(val) {
         this.listQuery.page = val
         this.getList()
-      },
-      create() {
-        this.revisitStudent = {}
-        this.showModule = 'info'
-      },
-      update(row) {
-        getObj(row.roleId)
-          .then(response => {
-            this.revisitStudent = response.data
-            this.showModule = 'info'
-          })
-      },
-      delete(id) {
-        this.getList()
-      },
-      cancel() {
-        this.showModule = 'list'
       },
       searchClick() {
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)

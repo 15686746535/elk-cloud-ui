@@ -98,8 +98,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj, delObj, permissionUpd, fetchRoleTree } from '@/api/upms/role'
-  import { fetchTree } from '@/api/upms/menu'
+  import { fetchList, getObj, addObj, putObj, delObj, permissionUpd } from '@/api/upms/role'
   import { mapGetters } from 'vuex'
   import { removeAllSpace } from '@/utils/validate'
 

@@ -192,7 +192,7 @@
 <script>
   import { getQuestion, addQuestion } from '@/api/student/revisit-question'
   import { mapGetters } from 'vuex'
-  import { getRevisitQuestionnaireList, addQuestionnaireList, getQuestionnaireList, putQuestionnaireList } from '@/api/student/revisit-questionnaire'
+  import { getRevisitQuestionnaireList, addQuestionnaireList, putQuestionnaireList } from '@/api/student/revisit-questionnaire'
 
   export default {
     name: 'table_revisitQuestion',

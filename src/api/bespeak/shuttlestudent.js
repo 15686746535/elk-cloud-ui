@@ -39,6 +39,7 @@ export function delShuttleStudent(id) {
 }
 // 更新
 export function putShuttleStudent(obj) {
+  console.log(obj)
   return request({
     url: '/bespeak/shuttlestudent',
     method: 'put',

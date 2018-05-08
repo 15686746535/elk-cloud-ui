@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}"  v-loading="infoLoading" element-loading-text="给我一点时间" >
     <div v-show="showModule=='list'">
 
       <el-card style="margin-bottom: 5px;">
@@ -158,7 +158,7 @@
       </el-card>
     </div>
 
-    <el-card v-show="showModule=='info'"  v-loading="infoLoading" element-loading-text="给我一点时间"> style="overflow: auto">
+    <el-card v-show="showModule=='info'" style="overflow: auto">
       <el-card class="box-card1">
 
         <div slot="header" class="clearfix">
@@ -710,28 +710,32 @@
           <el-row class="panel-group" :gutter="20">
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">行驶证</div>
-              <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleDrivingLicensePhotoSuccess" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         :on-success="handleDrivingLicensePhotoSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="safetyEntity.drivingLicensePhoto" :src="safetyEntity.drivingLicensePhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">登记证书</div>
-              <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleCertificatePhotoSuccess" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         :on-success="handleCertificatePhotoSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="safetyEntity.certificatePhoto" :src="safetyEntity.certificatePhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">保单</div>
-              <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handlePolicyPhotoSuccess" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         :on-success="handlePolicyPhotoSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="safetyEntity.policyPhoto" :src="safetyEntity.policyPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">二维检测</div>
-              <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleTwoDimensionalPhotoSuccess" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         :on-success="handleTwoDimensionalPhotoSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="safetyEntity.twoDimensionalPhoto" :src="safetyEntity.twoDimensionalPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
@@ -739,21 +743,24 @@
 
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">气瓶证</div>
-              <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleBottlePhotoSuccess" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         :on-success="handleBottlePhotoSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="safetyEntity.bottlePhoto" :src="safetyEntity.bottlePhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">标识卡</div>
-              <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleIdentificationPhotoSuccess" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         :on-success="handleIdentificationPhotoSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="safetyEntity.identificationPhoto" :src="safetyEntity.identificationPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">道路运输证</div>
-              <el-upload :disabled="!edit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleRoadTransportPhotoSuccess" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         :on-success="handleRoadTransportPhotoSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="safetyEntity.roadTransportPhoto" :src="safetyEntity.roadTransportPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
@@ -880,7 +887,7 @@
         total: null,
         listLoading: true,
         btnLoading: false,
-        infoLoading: true,
+        infoLoading: false,
         // 模块标记
         showModule: 'list',
         // 分页数据
@@ -1133,6 +1140,7 @@
         putObj(key, obj).then(() => {
           this.btnLoading = false
           this.infoLoading = false
+          this.editList({ 'vehicleEntity': this.vehicleEntity })
         })
         this.edit = ''
       },
@@ -1184,48 +1192,48 @@
           console.log('certificate')
           this.update(this.edit, this.certificateEntity)
         }
-        this.editList({ 'vehicleEntity': this.vehicleEntity })
         this.edit = key
       },
       handleClick(tab, event) {
       },
       handleAvatarSuccess(res, file) {
         this.vehicleEntity.vehiclePhoto = res.data
+        this.update('car', this.vehicleEntity)
       },
       /* 二维 */
       handleTwoDimensionalPhotoSuccess(res, file) {
         this.safetyEntity.twoDimensionalPhoto = res.data
-        this.editInfo('safety')
+        this.update('safety', this.safetyEntity)
       },
       /* 道路运输证 */
       handleRoadTransportPhotoSuccess(res, file) {
         this.safetyEntity.roadTransportPhoto = res.data
-        this.editInfo('safety')
+        this.update('safety', this.safetyEntity)
       },
       /* 标识卡 */
       handleIdentificationPhotoSuccess(res, file) {
         this.safetyEntity.identificationPhoto = res.data
-        this.editInfo('safety')
+        this.update('safety', this.safetyEntity)
       },
       /* 气瓶证 */
       handleBottlePhotoSuccess(res, file) {
         this.safetyEntity.bottlePhoto = res.data
-        this.editInfo('safety')
+        this.update('safety', this.safetyEntity)
       },
       /* 保单 */
       handlePolicyPhotoSuccess(res, file) {
         this.safetyEntity.policyPhoto = res.data
-        this.editInfo('safety')
+        this.update('safety', this.safetyEntity)
       },
       /* 登记证书 */
       handleCertificatePhotoSuccess(res, file) {
         this.safetyEntity.certificatePhoto = res.data
-        this.editInfo('safety')
+        this.update('safety', this.safetyEntity)
       },
       /* 行驶证照片 */
       handleDrivingLicensePhotoSuccess(res, file) {
         this.safetyEntity.drivingLicensePhoto = res.data
-        this.editInfo('safety')
+        this.update('safety', this.safetyEntity)
       },
       beforeAvatarUpload(file) {
         const type = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']

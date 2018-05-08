@@ -217,14 +217,15 @@
               </el-dialog>-->
 
               <!-- 添加接送信息 -->
-              <el-dialog :close-on-click-modal="false" width="30%" title="请选择接送人" :visible.sync="userListOption">
+              <el-dialog :close-on-click-modal="false" width="450px" title="请选择接送人" :visible.sync="userListOption">
                 <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
                   <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                   </el-option>
                 </el-select>
                 <div slot="footer">
                   <el-button @click="userListOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-                  <el-button type="primary" @click="addStudent">确 定</el-button>
+                  <el-button type="primary" v-show="isAdd" @click="addStudent">确 定</el-button>
+                  <el-button type="primary" v-show="!isAdd" @click="updateShuttleStudent">确 定</el-button>
                 </div>
               </el-dialog>
             </el-card>
@@ -265,7 +266,7 @@
                       </el-table-column>
                       <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                          <el-button type="primary" size="mini" @click="updateShuttleStudent(props.row)"><i class="el-icon-edit"></i> 修 改</el-button>
+                          <el-button type="primary" size="mini" @click="updateShuttleStudentClick(props.row.shuttleId, scope.row.studentId)"><i class="el-icon-edit"></i> 修 改</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -360,6 +361,7 @@
         studentList: [],
         studentListTotal: null,
         addStudentOption: false,
+        isAdd: true,
         showModule: 'list',
         shuttle: {
           userId: null,
@@ -508,6 +510,7 @@
           this.getUserList()
           this.shuttle.userId = null
           this.userListOption = true
+          this.isAdd = true
         }
       },
       addStudent() {
@@ -525,12 +528,25 @@
           })
         }
       },
-      updateShuttleStudent(val) {
-        console.log(val)
-        // console.log(val)
-        // this.shuttle.studentList.push( {'studentId': val.studentId} )
-        // putShuttleStudent().then(() => {
-        // })
+      updateShuttleStudentClick(shuttleId, studentId) {
+        this.shuttle.shuttleId = shuttleId
+        this.shuttle.studentId = studentId
+        this.getUserList()
+        this.shuttle.userId = null
+        this.userListOption = true
+        this.isAdd = false
+      },
+      updateShuttleStudent() {
+        if (this.shuttle.userId === null) {
+          this.$message.warning('请选择接送人')
+        } else {
+          putShuttleStudent(this.shuttle).then(() => {
+            this.userListOption = false
+            this.addStudentOption = false
+            this.getNotShuttleList()
+            this.getShuttledList()
+          })
+        }
       }
     }
   }

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function shuttlestudentList(query) {
   return request({
     url: '/bespeak/shuttlestudent/getPage',
     method: 'get',
@@ -8,7 +8,7 @@ export function fetchList(query) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function addShuttleStudent(obj) {
   return request({
     url: '/bespeak/shuttlestudent',
     method: 'post',
@@ -17,7 +17,7 @@ export function addObj(obj) {
 }
 
 // 根据ID获取
-export function getObj(id) {
+export function getShuttleStudent(id) {
   return request({
     url: '/bespeak/shuttlestudent/' + id,
     method: 'get'
@@ -31,17 +31,17 @@ export function getShuttleLogByStudentId(id) {
   })
 }
 // 删除
-export function delObj(id) {
+export function delShuttleStudent(id) {
   return request({
     url: '/bespeak/shuttlestudent/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putShuttleStudent(obj) {
   return request({
     url: '/bespeak/shuttlestudent',
-    method: 'post',
+    method: 'put',
     data: obj
   })
 }

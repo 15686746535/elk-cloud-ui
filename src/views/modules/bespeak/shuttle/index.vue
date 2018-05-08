@@ -154,12 +154,12 @@
 
               </div>
 
-              <el-dialog :close-on-click-modal="false" width="700px" title="添加接送学员" :visible.sync="addStudentOption">
+              <!--<el-dialog :close-on-click-modal="false" width="700px" title="添加接送学员" :visible.sync="addStudentOption">
                 <el-row>
                   <div class="filter-container">
-                    <!--<div style="float: left;line-height: 28px">-->
-                    <!--|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>-->
-                    <!--</div>-->
+                    &lt;!&ndash;<div style="float: left;line-height: 28px">&ndash;&gt;
+                    &lt;!&ndash;|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>&ndash;&gt;
+                    &lt;!&ndash;</div>&ndash;&gt;
                     <div style="float: right">
                       <el-input @keyup.enter.native="studentHandleCurrentChange(1)" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="studentListQuery.condition"></el-input>
                       <el-button class="filter-item" type="primary" size="mini" @click="studentHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>
@@ -214,7 +214,7 @@
                   <el-button @click="addStudentOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
                   <el-button type="primary" @click="addStudent">确 定</el-button>
                 </div>
-              </el-dialog>
+              </el-dialog>-->
 
               <!-- 添加接送信息 -->
               <el-dialog :close-on-click-modal="false" width="30%" title="请选择接送人" :visible.sync="userListOption">
@@ -265,7 +265,7 @@
                       </el-table-column>
                       <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                          <el-button type="danger" size="mini"><i class="el-icon-fa-undo"></i> 撤 销</el-button>
+                          <el-button type="primary" size="mini" @click="updateShuttleStudent(props.row)"><i class="el-icon-edit"></i> 修 改</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -325,7 +325,7 @@
 
 <script>
   import { getShuttleList, queryUndelivered } from '@/api/bespeak/shuttle'
-  import { putObj } from '@/api/bespeak/shuttlestudent'
+  import { addShuttleStudent, putShuttleStudent } from '@/api/bespeak/shuttlestudent'
   // import { fetchList } from '@/api/student/student'
   import { getShuttledList } from '@/api/bespeak/vehicleperiod'
   import { mapGetters } from 'vuex'
@@ -472,15 +472,15 @@
         this.getShuttledList()
       },
       /* 学员名单 */
-      studentHandleCurrentChange(val) {
-        this.studentListQuery.page = val
-        this.studentListLoading = true
-        fetchList(this.studentListQuery).then(response => {
-          this.studentList = response.data.data.list
-          this.studentListTotal = response.data.data.totalCount
-          this.studentListLoading = false
-        })
-      },
+      // studentHandleCurrentChange(val) {
+      //   this.studentListQuery.page = val
+      //   this.studentListLoading = true
+      //   fetchList(this.studentListQuery).then(response => {
+      //     this.studentList = response.data.data.list
+      //     this.studentListTotal = response.data.data.totalCount
+      //     this.studentListLoading = false
+      //   })
+      // },
       /* 转到管理页面 */
       create() {
         this.getNotShuttleList()
@@ -517,13 +517,20 @@
           this.$message.warning('请选择接送人')
         } else {
           console.log(this.shuttle)
-          putObj(this.shuttle).then(response => {
+          addShuttleStudent(this.shuttle).then(() => {
             this.userListOption = false
             this.addStudentOption = false
             this.getNotShuttleList()
             this.getShuttledList()
           })
         }
+      },
+      updateShuttleStudent(val) {
+        console.log(val)
+        // console.log(val)
+        // this.shuttle.studentList.push( {'studentId': val.studentId} )
+        // putShuttleStudent().then(() => {
+        // })
       }
     }
   }

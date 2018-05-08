@@ -158,7 +158,7 @@
 
 <script>
   import { addRevisited } from '@/api/student/revisited'
-  import { fetchList } from '@/api/student/examnote'
+  import { examFetchList } from '@/api/student/examnote'
   import { getRevisitQuestionnaireList } from '@/api/student/revisit-questionnaire'
   import { getQuestion } from '@/api/student/revisit-question'
   import { removeAllSpace } from '@/utils/validate'
@@ -223,7 +223,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        examFetchList(this.listQuery).then(response => {
           console.log('============== 回访信息 =============')
           console.log(response.data)
           this.list = response.data.data.list

@@ -217,7 +217,10 @@
 
             <!--</el-tab-pane>-->
             <el-tab-pane label="来访跟进信息" name="4">
-              <div :style="{height: (client.height-175) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
+              <div style="line-height: 160px;height: 160px;color: #909399;text-align: center;font-size: 14px" v-if="followUpList.length === 0">
+                无跟进信息
+              </div>
+              <div v-else :style="{height: (client.height-175) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
                 <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 25px;" v-for="followUp in followUpList">
                   <el-tag style="float:left;width:50px; height: 50px; border-radius: 1000px;margin-left: -26px;margin-top: -15px; padding: 0;overflow: hidden;">
                     <img width="100%" height="100%" :src="followUp.avatar">
@@ -232,7 +235,6 @@
 
             </el-tab-pane>
             <el-tab-pane label="约车日志" name="5">
-
               <el-table :data="vehiclePeriodList" stripe style="width: 100%">
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
                 <el-table-column align="center"  label="科目">
@@ -1088,9 +1090,7 @@
           name: [
             { required: true, message: '请输入姓名', trigger: ['blur', 'change'] }
           ],
-          wechat: [
-            { required: true, message: '请输入微信', trigger: ['blur', 'change'] }
-          ],
+          wechat: [],
           campus: [
             { required: true, message: '请输入校区地址', trigger: ['blur', 'change'] }
           ],
@@ -1152,9 +1152,7 @@
           name: [
             { required: true, message: '请输入姓名', trigger: ['blur', 'change'] }
           ],
-          wechat: [
-            { required: true, message: '请输入微信', trigger: ['blur', 'change'] }
-          ],
+          wechat: [],
           campus: [
             { required: true, message: '请输入校区地址', trigger: ['blur', 'change'] }
           ],
@@ -1189,7 +1187,6 @@
             { required: true, message: '请选择是否有车', trigger: ['blur', 'change'] }
           ],
           email: [
-            { required: false, message: '请输入邮箱', trigger: ['blur', 'change'] },
             { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] }
           ],
           company: [],
@@ -1359,36 +1356,43 @@
       },
       /* 考试日志 */
       getExam() {
-        examFetchList({ studentId: this.student.studentId, examState: 'exam_note_true' }).then(response => {
-          console.log('====================== 考试日志 =====================')
-          console.log(response.data)
-          this.examNoteList = response.data.data.list
-        })
+        if (this.student.studentId) {
+          examFetchList({ studentId: this.student.studentId, examState: 'exam_note_true' }).then(response => {
+            console.log('====================== 考试日志 =====================')
+            console.log(response.data)
+            this.examNoteList = response.data.data.list
+          })
+        }
       },
       /* 约车日志 */
       getVehiclePeriod() {
-        getVehiclePeriodByStudentId(this.student.studentId).then(response => {
-          console.log('====================== 约车日志 =====================')
-          console.log(response.data)
-          this.vehiclePeriodList = response.data.list
-        })
+        if (this.student.studentId) {
+          getVehiclePeriodByStudentId(this.student.studentId).then(response => {
+            console.log('====================== 约车日志 =====================')
+            console.log(response.data)
+            this.vehiclePeriodList = response.data.list
+          })
+        }
       },
       /* 接送日志 */
       getShuttleLog() {
-        getShuttleLogByStudentId(this.student.studentId).then(response => {
-          console.log('====================== 接送日志 =====================')
-          console.log(response.data)
-          this.shuttleLogList = response.data.list
-        })
+        if (this.student.studentId) {
+          getShuttleLogByStudentId(this.student.studentId).then(response => {
+            console.log('====================== 接送日志 =====================')
+            console.log(response.data)
+            this.shuttleLogList = response.data.list
+          })
+        }
       },
       /* 跟进信息 */
       getFollowUpList() {
-        console.log(this.student.mobile)
-        followUpList({ 'mobile': this.student.mobile }).then(response => {
-          console.log('====================== 跟进信息 =====================')
-          console.log(response.data)
-          this.followUpList = response.data.data
-        })
+        if (this.student.mobile) {
+          followUpList({ 'mobile': this.student.mobile }).then(response => {
+            console.log('====================== 跟进信息 =====================')
+            console.log(response.data)
+            this.followUpList = response.data.data
+          })
+        }
       },
       // 获取所有学员
       getList() {

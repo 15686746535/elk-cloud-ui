@@ -20,7 +20,7 @@
             <dict dictType="dict_source" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>
           </el-col>
           <el-col :xs="6" :sm="5" :md="4" :lg="4">
-            <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+            <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
           </el-col>
           <el-col :span="4">
             <el-button class="filter-item" type="primary" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
@@ -1139,6 +1139,7 @@
       // 搜索
       searchClick() {
         this.listQuery.page = 1
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.getList()
       },
       // 取消

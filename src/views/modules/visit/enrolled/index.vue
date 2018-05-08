@@ -23,8 +23,8 @@
                 :value="item.userId">
               </el-option>
             </el-select>
-            <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
-            <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
+            <!--<dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>-->
+            <!--<dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>-->
             <el-input :style="{width: ($store.state.app.client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
             <el-button class="filter-item" type="primary"   @click="searchClick">搜 索</el-button>
           </el-card>

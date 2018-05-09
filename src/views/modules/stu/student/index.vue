@@ -485,8 +485,10 @@
                             <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                             </el-option>
                           </el-select>
-                          <span v-for="(introducerName,index) in student.introducerNameList"  v-show="!edit" >{{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span></span>
-                        </el-form-item>
+                          <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >
+                            <span v-for="(introducerName,index) in student.introducerNameList" >{{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span></span>
+                          </div>
+                          </el-form-item>
                       </el-row>
                     </el-col>
                   </el-row>

@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
       <div>
         <el-card style="margin-bottom: 5px;">
-          <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+          <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" style="width: 200px" v-model="listQuery.roleName"></el-input>
           <el-button class="filter-item" type="primary" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
         </el-card>
         <el-card :style="{height: ($store.state.app.client.height - 130) + 'px'}">

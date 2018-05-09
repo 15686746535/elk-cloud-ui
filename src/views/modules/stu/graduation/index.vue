@@ -595,7 +595,7 @@
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
-  import { fetchList, getObj } from '@/api/student/student'
+  import { fetchStudentList, getStudent } from '@/api/student/student'
   import { examFetchList } from '@/api/student/examnote'
 
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
@@ -773,7 +773,7 @@
       editList(val) {
         console.log('====================== 进入单个学员编辑 =====================')
         this.infoLoading = true
-        getObj(val.studentId).then(response => {
+        getStudent(val.studentId).then(response => {
           console.log(response.data.data)
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
@@ -834,7 +834,7 @@
       // 获取所有学员
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        fetchStudentList(this.listQuery).then(response => {
           console.log(' ====== =============  这是所有学员信息  ==================')
           console.log(response.data)
           this.stuList = response.data.data.list

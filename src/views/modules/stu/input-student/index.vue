@@ -209,7 +209,7 @@
 </template>
 
 <script>
-  import { addObj } from '@/api/student/student'
+  import { saveStudent } from '@/api/student/student'
   import { mapGetters } from 'vuex'
   export default {
     name: 'table_student',
@@ -293,7 +293,7 @@
       },
       // 添加
       add() {
-        addObj(this.studentEntity).then(response => {
+        saveStudent(this.studentEntity).then(response => {
         })
       },
       generateInfo() {

@@ -1,57 +1,51 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-      <div>
-        <el-card style="margin-bottom: 5px;">
-          <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" style="width: 200px" v-model="listQuery.roleName"></el-input>
-          <el-button class="filter-item" type="primary" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
-        </el-card>
-        <el-card :style="{height: ($store.state.app.client.height - 130) + 'px'}">
-          <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
-                    highlight-current-row style="width: 100%">
-            <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
-            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-            <el-table-column label="内容">
-              <template slot-scope="scope">
-                <span>{{scope.row.message}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="发布人">
-              <template slot-scope="scope">
-                <span>{{scope.row.initiator}}</span>
-              </template>
-            </el-table-column>
-            <!--<el-table-column label="发布日期">-->
-            <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.createTime}}</span>-->
-            <!--</template>-->
-            <!--</el-table-column>-->
-            <!--<el-table-column label="修改时间">-->
-            <!--<template slot-scope="scope">-->
-            <!--<span>{{scope.row.updateTime}}</span>-->
-            <!--</template>-->
-            <!--</el-table-column>-->
+    <el-card >
+      <el-table :data="list" :height="$store.state.app.client.height - 180" v-loading="listLoading" element-loading-text="给我一点时间" border fit
+                highlight-current-row style="width: 100%">
+        <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <el-table-column label="内容">
+          <template slot-scope="scope">
+            <span>{{scope.row.message}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="发布人">
+          <template slot-scope="scope">
+            <span>{{scope.row.initiator}}</span>
+          </template>
+        </el-table-column>
+        <!--<el-table-column label="发布日期">-->
+        <!--<template slot-scope="scope">-->
+        <!--<span>{{scope.row.createTime}}</span>-->
+        <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column label="修改时间">-->
+        <!--<template slot-scope="scope">-->
+        <!--<span>{{scope.row.updateTime}}</span>-->
+        <!--</template>-->
+        <!--</el-table-column>-->
 
-            <!--<el-table-column label="操作">-->
-            <!--<template slot-scope="scope">-->
-            <!--<el-button size="mini" type="success"-->
-            <!--@click="handleUpdate(scope.row)">编辑-->
-            <!--</el-button>-->
-            <!--<el-button size="mini" type="danger"-->
-            <!--@click="handleDelete(scope.row)">删除-->
-            <!--</el-button>-->
-            <!--</template>-->
-            <!--</el-table-column>-->
+        <!--<el-table-column label="操作">-->
+        <!--<template slot-scope="scope">-->
+        <!--<el-button size="mini" type="success"-->
+        <!--@click="handleUpdate(scope.row)">编辑-->
+        <!--</el-button>-->
+        <!--<el-button size="mini" type="danger"-->
+        <!--@click="handleDelete(scope.row)">删除-->
+        <!--</el-button>-->
+        <!--</template>-->
+        <!--</el-table-column>-->
 
-          </el-table>
-          <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page.sync="listQuery.page" background
-                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                           layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-          </div>
-        </el-card>
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
       </div>
+    </el-card>
   </div>
 </template>
 
@@ -80,7 +74,7 @@ export default {
       this.listLoading = true
       isDown(this.listQuery).then(response => {
         console.log(response.data)
-        this.list = response.data.data
+        this.list = response.data.data.list
         this.total = response.data.data.totalCount
         this.listLoading = false
       })

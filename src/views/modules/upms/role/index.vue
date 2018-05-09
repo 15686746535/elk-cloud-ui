@@ -89,7 +89,14 @@
     </el-dialog>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission">
-      <my-tree v-if="url" :url="url" v-model="permissionList" :checkbox="true" ></my-tree>
+      <el-tabs v-model="activeName" >
+        <el-tab-pane label="菜单权限" style="height: 450px;overflow: auto" name="first">
+          <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
+        </el-tab-pane>
+        <el-tab-pane label="数据权限" name="second">
+          <my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>
+        </el-tab-pane>
+      </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="updatePermession(roleId, roleKey)">更 新</el-button>
       </div>
@@ -107,6 +114,7 @@
     data() {
       return {
         change: 1,
+        activeName: 'first',
         treeData: [],
         checkedKeys: [],
         defaultProps: {
@@ -127,8 +135,12 @@
           roleKey: undefined,
           roleDesc: undefined
         },
-        permissionList: [],
-        url: undefined,
+        permission: {
+          menuList: [],
+          dataList: []
+        },
+        menuUrl: undefined,
+        dataUrl: undefined,
         roleId: undefined,
         roleKey: undefined,
         rules: {
@@ -193,7 +205,8 @@
         this.dialogFormVisible = true
       },
       closePermission() {
-        this.url = ''
+        this.menuUrl = ''
+        this.dataUrl = ''
       },
       handleUpdate(row) {
         getObj(row.roleId)
@@ -209,11 +222,11 @@
         this.getList()
       },
       handlePermission(row) {
-        console.log(row.roleId)
         this.dialogStatus = 'permission'
         this.dialogPermissionVisible = true
         this.roleId = row.roleId
-        this.url = '/upms/menu/tree?roleId=' + row.roleId
+        this.menuUrl = '/upms/menu/tree?roleId=' + row.roleId
+        this.dataUrl = '/upms/menu/tree?roleId=' + row.roleId
         this.roleKey = row.roleKey
       },
       filterNode(value, data) {
@@ -264,7 +277,7 @@
         })
       },
       updatePermession(roleId, roleKey) {
-        permissionUpd(roleId, this.permissionList).then(() => {
+        permissionUpd(roleId, this.permission.menuList, this.permission.dataList).then(() => {
           this.dialogPermissionVisible = false
         })
       },

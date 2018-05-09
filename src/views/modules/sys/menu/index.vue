@@ -157,8 +157,6 @@
     methods: {
       getList() {
         fetchTree().then(response => {
-          console.log(123)
-          console.log(response)
           this.treeData = response.data.data
         })
       },

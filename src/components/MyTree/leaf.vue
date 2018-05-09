@@ -97,7 +97,7 @@
           var selected = !node.selected
           node.selected = selected
           selectedAll(node.children, node.id, selected)
-          this.selectedParent(this.list, node.parentId, selected)
+          // this.selectedParent(this.list, node.parentId, selected)
           getNodeList(this.list, nodeList)
           this.nodeCheckbox(nodeList)
         } else {

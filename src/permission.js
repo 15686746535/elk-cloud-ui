@@ -6,10 +6,12 @@ import { getToken } from '@/utils/auth'
 
 const whiteList = ['/login'] // 不重定向白名单
 router.beforeEach((to, from, next) => { // 开启Progress
+  console.log('======================')
+  console.log(to)
   NProgress.start()
   if (getToken()) { // 判断是否有token
     if (to.path === '/login') {
-      next({ path: '/' })
+      next({ path: '/dashboard' })
     } else {
       if (!store.getters.roles || store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
@@ -20,11 +22,17 @@ router.beforeEach((to, from, next) => { // 开启Progress
               next({ path: '/login' })
             })
           } else {
-            const menus = data.menus
-            console.log(menus)
-            store.dispatch('GenerateRoutes', { menus }).then(() => { // 生成可访问的路由表
+            const menuIds = data.menuIds
+            const roles = data.roles
+            console.log('menuIds')
+            console.log(menuIds)
+            store.dispatch('GenerateRoutes', { menuIds, roles }).then(() => { // 生成可访问的路由表
               router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-              next({ ...to }) // hack方法 确保addRoutes已完成
+              if (to.path === '/') {
+                next({ path: '/dashboard' })
+              } else {
+                next({ ...to }) // hack方法 确保addRoutes已完成
+              }
             })
           }
         }).catch((e) => {

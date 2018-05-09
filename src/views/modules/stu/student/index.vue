@@ -11,9 +11,12 @@
 
         <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 125px;line-height: 50px">
-              <el-date-picker value-format="timestamp"  :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+            <el-row>
+              <el-col></el-col>
+            </el-row>
+              <el-date-picker value-format="timestamp" size="mini" :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
               </el-date-picker>
-              <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
+              <el-select size="mini" :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.subject" clearable placeholder="科目">
                 <el-option
                   v-for="item in subject"
                   :key="item.value"
@@ -21,13 +24,13 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <dict v-model="listQuery.motorcycleType" dictType="dict_motorcycle_type" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="车型"  ></dict>
-              <dict v-model="listQuery.enrolSite" dictType="dict_enrolSite" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="报名点"  ></dict>
-              <Coach v-model="listQuery.fieldCoach" coachType="field":style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>
-              <Coach v-model="listQuery.roadCoach" coachType="road" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
-              <dict v-model="listQuery.source" dictType="dict_source" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
-              <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
+              <dict v-model="listQuery.motorcycleType" size="mini" dictType="dict_motorcycle_type" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="车型"  ></dict>
+              <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="报名点"  ></dict>
+              <Coach v-model="listQuery.fieldCoach" size="mini" coachType="field":style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>
+              <Coach v-model="listQuery.roadCoach" size="mini" coachType="road" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="路训教练"  ></Coach>
+              <dict v-model="listQuery.source" size="mini" dictType="dict_source" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="来源渠道"  ></dict>
+              <el-input @keyup.enter.native="searchClick" size="mini" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+              <el-button class="filter-item" type="primary"  size="mini" @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
           </el-card>
 
           <el-card :style="{height: ($store.state.app.client.height-170) + 'px'}">

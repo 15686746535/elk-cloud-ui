@@ -314,7 +314,7 @@
           <el-button @click="operation('3','报考成功')" type="success" round>成功</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '3'">
-          <el-button @click="operation('2','撤销成功')" type="primary" round>撤销</el-button>
+          <el-button @click="operation('6','撤销成功')" type="danger" round>取消约考</el-button>
         </el-button-group>
         <span v-else>
         </span>

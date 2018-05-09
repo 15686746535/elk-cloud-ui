@@ -12,20 +12,40 @@
 
         <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
-            <el-date-picker :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
-            </el-date-picker>
-            <el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.introducer" clearable placeholder="负责人">
-              <el-option
-                v-for="item in userList"
-                :key="item.userId"
-                :label="item.name"
-                :value="item.userId">
-              </el-option>
-            </el-select>
-            <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>
-            <dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>
-            <el-input :style="{width: ($store.state.app.client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
+            <el-row :gutter="5">
+              <el-col :xs="7" :sm="7" :md="7" :lg="7">
+                <el-date-picker value-format="timestamp"  style="width: 100%;" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+                </el-date-picker>
+              </el-col>
+
+              <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                <el-select style="width: 100%;"  v-model="listQuery.introducer" clearable placeholder="负责人">
+                  <el-option
+                    v-for="item in userList"
+                    :key="item.userId"
+                    :label="item.name"
+                    :value="item.userId">
+                  </el-option>
+                </el-select>
+              </el-col>
+
+              <el-col :xs="3" :sm="3" :md="3" :lg="3">
+                <dict dictType="dict_customer_type"  v-model="listQuery.customerType" placeholder="类型"></dict>
+              </el-col>
+
+              <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                <dict dictType="dict_source"  v-model="listQuery.source" placeholder="来源渠道"></dict>
+              </el-col>
+
+              <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                <el-input @keyup.enter.native="searchClick"  class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+              </el-col>
+
+              <el-col :xs="2" :sm="2" :md="2" :lg="2">
+                <el-button class="filter-item" type="primary"   icon="search" @click="searchClick">搜索</el-button>
+              </el-col>
+
+            </el-row>
           </el-card>
           <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}" style="overflow: hidden">
             <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >

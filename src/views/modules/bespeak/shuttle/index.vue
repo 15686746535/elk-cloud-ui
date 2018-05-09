@@ -498,6 +498,7 @@
       },
       /* 返回list */
       backClick() {
+        this.getShuttleLog()
         this.showModule = 'list'
       },
       /* 被接送人集合 */

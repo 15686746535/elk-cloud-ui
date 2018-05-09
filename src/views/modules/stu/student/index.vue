@@ -905,7 +905,7 @@
       </el-row>
     </div>
 
-    <el-dialog @close="closeBespeak" title="选择批次" width="40%" :visible.sync="dialogFormBespeak">
+    <el-dialog @close="closeBespeak" title="选择批次" width="550px" :visible.sync="dialogFormBespeak">
       <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
         <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
           无可预约场次
@@ -914,6 +914,25 @@
           <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
             <{{batch.examTime | subTime}}> {{batch.examField}}
             <span>【{{batch.hasReserved}}/{{batch.stuCount}}】</span>
+          </div>
+
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeBespeak"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+        <el-button :loading="btnLoading" type="primary" @click="createBespeak">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog @close="closeBespeak" title="选择课时" width="550px" :visible.sync="besCarDialog">
+      <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
+        <div v-if="carClass.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
+          无可预约课时
+        </div>
+        <div v-else v-for="carClass in carClass"  style="float: left;margin: 5px">
+          <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
+            <{{carClass.beginTime | subTime}}> {{carClass.endTime}}
+            <span>【{{carClass.number}}/{{carClass.count}}】</span>
           </div>
 
         </div>
@@ -940,7 +959,7 @@
   import { getBatchList } from '@/api/student/batch'
 
   import { userList } from '@/api/upms/user'
-  import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
+  import { getVehiclePeriodByStudentId, getClassByCoachId } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { followUpList } from '@/api/visit/followup'
   import { getIntentionByMobile } from '@/api/visit/intention'
@@ -1274,6 +1293,7 @@
           }
         ],
         dialogFormBespeak: false,
+        besCarDialog: false,
         batchList: [],
         examBespeak: {
           studentId: null,
@@ -1281,6 +1301,11 @@
           examId: null,
           subject: null
         },
+        carBespeak: {
+          studentId: null,
+          periodId: null
+        },
+        carClass: {},
         batchListQuery: {
           page: 1,
           limit: 0,
@@ -1621,6 +1646,7 @@
         this.editList(this.student)
         this.examBespeak.examId = null
         this.dialogFormBespeak = false
+        this.besCarDialog = false
       },
       batchClick(e, batch) {
         this.examBespeak.examId = batch.examId
@@ -1673,7 +1699,18 @@
           this.createLoading = false
         })
       },
-      handleBespeakCar() {}
+      handleBespeakCar() {
+        var coachId
+        if (this.student.state === '2') coachId = this.student.fieldCoach
+        if (this.student.state === '3') coachId = this.student.roadCoach
+        console.log(coachId)
+        if (coachId) {
+          getClassByCoachId(coachId).then(response => {
+            console.log(response.data)
+            this.besCarDialog = true
+          })
+        }
+      }
     }
   }
 </script>

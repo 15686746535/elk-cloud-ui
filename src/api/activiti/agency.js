@@ -7,6 +7,13 @@ export function busPage(query) {
     params: query
   })
 }
+export function isDown(query) {
+  return request({
+    url: '/activiti/agency/isDown',
+    method: 'get',
+    params: query
+  })
+}
 export function updateAgency(obj) {
   return request({
     url: '/activiti/agency',

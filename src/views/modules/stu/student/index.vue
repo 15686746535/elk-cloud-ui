@@ -922,18 +922,18 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeBespeak"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-        <el-button :loading="btnLoading" type="primary" @click="createBespeak">确 定</el-button>
+        <el-button :loading="btnLoading" type="primary" @click="createBespeak('exam')">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog @close="closeBespeak" title="选择课时" width="550px" :visible.sync="besCarDialog">
       <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
-        <div v-if="carClass.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
+        <div v-if="carClassList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
           无可预约课时
         </div>
-        <div v-else v-for="carClass in carClass"  style="float: left;margin: 5px">
-          <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
-            <{{carClass.beginTime | subTime}}> {{carClass.endTime}}
+        <div v-else v-for="carClass in carClassList"  style="float: left;margin: 5px">
+          <div class="carClassCss" @click="carClassClick($event,carClass)" style="float: left;">
+            <{{carClass.beginTime | parseTime('{y}-{m}-{d} {h}:{i}')}} - {{carClass.endTime | parseTime('{h}:{i}')}}>
             <span>【{{carClass.number}}/{{carClass.count}}】</span>
           </div>
 
@@ -941,7 +941,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeBespeak"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-        <el-button :loading="btnLoading" type="primary" @click="createBespeak">确 定</el-button>
+        <el-button :loading="btnLoading" type="primary" @click="createBespeak('car')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -961,7 +961,7 @@
   import { getBatchList } from '@/api/student/batch'
 
   import { userList } from '@/api/upms/user'
-  import { getVehiclePeriodByStudentId, getClassByCoachId } from '@/api/bespeak/vehicleperiod'
+  import { getVehiclePeriodByStudentId, getClassByCoachId, bespeakVehiclePeriod } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { followUpList } from '@/api/visit/followup'
   import { getIntentionByMobile } from '@/api/visit/intention'
@@ -1097,7 +1097,7 @@
         studentEntityRules: {
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change'] }
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           idNumber: [
             { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
@@ -1159,7 +1159,7 @@
         studentRules: {
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change'] }
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           idNumber: [
             { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
@@ -1301,13 +1301,14 @@
           studentId: null,
           state: 0,
           examId: null,
+          periodId: null,
           subject: null
         },
         carBespeak: {
           studentId: null,
           periodId: null
         },
-        carClass: {},
+        carClassList: [],
         batchListQuery: {
           page: 1,
           limit: 0,
@@ -1644,12 +1645,19 @@
           a[i].classList.remove('batchCss_selected')
         }
       },
+      cleanCarClassSelected() {
+        var a = document.getElementsByClassName('carClassCss')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('carClassCss_selected')
+        }
+      },
       closeBespeak() {
         this.editList(this.student)
         this.examBespeak.examId = null
         this.dialogFormBespeak = false
         this.besCarDialog = false
       },
+      /* 约考 */
       batchClick(e, batch) {
         this.examBespeak.examId = batch.examId
         var a = document.getElementsByClassName('batchCss')
@@ -1658,21 +1666,43 @@
         }
         e.currentTarget.classList.add('batchCss_selected')
       },
-      createBespeak() {
-        console.log('================== 这里是添加学员到批次 ====================')
-        console.log(this.examBespeak)
-        if (this.examBespeak.examId === null) {
-          this.$alert('请先选择报考批次', '提示', {
-            confirmButtonText: '确定',
-            type: 'warning'
-          })
-        } else {
-          this.btnLoading = true
-          batchSave(this.examBespeak).then(() => {
-            this.dialogFormBespeak = false
-            this.btnLoading = false
-            this.examBespeak.examId = null
-          })
+      /* 约车 */
+      carClassClick(e, carClass) {
+        this.examBespeak.periodId = carClass.periodId
+        var a = document.getElementsByClassName('carClassCss')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('carClassCss_selected')
+        }
+        e.currentTarget.classList.add('carClassCss_selected')
+      },
+      createBespeak(flag) {
+        if (flag === 'exam') {
+          console.log('================== 这里是添加学员到批次 ====================')
+          console.log(this.examBespeak)
+          if (this.examBespeak.examId === null) {
+            this.$message.warning('请先选择报考批次')
+          } else {
+            this.btnLoading = true
+            batchSave(this.examBespeak).then(() => {
+              this.dialogFormBespeak = false
+              this.btnLoading = false
+              this.examBespeak.examId = null
+            })
+          }
+        }
+        else if (flag === 'car') {
+          console.log('================== 这里是添加学员到课时 ====================')
+          console.log(this.examBespeak)
+          if (this.examBespeak.periodId === null) {
+            this.$message.warning('请先选择课时')
+          } else {
+            this.btnLoading = true
+            bespeakVehiclePeriod(this.examBespeak).then(() => {
+              this.besCarDialog = false
+              this.btnLoading = false
+              this.examBespeak.periodId = null
+            })
+          }
         }
       },
       matchingStudents() {
@@ -1703,14 +1733,18 @@
       },
       handleBespeakCar() {
         var coachId
+        this.cleanCarClassSelected()
         if (this.student.state === '2') coachId = this.student.fieldCoach
         if (this.student.state === '3') coachId = this.student.roadCoach
         console.log(coachId)
         if (coachId) {
           getClassByCoachId(coachId).then(response => {
             console.log(response.data)
+            this.carClassList = response.data.data
             this.besCarDialog = true
           })
+        } else {
+          this.$message.warning('该学员未分配当前科目教练')
         }
       }
     }
@@ -1836,6 +1870,30 @@
     color: #67c23a;
   }
   .batchCss:hover{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
+  }
+  .carClassCss{
+       background-color: rgba(64,158,255,.1);
+       display: inline-block;
+       padding: 0 10px;
+       height: 32px;
+       line-height: 30px;
+       font-size: 12px;
+       color: #409eff;
+       border-radius: 4px;
+       box-sizing: border-box;
+       border: 1px solid rgba(64,158,255,.2);
+       white-space: nowrap;
+       cursor: pointer;
+     }
+  .carClassCss_selected{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
+  }
+  .carClassCss:hover{
     background-color: rgba(103,194,58,.1);
     border-color: rgba(103,194,58,.2);
     color: #67c23a;

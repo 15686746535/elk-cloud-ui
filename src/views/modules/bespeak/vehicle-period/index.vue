@@ -23,11 +23,32 @@
       <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="($store.state.app.client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
-            <span style="margin-left: 5px;" v-for="student in props.row.studentList">
-              <el-tag>
-                {{student.name}}&nbsp;&nbsp;({{student.mobile}})
-              </el-tag>
-            </span>
+            <el-row style="text-align: center">
+              <el-col :span="12" style="color: #909399;font-weight: 600;border-bottom: 1px solid #ebeef5;line-height: 40px">
+                <el-col :span="8">姓名</el-col>
+                <el-col :span="8">电话</el-col>
+                <el-col :span="8">操作</el-col>
+              </el-col>
+              <el-col :span="12" style="color: #909399;font-weight: 600;border-bottom: 1px solid #ebeef5;line-height: 40px">
+                <el-col :span="8">姓名</el-col>
+                <el-col :span="8">电话</el-col>
+                <el-col :span="8">操作</el-col>
+              </el-col>
+              <span v-for="student in props.row.studentList">
+                <el-col :span="12" style="border-bottom: 1px solid #ebeef5;line-height: 40px">
+                  <el-col :span="8">{{student.name}}</el-col>
+                  <el-col :span="8">{{student.mobile}}</el-col>
+                  <el-col :span="8" style="color: rgb(255, 73, 72);">
+                    <a @click="deleteVehiclePeriodStudent(student.studentId, props.row.periodId)"><i class="el-icon-fa-undo"></i></a>
+                  </el-col>
+                </el-col>
+              </span>
+            </el-row>
+            <!--<span style="margin-left: 5px;" v-for="student in props.row.studentList">-->
+              <!--<el-tag>-->
+                <!--{{student.name}}&nbsp;&nbsp;({{student.mobile}})-->
+              <!--</el-tag>-->
+            <!--</span>-->
           </template>
         </el-table-column>
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -274,7 +295,7 @@
 </template>
 
 <script>
-  import { getVehiclePeriodList, putVehiclePeriod, addVehiclePeriod } from '@/api/bespeak/vehicleperiod'
+  import { getVehiclePeriodList, putVehiclePeriod, addVehiclePeriod, deleteVehiclePeriodStudent } from '@/api/bespeak/vehicleperiod'
   import { queryVehicleList } from '@/api/vehicle/vehicle'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
@@ -526,6 +547,17 @@
           this.vehiclePeriodListQuery.beginTime = this.vehiclePeriodListQuery.interval[0]
           this.vehiclePeriodListQuery.endTime = this.vehiclePeriodListQuery.interval[1]
         }
+      },
+      deleteVehiclePeriodStudent(studentId, periodId) {
+        this.$confirm('是否取消该学员约车?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteVehiclePeriodStudent({ 'studentId': studentId, 'periodId': periodId }).then(() => {
+            this.getVehiclePeriodList()
+          })
+        })
       }
     }
   }

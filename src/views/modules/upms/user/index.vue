@@ -202,11 +202,12 @@
                         </el-col>
                         <el-col :span="12">
 
-                          <el-form-item prop="workMobile">
-                            <span slot="label" class="text_css">工作电话:</span>
-                            <el-input v-if="edit"  v-model="userEntity.workMobile" placeholder="工作电话" ></el-input>
-                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.workMobile}}</span>
+                          <el-form-item prop="mobile">
+                            <span slot="label" class="text_css">联系电话:</span>
+                            <el-input v-if="edit"  v-model="userEntity.mobile" placeholder="联系电话"></el-input>
+                            <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.mobile}}</span>
                           </el-form-item>
+
 
                         </el-col>
                       </el-row>
@@ -217,14 +218,14 @@
               </el-row>
               <el-row>
                 <el-card shadow="hover" style="margin-top: 5px;">
-                  <el-card body-style="padding:10px;" :style="{height: ($store.state.app.client.height-423) + 'px'}" shadow="never" style="border: none;min-height: 300px;" >
+                  <el-card body-style="padding:10px;" :style="{height: ($store.state.app.client.height-423) + 'px'}" shadow="never" style="border: none;min-height: 350px;" >
                     <el-row :gutter="10" style="height: 50px">
                       <el-col :span="8">
 
-                        <el-form-item prop="mobile">
-                          <span slot="label" class="text_css">联系电话:</span>
-                          <el-input v-if="edit"  v-model="userEntity.mobile" placeholder="联系电话"></el-input>
-                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.mobile}}</span>
+                        <el-form-item prop="workMobile">
+                          <span slot="label" class="text_css">工作电话:</span>
+                          <el-input v-if="edit"  v-model="userEntity.workMobile" placeholder="工作电话" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.workMobile}}</span>
                         </el-form-item>
 
                       </el-col>
@@ -397,6 +398,24 @@
                       </el-col>
                     </el-row>
 
+                    <el-row :gutter="20" style="height: 50px">
+                      <el-col :span="24">
+
+                        <el-form-item label-width="120px" prop="fiveInsuranceTime">
+                          <span slot="label" class="text_css">是否教练:</span>
+                          <el-radio-group  v-if="edit"  v-model="userEntity.iscoach">
+                            <el-radio label="0">不是</el-radio>
+                            <el-radio label="16">场训</el-radio>
+                            <el-radio label="32">路训</el-radio>
+                            <el-radio label="48">都是</el-radio>
+                          </el-radio-group>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.iscoach | isCoachFilter}}</span>
+                        </el-form-item>
+
+                      </el-col>
+
+                    </el-row>
+
                   </el-card>
                   <el-card shadow="never" body-style="padding:0;" style="border: none;">
                     <el-row v-if="edit">
@@ -420,8 +439,8 @@
 
             <el-col :span="10">
               <el-row>
-                <el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-150) + 'px'}" style="min-height: 573px;">
-                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 284px;">-->
+                <el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-150) + 'px'}" style="min-height: 633px;">
+                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 300px;">-->
                   <div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">
                     <div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">
                       招生信息
@@ -436,7 +455,7 @@
               <!--  操作日志  -->
 
               <!--<el-row>-->
-                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 284px;margin-top: 5px">-->
+                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 300px;margin-top: 5px">-->
                   <!--<div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">-->
                     <!--<div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">-->
                       <!--操作日志-->
@@ -572,6 +591,7 @@
           emergencyMobile: null,
           fiveInsuranceTime: null,
           providentFundTime: null,
+          iscoach: null,
           workMobile: null
         },
         // 添加 标记
@@ -580,7 +600,10 @@
         userEntityRules: {
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change'] }
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
+          ],
+          iscoach: [
+            { required: true, message: '请选择是否教练', trigger: ['blur', 'change'] }
           ],
           idNumber: [
             { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
@@ -632,11 +655,11 @@
           ],
           emergencyMobile: [
             { required: true, message: '请输入紧急联系人电话', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change']}
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change']}
           ],
           workMobile: [
             { required: false, message: '请输入工作电话', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change']}
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change']}
           ]
         }
       }

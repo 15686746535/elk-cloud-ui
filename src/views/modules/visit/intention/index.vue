@@ -533,7 +533,7 @@
           ],
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[34578]\d{9}$/, message: '目前只支持中国大陆的手机号码', trigger: ['blur', 'change'] }
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           wechat: [
             { required: true, message: '请输入客户微信', trigger: ['blur', 'change'] }],

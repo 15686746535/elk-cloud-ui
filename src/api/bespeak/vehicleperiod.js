@@ -23,6 +23,22 @@ export function addVehiclePeriod(obj) {
     data: obj
   })
 }
+// 添加
+export function bespeakVehiclePeriod(obj) {
+  return request({
+    url: '/bespeak/vehicleperiod/bespeak',
+    method: 'post',
+    params: obj
+  })
+}
+// 删除
+export function deleteVehiclePeriodStudent(obj) {
+  return request({
+    url: '/bespeak/vehicleperiod/deleteVehiclePeriodStudent',
+    method: 'delete',
+    params: obj
+  })
+}
 // 根据ID获取
 export function getVehiclePeriod(id) {
   return request({

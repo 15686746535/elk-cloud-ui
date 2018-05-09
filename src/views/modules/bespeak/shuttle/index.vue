@@ -22,10 +22,10 @@
         <el-table :data="shuttleLog"  :height="($store.state.app.client.height-195)"  v-loading="shuttleLogLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
-              <el-table :data="props.row.studentList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+              <el-table :data="props.row.studentEntityList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column align="center" label="学员">
                   <template slot-scope="scope">
-                    <span>{{scope.row.studentName}}</span>
+                    <span>{{scope.row.name}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center" label="电话">
@@ -369,7 +369,8 @@
         },
         shuttleLogQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          scope: 'before'
         },
         notShuttleListQuery: {
           page: 1,
@@ -377,7 +378,8 @@
         },
         shuttledListQuery: {
           page: 1,
-          limit: 20
+          limit: 20,
+          scope: 'after'
         },
         studentListQuery: {
           page: 1,
@@ -394,7 +396,7 @@
         this.shuttleLogLoading = true
         console.log('------ 获取查看页面接送名单查询条件 -------')
         console.log(this.shuttleLogQuery)
-        getShuttleList(this.shuttleLogQuery).then(response => {
+        getShuttledList(this.shuttleLogQuery).then(response => {
           console.log('=========== 接送名单 ==========')
           console.log(response.data)
           this.shuttleLog = response.data.data.list

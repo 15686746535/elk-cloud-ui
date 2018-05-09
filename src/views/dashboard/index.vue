@@ -135,8 +135,9 @@
 import PieChart from '@/components/PieChart'
 import BarPileChart from '@/components/BarPileChart'
 import { queryIndex } from '@/api/visualization/api'
-import { busPage,updateAgency } from '@/api/activiti/agency'
+import { queryAgency, updateAgency } from '@/api/activiti/agency'
 import Coach from '@/components/Coach'
+
 export default {
   name: 'dashboard',
   components: {
@@ -171,13 +172,9 @@ export default {
         xAxis: [],
         seriesList: []
       },
-      listQuery: {
-        page: 1,
-        limit: 0
-      },
       evenNoticeListOption: false,
       evenNotice: {
-        flag: '',
+        flag: ''
       }
     }
   },
@@ -209,8 +206,11 @@ export default {
         this.intentionCount = data.intentionCount
       })
       // 查询代办 、提醒
-      busPage(this.listQuery).then(response => {
-        this.noticeList = response.data.data.list
+      this.getAgency()
+    },
+    getAgency() {
+      queryAgency().then(response => {
+        this.noticeList = response.data.data
       })
     },
     evenNoticeListDialog(val, str) {
@@ -222,9 +222,7 @@ export default {
       this.evenNotice.status = '1'
       updateAgency(this.evenNotice).then(() => {
         // 查询代办 、提醒
-        busPage(this.listQuery).then(response => {
-          this.noticeList = response.data.data.list
-        })
+        this.getAgency()
         this.evenNoticeListOption = false
       })
     }

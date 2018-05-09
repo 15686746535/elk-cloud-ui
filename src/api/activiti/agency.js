@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function busPage(query) {
+export function queryAgency(query) {
   return request({
-    url: '/activiti/agency/getPage',
+    url: '/activiti/agency/queryAgency',
     method: 'get',
     params: query
   })

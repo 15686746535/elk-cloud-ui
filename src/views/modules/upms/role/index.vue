@@ -90,10 +90,10 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission">
       <el-tabs v-model="activeName" >
-        <el-tab-pane label="菜单权限" style="height: 450px;overflow: auto" name="first">
+        <el-tab-pane label="菜单权限" style="height: 450px;overflow: auto" name="menuPermission">
           <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
         </el-tab-pane>
-        <el-tab-pane label="数据权限" name="second">
+        <el-tab-pane label="数据权限" style="height: 450px;overflow: auto"  name="dataPermission">
           <my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>
         </el-tab-pane>
       </el-tabs>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj, delObj, permissionUpd } from '@/api/upms/role'
+  import { fetchList, getObj, addObj, putObj, delObj, menuPermissionUpd, dataPermissionUpd } from '@/api/upms/role'
   import { mapGetters } from 'vuex'
   import { removeAllSpace } from '@/utils/validate'
 
@@ -114,7 +114,7 @@
     data() {
       return {
         change: 1,
-        activeName: 'first',
+        activeName: 'menuPermission',
         treeData: [],
         checkedKeys: [],
         defaultProps: {
@@ -226,7 +226,7 @@
         this.dialogPermissionVisible = true
         this.roleId = row.roleId
         this.menuUrl = '/upms/menu/tree?roleId=' + row.roleId
-        this.dataUrl = '/upms/menu/tree?roleId=' + row.roleId
+        this.dataUrl = '/upms/org/tree?roleId=' + row.roleId
         this.roleKey = row.roleKey
       },
       filterNode(value, data) {
@@ -277,9 +277,17 @@
         })
       },
       updatePermession(roleId, roleKey) {
-        permissionUpd(roleId, this.permission.menuList, this.permission.dataList).then(() => {
-          this.dialogPermissionVisible = false
-        })
+        console.log(this.activeName)
+        if (this.activeName === 'menuPermission') {
+          menuPermissionUpd(roleId, this.permission.menuList).then(() => {
+            this.dialogPermissionVisible = false
+          })
+        }
+        if (this.activeName === 'dataPermission') {
+          dataPermissionUpd(roleId, this.permission.dataList).then(() => {
+            this.dialogPermissionVisible = false
+          })
+        }
       },
       resetTemp() {
         this.form = {

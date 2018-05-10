@@ -21,6 +21,7 @@
                  :leafWidth="leafWidth"
                  :checkbox="checkbox"
                  :length="model.children.length"
+                 :root="false"
                  @node="emit"
                  @node-checkbox="nodeCheckbox"></leaf>
         </template>
@@ -36,6 +37,7 @@
       model: Object,
       index: Number,
       length: Number,
+      root: Boolean,
       leafWidth: String,
       folder: Boolean,
       checkbox: Boolean,
@@ -59,7 +61,7 @@
     },
     computed: {
       clazz() {
-        if (this.model.parentId === -1 && this.index === 0) { // 最外层第一个
+        if (this.root && this.index === 0) { // 最外层第一个
           if (this.length > 1) {
             return this.isOpen ? 'roots_open' : 'roots_close' // 日┌  /  田┌
           } else {
@@ -174,7 +176,7 @@
   * {
     padding: 0;
     margin: 0;
-    font-size: 14px;
+    font-size: 12px;
     font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif;
   }
   li a {

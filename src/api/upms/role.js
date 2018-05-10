@@ -45,14 +45,24 @@ export function delObj(id) {
   })
 }
 
-export function permissionUpd(roleId, menuIds, orgIds) {
+export function menuPermissionUpd(roleId, menuIds) {
   return request({
     url: '/upms/role/roleMenuUpd',
     method: 'put',
     params: {
       roleId: roleId,
-      menuIds: menuIds,
-      orgIds: menuIds
+      menuIds: menuIds
+    }
+  })
+}
+
+export function dataPermissionUpd(roleId, orgIds) {
+  return request({
+    url: '/upms/role/roleOrgUpd',
+    method: 'put',
+    params: {
+      roleId: roleId,
+      orgIds: orgIds
     }
   })
 }

@@ -10,7 +10,7 @@
           <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="getList"></my-tree>
         </el-card >
       </el-col>
-      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
         <el-card>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
           <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="getList">搜索</el-button>

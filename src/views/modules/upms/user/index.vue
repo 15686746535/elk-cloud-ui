@@ -11,7 +11,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
           <el-card style="height: 80px">
             <div class="filter-container" style="float: left;line-height: 40px">
               |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>

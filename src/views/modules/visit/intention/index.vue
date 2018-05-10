@@ -10,7 +10,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
           <el-card style="margin-bottom: 5px;height: 80px;">
             <el-row :gutter="5">
               <el-col :xs="7" :sm="7" :md="7" :lg="7">

@@ -9,10 +9,10 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
-          <el-card body-style="padding: 5px 20px;" style="margin-bottom: 5px;height: 90px;line-height: 35px">
+        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
+          <el-card body-style="padding: 5px 20px;" style="margin-bottom: 5px;height: 90px;line-height: 38px">
             <el-row :gutter="5">
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="7">
+              <el-col :xs="6" :sm="6" :md="8" :lg="7" :xl="5">
                 <el-date-picker value-format="timestamp" style="width: 100%" size="mini" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
                 </el-date-picker>
               </el-col>
@@ -26,10 +26,7 @@
                   </el-option>
                 </el-select>
               </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-                <dict v-model="listQuery.motorcycleType" size="mini" dictType="dict_motorcycle_type" placeholder="车型"  ></dict>
-              </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
                 <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" placeholder="报名点"  ></dict>
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
@@ -38,13 +35,16 @@
               <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
                 <Coach v-model="listQuery.roadCoach" size="mini" coachType="road" placeholder="路训教练"  ></Coach>
               </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="3">
+              <el-col class="hidden-md-and-down"  :xs="6" :sm="6" :md="6" :lg="5" :xl="3">
                 <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"  ></dict>
               </el-col>
-              <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="3">
+              <el-col :xs="6" :sm="6" :md="6" :lg="3" :xl="3">
+                <dict v-model="listQuery.motorcycleType" size="mini" dictType="dict_motorcycle_type" placeholder="车型"  ></dict>
+              </el-col>
+              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
                 <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
               </el-col>
-              <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="2">
+              <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
                 <el-button type="primary"  size="mini" @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
               </el-col>
             </el-row>
@@ -56,7 +56,7 @@
           </el-card>
 
           <el-card :style="{height: ($store.state.app.client.height-135) + 'px'}">
-              <el-table :data="stuList" :height="($store.state.app.client.height-260)" highlight-current-row stripe @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
+              <el-table :data="stuList" :height="($store.state.app.client.height-225)" highlight-current-row stripe @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
                 <el-table-column align="center" label="头像" min-width="150px">
                   <template slot-scope="scope">
                     <!-- 头像 -->
@@ -187,7 +187,7 @@
                                :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                                layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
-                <el-button style="float:right;" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+                <el-button style="float:right;" @click="create"  size="small" type="primary"><i class="el-icon-plus"></i>添加</el-button>
               </div>
             </el-card>
         </el-col>

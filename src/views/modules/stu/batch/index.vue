@@ -1,31 +1,33 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
-    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 80px">
-      <div class="filter-container">
-        <div style="float:left;margin-top: 8px">
-          <el-radio-group @change="handleSubject" v-model="listQuery.subject">
+    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px">
+      <el-row :gutter="5">
+        <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
+          <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
             <el-radio-button label="1">科目一</el-radio-button>
             <el-radio-button label="2">科目二</el-radio-button>
             <el-radio-button label="3">科目三</el-radio-button>
             <el-radio-button label="4">科目四</el-radio-button>
           </el-radio-group>
-        </div>
-        <div style="float:right;">
-          <el-date-picker value-format="timestamp" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
+        </el-col>
+        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6">
+          <el-date-picker value-format="timestamp" size="mini" style="width: 100%;" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="4">
+          <span v-show="'1' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field1" placeholder="科目一考试场地"></dict></span>
+          <span v-show="'2' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field2" placeholder="科目二考试场地"></dict></span>
+          <span v-show="'3' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field3" placeholder="科目三考试场地"></dict></span>
+          <span v-show="'4' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field4" placeholder="科目四考试场地"></dict></span>
+        </el-col>
+        <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
+          <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
+        </el-col>
+      </el-row>
 
-
-          <span v-show="'1' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field1" style="width: 240px;margin-top: 8px"  placeholder="科目一考试场地"></dict></span>
-          <span v-show="'2' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field2" style="width: 240px;margin-top: 8px"  placeholder="科目二考试场地"></dict></span>
-          <span v-show="'3' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field3" style="width: 240px;margin-top: 8px"  placeholder="科目三考试场地"></dict></span>
-          <span v-show="'4' === listQuery.subject"><dict v-model="listQuery.examField" dictType="dict_exam_field4" style="width: 240px;margin-top: 8px"  placeholder="科目四考试场地"></dict></span>
-
-          <el-button type="primary"  @click="searchClick" >搜索</el-button>
-        </div>
-      </div>
     </el-card>
-    <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
+    <el-card :style="{height: ($store.state.app.client.height - 95) + 'px'}">
+      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
           <template slot-scope="scope">
@@ -73,7 +75,7 @@
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
 
-        <el-button style="float:right;" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+        <el-button style="float:right;" @click="createClick" size="small" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
 

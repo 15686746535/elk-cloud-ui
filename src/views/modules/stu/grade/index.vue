@@ -1,28 +1,33 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
-    <el-card style="margin-bottom: 5px;height: 80px">
-      <div class="filter-container">
-
-        <el-radio-group @change="handleSubject" v-model="batchListQuery.subject">
-          <el-radio-button label="1">科目一</el-radio-button>
-          <el-radio-button label="2">科目二</el-radio-button>
-          <el-radio-button label="3">科目三</el-radio-button>
-          <el-radio-button label="4">科目四</el-radio-button>
-        </el-radio-group>
-        <div style="float: right">
-          <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" style="margin-bottom: 0px;" unlink-panels range-separator="-" start-placeholder="开始日期"
+    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px">
+      <el-row :gutter="5">
+        <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
+          <el-radio-group @change="handleSubject" size="mini" v-model="batchListQuery.subject">
+            <el-radio-button label="1">科目一</el-radio-button>
+            <el-radio-button label="2">科目二</el-radio-button>
+            <el-radio-button label="3">科目三</el-radio-button>
+            <el-radio-button label="4">科目四</el-radio-button>
+          </el-radio-group>
+        </el-col>
+        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6">
+          <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" size="mini" style="width: 100%" unlink-panels range-separator="-" start-placeholder="开始日期"
                           end-placeholder="结束日期" :picker-options="pickerOptions">
           </el-date-picker>
-          <el-input @keyup.enter.native="searchClick" style="width: 200px;margin-bottom: 0px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition"></el-input>
-          <el-button type="primary"  @click="searchClick" ><i class="el-icon-search"></i>搜索</el-button>
-        </div>
-      </div>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="4">
+          <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition"></el-input>
+        </el-col>
+        <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
+          <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
+        </el-col>
+      </el-row>
     </el-card>
-    <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 125) + 'px'}">
+    <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 95) + 'px'}">
       <el-col style="width: 200px;">
         <el-card>
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
-          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 250) + 'px'}">
+          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 220) + 'px'}">
             <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
                 <{{batch.examTime | subTime}}> {{batch.examField}}
@@ -43,7 +48,7 @@
       </el-col>
       <el-col :style="{width: (client.width-195) + 'px'}">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -139,7 +144,7 @@
                            style="float:left;"
                            layout="total, sizes, prev, pager, next, jumper" :total="studentTotal">
             </el-pagination>
-            <el-button style="float:right;"  @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+            <el-button style="float:right;" size="small"  @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
           </div>
         </el-card>
 

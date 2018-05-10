@@ -11,7 +11,7 @@
         </el-card>
       </el-col>
 
-      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
             <el-button type="primary"  @click="handlerAdd"><i class="el-icon-plus"></i>添加</el-button>

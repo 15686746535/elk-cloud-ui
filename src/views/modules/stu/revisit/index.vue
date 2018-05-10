@@ -8,27 +8,28 @@
         </el-card>
       </el-col>
 
-      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
-        <el-card body-style="padding:10px 20px;" style="height: 70px;line-height: 50px">
-          <!--<div style="float: left">-->
-            <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>-->
-          <!--</div>-->
+      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
+        <el-card body-style="padding:10px 20px;" style="height: 50px;">
 
-          <div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">
-            <el-radio-group @change="handleSubject" v-model="listQuery.subject">
-              <el-radio-button label="1">科目一</el-radio-button>
-              <el-radio-button label="2">科目二</el-radio-button>
-              <el-radio-button label="3">科目三</el-radio-button>
-            </el-radio-group>
-          </div>
-          <div style="float: right">
-            <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
-          </div>
+          <el-row :gutter="5">
+            <el-col :xs="15" :sm="15" :md="15" :lg="17" :xl="19">
+              <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
+                <el-radio-button label="1">科目一</el-radio-button>
+                <el-radio-button label="2">科目二</el-radio-button>
+                <el-radio-button label="3">科目三</el-radio-button>
+              </el-radio-group>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+            </el-col>
+            <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
+              <el-button size="mini" type="primary"  @click="searchClick">搜索</el-button>
+            </el-col>
+          </el-row>
         </el-card>
-        <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-115) + 'px'}">
+        <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-95) + 'px'}">
 
-          <el-table  :height="($store.state.app.client.height-205)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+          <el-table  :height="($store.state.app.client.height-185)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column align="center" label="姓名">
@@ -113,32 +114,32 @@
 
     </el-dialog>
 
-    <el-dialog @close="closeDialog" title="回访登记" width="40%" :visible.sync="visitStudentOption">
+    <el-dialog @close="closeDialog" title="回访登记" width="750px" :visible.sync="visitStudentOption">
       <div :style="{height: ($store.state.app.client.height)/2 +'px'}" style="overflow: auto;margin-bottom: 10px">
 
         <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in answerList.revisitQuestionList">
           <el-row>
             <el-col :span="2">
-              <span style="color: #001528;font-size: 16px;">{{index+1}}、</span>
-              <!--style="display: none"-->
-              <!--<el-input v-model="answerList[index].question">question.question</el-input>-->
+              <span style="color: #001528;font-size: 14px;font-weight: 600">{{index+1}}、</span>
             </el-col>
             <el-col :span="22">
-              <el-row><span style="color: #001528;font-size: 16px;">{{question.question}}</span></el-row>
-              <el-radio-group v-model="question.answer">
-                <el-row style="font-size: 14px;">
-                  <el-radio :span="12" v-show="question.itemA" label="16" style="margin-top: 10px;">A: {{question.itemA}}</el-radio>
-                  <el-radio :span="12" v-show="question.itemB" label="32" style="margin-top: 10px;">B: {{question.itemB}}</el-radio>
-                </el-row>
-                <el-row style="font-size: 14px;">
-                  <el-radio :span="12" v-show="question.itemC" label="64" style="margin-top: 10px;">C: {{question.itemC}}</el-radio>
-                  <el-radio :span="12" v-show="question.itemD" label="128" style="margin-top: 10px;">D: {{question.itemD}}</el-radio>
-                </el-row>
-                <el-row style="font-size: 14px;">
-                  <el-radio :span="12" v-show="question.itemE" label="256" style="margin-top: 10px;">E: {{question.itemE}}</el-radio>
-                  <el-radio :span="12" v-show="question.itemF" label="512" style="margin-top: 10px;">F: {{question.itemF}}</el-radio>
-                </el-row>
-              </el-radio-group>
+              <el-row><span style="color: #001528;font-size: 14px;font-weight: 600">{{question.question}}</span></el-row>
+              <el-row style="font-size: 12px;">
+                <el-radio-group size="mini" v-model="question.answer">
+                  <el-row>
+                    <el-radio :span="12" v-show="question.itemA" label="16" style="margin-top: 10px;">A: {{question.itemA}}</el-radio>
+                    <el-radio :span="12" v-show="question.itemB" label="32" style="margin-top: 10px;">B: {{question.itemB}}</el-radio>
+                  </el-row>
+                  <el-row>
+                    <el-radio :span="12" v-show="question.itemC" label="64" style="margin-top: 10px;">C: {{question.itemC}}</el-radio>
+                    <el-radio :span="12" v-show="question.itemD" label="128" style="margin-top: 10px;">D: {{question.itemD}}</el-radio>
+                  </el-row>
+                  <el-row>
+                    <el-radio :span="12" v-show="question.itemE" label="256" style="margin-top: 10px;">E: {{question.itemE}}</el-radio>
+                    <el-radio :span="12" v-show="question.itemF" label="512" style="margin-top: 10px;">F: {{question.itemF}}</el-radio>
+                  </el-row>
+                </el-radio-group>
+              </el-row>
             </el-col>
           </el-row>
         </div>
@@ -146,7 +147,7 @@
       </div>
 
       <div>
-        <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="answerList.remark" placeholder="备注"></el-input>
+        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 3}" v-model="answerList.remark" placeholder="备注"></el-input>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeDialog"><i class="el-icon-fa-undo"></i> 取 消</el-button>

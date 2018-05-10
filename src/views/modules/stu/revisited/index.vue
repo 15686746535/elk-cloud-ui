@@ -8,7 +8,7 @@
         </el-card>
       </el-col>
 
-      <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
         <el-card body-style="padding:10px 20px;" style="height: 70px;line-height: 50px">
           <!--<div style="float: left">-->
           <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>-->

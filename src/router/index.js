@@ -37,7 +37,11 @@ export default new Router({
   // scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
-
+/**
+ * 系统菜单 menuId 需要和数据库一样
+ * 修改图标无需再数据库修改，只需在此修icon改即可
+ * @type {*[]}
+ */
 export const asyncRouterMap = [
   {
     menuId: 10000,

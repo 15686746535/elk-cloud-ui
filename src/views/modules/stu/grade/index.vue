@@ -24,8 +24,8 @@
       </el-row>
     </el-card>
     <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 95) + 'px'}">
-      <el-col style="width: 200px;">
-        <el-card>
+      <el-col style="width: 230px;">
+        <el-card v-loading="batchListLoading" element-loading-text="我已经全速加载了QAQ">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 220) + 'px'}">
             <div v-for="batch in batchList">
@@ -46,7 +46,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :style="{width: (client.width-195) + 'px'}">
+      <el-col :style="{width: (client.width-225) + 'px'}">
         <el-card>
           <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
@@ -150,9 +150,9 @@
 
         <el-dialog @close="getGradeList" width="550px" title="成绩修改" :visible.sync="gradeEdit">
           <el-button-group>
-            <el-button type="success" @click="passExam">通 过</el-button>
-            <el-button type="danger" @click="examOperation('2')">失 败</el-button>
-            <el-button type="warning"  @click="examOperation('3')">缺 考</el-button>
+            <el-button type="success" size="small" @click="passExam">通 过</el-button>
+            <el-button type="danger" size="small" @click="examOperation('2')">失 败</el-button>
+            <el-button type="warning"  size="small" @click="examOperation('3')">缺 考</el-button>
           </el-button-group>
           <div slot="footer">
             <el-button-group>
@@ -193,14 +193,14 @@
             <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
 
             <div slot="footer">
-              <el-button type="danger" @click="innerGradeOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-              <el-button type="success" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
+              <el-button size="small" @click="innerGradeOption = false">取 消</el-button>
+              <el-button type="primary" size="small" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
             </div>
           </el-dialog>
           <div slot="footer">
-            <el-button type="success" :loading="btnLoading" @click="passExam">通 过</el-button>
-            <el-button type="danger" :loading="btnLoading" @click="examOperation('2')">失 败</el-button>
-            <el-button type="warning" :loading="btnLoading" @click="examOperation('3')">缺 考</el-button>
+            <el-button type="success" size="small" :loading="btnLoading" @click="passExam">通 过</el-button>
+            <el-button type="danger" size="small" :loading="btnLoading" @click="examOperation('2')">失 败</el-button>
+            <el-button type="warning" size="small" :loading="btnLoading" @click="examOperation('3')">缺 考</el-button>
           </div>
         </el-dialog>
 
@@ -210,8 +210,8 @@
           <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
 
           <div slot="footer">
-            <el-button type="danger" @click="innerGradeOption1 = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-            <el-button type="success" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
+            <el-button size="small"  @click="innerGradeOption1 = false">取 消</el-button>
+            <el-button type="primary" size="small" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -441,18 +441,22 @@ export default {
         }
       },
       examOperation(state) {
-        this.examParameter.examState = state
-        this.examParameter.subject = this.batchListQuery.subject
-        console.log(this.examParameter)
-        this.btnLoading = true
-        putExamNote(this.examParameter).then(() => {
-          this.getGradeList()
-          this.gradeOption = false
-          this.innerGradeOption = false
-          this.btnLoading = false
-          this.innerGradeOption1 = false
-          this.gradeEdit = false
-        })
+        if (this.examParameter.examNoteList.length === 0) {
+          this.$message.warning('请选择学员')
+        } else {
+          this.examParameter.examState = state
+          this.examParameter.subject = this.batchListQuery.subject
+          console.log(this.examParameter)
+          this.btnLoading = true
+          putExamNote(this.examParameter).then(() => {
+            this.getGradeList()
+            this.gradeOption = false
+            this.innerGradeOption = false
+            this.btnLoading = false
+            this.innerGradeOption1 = false
+            this.gradeEdit = false
+          })
+        }
       },
       examEdit(row, state) {
         this.examParameter.examNoteList = []

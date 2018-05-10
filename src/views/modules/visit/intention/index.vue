@@ -10,16 +10,16 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
-          <el-card style="margin-bottom: 5px;height: 80px;">
+        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+          <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
             <el-row :gutter="5">
               <el-col :xs="7" :sm="7" :md="7" :lg="7">
-                <el-date-picker value-format="timestamp"  style="width: 100%;" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+                <el-date-picker value-format="timestamp" size="mini" style="width: 100%;" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
                 </el-date-picker>
               </el-col>
 
               <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                <el-select style="width: 100%;"  v-model="listQuery.introducer" clearable placeholder="负责人">
+                <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer" clearable placeholder="负责人">
                   <el-option
                     v-for="item in userList"
                     :key="item.userId"
@@ -30,25 +30,25 @@
               </el-col>
 
               <el-col :xs="3" :sm="3" :md="3" :lg="3">
-                <dict dictType="dict_customer_type"  v-model="listQuery.customerType" placeholder="类型"></dict>
+                <dict dictType="dict_customer_type" size="mini" v-model="listQuery.customerType" placeholder="类型"></dict>
               </el-col>
 
               <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                <dict dictType="dict_source"  v-model="listQuery.source" placeholder="来源渠道"></dict>
+                <dict dictType="dict_source" size="mini" v-model="listQuery.source" placeholder="来源渠道"></dict>
               </el-col>
 
               <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                <el-input @keyup.enter.native="searchClick"  class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+                <el-input @keyup.enter.native="searchClick" size="mini" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
               </el-col>
 
               <el-col :xs="2" :sm="2" :md="2" :lg="2">
-                <el-button class="filter-item" type="primary"   icon="search" @click="searchClick">搜索</el-button>
+                <el-button class="filter-item" type="primary" size="mini" icon="search" @click="searchClick">搜索</el-button>
               </el-col>
 
             </el-row>
           </el-card>
-          <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}" style="overflow: hidden">
-            <div class="intentions"  :style="{height: (client.height-215) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
+          <el-card :style="{height: ($store.state.app.client.height-95) + 'px'}" style="overflow: hidden">
+            <div class="intentions"  :style="{height: (client.height-185) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
 
               <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
                 <div style="width: 100%;height: 25px">
@@ -132,120 +132,120 @@
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
                              background
-                             style="float: left;margin-top: 4px"
+                             style="float: left"
                              :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
 
-              <el-button class="filter-item" style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+              <el-button size="small" style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
             </div>
-
 
           </el-card>
         </el-col>
       </el-row>
-      <el-dialog width="650px" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
 
-
-        <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm"  size="small">
-
-          <el-row :gutter="5">
-            <el-col :span="12">
-              <el-form-item prop="name">
-                <span slot="label" class="text_css">姓名</span>
-                <el-input v-model="intention.name" placeholder="姓名"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="sex">
-                <span slot="label" class="text_css">性别</span>
-                <el-radio-group v-model="intention.sex">
-                  <el-radio label="1">男</el-radio>
-                  <el-radio label="0">女</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item prop="mobile">
-                <span slot="label" class="text_css">电话</span>
-                <el-input  v-model="intention.mobile" placeholder="电话"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="wechat">
-                <span slot="label" class="text_css">微信</span>
-                <el-input  v-model="intention.wechat" placeholder="微信"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item prop="contactAddress">
-                <span slot="label" class="text_css">住址</span>
-                <el-input  v-model="intention.contactAddress" placeholder="住址"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="customerType">
-                <span slot="label" class="text_css">客户类型</span>
-                <dict v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item prop="source">
-                <span slot="label" class="text_css">来源渠道</span>
-                <dict dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="worry">
-                <span slot="label" class="text_css">客户顾虑</span>
-                <dict v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户顾虑"></dict>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item prop="visitTime">
-                <span slot="label" class="text_css">来访时间</span>
-                <el-date-picker  type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="applyType">
-                <span slot="label" class="text_css">车型</span>
-                <dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col>
-              <el-form-item prop="content">
-                <span slot="label" class="text_css">咨询内容</span>
-                <el-input  type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-
-        <div slot="footer">
-          <el-button @click="closeAlert('intention')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-          <el-button @click="add('intention')" type="primary">录 入</el-button>
-        </div>
-
-      </el-dialog>
     </div>
     </transition>
 
+    <el-dialog width="650px" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
+
+
+      <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm"  size="small">
+
+        <el-row :gutter="5">
+          <el-col :span="12">
+            <el-form-item prop="name">
+              <span slot="label" class="text_css">姓名</span>
+              <el-input v-model="intention.name" placeholder="姓名"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="sex">
+              <span slot="label" class="text_css">性别</span>
+              <el-radio-group v-model="intention.sex">
+                <el-radio label="1">男</el-radio>
+                <el-radio label="0">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="mobile">
+              <span slot="label" class="text_css">电话</span>
+              <el-input  v-model="intention.mobile" placeholder="电话"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="wechat">
+              <span slot="label" class="text_css">微信</span>
+              <el-input  v-model="intention.wechat" placeholder="微信"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="contactAddress">
+              <span slot="label" class="text_css">住址</span>
+              <el-input  v-model="intention.contactAddress" placeholder="住址"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="customerType">
+              <span slot="label" class="text_css">客户类型</span>
+              <dict v-model="intention.customerType" dictType="dict_customer_type" style="width: 100%;"  placeholder="客户类型"></dict>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="source">
+              <span slot="label" class="text_css">来源渠道</span>
+              <dict dictType="dict_source" style="width: 100%;" v-model="intention.source"  placeholder="来源渠道"></dict>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="worry">
+              <span slot="label" class="text_css">客户顾虑</span>
+              <dict v-model="intention.worry" dictType="dict_worry" style="width: 100%;"  placeholder="客户顾虑"></dict>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="visitTime">
+              <span slot="label" class="text_css">来访时间</span>
+              <el-date-picker  type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="applyType">
+              <span slot="label" class="text_css">车型</span>
+              <dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col>
+            <el-form-item prop="content">
+              <span slot="label" class="text_css">咨询内容</span>
+              <el-input  type="textarea" v-model="intention.content" placeholder="咨询内容"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+
+      <div slot="footer">
+        <el-button size="small" @click="closeAlert('intention')">取 消</el-button>
+        <el-button size="small" @click="add('intention')" type="primary">录 入</el-button>
+      </div>
+
+    </el-dialog>
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='info'">
 

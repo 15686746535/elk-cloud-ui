@@ -151,15 +151,8 @@
                   <template slot-scope="scope">
                     <el-col style=" line-height: 25px">
                       <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">服务类别:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.serviceType}}</el-col>
-                      </el-row>
-
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">增值服务:</el-col>
-                        <el-col :span="17" class="table_text">
-                          <span v-for="(increment,index) in scope.row.incrementList">{{increment}}<span v-if="scope.row.incrementList.length !== (index+1)">、</span></span>
-                        </el-col>
+                        <el-col :span="7" class="table_text">服务项:</el-col>
+                        <el-col :span="17" class="table_text">{{scope.row.serviceNotes}}</el-col>
                       </el-row>
 
                       <el-row :gutter="10">

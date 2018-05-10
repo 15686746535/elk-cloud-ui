@@ -9,26 +9,27 @@
       </el-col>
 
       <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
-        <el-card body-style="padding:10px 20px;" style="height: 70px;line-height: 50px">
-          <!--<div style="float: left">-->
-          <!--|&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">回访列表</span>-->
-          <!--</div>-->
+        <el-card body-style="padding:10px 20px;" style="height: 50px;">
 
-          <div style="height: 60px; border-bottom: 1px solid #b3d8ff;float: left">
-            <el-radio-group @change="handleSubject" v-model="listQuery.subject">
-              <el-radio-button label="1">科目一</el-radio-button>
-              <el-radio-button label="2">科目二</el-radio-button>
-              <el-radio-button label="3">科目三</el-radio-button>
-            </el-radio-group>
-          </div>
-          <div style="float: right">
-            <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-            <el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>
-          </div>
+          <el-row :gutter="5">
+            <el-col :xs="15" :sm="15" :md="15" :lg="17" :xl="19">
+              <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
+                <el-radio-button label="1">科目一</el-radio-button>
+                <el-radio-button label="2">科目二</el-radio-button>
+                <el-radio-button label="3">科目三</el-radio-button>
+              </el-radio-group>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+            </el-col>
+            <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
+              <el-button size="mini" type="primary"  @click="searchClick">搜索</el-button>
+            </el-col>
+          </el-row>
         </el-card>
-          <el-card :style="{height: ($store.state.app.client.height-115) + 'px',width: ($store.state.app.client.width-690) + 'px'}" style="float: left;border-radius:4px 0 0 4px;margin-top: 5px">
+          <el-card :style="{height: ($store.state.app.client.height-95) + 'px',width: ($store.state.app.client.width-665) + 'px'}" style="float: left;border-radius:4px 0 0 4px;margin-top: 5px">
 
-            <el-table :height="($store.state.app.client.height-205)" :data="list" v-loading="listLoading" @row-click="questionClick"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+            <el-table :height="($store.state.app.client.height-185)" :data="list" v-loading="listLoading" @row-click="questionClick"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
               <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
               <el-table-column  align="center" label="姓名">
                 <template slot-scope="scope">
@@ -77,7 +78,7 @@
             </div>
 
           </el-card>
-          <el-card :style="{height: ($store.state.app.client.height-115) + 'px'}" style="width: 435px; border-radius:0 4px 4px 0;float: left;margin-top: 5px;overflow: auto" v-loading="questionLoading" element-loading-text="给我一点时间">
+          <el-card :style="{height: ($store.state.app.client.height-95) + 'px'}" style="width: 435px; border-radius:0 4px 4px 0;float: left;margin-top: 5px;overflow: auto" v-loading="questionLoading" element-loading-text="给我一点时间">
             <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
               <el-row>
                 <el-col :span="2">

@@ -29,7 +29,7 @@
               <el-input v-model="form.orgName" :disabled="option ===''" placeholder="请输入部门名字"></el-input>
             </el-form-item>
             <el-form-item label="排序"  prop="sort">
-              <el-input type="number" :min="0"  v-model.number="form.sort" :disabled="option ===''" placeholder="排序"></el-input>
+              <el-input-number style="width:100%;"v-model="form.sort" controls-position="right" :disabled="option ===''" :min="1"></el-input-number>
             </el-form-item>
             <el-form-item label="备注"  prop="remark">
               <el-input  v-model="form.remark" :disabled="option ===''" placeholder="请输入备注"></el-input>

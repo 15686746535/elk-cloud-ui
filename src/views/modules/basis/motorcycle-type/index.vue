@@ -55,10 +55,10 @@
         <el-form-item label="描述" prop="description">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
         </el-form-item>
-        <el-form-item label="排序（升序）" prop="sort">
+        <el-form-item label="排序(升)" prop="sort">
           <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
           </el-popover>
-          <el-input type="number" v-popover:popover v-model.number="dict.sort" placeholder="排序（升序）" ></el-input>
+          <el-input-number style="width:100%;"v-model="dict.sort" v-popover:popover controls-position="right" :min="1"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

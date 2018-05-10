@@ -54,7 +54,8 @@ export const asyncRouterMap = [
     },
     children: [
       { menuId: 10100, path: 'menu', component: _import('modules/sys/menu/index'), name: '菜单管理', alwaysShow: true, meta: { title: '菜单管理', icon: 'menu' }},
-      { menuId: 10200, path: 'swagger', component: _import('modules/sys/monitor/swagger'), name: '接口文档', alwaysShow: true, meta: { title: '接口文档', icon: 'menu' }}
+      { menuId: 10200, path: 'swagger', component: _import('modules/sys/monitor/swagger'), name: '接口文档', alwaysShow: true, meta: { title: '接口文档', icon: 'menu' }},
+      { menuId: 10300, path: 'configure', component: _import('modules/sys/configure/index'), name: '配置信息', alwaysShow: true, meta: { title: '配置信息', icon: 'menu' }}
     ]
   },
   {

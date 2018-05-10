@@ -256,7 +256,7 @@
 
                         <el-form-item prop="orgId">
                           <span slot="label" class="text_css">所属部门:</span>
-                          <tree-select height="28px" style="font-size: 12px" v-show="edit" url="/upms/org/tree" v-model="userEntity.orgId" @org-click="orgClick" placeholder="家庭住址"></tree-select>
+                          <tree-select height="28px" style="font-size: 12px" v-show="edit" url="/upms/org/tree" v-model="userEntity.orgId" placeholder="所属部门"></tree-select>
                           <span style="padding-left: 16px;font-size: 12px;" v-show="!edit" >{{userEntity.orgName}}</span>
                         </el-form-item>
 
@@ -710,7 +710,7 @@
           console.log(response.data)
           this.userEntity = response.data.data
           console.log(this.userEntity.orgId)
-          roleList(this.userEntity.orgId).then(response => {
+          roleList().then(response => {
             console.log('====================== 职位 =====================')
             this.roleList = response.data.data
             console.log(this.roleList)
@@ -799,13 +799,13 @@
           }
         })
       },
-      orgClick(org) {
-        this.userEntity.orgName = org.name
-        roleList(org.id).then(response => {
-          console.log(response.data)
-          this.roleList = response.data.data
-        })
-      },
+      // orgClick(org) {
+      //   this.userEntity.orgName = org.name
+      //   roleList(org.id).then(response => {
+      //     console.log(response.data)
+      //     this.roleList = response.data.data
+      //   })
+      // },
       filterNode(value, data) {
         if (!value) return true
         return data.label.indexOf(value) !== -1

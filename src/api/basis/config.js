@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getConfigList(query) {
   return request({
     url: '/basis/config/getPage',
     method: 'get',
@@ -8,7 +8,7 @@ export function fetchList(query) {
   })
 }
 // 添加
-export function addObj(obj) {
+export function addConfig(obj) {
   return request({
     url: '/basis/config',
     method: 'post',
@@ -16,21 +16,21 @@ export function addObj(obj) {
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getConfig(id) {
   return request({
     url: '/basis/config/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delConfig(id) {
   return request({
     url: '/basis/config/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putConfig(obj) {
   return request({
     url: '/basis/config',
     method: 'put',

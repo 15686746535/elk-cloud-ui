@@ -303,20 +303,21 @@
 
         <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
         <el-button-group v-if="studentListQuery.state === '0'">
-          <el-button @click="operation('5','审核失败')" type="danger" round>失败</el-button>
-          <el-button @click="operation('1','审核通过')" type="success" round>通过</el-button>
+          <el-button @click="operation('5','审核失败')" size="small" type="danger" round>失败</el-button>
+          <el-button @click="operation('1','审核通过')" size="small" type="success" round>通过</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '1'">
-          <el-button @click="operation('0','撤销成功')" type="info" round>撤销</el-button>
-          <el-button @click="operation('2','约考成功')" type="success" round>已约</el-button>
+          <el-button @click="operation('0','撤销成功')" size="small" type="info" round>撤销</el-button>
+          <el-button @click="operation('2','约考成功')" size="small" type="success" round>已约</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '2'">
-          <el-button @click="operation('4','报考失败')" type="danger" round>失败</el-button>
-          <el-button @click="operation('1','撤销成功')" type="info" round>撤销</el-button>
-          <el-button @click="operation('3','报考成功')" type="success" round>成功</el-button>
+          <el-button @click="operation('4','报考失败')" size="small" type="danger" round>失败</el-button>
+          <el-button @click="operation('1','撤销成功')" size="small" type="info" round>撤销</el-button>
+          <el-button @click="operation('3','报考成功')" size="small" type="success" round>成功</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '3'">
-          <el-button @click="operation('6','撤销成功')" type="danger" round>取消约考</el-button>
+          <el-button @click="operation('6','撤销成功')" size="small" type="danger" round>取消约考</el-button>
+          <el-button type="primary" size="small" round>导出</el-button>
         </el-button-group>
         <span v-else>
         </span>

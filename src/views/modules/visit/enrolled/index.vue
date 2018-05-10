@@ -12,15 +12,15 @@
         </el-col>
 
         <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
-          <el-card style="margin-bottom: 5px;height: 80px;">
+          <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
 
             <el-row :gutter="10">
-              <el-col :xs="8" :sm="8" :md="11" :lg="10">
-                <el-date-picker style="width: 100%" value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+              <el-col :xs="10" :sm="10" :md="10" :lg="6">
+                <el-date-picker style="width: 100%" size="mini" value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
                 </el-date-picker>
               </el-col>
-              <el-col :xs="6" :sm="6" :md="5" :lg="4">
-                <el-select style="width: 100%" v-model="listQuery.introducer" clearable placeholder="负责人">
+              <el-col :xs="6" :sm="6" :md="6" :lg="4">
+                <el-select style="width: 100%" size="mini" v-model="listQuery.introducer" clearable placeholder="负责人">
                   <el-option
                     v-for="item in userList"
                     :key="item.userId"
@@ -30,30 +30,16 @@
                 </el-select>
               </el-col>
               <el-col :xs="6" :sm="6" :md="5" :lg="4">
-                <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+                <el-input @keyup.enter.native="searchClick" size="mini" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
               </el-col>
-              <el-col :xs="4" :sm="4" :md="3" :lg="4">
-                <el-button class="filter-item" type="primary"   @click="searchClick">搜 索</el-button>
+              <el-col :xs="2" :sm="2" :md="3" :lg="4">
+                <el-button class="filter-item" type="primary" size="mini" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
               </el-col>
             </el-row>
 
-            <!--<el-date-picker :style="{width: ($store.state.app.client.width/7)*1.5 + 'px'}" value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
-            <!--</el-date-picker>-->
-            <!--<el-select :style="{width: ($store.state.app.client.width/10) + 'px'}" v-model="listQuery.introducer" clearable placeholder="负责人">-->
-              <!--<el-option-->
-                <!--v-for="item in userList"-->
-                <!--:key="item.userId"-->
-                <!--:label="item.name"-->
-                <!--:value="item.userId">-->
-              <!--</el-option>-->
-            <!--</el-select>-->
-            <!--&lt;!&ndash;<dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_customer_type" v-model="listQuery.customerType" style="width: 200px;"  placeholder="类型"></dict>&ndash;&gt;-->
-            <!--&lt;!&ndash;<dict :style="{width: ($store.state.app.client.width/10) + 'px'}" dictType="dict_source" v-model="listQuery.source" style="width: 200px;"  placeholder="来源渠道"></dict>&ndash;&gt;-->
-            <!--<el-input :style="{width: ($store.state.app.client.width/8) + 'px'}" @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>-->
-            <!--<el-button class="filter-item" type="primary"   @click="searchClick">搜 索</el-button>-->
           </el-card>
-          <el-card :style="{height: (client.height-125) + 'px'}">
-            <div class="intentions"  :style="{height: (client.height-205) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
+          <el-card :style="{height: (client.height-95) + 'px'}">
+            <div class="intentions"  :style="{height: (client.height-175) + 'px'}" v-loading="listLoading" element-loading-text="给我一点时间" >
               <div class="intention" v-for="intention in list" @click="intentionClick(intention.intentionId,$event)" ><!--@dblclick="editList(intention) "-->
                 <div style="width: 100%;height: 25px">
                   <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
@@ -85,7 +71,7 @@
                              :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
-              <el-button class="filter-item" style="float: right;" @click="open" type="success" icon="plus">重新分配</el-button>
+              <el-button size="small" style="float: right;" @click="open" type="success">再分配</el-button>
             </div>
 
           </el-card>

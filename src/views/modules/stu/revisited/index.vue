@@ -175,10 +175,16 @@
         this.getList()
       },
       revoke(id) {
-        console.log(id)
-        delRevisited(id).then(() => {
+        this.$confirm('是否撤销该回访记录?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(id)
+          delRevisited(id).then(() => {
+          })
+          this.getList()
         })
-        this.getList()
       },
       // 根据部门id查询员工
       searchByOrg(data) {

@@ -1310,7 +1310,7 @@
       },
       handleAvatarSuccess(res, file) {
         this.vehicleEntity.vehiclePhoto = res.data
-        this.update('car', this.vehicleEntity)
+        // this.update('car', this.vehicleEntity)
       },
       /* 二维 */
       handleTwoDimensionalPhotoSuccess(res, file) {

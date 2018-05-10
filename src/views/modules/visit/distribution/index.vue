@@ -2,27 +2,27 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
 
     <el-col :style="{width: ($store.state.app.client.width) + 'px'}">
-        <el-card style="margin-bottom: 5px;height: 80px;">
+        <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
           <!--<el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
           <!--</el-date-picker>-->
           <el-row :gutter="10">
             <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <dict dictType="dict_customer_type" v-model="listQuery.customerType" placeholder="类别"></dict>
+              <dict dictType="dict_customer_type" size="mini" v-model="listQuery.customerType" placeholder="类别"></dict>
             </el-col>
             <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <dict dictType="dict_source" v-model="listQuery.source" placeholder="来源渠道"></dict>
+              <dict dictType="dict_source" size="mini" v-model="listQuery.source" placeholder="来源渠道"></dict>
             </el-col>
             <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
+              <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
             </el-col>
             <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜 索</el-button>
+              <el-button size="mini" type="primary"  icon="search" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
             </el-col>
           </el-row>
         </el-card>
 
-        <el-card :style="{height: ($store.state.app.client.height-125) + 'px'}">
-          <el-table :data="list" :height="($store.state.app.client.height-205)" @selection-change="handleSelectionChange"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <el-card :style="{height: ($store.state.app.client.height-95) + 'px'}">
+          <el-table :data="list" :height="($store.state.app.client.height-175)" @selection-change="handleSelectionChange"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column  align="center" label="姓名">
@@ -71,8 +71,8 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
             <div style="float: right;">
-              <el-button class="filter-item" type="primary">上 传</el-button>
-              <el-button class="filter-item" @click="distribution" type="success" icon="plus">分 配</el-button>
+              <el-button size="small" type="primary">上 传</el-button>
+              <el-button size="small" @click="distribution" type="success" icon="plus">分 配</el-button>
             </div>
           </div>
 

@@ -108,7 +108,7 @@
         </el-pagination>
         <el-button style="margin-top: -8px;float: right" @click="createClick" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
       </div>
-      <el-dialog @close="cancel('carPeriod')" width="700px" title="编辑课时" :visible.sync="editOption">
+      <el-dialog @close="cancel('carPeriod')" :close-on-click-modal="false" width="700px" title="编辑课时" :visible.sync="editOption">
 
         <el-form :model="carPeriod" :rules="carPeriodRules"  ref="carPeriod" label-position="left" label-width="100px">
 
@@ -192,7 +192,7 @@
           <el-button type="primary" @click="update('carPeriod')">修 改</el-button>
         </div>
       </el-dialog>
-      <el-dialog  @close="cancel('vehiclePeriod')" width="700px" title="录入课时" :visible.sync="addOption">
+      <el-dialog :close-on-click-modal="false" @close="cancel('vehiclePeriod')" width="700px" title="录入课时" :visible.sync="addOption">
 
         <el-form :model="vehiclePeriod" :rules="vehiclePeriodRules"  ref="vehiclePeriod" label-position="left" label-width="100px">
 

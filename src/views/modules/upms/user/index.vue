@@ -696,10 +696,11 @@
           fiveInsuranceTime: null,
           providentFundTime: null,
           workMobile: null
-
         }
+        console.log(this.userEntity)
         this.addInfo = true
         this.edit = true
+        this.getRoleList()
         this.showModule = 'info'
       },
       // 双击行  编辑
@@ -710,14 +711,17 @@
           console.log(response.data)
           this.userEntity = response.data.data
           console.log(this.userEntity.orgId)
-          roleList().then(response => {
-            console.log('====================== 职位 =====================')
-            this.roleList = response.data.data
-            console.log(this.roleList)
-          })
+          this.getRoleList()
           this.infoLoading = false
         })
         this.showModule = 'info'
+      },
+      getRoleList() {
+        roleList().then(response => {
+          console.log('====================== 职位 =====================')
+          this.roleList = response.data.data
+          console.log(this.roleList)
+        })
       },
       // 改变页容量
       handleSizeChange(val) {

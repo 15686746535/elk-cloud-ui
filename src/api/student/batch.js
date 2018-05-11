@@ -43,3 +43,11 @@ export function putObj(obj) {
     data: obj
   })
 }
+/* 考试名单导出接口 */
+export function exportExamList(query) {
+  return request({
+    url: '/stu/exam/exportExamList',
+    method: 'get',
+    params: query
+  })
+}

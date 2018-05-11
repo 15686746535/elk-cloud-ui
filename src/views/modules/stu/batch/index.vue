@@ -135,16 +135,17 @@
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
             </el-table-column>
+            <!--:filters="[-->
+            <!--{ text: '报考失败', value: '4' },-->
+            <!--{ text: '审核失败', value: '5' },-->
+            <!--{ text: '待审核', value: '0' },-->
+            <!--{ text: '待约考', value: '1' },-->
+            <!--{ text: '已约考', value: '2' },-->
+            <!--{ text: '报考成功', value: '3' }-->
+            <!--]"-->
+            <!--:filter-method="filterTag" filter-placement="bottom-end"-->
             <el-table-column  align="center"
-                              :filters="[
-                                { text: '报考失败', value: '4' },
-                                { text: '审核失败', value: '5' },
-                                { text: '待审核', value: '0' },
-                                { text: '待约考', value: '1' },
-                                { text: '已约考', value: '2' },
-                                { text: '报考成功', value: '3' }
-                               ]"
-                              :filter-method="filterTag" filter-placement="bottom-end" label="状态">
+                              label="状态">
               <template slot-scope="scope">
                 <!--<span>{{scope.row.state}}</span>-->
                 <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
@@ -303,21 +304,21 @@
 
         <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
         <el-button-group v-if="studentListQuery.state === '0'">
-          <el-button @click="operation('5','审核失败')" size="small" type="danger" round>失败</el-button>
-          <el-button @click="operation('1','审核通过')" size="small" type="success" round>通过</el-button>
+          <el-button @click="operation('5','examBespeakCancel')" size="small" type="danger" round>失败</el-button>
+          <el-button @click="operation('1','examBespeakCheck')" size="small" type="success" round>通过</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '1'">
-          <el-button @click="operation('0','撤销成功')" size="small" type="info" round>撤销</el-button>
-          <el-button @click="operation('2','约考成功')" size="small" type="success" round>已约</el-button>
+          <el-button @click="operation('0','examBespeakCancel')" size="small" type="info" round>撤销</el-button>
+          <el-button @click="operation('2','examBespeakCheck')" size="small" type="success" round>已约</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '2'">
-          <el-button @click="operation('4','报考失败')" size="small" type="danger" round>失败</el-button>
-          <el-button @click="operation('1','撤销成功')" size="small" type="info" round>撤销</el-button>
-          <el-button @click="operation('3','报考成功')" size="small" type="success" round>成功</el-button>
+          <el-button @click="operation('4','examBespeakCheck')" size="small" type="danger" round>失败</el-button>
+          <el-button @click="operation('1','examBespeakCancel')" size="small" type="info" round>撤销</el-button>
+          <el-button @click="operation('3','examBespeakCheck')" size="small" type="success" round>成功</el-button>
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '3'">
-          <el-button @click="operation('6','撤销成功')" size="small" type="danger" round>取消约考</el-button>
-          <el-button type="primary" size="small" round>导出</el-button>
+          <el-button @click="operation('6','examBespeakCancel')" size="small" type="danger" round>取消约考</el-button>
+          <el-button type="primary" size="small" round>导出名单</el-button>
         </el-button-group>
         <span v-else>
         </span>
@@ -330,7 +331,7 @@
 </template>
 
 <script>
-  import { getBatchList, delObj, addObj, putObj } from '@/api/student/batch'
+  import { getBatchList, delObj, addObj, putObj, exportExamList } from '@/api/student/batch'
   import { getexambespeakbyid, delexambespeak, putExamBespeak } from '@/api/student/exambespeak'
   import { mapGetters } from 'vuex'
   import { parseTime } from '@/utils/index'
@@ -531,7 +532,7 @@
         }).then(() => {
           this.examBespeakList.examBespeakList = []
           this.examBespeakList.examBespeakList.push({ 'studentId': val.studentId, 'makeUpExam': val.makeUpExam, 'examBespeakId': val.examBespeakId })
-          this.operation('6', '已取消约考')
+          this.operation('6', 'examBespeakCancel')
           // delexambespeak(val.examBespeakId).then(() => {
           //   this.see(val.examId, this.studentListQuery.state)
           //   this.$notify({
@@ -561,14 +562,14 @@
         if (state.name === 'all') this.studentListQuery.state = null
         this.see(this.studentListQuery.examId, this.studentListQuery.state)
       },
-      operation(state, str) {
+      operation(state, url) {
         if (this.examBespeakList.examBespeakList.length === 0) {
           this.$message.warning('请先选择学员')
         } else {
           this.examBespeakList.state = state
           console.log('==== 选择的学员 ====')
           console.log(this.examBespeakList)
-          putExamBespeak(this.examBespeakList).then(() => {
+          putExamBespeak(this.examBespeakList, url).then(() => {
             this.see(this.studentListQuery.examId, this.studentListQuery.state)
             // this.$notify({
             //   title: '成功',
@@ -609,6 +610,10 @@
       filterHandler(value, row, column) {
         const property = column['property']
         return row[property] === value
+      },
+      exportExamList() {
+        exportExamList().then(() => {
+        })
       }
     }
   }

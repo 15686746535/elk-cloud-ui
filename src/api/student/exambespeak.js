@@ -47,9 +47,9 @@ export function delexambespeak(id) {
   })
 }
 // 更新
-export function putExamBespeak(obj) {
+export function putExamBespeak(obj, url) {
   return request({
-    url: '/stu/exam/bespeak',
+    url: '/stu/exam/bespeak/' + url,
     method: 'put',
     data: obj
   })

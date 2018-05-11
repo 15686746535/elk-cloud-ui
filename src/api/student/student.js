@@ -38,10 +38,3 @@ export function putStudent(obj) {
   })
 }
 
-export function fetchUserList(query) {
-  return request({
-    url: '/stu_upms/user/userList',
-    method: 'get',
-    params: query
-  })
-}

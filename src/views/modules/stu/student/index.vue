@@ -180,6 +180,15 @@
                                :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                                layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
+                <el-upload class="upload-demo" action="/stu/student/import"
+                           :headers="headers"
+                           :on-success="handleTextSuccess"
+                           :on-error="handleTextError"
+                           :show-file-list="false"
+                           :before-upload="beforeTextUpload">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+
                 <el-button style="float:right;" @click="create"  size="small" type="primary"><i class="el-icon-plus"></i>添加</el-button>
               </div>
             </el-card>
@@ -387,7 +396,7 @@
                       <!-- 头像 -->
                       <el-form-item prop="avatar">
                         <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
-                                   :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                                   :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                           <img :src="student.avatar" class="avatar">
                         </el-upload>
                       </el-form-item>
@@ -789,7 +798,7 @@
                       <el-col  :span="18">
                         <div style="height: 150px;width: 100px;margin: 0 auto">
                           <el-upload :disabled="!edit"  class="AddAvatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
-                                     :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                                     :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                             <img :src="studentEntity.avatar" class="AddAvatar">
                           </el-upload>
                           <!--<el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">-->
@@ -1588,6 +1597,9 @@
       handleAvatarSuccess(res, file) {
         this.student.avatar = res.data
       },
+      handleAvatarError(err, file, fileList) {
+        this.$message.error('上传失败')
+      },
       beforeAvatarUpload(file) {
         const type = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
         const isLt2M = file.size / 1024 / 1024 < 2
@@ -1616,6 +1628,21 @@
           }
           this.studentEntity.sex = value[2].toString()
         }
+      },
+      beforeTextUpload(file) {
+        const isXls = file.type === 'application/vnd.ms-excel'
+
+        if (!isXls) {
+          this.$message.error('只能上传Excel文件！')
+        }
+
+        return isXls
+      },
+      handleTextSuccess(res, file) {
+        this.$message.success('上传成功')
+      },
+      handleTextError(err, file, fileList) {
+        this.$message.error('上传失败')
       },
       reset(formName) {
         this.$refs[formName].resetFields()

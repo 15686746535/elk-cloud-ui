@@ -556,9 +556,9 @@
             { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           wechat: [
-            { required: true, message: '请输入客户微信', trigger: ['blur', 'change'] }],
+            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] }],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: ['blur', 'change'] }
+            { required: false, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
           customerType: [
             { required: true, message: '请选择客户类型', trigger: ['blur', 'change'] }
@@ -576,7 +576,7 @@
             { required: true, message: '请选择来访时间', trigger: ['blur', 'change'] }
           ],
           content: [
-            { required: true, message: '请输入资讯内容', trigger: ['blur', 'change'] }
+            { required: false, message: '请输入资讯内容', trigger: ['blur', 'change'] }
           ]
         }
       }

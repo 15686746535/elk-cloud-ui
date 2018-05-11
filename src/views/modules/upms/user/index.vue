@@ -129,7 +129,7 @@
       </el-row>
     </div>
 
-    <div v-show="showModule=='info'" v-loading="infoLoading" >
+    <div v-show="showModule=='info'">
       <el-card>
         <div slot="header" class="clearfix">
           <div style="float: left">
@@ -145,7 +145,7 @@
           <el-row :gutter="5">
             <el-col :span="14">
               <el-row>
-                <el-card body-style="padding:15px 15px 0 15px;" shadow="hover">
+                <el-card body-style="padding:15px 15px 0 15px;"  v-loading="infoLoading" element-loading-text="给我一点时间" shadow="hover">
                   <el-row>
                     <el-col :span="6">
                       <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
@@ -439,13 +439,24 @@
 
             <el-col :span="10">
               <el-row>
-                <el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-150) + 'px'}" style="min-height: 633px;">
+                <el-card shadow="hover" body-style="padding:0" :style="{height: ($store.state.app.client.height-150) + 'px'}" style="min-height: 633px;">
                 <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 300px;">-->
                   <div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">
                     <div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">
                       招生信息
                     </div>
                   </div>
+
+                  <el-table :data="studentList" v-loading="studentListLoading" :height="$store.state.app.client.height-205"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+                    <el-table-column type="index" align="center" label="编号" width="50">
+                    </el-table-column>
+                    <el-table-column align="center"  label="姓名">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.label}}</span>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+
 
 
 
@@ -484,6 +495,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { roleList } from '@/api/upms/role'
+  import { queryEnrollStudents } from '@/api/student/student'
   import { removeAllSpace } from '@/utils/validate'
   import { autoProduce } from '@/utils/index'
   import Bar from '@/components/Bar'
@@ -554,12 +566,19 @@
         // 总条数
         total: 1,
         listLoading: true,
-        infoLoading: true,
+        infoLoading: false,
+        studentListLoading: false,
         // 分页数据
         listQuery: {
           page: 1,
           limit: 20,
           orgId: null,
+          condition: null
+        },
+        studentListQuery: {
+          page: 1,
+          limit: 20,
+          userId: null,
           condition: null
         },
         defaultProps: {
@@ -597,6 +616,7 @@
         // 添加 标记
         addInfo: false,
         roleList: [],
+        studentList: [],
         userEntityRules: {
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
@@ -712,6 +732,8 @@
           this.userEntity = response.data.data
           console.log(this.userEntity.orgId)
           this.getRoleList()
+          this.studentListQuery.userId = this.userEntity.userId
+          this.getEnrollStudentList()
           this.infoLoading = false
         })
         this.showModule = 'info'
@@ -751,6 +773,18 @@
           this.userList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
+        })
+        console.log('=====================   完成   =======================')
+      },
+      // 查询招生信息集合
+      getEnrollStudentList() {
+        console.log('=====================   查询员工集合   =======================')
+        this.studentListLoading = true
+        queryEnrollStudents(this.studentListQuery).then(response => {
+          console.log(response.data)
+          this.studentList = response.data.data.list
+          // this.total = response.data.data.totalCount
+          this.studentListLoading = false
         })
         console.log('=====================   完成   =======================')
       },

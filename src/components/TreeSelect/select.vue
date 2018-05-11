@@ -80,6 +80,9 @@
     // 数据请求
     watch: {
       value: function(val) {
+        if (!val) {
+          this.label = ''
+        }
         if (!this.checkbox) {
           this.currentId = val
           this.choose(this.orgList, val)

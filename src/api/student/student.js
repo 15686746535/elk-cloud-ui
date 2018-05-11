@@ -7,6 +7,14 @@ export function fetchStudentList(query) {
     params: query
   })
 }
+// 查询集合
+export function queryEnrollStudents(query) {
+  return request({
+    url: '/stu/student/queryEnrollStudents',
+    method: 'get',
+    params: query
+  })
+}
 // 添加
 export function saveStudent(obj) {
   return request({

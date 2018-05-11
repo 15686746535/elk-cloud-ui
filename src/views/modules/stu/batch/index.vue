@@ -318,7 +318,8 @@
         </el-button-group>
         <el-button-group v-else-if="studentListQuery.state === '3'">
           <el-button @click="operation('6','examBespeakCancel')" size="small" type="danger" round>取消约考</el-button>
-          <el-button type="primary" size="small" round>导出名单</el-button>
+          <el-button type="primary" size="small" @click="exportExamList" round>导出名单</el-button>
+          <a href="192.168.1.130:8003/stu/exam/exportExamList?examId=104&subject=一"> 说三道四</a>
         </el-button-group>
         <span v-else>
         </span>
@@ -612,7 +613,17 @@
         return row[property] === value
       },
       exportExamList() {
-        exportExamList().then(() => {
+        var subject
+        if (this.listQuery.subject === '1') {
+          subject = '一'
+        } else if (this.listQuery.subject === '2') {
+          subject = '二'
+        } else if (this.listQuery.subject === '3') {
+          subject = '三'
+        } else if (this.listQuery.subject === '4') {
+          subject = '四'
+        }
+        exportExamList({ 'examId': this.studentListQuery.examId, 'state': this.studentListQuery.state, 'subject': subject }).then(() => {
         })
       }
     }

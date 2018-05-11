@@ -79,7 +79,7 @@
 
 
         </el-card>
-        <el-dialog @close="getList" title="选择负责人" width="150px" :visible.sync="dialogIntentionList">
+        <el-dialog @close="getList" title="选择负责人" width="350px" :visible.sync="dialogIntentionList">
           <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
 
           <el-select :loading="selectLoading" v-model="intentionList.userId" clearable style="width: 100%;margin-top: 20px;" placeholder="负责人">
@@ -91,8 +91,8 @@
             </el-option>
           </el-select>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="closeIntention"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-            <el-button type="primary" @click="redistribution">确 定</el-button>
+            <el-button @click="closeIntention" size="small">取 消</el-button>
+            <el-button type="primary" @click="redistribution" size="small">确 定</el-button>
           </div>
         </el-dialog>
       </el-col>

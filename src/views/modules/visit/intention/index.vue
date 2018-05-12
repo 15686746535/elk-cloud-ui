@@ -459,7 +459,7 @@
 </template>
 
 <script>
-  import { fetchList, addObj, getObj, putObj } from '@/api/visit/intention'
+  import { fetchList, addObj, getObj, putObj, getIntentionByMobile } from '@/api/visit/intention'
   import { followUpList, addFollowUp } from '@/api/visit/followup'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
@@ -499,8 +499,6 @@
           followUp: true
         },
         alertFollowEntity: {},
-        stateLabel: '跟进中',
-        dialogStatus: '',
         pickerOptions: {
           shortcuts: [{
             text: '昨天',

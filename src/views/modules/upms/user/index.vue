@@ -428,8 +428,12 @@
 
 
                     <el-row v-else>
+                      <div style="float: left">
+                        <el-button type="danger" size="mini" @click="quit(userEntity.userId)"><i class="el-icon-circle-close-outline"></i>办理离职</el-button>
+                        <el-button type="danger" size="mini" @click="rePassword(userEntity.userId)"><i class="el-icon-refresh"></i>重置密码</el-button>
+                      </div>
                       <div style="float: right;" >
-                        <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编辑</el-button>
+                        <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
                       </div>
                     </el-row>
                   </el-card>
@@ -500,7 +504,7 @@
   import { autoProduce } from '@/utils/index'
   import Bar from '@/components/Bar'
   import LineChart from '@/components/LineChart'
-  import { fetchList, addObj, putObj, getObj } from '@/api/upms/user'
+  import { fetchList, addObj, putObj, getObj, rePassword, delObj } from '@/api/upms/user'
   import { getToken } from '@/utils/auth'
 
   export default {
@@ -675,11 +679,11 @@
           ],
           emergencyMobile: [
             { required: true, message: '请输入紧急联系人电话', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change']}
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           workMobile: [
             { required: false, message: '请输入工作电话', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change']}
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ]
         }
       }
@@ -882,6 +886,28 @@
         }
 
         return isImages && isLt2M
+      },
+      rePassword(userId) {
+        console.log(userId)
+        this.$confirm('是否重置密码?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          rePassword(userId).then(() => {
+          })
+        })
+      },
+      quit(userId) {
+        this.$confirm('是否办理员工离职?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delObj(userId).then(() => {
+            this.back()
+          })
+        })
       }
     }
   }

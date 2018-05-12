@@ -32,8 +32,16 @@ export function getObj(id) {
 
 export function delObj(id) {
   return request({
-    url: '/upms/user/' + id,
-    method: 'delete'
+    url: '/upms/user/quit/' + id,
+    method: 'put'
+  })
+}
+
+export function rePassword(id) {
+  return request({
+    url: '/upms/user/initialize',
+    method: 'put',
+    data: id
   })
 }
 

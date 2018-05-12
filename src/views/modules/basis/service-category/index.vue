@@ -4,8 +4,8 @@
       <!--<el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加-->
       <!--</el-button>-->
     <!--</el-card>-->
-    <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :height="$store.state.app.client.height-205"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+    <el-card :style="{height: ($store.state.app.client.height - 45) + 'px'}">
+      <el-table :data="list" v-loading="listLoading"  :height="$store.state.app.client.height-125"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
       </el-table-column>
       <el-table-column align="center" label="收费服务">
@@ -50,32 +50,32 @@
         </template>
       </el-table-column>
     </el-table>
-    <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+    <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page.sync="listQuery.page" background
                      style="float: left"
                      :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
-      <el-button v-if="add_menu" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+      <el-button v-if="add_menu" size="small" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
     </div>
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="serviceCategory" :rules="rules" ref="serviceCategory" label-width="100px">
-        <el-form-item label="收费服务名字"  prop="username">
-          <el-input v-model="serviceCategory.name" placeholder="收费服务名字" ></el-input>
+        <el-form-item label="收费服务"  prop="name">
+          <el-input v-model="serviceCategory.name" placeholder="收费服务" ></el-input>
         </el-form-item>
-        <el-form-item label="费用" prop="username">
-          <el-input type="number" v-model="serviceCategory.cost" placeholder="费用" ></el-input>
+        <el-form-item label="费用" prop="price">
+          <el-input type="number" v-model="serviceCategory.price" placeholder="费用" ></el-input>
         </el-form-item>
-        <el-form-item label="服务欠费" prop="username">
-          <el-input type="number" v-model="serviceCategory.arrearage" placeholder="服务欠费" ></el-input>
+        <el-form-item label="服务类型" prop="priceType">
+          <el-input type="number" v-model="serviceCategory.priceType | codeFilter" placeholder="服务类型" ></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="username">
-          <el-input v-model="serviceCategory.description" placeholder="描述" ></el-input>
+        <el-form-item label="类型" prop="code">
+          <el-input v-model="serviceCategory.code" placeholder="类型" ></el-input>
         </el-form-item>
-        <el-form-item label="排序(升)" prop="username">
-          <el-input-number style="width:100%;"v-model="serviceCategory.sort"></el-input-number>
+        <el-form-item label="描述" prop="remark">
+          <el-input v-model="serviceCategory.remark" placeholder="描述" ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -104,7 +104,6 @@
           page: 1,
           limit: 20
         },
-        rules: {},
         serviceCategory: {},
         dialogFormVisible: false,
         dialogStatus: '',
@@ -116,7 +115,7 @@
           update: '编辑',
           create: '创建'
         },
-        tableKey: 0
+        rules: {}
       }
     },
     computed: {
@@ -126,10 +125,12 @@
       ])
     },
     filters: {
-      statusFilter(status) {
+      codeFilter(status) {
         const statusMap = {
-          0: '有效',
-          1: '无效'
+          '001': '代收费',
+          '002': '培训费',
+          '003': '服务包',
+          '004': '活动'
         }
         return statusMap[status]
       }
@@ -161,16 +162,10 @@
       },
       handleDelete(row) {
         console.log(row)
-        delFinance(row.serviceCategoryId)
+        delFinance(row.categoryId)
           .then(() => {
             this.dialogFormVisible = false
             this.getList()
-            this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
-              duration: 2000
-            })
           })
       },
       createClick() {
@@ -179,11 +174,6 @@
         this.dialogFormVisible = true
       },
       handleUpdate(val) {
-        this.serviceCategory.name = val.label
-        this.serviceCategory.cost = JSON.parse(val.value).cost
-        this.serviceCategory.arrearage = JSON.parse(val.value).arrearage
-        console.log('==========================')
-        console.log(val)
         this.serviceCategory = val
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
@@ -196,12 +186,6 @@
               .then(() => {
                 this.dialogFormVisible = false
                 this.getList()
-                this.$notify({
-                  title: '成功',
-                  message: '创建成功',
-                  type: 'success',
-                  duration: 2000
-                })
               })
           } else {
             return false
@@ -210,8 +194,6 @@
       },
       cancel(formName) {
         this.dialogFormVisible = false
-        this.serviceCategory = {}
-        this.serviceCategory = {}
         const set = this.$refs
         set[formName].resetFields()
       },
@@ -219,17 +201,9 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.serviceCategory.label = this.serviceCategory.name
-            this.serviceCategory.value = JSON.stringify(this.serviceCategory)
             putFinance(this.serviceCategory).then(() => {
               this.dialogFormVisible = false
               this.getList()
-              this.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success',
-                duration: 2000
-              })
             })
           } else {
             return false

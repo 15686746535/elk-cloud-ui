@@ -76,6 +76,7 @@
                          :headers="headers"
                          style="float:right;"
                          :on-success="handleTextSuccess"
+                         accept=".xls,.xlsx"
                          :on-error="handleTextError"
                          :show-file-list="false"
                          :before-upload="beforeTextUpload">
@@ -263,16 +264,17 @@
         this.getList()
       },
       beforeTextUpload(file) {
-        const isXls = (file.type === 'application/vnd.ms-excel') || (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-
-        if (!isXls) {
-          this.$message.error('只能上传Excel文件！')
-        }
-
-        return isXls
+        this.$store.dispatch('setLoading', true)
+        return true
       },
       handleTextSuccess(res, file) {
-        this.$message.success('上传成功')
+        this.$store.dispatch('setLoading', false)
+        if (res.code === 0) {
+          this.$message.success(res.msg)
+          this.getList()
+        } else {
+          this.$message.error(res.msg)
+        }
       },
       handleTextError(err, file, fileList) {
         this.$message.error('上传失败')

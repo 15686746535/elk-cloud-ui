@@ -1,5 +1,5 @@
 <template>
-  <div id="app" @click="app($event)">
+  <div id="app" @click="appClack($event)">
     <router-view></router-view>
     <!--加载框-->
     <div v-loading.fullscreen.lock="$store.state.app.loading"
@@ -22,7 +22,7 @@ export default {
     }
   },
   methods: {
-    app(e) {
+    appClack(e) {
       this.$store.dispatch('setSpread', e.target.classList.contains('spread-true'))
     },
     setClientSize() {

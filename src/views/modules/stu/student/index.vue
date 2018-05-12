@@ -188,6 +188,7 @@
                            :on-success="handleTextSuccess"
                            accept=".xls,.xlsx"
                            :on-error="handleAvatarError"
+                           :before-upload="beforeTextUpload"
                            :show-file-list="false">
                   <el-button size="small"><i class="el-icon-upload2"></i>导入</el-button>
                 </el-upload>
@@ -1634,16 +1635,11 @@
         }
       },
       beforeTextUpload(file) {
-        console.log(file)
-        const isXls = file.type === 'application/vnd.ms-excel'
-
-        if (!isXls) {
-          this.$message.error('只能上传Excel文件！')
-        }
-
-        return isXls
+        this.$store.dispatch('setLoading', true)
+        return true
       },
       handleTextSuccess(res, file) {
+        this.$store.dispatch('setLoading', false)
         if (res.code === 0) {
           this.$message.success(res.msg)
           this.getList()

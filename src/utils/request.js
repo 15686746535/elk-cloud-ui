@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '../store'
-import { getToken } from '@/utils/auth'
+import { getToken, setToken } from '@/utils/auth'
 // 调试模式 抛出异常到控制台
 
 // 创建axios实例
@@ -26,11 +26,17 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     const res = response.data
+    console.log('response---------------')
+    console.log(res)
     if (res.code === 500) {
       Message.error(res.msg)
     }
     // 网关异常统一拦截
-    if (res.status === 500) {
+    if (res.code === 500) {
+      Message.error(res.message)
+    }
+    if (res.code === 107) {
+      setToken(null)
       Message.error(res.message)
     }
     if (res.code === 0 && res.msg !== 'success') {
@@ -46,17 +52,22 @@ service.interceptors.response.use(
     if (res.status === 478 || res.status === 403) {
       Message.error('您没有权限！')
     } else if (res.status === 400) {
-      Message.error('服务器异常!')
+      if (res.data) {
+        Message.error(res.data.error_description)
+      } else {
+        Message.error('异常请求')
+      }
     } else if (res.status === 404) {
       Message.warning('数据丢失!')
     } else if (res.status === 401) {
       Message.warning('登录过期!')
+    } else if (res.status === 503) {
+      Message.warning('服务异常!')
+      console.log('服务异常:' + res.data)
     } else {
       Message.error(res.msg)
     }
     store.dispatch('setLoading', false)
-
-    // if (debug) return Promise.reject(error)
   }
 )
 

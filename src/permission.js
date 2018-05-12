@@ -8,7 +8,6 @@ const whiteList = ['/login'] // 不重定向白名单
 
 router.beforeEach((to, from, next) => { // 开启Progress
   NProgress.start()
-  console.log(getToken())
   if (getToken()) { // 判断是否有token
     if (to.path === '/login') {
       next({ path: '/' })
@@ -53,6 +52,5 @@ export function getInfo(to, from, next) {
 }
 
 router.afterEach(() => {
-  console.log('=================afterEach==========')
   NProgress.done() // 结束Progress
 })

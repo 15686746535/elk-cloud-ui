@@ -24,8 +24,9 @@ function hasPermission(menuIds, route) {
 function filterAsyncRouter(routerMap, data) {
   const menuIds = data.menuIds
   const roles = data.roles
+  console.log(data)
   // admin 拥有全部
-  if (!roles.indexOf('admins') >= 0) {
+  if (roles && roles.indexOf('admins') === -1) {
     filterRouter(routerMap, menuIds)
   }
   return routerMap
@@ -58,7 +59,7 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+        console.log(data)
         commit('SET_ROUTERS', filterAsyncRouter(asyncRouterMap, data))
         resolve()
       })

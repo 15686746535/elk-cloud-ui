@@ -7,7 +7,7 @@
         <el-tooltip effect="dark" content="点击查看更多功能" placement="bottom">
           <div class="avatar-wrapper">
             <el-badge :value="notice" :max="99" class="item" style="height: 40px;">
-              <img class="user-avatar" :src="avatar + '?imageView2/1/w/80/h/80'">
+              <img class="user-avatar" :src="avatar">
             </el-badge>
             <!--<i class="el-icon-caret-bottom"></i>-->
           </div>

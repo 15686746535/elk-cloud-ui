@@ -1,22 +1,22 @@
 <template>
   <div class="menu-wrapper">
-    <template v-for="item in routes" v-if="!item.hidden&&item.children">
-
-      <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children && item.menuId !== 0" :to="item.path+'/'+item.children[0].path"
+    <template v-for="item in routes" >
+      <!--v-if="!item.hidden&&item.children"-->
+      <router-link v-if="hasOneChildren(item.children) && item.menuId !== 0" :to="item.path+'/'+item.children[0].path"
                    :key="item.children[0].name">
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
           <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
-          <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{item.meta.title}}</span>
+          <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{item.children[0].meta.title}}</span>
         </el-menu-item>
       </router-link>
 
-      <el-submenu v-else :index="item.name||item.path" v-show="item.alwaysShow" :key="item.name">
+      <el-submenu v-if="hasChildren(item.children) && item.menuId !== 0" :index="item.name||item.path" :key="item.name">
         <template slot="title">
           <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
           <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
         </template>
 
-        <template  v-for="child in item.children" v-if="!child.hidden && child.alwaysShow">
+        <template  v-for="child in item.children">
           <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>
 
           <router-link v-else :to="item.path+'/'+child.path" :key="child.name">
@@ -35,26 +35,26 @@
 <script>
   export default {
     name: 'SidebarItem',
-    props: {
-      routes: {
-        type: Array
-      },
-      isNest: {
-        type: Boolean,
-        default: false
-      }
-    },
+    props: ['routes', 'isNest'],
     computed: {
     },
     methods: {
-      hasOneShowingChildren(children) {
+      hasOneChildren(children) {
+        children = this.childrenFilter(children)
+        return children && children.length === 1
+      },
+      hasChildren(children) {
+        children = this.childrenFilter(children)
+        return children && children.length > 1
+      },
+      childrenFilter(children) {
         const showingChildren = children.filter(item => {
-          return !item.hidden
+          if (item.children) {
+            item.children = this.childrenFilter(item.children)
+          }
+          return item.isShow
         })
-        if (showingChildren.length === 1) {
-          return true
-        }
-        return false
+        return showingChildren
       }
     }
   }

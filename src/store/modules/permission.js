@@ -17,36 +17,31 @@ function hasPermission(menuIds, route) {
 }
 
 /**
- * 过滤异步路由表，返回符合用户角色权限的路由表 第一级
+ * 过滤过滤 admins 角色
  * @param asyncRouterMap
  * @param roles
  */
-function filterAsyncRouter(routerMap, menuIds) {
-  routerMap.forEach(route => {
-    if (route.children && route.children.length) {
-      route.children = filterRouter(route.children, menuIds)
-    }
-    if (!route.children || !route.children.length) {
-      route.alwaysShow = false
-    }
-  })
+function filterAsyncRouter(routerMap, data) {
+  const menuIds = data.menuIds
+  const roles = data.roles
+  // admin 拥有全部
+  if (!roles.indexOf('admins') >= 0) {
+    filterRouter(routerMap, menuIds)
+  }
+  return routerMap
 }
 /**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表 下级
+ * 递归过滤异步路由表，返回符合用户角色权限的路由表
  * @param asyncRouterMap
  * @param roles
  */
 function filterRouter(routerMap, menuIds) {
-  const accessedRouters = routerMap.filter(route => {
-    if (hasPermission(menuIds, route)) {
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, menuIds)
-      }
-      return true
+  routerMap.forEach(function(route) {
+    route.isShow = hasPermission(menuIds, route)
+    if (route.children) {
+      filterRouter(route.children, menuIds)
     }
-    return false
   })
-  return accessedRouters
 }
 
 const permission = {
@@ -63,12 +58,8 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const { menuIds, roles } = data
-        const accessedRouters = asyncRouterMap
-        if (!roles.indexOf('admins') >= 0) {
-          filterAsyncRouter(asyncRouterMap, menuIds)
-        }
-        commit('SET_ROUTERS', accessedRouters)
+        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+        commit('SET_ROUTERS', filterAsyncRouter(asyncRouterMap, data))
         resolve()
       })
     }

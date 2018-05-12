@@ -90,7 +90,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj } from '@/api/finance/resitfee'
+  import { getFinanceList, getFinance } from '@/api/finance/resitfee'
 
   import { removeAllSpace } from '@/utils/validate'
 
@@ -115,7 +115,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        getFinanceList(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -134,7 +134,7 @@
         this.showModule = 'info'
       },
       update(row) {
-        getObj(row.roleId)
+        getFinance(row.roleId)
           .then(response => {
             this.resitfee = response.data
             this.showModule = 'info'

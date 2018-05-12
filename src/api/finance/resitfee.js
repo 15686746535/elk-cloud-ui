@@ -1,38 +1,38 @@
 import request from '@/utils/request'
 // 查询集合
-export function fetchList(query) {
+export function getFinanceList(query) {
   return request({
-    url: '/finance/resitfee/getPage',
+    url: '/finance/service/note/getPage',
     method: 'get',
     params: query
   })
 }
 // 添加
-export function addObj(obj) {
+export function addFinance(obj) {
   return request({
-    url: '/finance/resitfee',
+    url: '/finance/service/note',
     method: 'post',
     data: obj
   })
 }
 // 根据ID获取
-export function getObj(id) {
+export function getFinance(id) {
   return request({
-    url: '/finance/resitfee/' + id,
+    url: '/finance/service/note/' + id,
     method: 'get'
   })
 }
 // 删除
-export function delObj(id) {
+export function delFinance(id) {
   return request({
-    url: '/finance/resitfee/' + id,
+    url: '/finance/service/note/' + id,
     method: 'delete'
   })
 }
 // 更新
-export function putObj(obj) {
+export function putFinance(obj) {
   return request({
-    url: '/finance/resitfee',
+    url: '/finance/service/note',
     method: 'put',
     data: obj
   })

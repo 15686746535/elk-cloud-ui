@@ -1,39 +1,37 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card style="margin-bottom: 5px;height: 80px">
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加
-      </el-button>
-    </el-card>
+    <!--<el-card style="margin-bottom: 5px;height: 80px">-->
+      <!--<el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加-->
+      <!--</el-button>-->
+    <!--</el-card>-->
     <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
       <el-table :key='tableKey' :data="list" v-loading="listLoading"  :height="$store.state.app.client.height-205"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
       </el-table-column>
-      <el-table-column align="center"  label="服务类别名字">
+      <el-table-column align="center" label="收费服务">
         <template slot-scope="scope">
-          <span>{{ scope.row.label }}</span>
+          <span>{{ scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="费用">
+      <el-table-column align="center" label="价格">
         <template slot-scope="scope">
-          <span>{{ scope.row.value | parseJson('cost')}}</span>
+          <span>{{ scope.row.price}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="服务欠费">
+      <el-table-column align="center"  label="服务类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.value | parseJson('arrearage')}}</span>
+          <span>{{ scope.row.priceType}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="排序">
+      <el-table-column align="center" label="描述">
         <template slot-scope="scope">
-          <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
-          </el-popover>
-          <span v-popover:popover>{{ scope.row.sort }}</span>
+          <span>{{ scope.row.remark }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间">
@@ -43,10 +41,10 @@
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button v-if="sys_dict_upd" size="small" type="success"
+          <el-button v-if="update_menu" size="small" type="success"
                      @click="handleUpdate(scope.row)">编辑
           </el-button>
-          <el-button v-if="sys_dict_del" size="mini" type="danger"
+          <el-button v-if="del_menu" size="mini" type="danger"
                      @click="handleDelete(scope.row)">删除
           </el-button>
         </template>
@@ -55,48 +53,47 @@
     <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page.sync="listQuery.page" background
+                     style="float: left"
                      :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
+      <el-button v-if="add_menu" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
     </div>
     </el-card>
     <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
-      <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
-        <el-form-item label="服务类别名字"  prop="username">
-          <el-input v-model="serviceType.name" placeholder="服务类别名字" ></el-input>
+      <el-form label-position="left" :model="serviceCategory" :rules="rules" ref="serviceCategory" label-width="100px">
+        <el-form-item label="收费服务名字"  prop="username">
+          <el-input v-model="serviceCategory.name" placeholder="收费服务名字" ></el-input>
         </el-form-item>
         <el-form-item label="费用" prop="username">
-          <el-input type="number" v-model="serviceType.cost" placeholder="费用" ></el-input>
+          <el-input type="number" v-model="serviceCategory.cost" placeholder="费用" ></el-input>
         </el-form-item>
         <el-form-item label="服务欠费" prop="username">
-          <el-input type="number" v-model="serviceType.arrearage" placeholder="服务欠费" ></el-input>
+          <el-input type="number" v-model="serviceCategory.arrearage" placeholder="服务欠费" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="username">
-          <el-input v-model="dict.description" placeholder="描述" ></el-input>
+          <el-input v-model="serviceCategory.description" placeholder="描述" ></el-input>
         </el-form-item>
         <el-form-item label="排序(升)" prop="username">
-          <el-popover ref="popover" placement="right" title="提示" width="200" trigger="hover" content="依据数字大小排序，数字越大排名越后">
-          </el-popover>
-          <el-input-number style="width:100%;"v-model="dict.sort" v-popover:popover controls-position="right" :min="1"></el-input-number>
+          <el-input-number style="width:100%;"v-model="serviceCategory.sort"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel('dict')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('dict')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('dict')">修 改</el-button>
+        <el-button @click="cancel('serviceCategory')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('serviceCategory')">确 定</el-button>
+        <el-button v-else type="primary" @click="update('serviceCategory')">修 改</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { fetchList, addObj, putObj, delObj } from '@/api/basis/dict'
-
+  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/resitfee'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'table_sys_dict',
+    name: 'finance_service_category',
     data() {
       return {
         list: [],
@@ -105,17 +102,16 @@
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 20,
-          type: 'dict_service_type'
+          limit: 20
         },
         rules: {},
-        dict: {},
-        serviceType: {},
+        serviceCategory: {},
         dialogFormVisible: false,
         dialogStatus: '',
-        sys_dict_add: false,
-        sys_dict_upd: false,
-        sys_dict_del: false,
+        /* 按钮权限 */
+        add_menu: false,
+        update_menu: false,
+        del_menu: false,
         textMap: {
           update: '编辑',
           create: '创建'
@@ -140,16 +136,14 @@
     },
     created() {
       this.getList()
-      this.sys_dict_add = this.permissions['basis_dict_add']
-      this.sys_dict_upd = this.permissions['basis_dict_update']
-      this.sys_dict_del = this.permissions['basis_dict_del']
+      this.add_menu = this.permissions['finance_service-category_add']
+      this.update_menu = this.permissions['finance_service_category_update']
+      this.del_menu = this.permissions['finance_service_category_del']
     },
     methods: {
       getList() {
         this.listLoading = true
-        this.listQuery.orderByField = 'create_time'
-        this.listQuery.isAsc = false
-        fetchList(this.listQuery).then(response => {
+        getFinanceList(this.listQuery).then(response => {
           console.log('===========================')
           console.log(response.data)
           this.list = response.data.data.list
@@ -167,8 +161,8 @@
       },
       handleDelete(row) {
         console.log(row)
-        delObj(row.dictId)
-          .then(response => {
+        delFinance(row.serviceCategoryId)
+          .then(() => {
             this.dialogFormVisible = false
             this.getList()
             this.$notify({
@@ -180,17 +174,17 @@
           })
       },
       createClick() {
-        this.dict = {}
+        this.serviceCategory = {}
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
       },
       handleUpdate(val) {
-        this.serviceType.name = val.label
-        this.serviceType.cost = JSON.parse(val.value).cost
-        this.serviceType.arrearage = JSON.parse(val.value).arrearage
+        this.serviceCategory.name = val.label
+        this.serviceCategory.cost = JSON.parse(val.value).cost
+        this.serviceCategory.arrearage = JSON.parse(val.value).arrearage
         console.log('==========================')
         console.log(val)
-        this.dict = val
+        this.serviceCategory = val
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
       },
@@ -198,10 +192,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.serviceType.name
-            this.dict.value = JSON.stringify(this.serviceType)
-            this.dict.type = this.listQuery.type
-            addObj(this.dict)
+            addFinance(this.serviceCategory)
               .then(() => {
                 this.dialogFormVisible = false
                 this.getList()
@@ -219,8 +210,8 @@
       },
       cancel(formName) {
         this.dialogFormVisible = false
-        this.dict = {}
-        this.serviceType = {}
+        this.serviceCategory = {}
+        this.serviceCategory = {}
         const set = this.$refs
         set[formName].resetFields()
       },
@@ -228,9 +219,9 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            this.dict.label = this.serviceType.name
-            this.dict.value = JSON.stringify(this.serviceType)
-            putObj(this.dict).then(() => {
+            this.serviceCategory.label = this.serviceCategory.name
+            this.serviceCategory.value = JSON.stringify(this.serviceCategory)
+            putFinance(this.serviceCategory).then(() => {
               this.dialogFormVisible = false
               this.getList()
               this.$notify({

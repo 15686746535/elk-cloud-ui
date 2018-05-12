@@ -128,7 +128,7 @@
                 <template slot-scope="scope">
                   <el-col style=" line-height: 25px">
                     <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">服务类别:</el-col>
+                      <el-col :span="7" class="table_text">收费服务:</el-col>
                       <el-col :span="17" class="table_text">{{scope.row.serviceType}}</el-col>
                     </el-row>
 

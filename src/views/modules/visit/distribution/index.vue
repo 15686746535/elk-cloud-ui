@@ -71,8 +71,17 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
             <div style="float: right;">
-              <el-button size="small" type="primary">上 传</el-button>
-              <el-button size="small" @click="distribution" type="success" icon="plus">分 配</el-button>
+              <el-button size="small" style="float:right;margin: 0 5px" @click="distribution" type="primary"><i class="el-icon-refresh"></i>分配</el-button>
+              <el-upload class="upload-demo" action="/visit/intention/import"
+                         :headers="headers"
+                         style="float:right;"
+                         :on-success="handleTextSuccess"
+                         :on-error="handleTextError"
+                         :show-file-list="false"
+                         :before-upload="beforeTextUpload">
+                <el-button size="small"><i class="el-icon-upload2"></i>导入</el-button>
+              </el-upload>
+
             </div>
           </div>
 
@@ -104,6 +113,7 @@
   import { userList } from '@/api/upms/user'
   import { removeAllSpace } from '@/utils/validate'
   import { fetchList, putIntention } from '@/api/visit/intention'
+  import { getToken } from '@/utils/auth'
 
   export default {
     name: 'table_intention',
@@ -151,6 +161,11 @@
           0: '女'
         }
         return typeMap[this.student.sex]
+      },
+      headers() {
+        return {
+          'Authorization': 'Bearer ' + getToken()
+        }
       }
     },
     methods: {
@@ -246,6 +261,21 @@
       handleCurrentChange(val) {
         this.listQuery.page = val
         this.getList()
+      },
+      beforeTextUpload(file) {
+        const isXls = (file.type === 'application/vnd.ms-excel') || (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+        if (!isXls) {
+          this.$message.error('只能上传Excel文件！')
+        }
+
+        return isXls
+      },
+      handleTextSuccess(res, file) {
+        this.$message.success('上传成功')
+      },
+      handleTextError(err, file, fileList) {
+        this.$message.error('上传失败')
       }
     }
   }

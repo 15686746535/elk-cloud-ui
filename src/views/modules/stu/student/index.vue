@@ -180,16 +180,19 @@
                                :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                                layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
+
+                <el-button @click="create" style="float:right;margin: 0 5px" size="small" type="primary"><i class="el-icon-plus"></i>添加</el-button>
                 <el-upload class="upload-demo" action="/stu/student/import"
                            :headers="headers"
+                           style="float:right;"
                            :on-success="handleTextSuccess"
                            :on-error="handleTextError"
                            :show-file-list="false"
                            :before-upload="beforeTextUpload">
-                  <el-button size="small" type="primary">点击上传</el-button>
+                  <el-button size="small"><i class="el-icon-upload2"></i>导入</el-button>
                 </el-upload>
 
-                <el-button style="float:right;" @click="create"  size="small" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+
               </div>
             </el-card>
         </el-col>

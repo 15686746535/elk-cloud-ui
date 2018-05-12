@@ -186,9 +186,9 @@
                            :headers="headers"
                            style="float:right;"
                            :on-success="handleTextSuccess"
-                           :on-error="handleTextError"
-                           :show-file-list="false"
-                           :before-upload="beforeTextUpload">
+                           accept=".xls,.xlsx"
+                           :on-error="handleAvatarError"
+                           :show-file-list="false">
                   <el-button size="small"><i class="el-icon-upload2"></i>导入</el-button>
                 </el-upload>
 
@@ -1601,6 +1601,7 @@
         this.student.avatar = res.data
       },
       handleAvatarError(err, file, fileList) {
+        console.log(err)
         this.$message.error('上传失败')
       },
       beforeAvatarUpload(file) {
@@ -1633,6 +1634,7 @@
         }
       },
       beforeTextUpload(file) {
+        console.log(file)
         const isXls = file.type === 'application/vnd.ms-excel'
 
         if (!isXls) {
@@ -1642,10 +1644,12 @@
         return isXls
       },
       handleTextSuccess(res, file) {
-        this.$message.success('上传成功')
-      },
-      handleTextError(err, file, fileList) {
-        this.$message.error('上传失败')
+        if (res.code === 0) {
+          this.$message.success(res.msg)
+          this.getList()
+        } else {
+          this.$message.error(res.msg)
+        }
       },
       reset(formName) {
         this.$refs[formName].resetFields()

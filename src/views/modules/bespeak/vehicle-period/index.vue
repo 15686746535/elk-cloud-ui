@@ -354,39 +354,39 @@
         },
         vehiclePeriodRules: {
           coachId: [
-            { required: true, message: '请选择教练', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择教练', trigger: ['blur'] }
           ],
           count: [
-            { required: true, message: '请输入上限', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入上限', trigger: ['blur'] }
           ],
           fieldAddress: [
-            { required: true, message: '请选择场地', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择场地', trigger: ['blur'] }
           ],
           beginTime: [
-            { required: true, message: '请选择开始时间', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择开始时间', trigger: ['blur'] }
           ],
           endTime: [
-            { required: true, message: '请选择结束时间', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择结束时间', trigger: ['blur'] }
           ],
           dateList: [
-            { required: true, message: '请选择培训日期', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择培训日期', trigger: ['blur'] }
           ],
           vehicleList: [
-            { required: true, message: '请选择培训车辆', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择培训车辆', trigger: ['blur'] }
           ]
         },
         carPeriodRules: {
           coachId: [
-            { required: true, message: '请选择教练', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择教练', trigger: ['blur'] }
           ],
           count: [
-            { required: true, message: '请输入上限', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入上限', trigger: ['blur'] }
           ],
           fieldAddress: [
-            { required: true, message: '请选择场地', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择场地', trigger: ['blur'] }
           ],
           vehicleId: [
-            { required: true, message: '请选择培训车辆', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择培训车辆', trigger: ['blur'] }
           ]
         }
       }

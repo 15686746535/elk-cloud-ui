@@ -91,13 +91,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写车型', trigger: ['blur', 'change'] }
+            { required: true, message: '请填写车型', trigger: ['blur'] }
           ],
           description: [
-            { required: true, message: '请填写车型描述', trigger: ['blur', 'change'] }
+            { required: true, message: '请填写车型描述', trigger: ['blur'] }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写车型排序等级', trigger: ['blur', 'change'] }
+            { required: true, type: 'number', message: '请填写车型排序等级', trigger: ['blur'] }
           ]
         },
         dict: {},

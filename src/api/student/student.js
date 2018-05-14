@@ -30,6 +30,13 @@ export function getStudent(id) {
     method: 'get'
   })
 }
+// 判断身份证或者手机是否已结存在
+export function isExistence(condition) {
+  return request({
+    url: '/stu/student/isExistence/' + condition,
+    method: 'get'
+  })
+}
 // 删除
 export function delStudent(id) {
   return request({

@@ -78,21 +78,21 @@
             {
               required: true,
               message: '父级部门',
-              trigger: ['blur', 'change']
+              trigger: ['blur']
             }
           ],
           sort: [
             {
               required: true,
               message: '排序',
-              trigger: ['blur', 'change']
+              trigger: ['blur']
             }
           ],
           orgName: [
             {
               required: true,
               message: '部门名称',
-              trigger: ['blur', 'change']
+              trigger: ['blur']
             }
           ],
           remark: [

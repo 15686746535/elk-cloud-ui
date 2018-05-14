@@ -148,13 +148,13 @@
             {
               required: true,
               message: '角色名称',
-              trigger: ['blur', 'change']
+              trigger: ['blur']
             },
             {
               min: 1,
               max: 20,
               message: '长度在 3 到 20 个字符',
-              trigger: ['blur', 'change']
+              trigger: ['blur']
             }
           ]
         },

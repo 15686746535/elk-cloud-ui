@@ -93,13 +93,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写校区名字', trigger: ['blur', 'change'] }
+            { required: true, message: '请填写校区名字', trigger: ['blur'] }
           ],
           description: [
-            { required: true, message: '请填写校区描述', trigger: ['blur', 'change'] }
+            { required: true, message: '请填写校区描述', trigger: ['blur'] }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写校区排序等级', trigger: ['blur', 'change'] }
+            { required: true, type: 'number', message: '请填写校区排序等级', trigger: ['blur'] }
           ]
         },
         dict: {},

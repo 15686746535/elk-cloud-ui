@@ -147,6 +147,7 @@ export const asyncRouterMap = [
     },
     children: [
       { menuId: 60100, path: 'user', component: _import('modules/upms/user/index'), name: '同事信息', isShow: true, meta: { title: '同事信息', icon: 'menu' }},
+      { menuId: 60100, path: 'quitUser', component: _import('modules/upms/quitUser/index'), name: '离职同事', isShow: true, meta: { title: '离职同事', icon: 'menu' }},
       { menuId: 60200, path: 'org', component: _import('modules/upms/org/index'), name: '部门设置', isShow: true, meta: { title: '部门设置', icon: 'menu' }},
       { menuId: 60300, path: 'role', component: _import('modules/upms/role/index'), name: '职位设置', isShow: true, meta: { title: '职位设置', icon: 'menu' }}
     ]

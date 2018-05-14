@@ -988,40 +988,40 @@
         },
         vehicleEntityRules: {
           number: [
-            { required: true, message: '请输入自编号', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入自编号', trigger: ['blur'] }
           ],
           plateNumber: [
-            { required: true, message: '请输入车牌', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入车牌', trigger: ['blur'] }
           ],
           engineNo: [
-            { required: true, message: '请输入发动机号', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入发动机号', trigger: ['blur'] }
           ],
           factoryTime: [
-            { required: true, message: '请输入出厂日期', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入出厂日期', trigger: ['blur'] }
           ],
           allowNumber: [
-            { required: true, message: '请输入核定载客人', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入核定载客人', trigger: ['blur'] }
           ],
           affiliation: [
-            { required: true, message: '请输入所属机构', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入所属机构', trigger: ['blur'] }
           ],
           registerTime: [
-            { required: true, message: '请输入注册登记日期', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入注册登记日期', trigger: ['blur'] }
           ],
           vehicleType: [
-            { required: true, message: '请输入车辆类别', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入车辆类别', trigger: ['blur'] }
           ],
           vehicleState: [
-            { required: true, message: '请输入车辆来源', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入车辆来源', trigger: ['blur'] }
           ],
           userId: [
-            { required: true, message: '请输入使用责任人', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入使用责任人', trigger: ['blur'] }
           ],
           vinNo: [
-            { required: true, message: '请输入车架号', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入车架号', trigger: ['blur'] }
           ],
           plateColor: [
-            { required: true, message: '请输入车牌颜色', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入车牌颜色', trigger: ['blur'] }
           ]
         },
         certificateEntityRules: {},
@@ -1102,24 +1102,24 @@
         ],
         repairRules: {
           description: [
-            { required: true, message: '请填写维修内容', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写维修内容', trigger: ['blur'] },
           ],
           repairTime: [
-            { required: true, message: '请选择维修时间', trigger: ['blur', 'change'] },
+            { required: true, message: '请选择维修时间', trigger: ['blur'] },
           ],
           cost: [
-            { required: true, message: '请填写维修费用', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写维修费用', trigger: ['blur'] },
           ]
         },
         maintainRules: {
           description: [
-            { required: true, message: '请填写保养内容', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写保养内容', trigger: ['blur'] },
           ],
           maintainTime: [
-            { required: true, message: '请选择保养时间', trigger: ['blur', 'change'] },
+            { required: true, message: '请选择保养时间', trigger: ['blur'] },
           ],
           cost: [
-            { required: true, message: '请填写保养费用', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写保养费用', trigger: ['blur'] },
           ]
         }
       }

@@ -18,18 +18,18 @@
           <span>{{ scope.row.price}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="服务类型">
+      <el-table-column align="center"  label="收费类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.priceType}}</span>
+          <span>{{ scope.row.priceType | priceTypeFilter}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="类型">
+      <el-table-column align="center" label="服务类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
+          <span>{{ scope.row.code | codeFilter}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="收费服务描述">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
@@ -65,17 +65,25 @@
         <el-form-item label="收费服务"  prop="name">
           <el-input v-model="serviceCategory.name" placeholder="收费服务" ></el-input>
         </el-form-item>
-        <el-form-item label="费用" prop="price">
-          <el-input type="number" v-model="serviceCategory.price" placeholder="费用" ></el-input>
+        <el-form-item label="价格" prop="price">
+          <el-input type="number" v-model.number="serviceCategory.price" placeholder="价格" ></el-input>
         </el-form-item>
-        <el-form-item label="服务类型" prop="priceType">
-          <el-input type="number" v-model="serviceCategory.priceType | codeFilter" placeholder="服务类型" ></el-input>
+        <el-form-item label="收费类型" prop="priceType">
+          <el-radio v-model="serviceCategory.priceType" label="0">一次性收费</el-radio>
+          <el-radio v-model="serviceCategory.priceType" label="1">可重复收费</el-radio>
         </el-form-item>
-        <el-form-item label="类型" prop="code">
-          <el-input v-model="serviceCategory.code" placeholder="类型" ></el-input>
+        <el-form-item label="服务类型" prop="code">
+          <el-select v-model="serviceCategory.code" style="width: 100%" placeholder="请选择服务类型">
+            <el-option
+              v-for="item in codes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="描述" prop="remark">
-          <el-input v-model="serviceCategory.remark" placeholder="描述" ></el-input>
+        <el-form-item label="收费服务描述" prop="remark">
+          <el-input v-model="serviceCategory.remark" placeholder="收费服务描述" ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -115,7 +123,36 @@
           update: '编辑',
           create: '创建'
         },
-        rules: {}
+        codes: [
+          {
+            value: '001',
+            label: '代收费'
+          }, {
+            value: '002',
+            label: '培训费'
+          },
+          {
+            value: '003',
+            label: '服务包'
+          }, {
+            value: '004',
+            label: '活动'
+          }
+        ],
+        rules: {
+          name: [
+            { required: true, message: '请输入收费服务名字', trigger: ['blur'] }
+          ],
+          price: [
+            { required: true, message: '请输入价格', trigger: ['blur'] }
+          ],
+          priceType: [
+            { required: true, message: '请选择收费类型', trigger: ['blur'] }
+          ],
+          code: [
+            { required: true, message: '请选择服务类型', trigger: ['blur'] }
+          ]
+        }
       }
     },
     computed: {
@@ -131,6 +168,13 @@
           '002': '培训费',
           '003': '服务包',
           '004': '活动'
+        }
+        return statusMap[status]
+      },
+      priceTypeFilter(status) {
+        const statusMap = {
+          '0': '一次性收费',
+          '1': '可重复收费'
         }
         return statusMap[status]
       }
@@ -162,11 +206,17 @@
       },
       handleDelete(row) {
         console.log(row)
-        delFinance(row.categoryId)
-          .then(() => {
-            this.dialogFormVisible = false
-            this.getList()
-          })
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delFinance(row.categoryId)
+            .then(() => {
+              this.dialogFormVisible = false
+              this.getList()
+            })
+        })
       },
       createClick() {
         this.serviceCategory = {}

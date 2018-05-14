@@ -674,7 +674,9 @@
     </el-card>
 
 
-    <div v-show="showModule=='create'"  v-loading="createLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力加载中...">
+
+
+    <div v-show="showModule=='create1'"  v-loading="createLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力加载中...">
       <el-card body-style="padding:5px 20px;" style="margin-bottom: 5px;height: 60px;line-height: 50px">
         录入详细信息
         <div style="float: right"><el-button type="primary" @click="backClick">返  回</el-button></div>
@@ -976,6 +978,241 @@
       </div>
     </el-dialog>
 
+    <el-dialog @close="backClick" title="录入详细信息" width="800px" :visible.sync="isCreate">
+      <div v-loading="createLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力加载中..." style="overflow-x: hidden;overflow-y: auto;line-height: 50px;height:575px">
+        <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="80px" size="mini" >
+          <el-row :gutter="20">
+            <el-col :span="12" >
+
+              <!-- 联系电话 -->
+              <el-row >
+                <el-form-item prop="mobile">
+                  <span slot="label" class="text_css">联系电话</span>
+                  <el-input size="mini" class="filter-item" @keyup.enter.native="matchingStudents" @blur="matchingStudents" placeholder="联系电话" :maxlength="11"  v-model.number="studentEntity.mobile"></el-input>
+                </el-form-item>
+
+              </el-row>
+
+              <!-- 身份证号 -->
+              <el-row >
+                <el-form-item prop="idNumber">
+                  <span slot="label" class="text_css">身份证号</span>
+                  <el-input size="mini" class="filter-item" placeholder="身份证号" :maxlength="18" @keyup.enter.native="AddGenerateInfo" @blur="AddGenerateInfo" v-model="studentEntity.idNumber"></el-input>
+                </el-form-item>
+              </el-row>
+
+              <!-- 档案号 -->
+              <el-row >
+                <el-form-item prop="archivesNumber">
+                  <span slot="label" class="text_css">档案号</span>
+                  <el-input size="mini" class="filter-item" placeholder="档案号" v-model="studentEntity.archivesNumber"></el-input>
+                </el-form-item>
+              </el-row>
+
+              <!-- 姓名 -->
+              <el-row >
+
+                <el-form-item prop="name">
+                  <span slot="label" class="text_css">姓名</span>
+                  <el-input size="mini" class="filter-item" placeholder="姓名" clearable v-model="studentEntity.name"></el-input>
+                </el-form-item>
+
+              </el-row>
+
+
+              <!-- 微信 -->
+              <el-row >
+                <el-form-item prop="wechat">
+                  <span slot="label"  class="text_css">微信</span>
+                  <el-input size="mini" class="filter-item" placeholder="微信" v-model="studentEntity.wechat"></el-input>
+                </el-form-item>
+              </el-row>
+
+
+              <!-- 校区 -->
+              <el-row >
+                <el-form-item prop="campus">
+                  <span slot="label"  class="text_css">校区</span>
+                  <dict size="mini" v-model="studentEntity.campus" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict>
+                </el-form-item>
+              </el-row>
+
+              <!-- 联系地址 -->
+              <el-row >
+                <el-form-item prop="contactAddress">
+                  <span slot="label"  class="text_css">联系地址</span>
+                  <el-input size="mini" class="filter-item" placeholder="联系地址" v-model="studentEntity.contactAddress"></el-input>
+                </el-form-item>
+              </el-row>
+
+
+              <!-- 入学期数 -->
+              <el-row >
+                <el-form-item prop="periods">
+                  <span slot="label"  class="text_css">入学期数</span>
+                  <el-input size="mini" class="filter-item" placeholder="入学期数" v-model="studentEntity.periods"></el-input>
+                </el-form-item>
+              </el-row>
+
+
+
+
+              <!-- 生日 -->
+              <el-row >
+                <el-form-item prop="birthday">
+                  <span slot="label" class="text_css">生日</span>
+                  <el-date-picker size="mini" value-format="timestamp"  type="date" placeholder="生日"  style="width: 100%" v-model="studentEntity.birthday"></el-date-picker>
+                </el-form-item>
+              </el-row>
+
+              <!-- 所学车型 -->
+              <el-row >
+                <el-form-item prop="motorcycleType">
+                  <span slot="label"  class="text_css">所学车型</span>
+                  <dict size="mini" v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                </el-form-item>
+              </el-row>
+
+              <!-- 来源渠道 -->
+              <el-row >
+                <el-form-item prop="source">
+                  <span slot="label" class="text_css">来源渠道</span>
+                  <dict size="mini" v-model="studentEntity.source" dictType="dict_source" style="width: 100%;"  placeholder="来源渠道"></dict>
+                </el-form-item>
+              </el-row>
+
+
+              <!-- 入学日期 -->
+              <el-row >
+                <el-form-item prop="enrolTime">
+                  <span slot="label"  class="text_css">入学日期</span>
+                  <el-date-picker size="mini" value-format="timestamp" type="date" placeholder="入学日期" style="width: 100%" v-model="studentEntity.enrolTime"></el-date-picker>
+                </el-form-item>
+              </el-row>
+
+            </el-col>
+
+            <el-col :span="12">
+
+              <el-row>
+                <el-col :span="6"> &nbsp;</el-col>
+                <el-col  :span="18">
+                  <div style="height: 150px;width: 100px;margin: 0 auto">
+                    <el-upload :disabled="!edit"  class="AddAvatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                               :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
+                      <img :src="studentEntity.avatar" class="AddAvatar">
+                    </el-upload>
+                    <!--<el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">-->
+                    <!--<img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">-->
+                    <!--<i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>-->
+                    <!--</el-upload>-->
+                  </div>
+                </el-col>
+              </el-row>
+
+
+              <!-- 性别 -->
+              <el-row >
+                <el-form-item prop="sex">
+                  <span slot="label" class="text_css">性别</span>
+                  <el-radio-group size="mini" v-model="studentEntity.sex">
+                    <el-radio label="1">男</el-radio>
+                    <el-radio label="0">女</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-row>
+
+
+              <!-- 是否体检 -->
+              <el-row >
+                <el-form-item prop="physicalExamination">
+                  <span slot="label" class="text_css">是否体检</span>
+                  <el-radio-group v-model="studentEntity.physicalExamination">
+                    <el-radio label="1">是</el-radio>
+                    <el-radio label="0">否</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-row>
+
+
+              <!-- 是否增驾 -->
+              <el-row >
+                <el-form-item prop="addDrive">
+                  <span slot="label" class="text_css">是否增驾</span>
+                  <el-radio-group v-model="studentEntity.addDrive">
+                    <el-radio label="1">是</el-radio>
+                    <el-radio label="0">否</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-row>
+
+              <!-- 是否有车 -->
+              <el-row >
+                <el-form-item prop="haveCar">
+                  <span slot="label" class="text_css">是否有车</span>
+                  <el-radio-group v-model="studentEntity.haveCar">
+                    <el-radio label="1">是</el-radio>
+                    <el-radio label="0">否</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-row>
+
+              <!-- 电子邮箱 -->
+              <el-row >
+                <el-form-item prop="email">
+                  <span slot="label"  class="text_css">电子邮箱</span>
+                  <el-input style="width: 100%;" class="filter-item" placeholder="电子邮箱" v-model="studentEntity.email"></el-input>
+                </el-form-item>
+              </el-row>
+
+
+              <!-- 所在单位 -->
+              <el-row >
+                <el-form-item prop="company">
+                  <span slot="label"  class="text_css">所在单位</span>
+                  <el-input style="width: 100%;" class="filter-item" placeholder="所在单位" v-model="studentEntity.company"></el-input>
+                </el-form-item>
+
+              </el-row>
+
+              <!-- 所属职位 -->
+              <el-row >
+                <el-form-item prop="position">
+                  <span slot="label"  class="text_css">所属职位</span>
+                  <el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="studentEntity.position"></el-input>
+                </el-form-item>
+              </el-row>
+              <!-- 报名点 -->
+              <el-row >
+                <el-form-item prop="enrolSite">
+                  <span slot="label"  class="text_css">报名点</span>
+                  <dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
+                </el-form-item>
+              </el-row>
+
+              <!-- 介绍人 -->
+              <el-row >
+                <el-form-item prop="introducerList">
+                  <span slot="label"  class="text_css">介绍人</span>
+                  <el-select v-model="studentEntity.introducerList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
+                    <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-row>
+
+
+            </el-col>
+
+          </el-row>
+        </el-form>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button plain @click="reset('studentEntity')">重  置</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="add('studentEntity')">建 档</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -986,7 +1223,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent, saveStudent, putStudent } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence } from '@/api/student/student'
   import { batchSave } from '@/api/student/exambespeak'
   import { examFetchList } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
@@ -1023,6 +1260,28 @@
         } else {
           callback(new Error('请输入正确的身份证号码'))
         }
+      }
+      var idNumberIsExistence = (rule, value, callback) => {
+        isExistence(value).then(response => {
+          console.log('=== ===')
+          console.log(response.data)
+          if (response.data.data) {
+            callback()
+          } else {
+            callback(new Error('身份证号码已存在'))
+          }
+        })
+      }
+      var mobileIsExistence = (rule, value, callback) => {
+        isExistence(value).then(response => {
+          console.log('=== ===')
+          console.log(response.data)
+          if (response.data.data) {
+            callback()
+          } else {
+            callback(new Error('电话号码已存在'))
+          }
+        })
       }
       var introducerListReg = (rule, value, callback) => {
         if (value.length > 0) {
@@ -1127,126 +1386,128 @@
         },
         studentEntityRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入手机号', trigger: ['blur'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] },
+            { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
-            { validator: idNumberReg, trigger: ['blur', 'change'] }
+            { required: true, message: '请输入身份证', trigger: ['blur'] },
+            { validator: idNumberReg, trigger: ['blur'] },
+            { validator: idNumberIsExistence, trigger: ['blur'] }
           ],
           archivesNumber: [
-            { required: true, message: '请输入档案号', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入档案号', trigger: ['blur'] }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入姓名', trigger: ['blur'] }
           ],
           wechat: [],
           campus: [
-            { required: true, message: '请输入校区地址', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入校区地址', trigger: ['blur'] }
           ],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入住址', trigger: ['blur'] }
           ],
           periods: [
-            { required: true, message: '请输入入学期数', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入入学期数', trigger: ['blur'] }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择生日', trigger: ['blur'] }
           ],
           motorcycleType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur'] }
           ],
           enrolTime: [
-            { required: true, message: '请选择入学日期', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择入学日期', trigger: ['blur'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择性别', trigger: ['blur'] }
           ],
           physicalExamination: [
-            { required: true, message: '请选择是否体检', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择是否体检', trigger: ['blur'] }
           ],
           addDrive: [
-            { required: true, message: '请选择是否增加', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择是否增加', trigger: ['blur'] }
           ],
           haveCar: [
-            { required: true, message: '请选择是否有车', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择是否有车', trigger: ['blur'] }
           ],
           email: [
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] }
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur'] }
           ],
           company: [],
           position: [],
           enrolSite: [
-            { required: true, message: '请选择报名点', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择报名点', trigger: ['blur'] }
           ],
           introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] },
-            { validator: introducerListReg, trigger: ['blur', 'change'] }
+            { required: true, message: '请选择介绍人', trigger: ['blur'] },
+            { validator: introducerListReg, trigger: ['blur'] }
           ]
         },
         studentRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入手机号', trigger: ['blur'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
-            { validator: idNumberReg, trigger: ['blur', 'change'] }
+            { required: true, message: '请输入身份证', trigger: ['blur'] },
+            { validator: idNumberReg, trigger: ['blur'] }
           ],
           archivesNumber: [
-            { required: true, message: '请输入档案号', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入档案号', trigger: ['blur'] }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入姓名', trigger: ['blur'] }
           ],
           wechat: [],
           campus: [
-            { required: true, message: '请输入校区地址', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入校区地址', trigger: ['blur'] }
           ],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入住址', trigger: ['blur'] }
           ],
           periods: [
-            { required: true, message: '请输入入学期数', trigger: ['blur', 'change'] }
+            { required: true, message: '请输入入学期数', trigger: ['blur'] }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择生日', trigger: ['blur'] }
           ],
           motorcycleType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur'] }
           ],
           enrolTime: [
-            { required: true, message: '请选择入学日期', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择入学日期', trigger: ['blur'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择性别', trigger: ['blur'] }
           ],
           physicalExamination: [
-            { required: true, message: '请选择是否体检', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择是否体检', trigger: ['blur'] }
           ],
           addDrive: [
-            { required: true, message: '请选择是否增加', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择是否增加', trigger: ['blur'] }
           ],
           haveCar: [
-            { required: true, message: '请选择是否有车', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择是否有车', trigger: ['blur'] }
           ],
           email: [
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] }
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur'] }
           ],
           company: [],
           position: [],
           enrolSite: [
-            { required: true, message: '请选择报名点', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择报名点', trigger: ['blur'] }
           ],
           introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] },
-            { validator: introducerListReg, trigger: ['blur', 'change'] }
+            { required: true, message: '请选择介绍人', trigger: ['blur'] },
+            { validator: introducerListReg, trigger: ['blur'] }
           ]
         },
         stuList: [],
@@ -1257,6 +1518,7 @@
         total: 1,
         listLoading: true,
         btnLoading: false,
+        isCreate: false,
         showModule: 'list',
         listQuery: {
           page: 1,
@@ -1348,8 +1610,8 @@
           subject: null
         },
         /* 添加加载动画 */
-        createLoading: true,
-        infoLoading: true,
+        createLoading: false,
+        infoLoading: false,
         userList: []
       }
     },
@@ -1537,7 +1799,7 @@
           createTime: null,
           updateTime: null
         }
-        this.showModule = 'create'
+        this.isCreate = true
         this.edit = true
         this.getIntroducerList()
       },
@@ -1574,7 +1836,9 @@
       backClick() {
         this.showModule = 'list'
         this.edit = false
+        this.isCreate = false
         this.$refs['student'].resetFields()
+        this.$refs['studentEntity'].resetFields()
         this.getList()
       },
       // 搜索
@@ -1754,30 +2018,33 @@
         }
       },
       matchingStudents() {
-        this.createLoading = true
-        getIntentionByMobile(this.studentEntity.mobile).then(response => {
-          console.log('======== 匹配到的值 =========')
-          console.log(response.data)
-          var flag = true
-          if (response.data.data) {
-            this.studentEntity.intentionId = response.data.data.intentionId
-            if (!this.studentEntity.name) this.studentEntity.name = response.data.data.name
-            if (!this.studentEntity.sex) this.studentEntity.sex = response.data.data.sex
-            if (!this.studentEntity.source) this.studentEntity.source = response.data.data.source
-            if (!this.studentEntity.wechat) this.studentEntity.wechat = response.data.data.wechat
-            if (!this.studentEntity.contactAddress) this.studentEntity.contactAddress = response.data.data.contactAddress
-            for (var i = 0; i < this.studentEntity.introducerList.length; i++) {
-              if (this.studentEntity.introducerList[i] === response.data.data.userId) {
-                flag = false
-                break
+        console.log(this.studentEntity.mobile)
+        if (this.studentEntity.mobile) {
+          this.createLoading = true
+          getIntentionByMobile({ 'mobile': this.studentEntity.mobile, 'state': '0' }).then(response => {
+            console.log('======== 匹配到的值 =========')
+            console.log(response.data)
+            var flag = true
+            if (response.data.data) {
+              this.studentEntity.intentionId = response.data.data.intentionId
+              if (!this.studentEntity.name) this.studentEntity.name = response.data.data.name
+              if (!this.studentEntity.sex) this.studentEntity.sex = response.data.data.sex
+              if (!this.studentEntity.source) this.studentEntity.source = response.data.data.source
+              if (!this.studentEntity.wechat) this.studentEntity.wechat = response.data.data.wechat
+              if (!this.studentEntity.contactAddress) this.studentEntity.contactAddress = response.data.data.contactAddress
+              for (var i = 0; i < this.studentEntity.introducerList.length; i++) {
+                if (this.studentEntity.introducerList[i] === response.data.data.userId) {
+                  flag = false
+                  break
+                }
               }
+              if (flag) this.studentEntity.introducerList.push(response.data.data.userId)
+              console.log(this.studentEntity.introducerList)
+              if (!this.studentEntity.motorcycleType) this.studentEntity.motorcycleType = response.data.data.applyType
             }
-            if (flag) this.studentEntity.introducerList.push(response.data.data.userId)
-            console.log(this.studentEntity.introducerList)
-            if (!this.studentEntity.motorcycleType) this.studentEntity.motorcycleType = response.data.data.applyType
-          }
-          this.createLoading = false
-        })
+            this.createLoading = false
+          })
+        }
       },
       handleBespeakCar() {
         var coachId

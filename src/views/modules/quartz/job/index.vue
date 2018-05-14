@@ -134,19 +134,19 @@
         },
         rules: {
           orgId: [
-            { required: true, message: '所属部门', trigger: ['blur', 'change'] }
+            { required: true, message: '所属部门', trigger: ['blur'] }
           ],
           name: [
-            { required: true, message: '任务名称', trigger: ['blur', 'change'] }
+            { required: true, message: '任务名称', trigger: ['blur'] }
           ],
           beanName: [
-            { required: true, message: 'bean名称', trigger: ['blur', 'change'] }
+            { required: true, message: 'bean名称', trigger: ['blur'] }
           ],
           methodName: [
-            { required: true, message: '方法名', trigger: ['blur', 'change'] }
+            { required: true, message: '方法名', trigger: ['blur'] }
           ],
           cronExpression: [
-            { required: true, message: 'cron表达式', trigger: ['blur', 'change'] }
+            { required: true, message: 'cron表达式', trigger: ['blur'] }
           ]
         },
         listQuery: {

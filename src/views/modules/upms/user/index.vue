@@ -114,7 +114,7 @@
           <el-row :gutter="5">
             <el-col :span="14">
               <el-row>
-                <el-card body-style="padding:15px 15px 0 15px;"  v-loading="infoLoading" element-loading-text="给我一点时间" shadow="hover">
+                <el-card body-style="padding:15px 15px 0 15px;"  v-loading="infoLoading" element-loading-text="୧(๑•̀⌄•́๑)૭转圈圈~" shadow="hover">
                   <el-row>
                     <el-col :span="6">
                       <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
@@ -874,7 +874,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          delObj(userId).then(() => {
+          delObj({ 'userId': userId, 'quit': '1' }).then(() => {
             this.back()
           })
         })

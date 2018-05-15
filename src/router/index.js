@@ -74,6 +74,7 @@ export const asyncRouterMap = [
     },
     children: [
       { menuId: 20100, path: 'student', component: _import('modules/stu/student/index'), name: '学员信息', isShow: true, meta: { title: '学员信息', icon: 'menu' }},
+      { menuId: 20900, path: 'service-note', component: _import('modules/stu/service-note/index'), name: '学员缴费', isShow: true, meta: { title: '学员缴费', icon: 'menu' }},
       { menuId: 20300, path: 'exam', component: _import('modules/stu/batch/index'), name: '考试安排', isShow: true, meta: { title: '考试安排', icon: 'menu' }},
       { menuId: 20400, path: 'grade', component: _import('modules/stu/grade/index'), name: '成绩登记', isShow: true, meta: { title: '成绩登记', icon: 'menu' }},
       { menuId: 20600, path: 'graduation', component: _import('modules/stu/graduation/index'), name: '毕业学员', isShow: true, meta: { title: '毕业学员', icon: 'menu' }},

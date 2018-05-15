@@ -594,12 +594,12 @@
         this.getUserList()
       },
       quit(userId) {
-        this.$confirm('是否办理员工离职?', '提示', {
+        this.$confirm('是否办理员工复职?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          delObj(userId).then(() => {
+          delObj({ 'userId': userId, 'quit': '0' }).then(() => {
             this.back()
           })
         })

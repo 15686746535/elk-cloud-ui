@@ -468,6 +468,17 @@
   export default {
     name: 'table_intention',
     data() {
+      var mobileIsExistence = (rule, value, callback) => {
+        getIntentionByMobile({ 'mobile': value, 'state': '' }).then(response => {
+          console.log('=== ===')
+          console.log(response.data)
+          if (response.data.data) {
+            callback(new Error('电话号码已存在'))
+          } else {
+            callback()
+          }
+        })
+      }
       return {
         intentionList: [],
         intention: {},
@@ -551,7 +562,8 @@
           ],
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur'] },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] }
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] },
+            { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           wechat: [
             { required: false, message: '请输入客户微信', trigger: ['blur'] }],

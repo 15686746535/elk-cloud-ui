@@ -32,16 +32,17 @@ export function getObj(id) {
 
 export function delObj(id) {
   return request({
-    url: '/upms/user/quit/' + id,
-    method: 'put'
+    url: '/upms/user/quit',
+    method: 'put',
+    data: id
   })
 }
 
-export function rePassword(id) {
+export function rePassword(userId) {
   return request({
     url: '/upms/user/initialize',
     method: 'put',
-    data: id
+    data: { 'userId': userId }
   })
 }
 

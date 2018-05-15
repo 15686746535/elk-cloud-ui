@@ -1,8 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-const url2 = 'http://192.168.1.28:8003'
-const url3 = 'http://192.168.1.74:8003'
-const url = 'http://127.0.0.1:8003'
+const url = 'http://52.83.141.137:8003'
 
 
 module.exports = {

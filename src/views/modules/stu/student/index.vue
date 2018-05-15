@@ -663,7 +663,7 @@
               </div>
               <div v-else style="float: right;">
                 <el-button type="primary" size="mini" @click="handleBespeakCar"><i class="el-icon-fa-car"></i> 约 车</el-button>
-                <el-button type="primary" size="mini" @click="handleBespeakExam"><i class="el-icon-edit"></i> 约 考</el-button>
+                <el-button type="primary" size="mini" @click="handleBespeakExam"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
               </div>
 
@@ -1262,6 +1262,8 @@
         }
       }
       var idNumberIsExistence = (rule, value, callback) => {
+        console.log('---------------- == -----------------')
+        console.log(value)
         isExistence(value).then(response => {
           console.log('=== ===')
           console.log(response.data)

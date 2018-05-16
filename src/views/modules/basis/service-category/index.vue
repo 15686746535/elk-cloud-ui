@@ -60,7 +60,7 @@
       <el-button v-if="add_menu" size="small" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
     </div>
     </el-card>
-    <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
+    <el-dialog @close="cancel('serviceCategory')" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="serviceCategory" :rules="rules" ref="serviceCategory" label-width="100px">
         <el-form-item label="收费服务"  prop="name">
           <el-input v-model="serviceCategory.name" placeholder="收费服务" ></el-input>

@@ -425,12 +425,30 @@
                     </el-table-column>
                     <el-table-column align="center"  label="姓名">
                       <template slot-scope="scope">
-                        <span>{{ scope.row.label}}</span>
+                        <span>{{ scope.row.name}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center"  label="电话">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.mobile}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center"  label="入学日期">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.enrolTime}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center"  label="车型">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.motorcycleType}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center"  label="状态">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.state | subjectFilter}}</span>
                       </template>
                     </el-table-column>
                   </el-table>
-
-
 
 
                 </el-card>
@@ -752,9 +770,9 @@
       },
       // 查询招生信息集合
       getEnrollStudentList() {
-        console.log('=====================   查询员工集合   =======================')
         this.studentListLoading = true
         queryEnrollStudents(this.studentListQuery).then(response => {
+          console.log('=====================   查询招生信息集合   =======================')
           console.log(response.data)
           this.studentList = response.data.data.list
           // this.total = response.data.data.totalCount

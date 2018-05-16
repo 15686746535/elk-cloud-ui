@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}"  v-loading="infoLoading" element-loading-text="给我一点时间" >
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
     <div v-show="showModule=='list'">
 
       <el-card style="margin-bottom: 5px;">
@@ -158,7 +158,7 @@
       </el-card>
     </div>
 
-    <el-card v-show="showModule=='info'" style="overflow: auto">
+    <el-card v-show="showModule=='info'"  v-loading="infoLoading" element-loading-text="给我一点时间"  style="overflow: auto">
       <el-card class="box-card1">
 
         <div slot="header" class="clearfix">

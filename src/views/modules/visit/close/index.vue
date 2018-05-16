@@ -112,7 +112,6 @@
           followUp: true
         },
         stateLabel: '',
-        bgImg: 'static/img/bj.png',
         dialogStatus: '',
         pickerOptions: {
           shortcuts: [{

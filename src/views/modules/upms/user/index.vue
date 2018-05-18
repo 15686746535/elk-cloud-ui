@@ -69,13 +69,13 @@
                   </el-col>
                 </template>
               </el-table-column>
-              <el-table-column label="招生记录">
+              <el-table-column align="center" label="招生记录">
                 <template slot-scope="scope">
                   <bar :data="scope.row.recruits"></bar>
                 </template>
               </el-table-column>
 
-              <el-table-column label="来访信息">
+              <el-table-column align="center" label="来访信息">
                 <template slot-scope="scope">
                   <LineChart :chart-data="scope.row.visits"></LineChart>
                 </template>
@@ -722,6 +722,7 @@
           console.log('====================== 单个员工信息 =====================')
           console.log(response.data)
           this.userEntity = response.data.data
+          if (!this.userEntity.roleIdList) this.userEntity.roleIdList = []
           console.log(this.userEntity.orgId)
           this.getRoleList()
           this.studentListQuery.userId = this.userEntity.userId

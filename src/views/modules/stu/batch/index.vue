@@ -319,7 +319,6 @@
         <el-button-group v-else-if="studentListQuery.state === '3'">
           <el-button @click="operation('6','examBespeakCancel')" size="small" type="danger" round>取消约考</el-button>
           <el-button type="primary" size="small" @click="exportExamList" round>导出名单</el-button>
-          <a href="192.168.1.130:8003/stu/exam/exportExamList?examId=104&subject=一"> 说三道四</a>
         </el-button-group>
         <span v-else>
         </span>
@@ -623,7 +622,14 @@
         } else if (this.listQuery.subject === '4') {
           subject = '四'
         }
-        exportExamList({ 'examId': this.studentListQuery.examId, 'state': this.studentListQuery.state, 'subject': subject }).then(() => {
+        exportExamList({ 'examId': this.studentListQuery.examId, 'state': this.studentListQuery.state, 'subject': subject }).then(response => {
+          // // 创建一个blob对象,file的一种
+          // let blob = new Blob([response.data], { type: 'application/x-xls' })
+          // let link = document.createElement('a')
+          // link.href = window.URL.createObjectURL(blob)
+          // // 配置下载的文件名
+          // link.download = fileNames[scheduleType] + '_' + response.headers.datestr + '.xls'
+          // link.click()
         })
       }
     }

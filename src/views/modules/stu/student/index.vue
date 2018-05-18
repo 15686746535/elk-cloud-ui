@@ -92,7 +92,7 @@
 
                       <el-row :gutter="10">
                         <el-col :span="7" class="table_text">介绍人:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.introducers.replace('/', '、')}}</el-col>
+                        <el-col :span="17" class="table_text">{{scope.row.introducers.replace(new RegExp('/','gm'), '、')}}</el-col>
                       </el-row>
                     </el-col>
                   </template>

@@ -623,13 +623,6 @@
           subject = '四'
         }
         exportExamList({ 'examId': this.studentListQuery.examId, 'state': this.studentListQuery.state, 'subject': subject }).then(response => {
-          // // 创建一个blob对象,file的一种
-          // let blob = new Blob([response.data], { type: 'application/x-xls' })
-          // let link = document.createElement('a')
-          // link.href = window.URL.createObjectURL(blob)
-          // // 配置下载的文件名
-          // link.download = fileNames[scheduleType] + '_' + response.headers.datestr + '.xls'
-          // link.click()
         })
       }
     }

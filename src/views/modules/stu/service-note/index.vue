@@ -213,7 +213,7 @@
 
       </el-col>
       <div style="float: right;margin-top: 20px;">
-        <el-button v-if="stuServiceBuyNoteEntity.studentId" type="primary" @click="stuBuyServiceNote"><i class="el-icon-fa-save"></i> 提 交</el-button>
+        <el-button v-if="stuServiceBuyNoteEntity.studentId" type="primary" :loading="btnLoading" @click="stuBuyServiceNote"><i class="el-icon-fa-save"></i> 提 交</el-button>
       </div>
 
 
@@ -249,6 +249,7 @@
         student: {},
         studentListLoading: false,
         infoLoading: false,
+        btnLoading: false,
         financeListQuery: {
           page: 1,
           limit: 0,
@@ -354,7 +355,20 @@
         })
       },
       stuBuyServiceNote() {
+        this.btnLoading = true
         saveServiceCharge(this.stuServiceBuyNoteEntity).then(() => {
+          this.stuServiceBuyNoteEntity = {
+            studentId: null, // 学员Id
+            originalPrice: 0, // 原始价格
+            activityPrice: 0, // 活动价格
+            realPrice: 0, // 实收价格
+            remark: null, // 实收价格
+            receivablesType: null,
+            payTypeList: [{}],
+            financeList: []
+          }
+          this.student = {}
+          this.btnLoading = false
         })
       },
       calculation() {

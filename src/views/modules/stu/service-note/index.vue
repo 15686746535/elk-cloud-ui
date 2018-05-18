@@ -206,7 +206,7 @@
           <el-col :span="13">
             <el-row>
               <el-col :span="2">备注：</el-col>
-              <el-col :span="21"><input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
+              <el-col :span="21"><input v-model="stuServiceBuyNoteEntity.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
             </el-row>
           </el-col>
         </el-row>
@@ -264,6 +264,7 @@
           originalPrice: 0, // 原始价格
           activityPrice: 0, // 活动价格
           realPrice: 0, // 实收价格
+          remark: null, // 实收价格
           receivablesType: null,
           payTypeList: [{}],
           financeList: []

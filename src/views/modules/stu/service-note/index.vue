@@ -143,7 +143,7 @@
                 原价：￥{{stuServiceBuyNoteEntity.originalPrice}}
               </div>
 
-              <div v-if="stuServiceBuyNoteEntity.activityPrice !== 0" class="text_css" style="width: 150px;float: left">
+              <div v-if="stuServiceBuyNoteEntity.activityPrice !== stuServiceBuyNoteEntity.originalPrice" class="text_css" style="width: 150px;float: left">
                 活动价：￥{{stuServiceBuyNoteEntity.activityPrice}}
               </div>
 
@@ -230,6 +230,7 @@
   import Coach from '@/components/Coach'
   import { removeAllSpace } from '@/utils/validate'
   import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
+  import { saveServiceCharge } from '@/api/finance/service-charge'
   import { mapGetters } from 'vuex'
 
   import { fetchStudentList, getStudent } from '@/api/student/student'
@@ -263,7 +264,7 @@
           originalPrice: 0, // 原始价格
           activityPrice: 0, // 活动价格
           realPrice: 0, // 实收价格
-          receivablesType: [],
+          receivablesType: null,
           payTypeList: [{}],
           financeList: []
         },
@@ -351,10 +352,14 @@
           this.infoLoading = false
         })
       },
-      stuBuyServiceNote() {},
+      stuBuyServiceNote() {
+        saveServiceCharge(this.stuServiceBuyNoteEntity).then(() => {
+        })
+      },
       calculation() {
         this.stuServiceBuyNoteEntity.originalPrice = 0
         this.stuServiceBuyNoteEntity.activityPrice = 0
+        var activityPrice = 0
         console.log(this.stuServiceBuyNoteEntity.financeList)
         /* 先计算未参加活动的价格 */
         for (var i = 0; i < this.stuServiceBuyNoteEntity.financeList.length; i++) {
@@ -370,13 +375,13 @@
         for (var i = 0; i < this.stuServiceBuyNoteEntity.financeList.length; i++) {
           if (this.stuServiceBuyNoteEntity.financeList[i].code === '004') {
             if (this.stuServiceBuyNoteEntity.financeList[i].priceType === '0') {
-              this.stuServiceBuyNoteEntity.activityPrice = this.stuServiceBuyNoteEntity.activityPrice + this.stuServiceBuyNoteEntity.financeList[i].price
+              activityPrice = activityPrice + this.stuServiceBuyNoteEntity.financeList[i].price
             } else {
-              this.stuServiceBuyNoteEntity.activityPrice = this.stuServiceBuyNoteEntity.activityPrice + (this.stuServiceBuyNoteEntity.financeList[i].price * this.stuServiceBuyNoteEntity.financeList[i].number)
+              activityPrice = activityPrice + (this.stuServiceBuyNoteEntity.financeList[i].price * this.stuServiceBuyNoteEntity.financeList[i].number)
             }
           }
         }
-        this.stuServiceBuyNoteEntity.activityPrice = this.stuServiceBuyNoteEntity.activityPrice + this.stuServiceBuyNoteEntity.originalPrice
+        this.stuServiceBuyNoteEntity.activityPrice = activityPrice + this.stuServiceBuyNoteEntity.originalPrice
       },
       /* 计算应收费用 */
       actualMoneyCalculation() {

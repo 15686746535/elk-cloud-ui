@@ -28,7 +28,7 @@
 
           </el-col>
           <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-            <span class="text_css">姓名：{{student.studentName}}</span>
+            <span class="text_css">姓名：{{student.name}}</span>
           </el-col>
           <el-col :span="7" style="line-height: 50px;padding: 0 10px">
 
@@ -52,11 +52,11 @@
                 <span >代收费：</span>
               </el-col>
               <el-col :span="23">
-                <el-checkbox-group v-model="stuServiceBuyNoteEntity.financeList">
+                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
                   <el-checkbox v-for="finance in evenFinanceList('001')" :label="finance" :key="finance.categoryId">
                     {{finance.name}} {{finance.price}}元
                     <span v-if="finance.priceType === '1'">
-                      /份*&nbsp;<input v-model="finance.number" style="border: none;
+                      /份*&nbsp;<input @change="calculation" type="number" min="1" v-model.number="finance.number" style="border: none;
                                                                  outline:none;
                                                                  width: 50px;
                                                                  border-bottom: #dcdfe6 1px solid;
@@ -73,11 +73,11 @@
                 <span >培训费：</span>
               </el-col>
               <el-col :span="23">
-                <el-checkbox-group v-model="stuServiceBuyNoteEntity.financeList">
+                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
                   <el-checkbox v-for="finance in evenFinanceList('002')" :label="finance" :key="finance.categoryId">
                     {{finance.name}} {{finance.price}}元
                     <span v-if="finance.priceType === '1'">
-                      /份*&nbsp;<input v-model="finance.number" style="border: none;
+                      /份*&nbsp;<input @change="calculation" type="number" min="1" v-model.number="finance.number" style="border: none;
                                                                  outline:none;
                                                                  width: 50px;
                                                                  border-bottom: #dcdfe6 1px solid;
@@ -93,17 +93,17 @@
                 <span >服务包：</span>
               </el-col>
               <el-col :span="23">
-                <el-checkbox-group v-model="stuServiceBuyNoteEntity.financeList">
+                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
                   <el-checkbox v-for="finance in evenFinanceList('003')" :label="finance" :key="finance.categoryId">
                     {{finance.name}} {{finance.price}}元
                     <span v-if="finance.priceType === '1'">
-                    /份*&nbsp;<input v-model="finance.number" style="border: none;
+                    /份*&nbsp;<input @change="calculation"  type="number" min="1" v-model.number="finance.number" style="border: none;
                                                                outline:none;
                                                                width: 50px;
                                                                border-bottom: #dcdfe6 1px solid;
                                                                font-size: 12px;
                                                                color: #606266;"/>份
-                  </span>
+                    </span>
                   </el-checkbox>
                 </el-checkbox-group>
               </el-col>
@@ -113,11 +113,11 @@
                 <span >优惠包：</span>
               </el-col>
               <el-col :span="23">
-                <el-checkbox-group v-model="stuServiceBuyNoteEntity.financeList">
+                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
                   <el-checkbox v-for="finance in evenFinanceList('004')" :label="finance" :key="finance.categoryId">
                     {{finance.name}} {{finance.price}}元
                     <span v-if="finance.priceType === '1'">
-                      /份*&nbsp;<input v-model="finance.number" style="border: none;
+                      /份*&nbsp;<input @change="calculation"  type="number" min="1" v-model.number="finance.number" style="border: none;
                                                                  outline:none;
                                                                  width: 50px;
                                                                  border-bottom: #dcdfe6 1px solid;
@@ -139,22 +139,23 @@
           </el-col>
           <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
             <el-row style="line-height: 50px;padding: 0 10px">
-              <span class="text_css">原价：￥</span>
-              <input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;"/>
+              <div class="text_css" style="width: 150px;float: left">
+                原价：￥{{stuServiceBuyNoteEntity.originalPrice}}
+              </div>
 
-              <span class="text_css">活动价：￥</span>
-              <input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;"/>
+              <div v-if="stuServiceBuyNoteEntity.activityPrice !== 0" class="text_css" style="width: 150px;float: left">
+                活动价：￥{{stuServiceBuyNoteEntity.activityPrice}}
+              </div>
 
             </el-row>
             <el-row style="line-height: 50px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-              <span class="text_css">已收定金：￥</span>
-              <input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;"/>
+              <div class="text_css" style="width: 150px;float: left">已收定金：￥</div>
 
-              <span class="text_css">本次实收金额：￥</span>
-              <input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;"/>
+              <div class="text_css" style="width: 150px;float: left">
+                本次实收金额：￥{{stuServiceBuyNoteEntity.realPrice}}
+              </div>
 
-              <span class="text_css">，人名币大写：￥</span>
-              <input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;"/>
+              <div class="text_css" style="float: left">，人名币大写：{{stuServiceBuyNoteEntity.realPrice | smalltoBIG}}</div>
             </el-row>
             <el-row  class="text_css"  style="line-height: 50px;padding: 0 10px">
               <el-col :span="2">
@@ -165,7 +166,7 @@
                   <span>
                     {{payType.mode}}：
                   </span>
-                  <input v-model="payType.money" style="border: none;
+                  <input @change="actualMoneyCalculation" type="number" v-model.number="payType.money" style="border: none;
                                                                outline:none;
                                                                width: 50px;
                                                                border-bottom: #dcdfe6 1px solid;
@@ -203,14 +204,16 @@
             </span>
           </el-col>
           <el-col :span="13">
-            备注：
-            <input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;"/>
+            <el-row>
+              <el-col :span="2">备注：</el-col>
+              <el-col :span="21"><input style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
+            </el-row>
           </el-col>
         </el-row>
 
       </el-col>
-      <div style="float: right">
-        <el-button @click=""><i class="el-icon-fa-save"></i> 提 交</el-button>
+      <div style="float: right;margin-top: 20px;">
+        <el-button v-if="stuServiceBuyNoteEntity.studentId" type="primary" @click="stuBuyServiceNote"><i class="el-icon-fa-save"></i> 提 交</el-button>
       </div>
 
 
@@ -226,7 +229,7 @@
 <script>
   import Coach from '@/components/Coach'
   import { removeAllSpace } from '@/utils/validate'
-  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/resitfee'
+  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
   import { mapGetters } from 'vuex'
 
   import { fetchStudentList, getStudent } from '@/api/student/student'
@@ -256,7 +259,10 @@
           condition: null
         },
         stuServiceBuyNoteEntity: {
-          studentId: null,
+          studentId: null, // 学员Id
+          originalPrice: 0, // 原始价格
+          activityPrice: 0, // 活动价格
+          realPrice: 0, // 实收价格
           receivablesType: [],
           payTypeList: [{}],
           financeList: []
@@ -345,30 +351,39 @@
           this.infoLoading = false
         })
       },
-      smalltoBIG(n) {
-        var fraction = ['角', '分']
-        var digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
-        var unit = [['元', '万', '亿'], ['', '拾', '佰', '仟']]
-        var head = n < 0 ? '欠' : ''
-        n = Math.abs(n)
-
-        var s = ''
-
-        for (var i = 0; i < fraction.length; i++) {
-          s += (digit[Math.floor(n * 10 * Math.pow(10, i)) % 10] + fraction[i]).replace(/零./, '')
-        }
-        s = s || '整'
-        n = Math.floor(n)
-
-        for (var i = 0; i < unit[0].length && n > 0; i++) {
-          var p = ''
-          for (var j = 0; j < unit[1].length && n > 0; j++) {
-            p = digit[n % 10] + unit[1][j] + p
-            n = Math.floor(n / 10)
+      stuBuyServiceNote() {},
+      calculation() {
+        this.stuServiceBuyNoteEntity.originalPrice = 0
+        this.stuServiceBuyNoteEntity.activityPrice = 0
+        console.log(this.stuServiceBuyNoteEntity.financeList)
+        /* 先计算未参加活动的价格 */
+        for (var i = 0; i < this.stuServiceBuyNoteEntity.financeList.length; i++) {
+          if (this.stuServiceBuyNoteEntity.financeList[i].code !== '004') {
+            if (this.stuServiceBuyNoteEntity.financeList[i].priceType === '0') {
+              this.stuServiceBuyNoteEntity.originalPrice = this.stuServiceBuyNoteEntity.originalPrice + this.stuServiceBuyNoteEntity.financeList[i].price
+            } else {
+              this.stuServiceBuyNoteEntity.originalPrice = this.stuServiceBuyNoteEntity.originalPrice + (this.stuServiceBuyNoteEntity.financeList[i].price * this.stuServiceBuyNoteEntity.financeList[i].number)
+            }
           }
-          s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s
         }
-        return head + s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整')
+        /* 再计算参加活动的价格 */
+        for (var i = 0; i < this.stuServiceBuyNoteEntity.financeList.length; i++) {
+          if (this.stuServiceBuyNoteEntity.financeList[i].code === '004') {
+            if (this.stuServiceBuyNoteEntity.financeList[i].priceType === '0') {
+              this.stuServiceBuyNoteEntity.activityPrice = this.stuServiceBuyNoteEntity.activityPrice + this.stuServiceBuyNoteEntity.financeList[i].price
+            } else {
+              this.stuServiceBuyNoteEntity.activityPrice = this.stuServiceBuyNoteEntity.activityPrice + (this.stuServiceBuyNoteEntity.financeList[i].price * this.stuServiceBuyNoteEntity.financeList[i].number)
+            }
+          }
+        }
+        this.stuServiceBuyNoteEntity.activityPrice = this.stuServiceBuyNoteEntity.activityPrice + this.stuServiceBuyNoteEntity.originalPrice
+      },
+      /* 计算应收费用 */
+      actualMoneyCalculation() {
+        this.stuServiceBuyNoteEntity.realPrice = 0
+        for (var i = 0; i < this.payTypeList.length; i++) {
+          this.stuServiceBuyNoteEntity.realPrice = Number(this.stuServiceBuyNoteEntity.realPrice) + Number(this.payTypeList[i].money)
+        }
       }
     }
   }

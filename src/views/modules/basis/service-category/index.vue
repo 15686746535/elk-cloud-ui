@@ -96,7 +96,7 @@
 </template>
 
 <script>
-  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/resitfee'
+  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
@@ -112,7 +112,14 @@
           page: 1,
           limit: 20
         },
-        serviceCategory: {},
+        serviceCategory: {
+          name: null,
+          price: null,
+          priceType: null,
+          code: null,
+          remark: null,
+          number: 1
+        },
         dialogFormVisible: false,
         dialogStatus: '',
         /* 按钮权限 */

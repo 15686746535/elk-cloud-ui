@@ -2,7 +2,12 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-card  style="min-height: 820px">
       <div slot="header" class="clearfix">
-        <span>学员收费</span>
+        <span>
+          <el-radio-group  @change="handleSubject">
+            <el-radio-button label="1">添加收费</el-radio-button>
+            <el-radio-button label="2">补齐费用</el-radio-button>
+          </el-radio-group>
+        </span>
         <div style="float: right; padding: 3px 0" >
           <el-select style="width: 300px;" v-model="stuServiceBuyNoteEntity.studentId" @change="studentIdChange" filterable="" remote="" reserve-keyword placeholder="请输入姓名/电话/身份证" :remote-method="getStudentList" :loading="studentListLoading">
             <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
@@ -409,7 +414,8 @@
           this.stuServiceBuyNoteEntity.realPrice = Number(this.stuServiceBuyNoteEntity.realPrice) + Number(this.payTypeList[i].money)
         }
         console.log(this.stuServiceBuyNoteEntity.payTypeList)
-      }
+      },
+      handleSubject() {}
     }
   }
 </script>

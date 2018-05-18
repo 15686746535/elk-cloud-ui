@@ -386,9 +386,14 @@
       /* 计算应收费用 */
       actualMoneyCalculation() {
         this.stuServiceBuyNoteEntity.realPrice = 0
+        this.stuServiceBuyNoteEntity.payTypeList = []
         for (var i = 0; i < this.payTypeList.length; i++) {
+          if (this.payTypeList[i].money !== null && this.payTypeList[i].money !== 0 && this.payTypeList[i].money !== '') {
+            this.stuServiceBuyNoteEntity.payTypeList.push(this.payTypeList[i])
+          }
           this.stuServiceBuyNoteEntity.realPrice = Number(this.stuServiceBuyNoteEntity.realPrice) + Number(this.payTypeList[i].money)
         }
+        console.log(this.stuServiceBuyNoteEntity.payTypeList)
       }
     }
   }

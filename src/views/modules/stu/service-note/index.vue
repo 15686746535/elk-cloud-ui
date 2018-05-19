@@ -3,7 +3,7 @@
     <el-card  style="min-height: 820px">
       <div slot="header" class="clearfix">
         <span>
-          <el-radio-group  @change="handleSubject">
+          <el-radio-group  @change="handleSubject" v-model="flag">
             <el-radio-button label="1">添加收费</el-radio-button>
             <el-radio-button label="2">补齐费用</el-radio-button>
           </el-radio-group>
@@ -234,7 +234,7 @@
 <script>
   import Coach from '@/components/Coach'
   import { removeAllSpace } from '@/utils/validate'
-  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
+  import { getFinanceList, queryMoneyListById, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
   import { saveServiceCharge } from '@/api/finance/service-charge'
   import { mapGetters } from 'vuex'
 
@@ -255,6 +255,7 @@
         studentListLoading: false,
         infoLoading: false,
         btnLoading: false,
+        flag: '1',
         financeListQuery: {
           page: 1,
           limit: 0,
@@ -342,7 +343,7 @@
           this.studentListQuery.condition = query
           console.log(this.studentListQuery)
           fetchStudentList(this.studentListQuery).then(response => {
-            console.log(' ====== =============  这是所有学员信息  ==================')
+            console.log(' ===================  这是所有学员信息  ==================')
             console.log(response.data)
             this.studentList = response.data.data.list
             this.studentListLoading = false
@@ -351,11 +352,12 @@
           this.studentList = []
         }
       },
+      /* 根据学员id查询学员 */
       studentIdChange() {
         this.infoLoading = true
         getStudent(this.stuServiceBuyNoteEntity.studentId).then(response => {
-          console.log(response.data.data)
-          this.student = response.data.data
+          console.log(response.data)
+          // this.student = response.data.data
           this.infoLoading = false
         })
       },
@@ -376,6 +378,7 @@
           this.btnLoading = false
         })
       },
+      /* 计算价格 */
       calculation() {
         this.stuServiceBuyNoteEntity.originalPrice = 0
         this.stuServiceBuyNoteEntity.activityPrice = 0
@@ -415,7 +418,13 @@
         }
         console.log(this.stuServiceBuyNoteEntity.payTypeList)
       },
-      handleSubject() {}
+      handleSubject() {
+        if (flag === '1') {
+          this.getFinanceList()
+        } else {
+          this.studentIdChange()
+        }
+      }
     }
   }
 </script>

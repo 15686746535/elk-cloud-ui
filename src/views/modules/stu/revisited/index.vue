@@ -64,7 +64,7 @@
 
               <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="revoke(scope.row.examNoteId)">撤 销</el-button>
+                  <el-button size="mini" type="danger" @click="revoke(scope.row)">撤 销</el-button>
                 </template>
               </el-table-column>
 
@@ -109,9 +109,9 @@
 </template>
 
 <script>
-  import { getRevisitedList, delRevisited } from '@/api/student/revisited'
-  import { queryExamNoted, addQuestion } from '@/api/student/revisit-question'
-  import { fetchList, getObj } from '@/api/student/revisit'
+  import { delRevisited } from '@/api/student/revisited'
+  import { queryExamNoted } from '@/api/student/revisit-question'
+  import { examFetchList } from '@/api/student/examnote'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
@@ -145,7 +145,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        examFetchList(this.listQuery).then(response => {
           console.log('============ 已回访学员 ===========')
           console.log(response.data)
           this.list = response.data.data.list
@@ -161,27 +161,17 @@
         this.listQuery.page = val
         this.getList()
       },
-      create() {
-        this.revisited = {}
-      },
-      update(row) {
-        getObj(row.roleId)
-          .then(response => {
-            this.revisited = response.data
-          })
-      },
       searchClick() {
         this.listQuery.page = 1
         this.getList()
       },
-      revoke(id) {
+      revoke(obj) {
         this.$confirm('是否撤销该回访记录?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.log(id)
-          delRevisited(id).then(() => {
+          delRevisited(obj).then(() => {
           })
           this.getList()
         })
@@ -202,7 +192,7 @@
       questionClick(row) {
         this.questionLoading = true
         console.log(row)
-        queryExamNoted(row.examNoteId).then(response => {
+        queryExamNoted({ 'examId': row.examId, 'studentId': row.studentId }).then(response => {
           console.log('========= 题目 ==========')
           console.log(response.data)
           this.questionList = response.data.data

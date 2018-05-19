@@ -1224,8 +1224,7 @@
   import { mapGetters } from 'vuex'
 
   import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence } from '@/api/student/student'
-  import { batchSave } from '@/api/student/exambespeak'
-  import { examFetchList } from '@/api/student/examnote'
+  import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
   import { userList } from '@/api/upms/user'

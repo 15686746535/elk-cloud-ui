@@ -16,7 +16,7 @@ export function addFinance(obj) {
   })
 }
 // 根据ID获取
-export function getFinance(id) {
+export function queryMoneyListById(id) {
   return request({
     url: '/finance/service/category/' + id,
     method: 'get'

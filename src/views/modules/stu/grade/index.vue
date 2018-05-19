@@ -404,7 +404,7 @@ export default {
       handleSelectionChange(val) {
         this.examParameter.examNoteList = []
         for (var i = 0; i < val.length; i++) {
-          this.examParameter.examNoteList.push({ 'examNoteId': val[i].examNoteId, 'studentId': val[i].studentId })
+          this.examParameter.examNoteList.push({ 'examId': val[i].examId, 'studentId': val[i].studentId })
         }
         console.log(val)
         console.log(this.examParameter.examNoteList)
@@ -460,7 +460,7 @@ export default {
       },
       examEdit(row, state) {
         this.examParameter.examNoteList = []
-        this.examParameter.examNoteList.push({ 'examNoteId': row.examNoteId, 'studentId': row.studentId })
+        this.examParameter.examNoteList.push({ 'examId': row.examId, 'studentId': row.studentId })
         this.examParameter.examId = row.examId
         this.examParameter.examStateOld = row.examState
         if (state === '0') {

@@ -15,13 +15,7 @@ export function addRevisited(obj) {
     data: obj
   })
 }
-// 根据ID获取
-export function getRevisited(id) {
-  return request({
-    url: '/stu/revisit/note/' + id,
-    method: 'get'
-  })
-}
+
 // 删除
 export function delRevisited(id) {
   return request({

@@ -1,6 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-const url = 'http://52.83.141.137:8003'
+const url = 'http://52.83.97.172:8003'
 
 
 module.exports = {

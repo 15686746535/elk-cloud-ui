@@ -376,9 +376,8 @@
         btnLoading: false,
         examBespeak: [],
         examBespeakList: {
-          examBespeakList: [],
-          state: null,
-          examId: null
+          examNoteList: [],
+          examineState: null
         },
         studentListQuery: {
           examId: null,
@@ -447,7 +446,7 @@
           this.examBespeak = response.data.data
           this.examBespeakLoading = false
         })
-        this.examBespeakList.examId = examId
+        // this.examBespeakList.examId = examId
         this.examOption = true
       },
       closeExamOption() {
@@ -531,8 +530,8 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.examBespeakList.examBespeakList = []
-          this.examBespeakList.examBespeakList.push({ 'studentId': val.studentId, 'makeUpExam': val.makeUpExam, 'examBespeakId': val.examBespeakId })
+          this.examBespeakList.examNoteList = []
+          this.examBespeakList.examNoteList.push({ 'studentId': val.studentId, 'examId': val.examId })
           this.operation('6', 'examCancel')
         }).catch(() => {
           this.$message({
@@ -543,9 +542,9 @@
       },
       handleSelectionChange(val) {
         console.log(val)
-        this.examBespeakList.examBespeakList = []
+        this.examBespeakList.examNoteList = []
         for (var i = 0; i < val.length; i++) {
-          this.examBespeakList.examBespeakList.push({ 'studentId': val[i].studentId, 'makeUpExam': val[i].makeUpExam, 'examBespeakId': val[i].examBespeakId })
+          this.examBespeakList.examNoteList.push({ 'studentId': val[i].studentId, 'examId': val[i].examId })
         }
       },
       // 根据状态查询约考学员
@@ -555,10 +554,10 @@
         this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
       },
       operation(state, url) {
-        if (this.examBespeakList.examBespeakList.length === 0) {
+        if (this.examBespeakList.examNoteList.length === 0) {
           this.$message.warning('请先选择学员')
         } else {
-          this.examBespeakList.state = state
+          this.examBespeakList.examineState = state
           console.log('==== 选择的学员 ====')
           console.log(this.examBespeakList)
           putExamBespeak(this.examBespeakList, url).then(() => {

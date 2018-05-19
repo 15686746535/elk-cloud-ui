@@ -103,7 +103,6 @@
           ]
         },
         dict: {},
-        enrolSite: {},
         dialogFormVisible: false,
         dialogStatus: '',
         menu_add: false,
@@ -139,6 +138,7 @@
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
+          this.dialogFormVisible = false
         })
       },
       handleSizeChange(val) {
@@ -193,10 +193,9 @@
       },
       cancel(formName) {
         this.dialogFormVisible = false
-        this.dict = {}
-        this.enrolSite = {}
-        const set = this.$refs
-        set[formName].resetFields()
+        // this.dict = {}
+        this.getList()
+        this.$refs[formName].resetFields()
       },
       update(formName) {
         const set = this.$refs

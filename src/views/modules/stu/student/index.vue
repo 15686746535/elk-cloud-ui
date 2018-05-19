@@ -152,7 +152,7 @@
                     <el-col style=" line-height: 25px">
                       <el-row :gutter="10">
                         <el-col :span="7" class="table_text">服务项:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.serviceNotes}}</el-col>
+                        <el-col :span="17" class="table_text">{{scope.row.serviceNotes.replace(new RegExp('/','gm'), '、')}}</el-col>
                       </el-row>
 
                       <el-row :gutter="10">
@@ -676,7 +676,7 @@
 
 
 
-    <div v-show="showModule=='create1'"  v-loading="createLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力加载中...">
+    <!--<div v-show="showModule=='create1'"  v-loading="createLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力加载中...">
       <el-card body-style="padding:5px 20px;" style="margin-bottom: 5px;height: 60px;line-height: 50px">
         录入详细信息
         <div style="float: right"><el-button type="primary" @click="backClick">返  回</el-button></div>
@@ -689,7 +689,7 @@
                 <el-row :gutter="20">
                   <el-col :span="12" >
 
-                    <!-- 联系电话 -->
+                    &lt;!&ndash; 联系电话 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="mobile">
                         <span slot="label" class="text_css">联系电话</span>
@@ -698,7 +698,7 @@
 
                     </el-row>
 
-                    <!-- 身份证号 -->
+                    &lt;!&ndash; 身份证号 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="idNumber">
                         <span slot="label" class="text_css">身份证号</span>
@@ -706,7 +706,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 档案号 -->
+                    &lt;!&ndash; 档案号 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="archivesNumber">
                         <span slot="label" class="text_css">档案号</span>
@@ -714,7 +714,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 姓名 -->
+                    &lt;!&ndash; 姓名 &ndash;&gt;
                     <el-row >
 
                       <el-form-item prop="name">
@@ -725,7 +725,7 @@
                     </el-row>
 
 
-                    <!-- 微信 -->
+                    &lt;!&ndash; 微信 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="wechat">
                         <span slot="label"  class="text_css">微信</span>
@@ -734,7 +734,7 @@
                     </el-row>
 
 
-                    <!-- 校区 -->
+                    &lt;!&ndash; 校区 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="campus">
                         <span slot="label"  class="text_css">校区</span>
@@ -742,7 +742,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 联系地址 -->
+                    &lt;!&ndash; 联系地址 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="contactAddress">
                         <span slot="label"  class="text_css">联系地址</span>
@@ -751,7 +751,7 @@
                     </el-row>
 
 
-                    <!-- 入学期数 -->
+                    &lt;!&ndash; 入学期数 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="periods">
                         <span slot="label"  class="text_css">入学期数</span>
@@ -762,7 +762,7 @@
 
 
 
-                    <!-- 生日 -->
+                    &lt;!&ndash; 生日 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="birthday">
                         <span slot="label" class="text_css">生日</span>
@@ -770,7 +770,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 所学车型 -->
+                    &lt;!&ndash; 所学车型 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="motorcycleType">
                         <span slot="label"  class="text_css">所学车型</span>
@@ -778,7 +778,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 来源渠道 -->
+                    &lt;!&ndash; 来源渠道 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="source">
                         <span slot="label" class="text_css">来源渠道</span>
@@ -787,7 +787,7 @@
                     </el-row>
 
 
-                    <!-- 入学日期 -->
+                    &lt;!&ndash; 入学日期 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="enrolTime">
                         <span slot="label"  class="text_css">入学日期</span>
@@ -807,16 +807,16 @@
                                      :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                             <img :src="studentEntity.avatar" class="AddAvatar">
                           </el-upload>
-                          <!--<el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">-->
-                            <!--<img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">-->
-                            <!--<i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>-->
-                          <!--</el-upload>-->
+                          &lt;!&ndash;<el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">&ndash;&gt;
+                            &lt;!&ndash;<img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">&ndash;&gt;
+                            &lt;!&ndash;<i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>&ndash;&gt;
+                          &lt;!&ndash;</el-upload>&ndash;&gt;
                         </div>
                       </el-col>
                     </el-row>
 
 
-                    <!-- 性别 -->
+                    &lt;!&ndash; 性别 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="sex">
                         <span slot="label" class="text_css">性别</span>
@@ -828,7 +828,7 @@
                     </el-row>
 
 
-                    <!-- 是否体检 -->
+                    &lt;!&ndash; 是否体检 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="physicalExamination">
                         <span slot="label" class="text_css">是否体检</span>
@@ -840,7 +840,7 @@
                     </el-row>
 
 
-                    <!-- 是否增驾 -->
+                    &lt;!&ndash; 是否增驾 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="addDrive">
                         <span slot="label" class="text_css">是否增驾</span>
@@ -851,7 +851,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 是否有车 -->
+                    &lt;!&ndash; 是否有车 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="haveCar">
                         <span slot="label" class="text_css">是否有车</span>
@@ -862,7 +862,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 电子邮箱 -->
+                    &lt;!&ndash; 电子邮箱 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="email">
                         <span slot="label"  class="text_css">电子邮箱</span>
@@ -871,7 +871,7 @@
                     </el-row>
 
 
-                    <!-- 所在单位 -->
+                    &lt;!&ndash; 所在单位 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="company">
                         <span slot="label"  class="text_css">所在单位</span>
@@ -880,14 +880,14 @@
 
                     </el-row>
 
-                    <!-- 所属职位 -->
+                    &lt;!&ndash; 所属职位 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="position">
                         <span slot="label"  class="text_css">所属职位</span>
                         <el-input style="width: 100%;" class="filter-item" placeholder="所属职位" v-model="studentEntity.position"></el-input>
                       </el-form-item>
                     </el-row>
-                    <!-- 报名点 -->
+                    &lt;!&ndash; 报名点 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="enrolSite">
                         <span slot="label"  class="text_css">报名点</span>
@@ -895,7 +895,7 @@
                       </el-form-item>
                     </el-row>
 
-                    <!-- 介绍人 -->
+                    &lt;!&ndash; 介绍人 &ndash;&gt;
                     <el-row >
                       <el-form-item prop="introducerList">
                         <span slot="label"  class="text_css">介绍人</span>
@@ -938,7 +938,7 @@
           </el-card>
         </el-col>
       </el-row>
-    </div>
+    </div>-->
 
     <el-dialog @close="closeBespeak" title="选择批次" width="550px" :visible.sync="dialogFormBespeak">
       <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
@@ -1102,10 +1102,6 @@
                                :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                       <img :src="studentEntity.avatar" class="AddAvatar">
                     </el-upload>
-                    <!--<el-upload class="AddAvatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload">-->
-                    <!--<img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="AddAvatar">-->
-                    <!--<i v-else class="el-icon-plus AddAvatar-uploader-icon"></i>-->
-                    <!--</el-upload>-->
                   </div>
                 </el-col>
               </el-row>
@@ -1339,14 +1335,10 @@
           updateTime: null
         },
         studentEntity: {
-          studentId: null,
           intentionId: null,
-          orgId: null,
-          openId: null,
           archivesNumber: null,
           name: null,
           sex: null,
-          age: null,
           idNumber: null,
           birthday: null,
           mobile: null,
@@ -1370,20 +1362,13 @@
           graduationTime: null,
           periodOfValidity: null,
           aboardTime: null,
-          roadCoach: null,
-          fieldCoach: null,
           incrementList: [],
           introducerList: [],
           serviceType: null,
           arrearage: null,
           enrolSite: null,
           source: null,
-          motorcycleType: null,
-          delFlag: null,
-          remark: null,
-          operator: null,
-          createTime: null,
-          updateTime: null
+          motorcycleType: null
         },
         studentEntityRules: {
           mobile: [
@@ -1744,7 +1729,7 @@
             console.log('======================= 添加的数据 ======')
             console.log(this.studentEntity)
             this.btnLoading = true
-            saveStudent(this.studentEntity).then(response => {
+            saveStudent(this.studentEntity).then(() => {
               this.backClick()
               this.btnLoading = false
             })
@@ -1753,15 +1738,11 @@
       },
       // 新增
       create() {
-        this.studentEntity = {
-          studentId: null,
+        /*this.studentEntity = {
           intentionId: null,
-          orgId: null,
-          openId: null,
           archivesNumber: null,
           name: null,
           sex: null,
-          age: null,
           idNumber: null,
           birthday: null,
           mobile: null,
@@ -1785,21 +1766,14 @@
           graduationTime: null,
           periodOfValidity: null,
           aboardTime: null,
-          roadCoach: null,
-          fieldCoach: null,
           incrementList: [],
           introducerList: [],
           serviceType: null,
           arrearage: null,
           enrolSite: null,
           source: null,
-          motorcycleType: null,
-          delFlag: null,
-          remark: null,
-          operator: null,
-          createTime: null,
-          updateTime: null
-        }
+          motorcycleType: null
+        }*/
         this.isCreate = true
         this.edit = true
         this.getIntroducerList()
@@ -1914,7 +1888,7 @@
       },
       reset(formName) {
         this.$refs[formName].resetFields()
-        console.log(this.studentEntity)
+        this.btnLoading = false
       },
       getFieldCoach(coach) {
         console.log('============ 教练 =============')

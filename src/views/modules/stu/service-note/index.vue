@@ -355,7 +355,12 @@
       /* 根据学员id查询学员 */
       studentIdChange() {
         this.infoLoading = true
-        getStudent(this.stuServiceBuyNoteEntity.studentId).then(response => {
+        // getStudent(this.stuServiceBuyNoteEntity.studentId).then(response => {
+        //   console.log(response.data)
+        //   // this.student = response.data.data
+        //   this.infoLoading = false
+        // })
+        queryMoneyListById(this.stuServiceBuyNoteEntity.studentId).then(response => {
           console.log(response.data)
           // this.student = response.data.data
           this.infoLoading = false

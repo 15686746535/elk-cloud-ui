@@ -7,12 +7,27 @@ export function getServiceChargeList(query) {
     params: query
   })
 }
-// 添加
+// 一次收费
 export function saveServiceCharge(obj) {
   return request({
     url: '/finance/service/charge',
     method: 'post',
     data: obj
+  })
+}
+// 二次收费
+export function twoPayment(obj) {
+  return request({
+    url: '/finance/service/charge/twoPayment',
+    method: 'post',
+    data: obj
+  })
+}
+// 根据ID获取
+export function queryMoneyListById(id) {
+  return request({
+    url: '/finance/service/charge/' + id,
+    method: 'get'
   })
 }
 // 根据ID获取

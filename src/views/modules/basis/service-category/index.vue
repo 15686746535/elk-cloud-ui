@@ -251,8 +251,8 @@
       },
       cancel(formName) {
         this.dialogFormVisible = false
-        const set = this.$refs
-        set[formName].resetFields()
+        this.getList()
+        this.$refs[formName].resetFields()
       },
       update(formName) {
         const set = this.$refs

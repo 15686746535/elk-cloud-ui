@@ -122,7 +122,7 @@ export function getLodop(oOBJECT, oEMBED) {
         return LODOP
       }
     }
-    if (LODOP.VERSION < '6.2.2.1') {
+    if (LODOP.VERSION < '6.2.2.2') {
       if (!needCLodop()) {
         if (is64IE) {
           document.write(strHtm64_Update)
@@ -142,4 +142,3 @@ export function getLodop(oOBJECT, oEMBED) {
     alert('getLodop出错:' + err)
   }
 }
-

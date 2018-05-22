@@ -22,3 +22,11 @@ export function updateAgency(obj) {
   })
 }
 
+export function saveAgency(obj) {
+  return request({
+    url: '/activiti/agency',
+    method: 'post',
+    data: obj
+  })
+}
+

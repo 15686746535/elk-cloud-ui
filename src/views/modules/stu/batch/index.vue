@@ -380,6 +380,8 @@
           examineState: null
         },
         studentListQuery: {
+          page: 1,
+          limit: 0,
           examId: null,
           examineState: '0',
           examState: 'exam_note_examine'
@@ -443,7 +445,7 @@
         this.studentListQuery.examId = examId
         this.studentListQuery.examineState = state
         examFetchList(this.studentListQuery).then(response => {
-          this.examBespeak = response.data.data
+          this.examBespeak = response.data.data.list
           this.examBespeakLoading = false
         })
         // this.examBespeakList.examId = examId

@@ -42,7 +42,7 @@ export function rePassword(userId) {
   return request({
     url: '/upms/user/initialize',
     method: 'put',
-    data: { 'userId': userId }
+    params: { 'userId': userId }
   })
 }
 

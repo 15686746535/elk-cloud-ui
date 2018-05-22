@@ -116,7 +116,7 @@
                       <div style="padding: 0 5px;">
                         <el-row :gutter="5">
                           <el-col :span="19" >
-                            <el-input type="textarea" maxlength="200" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                            <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                           </el-col>
                           <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading" type="primary" @click="addFollowUp">跟进</el-button></el-col>
                         </el-row>
@@ -443,7 +443,7 @@
               <div style="padding: 0 5px;">
                 <el-row :gutter="5">
                   <el-col :span="19" >
-                    <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                    <el-input type="textarea" @keyup.enter.native="addFollowUp" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                   </el-col>
                   <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading"  type="primary" @click="addFollowUp">跟进</el-button></el-col>
                 </el-row>

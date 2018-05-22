@@ -18,7 +18,7 @@ export function queryEnrollStudents(query) {
 // 添加
 export function saveStudent(obj) {
   return request({
-    url: '/stu/student',
+    url: '/stu/student/save',
     method: 'post',
     data: obj
   })

@@ -106,7 +106,7 @@
           </el-option>
         </el-select>
       </div>
-      
+
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="questionnaireOption = false">取 消</el-button>
         <el-button type="primary" size="small" @click="getRevisitQuestion">确 定</el-button>
@@ -174,7 +174,8 @@
         questionnaireList: [],
         answerList: {
           revisitQuestionList: [],
-          examNoteId: null,
+          examId: null,
+          studentId: null,
           remark: null
         },
         total: null,
@@ -259,7 +260,8 @@
       },
       /* 回访 */
       visitStudent(val) {
-        this.answerList.examNoteId = val.examNoteId
+        this.answerList.examId = val.examId
+        this.answerList.studentId = val.studentId
         this.questionnaireListQuery.subject = this.listQuery.subject
         getRevisitQuestionnaireList(this.questionnaireListQuery).then(response => {
           console.log('=================== 问卷 -=============')
@@ -274,14 +276,6 @@
         getQuestion(this.questionnaireId).then(response => {
           console.log(response.data)
           this.answerList.revisitQuestionList = response.data.data
-          // for (var i = 0; i < this.revisitQuestionList.length; i++) {
-          //   this.answerList.push({
-          //     examNoteId: this.examNoteId,
-          //     questionId: this.revisitQuestionList[i].questionId,
-          //     answer: null
-          //   })
-          // }
-          // console.log(this.revisitQuestionList.length)
           console.log(this.answerList)
           this.visitStudentOption = true
         })

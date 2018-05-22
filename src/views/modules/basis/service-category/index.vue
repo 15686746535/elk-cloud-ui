@@ -60,7 +60,7 @@
       <el-button v-if="add_menu" size="small" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
     </div>
     </el-card>
-    <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
+    <el-dialog @close="cancel('serviceCategory')" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="serviceCategory" :rules="rules" ref="serviceCategory" label-width="100px">
         <el-form-item label="收费服务"  prop="name">
           <el-input v-model="serviceCategory.name" placeholder="收费服务" ></el-input>
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/resitfee'
+  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
@@ -112,7 +112,14 @@
           page: 1,
           limit: 20
         },
-        serviceCategory: {},
+        serviceCategory: {
+          name: null,
+          price: null,
+          priceType: null,
+          code: null,
+          remark: null,
+          number: 1
+        },
         dialogFormVisible: false,
         dialogStatus: '',
         /* 按钮权限 */
@@ -244,8 +251,8 @@
       },
       cancel(formName) {
         this.dialogFormVisible = false
-        const set = this.$refs
-        set[formName].resetFields()
+        this.getList()
+        this.$refs[formName].resetFields()
       },
       update(formName) {
         const set = this.$refs

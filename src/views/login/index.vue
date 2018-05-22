@@ -19,19 +19,19 @@
       </el-form-item>
 
       <input name="randomStr" type="hidden" v-model="loginForm.randomStr" />
-      <el-form-item>
-        <el-col :span="2">
-          <span class="svg-container">
-          <!--<icon-svg icon-class="form"/>-->
-        </span>
-        </el-col>
-        <el-col :span="11">
-          <el-input name="code" type="text" v-model="loginForm.code" autoComplete="on" placeholder="验证码"/>
-        </el-col>
-        <el-col :span="10" style="height: 52px;">
-          <img :src="src" style="margin-top: 2px;border-radius: 3px;" @click="refreshCode"/>
-        </el-col>
-      </el-form-item>
+      <!--<el-form-item>-->
+        <!--<el-col :span="2">-->
+          <!--<span class="svg-container">-->
+          <!--&lt;!&ndash;<icon-svg icon-class="form"/>&ndash;&gt;-->
+        <!--</span>-->
+        <!--</el-col>-->
+        <!--<el-col :span="11">-->
+          <!--<el-input name="code" type="text" v-model="loginForm.code" autoComplete="on" placeholder="验证码"/>-->
+        <!--</el-col>-->
+        <!--<el-col :span="10" style="height: 52px;">-->
+          <!--<img :src="src" style="margin-top: 2px;border-radius: 3px;" @click="refreshCode"/>-->
+        <!--</el-col>-->
+      <!--</el-form-item>-->
 
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
@@ -58,13 +58,13 @@ export default {
     return {
       src: '',
       loginForm: {
-        username: 'admin',
-        password: '123456',
+        username: null,
+        password: null,
         code: 'FFFF',
         randomStr: Math.ceil(Math.random() * 100000) + '_' + Date.now()
       },
       loginRules: {
-        username: [{ required: true, trigger: ['blur'] }],
+        username: [{ required: true, message: '请输入账号', trigger: ['blur'] }],
         password: [{ required: true, trigger: ['blur'], validator: validatePass }],
         code: [{ required: true, trigger: ['blur'] }]
       },

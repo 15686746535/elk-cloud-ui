@@ -22,10 +22,11 @@ export function getQbj(id) {
   })
 }
 // 根据ID获取
-export function queryExamNoted(id) {
+export function queryExamNoted(obj) {
   return request({
-    url: '/stu/revisit/question/queryExamNoted/' + id,
-    method: 'get'
+    url: '/stu/revisit/question/queryExamNoted',
+    method: 'get',
+    params: obj
   })
 }
 // 删除

@@ -163,6 +163,7 @@ export const asyncRouterMap = [
       icon: 'menu'
     },
     children: [
+      { menuId: 70100, path: 'costInfo', component: _import('modules/finance/cost-info/index'), name: '费用信息', isShow: true, meta: { title: '费用信息', icon: 'menu' }}
     ]
   },
   {

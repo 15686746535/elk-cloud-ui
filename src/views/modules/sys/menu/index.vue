@@ -60,8 +60,8 @@
               <el-input v-model="form.component" :disabled="formEdit" placeholder="前端页面路径"></el-input>
             </el-form-item>
             <el-form-item label="排序" prop="sort">
-              <el-input-number style="width:100%;"v-model="form.sort" controls-position="right" :disabled="formEdit" :min="1" ></el-input-number>
-              <!--<el-input v-model="form.sort" type="number" :disabled="formEdit" placeholder="请输入排序"></el-input>-->
+              <!--<el-input-number style="width:100%;"v-model="form.sort" controls-position="right" :disabled="formEdit" :min="1" ></el-input-number>-->
+              <el-input v-model="form.sort" type="number" :disabled="formEdit" placeholder="请输入排序"></el-input>
             </el-form-item>
             <el-form-item v-if="formStatus == 'update'">
               <el-button type="primary" @click="update">更新</el-button>

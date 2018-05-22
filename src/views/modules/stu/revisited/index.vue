@@ -135,6 +135,7 @@
           page: 1,
           limit: 20,
           subject: 1,
+          examState: 'exam_note_pass',
           revisitFlag: 1
         }
       }

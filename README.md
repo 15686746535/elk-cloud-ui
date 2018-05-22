@@ -13,7 +13,7 @@ npm run build
 # 构建项目分析日志
 npm run build --report
 
-### 构建docker镜像（注意命令最后的小点） 
+### 构建docker镜像（注意命令最后的小点 ） 
 docker build -t elk-cloud-ui:1.0 .
 
 ### 启动的docker镜像

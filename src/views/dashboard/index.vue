@@ -62,10 +62,9 @@
               <i class="el-icon-fa-volume-up"> 我的待办 ({{evenNoticeList('1').length}})</i>
           </div>
           <div class="notice-body">
-            <div class="message" :style="{ top: (index9*25) + 'px'}" v-for="(notice,index) in evenNoticeList('1')">
+            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('1')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg" @click="evenNoticeListDialog(notice,'未办理')" :title="notice.message">{{index9 +
-                1}}.{{notice.message}}</div>
+              <div class="msg" @click="evenNoticeListDialog(notice,'未办理')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>
@@ -84,17 +83,44 @@
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
           <div class="notice-title">
-              <i class="el-icon-fa-bell"> 提醒 ({{evenNoticeList('2').length}})</i>
+            <i class="el-icon-fa-bell"> 提醒 ({{evenNoticeList('2').length}})</i>
+            <span class="agency" @click="agencyOption = true"><i class="el-icon-fa-paper-plane"></i></span>
           </div>
           <div class="notice-body">
-            <div class="message" :style="{ top: (index9*25) + 'px'}" v-for="(notice,index) in evenNoticeList('2')">
+            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('2')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg"  @click="evenNoticeListDialog(notice,'通知')" :title="notice.message">{{index9 +
-                1}}.{{notice.message}}</div>
+              <div class="msg"  @click="evenNoticeListDialog(notice,'通知')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>
         </div>
+
+        <!-- 发送消息 -->
+        <el-dialog title="发送消息" width="550px" :visible.sync="agencyOption">
+          <el-form :model="agency" :rules="agencyRules" ref="agency" label-position="left">
+
+            <el-form-item prop="message">
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="agency.message" placeholder="发送内容"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="recipientId">
+              <el-select v-model="agency.recipientId" collapse-tags style="width: 100%" filterable placeholder="请选择接收人">
+                <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+          </el-form>
+
+          <div style="width: 100%">
+            <el-button style="float: right" type="primary" :loading="btnLoading" @click="saveAgency('agency')"> 发 送</el-button>
+          </div>
+          <!-- 清除上一个浮动效果影响 -->
+          <div style="width: 100%; height: 1px;clear: both">
+          </div>
+        </el-dialog>
+
+
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
@@ -137,7 +163,8 @@
 import PieChart from '@/components/PieChart'
 import BarPileChart from '@/components/BarPileChart'
 import { queryIndex } from '@/api/visualization/api'
-import { queryAgency, updateAgency } from '@/api/activiti/agency'
+import { userList } from '@/api/upms/user'
+import { queryAgency, updateAgency, saveAgency } from '@/api/activiti/agency'
 import Coach from '@/components/Coach'
 
 export default {
@@ -150,6 +177,7 @@ export default {
   data() {
     return {
       noticeList: [],
+      userList: [],
       // 部门 个人（签约，意向）总数
       intentionCount: {
         myStudent: 0,
@@ -175,6 +203,20 @@ export default {
         seriesList: []
       },
       evenNoticeListOption: false,
+      agencyOption: false,
+      btnLoading: false,
+      agency: {
+        message: null,
+        recipientId: null
+      },
+      agencyRules: {
+        message: [
+          { required: true, message: '请填写发送内容', trigger: ['blur'] }
+        ],
+        recipientId: [
+          { required: true, message: '请选择接收人', trigger: ['blur'] }
+        ]
+      },
       evenNotice: {
         flag: ''
       }
@@ -182,6 +224,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getUserList()
   },
   methods: {
     evenNoticeList(type) {
@@ -226,6 +269,25 @@ export default {
         // 查询代办 、提醒
         this.getAgency()
         this.evenNoticeListOption = false
+      })
+    },
+    saveAgency(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.btnLoading = true
+          saveAgency(this.agency).then(() => {
+            this.agencyOption = false
+            this.btnLoading = false
+            this.$refs[formName].resetFields()
+          })
+        }
+      })
+    },
+    /* 获取接收人列表 */
+    getUserList() {
+      userList().then(response => {
+        console.log(response.data.data)
+        this.userList = response.data.data
       })
     }
   }
@@ -352,6 +414,14 @@ export default {
         width: 100%;
         border-radius: 5px;
       }
+    }
+    .agency{
+      float: right;
+      color: #bfc4cc;
+      cursor: pointer;
+    }
+    .agency:hover{
+      color: #409eff;
     }
   }
 </style>

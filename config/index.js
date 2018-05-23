@@ -1,6 +1,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 const url = 'http://52.83.97.172:8003'
+const url1 = 'http://127.0.0.1:8003'
 
 
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
-    //productionGzipExtensions: ['js', 'css'],
+    // productionGzipExtensions: ['js', 'css'],
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`

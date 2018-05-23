@@ -225,7 +225,11 @@
           <el-col :span="12">
             <el-form-item prop="applyType">
               <span slot="label" class="text_css">车型</span>
-              <dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+
+              <el-select style="width:100%" size="mini" clearable placeholder="车型" v-model="intention.motorcycleType">
+                <el-option v-for="motorcycleType in $store.state.app.motorcycleTypeList" :key="motorcycleType" :label="motorcycleType" :value="motorcycleType"></el-option>
+              </el-select>
+
             </el-form-item>
           </el-col>
         </el-row>
@@ -354,7 +358,10 @@
                 <el-col :span="12">
                   <el-form-item prop="applyType">
                     <span slot="label" class="text_css">车型</span>
-                    <dict v-if="edit" v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+
+                    <el-select  v-if="edit" style="width:100%" size="mini" clearable placeholder="车型" v-model="intention.motorcycleType">
+                      <el-option v-for="motorcycleType in $store.state.app.motorcycleTypeList" :key="motorcycleType" :label="motorcycleType" :value="motorcycleType"></el-option>
+                    </el-select>
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.applyType}}</div>
                   </el-form-item>
                 </el-col>

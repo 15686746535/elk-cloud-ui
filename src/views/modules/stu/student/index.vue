@@ -39,7 +39,9 @@
                 <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"  ></dict>
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="3" :xl="3">
-                <dict v-model="listQuery.motorcycleType" size="mini" dictType="dict_motorcycle_type" placeholder="车型"  ></dict>
+                <el-select style="width:100%" size="mini" clearable placeholder="车型" v-model="listQuery.motorcycleType">
+                  <el-option v-for="motorcycleType in $store.state.app.motorcycleTypeList" :key="motorcycleType" :label="motorcycleType" :value="motorcycleType"></el-option>
+                </el-select>
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
                 <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
@@ -465,7 +467,9 @@
                       <el-row>
                         <el-form-item prop="motorcycleType">
                           <span slot="label" class="text_css">所学车型:</span>
-                          <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                          <el-select v-if="edit" style="width:100%" size="mini" clearable placeholder="所学车型" v-model="student.motorcycleType">
+                            <el-option v-for="motorcycleType in $store.state.app.motorcycleTypeList" :key="motorcycleType" :label="motorcycleType" :value="motorcycleType"></el-option>
+                          </el-select>
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                         </el-form-item>
                       </el-row>
@@ -1069,7 +1073,11 @@
               <el-row >
                 <el-form-item prop="motorcycleType">
                   <span slot="label"  class="text_css">所学车型</span>
-                  <dict size="mini" v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+
+                  <el-select style="width:100%" size="mini" clearable placeholder="所学车型" v-model="studentEntity.motorcycleType">
+                    <el-option v-for="motorcycleType in $store.state.app.motorcycleTypeList" :key="motorcycleType" :label="motorcycleType" :value="motorcycleType"></el-option>
+                  </el-select>
+
                 </el-form-item>
               </el-row>
 
@@ -1738,42 +1746,6 @@
       },
       // 新增
       create() {
-        /*this.studentEntity = {
-          intentionId: null,
-          archivesNumber: null,
-          name: null,
-          sex: null,
-          idNumber: null,
-          birthday: null,
-          mobile: null,
-          phone: null,
-          email: null,
-          wechat: null,
-          avatar: null,
-          contactAddress: null,
-          campus: null,
-          company: null,
-          position: null,
-          enrolTime: null,
-          periods: null,
-          studyTime: null,
-          latitude: null,
-          longitude: null,
-          physicalExamination: null,
-          haveCar: null,
-          addDrive: null,
-          state: null,
-          graduationTime: null,
-          periodOfValidity: null,
-          aboardTime: null,
-          incrementList: [],
-          introducerList: [],
-          serviceType: null,
-          arrearage: null,
-          enrolSite: null,
-          source: null,
-          motorcycleType: null
-        }*/
         this.isCreate = true
         this.edit = true
         this.getIntroducerList()

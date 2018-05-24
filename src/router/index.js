@@ -60,7 +60,8 @@ export const asyncRouterMap = [
     children: [
       { menuId: 10100, path: 'menu', component: _import('modules/sys/menu/index'), name: '菜单管理', isShow: true, meta: { title: '菜单管理', icon: 'menu' }},
       { menuId: 10200, path: 'swagger', component: _import('modules/sys/monitor/swagger'), name: '接口文档', isShow: true, meta: { title: '接口文档', icon: 'menu' }},
-      { menuId: 10300, path: 'configure', component: _import('modules/sys/configure/index'), name: '配置信息', isShow: true, meta: { title: '配置信息', icon: 'menu' }}
+      { menuId: 10300, path: 'configure', component: _import('modules/sys/configure/index'), name: '配置信息', isShow: true, meta: { title: '配置信息', icon: 'menu' }},
+      { menuId: 10400, path: 'monitor', component: _import('modules/sys/monitor/monitor'), name: '服务监控', isShow: true, meta: { title: '服务监控', icon: 'menu' }}
     ]
   },
   {

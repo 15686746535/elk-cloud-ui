@@ -1967,6 +1967,7 @@
         this.editList(this.student)
         this.examBespeak.examId = null
         this.dialogFormBespeak = false
+        this.btnLoading = false
         this.besCarDialog = false
       },
       /* 约考 */

@@ -16,153 +16,153 @@
         </div>
       </div>
 
-      <el-col style="border: 1px solid #1f2d3d;font-size: 12px;" v-loading="infoLoading" element-loading-text="T T 别急,一会儿就好~">
-        <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d;font-size: 12px;">
-          <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-            {{new Date().getFullYear()}}年{{new Date().getMonth()}}月{{new Date().getDate()}}日
-          </el-col>
-          <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-            <span class="text_css">校区：{{student.campus}}</span>
-          </el-col>
-          <el-col :span="6" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-            <el-radio-group v-model="stuServiceBuyNoteEntity.receivablesType">
-              <el-radio label="全款"></el-radio>
-              <el-radio label="定金"></el-radio>
-              <el-radio label="定转全"></el-radio>
-            </el-radio-group>
+      <div v-loading="infoLoading" element-loading-text="T T 别急,一会儿就好~">
 
-          </el-col>
-          <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-            <span class="text_css">姓名：{{student.name}}</span>
-          </el-col>
-          <el-col :span="7" style="line-height: 50px;padding: 0 10px">
+        <el-col style="border: 1px solid #1f2d3d;font-size: 12px;">
+          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d;font-size: 12px;">
+            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              {{new Date().getFullYear()}}年{{new Date().getMonth()}}月{{new Date().getDate()}}日
+            </el-col>
+            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <span class="text_css">校区：{{student.campus}}</span>
+            </el-col>
+            <el-col :span="6" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <el-radio-group v-model="stuServiceBuyNoteEntity.receivablesType">
+                <el-radio label="全款"></el-radio>
+                <el-radio label="定金"></el-radio>
+                <el-radio label="定转全"></el-radio>
+              </el-radio-group>
 
-            <span class="text_css">身份证：{{student.idNumber}}</span>
+            </el-col>
+            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <span class="text_css">姓名：{{student.name}}</span>
+            </el-col>
+            <el-col :span="7" style="line-height: 50px;padding: 0 10px">
 
-          </el-col>
-        </el-row>
+              <span class="text_css">身份证：{{student.idNumber}}</span>
 
+            </el-col>
+          </el-row>
 
-
-        <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
-          <el-col :span="1" style="padding: 0 10px;">
-            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">项目</div>
-          </el-col>
-          <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
-            <el-row style="line-height: 30px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-              <span class="text_css">车型：{{student.motorcycleType}}</span>
-            </el-row>
-            <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-              <el-col class="text_css" :span="1">
-                <span >代收费：</span>
-              </el-col>
-              <el-col :span="23">
-                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                  <el-checkbox v-for="finance in evenFinanceList('001')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                    {{finance.name}} {{finance.price}}元
-                    <span v-if="finance.priceType === '1'">
+          <!-- 项目 -->
+          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
+            <el-col :span="1" style="padding: 0 10px;">
+              <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">项目</div>
+            </el-col>
+            <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
+              <el-row style="line-height: 30px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <span class="text_css">车型：{{student.motorcycleType}}</span>
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <el-col class="text_css" :span="1">
+                  <span >代收费：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('001')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
                       /份*&nbsp;<input @change="calculation" type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
                                                                  outline:none;
                                                                  width: 50px;
                                                                  border-bottom: #dcdfe6 1px solid;
                                                                  font-size: 12px;"/>份
                     </span>
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-col>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
 
-            </el-row>
-            <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-              <el-col class="text_css" :span="1">
-                <span >培训费：</span>
-              </el-col>
-              <el-col :span="23">
-                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                  <el-checkbox v-for="finance in evenFinanceList('002')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                    {{finance.name}} {{finance.price}}元
-                    <span v-if="finance.priceType === '1'">
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <el-col class="text_css" :span="1">
+                  <span >培训费：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('002')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
                       /份*&nbsp;<input @change="calculation" type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
                                                                  outline:none;
                                                                  width: 50px;
                                                                  border-bottom: #dcdfe6 1px solid;
                                                                  font-size: 12px;"/>份
                     </span>
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-col>
-            </el-row>
-            <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-              <el-col class="text_css" :span="1">
-                <span >服务包：</span>
-              </el-col>
-              <el-col :span="23">
-                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                  <el-checkbox v-for="finance in evenFinanceList('003')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                    {{finance.name}} {{finance.price}}元
-                    <span v-if="finance.priceType === '1'">
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <el-col class="text_css" :span="1">
+                  <span >服务包：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('003')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
                     /份*&nbsp;<input @change="calculation"  type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
                                                                outline:none;
                                                                width: 50px;
                                                                border-bottom: #dcdfe6 1px solid;
                                                                font-size: 12px;"/>份
                     </span>
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-col>
-            </el-row>
-            <el-row style="line-height: 40px;padding: 0 10px;">
-              <el-col class="text_css" :span="1">
-                <span >优惠包：</span>
-              </el-col>
-              <el-col :span="23">
-                <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                  <el-checkbox v-for="finance in evenFinanceList('004')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                    {{finance.name}} {{finance.price}}元
-                    <span v-if="finance.priceType === '1'">
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;">
+                <el-col class="text_css" :span="1">
+                  <span >优惠包：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('004')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
                       /份*&nbsp;<input @change="calculation"  type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
                                                                  outline:none;
                                                                  width: 50px;
                                                                  border-bottom: #dcdfe6 1px solid;
                                                                  font-size: 12px;"/>份
                     </span>
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
 
+          <!-- 收款 -->
+          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
+            <el-col :span="1" style="padding: 0 10px;">
+              <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">收款</div>
+            </el-col>
+            <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
+              <el-row style="line-height: 50px;padding: 0 10px">
+                <div class="text_css" style="width: 150px;float: left">
+                  原价：￥{{stuServiceBuyNoteEntity.originalPrice}}
+                </div>
 
-        <!-- 收款 -->
-        <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
-          <el-col :span="1" style="padding: 0 10px;">
-            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">收款</div>
-          </el-col>
-          <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
-            <el-row style="line-height: 50px;padding: 0 10px">
-              <div class="text_css" style="width: 150px;float: left">
-                原价：￥{{stuServiceBuyNoteEntity.originalPrice}}
-              </div>
+                <div v-if="stuServiceBuyNoteEntity.activityPrice !== stuServiceBuyNoteEntity.originalPrice" class="text_css" style="width: 150px;float: left">
+                  活动价：￥{{stuServiceBuyNoteEntity.activityPrice}}
+                </div>
 
-              <div v-if="stuServiceBuyNoteEntity.activityPrice !== stuServiceBuyNoteEntity.originalPrice" class="text_css" style="width: 150px;float: left">
-                活动价：￥{{stuServiceBuyNoteEntity.activityPrice}}
-              </div>
+              </el-row>
+              <el-row style="line-height: 50px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <div class="text_css" style="width: 150px;float: left">已收定金：￥</div>
 
-            </el-row>
-            <el-row style="line-height: 50px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-              <div class="text_css" style="width: 150px;float: left">已收定金：￥</div>
+                <div class="text_css" style="width: 150px;float: left">
+                  本次实收金额：￥{{stuServiceBuyNoteEntity.realPrice}}
+                </div>
 
-              <div class="text_css" style="width: 150px;float: left">
-                本次实收金额：￥{{stuServiceBuyNoteEntity.realPrice}}
-              </div>
-
-              <div class="text_css" style="float: left">，人名币大写：{{stuServiceBuyNoteEntity.realPrice | smalltoBIG}}</div>
-            </el-row>
-            <el-row  class="text_css"  style="line-height: 50px;padding: 0 10px">
-              <el-col :span="2">
-                <span >本次收款方式：</span>
-              </el-col>
-              <el-col :span="22">
+                <div class="text_css" style="float: left">，人名币大写：{{stuServiceBuyNoteEntity.realPrice | smalltoBIG}}</div>
+              </el-row>
+              <el-row  class="text_css"  style="line-height: 50px;padding: 0 10px">
+                <el-col :span="2">
+                  <span >本次收款方式：</span>
+                </el-col>
+                <el-col :span="22">
                 <span v-for="(payType,index) in payTypeList">
                   <span>
                     {{payType.mode}}：
@@ -175,34 +175,231 @@
                                                                color: #606266;"/>元
                   <span v-if="payTypeList.length !== (index+1)">，</span>
                 </span>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
 
 
-        <el-row :gutter="5" style="line-height: 50px;padding: 0 10px;border-top: none;font-size: 12px;height: 100%">
-          <el-col :span="6" style="border-right: 1px solid #1f2d3d;text-align: center">
-            <el-checkbox  v-model="student.receivablesType" label="学时卡已发放"></el-checkbox>
-            <el-checkbox v-model="student.receivablesType" label="体检表已发放"></el-checkbox>
-          </el-col>
-          <el-col :span="5" style="border-right: 1px solid #1f2d3d;">
+          <el-row :gutter="5" style="line-height: 50px;padding: 0 10px;border-top: none;font-size: 12px;height: 100%">
+            <el-col :span="6" style="border-right: 1px solid #1f2d3d;text-align: center">
+              <el-checkbox  v-model="student.receivablesType" label="学时卡已发放"></el-checkbox>
+              <el-checkbox v-model="student.receivablesType" label="体检表已发放"></el-checkbox>
+            </el-col>
+            <el-col :span="5" style="border-right: 1px solid #1f2d3d;">
             <span class="text_css">销售员：
               <span v-for="(introducerName,index) in student.introducerNameList">
                 {{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span>
               </span>
             </span>
-          </el-col>
-          <el-col :span="13">
-            <el-row>
-              <el-col :span="2">备注：</el-col>
-              <el-col :span="21"><input v-model="stuServiceBuyNoteEntity.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
-            </el-row>
-          </el-col>
-        </el-row>
+            </el-col>
+            <el-col :span="13">
+              <el-row>
+                <el-col :span="2">备注：</el-col>
+                <el-col :span="21"><input v-model="stuServiceBuyNoteEntity.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
+              </el-row>
+            </el-col>
+          </el-row>
 
-      </el-col>
+        </el-col>
+
+      </div>
+
+      <div id="pppppppp" v-show="false">
+
+        <el-col style="border: 1px solid #1f2d3d;font-size: 12px;">
+          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d;font-size: 12px;">
+            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              {{new Date().getFullYear()}}年{{new Date().getMonth()}}月{{new Date().getDate()}}日
+            </el-col>
+            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <span class="text_css">校区：{{student.campus}}</span>
+            </el-col>
+            <el-col :span="6" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <el-radio-group v-model="stuServiceBuyNoteEntity.receivablesType">
+                <el-radio label="全款"></el-radio>
+                <el-radio label="定金"></el-radio>
+                <el-radio label="定转全"></el-radio>
+              </el-radio-group>
+
+            </el-col>
+            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <span class="text_css">姓名：{{student.name}}</span>
+            </el-col>
+            <el-col :span="7" style="line-height: 50px;padding: 0 10px">
+
+              <span class="text_css">身份证：{{student.idNumber}}</span>
+
+            </el-col>
+          </el-row>
+
+          <!-- 项目 -->
+          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
+            <el-col :span="1" style="padding: 0 10px;">
+              <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">项目</div>
+            </el-col>
+            <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
+              <el-row style="line-height: 30px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <span class="text_css">车型：{{student.motorcycleType}}</span>
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <el-col class="text_css" :span="1">
+                  <span >代收费：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('001')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
+                      /份*&nbsp;<input @change="calculation" type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
+                                                                 outline:none;
+                                                                 width: 50px;
+                                                                 border-bottom: #dcdfe6 1px solid;
+                                                                 font-size: 12px;"/>份
+                    </span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
+
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <el-col class="text_css" :span="1">
+                  <span >培训费：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('002')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
+                      /份*&nbsp;<input @change="calculation" type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
+                                                                 outline:none;
+                                                                 width: 50px;
+                                                                 border-bottom: #dcdfe6 1px solid;
+                                                                 font-size: 12px;"/>份
+                    </span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <el-col class="text_css" :span="1">
+                  <span >服务包：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('003')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
+                    /份*&nbsp;<input @change="calculation"  type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
+                                                               outline:none;
+                                                               width: 50px;
+                                                               border-bottom: #dcdfe6 1px solid;
+                                                               font-size: 12px;"/>份
+                    </span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
+              </el-row>
+              <el-row style="line-height: 40px;padding: 0 10px;">
+                <el-col class="text_css" :span="1">
+                  <span >优惠包：</span>
+                </el-col>
+                <el-col :span="23">
+                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
+                    <el-checkbox v-for="finance in evenFinanceList('004')" :label="finance" :disabled="!flag" :key="finance.categoryId">
+                      {{finance.name}} {{finance.price}}元
+                      <span v-if="finance.priceType === '1'">
+                      /份*&nbsp;<input @change="calculation"  type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
+                                                                 outline:none;
+                                                                 width: 50px;
+                                                                 border-bottom: #dcdfe6 1px solid;
+                                                                 font-size: 12px;"/>份
+                    </span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+
+          <!-- 收款 -->
+          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
+            <el-col :span="1" style="padding: 0 10px;">
+              <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">收款</div>
+            </el-col>
+            <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
+              <el-row style="line-height: 50px;padding: 0 10px">
+                <div class="text_css" style="width: 150px;float: left">
+                  原价：￥{{stuServiceBuyNoteEntity.originalPrice}}
+                </div>
+
+                <div v-if="stuServiceBuyNoteEntity.activityPrice !== stuServiceBuyNoteEntity.originalPrice" class="text_css" style="width: 150px;float: left">
+                  活动价：￥{{stuServiceBuyNoteEntity.activityPrice}}
+                </div>
+
+              </el-row>
+              <el-row style="line-height: 50px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+                <div class="text_css" style="width: 150px;float: left">已收定金：￥</div>
+
+                <div class="text_css" style="width: 150px;float: left">
+                  本次实收金额：￥{{stuServiceBuyNoteEntity.realPrice}}
+                </div>
+
+                <div class="text_css" style="float: left">，人名币大写：{{stuServiceBuyNoteEntity.realPrice | smalltoBIG}}</div>
+              </el-row>
+              <el-row  class="text_css"  style="line-height: 50px;padding: 0 10px">
+                <el-col :span="2">
+                  <span >本次收款方式：</span>
+                </el-col>
+                <el-col :span="22">
+                <span v-for="(payType,index) in payTypeList">
+                  <span>
+                    {{payType.mode}}：
+                  </span>
+                  <input @change="actualMoneyCalculation" type="number" v-model.number="payType.money" style="border: none;
+                                                               outline:none;
+                                                               width: 50px;
+                                                               border-bottom: #dcdfe6 1px solid;
+                                                               font-size: 12px;
+                                                               color: #606266;"/>元
+                  <span v-if="payTypeList.length !== (index+1)">，</span>
+                </span>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+
+
+          <el-row :gutter="5" style="line-height: 50px;padding: 0 10px;border-top: none;font-size: 12px;height: 100%">
+            <el-col :span="6" style="border-right: 1px solid #1f2d3d;text-align: center">
+              <el-checkbox  v-model="student.receivablesType" label="学时卡已发放"></el-checkbox>
+              <el-checkbox v-model="student.receivablesType" label="体检表已发放"></el-checkbox>
+            </el-col>
+            <el-col :span="5" style="border-right: 1px solid #1f2d3d;">
+            <span class="text_css">销售员：
+              <span v-for="(introducerName,index) in student.introducerNameList">
+                {{introducerName}}<span v-if="student.introducerNameList.length !== (index+1)">、</span>
+              </span>
+            </span>
+            </el-col>
+            <el-col :span="13">
+              <el-row>
+                <el-col :span="2">备注：</el-col>
+                <el-col :span="21"><input v-model="stuServiceBuyNoteEntity.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+
+        </el-col>
+
+
+      </div>
+
+
       <div style="float: right;margin-top: 20px;">
+        <span style="cursor: pointer" @click="createOneFormPage">
+          <i class="el-icon-printer"></i>
+        </span>
         <el-button v-if="stuServiceBuyNoteEntity.studentId" type="primary" :loading="btnLoading" @click="stuBuyServiceNote"><i class="el-icon-fa-save"></i> 提 交</el-button>
       </div>
 
@@ -222,6 +419,7 @@
   import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
   import { queryMoneyListById, saveServiceCharge, twoPayment } from '@/api/finance/service-charge'
   import { mapGetters } from 'vuex'
+  import { getLodop } from '@/utils/LodopFuncs'
   import { fetchStudentList, getStudent } from '@/api/student/student'
   import { userList } from '@/api/upms/user'
 
@@ -495,6 +693,15 @@
             money: null
           }
         ]
+      },
+      createOneFormPage(){
+        LODOP = getLodop()
+        LODOP.PRINT_INIT('打印控件功能演示_Lodop功能_表单一')
+        LODOP.SET_PRINT_STYLE("FontSize",18)
+        LODOP.SET_PRINT_STYLE("Bold",1)
+        LODOP.ADD_PRINT_TEXT(50,231,260,39,"打印页面部分内容")
+        LODOP.ADD_PRINT_HTM(88,200,350,600,document.getElementById("pppppppp").innerHTML)
+        LODOP.PREVIEW()
       }
     }
   }

@@ -190,6 +190,7 @@ export default {
         legend: [],
         value: []
       },
+      userList: [],
       // 本周意向展示
       weekData: {
         colors: [],

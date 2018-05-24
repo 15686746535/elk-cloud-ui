@@ -21,8 +21,13 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" size="mini" clearable placeholder="车型" v-model="listQuery.motorcycleType">
-              <el-option v-for="motorcycleType in $store.state.app.motorcycleTypeList" :key="motorcycleType" :label="motorcycleType" :value="motorcycleType"></el-option>
+            <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.motorcycleType" clearable placeholder="车型">
+              <el-option
+                v-for="item in $store.state.app.motorcycleType"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
             </el-select>
             <dict v-model="listQuery.enrolSite" dictType="dict_enrolSite" :style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="报名点"  ></dict>
             <Coach v-model="listQuery.fieldCoach" coachType="field":style="{width: ($store.state.app.client.width/7) + 'px'}"  placeholder="场训教练"  ></Coach>

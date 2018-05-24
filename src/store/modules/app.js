@@ -6,7 +6,8 @@ const app = {
       opened: !+Cookies.get('sidebarStatus')
     },
     visitedViews: [],
-    motorcycleTypeList: ['A1','A2','A3','B1','B2','C1','C2','C3','C4','M'],
+    iFrameUrl: 'http://52.83.97.172',
+    motorcycleType: ['C1','C2','C3','C4','A1','A2','A3','B1','B2','D','E','F','M','N','P'],
     loading: false,
     spread: false,
     client: {

@@ -270,10 +270,16 @@
           type: 'info'
         }).then(() => {
           putIntention(this.intentionList).then(() => {
-            this.$message({
-              type: 'success',
-              message: '分配成功'
-            })
+            // this.$message({
+            //   type: 'success',
+            //   message: '分配成功'
+            // })
+
+            var a = document.getElementsByClassName('intention')
+            for (var i = 0; i < a.length; i++) {
+              a[i].classList.remove('intention_selected')
+            }
+            this.intentionList.intentionIds = []
             this.getList()
           })
         }).catch(() => {

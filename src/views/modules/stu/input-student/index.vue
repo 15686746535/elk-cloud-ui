@@ -83,11 +83,15 @@
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">所学车型</span></el-col>
                     <el-col :span="18">
-
-                      <el-select style="width:100%" size="mini" clearable placeholder="所学车型" v-model="studentEntity.motorcycleType">
-                        <el-option v-for="motorcycleType in $store.state.app.motorcycleTypeList" :key="motorcycleType" :label="motorcycleType" :value="motorcycleType"></el-option>
+                      <el-select style="width: 100%" v-model="studentEntity.motorcycleType" clearable placeholder="车型">
+                        <el-option
+                          v-for="item in $store.state.app.motorcycleType"
+                          :key="item"
+                          :label="item"
+                          :value="item">
+                        </el-option>
                       </el-select>
-
+                      <!--<dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>-->
                     </el-col>
                   </el-row>
 

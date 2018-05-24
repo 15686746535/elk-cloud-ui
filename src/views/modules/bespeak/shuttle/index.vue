@@ -148,73 +148,10 @@
                 >
                 </el-pagination>
                 <div style="float: right;" >
-                  <!--<el-button type="primary" size="mini" @click="getStudentList"><i class="el-icon-plus"></i> 添 加</el-button>-->
                   <el-button type="primary" size="mini" @click="shuttleClick"><i class="el-icon-fa-bus"></i> 接 送</el-button>
                 </div>
 
               </div>
-
-              <!--<el-dialog :close-on-click-modal="false" width="700px" title="添加接送学员" :visible.sync="addStudentOption">
-                <el-row>
-                  <div class="filter-container">
-                    &lt;!&ndash;<div style="float: left;line-height: 28px">&ndash;&gt;
-                    &lt;!&ndash;|&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>&ndash;&gt;
-                    &lt;!&ndash;</div>&ndash;&gt;
-                    <div style="float: right">
-                      <el-input @keyup.enter.native="studentHandleCurrentChange(1)" size="mini" style="width: 180px" class="filter-item" placeholder="接送人/接送名单" v-model="studentListQuery.condition"></el-input>
-                      <el-button class="filter-item" type="primary" size="mini" @click="studentHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>
-                    </div>
-                  </div>
-                  <el-table :data="studentList" :height="($store.state.app.client.height - 420)" border style="width: 100%"
-                            @selection-change="handleSelectionChange" highlight-current-row v-loading="studentListLoading" element-loading-text="给我一点时间">
-                    <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-                    <el-table-column type="index" align="center" label="编号" width="50">
-                    </el-table-column>
-                    <el-table-column align="center" label="姓名">
-                      <template slot-scope="scope">
-                        <span>{{scope.row.name}}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="电话" width="120">
-                      <template slot-scope="scope">
-                        <span>{{scope.row.mobile}}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="详细地址">
-                      <template slot-scope="scope">
-                        <span>{{scope.row.relayAddress}}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="常接送人">
-                      <template slot-scope="scope">
-                        <span>{{scope.row.studentName}}</span>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-
-                  <div class="pagination-container" style="margin-top: 12px;">
-                    <el-pagination
-                      @current-change="studentHandleCurrentChange"
-                      layout="prev, pager, next"
-                      style="float: left"
-                      :current-page="studentListQuery.page"
-                      :page-size="studentListQuery.limit"
-                      :total="studentListTotal"
-                    >
-                    </el-pagination>
-                  </div>
-                </el-row>
-                <el-row style="margin-top: 10px;">
-                  <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
-                    <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
-                    </el-option>
-                  </el-select>
-                </el-row>
-                <div slot="footer">
-                  <el-button @click="addStudentOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-                  <el-button type="primary" @click="addStudent">确 定</el-button>
-                </div>
-              </el-dialog>-->
 
               <!-- 添加接送信息 -->
               <el-dialog :close-on-click-modal="false" width="450px" title="请选择接送人" :visible.sync="userListOption">
@@ -224,8 +161,8 @@
                 </el-select>
                 <div slot="footer">
                   <el-button @click="userListOption = false"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-                  <el-button type="primary" v-show="isAdd" @click="addStudent">确 定</el-button>
-                  <el-button type="primary" v-show="!isAdd" @click="updateShuttleStudent">确 定</el-button>
+                  <el-button type="primary" v-show="isAdd" :loading="btnLoading" @click="addStudent">确 定</el-button>
+                  <el-button type="primary" v-show="!isAdd" :loading="btnLoading" @click="updateShuttleStudent">确 定</el-button>
                 </div>
               </el-dialog>
             </el-card>
@@ -239,10 +176,6 @@
                 <div style="float: left;line-height: 28px">
                   |&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">已安排名单</span>
                 </div>
-                <!--<div style="float: right">-->
-                  <!--<el-input @keyup.enter.native="shuttledHandleCurrentChange(1)" size="mini" style="width: 200px" class="filter-item" placeholder="接送人/接送名单" v-model="shuttledListQuery.condition"></el-input>-->
-                  <!--<el-button class="filter-item" type="primary" size="mini" @click="shuttledHandleCurrentChange(1)"><i class="el-icon-search"></i>搜索</el-button>-->
-                <!--</div>-->
               </div>
 
               <el-table :data="shuttledList"  :height="($store.state.app.client.height-260)"  v-loading="shuttledListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
@@ -293,11 +226,6 @@
                     <span>{{scope.row.shuttleTime | subTime}}</span>
                   </template>
                 </el-table-column>
-                <!--<el-table-column align="center" label="操作">-->
-                  <!--<template slot-scope="scope">-->
-                    <!--<el-button type="danger" size="mini"><i class="el-icon-delete"></i> 删 除</el-button>-->
-                  <!--</template>-->
-                <!--</el-table-column>-->
 
 
               </el-table>
@@ -308,10 +236,6 @@
                                :page-sizes="[10,20,30, 50]" :page-size="shuttledListQuery.limit"
                                layout="total, sizes, prev, pager, next, jumper" :total="shuttledTotal">
                 </el-pagination>
-                <!--<div style="float: right;" >-->
-                  <!--<el-button type="primary" size="mini"><i class="el-icon-plus"></i> 添 加</el-button>-->
-                  <!--<el-button type="primary" size="mini"><i class="el-icon-fa-bus"></i> 接 送</el-button>-->
-                <!--</div>-->
               </div>
 
 
@@ -357,6 +281,7 @@
         shuttledListLoading: false,
         userList: [],
         userListOption: false,
+        btnLoading: false,
         studentListLoading: false,
         studentList: [],
         studentListTotal: null,
@@ -523,9 +448,11 @@
           this.$message.warning('请选择接送人')
         } else {
           console.log(this.shuttle)
+          this.btnLoading = true
           addShuttleStudent(this.shuttle).then(() => {
             this.userListOption = false
             this.addStudentOption = false
+            this.btnLoading = false
             this.getNotShuttleList()
             this.getShuttledList()
           })
@@ -543,8 +470,10 @@
         if (this.shuttle.userId === null) {
           this.$message.warning('请选择接送人')
         } else {
+          this.btnLoading = true
           putShuttleStudent(this.shuttle).then(() => {
             this.userListOption = false
+            this.btnLoading = false
             this.addStudentOption = false
             this.getNotShuttleList()
             this.getShuttledList()

@@ -59,7 +59,7 @@
         <el-table-column align="center" label="操作" width="240">
           <template slot-scope="scope">
             <!--<el-button-group>-->
-              <el-button size="mini" type="success" @click="see(scope.row.examId, studentListQuery.state)" plain>查 看</el-button>
+              <el-button size="mini" type="success" @click="see(scope.row.examId, studentListQuery.examineState)" plain>查 看</el-button>
               <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
             <!--</el-button-group>-->
@@ -303,20 +303,20 @@
       <div slot="footer" style="margin-top: -30px">
 
         <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
-        <el-button-group v-if="studentListQuery.state === '0'">
+        <el-button-group v-if="studentListQuery.examineState === '0'">
           <el-button @click="operation('5','examCancel')" size="small" type="danger" round>失败</el-button>
           <el-button @click="operation('1','examExamine')" size="small" type="success" round>通过</el-button>
         </el-button-group>
-        <el-button-group v-else-if="studentListQuery.state === '1'">
+        <el-button-group v-else-if="studentListQuery.examineState === '1'">
           <el-button @click="operation('0','examCancel')" size="small" type="info" round>撤销</el-button>
           <el-button @click="operation('2','examExamine')" size="small" type="success" round>已约</el-button>
         </el-button-group>
-        <el-button-group v-else-if="studentListQuery.state === '2'">
+        <el-button-group v-else-if="studentListQuery.examineState === '2'">
           <el-button @click="operation('4','examExamine')" size="small" type="danger" round>失败</el-button>
           <el-button @click="operation('1','examCancel')" size="small" type="info" round>撤销</el-button>
           <el-button @click="operation('3','examExamine')" size="small" type="success" round>成功</el-button>
         </el-button-group>
-        <el-button-group v-else-if="studentListQuery.state === '3'">
+        <el-button-group v-else-if="studentListQuery.examineState === '3'">
           <el-button @click="operation('6','examCancel')" size="small" type="danger" round>取消约考</el-button>
           <el-button type="primary" size="small" @click="exportExamList" round>导出名单</el-button>
         </el-button-group>

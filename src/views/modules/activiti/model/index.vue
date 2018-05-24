@@ -145,7 +145,7 @@
       designFlow(modelId) {
         console.log('========== 设计流程图 busSet ====================')
         console.log(modelId)
-        this.url = 'http://127.0.0.1:8114/model/create?modelId=' + modelId + '&token=' + getToken()
+        this.url = this.$store.state.app.client.iFrameUrl + ':8114/model/create?modelId=' + modelId + '&token=' + getToken()
         this.showPlate = 'design'
       },
       delModel(modelId) {

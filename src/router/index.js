@@ -60,7 +60,8 @@ export const asyncRouterMap = [
     children: [
       { menuId: 10100, path: 'menu', component: _import('modules/sys/menu/index'), name: '菜单管理', isShow: true, meta: { title: '菜单管理', icon: 'menu' }},
       { menuId: 10200, path: 'swagger', component: _import('modules/sys/monitor/swagger'), name: '接口文档', isShow: true, meta: { title: '接口文档', icon: 'menu' }},
-      { menuId: 10300, path: 'configure', component: _import('modules/sys/configure/index'), name: '配置信息', isShow: true, meta: { title: '配置信息', icon: 'menu' }}
+      { menuId: 10300, path: 'configure', component: _import('modules/sys/configure/index'), name: '配置信息', isShow: true, meta: { title: '配置信息', icon: 'menu' }},
+      { menuId: 10400, path: 'monitor', component: _import('modules/sys/monitor/monitor'), name: '服务监控', isShow: true, meta: { title: '服务监控', icon: 'menu' }}
     ]
   },
   {
@@ -115,7 +116,7 @@ export const asyncRouterMap = [
       { menuId: 40500, path: 'service-category', component: _import('modules/basis/service-category/index'), name: '收费服务设置', isShow: true, meta: { title: '收费服务设置', icon: 'menu' }},
       { menuId: 40600, path: 'revisit-question', component: _import('modules/basis/revisit-question/index'), name: '回访问题设置', isShow: true, meta: { title: '回访问题设置', icon: 'menu' }},
       { menuId: 40700, path: 'source', component: _import('modules/basis/source/index'), name: '来源渠道设置', isShow: true, meta: { title: '来源渠道设置', icon: 'menu' }},
-      { menuId: 40800, path: 'mc-model', component: _import('modules/basis/mc-model/index'), name: '短信模板设置', isShow: true, meta: { title: '短信模板设置', icon: 'menu' }},
+      // { menuId: 40800, path: 'mc-model', component: _import('modules/basis/mc-model/index'), name: '短信模板设置', isShow: true, meta: { title: '短信模板设置', icon: 'menu' }},
       { menuId: 40900, path: 'worry', component: _import('modules/basis/worry/index'), name: '顾虑问题设置', isShow: true, meta: { title: '顾虑问题设置', icon: 'menu' }},
       { menuId: 41000, path: 'exam-dot', component: _import('modules/basis/exam-dot/index'), name: '考试场地设置', isShow: true, meta: { title: '考试场地设置', icon: 'menu' }},
       { menuId: 41200, path: 'training-dot', component: _import('modules/basis/training-dot/index'), name: '训练场地设置', isShow: true, meta: { title: '训练场地设置', icon: 'menu' }},
@@ -207,19 +208,19 @@ export const asyncRouterMap = [
       { menuId: 90400, path: 'business', component: _import('modules/activiti/business/index'), name: '业务设置', isShow: true, meta: { title: '业务设置', icon: 'menu' }}
     ]
   },
-  {
-    menuId: 100000,
-    path: '/file',
-    component: Layout,
-    isShow: true,
-    meta: {
-      title: '文件管理',
-      icon: 'menu'
-    },
-    children: [
-      { menuId: 100100, path: 'manage', component: _import('modules/file-manage/file-share/index'), name: '共享文件', isShow: true, meta: { title: '共享文件', icon: 'menu' }}
-    ]
-  },
+  // {
+  //   menuId: 100000,
+  //   path: '/file',
+  //   component: Layout,
+  //   isShow: true,
+  //   meta: {
+  //     title: '文件管理',
+  //     icon: 'menu'
+  //   },
+  //   children: [
+      // { menuId: 100100, path: 'manage', component: _import('modules/file-manage/file-share/index'), name: '共享文件', isShow: true, meta: { title: '共享文件', icon: 'menu' }}
+  //   ]
+  // },
   {
     menuId: 110000,
     path: '/qrtz',

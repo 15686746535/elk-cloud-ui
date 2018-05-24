@@ -1,4 +1,4 @@
-<template xmlns:v-popover="http://www.w3.org/1999/xhtml">
+<template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <!--<el-card style="margin-bottom: 5px;height: 80px">-->
       <!--<el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加-->
@@ -69,8 +69,8 @@
           <el-input type="number" v-model.number="serviceCategory.price" placeholder="价格" ></el-input>
         </el-form-item>
         <el-form-item label="收费类型" prop="priceType">
-          <el-radio v-model="serviceCategory.priceType" label="0">一次性收费</el-radio>
-          <el-radio v-model="serviceCategory.priceType" label="1">可重复收费</el-radio>
+          <el-radio v-model="serviceCategory.priceType" label="0">单次收费</el-radio>
+          <el-radio v-model="serviceCategory.priceType" label="1">多次收费</el-radio>
         </el-form-item>
         <el-form-item label="服务类型" prop="code">
           <el-select v-model="serviceCategory.code" style="width: 100%" placeholder="请选择服务类型">
@@ -180,8 +180,8 @@
       },
       priceTypeFilter(status) {
         const statusMap = {
-          '0': '一次性收费',
-          '1': '可重复收费'
+          '0': '单次收费',
+          '1': '多次收费'
         }
         return statusMap[status]
       }

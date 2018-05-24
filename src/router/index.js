@@ -116,7 +116,7 @@ export const asyncRouterMap = [
       { menuId: 40500, path: 'service-category', component: _import('modules/basis/service-category/index'), name: '收费服务设置', isShow: true, meta: { title: '收费服务设置', icon: 'menu' }},
       { menuId: 40600, path: 'revisit-question', component: _import('modules/basis/revisit-question/index'), name: '回访问题设置', isShow: true, meta: { title: '回访问题设置', icon: 'menu' }},
       { menuId: 40700, path: 'source', component: _import('modules/basis/source/index'), name: '来源渠道设置', isShow: true, meta: { title: '来源渠道设置', icon: 'menu' }},
-      { menuId: 40800, path: 'mc-model', component: _import('modules/basis/mc-model/index'), name: '短信模板设置', isShow: true, meta: { title: '短信模板设置', icon: 'menu' }},
+      // { menuId: 40800, path: 'mc-model', component: _import('modules/basis/mc-model/index'), name: '短信模板设置', isShow: true, meta: { title: '短信模板设置', icon: 'menu' }},
       { menuId: 40900, path: 'worry', component: _import('modules/basis/worry/index'), name: '顾虑问题设置', isShow: true, meta: { title: '顾虑问题设置', icon: 'menu' }},
       { menuId: 41000, path: 'exam-dot', component: _import('modules/basis/exam-dot/index'), name: '考试场地设置', isShow: true, meta: { title: '考试场地设置', icon: 'menu' }},
       { menuId: 41200, path: 'training-dot', component: _import('modules/basis/training-dot/index'), name: '训练场地设置', isShow: true, meta: { title: '训练场地设置', icon: 'menu' }},

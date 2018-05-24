@@ -208,19 +208,19 @@ export const asyncRouterMap = [
       { menuId: 90400, path: 'business', component: _import('modules/activiti/business/index'), name: '业务设置', isShow: true, meta: { title: '业务设置', icon: 'menu' }}
     ]
   },
-  {
-    menuId: 100000,
-    path: '/file',
-    component: Layout,
-    isShow: true,
-    meta: {
-      title: '文件管理',
-      icon: 'menu'
-    },
-    children: [
-      { menuId: 100100, path: 'manage', component: _import('modules/file-manage/file-share/index'), name: '共享文件', isShow: true, meta: { title: '共享文件', icon: 'menu' }}
-    ]
-  },
+  // {
+  //   menuId: 100000,
+  //   path: '/file',
+  //   component: Layout,
+  //   isShow: true,
+  //   meta: {
+  //     title: '文件管理',
+  //     icon: 'menu'
+  //   },
+  //   children: [
+      // { menuId: 100100, path: 'manage', component: _import('modules/file-manage/file-share/index'), name: '共享文件', isShow: true, meta: { title: '共享文件', icon: 'menu' }}
+  //   ]
+  // },
   {
     menuId: 110000,
     path: '/qrtz',

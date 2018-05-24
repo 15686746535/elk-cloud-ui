@@ -39,7 +39,16 @@
                 <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"  ></dict>
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="3" :xl="3">
-                <dict v-model="listQuery.motorcycleType" size="mini" dictType="dict_motorcycle_type" placeholder="车型"  ></dict>
+
+                <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" placeholder="车型">
+                  <el-option
+                    v-for="item in $store.state.app.motorcycleType"
+                    :key="item"
+                    :label="item"
+                    :value="item">
+                  </el-option>
+                </el-select>
+                <!--<dict v-model="listQuery.motorcycleType" size="mini" dictType="dict_motorcycle_type" placeholder="车型"  ></dict>-->
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
                 <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
@@ -465,7 +474,15 @@
                       <el-row>
                         <el-form-item prop="motorcycleType">
                           <span slot="label" class="text_css">所学车型:</span>
-                          <dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                          <el-select v-if="edit" style="width: 100%" size="mini" v-model="student.motorcycleType" placeholder="车型">
+                            <el-option
+                              v-for="item in $store.state.app.motorcycleType"
+                              :key="item"
+                              :label="item"
+                              :value="item">
+                            </el-option>
+                          </el-select>
+                          <!--<dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>-->
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                         </el-form-item>
                       </el-row>
@@ -1069,7 +1086,15 @@
               <el-row >
                 <el-form-item prop="motorcycleType">
                   <span slot="label"  class="text_css">所学车型</span>
-                  <dict size="mini" v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>
+                  <el-select v-if="edit" style="width: 100%" size="mini" v-model="studentEntity.motorcycleType" placeholder="车型">
+                    <el-option
+                      v-for="item in $store.state.app.motorcycleType"
+                      :key="item"
+                      :label="item"
+                      :value="item">
+                    </el-option>
+                  </el-select>
+                  <!--<dict size="mini" v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>-->
                 </el-form-item>
               </el-row>
 

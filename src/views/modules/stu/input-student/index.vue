@@ -82,7 +82,17 @@
                   <!-- 所学车型 -->
                   <el-row style="height: 50px">
                     <el-col :span="6"><span class="text_css">所学车型</span></el-col>
-                    <el-col :span="18"><dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict></el-col>
+                    <el-col :span="18">
+                      <el-select style="width: 100%" v-model="studentEntity.motorcycleType" placeholder="车型">
+                        <el-option
+                          v-for="item in $store.state.app.motorcycleType"
+                          :key="item"
+                          :label="item"
+                          :value="item">
+                        </el-option>
+                      </el-select>
+                      <!--<dict v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>-->
+                    </el-col>
                   </el-row>
 
                   <!-- 来源渠道 -->

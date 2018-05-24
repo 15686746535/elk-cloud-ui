@@ -225,7 +225,16 @@
           <el-col :span="12">
             <el-form-item prop="applyType">
               <span slot="label" class="text_css">车型</span>
-              <dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+
+              <el-select style="width: 100%" v-model="intention.applyType" placeholder="车型">
+                <el-option
+                  v-for="item in $store.state.app.motorcycleType"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
+              <!--<dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>-->
             </el-form-item>
           </el-col>
         </el-row>
@@ -354,7 +363,16 @@
                 <el-col :span="12">
                   <el-form-item prop="applyType">
                     <span slot="label" class="text_css">车型</span>
-                    <dict v-if="edit" v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>
+
+                    <el-select v-if="edit" style="width: 100%" v-model="intention.applyType" placeholder="车型">
+                      <el-option
+                        v-for="item in $store.state.app.motorcycleType"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                      </el-option>
+                    </el-select>
+                    <!--<dict v-if="edit" v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>-->
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.applyType}}</div>
                   </el-form-item>
                 </el-col>
@@ -382,8 +400,6 @@
                 </el-col>
               </el-row>
 
-              <!-- 分割线 -->
-              <el-row><el-col>&nbsp;</el-col></el-row>
 
               <el-row>
                 <el-col>

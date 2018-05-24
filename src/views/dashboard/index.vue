@@ -62,10 +62,9 @@
               <i class="el-icon-fa-volume-up"> 我的待办 ({{evenNoticeList('1').length}})</i>
           </div>
           <div class="notice-body">
-            <div class="message" :style="{ top: (index9*25) + 'px'}" v-for="(notice,index) in evenNoticeList('1')">
+            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('1')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg" @click="evenNoticeListDialog(notice,'未办理')" :title="notice.message">{{index9 +
-                1}}.{{notice.message}}</div>
+              <div class="msg" @click="evenNoticeListDialog(notice,'未办理')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>
@@ -87,10 +86,9 @@
               <i class="el-icon-fa-bell"> 提醒 ({{evenNoticeList('2').length}})</i>
           </div>
           <div class="notice-body">
-            <div class="message" :style="{ top: (index9*25) + 'px'}" v-for="(notice,index) in evenNoticeList('2')">
+            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('2')">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
-              <div class="msg"  @click="evenNoticeListDialog(notice,'通知')" :title="notice.message">{{index9 +
-                1}}.{{notice.message}}</div>
+              <div class="msg"  @click="evenNoticeListDialog(notice,'通知')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
             </div>
           </div>

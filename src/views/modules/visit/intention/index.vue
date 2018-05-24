@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
+  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
@@ -271,7 +271,7 @@
       <el-row :gutter="5">
         <el-col :span="12">
           <el-card body-style="padding:0;">
-            <el-card body-style="padding:10px;" :style="{height: ($store.state.app.client.height-185) + 'px'}" shadow="never" style="border: none;min-height: 350px;overflow: auto">
+            <el-card body-style="padding:10px;" :style="{height: ($store.state.app.client.height-155) + 'px'}" shadow="never" style="border: none;min-height: 350px;overflow: auto">
               <div slot="header" class="clearfix">
                 <div style="float: left">
                   |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">基本信息</span>
@@ -402,48 +402,18 @@
                 </el-row>
 
 
-                <el-row>
-                  <el-col>
-                    <el-row v-if="edit">
-                      <el-row  v-if="!addInfo" :gutter="10">
-                        <el-col :span="6">&nbsp;</el-col>
-                        <el-col :span="6"><el-button type="info" size="mini" @click="cancel"><i class="el-icon-fa-undo"></i> 取 消</el-button></el-col>
-                        <el-col :span="6"><el-button v-if="!addInfo" type="primary" size="mini" @click="update"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
-                        <el-col :span="6">&nbsp;</el-col>
-                      </el-row>
-                      <el-row v-if="addInfo">
-                        <el-col :span="8">&nbsp;</el-col>
-                        <el-col :span="8"><el-button type="primary" size="mini" @click="add"><i class="el-icon-fa-save"></i> 保 存</el-button></el-col>
-                        <el-col :span="8">&nbsp;</el-col>
-                      </el-row>
-                    </el-row>
 
-                    <el-row v-else :gutter="10">
-                      <el-col :span="8">&nbsp;</el-col>
-                      <el-col :span="8"><el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button></el-col>
-                      <el-col :span="8">&nbsp;</el-col>
-                    </el-row>
-
-                  </el-col>
-
-                </el-row>
               </el-form>
             </el-card>
-            <el-card shadow="never" body-style="padding:0;" style="border: none;">
+            <el-card shadow="never" body-style="padding:10px;" style="border: none;">
               <el-row v-if="edit">
                 <div style="float: right;" >
-                  <el-button v-if="addInfo" size="mini" type="success"  @click="add('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
-                  <el-button v-if="!addInfo" size="mini" type="info" @click="cancel('userEntity')"><i class="el-icon-close"></i> 取消</el-button>
-                  <el-button v-if="!addInfo" size="mini" type="success" @click="update('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
+                  <el-button v-if="!addInfo" type="info" size="mini" @click="cancel('intention')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+                  <el-button v-if="!addInfo" type="success" size="mini" @click="update('intention')"><i class="el-icon-fa-save"></i> 保 存</el-button>
+
                 </div>
               </el-row>
-
-
               <el-row v-else>
-                <div style="float: left">
-                  <el-button type="danger" size="mini" @click="quit(userEntity.userId)"><i class="el-icon-circle-close-outline"></i>办理离职</el-button>
-                  <el-button type="danger" size="mini" @click="rePassword(userEntity.userId)"><i class="el-icon-refresh"></i>重置密码</el-button>
-                </div>
                 <div style="float: right;" >
                   <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
                 </div>
@@ -631,6 +601,8 @@
     },
     created() {
       this.getList()
+      console.log('=============')
+      console.log(this.$store)
       this.getUserList()
     },
     computed: {
@@ -683,7 +655,7 @@
         this.listLoading = true
         console.log('====== 查询意向 =====')
         console.log(this.listQuery)
-        this.followShow = true
+        this.followShow = false
         fetchList(this.listQuery).then(response => {
           this.intentionList = response.data.data.list
           console.log('====== 意向信息 =====')
@@ -731,14 +703,18 @@
         this.addOption = false
       },
       // 修改
-      update() {
+      update(formName) {
         console.log('================= 修改 ==================')
         console.log(this.intention)
-        putObj(this.intention)
-          .then(() => {
-            this.edit = false
-            this.getList()
-          })
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            putObj(this.intention)
+              .then(() => {
+                this.edit = false
+                this.getList()
+              })
+          }
+        })
       },
       // 更改客户状态
       updateState(val, state) {
@@ -764,7 +740,8 @@
         this.getList()
       },
       // 取消
-      cancel() {
+      cancel(formName) {
+        this.$refs[formName].resetFields()
         console.log(this.intention.intentionId)
         getObj(this.intention.intentionId).then(response => {
           console.log('================= 取消 ==================')
@@ -779,7 +756,6 @@
         this.addInfo = false
         this.intention = {}
         this.edit = false
-        this.followShow = false
         this.addOption = false
         this.getList()
         this.getUserList()

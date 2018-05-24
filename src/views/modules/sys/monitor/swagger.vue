@@ -1,5 +1,5 @@
 <template>
-    <iframe ref="iframe" src="http://127.0.0.1:8003/swagger-ui.html" frameborder="0" style="border:0;" width="100%"></iframe>
+    <iframe ref="iframe" :src="$store.state.app.client.iFrameUrl + ':8003/swagger-ui.html'" frameborder="0" style="border:0;" width="100%"></iframe>
 </template>
 
 <script>

@@ -21,7 +21,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.motorcycleType" placeholder="车型">
+            <el-select :style="{width: ($store.state.app.client.width/7) + 'px'}" v-model="listQuery.motorcycleType" clearable placeholder="车型">
               <el-option
                 v-for="item in $store.state.app.motorcycleType"
                 :key="item"

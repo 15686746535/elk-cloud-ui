@@ -226,7 +226,7 @@
             <el-form-item prop="applyType">
               <span slot="label" class="text_css">车型</span>
 
-              <el-select style="width: 100%" v-model="intention.applyType" placeholder="车型">
+              <el-select style="width: 100%" v-model="intention.applyType" clearable placeholder="车型">
                 <el-option
                   v-for="item in $store.state.app.motorcycleType"
                   :key="item"
@@ -364,7 +364,7 @@
                   <el-form-item prop="applyType">
                     <span slot="label" class="text_css">车型</span>
 
-                    <el-select v-if="edit" style="width: 100%" v-model="intention.applyType" placeholder="车型">
+                    <el-select v-if="edit" style="width: 100%" v-model="intention.applyType" clearable placeholder="车型">
                       <el-option
                         v-for="item in $store.state.app.motorcycleType"
                         :key="item"
@@ -742,6 +742,7 @@
       },
       // 取消
       cancel() {
+        console.log(this.intention.intentionId)
         getObj(this.intention.intentionId).then(response => {
           console.log('================= 取消 ==================')
           console.log(response.data)

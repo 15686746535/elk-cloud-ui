@@ -40,7 +40,7 @@
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="3" :xl="3">
 
-                <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" placeholder="车型">
+                <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" clearable placeholder="车型">
                   <el-option
                     v-for="item in $store.state.app.motorcycleType"
                     :key="item"
@@ -474,7 +474,7 @@
                       <el-row>
                         <el-form-item prop="motorcycleType">
                           <span slot="label" class="text_css">所学车型:</span>
-                          <el-select v-if="edit" style="width: 100%" size="mini" v-model="student.motorcycleType" placeholder="车型">
+                          <el-select v-if="edit" style="width: 100%" size="mini" v-model="student.motorcycleType" clearable placeholder="车型">
                             <el-option
                               v-for="item in $store.state.app.motorcycleType"
                               :key="item"
@@ -1086,7 +1086,7 @@
               <el-row >
                 <el-form-item prop="motorcycleType">
                   <span slot="label"  class="text_css">所学车型</span>
-                  <el-select v-if="edit" style="width: 100%" size="mini" v-model="studentEntity.motorcycleType" placeholder="车型">
+                  <el-select v-if="edit" style="width: 100%" size="mini" v-model="studentEntity.motorcycleType" clearable placeholder="车型">
                     <el-option
                       v-for="item in $store.state.app.motorcycleType"
                       :key="item"

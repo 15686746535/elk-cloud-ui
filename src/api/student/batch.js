@@ -6,6 +6,13 @@ export function getBatchList(query) {
     method: 'get',
     params: query
   })
+}// 查询集合
+export function getBatchs(query) {
+  return request({
+    url: '/stu/exam/queryBatchList',
+    method: 'get',
+    params: query
+  })
 }
 export function getBatch(id) {
   return request({

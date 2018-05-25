@@ -73,17 +73,17 @@
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="科目">
-              <template slot-scope="scope">
-                <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
-              </template>
-            </el-table-column>
+            <!--<el-table-column align="center" label="科目">-->
+              <!--<template slot-scope="scope">-->
+                <!--<span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
 
-            <el-table-column align="center" label="批次" width="195">
-              <template slot-scope="scope">
-                <span><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>
-              </template>
-            </el-table-column>
+            <!--<el-table-column align="center" label="批次" width="195">-->
+              <!--<template slot-scope="scope">-->
+                <!--<span><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
 
             <el-table-column align="center" label="期数" width="100">
               <template slot-scope="scope">
@@ -225,7 +225,7 @@
 
 <script>
   import { examFetchList, putExamNote } from '@/api/student/examnote'
-  import { getBatchList } from '@/api/student/batch'
+  import { getBatchs } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
   import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
@@ -341,7 +341,7 @@ export default {
       getBatchList() {
         this.batchListLoading = true
         console.log(this.batchListQuery)
-        getBatchList(this.batchListQuery).then(response => {
+        getBatchs(this.batchListQuery).then(response => {
           console.log('========== Batch数据 ==========')
           console.log(response.data)
           this.batchList = this.batchList.concat(response.data.data.list)

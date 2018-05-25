@@ -25,24 +25,27 @@
     </el-card>
     <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 95) + 'px'}">
       <el-col style="width: 230px;">
-        <el-card v-loading="batchListLoading" element-loading-text="我已经全速加载了...">
+        <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
-          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 220) + 'px'}">
+          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 190) + 'px'}">
             <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
                 <{{batch.examTime | subTime}}> {{batch.examField}}
               </div>
             </div>
           </div>
-          <div class="pagination-container" style="margin-top: 20px">
-            <el-pagination
-              small
-              @current-change="batchHandleCurrentChange"
-              layout="prev, pager, next"
-              :current-page="batchListQuery.page"
-              :page-size="batchListQuery.limit"
-              :total="batchTotal">
-            </el-pagination>
+          <div class="loading-more">
+            <span v-if="batchTotalPage > batchListQuery.page" @click="batchHandleCurrentChange"><i class="el-icon-fa-angle-double-down"></i></span>
+            <span v-else>到底了</span>
+            <!--<el-button type="primary" size="mini" style="float: right" @click="batchHandleCurrentChange">加载更多</el-button>-->
+            <!--<el-pagination-->
+              <!--small-->
+              <!--@current-change="batchHandleCurrentChange"-->
+              <!--layout="prev, pager, next"-->
+              <!--:current-page="batchListQuery.page"-->
+              <!--:page-size="batchListQuery.limit"-->
+              <!--:total="batchTotal">-->
+            <!--</el-pagination>-->
           </div>
         </el-card>
       </el-col>
@@ -238,7 +241,7 @@ export default {
         notGradeStudentList: [],
         batchList: [],
         studentTotal: 0,
-        batchTotal: 0,
+        batchTotalPage: 1,
         studentListQuery: {
           page: 1,
           limit: 20,
@@ -341,8 +344,8 @@ export default {
         getBatchList(this.batchListQuery).then(response => {
           console.log('========== Batch数据 ==========')
           console.log(response.data)
-          this.batchList = response.data.data.list
-          this.batchTotal = response.data.data.totalCount
+          this.batchList = this.batchList.concat(response.data.data.list)
+          this.batchTotalPage = response.data.data.totalPage
           this.batchListLoading = false
         })
       },
@@ -355,10 +358,10 @@ export default {
         this.studentListQuery.page = val
         this.getGradeList()
       },
-      batchHandleCurrentChange(val) {
-        this.batchListQuery.page = val
+      batchHandleCurrentChange() {
+        this.batchListQuery.page = this.batchListQuery.page + 1
         this.getBatchList()
-        this.cleanBatchSelected()
+        // this.cleanBatchSelected()
       },
       /* 根据科目查询 */
       handleSubject() {
@@ -368,6 +371,7 @@ export default {
         this.studentListQuery.subject = this.batchListQuery.subject
         this.gradeStudentList = []
         this.notGradeStudentList = []
+        this.batchList = []
         this.getBatchList()
       },
       /* 搜索方法 */
@@ -493,7 +497,7 @@ export default {
     }
   }
 </script>
-<style>
+<style rel="stylesheet/scss" lang="scss" scoped>
   .batchCss{
     background-color: rgba(64,158,255,.1);
     /*display: inline-block;*/
@@ -551,5 +555,18 @@ export default {
     color: #fff;
     background-color: #409eff;
     border-color: #409eff;
+  }
+  .loading-more{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    i{
+      cursor: pointer;
+    }
+  }
+  .loading-more:hover{
+    i{
+      color: #909399;
+    }
   }
 </style>

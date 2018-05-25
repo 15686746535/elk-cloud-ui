@@ -44,9 +44,10 @@
             <span>{{scope.row.examField}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center"  label="人数">
+        <el-table-column align="center"  label="已约人数">
           <template slot-scope="scope">
-            <span>{{scope.row.hasReserved}}/{{scope.row.stuCount}}</span>
+            <!--<span>{{scope.row.hasReserved}}/{{scope.row.stuCount}}</span>-->
+            <span>{{scope.row.stuCount}}</span>
           </template>
         </el-table-column>
 
@@ -89,9 +90,9 @@
           <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
           <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
         </el-form-item>
-        <el-form-item label="人数"  prop="stuCount">
-          <el-input v-model.number="batch.stuCount" placeholder="人数" ></el-input>
-        </el-form-item>
+        <!--<el-form-item label="人数"  prop="stuCount">-->
+          <!--<el-input v-model.number="batch.stuCount" placeholder="人数" ></el-input>-->
+        <!--</el-form-item>-->
         <el-form-item label="考试时间" prop="examTime">
           <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
         </el-form-item>
@@ -390,9 +391,9 @@
           examField: [
             { required: true, message: '请选择考试场地', trigger: ['blur'] }
           ],
-          stuCount: [
-            { required: true, type: 'number', message: '请输入人数', trigger: ['blur'] }
-          ],
+          // stuCount: [
+          //   { required: true, type: 'number', message: '请输入人数', trigger: ['blur'] }
+          // ],
           examTime: [
             { required: true, message: '请选择考试时间', trigger: ['blur'] }
           ],

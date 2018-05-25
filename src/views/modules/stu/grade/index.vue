@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
-    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px">
+    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px" :style="{width: (client.width) + 'px'}">
       <el-row :gutter="5">
         <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
           <el-radio-group @change="handleSubject" size="mini" v-model="batchListQuery.subject">
@@ -25,7 +25,7 @@
     </el-card>
     <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 95) + 'px'}">
       <el-col style="width: 230px;">
-        <el-card v-loading="batchListLoading" element-loading-text="我已经全速加载了QAQ">
+        <el-card v-loading="batchListLoading" element-loading-text="我已经全速加载了...">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 220) + 'px'}">
             <div v-for="batch in batchList">

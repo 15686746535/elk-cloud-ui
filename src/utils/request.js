@@ -15,6 +15,7 @@ service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
   }
+  console.log('--------------s--------------')
   // config.headers['Content-Type'] = 'application/json;charset=UTF-8'
   return config
 }, error => {

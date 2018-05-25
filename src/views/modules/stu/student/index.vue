@@ -48,7 +48,6 @@
                     :value="item">
                   </el-option>
                 </el-select>
-                <!--<dict v-model="listQuery.motorcycleType" size="mini" dictType="dict_motorcycle_type" placeholder="车型"  ></dict>-->
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
                 <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
@@ -236,7 +235,7 @@
                 </el-table-column>
                 <el-table-column align="center"  label="考试批次">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.batch}}</span>
+                    <span><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center"  label="考试结果">
@@ -345,7 +344,7 @@
         <el-col style="width: 550px"  :style="{height: ($store.state.app.client.height-110) + 'px'}" >
           <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px" size="mini" >
             <el-card :style="{height: ($store.state.app.client.height-160) + 'px'}" body-style="padding: 0;"
-                     v-loading="infoLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力匹配中..."
+                     v-loading="infoLoading" element-loading-text="努力匹配中..."
                      shadow="never" style="border-radius:0 4px 0 0;line-height: 50px;overflow-y: auto;">
               <!-- 基本信息 -->
               <el-row>

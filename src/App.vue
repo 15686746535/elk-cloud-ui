@@ -27,7 +27,7 @@ export default {
     },
     setClientSize() {
       var height = document.documentElement.clientHeight - 84 || document.body.clientHeight - 84
-      var width = document.documentElement.clientWidth - 220 || document.body.clientWidth - 220
+      var width = document.documentElement.clientWidth - 240 || document.body.clientWidth - 240
       this.$store.dispatch('setClientHeight', height)
       this.$store.dispatch('setClientWidth', width)
     }

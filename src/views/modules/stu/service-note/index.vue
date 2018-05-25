@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div v-loading="infoLoading" element-loading-text="T T 别急,一会儿就好~">
+      <div v-loading="infoLoading" element-loading-text="别急,一会儿就好~">
 
         <el-col style="border: 1px solid #1f2d3d;font-size: 12px;">
           <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d;font-size: 12px;">

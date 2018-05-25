@@ -110,7 +110,7 @@ export const asyncRouterMap = [
     },
     children: [
       { menuId: 40100, path: 'campus', component: _import('modules/basis/campus/index'), name: '校区设置', isShow: true, meta: { title: '校区设置', icon: 'menu' }},
-      { menuId: 40200, path: 'motorcycle-type', component: _import('modules/basis/motorcycle-type/index'), name: '车型设置', isShow: true, meta: { title: '车型设置', icon: 'menu' }},
+      // { menuId: 40200, path: 'motorcycle-type', component: _import('modules/basis/motorcycle-type/index'), name: '车型设置', isShow: true, meta: { title: '车型设置', icon: 'menu' }},
       { menuId: 40300, path: 'enroll-dot', component: _import('modules/basis/enroll-dot/index'), name: '报名点设置', isShow: true, meta: { title: '报名点设置', icon: 'menu' }},
       // { menuId: 40400, path: 'increment', component: _import('modules/basis/increment/index'), name: '增值包设置', alwaysShow: true, meta: { title: '增值包设置', icon: 'menu' }},
       { menuId: 40500, path: 'service-category', component: _import('modules/basis/service-category/index'), name: '收费服务设置', isShow: true, meta: { title: '收费服务设置', icon: 'menu' }},

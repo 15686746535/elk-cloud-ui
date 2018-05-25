@@ -58,6 +58,7 @@
 
                 <!-- 分割线 -->
                 <div style="width: 100%;float: left;border: none;border-bottom:1px solid #9fcfff;"></div>
+
                 <div style="width: 100%;height: 25px">
                   <div class="intention_text" style="width: 50%;float: left">性别：{{intention.sex | sexFilter}}</div>
                   <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
@@ -234,7 +235,6 @@
                   :value="item">
                 </el-option>
               </el-select>
-              <!--<dict  v-model="intention.applyType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="车型"></dict>-->
             </el-form-item>
           </el-col>
         </el-row>
@@ -428,9 +428,6 @@
                 <div style="float: left">
                   |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">跟进信息</span>
                 </div>
-                <!--<div style="float: right">-->
-                  <!--<el-button type="primary" style="width: 174px;float: right" @click="back">返回</el-button>-->
-                <!--</div>-->
               </div>
 
               <div :style="{height: (client.height-275) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
@@ -706,15 +703,23 @@
       update(formName) {
         console.log('================= 修改 ==================')
         console.log(this.intention)
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            putObj(this.intention)
-              .then(() => {
-                this.edit = false
-                this.getList()
-              })
-          }
-        })
+        if (formName) {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              putObj(this.intention)
+                .then(() => {
+                  this.edit = false
+                  this.getList()
+                })
+            }
+          })
+        } else {
+          putObj(this.intention)
+            .then(() => {
+              this.edit = false
+              this.getList()
+            })
+        }
       },
       // 更改客户状态
       updateState(val, state) {
@@ -729,7 +734,7 @@
         }).then(() => {
           this.intention = val
           this.intention.state = state
-          this.update()
+          this.update(null)
         })
       },
       // 搜索

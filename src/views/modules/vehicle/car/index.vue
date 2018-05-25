@@ -770,7 +770,7 @@
         </el-tab-pane>
 
         <el-tab-pane label="维修日志" name="5">
-          <el-table v-loading="repairListLoading" element-loading-text="= = 我已经全速加载了..." :data="repairList" stripe border fit highlight-current-row style="width: 100%">
+          <el-table v-loading="repairListLoading" element-loading-text="我已经全速加载了..." :data="repairList" stripe border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column prop="description" label="维修事项" width="180">
@@ -790,7 +790,7 @@
 
         </el-tab-pane>
         <el-tab-pane label="保养日志" name="6">
-          <el-table v-loading="maintainListLoading" element-loading-text="= = 我已经全速加载了..." :data="maintainList" stripe border fit highlight-current-row style="width: 100%">
+          <el-table v-loading="maintainListLoading" element-loading-text="我已经全速加载了..." :data="maintainList" stripe border fit highlight-current-row style="width: 100%">
             <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column prop="description" label="保养内容" width="180">

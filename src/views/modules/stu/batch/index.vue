@@ -149,12 +149,12 @@
               <template slot-scope="scope">
                 <!--<span>{{scope.row.state}}</span>-->
                 <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
-                <span v-if="scope.row.state === '4'" style="border-radius: 20px;color: #f56c6c">报考失败</span>
-                <span v-else-if="scope.row.state === '5'" style="border-radius: 20px;color: #e6a23c">审核失败</span>
-                <span v-else-if="scope.row.state === '0'" style="border-radius: 20px;color: #909399">待审核</span>
-                <span v-else-if="scope.row.state === '1'" style="border-radius: 20px;color: #02b7ac">待约考</span>
-                <span v-else-if="scope.row.state === '2'" style="border-radius: 20px;color: #409eff">已约考</span>
-                <span v-else-if="scope.row.state === '3'" style="border-radius: 20px;color: #67c23a">报考成功</span>
+                <span v-if="scope.row.examineState === '4'" style="border-radius: 20px;color: #f56c6c">报考失败</span>
+                <span v-else-if="scope.row.examineState === '5'" style="border-radius: 20px;color: #e6a23c">审核失败</span>
+                <span v-else-if="scope.row.examineState === '0'" style="border-radius: 20px;color: #909399">待审核</span>
+                <span v-else-if="scope.row.examineState === '1'" style="border-radius: 20px;color: #02b7ac">待约考</span>
+                <span v-else-if="scope.row.examineState === '2'" style="border-radius: 20px;color: #409eff">已约考</span>
+                <span v-else-if="scope.row.examineState === '3'" style="border-radius: 20px;color: #67c23a">报考成功</span>
 
               </template>
             </el-table-column>

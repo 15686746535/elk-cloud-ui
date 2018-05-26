@@ -367,6 +367,7 @@ export default {
       handleSubject() {
         this.cleanBatchSelected()
         this.studentListQuery.page = 1
+        this.batchListQuery.page = 1
         this.studentListQuery.examId = null
         this.studentListQuery.subject = this.batchListQuery.subject
         this.gradeStudentList = []

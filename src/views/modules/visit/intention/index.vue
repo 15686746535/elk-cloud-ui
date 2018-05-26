@@ -277,7 +277,7 @@
                   |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">基本信息</span>
                 </div>
               </div>
-              <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" size="mini" class="demo-ruleForm">
+              <el-form :model="intention" :rules="editRules" ref="intention" label-width="120px" size="mini" class="demo-ruleForm">
 
                 <el-row :gutter="5"  style="line-height: 50px;height: 50px;">
                   <el-col :span="12">
@@ -569,6 +569,41 @@
             { required: true, message: '请输入手机号', trigger: ['blur'] },
             { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
+          ],
+          wechat: [
+            { required: false, message: '请输入客户微信', trigger: ['blur'] }],
+          contactAddress: [
+            { required: false, message: '请输入住址', trigger: ['blur'] }
+          ],
+          customerType: [
+            { required: true, message: '请选择客户类型', trigger: ['blur'] }
+          ],
+          source: [
+            { required: true, message: '请选择来源渠道', trigger: ['blur'] }
+          ],
+          worry: [
+            { required: true, message: '请选择客户顾虑', trigger: ['blur'] }
+          ],
+          applyType: [
+            { required: true, message: '请选择所学车型', trigger: ['blur'] }
+          ],
+          visitTime: [
+            { required: true, message: '请选择来访时间', trigger: ['blur'] }
+          ],
+          content: [
+            { required: false, message: '请输入资讯内容', trigger: ['blur'] }
+          ]
+        },
+        editRules: {
+          name: [
+            { required: true, message: '请输入名字', trigger: ['blur'] }
+          ],
+          sex: [
+            { required: true, message: '请选择性别', trigger: ['blur'] }
+          ],
+          mobile: [
+            { required: true, message: '请输入手机号', trigger: ['blur'] },
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] },
           ],
           wechat: [
             { required: false, message: '请输入客户微信', trigger: ['blur'] }],

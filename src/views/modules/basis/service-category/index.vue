@@ -62,16 +62,7 @@
     </el-card>
     <el-dialog @close="cancel('serviceCategory')" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="serviceCategory" :rules="rules" ref="serviceCategory" label-width="100px">
-        <el-form-item label="收费服务"  prop="name">
-          <el-input v-model="serviceCategory.name" placeholder="收费服务" ></el-input>
-        </el-form-item>
-        <el-form-item label="价格" prop="price">
-          <el-input type="number" v-model.number="serviceCategory.price" placeholder="价格" ></el-input>
-        </el-form-item>
-        <el-form-item label="收费类型" prop="priceType">
-          <el-radio v-model="serviceCategory.priceType" label="0">单次收费</el-radio>
-          <el-radio v-model="serviceCategory.priceType" label="1">多次收费</el-radio>
-        </el-form-item>
+
         <el-form-item label="服务类型" prop="code">
           <el-select v-model="serviceCategory.code" style="width: 100%" placeholder="请选择服务类型">
             <el-option
@@ -81,6 +72,19 @@
               :value="item.value">
             </el-option>
           </el-select>
+        </el-form-item>
+
+
+        <el-form-item label="收费服务"  prop="name">
+          <el-input v-model="serviceCategory.name" placeholder="收费服务" ></el-input>
+        </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-input type="number" v-model.number="serviceCategory.price" placeholder="价格" ></el-input>
+        </el-form-item>
+
+        <el-form-item label="收费类型" prop="priceType">
+          <el-radio v-model="serviceCategory.priceType" label="0">单次收费</el-radio>
+          <el-radio v-model="serviceCategory.priceType" label="1">多次收费</el-radio>
         </el-form-item>
         <el-form-item label="收费服务描述" prop="remark">
           <el-input v-model="serviceCategory.remark" placeholder="收费服务描述" ></el-input>

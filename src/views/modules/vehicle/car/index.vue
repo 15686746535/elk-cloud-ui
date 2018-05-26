@@ -16,9 +16,9 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :xs="0" :sm="5" :md="4" :lg="4">
-            <dict dictType="dict_source" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>
-          </el-col>
+          <!--<el-col :xs="0" :sm="5" :md="4" :lg="4">-->
+            <!--<dict dictType="dict_source" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>-->
+          <!--</el-col>-->
           <el-col :xs="6" :sm="5" :md="4" :lg="4">
             <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
           </el-col>

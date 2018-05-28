@@ -481,7 +481,6 @@
                               :value="item">
                             </el-option>
                           </el-select>
-                          <!--<dict v-if="edit" v-model="student.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>-->
                           <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                         </el-form-item>
                       </el-row>
@@ -664,13 +663,7 @@
                     <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
                   </el-form-item>
                 </el-row>
-
               </el-row>
-
-
-
-
-
             </el-card>
             <el-card body-style="padding: 10px 20px;"  shadow="never" style="height:50px; border-radius:0 0 4px 0;">
               <div v-if="edit" style="float: right;">
@@ -730,7 +723,7 @@
     </el-dialog>
 
     <el-dialog @close="backClick" title="录入详细信息" width="800px" :visible.sync="isCreate">
-      <div v-loading="createLoading" element-loading-text="୧(๑•̀⌄•́๑)૭努力加载中..." style="overflow-x: hidden;overflow-y: auto;line-height: 50px;height:575px">
+      <div v-loading="createLoading" element-loading-text="努力加载中..." style="overflow-x: hidden;overflow-y: auto;line-height: 50px;height:575px">
         <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="80px" size="mini" >
           <el-row :gutter="20">
             <el-col :span="12" >
@@ -1016,11 +1009,7 @@
         }
       }
       var idNumberIsExistence = (rule, value, callback) => {
-        console.log('---------------- == -----------------')
-        console.log(value)
         isExistence(value).then(response => {
-          console.log('=== ===')
-          console.log(response.data)
           if (response.data.data) {
             callback()
           } else {
@@ -1030,8 +1019,6 @@
       }
       var mobileIsExistence = (rule, value, callback) => {
         isExistence(value).then(response => {
-          console.log('=== ===')
-          console.log(response.data)
           if (response.data.data) {
             callback()
           } else {
@@ -1131,128 +1118,128 @@
         },
         studentEntityRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] },
+            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: ['blur'] },
-            { validator: idNumberReg, trigger: ['blur'] },
+            { required: true, message: '请输入身份证', trigger: ['blur','change'] },
+            { validator: idNumberReg, trigger: ['blur','change'] },
             { validator: idNumberIsExistence, trigger: ['blur'] }
           ],
           archivesNumber: [
-            { required: true, message: '请输入档案号', trigger: ['blur'] }
+            { required: true, message: '请输入档案号', trigger: ['blur','change'] }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: ['blur'] }
+            { required: true, message: '请输入姓名', trigger: ['blur','change'] }
           ],
           wechat: [],
           campus: [
-            { required: true, message: '请输入校区地址', trigger: ['blur'] }
+            { required: true, message: '请输入校区地址', trigger: ['blur','change'] }
           ],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: ['blur'] }
+            { required: true, message: '请输入住址', trigger: ['blur','change'] }
           ],
           periods: [
-            { required: true, message: '请输入入学期数', trigger: ['blur'] }
+            { required: true, message: '请输入入学期数', trigger: ['blur','change'] }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: ['blur'] }
+            { required: true, message: '请选择生日', trigger: ['blur','change'] }
           ],
           motorcycleType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
           ],
           enrolTime: [
-            { required: true, message: '请选择入学日期', trigger: ['blur'] }
+            { required: true, message: '请选择入学日期', trigger: ['blur','change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur'] }
+            { required: true, message: '请选择性别', trigger: ['blur','change'] }
           ],
           physicalExamination: [
-            { required: true, message: '请选择是否体检', trigger: ['blur'] }
+            { required: true, message: '请选择是否体检', trigger: ['blur','change'] }
           ],
           addDrive: [
-            { required: true, message: '请选择是否增加', trigger: ['blur'] }
+            { required: true, message: '请选择是否增加', trigger: ['blur','change'] }
           ],
           haveCar: [
-            { required: true, message: '请选择是否有车', trigger: ['blur'] }
+            { required: true, message: '请选择是否有车', trigger: ['blur','change'] }
           ],
           email: [
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur'] }
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur','change'] }
           ],
           company: [],
           position: [],
           enrolSite: [
-            { required: true, message: '请选择报名点', trigger: ['blur'] }
+            { required: true, message: '请选择报名点', trigger: ['blur','change'] }
           ],
           introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur'] },
-            { validator: introducerListReg, trigger: ['blur'] }
+            { required: true, message: '请选择介绍人', trigger: ['blur','change'] },
+            { validator: introducerListReg, trigger: ['blur','change'] }
           ]
         },
         studentRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] }
+            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: ['blur'] },
-            { validator: idNumberReg, trigger: ['blur'] }
+            { required: true, message: '请输入身份证', trigger: ['blur','change'] },
+            { validator: idNumberReg, trigger: ['blur','change'] }
           ],
           archivesNumber: [
-            { required: true, message: '请输入档案号', trigger: ['blur'] }
+            { required: true, message: '请输入档案号', trigger: ['blur','change'] }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: ['blur'] }
+            { required: true, message: '请输入姓名', trigger: ['blur','change'] }
           ],
           wechat: [],
           campus: [
-            { required: true, message: '请输入校区地址', trigger: ['blur'] }
+            { required: true, message: '请输入校区地址', trigger: ['blur','change'] }
           ],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: ['blur'] }
+            { required: true, message: '请输入住址', trigger: ['blur','change'] }
           ],
           periods: [
-            { required: true, message: '请输入入学期数', trigger: ['blur'] }
+            { required: true, message: '请输入入学期数', trigger: ['blur','change'] }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: ['blur'] }
+            { required: true, message: '请选择生日', trigger: ['blur','change'] }
           ],
           motorcycleType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
           ],
           enrolTime: [
-            { required: true, message: '请选择入学日期', trigger: ['blur'] }
+            { required: true, message: '请选择入学日期', trigger: ['blur','change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur'] }
+            { required: true, message: '请选择性别', trigger: ['blur','change'] }
           ],
           physicalExamination: [
-            { required: true, message: '请选择是否体检', trigger: ['blur'] }
+            { required: true, message: '请选择是否体检', trigger: ['blur','change'] }
           ],
           addDrive: [
-            { required: true, message: '请选择是否增加', trigger: ['blur'] }
+            { required: true, message: '请选择是否增加', trigger: ['blur','change'] }
           ],
           haveCar: [
-            { required: true, message: '请选择是否有车', trigger: ['blur'] }
+            { required: true, message: '请选择是否有车', trigger: ['blur','change'] }
           ],
           email: [
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur'] }
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur','change'] }
           ],
           company: [],
           position: [],
           enrolSite: [
-            { required: true, message: '请选择报名点', trigger: ['blur'] }
+            { required: true, message: '请选择报名点', trigger: ['blur','change'] }
           ],
           introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur'] },
-            { validator: introducerListReg, trigger: ['blur'] }
+            { required: true, message: '请选择介绍人', trigger: ['blur','change'] },
+            { validator: introducerListReg, trigger: ['blur','change'] }
           ]
         },
         stuList: [],

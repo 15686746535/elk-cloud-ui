@@ -215,10 +215,10 @@ export default {
       },
       agencyRules: {
         message: [
-          { required: true, message: '请填写发送内容', trigger: ['blur'] }
+          { required: true, message: '请填写发送内容', trigger: ['blur','change'] }
         ],
         recipientId: [
-          { required: true, message: '请选择接收人', trigger: ['blur'] }
+          { required: true, message: '请选择接收人', trigger: ['blur','change'] }
         ]
       }
     }

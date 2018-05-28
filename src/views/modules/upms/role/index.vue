@@ -22,11 +22,11 @@
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="职位标识">
-              <template slot-scope="scope">
-                <span>{{scope.row.roleKey}}</span>
-              </template>
-            </el-table-column>
+            <!--<el-table-column align="center" label="职位标识">-->
+              <!--<template slot-scope="scope">-->
+                <!--<span>{{scope.row.roleKey}}</span>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
 
             <el-table-column align="center" label="职位描述">
               <template slot-scope="scope">
@@ -148,13 +148,13 @@
             {
               required: true,
               message: '角色名称',
-              trigger: ['blur']
+              trigger: ['blur','change']
             },
             {
               min: 1,
               max: 20,
               message: '长度在 3 到 20 个字符',
-              trigger: ['blur']
+              trigger: ['blur','change']
             }
           ]
         },

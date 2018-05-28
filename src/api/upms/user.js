@@ -45,6 +45,13 @@ export function rePassword(userId) {
     params: { 'userId': userId }
   })
 }
+export function findUserByCondition(condition) {
+  return request({
+    url: '/upms/user/findUserByCondition',
+    method: 'get',
+    params: condition
+  })
+}
 
 export function putObj(obj) {
   return request({

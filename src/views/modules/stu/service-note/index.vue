@@ -696,44 +696,85 @@
       },
       createOneFormPage(){
         LODOP = getLodop()
+        var dsfStr = '';
+        var pxfStr = '';
+        var fwbStr = '';
+        var yhbStr = '';
+
         var dsf = 0;
         var pxf = 0;
         var fwb = 0;
         var yhb = 0;
 
 
-        for (var i = 0; i < this.financeList.length; i++) {
+        // for (var i = 0; i < this.financeList.length; i++) {
           for (var j = 0; j < this.stuServiceBuyNoteEntity.financeList.length; j++) {
-            if (this.financeList[i].categoryId === this.stuServiceBuyNoteEntity.financeList[j].categoryId) {
-              if (this.financeList[i].code === '001') {
-                LODOP.ADD_PRINT_TEXT(167,127,600,20,"代收费：");
-                //  710
+            // if (this.financeList[i].categoryId === this.stuServiceBuyNoteEntity.financeList[j].categoryId) {
+
+
+              if (this.stuServiceBuyNoteEntity.financeList[j].code === '001') {
+                if (50 - (dsfStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+                  dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+                } else {
+                  dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+                  dsf = dsf + 20
+                  console.log('dsf', dsf)
+                }
               }
-              if (this.financeList[i].code === '002') {
-                LODOP.ADD_PRINT_TEXT(167,72,100,20,"代收费：");
+
+              if (this.stuServiceBuyNoteEntity.financeList[j].code === '002') {
+
+                if (50 - (pxfStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+                  pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+                } else {
+                  pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+                  pxf = pxf + 20
+                }
+
               }
-              if (this.financeList[i].code === '003') {
-                LODOP.ADD_PRINT_TEXT(167,72,100,20,"代收费：");
+              if (this.stuServiceBuyNoteEntity.financeList[j].code === '003') {
+                if (50 - (fwbStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+                  fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+                } else {
+                  fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+                  fwb = fwb + 20
+                }
               }
-              if (this.financeList[i].code === '004') {
-                LODOP.ADD_PRINT_TEXT(167,72,100,20,"代收费：");
+              if (this.stuServiceBuyNoteEntity.financeList[j].code === '004') {
+                if (50 - (yhbStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+                  yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+                } else {
+                  yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+                  yhb = yhb + 20
+                }
               }
-            }
+            // }
           }
-        }
+          console.log('dsfStr:', dsfStr)
+          console.log('pxfStr:', pxfStr)
+          console.log('fwbStr:', fwbStr)
+          console.log('yhbStr:', yhbStr)
+          console.log('dsf:', dsf)
+          console.log('pxf:', pxf)
+          console.log('fwb:', fwb)
+          console.log('yhb:', yhb)
+        // }
         var a = dsf;
         var b = dsf + pxf;
         var c = dsf + pxf + fwb;
         var d = dsf + pxf + fwb + yhb;
-        console.log('a:',a);
-        console.log('b:',b);
-        console.log('c:',c);
-        console.log('d:',d);
-
 
 
         LODOP.PRINT_INITA(1,0,761,(550+d),"打印控件功能演示_Lodop功能_在线编辑获得程序代码");
         LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE",1);
+
+
+        LODOP.ADD_PRINT_TEXT(167,127,600,(20+dsf),dsfStr);
+        LODOP.ADD_PRINT_TEXT((198+a),127,600,(20+pxf),pxfStr);
+        LODOP.ADD_PRINT_TEXT((235+b),127,600,(20+fwb),fwbStr);
+        LODOP.ADD_PRINT_TEXT((266+c),127,600,(20+yhb),yhbStr);
+
+
         LODOP.ADD_PRINT_TEXT(16,242,300,53,"重庆壹路驾校培训有限公司\r\n收款收据");
         LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
         LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
@@ -744,20 +785,19 @@
         LODOP.ADD_PRINT_TEXT(90,26,100,20,"2018年5月2日");
         LODOP.ADD_PRINT_LINE(77,137,121,138,0,1);
         LODOP.ADD_PRINT_TEXT(90,139,45,20,"校区：");
-        LODOP.ADD_PRINT_TEXT(90,184,45,20,"沙坪坝");
+        LODOP.ADD_PRINT_TEXT(90,184,45,20,this.student.campus);
         LODOP.ADD_PRINT_LINE(121,275,77,276,0,1);
         LODOP.ADD_PRINT_TEXT(91,359,33,20,"全款");
         LODOP.ADD_PRINT_LINE(121,407,77,408,0,1);
         LODOP.ADD_PRINT_TEXT(91,280,69,20,"收款类型：");
         LODOP.ADD_PRINT_TEXT(91,411,46,20,"姓名：");
-        LODOP.ADD_PRINT_TEXT(90,458,65,21,"好无聊");
+        LODOP.ADD_PRINT_TEXT(90,458,65,21,this.student.name);
         LODOP.ADD_PRINT_LINE(121,527,77,528,0,1);
         LODOP.ADD_PRINT_TEXT(91,531,73,20,"身份证号：");
-        LODOP.ADD_PRINT_TEXT(91,605,120,20,"500113199612036010");
+        LODOP.ADD_PRINT_TEXT(91,605,120,20,this.student.idNumber);
 
 
-
-        LODOP.ADD_PRINT_TEXT(132,72,100,20,"车型：C1");
+        LODOP.ADD_PRINT_TEXT(132,72,100,20,"车型：" + this.student.motorcycleType);
         LODOP.ADD_PRINT_LINE(160,69,159,729,0,1); // 车型
 
         LODOP.ADD_PRINT_TEXT(167,72,100,20,"代收费：");
@@ -803,7 +843,7 @@
         // 线，竖杠(上边距1,1左边距,上边距2,2左边距,intLineStyle, intLineWidth)
         // intLineStyle:线条类型，默认为0；0--实线 1--破折线 2--点线 3--点划线 4--双点划线
         // intLineWidth:线条宽，默认是1，整数型，单位是(打印)像素，非实线的线条宽也是0
-
+        // 内容，参数（上边距，左边距，内容显示宽度，内容显示高度）
 
 
         LODOP.ADD_PRINT_TEXT((307+d),78,100,20,"原价：￥99");

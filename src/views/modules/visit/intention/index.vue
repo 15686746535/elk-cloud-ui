@@ -475,8 +475,6 @@
     data() {
       var mobileIsExistence = (rule, value, callback) => {
         getIntentionByMobile({ 'mobile': value, 'state': '' }).then(response => {
-          console.log('=== ===')
-          console.log(response.data)
           if (response.data.data) {
             callback(new Error('电话号码已存在'))
           } else {
@@ -560,73 +558,73 @@
         addOption: false,
         rules: {
           name: [
-            { required: true, message: '请输入名字', trigger: ['blur'] }
+            { required: true, message: '请输入名字', trigger: ['blur','change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur'] }
+            { required: true, message: '请选择性别', trigger: ['blur','change'] }
           ],
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur'] },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] },
+            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           wechat: [
-            { required: false, message: '请输入客户微信', trigger: ['blur'] }],
+            { required: false, message: '请输入客户微信', trigger: ['blur','change'] }],
           contactAddress: [
-            { required: false, message: '请输入住址', trigger: ['blur'] }
+            { required: false, message: '请输入住址', trigger: ['blur','change'] }
           ],
           customerType: [
-            { required: true, message: '请选择客户类型', trigger: ['blur'] }
+            { required: true, message: '请选择客户类型', trigger: ['blur','change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
           ],
           worry: [
-            { required: true, message: '请选择客户顾虑', trigger: ['blur'] }
+            { required: true, message: '请选择客户顾虑', trigger: ['blur','change'] }
           ],
           applyType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
           ],
           visitTime: [
-            { required: true, message: '请选择来访时间', trigger: ['blur'] }
+            { required: true, message: '请选择来访时间', trigger: ['blur','change'] }
           ],
           content: [
-            { required: false, message: '请输入资讯内容', trigger: ['blur'] }
+            { required: false, message: '请输入资讯内容', trigger: ['blur','change'] }
           ]
         },
         editRules: {
           name: [
-            { required: true, message: '请输入名字', trigger: ['blur'] }
+            { required: true, message: '请输入名字', trigger: ['blur','change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur'] }
+            { required: true, message: '请选择性别', trigger: ['blur','change'] }
           ],
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur'] },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur'] },
+            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] },
           ],
           wechat: [
-            { required: false, message: '请输入客户微信', trigger: ['blur'] }],
+            { required: false, message: '请输入客户微信', trigger: ['blur','change'] }],
           contactAddress: [
-            { required: false, message: '请输入住址', trigger: ['blur'] }
+            { required: false, message: '请输入住址', trigger: ['blur','change'] }
           ],
           customerType: [
-            { required: true, message: '请选择客户类型', trigger: ['blur'] }
+            { required: true, message: '请选择客户类型', trigger: ['blur','change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
           ],
           worry: [
-            { required: true, message: '请选择客户顾虑', trigger: ['blur'] }
+            { required: true, message: '请选择客户顾虑', trigger: ['blur','change'] }
           ],
           applyType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
           ],
           visitTime: [
-            { required: true, message: '请选择来访时间', trigger: ['blur'] }
+            { required: true, message: '请选择来访时间', trigger: ['blur','change'] }
           ],
           content: [
-            { required: false, message: '请输入资讯内容', trigger: ['blur'] }
+            { required: false, message: '请输入资讯内容', trigger: ['blur','change'] }
           ]
         }
       }
@@ -741,10 +739,12 @@
         if (formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
+              console.log('111')
               putObj(this.intention)
                 .then(() => {
                   this.edit = false
                   this.getList()
+                  this.$refs[formName].resetFields()
                 })
             }
           })

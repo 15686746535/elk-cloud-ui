@@ -176,10 +176,6 @@
                   <img :src="vehicleEntity.vehiclePhoto" class="avatar">
                 </el-upload>
 
-                <!--<el-upload :disabled="!edit" class="avatar-uploader" style="width: 128px;height: 128px;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">-->
-                  <!--<img v-if="vehicleEntity.vehiclePhoto" :src="vehicleEntity.vehiclePhoto" class="avatar"  style="width: 128px;height: 128px;" >-->
-                  <!--<i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-                <!--</el-upload>-->
               </el-row>
               <el-row style="height: 50px">
                 <el-form-item prop="plateColor">
@@ -988,40 +984,40 @@
         },
         vehicleEntityRules: {
           number: [
-            { required: true, message: '请输入自编号', trigger: ['blur'] }
+            { required: true, message: '请输入自编号', trigger: ['blur','change'] }
           ],
           plateNumber: [
-            { required: true, message: '请输入车牌', trigger: ['blur'] }
+            { required: true, message: '请输入车牌', trigger: ['blur','change'] }
           ],
           engineNo: [
-            { required: true, message: '请输入发动机号', trigger: ['blur'] }
+            { required: true, message: '请输入发动机号', trigger: ['blur','change'] }
           ],
           factoryTime: [
-            { required: true, message: '请输入出厂日期', trigger: ['blur'] }
+            { required: true, message: '请输入出厂日期', trigger: ['blur','change'] }
           ],
           allowNumber: [
-            { required: true, message: '请输入核定载客人', trigger: ['blur'] }
+            { required: true, message: '请输入核定载客人', trigger: ['blur','change'] }
           ],
           affiliation: [
-            { required: true, message: '请输入所属机构', trigger: ['blur'] }
+            { required: true, message: '请输入所属机构', trigger: ['blur','change'] }
           ],
           registerTime: [
-            { required: true, message: '请输入注册登记日期', trigger: ['blur'] }
+            { required: true, message: '请输入注册登记日期', trigger: ['blur','change'] }
           ],
           vehicleType: [
-            { required: true, message: '请输入车辆类别', trigger: ['blur'] }
+            { required: true, message: '请输入车辆类别', trigger: ['blur','change'] }
           ],
           vehicleState: [
-            { required: true, message: '请输入车辆来源', trigger: ['blur'] }
+            { required: true, message: '请输入车辆来源', trigger: ['blur','change'] }
           ],
           userId: [
-            { required: true, message: '请输入使用责任人', trigger: ['blur'] }
+            { required: true, message: '请输入使用责任人', trigger: ['blur','change'] }
           ],
           vinNo: [
-            { required: true, message: '请输入车架号', trigger: ['blur'] }
+            { required: true, message: '请输入车架号', trigger: ['blur','change'] }
           ],
           plateColor: [
-            { required: true, message: '请输入车牌颜色', trigger: ['blur'] }
+            { required: true, message: '请输入车牌颜色', trigger: ['blur','change'] }
           ]
         },
         certificateEntityRules: {},
@@ -1102,24 +1098,24 @@
         ],
         repairRules: {
           description: [
-            { required: true, message: '请填写维修内容', trigger: ['blur'] },
+            { required: true, message: '请填写维修内容', trigger: ['blur','change'] },
           ],
           repairTime: [
-            { required: true, message: '请选择维修时间', trigger: ['blur'] },
+            { required: true, message: '请选择维修时间', trigger: ['blur','change'] },
           ],
           cost: [
-            { required: true, message: '请填写维修费用', trigger: ['blur'] },
+            { required: true, message: '请填写维修费用', trigger: ['blur','change'] },
           ]
         },
         maintainRules: {
           description: [
-            { required: true, message: '请填写保养内容', trigger: ['blur'] },
+            { required: true, message: '请填写保养内容', trigger: ['blur','change'] },
           ],
           maintainTime: [
-            { required: true, message: '请选择保养时间', trigger: ['blur'] },
+            { required: true, message: '请选择保养时间', trigger: ['blur','change'] },
           ],
           cost: [
-            { required: true, message: '请填写保养费用', trigger: ['blur'] },
+            { required: true, message: '请填写保养费用', trigger: ['blur','change'] },
           ]
         }
       }
@@ -1310,6 +1306,7 @@
       },
       handleAvatarSuccess(res, file) {
         this.vehicleEntity.vehiclePhoto = res.data
+        this.infoLoading = false
         // this.update('car', this.vehicleEntity)
       },
       /* 二维 */

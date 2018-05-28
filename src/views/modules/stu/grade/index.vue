@@ -436,13 +436,14 @@ export default {
         }
       },
       passExam() {
-        console.log(this.batchListQuery.subject)
-        if (this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4') {
-          this.examOperation('1')
+        if (this.examParameter.examNoteList.length === 0) {
+          this.$message.warning('请选择学员')
         } else {
-          console.log('==========')
-          console.log(this.batchListQuery.subject)
-          this.innerGradeOption = true
+          if (this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4') {
+            this.examOperation('1')
+          } else {
+            this.innerGradeOption = true
+          }
         }
       },
       examOperation(state) {

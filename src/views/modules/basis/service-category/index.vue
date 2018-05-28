@@ -152,16 +152,16 @@
         ],
         rules: {
           name: [
-            { required: true, message: '请输入收费服务名字', trigger: ['blur'] }
+            { required: true, message: '请输入收费服务名字', trigger: ['blur','change'] }
           ],
           price: [
-            { required: true, message: '请输入价格', trigger: ['blur'] }
+            { required: true, message: '请输入价格', trigger: ['blur','change'] }
           ],
           priceType: [
-            { required: true, message: '请选择收费类型', trigger: ['blur'] }
+            { required: true, message: '请选择收费类型', trigger: ['blur','change'] }
           ],
           code: [
-            { required: true, message: '请选择服务类型', trigger: ['blur'] }
+            { required: true, message: '请选择服务类型', trigger: ['blur','change'] }
           ]
         }
       }
@@ -243,6 +243,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
+            this.serviceCategory.number = 1
             addFinance(this.serviceCategory)
               .then(() => {
                 this.dialogFormVisible = false
@@ -262,6 +263,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
+            this.serviceCategory.number = 1
             putFinance(this.serviceCategory).then(() => {
               this.dialogFormVisible = false
               this.getList()

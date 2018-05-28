@@ -91,13 +91,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写顾虑问题', trigger: ['blur'] }
+            { required: true, message: '请填写顾虑问题', trigger: ['blur','change'] }
           ],
           description: [
-            { required: true, message: '请填写顾虑问题描述', trigger: ['blur'] }
+            { required: true, message: '请填写顾虑问题描述', trigger: ['blur','change'] }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写顾虑问题排序等级', trigger: ['blur'] }
+            { required: true, type: 'number', message: '请填写顾虑问题排序等级', trigger: ['blur','change'] }
           ]
         },
         dict: {},

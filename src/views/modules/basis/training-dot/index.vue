@@ -97,13 +97,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写训练场地', trigger: ['blur'] }
+            { required: true, message: '请填写训练场地', trigger: ['blur','change'] }
           ],
           description: [
-            { required: true, message: '请填写训练场地描述', trigger: ['blur'] }
+            { required: true, message: '请填写训练场地描述', trigger: ['blur','change'] }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写训练场地排序等级', trigger: ['blur'] }
+            { required: true, type: 'number', message: '请填写训练场地排序等级', trigger: ['blur','change'] }
           ]
         },
         dict: {},

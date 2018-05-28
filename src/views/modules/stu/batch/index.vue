@@ -389,16 +389,16 @@
         },
         batchRules: {
           examField: [
-            { required: true, message: '请选择考试场地', trigger: ['blur'] }
+            { required: true, message: '请选择考试场地', trigger: ['blur','change'] }
           ],
           // stuCount: [
-          //   { required: true, type: 'number', message: '请输入人数', trigger: ['blur'] }
+          //   { required: true, type: 'number', message: '请输入人数', trigger: ['blur','change'] }
           // ],
           examTime: [
-            { required: true, message: '请选择考试时间', trigger: ['blur'] }
+            { required: true, message: '请选择考试时间', trigger: ['blur','change'] }
           ],
           expiryTime: [
-            { required: true, message: '请选择预约截止日期', trigger: ['blur'] }
+            { required: true, message: '请选择预约截止日期', trigger: ['blur','change'] }
           ]
         }
       }

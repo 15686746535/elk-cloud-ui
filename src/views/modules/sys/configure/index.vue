@@ -117,13 +117,13 @@
         total: null,
         rules: {
           key: [
-            { required: true, message: 'Please enter the key', trigger: ['blur'] }
+            { required: true, message: 'Please enter the key', trigger: ['blur','change'] }
           ],
           value: [
-            { required: true, message: 'Please enter the value', trigger: ['blur'] }
+            { required: true, message: 'Please enter the value', trigger: ['blur','change'] }
           ],
           remark: [
-            { required: true, message: 'Please enter the remark', trigger: ['blur'] }
+            { required: true, message: 'Please enter the remark', trigger: ['blur','change'] }
           ]
         },
         orgId: null,

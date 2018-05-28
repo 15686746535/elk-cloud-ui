@@ -81,7 +81,7 @@
       },
       // testaaaa() {
       //   console.log('===============aaa=============')
-      //   this.$emit(['blur'], true)
+      //   this.$emit(['blur','change'], true)
       // },
       emitChange(value) {
         if (value === '') value = null

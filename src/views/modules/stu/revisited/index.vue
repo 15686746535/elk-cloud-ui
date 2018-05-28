@@ -187,6 +187,7 @@
       handleSubject() {
         this.listQuery.page = 1
         this.listQuery.condition = null
+        this.questionList = []
         this.getList()
       },
       /* 根据问卷查题目 */

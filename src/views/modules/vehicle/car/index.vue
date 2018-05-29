@@ -1193,6 +1193,7 @@
         console.log('=================== 正在完成取消操作 ===================')
         this.editList({ 'vehicleEntity': this.vehicleEntity })
         this.showModule = 'info'
+        this.edit = ''
         console.log('=================== 完成 ===================')
       },
       // 双击编辑

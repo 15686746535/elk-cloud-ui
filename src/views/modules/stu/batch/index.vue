@@ -47,7 +47,7 @@
         <el-table-column align="center"  label="已约人数">
           <template slot-scope="scope">
             <!--<span>{{scope.row.hasReserved}}/{{scope.row.stuCount}}</span>-->
-            <span>{{scope.row.stuCount}}</span>
+            <span>{{scope.row.stuCount<0?0:scope.row.stuCount}}</span>
           </template>
         </el-table-column>
 
@@ -149,13 +149,14 @@
                               label="状态">
               <template slot-scope="scope">
                 <!--<span>{{scope.row.state}}</span>-->
-                <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
+                <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  6取消约考  -->
                 <span v-if="scope.row.examineState === '4'" style="border-radius: 20px;color: #f56c6c">报考失败</span>
                 <span v-else-if="scope.row.examineState === '5'" style="border-radius: 20px;color: #e6a23c">审核失败</span>
                 <span v-else-if="scope.row.examineState === '0'" style="border-radius: 20px;color: #909399">待审核</span>
                 <span v-else-if="scope.row.examineState === '1'" style="border-radius: 20px;color: #02b7ac">待约考</span>
                 <span v-else-if="scope.row.examineState === '2'" style="border-radius: 20px;color: #409eff">已约考</span>
                 <span v-else-if="scope.row.examineState === '3'" style="border-radius: 20px;color: #67c23a">报考成功</span>
+                <span v-else-if="scope.row.examineState === '6'" style="border-radius: 20px;color: #f56c6c">取消约考</span>
 
               </template>
             </el-table-column>
@@ -284,20 +285,6 @@
                   <span>{{scope.row.examTime | subTime}}</span>
                 </template>
               </el-table-column>
-              <!--<el-table-column align="center" label="考试情况">-->
-                <!--<el-table-column align="center" label="是否补考">-->
-
-                <!--</el-table-column>-->
-                <!--<el-table-column align="center" label="合格">-->
-
-                <!--</el-table-column>-->
-                <!--<el-table-column align="center" label="不合格">-->
-
-                <!--</el-table-column>-->
-                <!--<el-table-column align="center" label="未到">-->
-
-                <!--</el-table-column>-->
-              <!--</el-table-column>-->
             </el-table>
           </el-tab-pane>
       </el-tabs>
@@ -460,7 +447,6 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            // this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
             addObj(this.batch)
               .then(() => {
                 this.getList()
@@ -485,7 +471,6 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            // this.batch.batch = '<' + parseTime(this.batch.examTime, '{y}-{m}-{d}').toString().substr(0, 10) + '>  ' + this.batch.examField
             putObj(this.batch).then(response => {
               console.log(response.data)
               this.batchOption = false
@@ -508,7 +493,7 @@
           this.$confirm('此操作将永久删除, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: 'warning'
+            type: 'error'
           }).then(() => {
             delObj(val.examId).then(() => {
               this.$notify({

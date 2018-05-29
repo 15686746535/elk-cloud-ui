@@ -21,7 +21,7 @@
         <el-col style="border: 1px solid #1f2d3d;font-size: 12px;">
           <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d;font-size: 12px;">
             <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              {{new Date().getFullYear()}}年{{new Date().getMonth()}}月{{new Date().getDate()}}日
+              {{dateTime}}
             </el-col>
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
               <span class="text_css">校区：{{student.campus}}</span>
@@ -433,6 +433,7 @@
         financeList: [],
         studentList: [],
         student: {},
+        dateTime: null,
         studentListLoading: false,
         infoLoading: false,
         btnLoading: false,
@@ -491,6 +492,7 @@
     },
     created() {
       this.getFinanceList()
+      this.dateTime = new Date().getFullYear() + '年' + (new Date().getMonth()+1) + '月' + new Date().getDate() + '日'
     },
     computed: {
       ...mapGetters([
@@ -707,58 +709,53 @@
         var yhb = 0;
 
 
-        // for (var i = 0; i < this.financeList.length; i++) {
-          for (var j = 0; j < this.stuServiceBuyNoteEntity.financeList.length; j++) {
-            // if (this.financeList[i].categoryId === this.stuServiceBuyNoteEntity.financeList[j].categoryId) {
-
-
-              if (this.stuServiceBuyNoteEntity.financeList[j].code === '001') {
-                if (50 - (dsfStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-                  dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-                } else {
-                  dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-                  dsf = dsf + 20
-                  console.log('dsf', dsf)
-                }
-              }
-
-              if (this.stuServiceBuyNoteEntity.financeList[j].code === '002') {
-
-                if (50 - (pxfStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-                  pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-                } else {
-                  pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-                  pxf = pxf + 20
-                }
-
-              }
-              if (this.stuServiceBuyNoteEntity.financeList[j].code === '003') {
-                if (50 - (fwbStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-                  fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-                } else {
-                  fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-                  fwb = fwb + 20
-                }
-              }
-              if (this.stuServiceBuyNoteEntity.financeList[j].code === '004') {
-                if (50 - (yhbStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-                  yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-                } else {
-                  yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-                  yhb = yhb + 20
-                }
-              }
-            // }
+        for (var j = 0; j < this.stuServiceBuyNoteEntity.financeList.length; j++) {
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '001') {
+            if (50 - (dsfStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              dsf = dsf + 20
+              console.log('dsf', dsf)
+            }
           }
-          console.log('dsfStr:', dsfStr)
-          console.log('pxfStr:', pxfStr)
-          console.log('fwbStr:', fwbStr)
-          console.log('yhbStr:', yhbStr)
-          console.log('dsf:', dsf)
-          console.log('pxf:', pxf)
-          console.log('fwb:', fwb)
-          console.log('yhb:', yhb)
-        // }
+
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '002') {
+
+            if (50 - (pxfStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              pxf = pxf + 20
+            }
+
+          }
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '003') {
+            if (50 - (fwbStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              fwb = fwb + 20
+            }
+          }
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '004') {
+            if (50 - (yhbStr.length%50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              yhb = yhb + 20
+            }
+          }
+        }
+        console.log('dsfStr:', dsfStr)
+        console.log('pxfStr:', pxfStr)
+        console.log('fwbStr:', fwbStr)
+        console.log('yhbStr:', yhbStr)
+        console.log('dsf:', dsf)
+        console.log('pxf:', pxf)
+        console.log('fwb:', fwb)
+        console.log('yhb:', yhb)
+
         var a = dsf;
         var b = dsf + pxf;
         var c = dsf + pxf + fwb;
@@ -782,7 +779,7 @@
         LODOP.SET_PRINT_STYLEA(0,"FontSize",11);
         LODOP.ADD_PRINT_RECT(77,25,702,(376+d),0,1);
         LODOP.ADD_PRINT_LINE(122,26,121,728,0,1);
-        LODOP.ADD_PRINT_TEXT(90,26,100,20,"2018年5月2日");
+        LODOP.ADD_PRINT_TEXT(90,26,100,20,this.dateTime);
         LODOP.ADD_PRINT_LINE(77,137,121,138,0,1);
         LODOP.ADD_PRINT_TEXT(90,139,45,20,"校区：");
         LODOP.ADD_PRINT_TEXT(90,184,45,20,this.student.campus);

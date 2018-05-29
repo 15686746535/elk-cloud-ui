@@ -304,6 +304,7 @@
           <el-button @click="operation('1','examCancel')" size="small" type="info" round>撤销</el-button>
           <el-button @click="operation('3','examExamine')" size="small" type="success" round>成功</el-button>
         </el-button-group>
+
         <el-button-group v-else-if="studentListQuery.examineState === '3'">
           <el-button @click="operation('6','examCancel')" size="small" type="danger" round>取消约考</el-button>
           <el-button type="primary" size="small" @click="exportExamList" round>导出名单</el-button>
@@ -360,6 +361,7 @@
           label: '科目四'
         }],
         batchOption: false,
+        testUrl: null,
         examOption: false,
         btnLoading: false,
         examBespeak: [],
@@ -597,6 +599,13 @@
         }
         this.studentListQuery.subject = subject
         exportExamList(this.studentListQuery).then(response => {
+          console.log(response)
+          let time = new Date()
+          let blob = new Blob([response.data], { type: 'application/x-xls' })
+          let link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = '考试名单('  + time.toLocaleString()+ ').xls'
+          link.click()
         })
       }
     }

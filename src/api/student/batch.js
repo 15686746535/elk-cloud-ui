@@ -55,6 +55,7 @@ export function exportExamList(query) {
   return request({
     url: '/stu/exam/exportExamList',
     method: 'get',
-    params: query
+    params: query,
+    responseType: 'arraybuffer'
   })
 }

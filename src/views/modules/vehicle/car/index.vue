@@ -840,7 +840,7 @@
               <el-input v-model="repair.cost" placeholder="维修费用" ></el-input>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
-              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model.number="repair.remark" placeholder="备注" ></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model.number="repair.remark" placeholder="备注" ></el-input>
             </el-form-item>
           </el-form>
 
@@ -862,7 +862,7 @@
               <el-input v-model="maintain.cost" placeholder="保养费用" ></el-input>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
-              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model.number="maintain.remark" placeholder="备注" ></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model.number="maintain.remark" placeholder="备注" ></el-input>
             </el-form-item>
           </el-form>
 

@@ -100,14 +100,14 @@
                     <div style="width: 100%;height: 100%;">
 
                       <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
-                        <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 15px;" v-for="followUps in followUps">
+                        <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 15px;" v-for="followUp in followUps">
                           <el-tag class="avatar">
-                            <img width="100%" height="100%" :src="followUps.avatar">
+                            <img width="100%" height="100%" :src="followUp.avatar">
                           </el-tag>
-                          <div class="username">{{followUps.userName}}</div>
-                          <div class="time">{{followUps.createTime | subTime('dateTime')}}</div>
+                          <div class="username">{{followUp.name}}</div>
+                          <div class="time">{{followUp.createTime | subTime('dateTime')}}</div>
                           <div style="clear: both;white-space:normal;width: 100%">
-                            <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUps.content}}</p>
+                            <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUp.content}}</p>
                           </div>
                         </div>
                       </div>
@@ -117,7 +117,7 @@
                       <div style="padding: 0 5px;">
                         <el-row :gutter="5">
                           <el-col :span="19" >
-                            <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                            <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 4}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                           </el-col>
                           <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading" type="primary" @click="addFollowUp">跟进</el-button></el-col>
                         </el-row>
@@ -395,7 +395,7 @@
                   <el-col>
                     <el-form-item prop="content">
                       <span slot="label" class="text_css">咨询内容</span>
-                      <el-input v-if="edit" type="textarea" :autosize="{ minRows: 4, maxRows: 3}" v-model="intention.content" placeholder="咨询内容"></el-input>
+                      <el-input v-if="edit" type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="intention.content" placeholder="咨询内容"></el-input>
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.content}}</div>
                     </el-form-item>
                   </el-col>
@@ -448,7 +448,7 @@
               <div style="padding: 0 5px;">
                 <el-row :gutter="5">
                   <el-col :span="19" >
-                    <el-input type="textarea" @keyup.enter.native="addFollowUp" :autosize="{ minRows: 4, maxRows: 3}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                    <el-input type="textarea" @keyup.enter.native="addFollowUp" :autosize="{ minRows: 4, maxRows: 4}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                   </el-col>
                   <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading"  type="primary" @click="addFollowUp">跟进</el-button></el-col>
                 </el-row>

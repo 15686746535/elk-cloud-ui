@@ -89,7 +89,7 @@
         </el-table-column>
         <el-table-column align="center" label="状态">
           <template slot-scope="scope">
-            <el-switch :disabled="scope.row.studentList.length > 0" v-model="scope.row.state" active-value="1" inactive-value="0" @change="vehiclePeriodChange(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            <el-switch :title="scope.row.studentList.length > 0?'已有学员预约，不能修改':'暂无学员预约，可以修改'" :disabled="scope.row.studentList.length > 0" v-model="scope.row.state" active-value="1" inactive-value="0" @change="vehiclePeriodChange(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           </template>
         </el-table-column>
 

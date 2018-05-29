@@ -541,23 +541,31 @@
         }
       }
       var idNumberIsExistence = (rule, value, callback) => {
-        findUserByCondition({ 'condition': value }).then(response => {
-          console.log(response.data)
-          if (response.data.data) {
-            callback(new Error('身份证号码已存在'))
-          } else {
-            callback()
-          }
-        })
+        if (this.addInfo) {
+          findUserByCondition({ 'condition': value }).then(response => {
+            console.log(response.data)
+            if (response.data.data) {
+              callback(new Error('身份证号码已存在'))
+            } else {
+              callback()
+            }
+          })
+        } else {
+          callback()
+        }
       }
       var mobileIsExistence = (rule, value, callback) => {
-        findUserByCondition({ 'condition': value }).then(response => {
-          if (response.data.data) {
-            callback(new Error('电话号码已存在'))
-          } else {
-            callback()
-          }
-        })
+        if (this.addInfo) {
+          findUserByCondition({ 'condition': value }).then(response => {
+            if (response.data.data) {
+              callback(new Error('电话号码已存在'))
+            } else {
+              callback()
+            }
+          })
+        } else {
+          callback()
+        }
       }
       var roleListReg = (rule, value, callback) => {
         if (value.length > 0) {
@@ -646,7 +654,7 @@
             { required: true, message: '请输入档案号', trigger: ['blur','change'] }
           ],
           email: [
-            { required: true, message: '请输入邮箱', trigger: ['blur','change'] },
+            { required: false, message: '请输入邮箱', trigger: ['blur','change'] },
             { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur','change'] }
           ],
           name: [
@@ -659,7 +667,7 @@
             { required: true, message: '请选择生日', trigger: ['blur','change'] }
           ],
           wechat: [
-            { required: true, message: '请输入微信', trigger: ['blur','change'] }
+            { required: false, message: '请输入微信', trigger: ['blur','change'] }
           ],
           contactAddress: [
             { required: true, message: '请输入联系地址', trigger: ['blur','change'] }
@@ -672,22 +680,22 @@
             { validator: roleListReg, trigger: ['blur','change'] }
           ],
           homeAddress: [
-            { required: true, message: '请输入家庭地址', trigger: ['blur','change'] }
+            { required: false, message: '请输入家庭地址', trigger: ['blur','change'] }
           ],
           qq: [
-            { required: true, message: '请输入qq', trigger: ['blur','change'] }
+            { required: false, message: '请输入qq', trigger: ['blur','change'] }
           ],
           joinedTime: [
             { required: true, message: '请选择入职日期', trigger: ['blur','change'] }
           ],
           positiveTime: [
-            { required: true, message: '请选择转正日期', trigger: ['blur','change'] }
+            { required: false, message: '请选择转正日期', trigger: ['blur','change'] }
           ],
           emergencyContact: [
-            { required: true, message: '请输入紧急联系人', trigger: ['blur','change'] }
+            { required: false, message: '请输入紧急联系人', trigger: ['blur','change'] }
           ],
           emergencyMobile: [
-            { required: true, message: '请输入紧急联系人电话', trigger: ['blur','change'] },
+            { required: false, message: '请输入紧急联系人电话', trigger: ['blur','change'] },
             { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] }
           ],
           workMobile: [

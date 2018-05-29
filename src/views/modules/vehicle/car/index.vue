@@ -181,7 +181,7 @@
                 <el-form-item prop="plateColor">
                   <span slot="label" class="text_css">车牌颜色:</span>
                   <el-select style="width: 100%" v-if="edit === 'car'" v-model="vehicleEntity.plateColor" placeholder="请选择车牌颜色">
-                    <el-option v-for="item in plateColors" :key="item.value" :label="item.label" :value="item.value">
+                    <el-option v-for="item in plateColors" :key="item" :label="item" :value="item">
                     </el-option>
                   </el-select>
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicleEntity.plateColor}}</span>
@@ -209,7 +209,7 @@
                   <el-form-item prop="vehicleType">
                     <span slot="label" class="text_css">车辆类别:</span>
                     <el-select style="width: 100%" v-if="edit === 'car'" v-model="vehicleEntity.vehicleType" placeholder="请选择车辆类别">
-                      <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value">
+                      <el-option v-for="item in vehicleTypes" :key="item" :label="item" :value="item">
                       </el-option>
                     </el-select>
                     <span style="padding-left: 16px;font-size: 12px;" v-else>{{vehicleEntity.vehicleType}}</span>
@@ -219,7 +219,7 @@
                   <el-form-item prop="vehicleState">
                     <span slot="label" class="text_css">车辆来源:</span>
                     <el-select style="width: 100%" v-if="edit === 'car'" v-model="vehicleEntity.vehicleState" placeholder="请选择车辆来源">
-                      <el-option v-for="item in vehicleStates" :key="item.value" :label="item.label" :value="item.value">
+                      <el-option v-for="item in vehicleStates" :key="item" :label="item" :value="item">
                       </el-option>
                     </el-select>
                     <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicleEntity.vehicleState}}</span>
@@ -287,7 +287,7 @@
                   <el-form-item prop="fuelType">
                     <span slot="label" class="text_css">燃料类别:</span>
                     <el-select style="width: 100%" v-if="edit === 'car'" v-model="vehicleEntity.fuelType" placeholder="请选择燃料类别">
-                      <el-option v-for="item in fuelTypes" :key="item.value" :label="item.label" :value="item.value">
+                      <el-option v-for="item in fuelTypes" :key="item" :label="item" :value="item">
                       </el-option>
                     </el-select>
                     <span style="padding-left: 16px;font-size: 12px;" v-else >{{vehicleEntity.fuelType}}</span>
@@ -667,7 +667,7 @@
               <el-col :span="8">
                 <el-form-item prop="rearView">
                   <span slot="label" class="text_css">副后视境:</span>
-                  <el-input  v-if="edit === 'safety'" placeholder="副后视境"  style="width: 100%" v-model="safetyEntity.rearView"></el-input>
+                  <el-input v-if="edit === 'safety'" placeholder="副后视境"  style="width: 100%" v-model="safetyEntity.rearView"></el-input>
                   <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.rearView}}</span>
                 </el-form-item>
               </el-col>
@@ -1024,78 +1024,10 @@
         safetyEntityRules: {},
         technicalEntityRules: {},
         addInfo: false,
-        plateColors: [
-          {
-            value: '黄色',
-            label: '黄色'
-          }, {
-            value: '绿色',
-            label: '绿色'
-          }, {
-            value: '蓝色',
-            label: '蓝色'
-          }
-        ],
-        vehicleTypes: [
-          {
-            value: '教练车',
-            label: '教练车'
-          }, {
-            value: '公交',
-            label: '公交'
-          }, {
-            value: '挂车',
-            label: '挂车'
-          }, {
-            value: '普货车',
-            label: '普货车'
-          }, {
-            value: '特种',
-            label: '特种'
-          }, {
-            value: '公务车',
-            label: '公务车'
-          }, {
-            value: '出租',
-            label: '出租'
-          }
-        ],
-        vehicleStates: [
-          {
-            value: '新增',
-            label: '新增'
-          }, {
-            value: '内部转入',
-            label: '内部转入'
-          }, {
-            value: '外部转入',
-            label: '外部转入'
-          }, {
-            value: '报废更新',
-            label: '报废更新'
-          }, {
-            value: '租用',
-            label: '租用'
-          }
-        ],
-        fuelTypes: [
-          {
-            value: '柴油',
-            label: '柴油'
-          }, {
-            value: '汽油',
-            label: '汽油'
-          }, {
-            value: 'CNG天然气',
-            label: 'CNG天然气'
-          }, {
-            value: '油电混合',
-            label: '油电混合'
-          }, {
-            value: '纯电动',
-            label: '纯电动'
-          }
-        ],
+        plateColors: ['黄色','绿色','蓝色'],
+        vehicleTypes: ['教练车','公交','挂车','普货车','特种','公务车','出租'],
+        vehicleStates: ['新增','内部转入','外部转入','报废更新','租用'],
+        fuelTypes: ['柴油','汽油','CNG天然气','油电混合','纯电动'],
         repairRules: {
           description: [
             { required: true, message: '请填写维修内容', trigger: ['blur','change'] },
@@ -1282,7 +1214,6 @@
             this.timeGroup()
           })
         this.showModule = 'info'
-        this.edit = ''
         this.addInfo = false
       },
       // 所有编辑方法
@@ -1292,12 +1223,14 @@
           this.update(this.edit, this.vehicleEntity)
         } else if (this.edit === 'technical') {
           console.log('technical')
+          if (this.technicalEntity.wheelbase === null) this.technicalEntity.wheelbase = ''
           this.update(this.edit, this.technicalEntity)
         } else if (this.edit === 'safety') {
           console.log('safety')
           this.update(this.edit, this.safetyEntity)
         } else if (this.edit === 'certificate') {
           console.log('certificate')
+          if (this.certificateEntity.roadTransport === null) this.certificateEntity.roadTransport = ''
           this.update(this.edit, this.certificateEntity)
         }
         this.edit = key

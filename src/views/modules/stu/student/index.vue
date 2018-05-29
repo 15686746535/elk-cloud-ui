@@ -56,11 +56,6 @@
                 <el-button type="primary"  size="mini" @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
               </el-col>
             </el-row>
-
-
-
-
-
           </el-card>
 
           <el-card :style="{height: ($store.state.app.client.height-135) + 'px'}">
@@ -1010,19 +1005,21 @@
       }
       var idNumberIsExistence = (rule, value, callback) => {
         isExistence(value).then(response => {
+          console.log('身份证号码',response.data)
           if (response.data.data) {
-            callback()
-          } else {
             callback(new Error('身份证号码已存在'))
+          } else {
+            callback()
           }
         })
       }
       var mobileIsExistence = (rule, value, callback) => {
         isExistence(value).then(response => {
+          console.log('电话号码',response.data)
           if (response.data.data) {
-            callback()
-          } else {
             callback(new Error('电话号码已存在'))
+          } else {
+            callback()
           }
         })
       }

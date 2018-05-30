@@ -6,9 +6,9 @@
       <el-dropdown class="avatar-container" trigger="click">
         <el-tooltip effect="dark" content="点击查看更多功能" placement="bottom">
           <div class="avatar-wrapper">
-            <el-badge :value="notice" :max="99" class="item" style="height: 40px;">
+            <!--<el-badge :value="notice" :max="99" class="item" style="height: 40px;">-->
               <img class="user-avatar" :src="avatar">
-            </el-badge>
+            <!--</el-badge>-->
             <!--<i class="el-icon-caret-bottom"></i>-->
           </div>
         </el-tooltip>

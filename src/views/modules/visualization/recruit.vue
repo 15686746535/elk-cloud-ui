@@ -3,7 +3,7 @@
       <el-card>
         <el-row>
           <el-col>
-            <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" style="margin-bottom: 0px;"
+            <el-date-picker value-format="yyyy-MM-dd" v-model="interval" type="daterange" align="left" style="margin-bottom: 0px;"
                             unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
             <el-button type="primary"  @click="getList" ><i class="el-icon-search"></i>搜索</el-button>

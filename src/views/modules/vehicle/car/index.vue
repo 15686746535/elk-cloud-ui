@@ -172,6 +172,7 @@
               <el-row style="margin-bottom: 4px;">
 
                 <el-upload :disabled="!(edit === 'car')" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                           accept=".png,.jpg"
                            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                   <img :src="vehicleEntity.vehiclePhoto" class="avatar">
                 </el-upload>
@@ -707,6 +708,7 @@
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">行驶证</div>
               <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         accept=".png,.jpg"
                          :on-success="handleDrivingLicensePhotoSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                 <img v-if="safetyEntity.drivingLicensePhoto" :src="safetyEntity.drivingLicensePhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -715,6 +717,7 @@
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">登记证书</div>
               <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         accept=".png,.jpg"
                          :on-success="handleCertificatePhotoSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                 <img v-if="safetyEntity.certificatePhoto" :src="safetyEntity.certificatePhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -723,6 +726,7 @@
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">保单</div>
               <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         accept=".png,.jpg"
                          :on-success="handlePolicyPhotoSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                 <img v-if="safetyEntity.policyPhoto" :src="safetyEntity.policyPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -731,6 +735,7 @@
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">二维检测</div>
               <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         accept=".png,.jpg"
                          :on-success="handleTwoDimensionalPhotoSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                 <img v-if="safetyEntity.twoDimensionalPhoto" :src="safetyEntity.twoDimensionalPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -740,6 +745,7 @@
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">气瓶证</div>
               <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         accept=".png,.jpg"
                          :on-success="handleBottlePhotoSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                 <img v-if="safetyEntity.bottlePhoto" :src="safetyEntity.bottlePhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -748,6 +754,7 @@
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">标识卡</div>
               <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         accept=".png,.jpg"
                          :on-success="handleIdentificationPhotoSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                 <img v-if="safetyEntity.identificationPhoto" :src="safetyEntity.identificationPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -756,6 +763,7 @@
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
               <div style="width: 100%;height: 20px;text-align: center;font-size: 16px;font-weight: 600;margin-bottom: 5px;">道路运输证</div>
               <el-upload class="avatar-uploader" action="/oss/upload" :show-file-list="false" :headers="headers"
+                         accept=".png,.jpg"
                          :on-success="handleRoadTransportPhotoSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                 <img v-if="safetyEntity.roadTransportPhoto" :src="safetyEntity.roadTransportPhoto" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -1284,14 +1292,14 @@
       },
       beforeAvatarUpload(file) {
         const type = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 1
         const isImages = file.type && type.indexOf(file.type) > -1
 
         if (!isImages) {
-          this.$message.error('只支持jpg、png、gif格式的图片！')
+          this.$message.error('只支持jpg、png格式的图片！')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传图片大小不能超过 1MB!')
         }
 
         if (isImages && isLt2M) this.infoLoading = true

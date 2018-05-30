@@ -147,7 +147,11 @@
                            style="float:left;"
                            layout="total, sizes, prev, pager, next, jumper" :total="studentTotal">
             </el-pagination>
-            <el-button style="float:right;" size="small"  @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+
+            <div style="float: right" >
+              <el-button size="small" @click="exportAchievement" type="info"><i class="el-icon-download"></i> 导 出</el-button>
+              <el-button size="small" @click="createClick" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
+            </div>
           </div>
         </el-card>
 
@@ -224,7 +228,7 @@
 </template>
 
 <script>
-  import { examFetchList, putExamNote } from '@/api/student/examnote'
+  import { examFetchList, putExamNote, exportAchievement } from '@/api/student/examnote'
   import { getBatchs } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
   import { removeAllSpace } from '@/utils/validate'
@@ -494,6 +498,21 @@ export default {
         } else {
           this.studentListQuery.beginTime = null
           this.studentListQuery.endTime = null
+        }
+      },
+      exportAchievement(){
+        if (this.gradeStudentList.length === 0) {
+          this.$message.info('暂无数据')
+        } else {
+          exportAchievement(this.studentListQuery).then(response => {
+            console.log(response)
+            let time = new Date()
+            let blob = new Blob([response.data], { type: 'application/x-xls' })
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = '考试成绩('  + time.toLocaleString()+ ').xls'
+            link.click()
+          })
         }
       }
     }

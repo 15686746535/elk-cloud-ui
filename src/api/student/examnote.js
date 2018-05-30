@@ -53,3 +53,13 @@ export function batchSave(obj) {
     data: obj
   })
 }
+
+/* 学员成绩导出 */
+export function exportAchievement(query) {
+  return request({
+    url: '/stu/exam/note/exportAchievement',
+    method: 'get',
+    params: query,
+    responseType: 'arraybuffer'
+  })
+}

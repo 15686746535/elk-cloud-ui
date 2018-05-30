@@ -91,7 +91,10 @@
                              :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
-              <el-button class="filter-item" style="float: right" size="small" @click="create" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+              <div style="float: right" >
+                <el-button size="small" @click="exportUser" type="info"><i class="el-icon-download"></i> 导 出</el-button>
+                <el-button size="small" @click="create" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+              </div>
             </div>
           </el-card>
         </el-col>
@@ -117,7 +120,8 @@
                 <el-card body-style="padding:15px 15px 0 15px;"  v-loading="infoLoading" element-loading-text="转圈圈加载中~" shadow="hover">
                   <el-row>
                     <el-col :span="6">
-                      <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                      <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file"
+                                 accept=".png,.jpg" :show-file-list="false" :headers="headers"
                                   :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img :src="userEntity.avatar" class="avatar">
                       </el-upload>
@@ -420,30 +424,30 @@
                     </div>
                   </div>
 
-                  <el-table :data="studentList" v-loading="studentListLoading" :height="$store.state.app.client.height-205"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+                  <el-table :data="studentList" v-loading="studentListLoading" :height="$store.state.app.client.height-192" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;min-height: 633px;">
                     <el-table-column type="index" align="center" label="编号" width="50">
                     </el-table-column>
-                    <el-table-column align="center"  label="姓名">
+                    <el-table-column align="center" label="姓名">
                       <template slot-scope="scope">
                         <span>{{ scope.row.name}}</span>
                       </template>
                     </el-table-column>
-                    <el-table-column align="center"  label="电话">
+                    <el-table-column align="center" label="电话">
                       <template slot-scope="scope">
                         <span>{{ scope.row.mobile}}</span>
                       </template>
                     </el-table-column>
-                    <el-table-column align="center"  label="入学日期">
+                    <el-table-column align="center" label="入学日期">
                       <template slot-scope="scope">
                         <span>{{ scope.row.enrolTime}}</span>
                       </template>
                     </el-table-column>
-                    <el-table-column align="center"  label="车型">
+                    <el-table-column align="center" label="车型">
                       <template slot-scope="scope">
                         <span>{{ scope.row.motorcycleType}}</span>
                       </template>
                     </el-table-column>
-                    <el-table-column align="center"  label="状态">
+                    <el-table-column align="center" label="状态">
                       <template slot-scope="scope">
                         <span>{{ scope.row.state | subjectFilter}}</span>
                       </template>
@@ -491,7 +495,7 @@
   import { autoProduce } from '@/utils/index'
   import Bar from '@/components/Bar'
   import LineChart from '@/components/LineChart'
-  import { fetchList, addObj, putObj, getObj, rePassword, delObj, findUserByCondition } from '@/api/upms/user'
+  import { fetchList, addObj, putObj, getObj, rePassword, delObj, findUserByCondition, exportUser } from '@/api/upms/user'
   import { getToken } from '@/utils/auth'
 
   export default {
@@ -893,14 +897,14 @@
       },
       beforeAvatarUpload(file) {
         const type = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 1
         const isImages = file.type && type.indexOf(file.type) > -1
 
         if (!isImages) {
-          this.$message.error('只支持jpg、png、gif格式的图片！')
+          this.$message.error('只支持jpg、png格式的图片！')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传头像图片大小不能超过 1MB!')
         }
 
         return isImages && isLt2M
@@ -925,6 +929,18 @@
           delObj({ 'userId': userId, 'quit': '1' }).then(() => {
             this.back()
           })
+        })
+      },
+      exportUser() {
+        console.log(this.listQuery)
+        exportUser(this.listQuery).then(response => {
+          console.log(response)
+          let time = new Date()
+          let blob = new Blob([response.data], { type: 'application/x-xls' })
+          let link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = '同事名单('  + time.toLocaleString()+ ').xls'
+          link.click()
         })
       }
     }

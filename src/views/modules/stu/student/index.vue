@@ -175,7 +175,7 @@
 
 
 
-              <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+              <div v-show="!listLoading" style="margin-top: 20px">
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                :current-page.sync="listQuery.page"
                                background
@@ -184,12 +184,13 @@
                                layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
 
-                <el-button @click="create" style="float:right;margin: 0 5px" size="small" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+                <el-button @click="create" size="small" style="float:right;margin: 0 5px" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+                <el-button size="small" style="float:right;margin: 0 5px" @click="exportStudent" type="info"><i class="el-icon-download"></i>导出</el-button>
                 <el-upload class="upload-demo" action="/stu/student/import"
                            :headers="headers"
-                           style="float:right;"
                            :on-success="handleTextSuccess"
                            accept=".xls,.xlsx"
+                           style="float:right;margin: 0 5px"
                            :on-error="handleAvatarError"
                            :before-upload="beforeTextUpload"
                            :show-file-list="false">
@@ -403,6 +404,7 @@
                       <!-- 头像 -->
                       <el-form-item prop="avatar">
                         <el-upload :disabled="!edit"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                                   accept=".png,.jpg"
                                    :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                           <img :src="student.avatar" class="avatar">
                         </el-upload>
@@ -846,6 +848,7 @@
                 <el-col  :span="18">
                   <div style="height: 150px;width: 100px;margin: 0 auto">
                     <el-upload :disabled="!edit"  class="AddAvatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                               accept=".png,.jpg"
                                :on-success="AddHandleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
                       <img :src="studentEntity.avatar" class="AddAvatar">
                     </el-upload>
@@ -966,7 +969,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
@@ -1589,14 +1592,14 @@
       },
       beforeAvatarUpload(file) {
         const type = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 1
         const isImages = file.type && type.indexOf(file.type) > -1
 
         if (!isImages) {
-          this.$message.error('只支持jpg、png、gif格式的图片！')
+          this.$message.error('只支持jpg、png格式的图片！')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传头像图片大小不能超过 1MB!')
         }
 
         return isImages && isLt2M
@@ -1780,6 +1783,17 @@
         } else {
           this.$message.warning('该学员未分配当前科目教练')
         }
+      },
+      exportStudent() {
+        exportStudent(this.listQuery).then(response => {
+          console.log(response)
+          let time = new Date()
+          let blob = new Blob([response.data], { type: 'application/x-xls' })
+          let link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = '学员名单('  + time.toLocaleString()+ ').xls'
+          link.click()
+        })
       }
     }
   }

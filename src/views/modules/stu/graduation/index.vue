@@ -389,7 +389,8 @@
                     <el-row>
                       <!-- 头像 -->
                       <el-form-item prop="avatar">
-                        <el-upload :disabled="false" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false">
+                        <el-upload :disabled="false" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false"
+                                   accept=".png,.jpg">
                           <img :src="student.avatar" class="avatar">
                         </el-upload>
                       </el-form-item>

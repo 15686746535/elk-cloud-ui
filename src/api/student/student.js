@@ -53,3 +53,12 @@ export function putStudent(obj) {
   })
 }
 
+/* 学员信息导出 */
+export function exportStudent(query) {
+  return request({
+    url: '/stu/student/exportStudent',
+    method: 'get',
+    params: query,
+    responseType: 'arraybuffer'
+  })
+}

@@ -135,7 +135,8 @@
                     <el-col :span="6"> &nbsp;</el-col>
                     <el-col  :span="18">
                       <div style="height: 250px;width: 200px;margin: 0 auto">
-                        <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
+                                   accept=".png,.jpg" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                           <img v-if="studentEntity.avatar" :src="studentEntity.avatar" class="avatar">
                           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
@@ -319,13 +320,13 @@
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 1
 
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传头像图片大小不能超过 1MB!')
         }
         return isJPG && isLt2M
       }

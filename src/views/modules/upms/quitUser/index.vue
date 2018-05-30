@@ -119,6 +119,7 @@
                   <el-row>
                     <el-col :span="6">
                       <el-upload :disabled="false"  class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers"
+                                    accept=".png,.jpg"
                                   :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img :src="userEntity.avatar" class="avatar">
                       </el-upload>

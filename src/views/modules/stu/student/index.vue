@@ -1773,7 +1773,7 @@
         this.cleanCarClassSelected()
         if (this.student.state === '2') coachId = this.student.fieldCoach
         if (this.student.state === '3') coachId = this.student.roadCoach
-        console.log(coachId)
+        this.examBespeak.subject = this.student.state
         if (coachId) {
           getClassByCoachId(coachId).then(response => {
             console.log(response.data)
@@ -1791,7 +1791,7 @@
           let blob = new Blob([response.data], { type: 'application/x-xls' })
           let link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
-          link.download = '学员名单('  + time.toLocaleString()+ ').xls'
+          link.download = '学员名单(' + time.toLocaleString() + ').xls'
           link.click()
         })
       }

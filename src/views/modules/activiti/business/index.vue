@@ -198,6 +198,7 @@ export default {
     cancel(formName) {
       this.dialogFormVisible = false
       this.affiche = {}
+      this.option = false
       const set = this.$refs
       set[formName].resetFields()
     },

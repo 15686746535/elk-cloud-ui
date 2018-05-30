@@ -62,6 +62,7 @@ export const asyncRouterMap = [
       { menuId: 10200, path: 'swagger', component: _import('modules/sys/monitor/swagger'), name: '接口文档', isShow: true, meta: { title: '接口文档', icon: 'menu' }},
       { menuId: 10300, path: 'configure', component: _import('modules/sys/configure/index'), name: '配置信息', isShow: true, meta: { title: '配置信息', icon: 'menu' }},
       { menuId: 10400, path: 'monitor', component: _import('modules/sys/monitor/monitor'), name: '服务监控', isShow: true, meta: { title: '服务监控', icon: 'menu' }}
+      // { menuId: 10500, path: 'trigger', component: _import('modules/sys/monitor/trigger'), name: '节点设置', isShow: true, meta: { title: '节点设置', icon: 'menu' }}
     ]
   },
   {

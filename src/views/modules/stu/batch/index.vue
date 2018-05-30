@@ -491,7 +491,7 @@
         this.getList()
       },
       handleDelete(val) {
-        if (val.hasReserved === 0) {
+        if (val.stuCount === 0) {
           this.$confirm('此操作将永久删除, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',

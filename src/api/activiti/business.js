@@ -8,7 +8,7 @@ export function busPage(query) {
   })
 }
 
-export function addObj(obj) {
+export function addBusiness(obj) {
   return request({
     url: '/activiti/business',
     method: 'post',
@@ -16,7 +16,7 @@ export function addObj(obj) {
   })
 }
 
-export function putObj(obj) {
+export function putBusiness(obj) {
   return request({
     url: '/activiti/business',
     method: 'put',

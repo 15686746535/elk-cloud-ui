@@ -59,21 +59,14 @@
             </div>
           </el-card>
       </div>
-      <div v-show="isShow('info')">
-        <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
-          <div align="right">
-            <el-button  type="primary" @click="createClick()">返回</el-button>
-          </div>
-        </el-card>
-      </div>
 
       <el-dialog  @close="getList" :title="dialogType === 'create'?'添加':'编辑'" :show-close="false" width="550px" :visible.sync="option">
         <el-form :model="bus"  ref="bus" :rules="rules" label-width="100px">
           <el-form-item label="业务"  prop="name">
             <el-input v-model="bus.name" placeholder="业务名称" ></el-input>
           </el-form-item>
-          <el-form-item label="路由" prop="router">
-            <el-input v-model="bus.router" placeholder="路由" ></el-input>
+          <el-form-item label="部门" prop="orgId">
+            <tree-select url="/upms/org/tree" v-model="orgId" placeholder="部门" @org-click="orgClick"></tree-select>
           </el-form-item>
           <el-form-item label="消息" prop="message">
             <el-input v-model="bus.message" placeholder="消息" ></el-input>
@@ -91,7 +84,7 @@
 </template>
 
 <script>
-import { busPage, addObj, putObj, delObj } from '@/api/activiti/business'
+import { busPage, addBusiness, putBusiness, delObj } from '@/api/activiti/business'
 
 export default {
   name: 'active_business',
@@ -104,6 +97,7 @@ export default {
       dialogType: 'create',
       list: [],
       total: null,
+      orgId: null,
       listLoading: true,
       bus: {
         id: null,
@@ -119,13 +113,10 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入模型名称', trigger: 'submit' }
-        ],
-        router: [
-          { required: true, message: '请输入描述', trigger: 'submit' }
+          { required: true, message: '请输入业务名称', trigger: 'submit' }
         ],
         message: [
-          { required: true, message: '请输入描述', trigger: 'submit' }
+          { required: true, message: '请输入消息', trigger: 'submit' }
         ],
         orgId: [
           { required: true, message: '请选择组织', trigger: 'submit' }
@@ -139,6 +130,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      this.option = false
       busPage(this.listQuery).then(response => {
         this.list = response.data.data.list
         this.total = response.data.data.totalCount
@@ -161,7 +153,8 @@ export default {
       this.getList()
     },
     createClick() {
-      this.showModule = 'info'
+      this.option = true
+      this.dialogType = 'create'
     },
     handleUpdate(val) {
       this.affiche = val
@@ -174,28 +167,28 @@ export default {
         .then(response => {
           this.dialogFormVisible = false
           this.getList()
-          this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success',
-            duration: 2000
-          })
+          // this.$notify({
+          //   title: '成功',
+          //   message: '删除成功',
+          //   type: 'success',
+          //   duration: 2000
+          // })
         })
     },
     create(formName) {
       const set = this.$refs
       set[formName].validate(valid => {
         if (valid) {
-          addObj(this.affiche)
+          addBusiness(this.affiche)
             .then(() => {
               this.dialogFormVisible = false
               this.getList()
-              this.$notify({
-                title: '成功',
-                message: '创建成功',
-                type: 'success',
-                duration: 2000
-              })
+              // this.$notify({
+              //   title: '成功',
+              //   message: '创建成功',
+              //   type: 'success',
+              //   duration: 2000
+              // })
             })
         } else {
           return false
@@ -212,20 +205,23 @@ export default {
       const set = this.$refs
       set[formName].validate(valid => {
         if (valid) {
-          putObj(this.affiche).then(() => {
+          putBusiness(this.affiche).then(() => {
             this.dialogFormVisible = false
             this.getList()
-            this.$notify({
-              title: '成功',
-              message: '修改成功',
-              type: 'success',
-              duration: 2000
-            })
+            // this.$notify({
+            //   title: '成功',
+            //   message: '修改成功',
+            //   type: 'success',
+            //   duration: 2000
+            // })
           })
         } else {
           return false
         }
       })
+    },
+    orgClick(org) {
+      this.bus.orgId = org.groupId
     }
   }
 }

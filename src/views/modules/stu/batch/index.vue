@@ -305,10 +305,14 @@
           <el-button @click="operation('3','examExamine')" size="small" type="success" round>成功</el-button>
         </el-button-group>
 
-        <el-button-group v-else-if="studentListQuery.examineState === '3'">
-          <el-button @click="operation('6','examCancel')" size="small" type="danger" round>取消约考</el-button>
-          <el-button type="primary" size="small" @click="exportExamList" round>导出名单</el-button>
-        </el-button-group>
+        <div  v-else-if="studentListQuery.examineState === '3'">
+          <el-button-group style="float: left">
+            <el-button type="primary" size="small" @click="exportExamList" round>导出名单</el-button>
+          </el-button-group>
+          <el-button-group>
+            <el-button @click="operation('6','examCancel')" size="small" type="danger" round>取消约考</el-button>
+          </el-button-group>
+        </div>
         <span v-else>
         </span>
       </div>

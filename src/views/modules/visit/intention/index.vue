@@ -50,84 +50,82 @@
           <el-card :style="{height: ($store.state.app.client.height-95) + 'px'}" style="overflow: hidden">
             <div class="intentions"  :style="{height: (client.height-185) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
 
-              <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
-                <div style="width: 100%;height: 25px">
-                  <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
-                  <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
-                </div>
-
-                <!-- 分割线 -->
-                <div style="width: 100%;float: left;border: none;border-bottom:1px solid #9fcfff;"></div>
-
-                <div style="width: 100%;height: 25px">
-                  <div class="intention_text" style="width: 50%;float: left">性别：{{intention.sex | sexFilter}}</div>
-                  <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
-                </div>
-
-                <div class="intention_text" style="width: 100%;float: left">电话：{{intention.mobile}}</div>
-
-                <div class="intention_text" style="width: 100%;float: left">微信：{{intention.wechat}}</div>
-
-                <div class="intention_text" style="width: 100%;float: left">住址：{{intention.contactAddress}}</div>
-
-                <div class="intention_text" style="width: 100%;float: left">顾虑：{{intention.worry}}</div>
-
-                <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
-
-
-                <el-tooltip placement="bottom" effect="dark">
-                  <div slot="content">
-                    <div style="margin: 3px 0"><el-button type="primary" size="mini" @click="editList(intention)">查  看</el-button></div>
-                    <div style="margin: 3px 0"><el-button type="success" size="mini" @click="updateState(intention, '1')">入 学</el-button></div>
-                    <div style="margin: 3px 0"><el-button type="warning" size="mini" @click="updateState(intention, '-1')">分 配</el-button></div>
-                    <div style="margin: 3px 0"><el-button type="danger" size="mini" @click="updateState(intention, '2')">关 闭</el-button></div>
-                  </div>
-                  <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
-                </el-tooltip>
-
-
+            <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
+              <div style="width: 100%;height: 25px">
+                <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
+                <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
               </div>
 
-              <el-collapse-transition>
-                <div v-show="followShow">
-                  <div :style="{height: (client.height-1) + 'px'}" class="alert_follow" style="border-radius: 6px 0 0 5px;">
-                    <div style="width: 100%;background-color: #e9e9e9;height: 40px;line-height: 40px;border-radius: 5px 0 0 0; ">
-                      <div style="border: 5px solid #e9e9e9;border-left-color:#b7b7b7; height: 40px; width: 6px;float: left"></div>
-                      <span class="text_css" style="font-size: 16px;padding-left: 10px">{{alertFollowEntity.name}}</span>
-                      <span class="text_css" style="font-size: 14px;padding-left: 10px">{{alertFollowEntity.mobile}}</span>
-                      <div @click="followShow = !followShow" style="float: right;cursor: pointer;margin-right: 10px;"><svg-icon icon-class="closeLink"></svg-icon></div>
-                    </div>
-                    <div style="width: 100%;height: 100%;">
+              <!-- 分割线 -->
+              <div style="width: 100%;float: left;border: none;border-bottom:1px solid #9fcfff;"></div>
 
-                      <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
-                        <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 15px;" v-for="followUp in followUps">
-                          <el-tag class="avatar">
-                            <img width="100%" height="100%" :src="followUp.avatar">
-                          </el-tag>
-                          <div class="username">{{followUp.name}}</div>
-                          <div class="time">{{followUp.createTime | subTime('dateTime')}}</div>
-                          <div style="clear: both;white-space:normal;width: 100%">
-                            <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUp.content}}</p>
-                          </div>
-                        </div>
-                      </div>
+              <div style="width: 100%;height: 25px">
+                <div class="intention_text" style="width: 50%;float: left">性别：{{intention.sex | sexFilter}}</div>
+                <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
+              </div>
+
+              <div class="intention_text" style="width: 100%;float: left">电话：{{intention.mobile}}</div>
+
+              <div class="intention_text" style="width: 100%;float: left">微信：{{intention.wechat}}</div>
+
+              <div class="intention_text" style="width: 100%;float: left">住址：{{intention.contactAddress}}</div>
+
+              <div class="intention_text" style="width: 100%;float: left">顾虑：{{intention.worry}}</div>
+
+              <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
 
 
+              <el-tooltip placement="bottom" effect="dark">
+                <div slot="content">
+                  <div style="margin: 3px 0"><el-button type="primary" size="mini" @click="editList(intention)">查  看</el-button></div>
+                  <div style="margin: 3px 0"><el-button type="success" size="mini" @click="updateState(intention, '1')">入 学</el-button></div>
+                  <div style="margin: 3px 0"><el-button type="warning" size="mini" @click="updateState(intention, '-1')">分 配</el-button></div>
+                  <div style="margin: 3px 0"><el-button type="danger" size="mini" @click="updateState(intention, '2')">关 闭</el-button></div>
+                </div>
+                <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
+              </el-tooltip>
 
-                      <div style="padding: 0 5px;">
-                        <el-row :gutter="5">
-                          <el-col :span="19" >
-                            <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 4}" v-model="followUp.content" placeholder="跟进内容"></el-input>
-                          </el-col>
-                          <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading" type="primary" @click="addFollowUp">跟进</el-button></el-col>
-                        </el-row>
+
+            </div>
+
+            <div v-show="followShow">
+              <div :style="{height: (client.height-1) + 'px'}" class="alert_follow" style="border-radius: 6px 0 0 5px;">
+                <div style="width: 100%;background-color: #e9e9e9;height: 40px;line-height: 40px;border-radius: 5px 0 0 0; ">
+                  <div style="border: 5px solid #e9e9e9;border-left-color:#b7b7b7; height: 40px; width: 6px;float: left"></div>
+                  <span class="text_css" style="font-size: 16px;padding-left: 10px">{{alertFollowEntity.name}}</span>
+                  <span class="text_css" style="font-size: 14px;padding-left: 10px">{{alertFollowEntity.mobile}}</span>
+                  <div @click="followShow = !followShow" style="float: right;cursor: pointer;margin-right: 10px;"><svg-icon icon-class="closeLink"></svg-icon></div>
+                </div>
+                <div style="width: 100%;height: 100%;">
+
+                  <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
+                    <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 15px;" v-for="followUp in followUps">
+                      <el-tag class="avatar">
+                        <img width="100%" height="100%" :src="followUp.avatar">
+                      </el-tag>
+                      <div class="username">{{followUp.name}}</div>
+                      <div class="time">{{followUp.createTime | subTime('dateTime')}}</div>
+                      <div style="clear: both;white-space:normal;width: 100%">
+                        <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUp.content}}</p>
                       </div>
                     </div>
                   </div>
 
-                </div>
 
-              </el-collapse-transition>
+
+                  <div style="padding: 0 5px;">
+                    <el-row :gutter="5">
+                      <el-col :span="19" >
+                        <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 4}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+                      </el-col>
+                      <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading" type="primary" @click="addFollowUp">跟进</el-button></el-col>
+                    </el-row>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
             </div>
             <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"

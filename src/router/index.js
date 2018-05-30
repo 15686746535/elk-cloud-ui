@@ -206,7 +206,7 @@ export const asyncRouterMap = [
     children: [
       { menuId: 90100, path: 'model', component: _import('modules/activiti/model/index'), name: '流程设置', isShow: true, meta: { title: '流程设置', icon: 'menu' }},
       { menuId: 90300, path: 'doneList', component: _import('modules/activiti/doneList/index'), name: '我的已办', isShow: true, meta: { title: '我的已办', icon: 'menu' }},
-      { menuId: 90400, path: 'business', component: _import('modules/activiti/business/index'), name: '业务设置', isShow: true, meta: { title: '业务设置', icon: 'menu' }}
+      { menuId: 90400, path: 'business', component: _import('modules/activiti/business/index'), name: '已办消息配置', isShow: true, meta: { title: '已办消息配置', icon: 'menu' }}
     ]
   },
   // {

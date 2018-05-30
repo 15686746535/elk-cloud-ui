@@ -50,6 +50,9 @@
         if (this.interval) {
           this.listQuery.beginTime = this.interval[0]
           this.listQuery.endTime = this.interval[1]
+        } else {
+          this.listQuery.beginTime = null
+          this.listQuery.endTime = null
         }
         queryWorry(this.listQuery).then(response => {
           var data = response.data.data

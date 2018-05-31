@@ -9,10 +9,14 @@
           </div>
           <el-table :data="modelList"  v-loading="tableLoading" border :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-            <el-table-column prop="name" label="流程名字" align="center" width="250"></el-table-column>
-            <el-table-column align="center"  label="是否部署" width="80">
+            <el-table-column prop="name" label="流程名字" align="center" width="250">
+              <template slot-scope="scope"><!--defaultFlag-->
+                <span>{{scope.row.name }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center"  label="是否部署" width="100">
               <template slot-scope="scope">
-                <span>{{scope.row.status === '0'?'未部署':'已部署'}}</span>
+                <span>{{scope.row.status === '0'?'未部署':'已部署'}}</span><span style="color: #67c23a">{{scope.row.defaultFlag === '0'?'':'[默认]' }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="orgName" label="机构" align="center" width="300"></el-table-column>
@@ -28,6 +32,7 @@
                 <el-button size="mini" type="primary" @click="designFlow(scope.row.modelId)" plain >编 辑</el-button>
                 <!--<el-button size="mini" type="primary" @click="showFlowImg(scope.row.modelId)" plain>查看流程图</el-button>-->
                 <el-button v-if="scope.row.status === '0'" size="mini" @click="deploy(scope.row.modelId)" type="primary" plain>部署</el-button>
+                <el-button v-if="scope.row.defaultFlag === '0'" size="mini" @click="setDefault(scope.row.modelId)" type="primary" plain>部署为默认流程</el-button>
                 <el-button v-if="scope.row.status === '0'" size="mini"  @click="delModel(scope.row.modelId)" type="danger" plain>删除</el-button>
               </template>
             </el-table-column>
@@ -71,7 +76,7 @@
 </template>
 
 <script>
-  import { modelPage, modelSave, flowTree, modelUpdate, modelDeploy, showFlowImg, modelDel } from '@/api/activiti/model'
+  import { modelPage, modelSave, flowTree, modelUpdate, modelDeploy, modelDefault, showFlowImg, modelDel } from '@/api/activiti/model'
   import { mapGetters } from 'vuex'
   import { getToken } from '@/utils/auth'
 
@@ -156,6 +161,18 @@
           type: 'warning'
         }).then(() => {
           modelDel(modelId).then(response => {
+            this.getList()
+          })
+        })
+      },
+      setDefault(modelId) {
+        console.log('========== setDefault  ====================', modelId)
+        this.$confirm('将流程设置为默认并部署?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          modelDefault(modelId).then(response => {
             this.getList()
           })
         })

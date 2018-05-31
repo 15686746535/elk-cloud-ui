@@ -82,3 +82,11 @@ export function modelDeploy(modelId) {
     method: 'put'
   })
 }
+
+// 部署流程
+export function modelDefault(modelId) {
+  return request({
+    url: '/activiti/model/default/' + modelId,
+    method: 'put'
+  })
+}

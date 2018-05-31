@@ -10,7 +10,7 @@ export function busPage(query) {
 
 export function addBusiness(obj) {
   return request({
-    url: '/activiti/business',
+    url: '/activiti/business/add',
     method: 'post',
     data: obj
   })

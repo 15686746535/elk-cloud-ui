@@ -7,7 +7,6 @@
               <el-button class="filter-item" type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" :height="$store.state.app.client.height - 225" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
                 <el-table-column label="组织" align="center" width="150">
                     <template slot-scope="scope" >
@@ -154,41 +153,39 @@ export default {
     },
     createClick() {
       this.option = true
+      this.bus = {}
+      this.orgId = null
       this.dialogType = 'create'
     },
     handleUpdate(val) {
-      this.affiche = val
+      this.bus = val
+      this.orgId = this.bus.orgId
       this.dialogStatus = 'update'
+      this.option = true
       this.dialogFormVisible = true
     },
     handleDelete(row) {
       console.log(row)
-      delObj(row.afficheId)
-        .then(response => {
-          this.dialogFormVisible = false
-          this.getList()
-          // this.$notify({
-          //   title: '成功',
-          //   message: '删除成功',
-          //   type: 'success',
-          //   duration: 2000
-          // })
-        })
+      this.$confirm('是否删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delObj(row.id)
+          .then(response => {
+            this.dialogFormVisible = false
+            this.getList()
+          })
+      })
     },
     create(formName) {
       const set = this.$refs
       set[formName].validate(valid => {
         if (valid) {
-          addBusiness(this.affiche)
+          addBusiness(this.bus)
             .then(() => {
               this.dialogFormVisible = false
               this.getList()
-              // this.$notify({
-              //   title: '成功',
-              //   message: '创建成功',
-              //   type: 'success',
-              //   duration: 2000
-              // })
             })
         } else {
           return false
@@ -196,9 +193,8 @@ export default {
       })
     },
     cancel(formName) {
-      this.dialogFormVisible = false
-      this.affiche = {}
       this.option = false
+      this.dialogFormVisible = false
       const set = this.$refs
       set[formName].resetFields()
     },
@@ -206,8 +202,9 @@ export default {
       const set = this.$refs
       set[formName].validate(valid => {
         if (valid) {
-          putBusiness(this.affiche).then(() => {
+          putBusiness(this.bus).then(() => {
             this.dialogFormVisible = false
+            this.option = false
             this.getList()
             // this.$notify({
             //   title: '成功',

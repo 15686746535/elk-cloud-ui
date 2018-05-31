@@ -48,23 +48,26 @@ service.interceptors.response.use(
     const res = error.response
     console.log('error---------------------')
     console.log(res)
-    if (res.status === 478 || res.status === 403) {
-      Message.error('您没有权限！')
-    } else if (res.status === 400) {
-      if (res.data) {
-        Message.error(res.data.error_description)
+    console.log(error)
+    if (res) {
+      if (res.status === 478 || res.status === 403) {
+        Message.error('您没有权限！')
+      } else if (res.status === 400) {
+        if (res.data) {
+          Message.error(res.data.error_description)
+        } else {
+          Message.error('异常请求')
+        }
+      } else if (res.status === 404) {
+        Message.warning('数据丢失!')
+      } else if (res.status === 401) {
+        Message.warning('登录过期!')
+      } else if (res.status === 503) {
+        Message.warning('服务异常!')
+        console.log('服务异常:' + res.data)
       } else {
-        Message.error('异常请求')
+        Message.error(res.msg)
       }
-    } else if (res.status === 404) {
-      Message.warning('数据丢失!')
-    } else if (res.status === 401) {
-      Message.warning('登录过期!')
-    } else if (res.status === 503) {
-      Message.warning('服务异常!')
-      console.log('服务异常:' + res.data)
-    } else {
-      Message.error(res.msg)
     }
     store.dispatch('setLoading', false)
   }

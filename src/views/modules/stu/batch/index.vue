@@ -307,7 +307,7 @@
 
         <div  v-else-if="studentListQuery.examineState === '3'">
           <el-button-group style="float: left">
-            <el-button type="primary" size="small" @click="exportExamList" round>导出名单</el-button>
+            <el-button type="primary" size="small" :loading="expLoading" @click="exportExamList" round>导出名单</el-button>
           </el-button-group>
           <el-button-group>
             <el-button @click="operation('6','examCancel')" size="small" type="danger" round>取消约考</el-button>
@@ -368,6 +368,7 @@
         testUrl: null,
         examOption: false,
         btnLoading: false,
+        expLoading: false,
         examBespeak: [],
         examBespeakList: {
           examNoteList: [],
@@ -591,6 +592,7 @@
         return row[property] === value
       },
       exportExamList() {
+        this.expLoading = true
         var subject
         if (this.listQuery.subject === '1') {
           subject = '一'
@@ -610,6 +612,7 @@
           link.href = window.URL.createObjectURL(blob)
           link.download = '考试名单('  + time.toLocaleString()+ ').xls'
           link.click()
+          this.expLoading = false
         })
       }
     }

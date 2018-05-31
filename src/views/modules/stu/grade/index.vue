@@ -149,7 +149,7 @@
             </el-pagination>
 
             <div style="float: right" >
-              <el-button size="small" @click="exportAchievement" type="info"><i class="el-icon-download"></i> 导 出</el-button>
+              <el-button size="small" :loading="expLoading"  @click="exportAchievement" type="info"><i class="el-icon-download"></i> 导 出</el-button>
               <el-button size="small" @click="createClick" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
             </div>
           </div>
@@ -263,6 +263,7 @@ export default {
         studentListLoading: false,
         batchListLoading: true,
         gradeOption: false,
+        expLoading: false,
         innerGradeOption: false,
         innerGradeOption1: false,
         gradeEdit: false,
@@ -504,14 +505,16 @@ export default {
         if (this.gradeStudentList.length === 0) {
           this.$message.info('暂无数据')
         } else {
+          this.expLoading = true
           exportAchievement(this.studentListQuery).then(response => {
             console.log(response)
             let time = new Date()
             let blob = new Blob([response.data], { type: 'application/x-xls' })
             let link = document.createElement('a')
             link.href = window.URL.createObjectURL(blob)
-            link.download = '考试成绩('  + time.toLocaleString()+ ').xls'
+            link.download = '考试成绩(' + time.toLocaleString()+ ').xls'
             link.click()
+            this.expLoading = false
           })
         }
       }

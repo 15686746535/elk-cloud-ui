@@ -600,7 +600,7 @@
         },
         studentListQuery: {
           page: 1,
-          limit: 20,
+          limit: 0,
           userId: null,
           condition: null
         },

@@ -741,8 +741,6 @@
               putObj(this.intention)
                 .then(() => {
                   this.edit = false
-                  this.getList()
-                  this.$refs[formName].resetFields()
                 })
             }
           })

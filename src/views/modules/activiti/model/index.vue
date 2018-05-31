@@ -268,6 +268,7 @@
       openList() {
         this.showPlate = 'list'
         this.url = ''
+        this.getList()
       },
       handleSizeChange(val) {
         this.listQuery.limit = val

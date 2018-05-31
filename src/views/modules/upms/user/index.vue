@@ -92,7 +92,7 @@
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
               <div style="float: right" >
-                <el-button size="small" @click="exportUser" type="info"><i class="el-icon-download"></i> 导 出</el-button>
+                <el-button size="small" :loading="expLoading"  @click="exportUser" type="info"><i class="el-icon-download"></i> 导 出</el-button>
                 <el-button size="small" @click="create" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
               </div>
             </div>
@@ -589,6 +589,7 @@
         total: 1,
         listLoading: true,
         infoLoading: false,
+        expLoading: false,
         studentListLoading: false,
         // 分页数据
         listQuery: {
@@ -933,6 +934,7 @@
       },
       exportUser() {
         console.log(this.listQuery)
+        this.expLoading = true
         exportUser(this.listQuery).then(response => {
           console.log(response)
           let time = new Date()
@@ -941,6 +943,7 @@
           link.href = window.URL.createObjectURL(blob)
           link.download = '同事名单('  + time.toLocaleString()+ ').xls'
           link.click()
+          this.expLoading = false
         })
       }
     }

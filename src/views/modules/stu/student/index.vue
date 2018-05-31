@@ -185,7 +185,7 @@
                 </el-pagination>
 
                 <el-button @click="create" size="small" style="float:right;margin: 0 5px" type="primary"><i class="el-icon-plus"></i>添加</el-button>
-                <el-button size="small" style="float:right;margin: 0 5px" @click="exportStudent" type="info"><i class="el-icon-download"></i>导出</el-button>
+                <el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent" type="info"><i class="el-icon-download"></i>导出</el-button>
                 <el-upload class="upload-demo" action="/stu/student/import"
                            :headers="headers"
                            :on-success="handleTextSuccess"
@@ -207,7 +207,7 @@
     <el-card body-style="padding:0;" v-show="showModule=='info'">
       <div slot="header"  style="line-height: 30px;" class="clearfix">
         学员详细信息
-        <div style="float: right"><el-button type="primary" size="mini"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button></div>
+        <div style="float: right"><el-button type="primary" :disabled="edit" size="mini"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button></div>
       </div>
       <el-row >
         <el-col :style="{height: ($store.state.app.client.height-110) + 'px',width: ($store.state.app.client.width-555) + 'px'}">
@@ -1250,6 +1250,7 @@
         total: 1,
         listLoading: true,
         btnLoading: false,
+        expLoading: false,
         isCreate: false,
         showModule: 'list',
         listQuery: {
@@ -1484,42 +1485,6 @@
       },
       // 新增
       create() {
-        /*this.studentEntity = {
-          intentionId: null,
-          archivesNumber: null,
-          name: null,
-          sex: null,
-          idNumber: null,
-          birthday: null,
-          mobile: null,
-          phone: null,
-          email: null,
-          wechat: null,
-          avatar: null,
-          contactAddress: null,
-          campus: null,
-          company: null,
-          position: null,
-          enrolTime: null,
-          periods: null,
-          studyTime: null,
-          latitude: null,
-          longitude: null,
-          physicalExamination: null,
-          haveCar: null,
-          addDrive: null,
-          state: null,
-          graduationTime: null,
-          periodOfValidity: null,
-          aboardTime: null,
-          incrementList: [],
-          introducerList: [],
-          serviceType: null,
-          arrearage: null,
-          enrolSite: null,
-          source: null,
-          motorcycleType: null
-        }*/
         this.isCreate = true
         this.edit = true
         this.getIntroducerList()
@@ -1558,9 +1523,9 @@
         this.showModule = 'list'
         this.edit = false
         this.isCreate = false
-        this.$refs['student'].resetFields()
-        this.$refs['studentEntity'].resetFields()
         this.getList()
+        // this.$refs['student'].resetFields()
+        this.$refs['studentEntity'].resetFields()
       },
       // 搜索
       searchClick() {
@@ -1785,6 +1750,7 @@
         }
       },
       exportStudent() {
+        this.expLoading = true
         exportStudent(this.listQuery).then(response => {
           console.log(response)
           let time = new Date()
@@ -1793,6 +1759,7 @@
           link.href = window.URL.createObjectURL(blob)
           link.download = '学员名单(' + time.toLocaleString() + ').xls'
           link.click()
+          this.expLoading = false
         })
       }
     }

@@ -507,7 +507,7 @@
         ]
       },
       createOneFormPage(){
-        LODOP = getLodop()
+        var LODOP = getLodop()
         var dsfStr = '';
         var pxfStr = '';
         var fwbStr = '';

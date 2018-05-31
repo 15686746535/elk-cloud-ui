@@ -91,13 +91,13 @@
         },
         rules: {
           label: [
-            { required: true, message: '请填写顾虑问题', trigger: ['blur','change'] }
+            { required: true, message: '请填写顾虑问题', trigger: ['blur', 'change'] }
           ],
           description: [
-            { required: true, message: '请填写顾虑问题描述', trigger: ['blur','change'] }
+            { required: true, message: '请填写顾虑问题描述', trigger: ['blur', 'change'] }
           ],
           sort: [
-            { required: true, type: 'number', message: '请填写顾虑问题排序等级', trigger: ['blur','change'] }
+            { required: true, type: 'number', message: '请填写顾虑问题排序等级', trigger: ['blur', 'change'] }
           ]
         },
         dict: {},
@@ -132,8 +132,6 @@
         this.listQuery.orderByField = 'create_time'
         this.listQuery.isAsc = false
         fetchList(this.listQuery).then(response => {
-          console.log('===========================')
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -153,7 +151,6 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.log(row)
           delObj(row.dictId).then(() => {
             this.dialogFormVisible = false
             this.getList()

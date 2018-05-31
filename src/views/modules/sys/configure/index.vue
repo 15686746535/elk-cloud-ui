@@ -117,13 +117,13 @@
         total: null,
         rules: {
           key: [
-            { required: true, message: 'Please enter the key', trigger: ['blur','change'] }
+            { required: true, message: 'Please enter the key', trigger: ['blur', 'change'] }
           ],
           value: [
-            { required: true, message: 'Please enter the value', trigger: ['blur','change'] }
+            { required: true, message: 'Please enter the value', trigger: ['blur', 'change'] }
           ],
           remark: [
-            { required: true, message: 'Please enter the remark', trigger: ['blur','change'] }
+            { required: true, message: 'Please enter the remark', trigger: ['blur', 'change'] }
           ]
         },
         orgId: null,
@@ -157,8 +157,6 @@
       getList() {
         this.listLoading = true
         getConfigList(this.listQuery).then(response => {
-          console.log('===========================================================================')
-          console.log(response.data)
           this.configList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -198,7 +196,6 @@
         this.$refs[formName].resetFields()
       },
       create(formName) {
-        console.log(this.config)
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
@@ -213,7 +210,6 @@
       },
       update(formName) {
         const set = this.$refs
-        console.log(this.config)
         set[formName].validate(valid => {
           if (valid) {
             this.config.key = this.config.key + '_' + this.config.orgId

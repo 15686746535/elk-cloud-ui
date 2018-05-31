@@ -556,81 +556,79 @@
         addOption: false,
         rules: {
           name: [
-            { required: true, message: '请输入名字', trigger: ['blur','change'] }
+            { required: true, message: '请输入名字', trigger: ['blur', 'change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur','change'] }
+            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] },
+            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           wechat: [
-            { required: false, message: '请输入客户微信', trigger: ['blur','change'] }],
+            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] }],
           contactAddress: [
-            { required: false, message: '请输入住址', trigger: ['blur','change'] }
+            { required: false, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
           customerType: [
-            { required: true, message: '请选择客户类型', trigger: ['blur','change'] }
+            { required: true, message: '请选择客户类型', trigger: ['blur', 'change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
           ],
           worry: [
-            { required: true, message: '请选择客户顾虑', trigger: ['blur','change'] }
+            { required: true, message: '请选择客户顾虑', trigger: ['blur', 'change'] }
           ],
           applyType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
           ],
           visitTime: [
-            { required: true, message: '请选择来访时间', trigger: ['blur','change'] }
+            { required: true, message: '请选择来访时间', trigger: ['blur', 'change'] }
           ],
           content: [
-            { required: false, message: '请输入资讯内容', trigger: ['blur','change'] }
+            { required: false, message: '请输入资讯内容', trigger: ['blur', 'change'] }
           ]
         },
         editRules: {
           name: [
-            { required: true, message: '请输入名字', trigger: ['blur','change'] }
+            { required: true, message: '请输入名字', trigger: ['blur', 'change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur','change'] }
+            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] },
+            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
           ],
           wechat: [
-            { required: false, message: '请输入客户微信', trigger: ['blur','change'] }],
+            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] }],
           contactAddress: [
-            { required: false, message: '请输入住址', trigger: ['blur','change'] }
+            { required: false, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
           customerType: [
-            { required: true, message: '请选择客户类型', trigger: ['blur','change'] }
+            { required: true, message: '请选择客户类型', trigger: ['blur', 'change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
           ],
           worry: [
-            { required: true, message: '请选择客户顾虑', trigger: ['blur','change'] }
+            { required: true, message: '请选择客户顾虑', trigger: ['blur', 'change'] }
           ],
           applyType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
           ],
           visitTime: [
-            { required: true, message: '请选择来访时间', trigger: ['blur','change'] }
+            { required: true, message: '请选择来访时间', trigger: ['blur', 'change'] }
           ],
           content: [
-            { required: false, message: '请输入资讯内容', trigger: ['blur','change'] }
+            { required: false, message: '请输入资讯内容', trigger: ['blur', 'change'] }
           ]
         }
       }
     },
     created() {
       this.getList()
-      console.log('=============')
-      console.log(this.$store)
       this.getUserList()
     },
     computed: {
@@ -648,7 +646,6 @@
     },
     methods: {
       intervalTime() {
-        console.log('================== 时间转换 ===================')
         if (this.interval) {
           this.listQuery.beginTime = this.interval[0]
           this.listQuery.endTime = this.interval[1]
@@ -659,35 +656,26 @@
       },
       getUserList() {
         userList().then(response => {
-          console.log('================== 所有负责人 ===================')
-          console.log(response.data)
           this.userList = response.data.data
         })
       },
       // 根据部门id查询员工
       searchByOrg() {
-        console.log('=====================   根据部门id查询来访信息   =======================')
         this.listQuery.page = 1
         this.getList()
       },
       // 双击行  编辑
       editList(val) {
-        console.log('====================== 正在进入单个学员编辑 =====================')
         this.edit = false
         this.intention = val
-        console.log(val)
         this.showModule = 'info'
         this.getFollowUp(val)
       },
       getList() {
         this.listLoading = true
-        console.log('====== 查询意向 =====')
-        console.log(this.listQuery)
         this.followShow = false
         fetchList(this.listQuery).then(response => {
           this.intentionList = response.data.data.list
-          console.log('====== 意向信息 =====')
-          console.log(this.intentionList)
           this.total = response.data.data.totalCount
           this.listLoading = false
           this.cleanIntentionSelected()
@@ -716,12 +704,10 @@
           if (valid) {
             this.intention.state = 0
             addObj(this.intention).then(() => {
-              console.log('这里是添加方法===========================')
               this.closeAlert(formName)
               this.addOption = false
             })
           } else {
-            console.log('error submit!!')
             return false
           }
         })
@@ -732,12 +718,9 @@
       },
       // 修改
       update(formName) {
-        console.log('================= 修改 ==================')
-        console.log(this.intention)
         if (formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log('111')
               putObj(this.intention)
                 .then(() => {
                   this.edit = false
@@ -778,10 +761,7 @@
       // 取消
       cancel(formName) {
         this.$refs[formName].resetFields()
-        console.log(this.intention.intentionId)
         getObj(this.intention.intentionId).then(response => {
-          console.log('================= 取消 ==================')
-          console.log(response.data)
           this.intention = response.data.data
         })
         this.edit = false
@@ -800,7 +780,6 @@
       intentionClick(e, val) {
         this.alertFollowEntity = val
         this.getFollowUp(val)
-        console.log(e)
         this.followShow = true
         var a = document.getElementsByClassName('intention')
         for (var i = 0; i < a.length; i++) {
@@ -819,13 +798,10 @@
         this.followQuery.intentionId = val.intentionId
         this.followUp.intentionId = val.intentionId
         followUpList(this.followQuery).then(response => {
-          console.log('============= 跟进信息 ===================')
-          console.log(response.data.data)
           this.followUps = response.data.data
         })
       },
       addFollowUp() {
-        console.log('=================')
         this.followUp.content = removeAllSpace(this.followUp.content)
         if (this.followUp.content) {
           this.btnLoading = true

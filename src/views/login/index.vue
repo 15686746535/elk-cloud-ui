@@ -96,7 +96,6 @@ export default {
             this.refreshCode()
           })
         } else {
-          console.log('想搞事情？？')
           return false
         }
       })

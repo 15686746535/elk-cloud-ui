@@ -992,40 +992,40 @@
         },
         vehicleEntityRules: {
           number: [
-            { required: true, message: '请输入自编号', trigger: ['blur','change'] }
+            { required: true, message: '请输入自编号', trigger: ['blur', 'change'] }
           ],
           plateNumber: [
-            { required: true, message: '请输入车牌', trigger: ['blur','change'] }
+            { required: true, message: '请输入车牌', trigger: ['blur', 'change'] }
           ],
           engineNo: [
-            { required: true, message: '请输入发动机号', trigger: ['blur','change'] }
+            { required: true, message: '请输入发动机号', trigger: ['blur', 'change'] }
           ],
           factoryTime: [
-            { required: true, message: '请输入出厂日期', trigger: ['blur','change'] }
+            { required: true, message: '请输入出厂日期', trigger: ['blur', 'change'] }
           ],
           allowNumber: [
-            { required: true, message: '请输入核定载客人', trigger: ['blur','change'] }
+            { required: true, message: '请输入核定载客人', trigger: ['blur', 'change'] }
           ],
           affiliation: [
-            { required: true, message: '请输入所属机构', trigger: ['blur','change'] }
+            { required: true, message: '请输入所属机构', trigger: ['blur', 'change'] }
           ],
           registerTime: [
-            { required: true, message: '请输入注册登记日期', trigger: ['blur','change'] }
+            { required: true, message: '请输入注册登记日期', trigger: ['blur', 'change'] }
           ],
           vehicleType: [
-            { required: true, message: '请输入车辆类别', trigger: ['blur','change'] }
+            { required: true, message: '请输入车辆类别', trigger: ['blur', 'change'] }
           ],
           vehicleState: [
-            { required: true, message: '请输入车辆来源', trigger: ['blur','change'] }
+            { required: true, message: '请输入车辆来源', trigger: ['blur', 'change'] }
           ],
           userId: [
-            { required: true, message: '请输入使用责任人', trigger: ['blur','change'] }
+            { required: true, message: '请输入使用责任人', trigger: ['blur', 'change'] }
           ],
           vinNo: [
-            { required: true, message: '请输入车架号', trigger: ['blur','change'] }
+            { required: true, message: '请输入车架号', trigger: ['blur', 'change'] }
           ],
           plateColor: [
-            { required: true, message: '请输入车牌颜色', trigger: ['blur','change'] }
+            { required: true, message: '请输入车牌颜色', trigger: ['blur', 'change'] }
           ]
         },
         certificateEntityRules: {},
@@ -1038,24 +1038,24 @@
         fuelTypes: ['柴油','汽油','CNG天然气','油电混合','纯电动'],
         repairRules: {
           description: [
-            { required: true, message: '请填写维修内容', trigger: ['blur','change'] },
+            { required: true, message: '请填写维修内容', trigger: ['blur', 'change'] },
           ],
           repairTime: [
-            { required: true, message: '请选择维修时间', trigger: ['blur','change'] },
+            { required: true, message: '请选择维修时间', trigger: ['blur', 'change'] },
           ],
           cost: [
-            { required: true, message: '请填写维修费用', trigger: ['blur','change'] },
+            { required: true, message: '请填写维修费用', trigger: ['blur', 'change'] },
           ]
         },
         maintainRules: {
           description: [
-            { required: true, message: '请填写保养内容', trigger: ['blur','change'] },
+            { required: true, message: '请填写保养内容', trigger: ['blur', 'change'] },
           ],
           maintainTime: [
-            { required: true, message: '请选择保养时间', trigger: ['blur','change'] },
+            { required: true, message: '请选择保养时间', trigger: ['blur', 'change'] },
           ],
           cost: [
-            { required: true, message: '请填写保养费用', trigger: ['blur','change'] },
+            { required: true, message: '请填写保养费用', trigger: ['blur', 'change'] },
           ]
         }
       }
@@ -1067,37 +1067,26 @@
     methods: {
       // 时间范围分解
       viTimeBlur() {
-        console.log('=============  我正在转换商业险时间范围 ================')
         this.certificateEntity.viStart = this.daterange.viTime[0]
         this.certificateEntity.viEnd = this.daterange.viTime[1]
-        console.log('=============  完成 ================')
       },
       clivtaTimeBlur() {
-        console.log('=============  我正在转换交强险时间范围 ================')
         this.certificateEntity.clivtaStart = this.daterange.clivtaTime[0]
         this.certificateEntity.clivtaEnd = this.daterange.clivtaTime[1]
-        console.log('=============  完成 ================')
       },
       maintenanceTimeBlur() {
-        console.log('=============  我正在转换保养维修时间范围 ================')
         this.certificateEntity.maintenanceStart = this.daterange.maintenanceTime[0]
         this.certificateEntity.maintenanceEnd = this.daterange.maintenanceTime[1]
-        console.log('=============  完成 ================')
       },
       bottleTimeBlur() {
-        console.log('=============  我正在转换气瓶时间范围 ================')
         this.certificateEntity.bottleStart = this.daterange.bottleTime[0]
         this.certificateEntity.bottleEnd = this.daterange.bottleTime[1]
-        console.log('=============  完成 ================')
       },
       twoDimensionalTimeBlur() {
-        console.log('=============  我正在转换二维检测时间范围 ================')
         this.certificateEntity.twoDimensionalStart = this.daterange.twoDimensionalTime[0]
         this.certificateEntity.twoDimensionalEnd = this.daterange.twoDimensionalTime[1]
-        console.log('=============  完成 ================')
       },
       timeGroup() {
-        console.log('=============  我正在给时间范围赋值 ================')
         this.daterange = {
           viTime: [],
           clivtaTime: [],
@@ -1115,16 +1104,12 @@
         if (this.certificateEntity.bottleEnd) this.daterange.bottleTime.push(this.certificateEntity.bottleEnd)
         if (this.certificateEntity.twoDimensionalStart) this.daterange.twoDimensionalTime.push(this.certificateEntity.twoDimensionalStart)
         if (this.certificateEntity.twoDimensionalEnd) this.daterange.twoDimensionalTime.push(this.certificateEntity.twoDimensionalEnd)
-        console.log(this.daterange.twoDimensionalTime)
-        console.log('=============  结束  ================')
         this.infoLoading = false
       },
       // 获取所有车辆信息
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          console.log('=================== 这是所有车辆信息 ===================')
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -1162,8 +1147,6 @@
       },
       // 添加
       add(formName, key, obj) {
-        console.log('这里是车辆===========================')
-        console.log(obj)
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.btnLoading = true
@@ -1172,7 +1155,6 @@
               this.vehicleEntity.vehicleId = response.data.data
               this.btnLoading = false
               this.infoLoading = false
-              console.log(this.vehicleEntity.vehicleId)
               this.editList({ 'vehicleEntity': this.vehicleEntity })
             })
             this.edit = ''
@@ -1198,20 +1180,15 @@
       },
       // 取消
       cancel() {
-        console.log('=================== 正在完成取消操作 ===================')
         this.editList({ 'vehicleEntity': this.vehicleEntity })
         this.showModule = 'info'
         this.edit = ''
-        console.log('=================== 完成 ===================')
       },
       // 双击编辑
       editList(val) {
-        console.log(val)
         this.infoLoading = true
         getObj(val.vehicleEntity.vehicleId)
           .then(response => {
-            console.log('=================== 这是当前车辆的所有信息 ===================')
-            console.log(response.data)
             this.vehicleEntity = response.data.data.vehicleEntity === null ? {} : response.data.data.vehicleEntity
             this.technicalEntity = response.data.data.technicalEntity === null ? {} : response.data.data.technicalEntity
             this.safetyEntity = response.data.data.safetyEntity === null ? {} : response.data.data.safetyEntity
@@ -1228,17 +1205,13 @@
       // 所有编辑方法
       editInfo(key) {
         if (this.edit === 'car') {
-          console.log('car')
           this.update(this.edit, this.vehicleEntity)
         } else if (this.edit === 'technical') {
-          console.log('technical')
           if (this.technicalEntity.wheelbase === null) this.technicalEntity.wheelbase = ''
           this.update(this.edit, this.technicalEntity)
         } else if (this.edit === 'safety') {
-          console.log('safety')
           this.update(this.edit, this.safetyEntity)
         } else if (this.edit === 'certificate') {
-          console.log('certificate')
           if (this.certificateEntity.roadTransport === null) this.certificateEntity.roadTransport = ''
           this.update(this.edit, this.certificateEntity)
         }
@@ -1307,8 +1280,6 @@
       },
       getUserList() {
         userList().then(response => {
-          console.log('================== 所有负责人 ===================')
-          console.log(response.data)
           this.userList = response.data.data
         })
       },
@@ -1317,10 +1288,8 @@
         this.flag = key
         this.$refs[key].resetFields()
         // if (this.edit === 'repair') {
-        //   console.log('repair')
         //   this.update(this.edit, this.repair)
         // } else if (this.edit === 'maintain') {
-        //   console.log('maintain')
         //   this.update(this.edit, this.maintain)
         // }
       },

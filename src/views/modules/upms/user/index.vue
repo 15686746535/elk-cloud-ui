@@ -547,7 +547,6 @@
       var idNumberIsExistence = (rule, value, callback) => {
         if (this.addInfo) {
           findUserByCondition({ 'condition': value }).then(response => {
-            console.log(response.data)
             if (response.data.data) {
               callback(new Error('身份证号码已存在'))
             } else {
@@ -643,69 +642,69 @@
         studentList: [],
         userEntityRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] },
+            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           iscoach: [
-            { required: true, message: '请选择是否教练', trigger: ['blur','change'] }
+            { required: true, message: '请选择是否教练', trigger: ['blur', 'change'] }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: ['blur','change'] },
-            { validator: idNumberReg, trigger: ['blur','change'] },
+            { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
+            { validator: idNumberReg, trigger: ['blur', 'change'] },
             { validator: idNumberIsExistence, trigger: ['blur'] }
           ],
           jobNumber: [
-            { required: true, message: '请输入档案号', trigger: ['blur','change'] }
+            { required: true, message: '请输入档案号', trigger: ['blur', 'change'] }
           ],
           email: [
-            { required: false, message: '请输入邮箱', trigger: ['blur','change'] },
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur','change'] }
+            { required: false, message: '请输入邮箱', trigger: ['blur', 'change'] },
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: ['blur','change'] }
+            { required: true, message: '请输入姓名', trigger: ['blur', 'change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur','change'] }
+            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: ['blur','change'] }
+            { required: true, message: '请选择生日', trigger: ['blur', 'change'] }
           ],
           wechat: [
-            { required: false, message: '请输入微信', trigger: ['blur','change'] }
+            { required: false, message: '请输入微信', trigger: ['blur', 'change'] }
           ],
           contactAddress: [
-            { required: true, message: '请输入联系地址', trigger: ['blur','change'] }
+            { required: true, message: '请输入联系地址', trigger: ['blur', 'change'] }
           ],
           orgId: [
-            { required: true, message: '请选择部门', trigger: ['blur','change'] }
+            { required: true, message: '请选择部门', trigger: ['blur', 'change'] }
           ],
           roleIdList: [
-            { required: true, message: '请选择职位', trigger: ['blur','change'] },
-            { validator: roleListReg, trigger: ['blur','change'] }
+            { required: true, message: '请选择职位', trigger: ['blur', 'change'] },
+            { validator: roleListReg, trigger: ['blur', 'change'] }
           ],
           homeAddress: [
-            { required: false, message: '请输入家庭地址', trigger: ['blur','change'] }
+            { required: false, message: '请输入家庭地址', trigger: ['blur', 'change'] }
           ],
           qq: [
-            { required: false, message: '请输入qq', trigger: ['blur','change'] }
+            { required: false, message: '请输入qq', trigger: ['blur', 'change'] }
           ],
           joinedTime: [
-            { required: true, message: '请选择入职日期', trigger: ['blur','change'] }
+            { required: true, message: '请选择入职日期', trigger: ['blur', 'change'] }
           ],
           positiveTime: [
-            { required: false, message: '请选择转正日期', trigger: ['blur','change'] }
+            { required: false, message: '请选择转正日期', trigger: ['blur', 'change'] }
           ],
           emergencyContact: [
-            { required: false, message: '请输入紧急联系人', trigger: ['blur','change'] }
+            { required: false, message: '请输入紧急联系人', trigger: ['blur', 'change'] }
           ],
           emergencyMobile: [
-            { required: false, message: '请输入紧急联系人电话', trigger: ['blur','change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] }
+            { required: false, message: '请输入紧急联系人电话', trigger: ['blur', 'change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           workMobile: [
-            { required: false, message: '请输入工作电话', trigger: ['blur','change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] }
+            { required: false, message: '请输入工作电话', trigger: ['blur', 'change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ]
         }
       }
@@ -743,7 +742,6 @@
           providentFundTime: null,
           workMobile: null
         }
-        console.log(this.userEntity)
         this.addInfo = true
         this.edit = true
         this.getRoleList()
@@ -753,11 +751,8 @@
       doubleClickRow(val) {
         this.infoLoading = true
         getObj(val.userId).then(response => {
-          console.log('====================== 单个员工信息 =====================')
-          console.log(response.data)
           this.userEntity = response.data.data
           if (!this.userEntity.roleIdList) this.userEntity.roleIdList = []
-          console.log(this.userEntity.orgId)
           this.getRoleList()
           this.studentListQuery.userId = this.userEntity.userId
           this.getEnrollStudentList()
@@ -767,9 +762,7 @@
       },
       getRoleList() {
         roleList().then(response => {
-          console.log('====================== 职位 =====================')
           this.roleList = response.data.data
-          console.log(this.roleList)
         })
       },
       // 改变页容量
@@ -793,27 +786,21 @@
       },
       // 查询员工集合
       getUserList() {
-        console.log('=====================   查询员工集合   =======================')
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          console.log(response.data)
           this.userList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
-        console.log('=====================   完成   =======================')
       },
       // 查询招生信息集合
       getEnrollStudentList() {
         this.studentListLoading = true
         queryEnrollStudents(this.studentListQuery).then(response => {
-          console.log('=====================   查询招生信息集合   =======================')
-          console.log(response.data)
           this.studentList = response.data.data.list
           // this.total = response.data.data.totalCount
           this.studentListLoading = false
         })
-        console.log('=====================   完成   =======================')
       },
       // 根据部门id查询员工
       searchByOrg() {
@@ -821,27 +808,20 @@
       },
       // 编辑
       editInfo() {
-        console.log('=====================     编辑    ===================')
         this.edit = true
-        console.log(this.roleList)
-        console.log('=====================     完成    ===================')
       },
       // 取消编辑
       cancel(formName) {
-        console.log('=================== 正在完成取消操作 ===================')
         const set = this.$refs
         set[formName].resetFields()
         this.doubleClickRow(this.userEntity)
         this.edit = false
-        console.log('=================== 完成 ===================')
       },
       // 添加
       add(formName) {
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            console.log('这里是添加方法===========================')
-            console.log(this.userEntity)
             addObj(this.userEntity).then(response => {
               this.userEntity.userId = response.data.data
               this.back()
@@ -854,10 +834,7 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            console.log('这里是修改方法===========================')
-            console.log(this.userEntity)
             putObj(this.userEntity).then(response => {
-              console.log(response.data)
               this.doubleClickRow(this.userEntity)
               this.edit = false
             })
@@ -867,7 +844,6 @@
       // orgClick(org) {
       //   this.userEntity.orgName = org.name
       //   roleList(org.id).then(response => {
-      //     console.log(response.data)
       //     this.roleList = response.data.data
       //   })
       // },
@@ -911,7 +887,6 @@
         return isImages && isLt2M
       },
       rePassword(userId) {
-        console.log(userId)
         this.$confirm('是否重置密码?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -933,10 +908,8 @@
         })
       },
       exportUser() {
-        console.log(this.listQuery)
         this.expLoading = true
         exportUser(this.listQuery).then(response => {
-          console.log(response)
           let time = new Date()
           let blob = new Blob([response.data], { type: 'application/x-xls' })
           let link = document.createElement('a')

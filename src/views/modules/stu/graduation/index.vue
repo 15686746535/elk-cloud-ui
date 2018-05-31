@@ -796,16 +796,13 @@
     methods: {
       // 根据部门id查询学员信息
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询学员信息   =======================')
         this.listQuery.page = 1
         this.getList()
       },
       // 双击行  编辑
       editList(val) {
-        console.log('====================== 进入单个学员编辑 =====================')
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
-          console.log(response.data.data)
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
           if (this.student.introducerIdList === null) this.student.introducerIdList = [] // 防止介绍人为null
@@ -816,7 +813,6 @@
       },
       /* 切换标签 */
       handleClick(tab, event) {
-        console.log(tab.name)
         if (tab.label === '考试情况') {
           this.getExam()
         } else if (tab.label === '费用情况') {
@@ -832,33 +828,24 @@
       /* 考试日志 */
       getExam() {
         examFetchList({ studentId: this.student.studentId, examState: 'exam_note_true' }).then(response => {
-          console.log('====================== 考试日志 =====================')
-          console.log(response.data)
           this.examNoteList = response.data.data.list
         })
       },
       /* 约车日志 */
       getVehiclePeriod() {
         getVehiclePeriodByStudentId(this.student.studentId).then(response => {
-          console.log('====================== 约车日志 =====================')
-          console.log(response.data)
           this.vehiclePeriodList = response.data.list
         })
       },
       /* 接送日志 */
       getShuttleLog() {
         getShuttleLogByStudentId(this.student.studentId).then(response => {
-          console.log('====================== 接送日志 =====================')
-          console.log(response.data)
           this.shuttleLogList = response.data.list
         })
       },
       /* 跟进信息 */
       getFollowUpList() {
-        console.log(this.student.mobile)
         followUpList({ 'mobile': this.student.mobile }).then(response => {
-          console.log('====================== 跟进信息 =====================')
-          console.log(response.data)
           this.followUpList = response.data.data
         })
       },
@@ -866,8 +853,6 @@
       getList() {
         this.listLoading = true
         fetchStudentList(this.listQuery).then(response => {
-          console.log(' ====== =============  这是所有学员信息  ==================')
-          console.log(response.data)
           this.stuList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -890,14 +875,11 @@
       // 搜索
       searchClick() {
         this.listQuery.page = 1
-        console.log('============== 搜索方法 ===============')
         this.examTimeBlur()
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
-        console.log(this.listQuery)
         this.getList()
       },
       examTimeBlur() {
-        console.log('=============  我正在转换时间范围 ================')
         if (this.listQuery.interval === null) {
           this.listQuery.interval = []
           this.listQuery.beginTime = null
@@ -907,7 +889,6 @@
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }
-        console.log('=============  完成 ================')
       }
     }
   }

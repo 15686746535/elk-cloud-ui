@@ -354,39 +354,39 @@
         },
         vehiclePeriodRules: {
           coachId: [
-            { required: true, message: '请选择教练', trigger: ['blur','change'] }
+            { required: true, message: '请选择教练', trigger: ['blur', 'change'] }
           ],
           count: [
-            { required: true, message: '请输入上限', trigger: ['blur','change'] }
+            { required: true, message: '请输入上限', trigger: ['blur', 'change'] }
           ],
           fieldAddress: [
-            { required: true, message: '请选择场地', trigger: ['blur','change'] }
+            { required: true, message: '请选择场地', trigger: ['blur', 'change'] }
           ],
           beginTime: [
-            { required: true, message: '请选择开始时间', trigger: ['blur','change'] }
+            { required: true, message: '请选择开始时间', trigger: ['blur', 'change'] }
           ],
           endTime: [
-            { required: true, message: '请选择结束时间', trigger: ['blur','change'] }
+            { required: true, message: '请选择结束时间', trigger: ['blur', 'change'] }
           ],
           dateList: [
-            { required: true, message: '请选择培训日期', trigger: ['blur','change'] }
+            { required: true, message: '请选择培训日期', trigger: ['blur', 'change'] }
           ],
           vehicleList: [
-            { required: true, message: '请选择培训车辆', trigger: ['blur','change'] }
+            { required: true, message: '请选择培训车辆', trigger: ['blur', 'change'] }
           ]
         },
         carPeriodRules: {
           coachId: [
-            { required: true, message: '请选择教练', trigger: ['blur','change'] }
+            { required: true, message: '请选择教练', trigger: ['blur', 'change'] }
           ],
           count: [
-            { required: true, message: '请输入上限', trigger: ['blur','change'] }
+            { required: true, message: '请输入上限', trigger: ['blur', 'change'] }
           ],
           fieldAddress: [
-            { required: true, message: '请选择场地', trigger: ['blur','change'] }
+            { required: true, message: '请选择场地', trigger: ['blur', 'change'] }
           ],
           vehicleId: [
-            { required: true, message: '请选择培训车辆', trigger: ['blur','change'] }
+            { required: true, message: '请选择培训车辆', trigger: ['blur', 'change'] }
           ]
         }
       }
@@ -400,8 +400,6 @@
         this.vehiclePeriodListLoading = true
         getVehiclePeriodList(this.vehiclePeriodListQuery).then(response => {
           this.vehiclePeriodList = response.data.data.list
-          console.log('============================')
-          console.log(this.vehiclePeriodList)
           this.total = response.data.data.totalCount
           this.vehiclePeriodListLoading = false
           this.getDateList()
@@ -411,7 +409,6 @@
       /* 获取车辆数据 */
       getVehicleList() {
         queryVehicleList().then(response => {
-          console.log(response.data)
           this.vehicleList = response.data.list
         })
       },
@@ -439,7 +436,6 @@
       },
       /* 添加操作 */
       create(formName) {
-        console.log(this.vehiclePeriod)
         const set = this.$refs
         this.vehiclePeriod.subject = this.vehiclePeriodListQuery.subject
         set[formName].validate(valid => {
@@ -460,7 +456,6 @@
       cancel(formName) {
         this.addOption = false
         this.editOption = false
-        console.log('--------------------------------------------------')
         const set = this.$refs
         set[formName].resetFields()
         this.getVehiclePeriodList()
@@ -479,8 +474,6 @@
           subject: row.subject,
           vehicleId: row.vehicleId
         }
-        console.log('===-=-=-=-=-=-=-')
-        console.log(this.carPeriod)
       },
       /* 修改操作 */
       update(formName) {
@@ -534,7 +527,6 @@
             value: parseTime(date, '{y}-{m}-{d}')
           })
         }
-        console.log(this.dateList)
       },
       /* 时间段分解 */
       examTimeBlur() {

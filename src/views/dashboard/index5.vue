@@ -60,9 +60,7 @@ export default {
   methods: {
     aaaaaa() {
       wechatLogin(this.openId).then(response => {
-        console.log(response)
       }).catch(error => {
-        console.log(error)
       })
     },
     ClearForm() {

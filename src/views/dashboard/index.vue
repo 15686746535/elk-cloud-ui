@@ -215,10 +215,10 @@ export default {
       },
       agencyRules: {
         message: [
-          { required: true, message: '请填写发送内容', trigger: ['blur','change'] }
+          { required: true, message: '请填写发送内容', trigger: ['blur', 'change'] }
         ],
         recipientId: [
-          { required: true, message: '请选择接收人', trigger: ['blur','change'] }
+          { required: true, message: '请选择接收人', trigger: ['blur', 'change'] }
         ]
       }
     }
@@ -293,7 +293,6 @@ export default {
     /* 获取接收人列表 */
     getUserList() {
       userList().then(response => {
-        console.log(response.data.data)
         this.userList = response.data.data
       })
     }

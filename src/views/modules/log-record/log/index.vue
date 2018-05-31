@@ -126,7 +126,6 @@
       remote('log_type').then(response => {
         this.dicts = response.data
       })
-      console.log(this.dicts)
       this.getList()
       this.sys_log_del = this.permissions['sys_log_del']
     },
@@ -136,7 +135,6 @@
         this.listQuery.orderByField = 'create_time'
         this.listQuery.isAsc = false
         fetchList(this.listQuery).then(response => {
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false

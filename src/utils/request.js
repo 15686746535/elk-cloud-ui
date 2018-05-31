@@ -15,7 +15,6 @@ service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
   }
-  console.log('--------------s--------------')
   // config.headers['Content-Type'] = 'application/json;charset=UTF-8'
   return config
 }, error => {
@@ -46,9 +45,6 @@ service.interceptors.response.use(
   },
   error => {
     const res = error.response
-    console.log('error---------------------')
-    console.log(res)
-    console.log(error)
     if (res) {
       if (res.status === 478 || res.status === 403) {
         Message.error('您没有权限！')
@@ -64,7 +60,6 @@ service.interceptors.response.use(
         Message.warning('登录过期!')
       } else if (res.status === 503) {
         Message.warning('服务异常!')
-        console.log('服务异常:' + res.data)
       } else {
         Message.error(res.msg)
       }

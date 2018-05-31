@@ -328,27 +328,19 @@ export default {
     methods: {
       getGradeList() {
         this.studentListLoading = true
-        console.log('==========  查询学员条件  =-=======')
-        console.log(this.studentListQuery)
         this.studentListQuery.examState = 'exam_note_true'
         examFetchList(this.studentListQuery).then(response => {
-          console.log('========== 数据 ==========')
-          console.log(response.data)
           if (response.data.code === 0) {
             this.gradeStudentList = response.data.data.list
             this.studentTotal = response.data.data.totalCount
             this.studentListLoading = false
           } else {
-            console.log('这里是错误信息：' + response.data.msg)
           }
         })
       },
       getBatchList() {
         this.batchListLoading = true
-        console.log(this.batchListQuery)
         getBatchs(this.batchListQuery).then(response => {
-          console.log('========== Batch数据 ==========')
-          console.log(response.data)
           this.batchList = this.batchList.concat(response.data.data.list)
           this.batchTotalPage = response.data.data.totalPage
           this.batchListLoading = false
@@ -393,15 +385,12 @@ export default {
           this.gradeOptionLoading = true
           this.studentListQuery.examState = 'exam_note_false'
           examFetchList(this.studentListQuery).then(response => {
-            console.log('========== 数据 ==========')
-            console.log(response.data)
             if (response.data.code === 0) {
               this.notGradeStudentList = response.data.data.list
               this.studentTotal = response.data.data.totalCount
               this.examParameter.examStateOld = '0'
               this.gradeOptionLoading = false
             } else {
-              console.log('这里是错误信息：' + response.data.msg)
             }
           })
         } else {
@@ -416,8 +405,6 @@ export default {
         for (var i = 0; i < val.length; i++) {
           this.examParameter.examNoteList.push({ 'examId': val[i].examId, 'studentId': val[i].studentId })
         }
-        console.log(val)
-        console.log(this.examParameter.examNoteList)
       },
       /* 控制批次点击样式 */
       batchClick(e, batch) {
@@ -457,7 +444,6 @@ export default {
         } else {
           this.examParameter.examState = state
           this.examParameter.subject = this.batchListQuery.subject
-          console.log(this.examParameter)
           this.btnLoading = true
           putExamNote(this.examParameter).then(() => {
             this.getGradeList()
@@ -490,7 +476,6 @@ export default {
       },
       /* 时间转换方法 */
       intervalTime() {
-        console.log('================== 时间转换 ===================')
         if (this.interval.length !== 0) {
           this.studentListQuery.examId = null
           this.cleanBatchSelected()
@@ -507,7 +492,6 @@ export default {
         } else {
           this.expLoading = true
           exportAchievement(this.studentListQuery).then(response => {
-            console.log(response)
             let time = new Date()
             let blob = new Blob([response.data], { type: 'application/x-xls' })
             let link = document.createElement('a')

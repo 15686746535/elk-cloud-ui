@@ -22,10 +22,10 @@
         <el-table :data="shuttleLog"  :height="($store.state.app.client.height-195)"  v-loading="shuttleLogLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
-              <el-table :data="props.row.studentEntityList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+              <el-table :data="props.row.studentList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column align="center" label="学员">
                   <template slot-scope="scope">
-                    <span>{{scope.row.name}}</span>
+                    <span>{{scope.row.studentName}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center" label="电话">
@@ -181,10 +181,10 @@
               <el-table :data="shuttledList"  :height="($store.state.app.client.height-260)"  v-loading="shuttledListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
-                    <el-table :data="props.row.studentEntityList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+                    <el-table :data="props.row.studentList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                       <el-table-column align="center" label="学员">
                         <template slot-scope="scope">
-                          <span>{{scope.row.name}}</span>
+                          <span>{{scope.row.studentName}}</span>
                         </template>
                       </el-table-column>
                       <el-table-column align="center" label="电话">
@@ -319,11 +319,7 @@
       /* 获取查看页面接送名单 */
       getShuttleLog() {
         this.shuttleLogLoading = true
-        console.log('------ 获取查看页面接送名单查询条件 -------')
-        console.log(this.shuttleLogQuery)
         getShuttledList(this.shuttleLogQuery).then(response => {
-          console.log('=========== 接送名单 ==========')
-          console.log(response.data)
           this.shuttleLog = response.data.data.list
           this.shuttleLogTotal = response.data.data.totalCount
           this.shuttleLogLoading = false
@@ -332,11 +328,7 @@
       /* 获取未安排接送名单 */
       getNotShuttleList() {
         this.notShuttleListLoading = true
-        console.log('------ 获取未安排接送名单查询条件 -------')
-        console.log(this.notShuttleListQuery)
         queryUndelivered(this.notShuttleListQuery).then(response => {
-          console.log('=========== 获取未安排接送名单 ==========')
-          console.log(response.data)
           this.notShuttleList = response.data.data.list
           this.notShuttleTotal = response.data.data.totalCount
           this.notShuttleListLoading = false
@@ -345,11 +337,7 @@
       /* 获取已安排接送名单 */
       getShuttledList() {
         this.shuttledListLoading = true
-        console.log('------ 获取已安排接送名单查询条件 -------')
-        console.log(this.shuttledListQuery)
         getShuttledList(this.shuttledListQuery).then(response => {
-          console.log('=========== 获取已安排接送名单 ==========')
-          console.log(response.data)
           this.shuttledList = response.data.data.list
           this.shuttledTotal = response.data.data.totalCount
           this.shuttledListLoading = false
@@ -358,7 +346,6 @@
       /* 获取接送人人列表 */
       getUserList() {
         userList().then(response => {
-          console.log(response.data.data)
           this.userList = response.data.data
         })
       },
@@ -368,8 +355,6 @@
       //   this.studentListLoading = true
       //   this.addStudentOption = true
       //   fetchList(this.studentListQuery).then(response => {
-      //     console.log('=========== 获取学员名单 ==========')
-      //     console.log(response.data)
       //     this.studentList = response.data.data.list
       //     this.studentListTotal = response.data.data.totalCount
       //     this.shuttle.userId = null
@@ -428,7 +413,6 @@
       },
       /* 被接送人集合 */
       handleSelectionChange(val) {
-        console.log(val)
         this.shuttle.studentList = val
       },
       shuttleClick() {
@@ -447,7 +431,6 @@
         } else if (this.shuttle.userId === null) {
           this.$message.warning('请选择接送人')
         } else {
-          console.log(this.shuttle)
           this.btnLoading = true
           addShuttleStudent(this.shuttle).then(() => {
             this.userListOption = false

@@ -106,8 +106,6 @@
     methods: {
       getServiceChargeList() {
         getServiceChargeList(this.listQuery).then(response => {
-          console.log('=---=-=--=-=-=--=-=-2-1===-=-==')
-          console.log(response.data)
           this.financeList = response.data.data.list
           this.total = response.data.totalCount
         })

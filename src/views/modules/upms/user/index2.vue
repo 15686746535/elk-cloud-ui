@@ -40,7 +40,6 @@
     },
     methods: {
       searchClick() {
-        console.log('v-model结果===> ' + this.test)
       },
       updata() {
         this.test = 13
@@ -53,15 +52,12 @@
         this.userList.splice(index2 + 1, 0, { 'name': '选项_' + (index2 + 2) })
       },
       nodeList(list) {
-        console.log('选中集合')
-        console.log(list)
       },
       getOrgList() {
         request({
           url: '/upms/org/tree',
           method: 'get'
         }).then(response => {
-          console.log(response)
           this.treeData = response.data.data
           this.treeData[0].selected = true
         })

@@ -189,7 +189,6 @@
     },
     methods: {
       intervalTime() {
-        console.log('================== 时间转换 ===================')
         if (this.interval) {
           this.listQuery.beginTime = this.interval[0]
           this.listQuery.endTime = this.interval[1]
@@ -200,14 +199,11 @@
       },
       getUserList() {
         userList().then(response => {
-          console.log('================== 所有负责人 ===================')
-          console.log(response.data)
           this.userList = response.data.data
         })
       },
       // 根据部门id查询员工
       searchByOrg() {
-        console.log('=====================   根据部门id查询来访信息   =======================')
         this.listQuery.page = 1
         this.getList()
       },
@@ -215,8 +211,6 @@
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
           this.list = response.data.data.list
-          console.log('====== 意向信息 =====')
-          console.log(this.list)
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
@@ -239,8 +233,6 @@
       // 来访信息点击事件
       intentionClick(id, e) {
         var classList = e.currentTarget.classList
-        console.log('========== 点击事件 ===========')
-        console.log(this.hasClass(classList, 'intention_selected'))
         if (this.hasClass(classList, 'intention_selected')) {
           classList.remove('intention_selected')
           this.delNodeId(id)
@@ -248,7 +240,6 @@
           classList.add('intention_selected')
           this.intentionList.intentionIds.push(id)
         }
-        console.log(this.intentionList.intentionIds)
       },
       delNodeId(id) {
         for (var i = 0; i < this.intentionList.intentionIds.length; i++) {

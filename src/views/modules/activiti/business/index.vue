@@ -165,7 +165,6 @@ export default {
       this.dialogFormVisible = true
     },
     handleDelete(row) {
-      console.log(row)
       this.$confirm('是否删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

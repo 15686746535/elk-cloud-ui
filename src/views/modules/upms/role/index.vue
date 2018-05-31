@@ -148,13 +148,13 @@
             {
               required: true,
               message: '角色名称',
-              trigger: ['blur','change']
+              trigger: ['blur', 'change']
             },
             {
               min: 1,
               max: 20,
               message: '长度在 3 到 20 个字符',
-              trigger: ['blur','change']
+              trigger: ['blur', 'change']
             }
           ]
         },
@@ -277,7 +277,6 @@
         })
       },
       updatePermession(roleId, roleKey) {
-        console.log(this.activeName)
         if (this.activeName === 'menuPermission') {
           menuPermissionUpd(roleId, this.permission.menuList).then(() => {
             this.dialogPermissionVisible = false

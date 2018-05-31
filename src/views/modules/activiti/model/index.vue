@@ -133,7 +133,6 @@
     methods: {
       getList() {
         this.tableLoading = true
-        console.log('========== 查询条件  ====================')
         modelPage(this.listQuery).then(response => {
           var data = response.data.data
           this.modelList = data.list
@@ -148,13 +147,10 @@
         this.bus = bus
       },
       designFlow(modelId) {
-        console.log('========== 设计流程图 busSet ====================')
-        console.log(modelId)
         this.url = this.$store.state.app.iFrameUrl + ':8114/model/create?modelId=' + modelId + '&token=' + getToken()
         this.showPlate = 'design'
       },
       delModel(modelId) {
-        console.log('========== 删除流程  ====================')
         this.$confirm('确定删除流程?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -166,7 +162,6 @@
         })
       },
       setDefault(modelId) {
-        console.log('========== setDefault  ====================', modelId)
         this.$confirm('将流程设置为默认并部署?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -178,7 +173,6 @@
         })
       },
       deploy(modelId) {
-        console.log('========== 部署流程  ====================')
         this.$confirm('确定部署流程?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -190,22 +184,16 @@
         })
       },
       showFlowImg(modelId) {
-        console.log('========== 查看流程图片  ====================')
         showFlowImg(modelId).then(response => {
-          console.log(response)
           this.svg = response.data.data
           this.showPlate = 'img'
         })
       },
       flowTree(modelId) {
-        console.log('========== 获取流程图所有节点和连线  ====================')
         flowTree(modelId).then(response => {
-          console.log(response)
         })
       },
       dialogOpen(model) {
-        console.log('========== dialogOpen  ====================')
-        console.log(model)
         if (model) {
           this.model = {
             modelId: model.modelId, // ID
@@ -221,10 +209,7 @@
       },
       create(formName) {
         const set = this.$refs
-        console.log('============= 添加信息 ===================')
-        console.log(this.model)
         set[formName].validate(valid => {
-          console.log(valid)
           if (valid) {
             // 展开加载中
             this.$store.dispatch('setLoading', true)

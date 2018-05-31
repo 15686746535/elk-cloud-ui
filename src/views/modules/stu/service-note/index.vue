@@ -327,8 +327,6 @@
       getFinanceList() {
         this.listLoading = true
         getFinanceList(this.financeListQuery).then(response => {
-          console.log('===========================')
-          console.log(response.data)
           this.financeList = response.data.data.list
           this.listLoading = false
         })
@@ -338,7 +336,6 @@
         if (query) {
           this.studentListLoading = true
           this.studentListQuery.condition = query
-          console.log(this.studentListQuery)
           fetchStudentList(this.studentListQuery).then(response => {
             this.studentList = response.data.data.list
             this.studentListLoading = false
@@ -360,7 +357,6 @@
               this.stuServiceBuyNoteEntity.realPrice = 0
               this.stuServiceBuyNoteEntity.financeList = []
               this.stuServiceBuyNoteEntity.payTypeList = []
-              console.log(response.data)
               this.student = response.data.data
               this.infoLoading = false
               this.clean()
@@ -377,7 +373,6 @@
               this.stuServiceBuyNoteEntity.originalPrice = 0
               this.stuServiceBuyNoteEntity.activityPrice = 0
               this.stuServiceBuyNoteEntity.realPrice = 0
-              console.log(response.data)
               this.student = response.data.data
               this.financeList = this.student.financeList
               this.stuServiceBuyNoteEntity.financeList = this.student.financeList
@@ -397,8 +392,6 @@
       },
       stuBuyServiceNote() {
         this.btnLoading = true
-        console.log('=============== 传入参数 ==========')
-        console.log(this.stuServiceBuyNoteEntity)
         if (this.flag) {
           saveServiceCharge(this.stuServiceBuyNoteEntity).then(() => {
             this.stuServiceBuyNoteEntity = {
@@ -439,7 +432,6 @@
         this.stuServiceBuyNoteEntity.originalPrice = 0
         this.stuServiceBuyNoteEntity.activityPrice = 0
         var activityPrice = 0
-        console.log(this.stuServiceBuyNoteEntity.financeList)
         /* 先计算未参加活动的价格 */
         for (var i = 0; i < this.stuServiceBuyNoteEntity.financeList.length; i++) {
           if (this.stuServiceBuyNoteEntity.financeList[i].code !== '004') {
@@ -472,7 +464,6 @@
           }
           this.stuServiceBuyNoteEntity.realPrice = Number(this.stuServiceBuyNoteEntity.realPrice) + Number(this.payTypeList[i].money)
         }
-        console.log(this.stuServiceBuyNoteEntity.payTypeList)
       },
       clean() {
         this.payTypeList = [
@@ -526,7 +517,6 @@
             } else {
               dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
               dsf = dsf + 20
-              console.log('dsf', dsf)
             }
           }
 
@@ -557,14 +547,6 @@
             }
           }
         }
-        console.log('dsfStr:', dsfStr)
-        console.log('pxfStr:', pxfStr)
-        console.log('fwbStr:', fwbStr)
-        console.log('yhbStr:', yhbStr)
-        console.log('dsf:', dsf)
-        console.log('pxf:', pxf)
-        console.log('fwb:', fwb)
-        console.log('yhb:', yhb)
 
         var a = dsf;
         var b = dsf + pxf;

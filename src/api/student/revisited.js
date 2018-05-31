@@ -17,10 +17,11 @@ export function addRevisited(obj) {
 }
 
 // 删除
-export function delRevisited(id) {
+export function delRevisited(obj) {
   return request({
-    url: '/stu/revisit/note/' + id,
-    method: 'delete'
+    url: '/stu/revisit/note',
+    method: 'delete',
+    data: obj
   })
 }
 // 更新

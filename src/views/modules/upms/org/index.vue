@@ -78,21 +78,21 @@
             {
               required: true,
               message: '父级部门',
-              trigger: ['blur','change']
+              trigger: ['blur', 'change']
             }
           ],
           sort: [
             {
               required: true,
               message: '排序',
-              trigger: ['blur','change']
+              trigger: ['blur', 'change']
             }
           ],
           orgName: [
             {
               required: true,
               message: '部门名称',
-              trigger: ['blur','change']
+              trigger: ['blur', 'change']
             }
           ],
           remark: [
@@ -134,7 +134,6 @@
       },
       assignment() {
         if (this.option === 'create') {
-          console.log('create')
           this.form.parentId = this.org.orgId
           this.form.groupId = this.org.groupId
           this.form.companyId = this.org.companyId
@@ -147,7 +146,6 @@
             this.form.orgType = '0'
           }
         } else if (this.option === 'update') {
-          console.log('update')
           this.form = this.org
           if (this.org.parentName === null) this.form.parentName = '无'
         }

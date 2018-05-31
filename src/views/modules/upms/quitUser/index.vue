@@ -525,10 +525,7 @@
       doubleClickRow(val) {
         this.infoLoading = true
         getObj(val.userId).then(response => {
-          console.log('====================== 单个员工信息 =====================')
-          console.log(response.data)
           this.userEntity = response.data.data
-          console.log(this.userEntity.orgId)
           this.getRoleList()
           this.studentListQuery.userId = this.userEntity.userId
           this.getEnrollStudentList()
@@ -538,9 +535,7 @@
       },
       getRoleList() {
         roleList().then(response => {
-          console.log('====================== 职位 =====================')
           this.roleList = response.data.data
-          console.log(this.roleList)
         })
       },
       // 改变页容量
@@ -563,27 +558,20 @@
       },
       // 查询员工集合
       getUserList() {
-        console.log('=====================   查询员工集合   =======================')
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          console.log(response.data)
           this.userList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
-        console.log('=====================   完成   =======================')
       },
       // 查询招生信息集合
       getEnrollStudentList() {
-        console.log('=====================   查询员工集合   =======================')
         this.studentListLoading = true
         queryEnrollStudents(this.studentListQuery).then(response => {
-          console.log(response.data)
           this.studentList = response.data.data.list
-          // this.total = response.data.data.totalCount
           this.studentListLoading = false
         })
-        console.log('=====================   完成   =======================')
       },
       // 根据部门id查询员工
       searchByOrg() {

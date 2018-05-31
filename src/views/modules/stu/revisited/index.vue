@@ -147,10 +147,9 @@
       getList() {
         this.listLoading = true
         examFetchList(this.listQuery).then(response => {
-          console.log('============ 已回访学员 ===========')
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
+          this.questionList = []
           this.listLoading = false
         })
       },
@@ -173,13 +172,12 @@
           type: 'warning'
         }).then(() => {
           delRevisited(obj).then(() => {
+            this.getList()
           })
-          this.getList()
         })
       },
       // 根据部门id查询员工
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询员工信息   =======================')
         this.listQuery.page = 1
         this.getList()
       },
@@ -193,10 +191,7 @@
       /* 根据问卷查题目 */
       questionClick(row) {
         this.questionLoading = true
-        console.log(row)
         queryExamNoted({ 'examId': row.examId, 'studentId': row.studentId }).then(response => {
-          console.log('========= 题目 ==========')
-          console.log(response.data)
           this.questionList = response.data.data
           this.questionLoading = false
         })

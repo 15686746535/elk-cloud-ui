@@ -383,16 +383,16 @@
         },
         batchRules: {
           examField: [
-            { required: true, message: '请选择考试场地', trigger: ['blur','change'] }
+            { required: true, message: '请选择考试场地', trigger: ['blur', 'change'] }
           ],
           // stuCount: [
-          //   { required: true, type: 'number', message: '请输入人数', trigger: ['blur','change'] }
+          //   { required: true, type: 'number', message: '请输入人数', trigger: ['blur', 'change'] }
           // ],
           examTime: [
-            { required: true, message: '请选择考试时间', trigger: ['blur','change'] }
+            { required: true, message: '请选择考试时间', trigger: ['blur', 'change'] }
           ],
           expiryTime: [
-            { required: true, message: '请选择预约截止日期', trigger: ['blur','change'] }
+            { required: true, message: '请选择预约截止日期', trigger: ['blur', 'change'] }
           ]
         }
       }
@@ -410,7 +410,6 @@
       getList() {
         this.listLoading = true
         getBatchList(this.listQuery).then(response => {
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -479,7 +478,6 @@
           if (valid) {
             this.btnLoading = true
             putObj(this.batch).then(response => {
-              console.log(response.data)
               this.batchOption = false
               this.btnLoading = false
               this.getList()
@@ -492,7 +490,6 @@
       searchClick() {
         this.listQuery.page = 1
         this.examTimeBlur()
-        console.log(this.listQuery)
         this.getList()
       },
       handleDelete(val) {
@@ -536,7 +533,6 @@
         })
       },
       handleSelectionChange(val) {
-        console.log(val)
         this.examBespeakList.examNoteList = []
         for (var i = 0; i < val.length; i++) {
           this.examBespeakList.examNoteList.push({ 'studentId': val[i].studentId, 'examId': val[i].examId })
@@ -553,8 +549,6 @@
           this.$message.warning('请先选择学员')
         } else {
           this.examBespeakList.examineState = state
-          console.log('==== 选择的学员 ====')
-          console.log(this.examBespeakList)
           putExamBespeak(this.examBespeakList, url).then(() => {
             this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
           })
@@ -562,7 +556,6 @@
       },
       // 根据科目查询场地
       handleSubject() {
-        console.log(this.listQuery.subject)
         this.batch = {}
         this.listQuery.page = 1
         this.batch.subject = this.listQuery.subject
@@ -584,7 +577,6 @@
         }
       },
       filterTag(value, row) {
-        console.log('...................')
         return row.state === value
       },
       filterHandler(value, row, column) {
@@ -605,7 +597,6 @@
         }
         this.studentListQuery.subject = subject
         exportExamList(this.studentListQuery).then(response => {
-          console.log(response)
           let time = new Date()
           let blob = new Blob([response.data], { type: 'application/x-xls' })
           let link = document.createElement('a')

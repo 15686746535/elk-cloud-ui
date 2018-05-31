@@ -152,16 +152,16 @@
         ],
         rules: {
           name: [
-            { required: true, message: '请输入收费服务名字', trigger: ['blur','change'] }
+            { required: true, message: '请输入收费服务名字', trigger: ['blur', 'change'] }
           ],
           price: [
-            { required: true, message: '请输入价格', trigger: ['blur','change'] }
+            { required: true, message: '请输入价格', trigger: ['blur', 'change'] }
           ],
           priceType: [
-            { required: true, message: '请选择收费类型', trigger: ['blur','change'] }
+            { required: true, message: '请选择收费类型', trigger: ['blur', 'change'] }
           ],
           code: [
-            { required: true, message: '请选择服务类型', trigger: ['blur','change'] }
+            { required: true, message: '请选择服务类型', trigger: ['blur', 'change'] }
           ]
         }
       }
@@ -200,8 +200,6 @@
       getList() {
         this.listLoading = true
         getFinanceList(this.listQuery).then(response => {
-          console.log('===========================')
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -216,7 +214,6 @@
         this.getList()
       },
       handleDelete(row) {
-        console.log(row)
         this.$confirm('此操作将永久删除, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

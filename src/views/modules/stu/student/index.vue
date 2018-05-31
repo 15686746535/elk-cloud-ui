@@ -248,7 +248,6 @@
             <!--<el-tab-pane label="费用情况" name="3">-->
 
 
-            <!--</el-tab-pane>-->
             <el-tab-pane label="来访跟进信息" name="4">
               <div style="line-height: 160px;height: 160px;color: #909399;text-align: center;font-size: 14px" v-if="followUpList.length === 0">
                 无跟进信息
@@ -541,7 +540,7 @@
 
               <!-- 联系信息 -->
               <el-row>
-                <el-row class="title">联系信息:</el-row>
+                <el-row class="title">联系信息</el-row>
                 <el-row style="padding: 0 10px">
                   <el-row :gutter="10">
                     <el-col :span="12">
@@ -642,6 +641,15 @@
                   </el-row>
                 </el-row>
 
+                <!-- 联系地址 -->
+                <el-row style="margin: 0 10px">
+                  <el-form-item prop="contactAddress">
+                    <span slot="label" class="text_css">联系地址:</span>
+                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
+                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
+                  </el-form-item>
+                </el-row>
+
                 <!-- 所属单位 -->
                 <el-row style="margin: 0 10px">
                   <el-form-item prop="company">
@@ -651,15 +659,15 @@
                   </el-form-item>
                 </el-row>
 
-
-                <!-- 联系地址 -->
+                <!-- 历史费用 -->
                 <el-row style="margin: 0 10px">
-                  <el-form-item prop="contactAddress">
-                    <span slot="label" class="text_css">联系地址:</span>
-                    <el-input v-if="edit" style="width: 100%;" class="filter-item" placeholder="联系地址" v-model="student.contactAddress"></el-input>
-                    <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.contactAddress}}</div>
+                  <el-form-item prop="company">
+                    <span slot="label" class="text_css">历史费用:</span>
+                    <div style="padding-left: 16px;font-size: 12px;" >{{student.serviceRemark}}</div>
                   </el-form-item>
                 </el-row>
+
+
               </el-row>
             </el-card>
             <el-card body-style="padding: 10px 20px;"  shadow="never" style="height:50px; border-radius:0 0 4px 0;">
@@ -1008,7 +1016,6 @@
       }
       var idNumberIsExistence = (rule, value, callback) => {
         isExistence(value).then(response => {
-          console.log('身份证号码',response.data)
           if (response.data.data) {
             callback(new Error('身份证号码已存在'))
           } else {
@@ -1018,7 +1025,6 @@
       }
       var mobileIsExistence = (rule, value, callback) => {
         isExistence(value).then(response => {
-          console.log('电话号码',response.data)
           if (response.data.data) {
             callback(new Error('电话号码已存在'))
           } else {
@@ -1118,128 +1124,128 @@
         },
         studentEntityRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] },
+            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: ['blur','change'] },
-            { validator: idNumberReg, trigger: ['blur','change'] },
+            { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
+            { validator: idNumberReg, trigger: ['blur', 'change'] },
             { validator: idNumberIsExistence, trigger: ['blur'] }
           ],
           archivesNumber: [
-            { required: true, message: '请输入档案号', trigger: ['blur','change'] }
+            { required: true, message: '请输入档案号', trigger: ['blur', 'change'] }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: ['blur','change'] }
+            { required: true, message: '请输入姓名', trigger: ['blur', 'change'] }
           ],
           wechat: [],
           campus: [
-            { required: true, message: '请输入校区地址', trigger: ['blur','change'] }
+            { required: true, message: '请输入校区地址', trigger: ['blur', 'change'] }
           ],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: ['blur','change'] }
+            { required: true, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
           periods: [
-            { required: true, message: '请输入入学期数', trigger: ['blur','change'] }
+            { required: true, message: '请输入入学期数', trigger: ['blur', 'change'] }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: ['blur','change'] }
+            { required: true, message: '请选择生日', trigger: ['blur', 'change'] }
           ],
           motorcycleType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
           ],
           enrolTime: [
-            { required: true, message: '请选择入学日期', trigger: ['blur','change'] }
+            { required: true, message: '请选择入学日期', trigger: ['blur', 'change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur','change'] }
+            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           physicalExamination: [
-            { required: true, message: '请选择是否体检', trigger: ['blur','change'] }
+            { required: true, message: '请选择是否体检', trigger: ['blur', 'change'] }
           ],
           addDrive: [
-            { required: true, message: '请选择是否增加', trigger: ['blur','change'] }
+            { required: true, message: '请选择是否增加', trigger: ['blur', 'change'] }
           ],
           haveCar: [
-            { required: true, message: '请选择是否有车', trigger: ['blur','change'] }
+            { required: true, message: '请选择是否有车', trigger: ['blur', 'change'] }
           ],
           email: [
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur','change'] }
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] }
           ],
           company: [],
           position: [],
           enrolSite: [
-            { required: true, message: '请选择报名点', trigger: ['blur','change'] }
+            { required: true, message: '请选择报名点', trigger: ['blur', 'change'] }
           ],
           introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur','change'] },
-            { validator: introducerListReg, trigger: ['blur','change'] }
+            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] },
+            { validator: introducerListReg, trigger: ['blur', 'change'] }
           ]
         },
         studentRules: {
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur','change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur','change'] }
+            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           idNumber: [
-            { required: true, message: '请输入身份证', trigger: ['blur','change'] },
-            { validator: idNumberReg, trigger: ['blur','change'] }
+            { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },
+            { validator: idNumberReg, trigger: ['blur', 'change'] }
           ],
           archivesNumber: [
-            { required: true, message: '请输入档案号', trigger: ['blur','change'] }
+            { required: true, message: '请输入档案号', trigger: ['blur', 'change'] }
           ],
           name: [
-            { required: true, message: '请输入姓名', trigger: ['blur','change'] }
+            { required: true, message: '请输入姓名', trigger: ['blur', 'change'] }
           ],
           wechat: [],
           campus: [
-            { required: true, message: '请输入校区地址', trigger: ['blur','change'] }
+            { required: true, message: '请输入校区地址', trigger: ['blur', 'change'] }
           ],
           contactAddress: [
-            { required: true, message: '请输入住址', trigger: ['blur','change'] }
+            { required: true, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
           periods: [
-            { required: true, message: '请输入入学期数', trigger: ['blur','change'] }
+            { required: true, message: '请输入入学期数', trigger: ['blur', 'change'] }
           ],
           birthday: [
-            { required: true, message: '请选择生日', trigger: ['blur','change'] }
+            { required: true, message: '请选择生日', trigger: ['blur', 'change'] }
           ],
           motorcycleType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur','change'] }
+            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
           ],
           source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur','change'] }
+            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
           ],
           enrolTime: [
-            { required: true, message: '请选择入学日期', trigger: ['blur','change'] }
+            { required: true, message: '请选择入学日期', trigger: ['blur', 'change'] }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: ['blur','change'] }
+            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           physicalExamination: [
-            { required: true, message: '请选择是否体检', trigger: ['blur','change'] }
+            { required: true, message: '请选择是否体检', trigger: ['blur', 'change'] }
           ],
           addDrive: [
-            { required: true, message: '请选择是否增加', trigger: ['blur','change'] }
+            { required: true, message: '请选择是否增加', trigger: ['blur', 'change'] }
           ],
           haveCar: [
-            { required: true, message: '请选择是否有车', trigger: ['blur','change'] }
+            { required: true, message: '请选择是否有车', trigger: ['blur', 'change'] }
           ],
           email: [
-            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur','change'] }
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] }
           ],
           company: [],
           position: [],
           enrolSite: [
-            { required: true, message: '请选择报名点', trigger: ['blur','change'] }
+            { required: true, message: '请选择报名点', trigger: ['blur', 'change'] }
           ],
           introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur','change'] },
-            { validator: introducerListReg, trigger: ['blur','change'] }
+            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] },
+            { validator: introducerListReg, trigger: ['blur', 'change'] }
           ]
         },
         stuList: [],
@@ -1372,16 +1378,13 @@
     methods: {
       // 根据部门id查询学员信息
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询学员信息   =======================')
         this.listQuery.page = 1
         this.getList()
       },
       // 双击行  编辑
       editList(val) {
-        console.log('====================== 进入单个学员编辑 =====================')
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
-          console.log(response.data.data)
           this.student = response.data.data
           this.examBespeak.studentId = this.student.studentId
           if (this.student.introducerIdList === null) this.student.introducerIdList = [] // 防止介绍人为null
@@ -1393,7 +1396,6 @@
       },
       /* 切换标签 */
       handleClick(tab, event) {
-        console.log(tab.name)
         if (tab.label === '考试情况') {
           this.getExam()
         } else if (tab.label === '费用情况') {
@@ -1410,8 +1412,6 @@
       getExam() {
         if (this.student.studentId) {
           examFetchList({ studentId: this.student.studentId, examState: 'exam_note_true' }).then(response => {
-            console.log('====================== 考试日志 =====================')
-            console.log(response.data)
             this.examNoteList = response.data.data.list
           })
         }
@@ -1420,8 +1420,6 @@
       getVehiclePeriod() {
         if (this.student.studentId) {
           getVehiclePeriodByStudentId(this.student.studentId).then(response => {
-            console.log('====================== 约车日志 =====================')
-            console.log(response.data)
             this.vehiclePeriodList = response.data.list
           })
         }
@@ -1430,8 +1428,6 @@
       getShuttleLog() {
         if (this.student.studentId) {
           getShuttleLogByStudentId(this.student.studentId).then(response => {
-            console.log('====================== 接送日志 =====================')
-            console.log(response.data)
             this.shuttleLogList = response.data.list
           })
         }
@@ -1440,8 +1436,6 @@
       getFollowUpList() {
         if (this.student.mobile) {
           followUpList({ 'mobile': this.student.mobile }).then(response => {
-            console.log('====================== 跟进信息 =====================')
-            console.log(response.data)
             this.followUpList = response.data.data
           })
         }
@@ -1450,8 +1444,6 @@
       getList() {
         this.listLoading = true
         fetchStudentList(this.listQuery).then(response => {
-          console.log(' ====== =============  这是所有学员信息  ==================')
-          console.log(response.data)
           this.stuList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -1473,8 +1465,6 @@
       add(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log('======================= 添加的数据 ======')
-            console.log(this.studentEntity)
             this.btnLoading = true
             saveStudent(this.studentEntity).then(() => {
               this.backClick()
@@ -1492,7 +1482,6 @@
       /* 获取介绍人列表 */
       getIntroducerList() {
         userList().then(response => {
-          console.log(response.data.data)
           this.userList = response.data.data
         })
       },
@@ -1501,8 +1490,6 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.btnLoading = true
-            console.log('=========== 修改之后的值 =========')
-            console.log(this.student)
             putStudent(this.student).then(() => {
               this.editList(this.student)
               this.btnLoading = false
@@ -1524,16 +1511,13 @@
         this.edit = false
         this.isCreate = false
         this.getList()
-        // this.$refs['student'].resetFields()
         this.$refs['studentEntity'].resetFields()
       },
       // 搜索
       searchClick() {
         this.listQuery.page = 1
-        console.log('============== 搜索方法 ===============')
         this.examTimeBlur()
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
-        console.log(this.listQuery)
         this.getList()
       },
       generateInfo() {
@@ -1552,7 +1536,6 @@
         this.student.avatar = res.data
       },
       handleAvatarError(err, file, fileList) {
-        console.log(err)
         this.$message.error('上传失败')
       },
       beforeAvatarUpload(file) {
@@ -1602,17 +1585,12 @@
         this.btnLoading = false
       },
       getFieldCoach(coach) {
-        console.log('============ 教练 =============')
-        console.log(coach)
         this.student.fieldCoachName = coach.name
       },
       getRoadCoach(coach) {
-        console.log('============ 教练 =============')
-        console.log(coach)
         this.student.roadCoachName = coach.name
       },
       examTimeBlur() {
-        console.log('=============  我正在转换时间范围 ================')
         if (this.listQuery.interval === null) {
           this.listQuery.interval = []
           this.listQuery.beginTime = null
@@ -1622,15 +1600,11 @@
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }
-        console.log('=============  完成 ================')
       },
       handleBespeakExam() {
-        console.log(this.student.state)
         this.examBespeak.subject = this.student.state
         this.batchListQuery.subject = this.student.state
         getBatchList(this.batchListQuery).then(response => {
-          console.log(' ===================  这是所有批次信息  ==================')
-          console.log(response.data.data)
           this.batchList = response.data.data.list
         })
         this.dialogFormBespeak = true
@@ -1676,8 +1650,6 @@
       },
       createBespeak(flag) {
         if (flag === 'exam') {
-          console.log('================== 这里是添加学员到批次 ====================')
-          console.log(this.examBespeak)
           if (this.examBespeak.examId === null) {
             this.$message.warning('请先选择报考批次')
           } else {
@@ -1690,8 +1662,6 @@
           }
         }
         else if (flag === 'car') {
-          console.log('================== 这里是添加学员到课时 ====================')
-          console.log(this.examBespeak)
           if (this.examBespeak.periodId === null) {
             this.$message.warning('请先选择课时')
           } else {
@@ -1705,12 +1675,9 @@
         }
       },
       matchingStudents() {
-        console.log(this.studentEntity.mobile)
         if (this.studentEntity.mobile) {
           this.createLoading = true
           getIntentionByMobile({ 'mobile': this.studentEntity.mobile, 'state': '0' }).then(response => {
-            console.log('======== 匹配到的值 =========')
-            console.log(response.data)
             var flag = true
             if (response.data.data) {
               this.studentEntity.intentionId = response.data.data.intentionId
@@ -1726,7 +1693,6 @@
                 }
               }
               if (flag) this.studentEntity.introducerList.push(response.data.data.userId)
-              console.log(this.studentEntity.introducerList)
               if (!this.studentEntity.motorcycleType) this.studentEntity.motorcycleType = response.data.data.applyType
             }
             this.createLoading = false
@@ -1741,7 +1707,6 @@
         this.examBespeak.subject = this.student.state
         if (coachId) {
           getClassByCoachId(coachId).then(response => {
-            console.log(response.data)
             this.carClassList = response.data.data
             this.besCarDialog = true
           })
@@ -1752,7 +1717,6 @@
       exportStudent() {
         this.expLoading = true
         exportStudent(this.listQuery).then(response => {
-          console.log(response)
           let time = new Date()
           let blob = new Blob([response.data], { type: 'application/x-xls' })
           let link = document.createElement('a')

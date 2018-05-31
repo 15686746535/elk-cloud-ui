@@ -213,10 +213,10 @@
         },
         revisitQuestionnaireRules: {
           name: [
-            { required: true, message: '请填写问卷名字', trigger: ['blur','change'] }
+            { required: true, message: '请填写问卷名字', trigger: ['blur', 'change'] }
           ],
           remark: [
-            { required: true, message: '请填写备注', trigger: ['blur','change'] }
+            { required: true, message: '请填写备注', trigger: ['blur', 'change'] }
           ]
         },
         questionnaireId: null,
@@ -250,8 +250,6 @@
       getQuestionnaireList() {
         this.questionnaireLoading = true
         getRevisitQuestionnaireList(this.questionnaireListQuery).then(response => {
-          console.log('=================== 问卷 -=============')
-          console.log(response.data.data)
           this.questionnaireList = response.data.data.list
           this.total = response.data.data.totalCount
           this.questionnaireLoading = false
@@ -309,10 +307,7 @@
       questionClick(row) {
         this.questionLoading = true
         this.questionnaireId = row.questionnaireId
-        console.log(row.questionnaireId)
         getQuestion(row.questionnaireId).then(response => {
-          console.log('========= 题目 ==========')
-          console.log(response.data)
           this.questionList = response.data.data
           if (this.questionList.length === 0) {
             this.haveQuestion = false
@@ -339,7 +334,6 @@
       },
       /* 保存题目 */
       saveQuestion() {
-        console.log(this.questionList)
         if (!this.questionVerification()) {
           this.$message.warning('问题设置有错误')
           return

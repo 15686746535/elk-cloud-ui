@@ -171,12 +171,9 @@
     },
     methods: {
       getList() {
-        console.log('=====================   所有未分配来访信息   =======================')
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
           this.list = response.data.data.list
-          console.log('====== 意向信息 =====')
-          console.log(this.list)
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
@@ -184,7 +181,6 @@
       // 根据部门id查询员工
       searchByOrg(data) {
         if (data) {
-          console.log('=====================   根据部门id查询来访信息   =======================')
           this.listQuery.page = 1
           this.listQuery.orgId = data.id
           this.getList()
@@ -210,10 +206,8 @@
         }
       },
       orgClick() {
-        console.log('..........')
         this.selectLoading = true
         userList({ orgId: this.intentionList.orgId }).then(response => {
-          console.log(response.data.data)
           this.userList = response.data.data
           this.selectLoading = false
         })
@@ -225,8 +219,6 @@
           //   cancelButtonText: '取消',
           //   type: 'info'
           // }).then(() => {
-          console.log('------- 分配信息 -------')
-          console.log(this.intentionList)
           putIntention(this.intentionList).then(() => {
             this.$message({
               type: 'success',
@@ -250,7 +242,6 @@
             message: '请选择负责人'
           })
         }
-        console.log(this.orgId)
       },
       closeIntention() {
         this.dialogIntentionList = false

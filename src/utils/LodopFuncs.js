@@ -101,12 +101,9 @@ export function getLodop(oOBJECT,oEMBED){
         if (is64IE) document.write(strHtm64_Install); else
         if (isIE)   document.write(strHtmInstall);    else
           document.body.innerHTML=strHtmInstall+document.body.innerHTML;
-        console.log('=----------==-=-=-=-=-=-=-=-=--==-=-=-=')
-        console.log(LODOP)
         return LODOP;
       };
     };
-    console.log(LODOP)
     if (LODOP.VERSION<"6.2.2.2") {
       if (!needCLodop()){
         if (is64IE) document.write(strHtm64_Update); else

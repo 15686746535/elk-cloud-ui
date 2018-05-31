@@ -226,8 +226,6 @@
       getList() {
         this.listLoading = true
         examFetchList(this.listQuery).then(response => {
-          console.log('============== 回访信息 =============')
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -248,7 +246,6 @@
       },
       // 根据部门id查询员工
       searchByOrg(data) {
-        console.log('=====================   根据部门id查询员工信息   =======================')
         this.listQuery.page = 1
         this.getList()
       },
@@ -264,19 +261,14 @@
         this.answerList.studentId = val.studentId
         this.questionnaireListQuery.subject = this.listQuery.subject
         getRevisitQuestionnaireList(this.questionnaireListQuery).then(response => {
-          console.log('=================== 问卷 -=============')
-          console.log(response.data.data)
           this.questionnaireOption = true
           this.questionnaireList = response.data.data.list
           this.questionnaireId = this.questionnaireList[0].questionnaireId
-          console.log(this.questionnaireList)
         })
       },
       getRevisitQuestion() {
         getQuestion(this.questionnaireId).then(response => {
-          console.log(response.data)
           this.answerList.revisitQuestionList = response.data.data
-          console.log(this.answerList)
           this.visitStudentOption = true
         })
       },
@@ -295,7 +287,6 @@
           }
         }
         if (!flag) return
-        console.log(this.answerList)
         addRevisited(this.answerList).then(() => {
           this.closeDialog()
         })

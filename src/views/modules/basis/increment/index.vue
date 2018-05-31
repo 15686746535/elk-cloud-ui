@@ -140,8 +140,6 @@
         this.listQuery.orderByField = 'create_time'
         this.listQuery.isAsc = false
         fetchList(this.listQuery).then(response => {
-          console.log('===========================')
-          console.log(response.data)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -156,7 +154,6 @@
         this.getList()
       },
       handleDelete(row) {
-        console.log(row)
         delObj(row.dictId)
           .then(response => {
             this.dialogFormVisible = false
@@ -177,8 +174,6 @@
       handleUpdate(val) {
         this.increment.name = val.label
         this.increment.cost = JSON.parse(val.value).cost
-        console.log('==========================')
-        console.log(val)
         this.dict = val
         this.dialogStatus = 'update'
         this.dialogFormVisible = true

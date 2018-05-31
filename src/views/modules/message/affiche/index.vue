@@ -106,7 +106,6 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        console.log(response.data)
         this.list = response.data.data.list
         this.total = response.data.data.totalCount
         this.listLoading = false
@@ -137,7 +136,6 @@ export default {
       this.dialogFormVisible = true
     },
     handleDelete(row) {
-      console.log(row)
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

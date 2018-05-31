@@ -134,19 +134,19 @@
         },
         rules: {
           orgId: [
-            { required: true, message: '所属部门', trigger: ['blur','change'] }
+            { required: true, message: '所属部门', trigger: ['blur', 'change'] }
           ],
           name: [
-            { required: true, message: '任务名称', trigger: ['blur','change'] }
+            { required: true, message: '任务名称', trigger: ['blur', 'change'] }
           ],
           beanName: [
-            { required: true, message: 'bean名称', trigger: ['blur','change'] }
+            { required: true, message: 'bean名称', trigger: ['blur', 'change'] }
           ],
           methodName: [
-            { required: true, message: '方法名', trigger: ['blur','change'] }
+            { required: true, message: '方法名', trigger: ['blur', 'change'] }
           ],
           cronExpression: [
-            { required: true, message: 'cron表达式', trigger: ['blur','change'] }
+            { required: true, message: 'cron表达式', trigger: ['blur', 'change'] }
           ]
         },
         listQuery: {
@@ -162,7 +162,6 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          console.log(response)
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false

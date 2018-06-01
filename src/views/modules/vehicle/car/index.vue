@@ -644,22 +644,31 @@
               <el-col :span="8">
                 <el-form-item prop="gps">
                   <span slot="label" class="text_css">安装GPS:</span>
-                  <el-input  v-if="edit === 'safety'" placeholder="安装GPS" v-model="safetyEntity.gps"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.gps}}</span>
+                  <el-radio-group v-if="edit === 'safety'" v-model="safetyEntity.gps">
+                    <el-radio :label="1">有</el-radio>
+                    <el-radio :label="0">无</el-radio>
+                  </el-radio-group>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.gps == 1? '有':'无'}}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item prop="tripod">
                   <span slot="label" class="text_css">三角架:</span>
-                  <el-input  v-if="edit === 'safety'"  placeholder="三角架" v-model="safetyEntity.tripod"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.tripod}}</span>
+                  <el-radio-group v-if="edit === 'safety'" v-model="safetyEntity.tripod">
+                    <el-radio :label="1">有</el-radio>
+                    <el-radio :label="0">无</el-radio>
+                  </el-radio-group>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.tripod == 1? '有':'无'}}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item prop="extinguisher">
                   <span slot="label" class="text_css">发动机灭火器:</span>
-                  <el-input  v-if="edit === 'safety'" placeholder="发动机灭火器" v-model="safetyEntity.extinguisher"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.extinguisher}}</span>
+                  <el-radio-group v-if="edit === 'safety'" v-model="safetyEntity.extinguisher">
+                    <el-radio :label="1">有</el-radio>
+                    <el-radio :label="0">无</el-radio>
+                  </el-radio-group>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.extinguisher == 1? '有':'无'}}</span>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -668,22 +677,31 @@
               <el-col :span="8">
                 <el-form-item prop="rearView">
                   <span slot="label" class="text_css">副后视境:</span>
-                  <el-input v-if="edit === 'safety'" placeholder="副后视境"  style="width: 100%" v-model="safetyEntity.rearView"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.rearView}}</span>
+                  <el-radio-group v-if="edit === 'safety'" v-model="safetyEntity.rearView">
+                    <el-radio :label="1">有</el-radio>
+                    <el-radio :label="0">无</el-radio>
+                  </el-radio-group>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.rearView == 1? '有':'无'}}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item prop="brake">
                   <span slot="label" class="text_css">副刹:</span>
-                  <el-input  v-if="edit === 'safety'"  placeholder="副刹" v-model="safetyEntity.brake"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.brake}}</span>
+                  <el-radio-group v-if="edit === 'safety'" v-model="safetyEntity.brake">
+                    <el-radio :label="1">有</el-radio>
+                    <el-radio :label="0">无</el-radio>
+                  </el-radio-group>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.brake == 1? '有':'无'}}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item prop="faultWarning">
                   <span slot="label" class="text_css">故障警示牌:</span>
-                  <el-input  v-if="edit === 'safety'" placeholder="故障警示牌" v-model="safetyEntity.faultWarning"></el-input>
-                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.faultWarning}}</span>
+                  <el-radio-group v-if="edit === 'safety'" v-model="safetyEntity.faultWarning">
+                    <el-radio :label="1">有</el-radio>
+                    <el-radio :label="0">无</el-radio>
+                  </el-radio-group>
+                  <span style="padding-left: 16px;font-size: 12px;" v-else>{{safetyEntity.faultWarning == 1? '有':'无'}}</span>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -946,13 +964,13 @@
           description: null,
           maintainTime: null,
           cost: null,
-          remark:null
+          remark: null
         },
         repair: {
           description: null,
           repairTime: null,
           cost: null,
-          remark:null
+          remark: null
         },
         // 负责人集合
         userList: [],
@@ -1032,30 +1050,30 @@
         safetyEntityRules: {},
         technicalEntityRules: {},
         addInfo: false,
-        plateColors: ['黄色','绿色','蓝色'],
-        vehicleTypes: ['教练车','公交','挂车','普货车','特种','公务车','出租'],
-        vehicleStates: ['新增','内部转入','外部转入','报废更新','租用'],
-        fuelTypes: ['柴油','汽油','CNG天然气','油电混合','纯电动'],
+        plateColors: ['黄色', '绿色', '蓝色'],
+        vehicleTypes: ['教练车', '公交', '挂车', '普货车', '特种', '公务车', '出租'],
+        vehicleStates: ['新增', '内部转入', '外部转入', '报废更新', '租用'],
+        fuelTypes: ['柴油', '汽油', 'CNG天然气', '油电混合', '纯电动'],
         repairRules: {
           description: [
-            { required: true, message: '请填写维修内容', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写维修内容', trigger: ['blur', 'change'] }
           ],
           repairTime: [
-            { required: true, message: '请选择维修时间', trigger: ['blur', 'change'] },
+            { required: true, message: '请选择维修时间', trigger: ['blur', 'change'] }
           ],
           cost: [
-            { required: true, message: '请填写维修费用', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写维修费用', trigger: ['blur', 'change'] }
           ]
         },
         maintainRules: {
           description: [
-            { required: true, message: '请填写保养内容', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写保养内容', trigger: ['blur', 'change'] }
           ],
           maintainTime: [
-            { required: true, message: '请选择保养时间', trigger: ['blur', 'change'] },
+            { required: true, message: '请选择保养时间', trigger: ['blur', 'change'] }
           ],
           cost: [
-            { required: true, message: '请填写保养费用', trigger: ['blur', 'change'] },
+            { required: true, message: '请填写保养费用', trigger: ['blur', 'change'] }
           ]
         }
       }

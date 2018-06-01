@@ -295,6 +295,7 @@
         shuttleLogQuery: {
           page: 1,
           limit: 20,
+          condition: null,
           scope: 'before'
         },
         notShuttleListQuery: {
@@ -319,6 +320,7 @@
       /* 获取查看页面接送名单 */
       getShuttleLog() {
         this.shuttleLogLoading = true
+        this.shuttleLogQuery.condition = removeAllSpace(this.shuttleLogQuery.condition)
         getShuttledList(this.shuttleLogQuery).then(response => {
           this.shuttleLog = response.data.data.list
           this.shuttleLogTotal = response.data.data.totalCount

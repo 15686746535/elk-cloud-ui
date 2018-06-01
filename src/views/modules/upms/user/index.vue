@@ -601,7 +601,7 @@
         studentListQuery: {
           page: 1,
           limit: 0,
-          userId: null,
+          userIds: null,
           condition: null
         },
         defaultProps: {
@@ -754,7 +754,7 @@
           this.userEntity = response.data.data
           if (!this.userEntity.roleIdList) this.userEntity.roleIdList = []
           this.getRoleList()
-          this.studentListQuery.userId = this.userEntity.userId
+          this.studentListQuery.userIds = this.userEntity.userId
           this.getEnrollStudentList()
           this.infoLoading = false
         })

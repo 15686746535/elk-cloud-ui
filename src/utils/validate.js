@@ -32,6 +32,6 @@ export function validatAlphabets(str) {
 }
 // 去除所有空格
 export function removeAllSpace(str) {
-  if (str === null) return null
+  if (!str) return null
   return str.replace(/\s+/g, '')
 }

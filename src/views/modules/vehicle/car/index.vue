@@ -973,7 +973,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          roleName: null,
+          condition: null,
           plate: null,
           username: null,
           vehicleState: null

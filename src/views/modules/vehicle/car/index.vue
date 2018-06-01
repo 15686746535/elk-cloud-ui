@@ -4,23 +4,23 @@
 
       <el-card style="margin-bottom: 5px;">
         <el-row :gutter="20">
-          <el-col :xs="6" :sm="5" :md="4" :lg="4">
-            <el-select style="width: 100%" v-model="listQuery.plate" placeholder="请选择车牌">
-              <el-option v-for="item in plates" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :xs="6" :sm="5" :md="4" :lg="4">
-            <el-select style="width: 100%" v-model="listQuery.username" placeholder="请选择负责人">
-              <el-option v-for="item in userNames" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </el-col>
+          <!--<el-col :xs="6" :sm="5" :md="4" :lg="4">-->
+            <!--<el-select style="width: 100%" v-model="listQuery.plate" placeholder="请选择车牌">-->
+              <!--<el-option v-for="item in plates" :key="item.value" :label="item.label" :value="item.value">-->
+              <!--</el-option>-->
+            <!--</el-select>-->
+          <!--</el-col>-->
+          <!--<el-col :xs="6" :sm="5" :md="4" :lg="4">-->
+            <!--<el-select style="width: 100%" v-model="listQuery.username" placeholder="请选择负责人">-->
+              <!--<el-option v-for="item in userNames" :key="item.value" :label="item.label" :value="item.value">-->
+              <!--</el-option>-->
+            <!--</el-select>-->
+          <!--</el-col>-->
           <!--<el-col :xs="0" :sm="5" :md="4" :lg="4">-->
             <!--<dict dictType="dict_source" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>-->
           <!--</el-col>-->
           <el-col :xs="6" :sm="5" :md="4" :lg="4">
-            <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+            <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="车牌/负责人" v-model="listQuery.condition"></el-input>
           </el-col>
           <el-col :span="4">
             <el-button class="filter-item" type="primary" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>

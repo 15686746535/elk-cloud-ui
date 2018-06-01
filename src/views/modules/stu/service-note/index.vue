@@ -147,7 +147,7 @@
 
               </el-row>
               <el-row style="line-height: 50px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-                <div class="text_css" style="width: 150px;float: left">已收定金：￥</div>
+                <div class="text_css" style="width: 150px;float: left">已收定金：￥{{earnestMoney}}</div>
 
                 <div class="text_css" style="width: 150px;float: left">
                   本次实收金额：￥{{stuServiceBuyNoteEntity.realPrice}}
@@ -202,11 +202,11 @@
 
       </div>
 
-      <div style="float: right;margin-top: 20px;">
+      <div v-if="stuServiceBuyNoteEntity.studentId" style="float: right;margin-top: 20px;">
         <span style="cursor: pointer" @click="createOneFormPage">
           <i class="el-icon-printer"></i>
         </span>
-        <el-button v-if="stuServiceBuyNoteEntity.studentId" type="primary" :loading="btnLoading" @click="stuBuyServiceNote"><i class="el-icon-fa-save"></i> 提 交</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="stuBuyServiceNote"><i class="el-icon-fa-save"></i> 提 交</el-button>
       </div>
 
 
@@ -246,6 +246,7 @@
         btnLoading: false,
         studyCard: false,
         healthForm: false,
+        earnestMoney: 0,
         flag: true,
         financeListQuery: {
           page: 1,
@@ -355,6 +356,7 @@
               this.stuServiceBuyNoteEntity.originalPrice = 0
               this.stuServiceBuyNoteEntity.activityPrice = 0
               this.stuServiceBuyNoteEntity.realPrice = 0
+              this.earnestMoney = 0
               this.stuServiceBuyNoteEntity.financeList = []
               this.stuServiceBuyNoteEntity.payTypeList = []
               this.student = response.data.data
@@ -376,12 +378,14 @@
               this.student = response.data.data
               this.financeList = this.student.financeList
               this.stuServiceBuyNoteEntity.financeList = this.student.financeList
+              this.earnestMoney = 0
               for (var i = 0; i < this.student.payTypeList.length; i++) {
-                for (var j = 0; j < this.payTypeList.length; j++) {
-                  if (this.payTypeList[j].mode === this.student.payTypeList[i].mode) {
-                    this.payTypeList[j].money = this.student.payTypeList[i].money
-                  }
-                }
+                this.earnestMoney = this.earnestMoney + this.student.payTypeList[i].money
+                // for (var j = 0; j < this.payTypeList.length; j++) {
+                //   if (this.payTypeList[j].mode === this.student.payTypeList[i].mode) {
+                //     this.payTypeList[j].money = this.student.payTypeList[i].money
+                //   }
+                // }
               }
               this.calculation()
               this.actualMoneyCalculation()
@@ -394,35 +398,42 @@
         this.btnLoading = true
         if (this.flag) {
           saveServiceCharge(this.stuServiceBuyNoteEntity).then(() => {
-            this.stuServiceBuyNoteEntity = {
-              studentId: null, // 学员Id
-              originalPrice: 0, // 原始价格
-              activityPrice: 0, // 活动价格
-              realPrice: 0, // 实收价格
-              remark: null, // 实收价格
-              receivablesType: null,
-              payTypeList: [],
-              financeList: []
-            }
-            this.student = {}
-            this.clean()
+            // this.$confirm('是否打印?', '提示', {
+            //   confirmButtonText: '确定',
+            //   cancelButtonText: '取消',
+            //   type: 'warning'
+            // }).then(() => {
+            //
+            // })
+            // this.stuServiceBuyNoteEntity = {
+            //   studentId: null, // 学员Id
+            //   originalPrice: 0, // 原始价格
+            //   activityPrice: 0, // 活动价格
+            //   realPrice: 0, // 实收价格
+            //   remark: null, // 实收价格
+            //   receivablesType: null,
+            //   payTypeList: [],
+            //   financeList: []
+            // }
+            // this.student = {}
+            // this.clean()
             this.btnLoading = false
           })
         } else {
           twoPayment(this.stuServiceBuyNoteEntity).then(() => {
-            this.stuServiceBuyNoteEntity = {
-              studentId: null, // 学员Id
-              originalPrice: 0, // 原始价格
-              activityPrice: 0, // 活动价格
-              realPrice: 0, // 实收价格
-              remark: null, // 实收价格
-              receivablesType: null,
-              payTypeList: [],
-              financeList: []
-            }
-            this.student = {}
-            this.clean()
-            this.flag = true
+            // this.stuServiceBuyNoteEntity = {
+            //   studentId: null, // 学员Id
+            //   originalPrice: 0, // 原始价格
+            //   activityPrice: 0, // 活动价格
+            //   realPrice: 0, // 实收价格
+            //   remark: null, // 实收价格
+            //   receivablesType: null,
+            //   payTypeList: [],
+            //   financeList: []
+            // }
+            // this.student = {}
+            // this.clean()
+            // this.flag = true
             this.btnLoading = false
           })
         }
@@ -646,7 +657,7 @@
 
 
         LODOP.ADD_PRINT_TEXT((307+d),78,169,20,"原价：￥" + this.stuServiceBuyNoteEntity.originalPrice);
-        LODOP.ADD_PRINT_TEXT((333+d),76,148,20,"已收定金：￥");
+        LODOP.ADD_PRINT_TEXT((333+d),76,148,20,"已收定金：￥" + this.earnestMoney);
         LODOP.ADD_PRINT_TEXT((333+d),235,166,20,"本次实收金额：￥" + this.stuServiceBuyNoteEntity.realPrice);
         LODOP.ADD_PRINT_TEXT((334+d),436,234,20,"实收大写：" + smalltoBIG(this.stuServiceBuyNoteEntity.realPrice));
         LODOP.ADD_PRINT_LINE((362+d),69,(361+d),728,0,1);// 收款价格底

@@ -27,7 +27,7 @@
               <span class="text_css">校区：{{student.campus}}</span>
             </el-col>
             <el-col :span="6" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              <el-radio-group v-model="stuServiceBuyNoteEntity.receivablesType">
+              <el-radio-group @change="studentIdChange" v-model="stuServiceBuyNoteEntity.receivablesType">
                 <el-radio label="全款"></el-radio>
                 <el-radio label="定金"></el-radio>
                 <el-radio label="定转全"></el-radio>
@@ -347,6 +347,11 @@
       },
       /* 根据学员id查询学员 */
       studentIdChange() {
+        if (this.stuServiceBuyNoteEntity.receivablesType === '全款' || this.stuServiceBuyNoteEntity.receivablesType === '定转全') {
+          this.flag = true
+        } else {
+          this.flag = false
+        }
         if (this.flag) {
           // 一次收费查询
           this.getFinanceList()

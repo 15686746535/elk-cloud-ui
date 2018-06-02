@@ -321,7 +321,7 @@
                 <el-col :span="8">
                   <el-form-item prop="userId">
                     <span slot="label" class="text_css">使用责任人:</span>
-                    <el-select v-if="edit === 'car'" style="width: 100%;" v-model="vehicleEntity.userId" clearable placeholder="使用责任人">
+                    <el-select v-if="edit === 'car'" style="width: 100%;" v-model="vehicleEntity.userId" clearable filterable placeholder="使用责任人">
                       <el-option
                         v-for="item in userList"
                         :key="item.userId"

@@ -20,7 +20,7 @@
                 </el-date-picker>
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="4">
-                <el-select style="width: 100%" size="mini" v-model="listQuery.introducer" clearable placeholder="负责人">
+                <el-select style="width: 100%" size="mini" v-model="listQuery.introducer" clearable filterable placeholder="负责人">
                   <el-option
                     v-for="item in userList"
                     :key="item.userId"
@@ -30,7 +30,7 @@
                 </el-select>
               </el-col>
               <el-col :xs="6" :sm="6" :md="5" :lg="4">
-                <el-input @keyup.enter.native="searchClick" size="mini" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
+                <el-input @keyup.enter.native="searchClick" size="mini" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
               </el-col>
               <el-col :xs="2" :sm="2" :md="3" :lg="4">
                 <el-button class="filter-item" type="primary" size="mini" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>

@@ -3,10 +3,10 @@
     <el-card  style="min-height: 820px">
       <div slot="header" class="clearfix">
         <span>
-          <el-radio-group  @change="studentIdChange" v-model="flag">
-            <el-radio-button :label="true">添加收费</el-radio-button>
-            <el-radio-button :label="false">补齐费用</el-radio-button>
-          </el-radio-group>
+          <!--<el-radio-group  @change="studentIdChange" v-model="flag">-->
+            <!--<el-radio-button :label="true">添加收费</el-radio-button>-->
+            <!--<el-radio-button :label="false">补齐费用</el-radio-button>-->
+          <!--</el-radio-group>-->
         </span>
         <div style="float: right; padding: 3px 0" >
           <el-select style="width: 300px;" v-model="stuServiceBuyNoteEntity.studentId" @change="studentIdChange" filterable="" remote="" reserve-keyword placeholder="请输入姓名/电话/身份证" :remote-method="getStudentList" :loading="studentListLoading">
@@ -347,7 +347,7 @@
       },
       /* 根据学员id查询学员 */
       studentIdChange() {
-        if (this.stuServiceBuyNoteEntity.receivablesType === '全款' || this.stuServiceBuyNoteEntity.receivablesType === '定转全') {
+        if (this.stuServiceBuyNoteEntity.receivablesType === '全款' || this.stuServiceBuyNoteEntity.receivablesType === '定金') {
           this.flag = true
         } else {
           this.flag = false

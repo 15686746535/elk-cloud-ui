@@ -3,7 +3,7 @@
     <div v-show="showModule=='list'">
       <el-card style="margin-bottom: 5px;">
         <div class="filter-container">
-          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.roleName"></el-input>
+          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.roleName"></el-input>
           <el-button class="filter-item" type="primary"  icon="search" @click="searchClick">搜索</el-button>
           <el-button class="filter-item" style="margin-left: 10px;" @click="create" type="primary" ><i class="el-icon-plus"></i>添加</el-button>
         </div>

@@ -30,16 +30,11 @@ router.beforeEach((to, from, next) => { // 开启Progress
 export function getInfo(to, from, next) {
   store.dispatch('GetInfo').then(res => { // 拉取用户信息
     const data = res.data
-    if (data.code === 500) {
-      store.dispatch('FedLogOut').then(() => {
-        next({ path: '/login' })
-      })
-    } else {
-      store.dispatch('GenerateRoutes', data).then(() => { // 生成可访问的路由表
-        router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-        next({ ...to }) // hack方法 确保addRoutes已完成
-      })
-    }
+    store.dispatch('GenerateRoutes', data).then(() => { // 生成可访问的路由表
+      router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+      console.log(to)
+      next({ ...to }) // hack方法 确保addRoutes已完成
+    })
   }).catch((e) => {
     store.dispatch('FedLogOut').then(() => {
       next({ path: '/login' })

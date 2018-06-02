@@ -1,4 +1,6 @@
 import { login, logout, getInfo } from '@/api/upms/login'
+import { Message } from 'element-ui'
+import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -57,12 +59,20 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.username)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_NOTICE', data.notice)
-          commit('SET_PERMISSIONS', data.permissions)
-          resolve(response)
+          if (data.code === 0 && data.roles != null && data.roles.length > 0) {
+            commit('SET_ROLES', data.roles)
+            commit('SET_NAME', data.username)
+            commit('SET_AVATAR', data.avatar)
+            commit('SET_NOTICE', data.notice)
+            commit('SET_PERMISSIONS', data.permissions)
+            resolve(response)
+          } else {
+            setToken(null)
+            commit('SET_TOKEN', null)
+            commit('SET_REFRESH_TOKEN', null)
+            NProgress.done()
+            Message.error('您没有权限！')
+          }
         }).catch(error => {
           reject(error)
         })

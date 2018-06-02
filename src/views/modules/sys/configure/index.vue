@@ -1,50 +1,61 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
-      <el-table :data="configList" v-loading="listLoading"  :height="$store.state.app.client.height-125" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-        <el-table-column type="index" align="center" label="id" width="50">
-        </el-table-column>
-        <el-table-column align="center"  label="key">
-          <template slot-scope="scope">
-            <span class="table_text">{{ scope.row.key }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="value">
-          <template slot-scope="scope">
-            <span class="table_text" :title="scope.row.value">{{ scope.row.value }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="remark">
-          <template slot-scope="scope">
-            <span class="table_text">{{ scope.row.remark}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="createTime">
-          <template slot-scope="scope">
-            <span class="table_text">{{ scope.row.createTime | subTime }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="operation">
-          <template slot-scope="scope">
-            <el-button v-if="basis_configure_update" size="mini" type="success"
-                       @click="handleUpdate(scope.row)">编辑
-            </el-button>
-            <el-button v-if="basis_configure_del" size="mini" type="danger"
-                       @click="handleDelete(scope.row)">删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page.sync="listQuery.page" background
-                       style="float: left"
-                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                       layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-        <el-button v-if="basis_configure_add" class="filter-item" style="margin-left: 10px;float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加
-        </el-button>
-      </div>
+
+      <el-tabs tab-position="left" style="height: 200px;">
+        <el-tab-pane label="云存储配置">
+          云存储配置
+
+        </el-tab-pane>
+        <el-tab-pane label="配置管理">配置管理</el-tab-pane>
+        <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+        <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
+      </el-tabs>
+
+      <!--<el-table :data="configList" v-loading="listLoading"  :height="$store.state.app.client.height-125" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">-->
+        <!--<el-table-column type="index" align="center" label="id" width="50">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column align="center"  label="key">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span class="table_text">{{ scope.row.key }}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column align="center" label="value">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span class="table_text" :title="scope.row.value">{{ scope.row.value }}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column align="center" label="remark">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span class="table_text">{{ scope.row.remark}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column align="center" label="createTime">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span class="table_text">{{ scope.row.createTime | subTime }}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column align="center" label="operation">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-button v-if="basis_configure_update" size="mini" type="success"-->
+                       <!--@click="handleUpdate(scope.row)">编辑-->
+            <!--</el-button>-->
+            <!--<el-button v-if="basis_configure_del" size="mini" type="danger"-->
+                       <!--@click="handleDelete(scope.row)">删除-->
+            <!--</el-button>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+      <!--</el-table>-->
+      <!--<div v-show="!listLoading" class="pagination-container" style="margin-top: 10px">-->
+        <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
+                       <!--:current-page.sync="listQuery.page" background-->
+                       <!--style="float: left"-->
+                       <!--:page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"-->
+                       <!--layout="total, sizes, prev, pager, next, jumper" :total="total">-->
+        <!--</el-pagination>-->
+        <!--<el-button v-if="basis_configure_add" class="filter-item" style="margin-left: 10px;float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加-->
+        <!--</el-button>-->
+      <!--</div>-->
 
       <el-dialog @close="cancel('config')" title="Config Information" width="550px" :visible.sync="configOption">
         <el-form label-position="left" :model="config" :rules="rules" ref="config" label-width="110px">

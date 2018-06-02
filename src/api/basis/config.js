@@ -22,6 +22,13 @@ export function getConfig(id) {
     method: 'get'
   })
 }
+// 根据ID获取
+export function getByKey(id) {
+  return request({
+    url: '/basis/config/getByKey' + id,
+    method: 'get'
+  })
+}
 // 删除
 export function delConfig(id) {
   return request({

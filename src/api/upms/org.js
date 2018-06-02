@@ -36,3 +36,10 @@ export function putObj(obj) {
     data: obj
   })
 }
+
+export function groupList() {
+  return request({
+    url: '/upms/org/groupList',
+    method: 'get'
+  })
+}

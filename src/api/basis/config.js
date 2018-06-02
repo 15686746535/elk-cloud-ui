@@ -44,3 +44,18 @@ export function putConfig(obj) {
     data: obj
   })
 }
+
+export function qiniuConfig() {
+  return request({
+    url: '/oss/config',
+    method: 'get'
+  })
+}
+
+export function saveConfig(obj) {
+  return request({
+    url: '/oss/saveConfig',
+    method: 'post',
+    data: obj
+  })
+}

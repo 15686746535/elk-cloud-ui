@@ -2,14 +2,42 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
 
-      <el-tabs tab-position="left" style="height: 200px;">
-        <el-tab-pane label="云存储配置">
-          云存储配置
+      <el-tabs tab-position="top" style="height: 200px;" v-model="tab" @tab-click="tabClick">
+        <el-tab-pane label="云存储配置" name="ossConfig">
+          <tree-select style="font-size: 12px" url="/upms/org/tree" @org-click="orgClick" v-model="config.orgId"></tree-select>
+          <el-form label-position="left" :model="OssConfig" :rules="OssRules" ref="OssConfig" label-width="110px">
+            <el-form-item label="域名"  prop="qiniuDomain">
+              <el-input :disabled="disabled" v-model="OssConfig.qiniuDomain" placeholder="域名" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="前缀"  prop="qiniuPrefix">
+              <el-input :disabled="disabled" v-model="OssConfig.qiniuPrefix" placeholder="前缀" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="AccessKey"  prop="qiniuAccessKey">
+              <el-input :disabled="disabled" v-model="OssConfig.qiniuAccessKey" placeholder="AccessKey" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="SecretKey"  prop="qiniuSecretKey">
+              <el-input :disabled="disabled" v-model="OssConfig.qiniuSecretKey" placeholder="SecretKey" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="空间名"  prop="qiniuBucketName">
+              <el-input :disabled="disabled" v-model="OssConfig.qiniuBucketName" placeholder="空间名" ></el-input>
+            </el-form-item>
+          </el-form>
+          <div class="dialog-footer" style="float: right;">
+            <el-button v-if="!disabled" @click="$refs['OssConfig'].resetFields();qiniuConfig();">取消</el-button>
+            <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="qiniuSave('OssConfig')">保存</el-button>
+            <el-button v-if="disabled"  type="success" @click="disabled = false">编辑</el-button>
+          </div>
 
         </el-tab-pane>
-        <el-tab-pane label="配置管理">配置管理</el-tab-pane>
-        <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-        <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
+        <el-tab-pane label="小程序配置" name="appConfig">
+
+
+        </el-tab-pane>
+
       </el-tabs>
 
       <!--<el-table :data="configList" v-loading="listLoading"  :height="$store.state.app.client.height-125" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">-->
@@ -102,12 +130,39 @@
 </template>
 
 <script>
-  import { getConfigList, addConfig, getConfig, delConfig, putConfig } from '@/api/basis/config'
+  import { getConfigList, addConfig, getConfig, delConfig, putConfig, qiniuConfig, saveConfig } from '@/api/basis/config'
   import { mapGetters } from 'vuex'
   export default {
     name: 'menu',
     data() {
       return {
+        tab: 'ossConfig',
+        disabled: true,
+        OssConfig: {
+          type: 1,
+          qiniuDomain: '', // 域名
+          qiniuPrefix: '', // 路径前缀
+          qiniuAccessKey: '', // AccessKey
+          qiniuSecretKey: '', // SecretKey
+          qiniuBucketName: '' // 空间名
+        },
+        OssRules: {
+          qiniuDomain: [
+            { required: true, message: '请输入域名', trigger: 'blur' }
+          ],
+          qiniuPrefix: [
+            { required: true, message: '请输入路径前缀', trigger: 'blur' }
+          ],
+          qiniuAccessKey: [
+            { required: true, message: '请输入AccessKey', trigger: 'blur' }
+          ],
+          qiniuSecretKey: [
+            { required: true, message: '请输入SecretKey', trigger: 'blur' }
+          ],
+          qiniuBucketName: [
+            { required: true, message: '请输入空间名', trigger: 'blur' }
+          ]
+        },
         config: {
           key: null,
           value: null,
@@ -152,7 +207,7 @@
       }
     },
     created() {
-      this.getList()
+      this.qiniuConfig()
       this.basis_configure_add = this.permissions['basis_configure_add']
       this.basis_configure_update = this.permissions['basis_configure_update']
       this.basis_configure_del = this.permissions['basis_configure_del']
@@ -165,9 +220,38 @@
       ])
     },
     methods: {
+      tabClick(tab) {
+        if (tab.name === 'ossConfig') {
+          this.qiniuConfig()
+        } else if (tab.name === 'appConfig') {
+          this.qiniuConfig()
+        }
+      },
+      qiniuConfig() {
+        this.disabled = true
+        qiniuConfig().then(response => {
+          if (response.data.code === 0) {
+            this.OssConfig = response.data.data
+          }
+        })
+      },
+      qiniuSave(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            this.btnLoading = true
+            this.OssConfig.type = 1
+            console.log(this.OssConfig)
+            saveConfig(this.OssConfig).then(() => {
+              this.btnLoading = false
+              this.disabled = true
+            })
+          }
+        })
+      },
       getList() {
         this.listLoading = true
-        getConfigList(this.listQuery).then(response => {
+        getConfigList(this.OssConfig).then(response => {
           this.configList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false

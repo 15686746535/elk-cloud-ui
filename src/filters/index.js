@@ -43,6 +43,25 @@ export function subjectFilter(subject) {
   }
   return typeMap[subject]
 }
+// export function sendFilter(status) {
+//   const typeMap = {
+//     '0': '暂未发送',
+//     '100': '发送成功',
+//     '101': '验证失败(101)',
+//     '102': '手机号码格式不正确(102)',
+//     '103': '会员级别不够(103)',
+//     '104': '内容未审核(104)',
+//     '105': '内容过多(105)',
+//     '106': '账户余额不足(106)',
+//     '107': 'Ip受限(107)',
+//     '108': '手机号码发送太频繁，请换号或隔天再发(108)',
+//     '109': '帐号被锁定(109)',
+//     '110': '发送通道不正确(110)',
+//     '111': '当前时间段禁止短信发送(111)',
+//     '120': '短信发送系统升级(120)'
+//   }
+//   return typeMap[status]
+// }
 export function subTime(time, cFormat) {
   if (arguments[0] === undefined || arguments[0] == null) {
     return null

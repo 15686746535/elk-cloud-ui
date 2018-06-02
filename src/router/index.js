@@ -263,7 +263,7 @@ export const asyncRouterMap = [
       icon: 'menu'
     },
     children: [
-      { menuId: 140100, path: 'sendmsg', component: _import('modules/log-record/sendmsg/index'), name: '短信发送记录', isShow: true, meta: { title: '短信发送记录', icon: 'menu' }},
+      { menuId: 140100, path: 'message', component: _import('modules/log-record/message/index'), name: '短信发送记录', isShow: true, meta: { title: '短信发送记录', icon: 'menu' }},
       { menuId: 140200, path: 'log', component: _import('modules/log-record/log/index'), name: '系统日志', isShow: true, meta: { title: '系统日志', icon: 'menu' }}
     ]
   }

@@ -870,9 +870,10 @@
             </el-form-item>
           </el-form>
 
-          <div slot="footer" class="dialog-footer">
+          <div slot="footer" style="float: right">
             <el-button type="primary" :loading="btnLoading" @click="createRepair('repair', repair)">确 定</el-button>
           </div>
+          <div style="clear: both"></div>
         </div>
 
         <div v-show="flag === 'maintain'">
@@ -892,9 +893,10 @@
             </el-form-item>
           </el-form>
 
-          <div slot="footer" class="dialog-footer">
+          <div slot="footer" style="float: right">
             <el-button type="primary" :loading="btnLoading" @click="createRepair('maintain', maintain)">确 定</el-button>
           </div>
+          <div style="clear: both"></div>
 
 
         </div>

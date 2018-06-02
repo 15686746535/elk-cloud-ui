@@ -117,7 +117,7 @@
           <el-button style="float: right" type="primary" :loading="btnLoading" @click="sendAgency('agency')"> 发 送</el-button>
         </div>
         <!-- 清除上一个浮动效果影响 -->
-        <div style="width: 100%; height: 1px;clear: both">
+        <div style="clear: both">
         </div>
       </el-dialog>
 

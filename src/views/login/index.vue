@@ -43,18 +43,10 @@
 </template>
 
 <script>
-// import { isvalidUsername } from '@/utils/validate'
 
 export default {
   name: 'login',
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能小于6位'))
-      } else {
-        callback()
-      }
-    }
     return {
       src: '',
       loginForm: {
@@ -65,7 +57,10 @@ export default {
       },
       loginRules: {
         username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, trigger: 'blur', message: '密码不能小于6位' }
+        ],
         code: [{ required: true, trigger: 'blur' }]
       },
       loading: false,

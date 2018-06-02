@@ -25,7 +25,7 @@ export function getConfig(id) {
 // 根据ID获取
 export function getByKey(id) {
   return request({
-    url: '/basis/config/getByKey' + id,
+    url: '/basis/config/getByKey/' + id,
     method: 'get'
   })
 }

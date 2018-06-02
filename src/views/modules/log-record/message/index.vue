@@ -46,7 +46,7 @@
       </div>
     </el-card>
     <!-- 发送消息 -->
-    <el-dialog title="添加短信配置" width="550px" :visible.sync="messageConfigOption">
+    <el-dialog @clock="this.$refs['messageConfig'].resetFields()" title="添加短信配置" width="550px" :visible.sync="messageConfigOption">
       <el-form :model="messageConfig" :rules="messageConfigRules" ref="messageConfig" label-position="left">
         <el-form-item prop="dxtAccount">
           <el-input v-model="messageConfig.dxtAccount" placeholder="账号"></el-input>
@@ -86,6 +86,10 @@
     },
     data() {
       return {
+        config: {
+          key: null,
+          value: null
+        },
         messageConfigRules: {
           dxtAccount: [
             { required: true, message: '请输入账号', trigger: ['blur', 'change'] }
@@ -101,6 +105,7 @@
         list: [],
         total: null,
         messageConfigOption: false,
+        btnLoading: false,
         listLoading: true,
         dialogStatus: 'create',
         showModule: 'list',
@@ -161,14 +166,37 @@
       },
       messageConfigClick() {
         this.messageConfigOption = true
+        getByKey('dxton_config').then(response => {
+          console.log(response.data)
+          this.config.key = response.data.key
+          this.dialogStatus = 'create'
+          if (response.data.data) {
+            this.dialogStatus = 'update'
+            this.config.configId = response.data.data.configId
+            this.messageConfig.dxtAccount = JSON.parse(response.data.data.value).dxtAccount
+            this.messageConfig.dxtPassword = JSON.parse(response.data.data.value).dxtPassword
+          }
+        })
       },
       createMessageConfig(formName) {
-        /* key: dxton_config */
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            getByKey('dxton_config').then(response => {
-              console.log(response.data)
-            })
+            this.btnLoading = true
+            this.config.value = JSON.stringify(this.messageConfig)
+            if (this.dialogStatus == 'create') {
+              addConfig(this.config).then(() => {
+                this.btnLoading = false
+                this.messageConfigOption = false
+                this.$refs[formName].resetFields()
+              })
+            } else if (this.dialogStatus == 'update') {
+              console.log(this.config)
+              putConfig(this.config).then(() => {
+                this.btnLoading = false
+                this.messageConfigOption = false
+                this.$refs[formName].resetFields()
+              })
+            }
           }
         })
       }

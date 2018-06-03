@@ -2,9 +2,8 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
 
-      <el-tabs tab-position="top" style="height: 200px;" v-model="tab" @tab-click="tabClick">
+      <el-tabs tab-position="top" style="height: 200px;" v-model="tab">
         <el-tab-pane label="云存储配置" name="ossConfig">
-          <tree-select style="font-size: 12px" url="/upms/org/tree" @org-click="orgClick" v-model="config.orgId"></tree-select>
           <el-form label-position="left" :model="OssConfig" :rules="OssRules" ref="OssConfig" label-width="110px">
             <el-form-item label="域名"  prop="qiniuDomain">
               <el-input :disabled="disabled" v-model="OssConfig.qiniuDomain" placeholder="域名" ></el-input>
@@ -34,7 +33,7 @@
 
         </el-tab-pane>
         <el-tab-pane label="小程序配置" name="appConfig">
-
+          <!--<el-select></el-select>-->
 
         </el-tab-pane>
 
@@ -131,6 +130,7 @@
 
 <script>
   import { getConfigList, addConfig, getConfig, delConfig, putConfig, qiniuConfig, saveConfig } from '@/api/basis/config'
+  import { groupList } from '@/api/upms/org'
   import { mapGetters } from 'vuex'
   export default {
     name: 'menu',
@@ -138,6 +138,7 @@
       return {
         tab: 'ossConfig',
         disabled: true,
+        groupList: [],
         OssConfig: {
           type: 1,
           qiniuDomain: '', // 域名
@@ -163,6 +164,7 @@
             { required: true, message: '请输入空间名', trigger: 'blur' }
           ]
         },
+        // *******************
         config: {
           key: null,
           value: null,
@@ -208,6 +210,7 @@
     },
     created() {
       this.qiniuConfig()
+      this.getGroupList()
       this.basis_configure_add = this.permissions['basis_configure_add']
       this.basis_configure_update = this.permissions['basis_configure_update']
       this.basis_configure_del = this.permissions['basis_configure_del']
@@ -220,13 +223,6 @@
       ])
     },
     methods: {
-      tabClick(tab) {
-        if (tab.name === 'ossConfig') {
-          this.qiniuConfig()
-        } else if (tab.name === 'appConfig') {
-          this.qiniuConfig()
-        }
-      },
       qiniuConfig() {
         this.disabled = true
         qiniuConfig().then(response => {
@@ -246,6 +242,13 @@
               this.btnLoading = false
               this.disabled = true
             })
+          }
+        })
+      },
+      getGroupList() {
+        groupList().then(response => {
+          if (response.data.code === 0) {
+            this.groupList = response.data.data
           }
         })
       },

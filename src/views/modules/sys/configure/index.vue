@@ -4,36 +4,47 @@
 
       <el-tabs tab-position="top" style="height: 200px;" v-model="tab">
         <el-tab-pane label="云存储配置" name="ossConfig">
-          <el-form label-position="left" :model="OssConfig" :rules="OssRules" ref="OssConfig" label-width="110px">
+          <el-form label-position="left" :model="ossConfig" :rules="ossRules" ref="ossConfig" label-width="110px">
             <el-form-item label="域名"  prop="qiniuDomain">
-              <el-input :disabled="disabled" v-model="OssConfig.qiniuDomain" placeholder="域名" ></el-input>
+              <el-input :disabled="disabled" v-model="ossConfig.qiniuDomain" placeholder="域名" ></el-input>
             </el-form-item>
 
             <el-form-item label="前缀"  prop="qiniuPrefix">
-              <el-input :disabled="disabled" v-model="OssConfig.qiniuPrefix" placeholder="前缀" ></el-input>
+              <el-input :disabled="disabled" v-model="ossConfig.qiniuPrefix" placeholder="前缀" ></el-input>
             </el-form-item>
 
             <el-form-item label="AccessKey"  prop="qiniuAccessKey">
-              <el-input :disabled="disabled" v-model="OssConfig.qiniuAccessKey" placeholder="AccessKey" ></el-input>
+              <el-input :disabled="disabled" v-model="ossConfig.qiniuAccessKey" placeholder="AccessKey" ></el-input>
             </el-form-item>
 
             <el-form-item label="SecretKey"  prop="qiniuSecretKey">
-              <el-input :disabled="disabled" v-model="OssConfig.qiniuSecretKey" placeholder="SecretKey" ></el-input>
+              <el-input :disabled="disabled" v-model="ossConfig.qiniuSecretKey" placeholder="SecretKey" ></el-input>
             </el-form-item>
 
             <el-form-item label="空间名"  prop="qiniuBucketName">
-              <el-input :disabled="disabled" v-model="OssConfig.qiniuBucketName" placeholder="空间名" ></el-input>
+              <el-input :disabled="disabled" v-model="ossConfig.qiniuBucketName" placeholder="空间名" ></el-input>
             </el-form-item>
           </el-form>
           <div class="dialog-footer" style="float: right;">
-            <el-button v-if="!disabled" @click="$refs['OssConfig'].resetFields();qiniuConfig();">取消</el-button>
-            <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="qiniuSave('OssConfig')">保存</el-button>
+            <el-button v-if="!disabled" @click="$refs['ossConfig'].resetFields();qiniuConfig();">取消</el-button>
+            <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="qiniuSave('ossConfig')">保存</el-button>
             <el-button v-if="disabled"  type="success" @click="disabled = false">编辑</el-button>
           </div>
 
         </el-tab-pane>
         <el-tab-pane label="小程序配置" name="appConfig">
-          <!--<el-select></el-select>-->
+          <el-select style="width: 100%;" v-model="listQuery.introducer" @change="groupIdChange" clearable filterable placeholder="请选择组织">
+            <el-option
+              v-for="item in groupList"
+              :key="item.orgId"
+              :label="item.orgName"
+              :value="item.orgId">
+            </el-option>
+          </el-select>
+
+        </el-tab-pane>
+        <el-tab-pane label="短信模板配置" name="messageConfig">
+
 
         </el-tab-pane>
 
@@ -139,7 +150,7 @@
         tab: 'ossConfig',
         disabled: true,
         groupList: [],
-        OssConfig: {
+        appConfig: {
           type: 1,
           qiniuDomain: '', // 域名
           qiniuPrefix: '', // 路径前缀
@@ -147,7 +158,15 @@
           qiniuSecretKey: '', // SecretKey
           qiniuBucketName: '' // 空间名
         },
-        OssRules: {
+        ossConfig: {
+          type: 1,
+          qiniuDomain: '', // 域名
+          qiniuPrefix: '', // 路径前缀
+          qiniuAccessKey: '', // AccessKey
+          qiniuSecretKey: '', // SecretKey
+          qiniuBucketName: '' // 空间名
+        },
+        ossRules: {
           qiniuDomain: [
             { required: true, message: '请输入域名', trigger: 'blur' }
           ],
@@ -164,7 +183,6 @@
             { required: true, message: '请输入空间名', trigger: 'blur' }
           ]
         },
-        // *******************
         config: {
           key: null,
           value: null,
@@ -227,7 +245,7 @@
         this.disabled = true
         qiniuConfig().then(response => {
           if (response.data.code === 0) {
-            this.OssConfig = response.data.data
+            this.ossConfig = response.data.data
           }
         })
       },
@@ -236,9 +254,9 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            this.OssConfig.type = 1
-            console.log(this.OssConfig)
-            saveConfig(this.OssConfig).then(() => {
+            this.ossConfig.type = 1
+            console.log(this.ossConfig)
+            saveConfig(this.ossConfig).then(() => {
               this.btnLoading = false
               this.disabled = true
             })
@@ -249,12 +267,14 @@
         groupList().then(response => {
           if (response.data.code === 0) {
             this.groupList = response.data.data
+            console.log('=====')
+            console.log(this.groupList)
           }
         })
       },
       getList() {
         this.listLoading = true
-        getConfigList(this.OssConfig).then(response => {
+        getConfigList(this.ossConfig).then(response => {
           this.configList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
@@ -321,7 +341,10 @@
       },
       orgClick(org) {
       },
-      kerChange() {}
+      kerChange() {},
+      groupIdChange() {
+        // 'elk-cloud-app-coach '
+      }
     }
   }
 </script>

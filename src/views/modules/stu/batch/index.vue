@@ -372,6 +372,7 @@
         examBespeak: [],
         examBespeakList: {
           examNoteList: [],
+          subject: null,
           examineState: null
         },
         studentListQuery: {
@@ -438,6 +439,7 @@
         this.examBespeakLoading = true
         this.studentListQuery.examId = examId
         this.studentListQuery.examineState = state
+        this.examBespeakList.subject = this.listQuery.subject
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list
           this.examBespeakLoading = false
@@ -549,6 +551,7 @@
           this.$message.warning('请先选择学员')
         } else {
           this.examBespeakList.examineState = state
+          this.examBespeakList.subject = this.listQuery.subject
           putExamBespeak(this.examBespeakList, url).then(() => {
             this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
           })

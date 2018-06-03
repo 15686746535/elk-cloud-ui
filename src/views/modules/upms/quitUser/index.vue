@@ -375,12 +375,32 @@
                     </div>
                   </div>
 
-                  <el-table :data="studentList" v-loading="studentListLoading" :height="$store.state.app.client.height-205"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+                  <el-table :data="studentList" v-loading="studentListLoading" :height="$store.state.app.client.height-192" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;min-height: 633px;">
                     <el-table-column type="index" align="center" label="编号" width="50">
                     </el-table-column>
-                    <el-table-column align="center"  label="姓名">
+                    <el-table-column align="center" label="姓名">
                       <template slot-scope="scope">
-                        <span>{{ scope.row.label}}</span>
+                        <span>{{ scope.row.name}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="电话">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.mobile}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="入学日期">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.enrolTime}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="车型">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.motorcycleType}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="状态">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.state | subjectFilter}}</span>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -475,8 +495,8 @@
         },
         studentListQuery: {
           page: 1,
-          limit: 20,
-          userId: null,
+          limit: 0,
+          userIds: null,
           condition: null
         },
         defaultProps: {
@@ -526,8 +546,9 @@
         this.infoLoading = true
         getObj(val.userId).then(response => {
           this.userEntity = response.data.data
+          if (!this.userEntity.roleIdList) this.userEntity.roleIdList = []
           this.getRoleList()
-          this.studentListQuery.userId = this.userEntity.userId
+          this.studentListQuery.userIds = this.userEntity.userId
           this.getEnrollStudentList()
           this.infoLoading = false
         })
@@ -567,9 +588,11 @@
       },
       // 查询招生信息集合
       getEnrollStudentList() {
+        console.log('====')
         this.studentListLoading = true
         queryEnrollStudents(this.studentListQuery).then(response => {
           this.studentList = response.data.data.list
+          console.log(response.data)
           this.studentListLoading = false
         })
       },

@@ -914,7 +914,7 @@
           let blob = new Blob([response.data], { type: 'application/x-xls' })
           let link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
-          link.download = '同事名单('  + time.toLocaleString()+ ').xls'
+          link.download = '同事名单(' + time.toLocaleString() + ').xls'
           link.click()
           this.expLoading = false
         })

@@ -23,6 +23,13 @@ export function getConfig(id) {
   })
 }
 // 根据ID获取
+export function getByGroupKey(id) {
+  return request({
+    url: '/basis/config/getByGroupKey/' + id,
+    method: 'get'
+  })
+}
+// 根据ID获取
 export function getByKey(id) {
   return request({
     url: '/basis/config/getByKey/' + id,

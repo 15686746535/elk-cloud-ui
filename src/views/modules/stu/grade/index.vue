@@ -218,7 +218,7 @@
 
           <div slot="footer">
             <el-button size="small"  @click="innerGradeOption1 = false">取 消</el-button>
-            <el-button type="primary" size="small" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
+            <el-button type="primary" size="small" :loading="btnLoading" @click="examRowOperation('1')">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -228,7 +228,7 @@
 </template>
 
 <script>
-  import { examFetchList, putExamNote, exportAchievement } from '@/api/student/examnote'
+  import { examFetchList, putExamNote, putRowExamNote, exportAchievement } from '@/api/student/examnote'
   import { getBatchs } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
   import { removeAllSpace } from '@/utils/validate'
@@ -450,10 +450,21 @@ export default {
             this.gradeOption = false
             this.innerGradeOption = false
             this.btnLoading = false
-            this.innerGradeOption1 = false
             this.gradeEdit = false
           })
         }
+      },
+      examRowOperation(state) {
+        this.examParameter.examState = state
+        this.examParameter.subject = this.batchListQuery.subject
+        this.btnLoading = true
+        putRowExamNote(this.examParameter).then(() => {
+          this.getGradeList()
+          this.gradeOption = false
+          this.btnLoading = false
+          this.innerGradeOption1 = false
+          this.gradeEdit = false
+        })
       },
       examEdit(row, state) {
         this.examParameter.examNoteList = []
@@ -466,12 +477,12 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.examOperation(state)
+            this.examRowOperation(state)
           })
         } else if (state === '1' && !(this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4')) {
           this.innerGradeOption1 = true
         } else {
-          this.examOperation(state)
+          this.examRowOperation(state)
         }
       },
       /* 时间转换方法 */

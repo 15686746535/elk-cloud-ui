@@ -73,7 +73,7 @@
 <script>
   import { fetchList, getObj } from '@/api/basis/message'
   import { mapGetters } from 'vuex'
-  import { getConfigList, addConfig, getByKey, putConfig } from '@/api/basis/config'
+  import { getConfigList, addConfig, getByGroupKey, putConfig } from '@/api/basis/config'
   import { removeAllSpace } from '@/utils/validate'
 
   export default {
@@ -166,7 +166,7 @@
       },
       messageConfigClick() {
         this.messageConfigOption = true
-        getByKey('dxton_config').then(response => {
+        getByGroupKey('dxton_config').then(response => {
           console.log(response.data)
           this.config.key = response.data.key
           this.dialogStatus = 'create'

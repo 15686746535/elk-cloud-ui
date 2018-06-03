@@ -38,6 +38,14 @@ export function putExamNote(obj) {
   })
 }
 // 更新
+export function putRowExamNote(obj) {
+  return request({
+    url: '/stu/exam/note/update',
+    method: 'put',
+    data: obj
+  })
+}
+// 更新
 export function putExamBespeak(obj, url) {
   return request({
     url: '/stu/exam/note/' + url,

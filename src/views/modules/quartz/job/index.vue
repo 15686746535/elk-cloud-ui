@@ -98,7 +98,8 @@
           <el-form-item label="参数" prop="params">
             <el-input v-model="form.params" placeholder="参数"></el-input>
           </el-form-item>
-          <el-form-item label="cron表达式" prop="cronExpression">
+          <el-form-item prop="cronExpression">
+            <span slot="label" class="text_css"><a href="http://www.pdtools.net/tools/becron.jsp" target="_blank">cron表达式:</a></span>
             <el-input v-model="form.cronExpression" placeholder="cron表达式"></el-input>
           </el-form-item>
           <el-form-item label="任务状态" prop="status">

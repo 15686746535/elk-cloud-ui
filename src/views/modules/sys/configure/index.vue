@@ -422,6 +422,7 @@
         getByKey(this.config.key).then(response => {
           this.isAdd = true
           this.config.configId = null
+          console.log(response.data)
           if (response.data.data) {
             this.isAdd = false
             this.config.configId = response.data.data.configId

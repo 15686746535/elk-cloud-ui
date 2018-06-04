@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
+    <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}" style="overflow: auto">
       <!-- 集合数量较大可以使用filterable进行 -->
       <el-select v-model="orgId" placeholder="请选择组织">
         <el-option
@@ -64,6 +64,14 @@
               <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
             </el-form-item>
 
+            <el-form-item label="短信通账号"  prop="dxtAccount">
+              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通密码"  prop="dxtPassword">
+              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
+            </el-form-item>
+
           </el-form>
 
           <div style="float: right">
@@ -76,7 +84,6 @@
 
 
         <el-tab-pane label="市场端配置" name="appSalesmanConfig">
-
           <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
 
             <el-form-item label="key"  prop="key">
@@ -97,6 +104,14 @@
 
             <el-form-item label="token"  prop="token">
               <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通账号"  prop="dxtAccount">
+              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通密码"  prop="dxtPassword">
+              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
             </el-form-item>
 
           </el-form>
@@ -112,7 +127,6 @@
 
 
         <el-tab-pane label="学员端配置" name="appStudentConfig">
-
           <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
 
             <el-form-item label="key"  prop="key">
@@ -135,6 +149,14 @@
               <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
             </el-form-item>
 
+            <el-form-item label="短信通账号"  prop="dxtAccount">
+              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通密码"  prop="dxtPassword">
+              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
+            </el-form-item>
+
           </el-form>
 
           <div style="float: right">
@@ -143,10 +165,75 @@
             <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
           </div>
 
+
         </el-tab-pane>
 
 
         <el-tab-pane label="短信模板配置" name="messageConfig">
+
+          <el-table :data="configList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+            <el-table-column type="index" align="center" label="id" width="50">
+            </el-table-column>
+            <el-table-column label="value">
+              <template slot-scope="scope">
+                <span class="table_text" :title="scope.row.value">{{ scope.row.value }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="remark" width="200">
+              <template slot-scope="scope">
+                <span class="table_text">{{ scope.row.remark}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="createTime" width="120">
+              <template slot-scope="scope">
+                <span class="table_text">{{ scope.row.createTime | subTime }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="operation" width="180">
+              <template slot-scope="scope">
+                <el-button v-if="basis_configure_update" size="mini" type="success"
+                           @click="handleUpdate(scope.row)">编辑
+                </el-button>
+                <el-button v-if="basis_configure_del" size="mini" type="danger"
+                           @click="handleDelete(scope.row)">删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <el-dialog @close="getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))" title="添加短信模板" width="550px" :visible.sync="dialogMessageConfig">
+            <el-form label-position="left" :model="config" :rules="configRules" ref="config" label-width="110px">
+
+              <span v-if="isAdd">
+
+                <el-form-item label="messageType"  prop="messageType">
+                  <el-select v-model="messageType" style="width: 100%" placeholder="请选择类型">
+                    <el-option
+                      v-for="item in messageTypeList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+
+                </el-form-item>
+
+              </span>
+
+              <el-form-item label="value"  prop="value">
+                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="config.value" placeholder="请输入模板"></el-input>
+              </el-form-item>
+            </el-form>
+
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogMessageConfig = false; getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+              <el-button :loading="btnLoading" type="primary" @click="createMessageConfig('config')"><i class="el-icon-fa-save"></i> 确 定</el-button>
+            </div>
+
+          </el-dialog>
+          <div style="clear: both;height: 20px;width: 100%"></div>
+          <el-button style="float: right" type="primary" @click="createClick">添加</el-button>
+
         </el-tab-pane>
 
       </el-tabs>
@@ -165,6 +252,7 @@
       return {
         tab: 'ossConfig',
         disabled: true,
+        dialogMessageConfig: false,
         appCoachOrgId: null,
         appSalesmanOrgId: null,
         appStudentOrgId: null,
@@ -173,25 +261,9 @@
           aesKey: '',
           appId: '',
           secret: '',
-          token: ''
-        },
-        appCoachConfig: {
-          aesKey: null,
-          appId: null,
-          secret: null,
-          token: null
-        },
-        appSalesmanConfig: {
-          aesKey: null,
-          appId: null,
-          secret: null,
-          token: null
-        },
-        appStudentConfig: {
-          aesKey: null,
-          appId: null,
-          secret: null,
-          token: null
+          token: '',
+          dxtAccount: '',
+          dxtPassword: ''
         },
         ossConfig: {
           type: 1,
@@ -218,6 +290,11 @@
             { required: true, message: '请输入空间名', trigger: 'blur' }
           ]
         },
+        configRules: {
+          value: [
+            { required: true, message: '请输入短信模板', trigger: ['blur', 'change'] }
+          ]
+        },
         appRules: {
           aesKey: [
             { required: false, message: '请输入aesKey', trigger: 'blur' }
@@ -230,6 +307,12 @@
           ],
           token: [
             { required: false, message: '请输入token', trigger: 'blur' }
+          ],
+          dxtAccount: [
+            { required: true, message: '请输入短信通账号', trigger: 'blur' }
+          ],
+          dxtPassword: [
+            { required: true, message: '请输入短信通密码', trigger: 'blur' }
           ]
         },
         config: {
@@ -238,8 +321,9 @@
           remark: null
         },
         configList: [],
-        listLoading: true,
+        listLoading: false,
         btnLoading: false,
+        messageType: 'message_model_orgId_0_1',
         basis_configure_add: true,
         basis_configure_update: true,
         basis_configure_del: true,
@@ -249,13 +333,13 @@
         },
         rules: {
           key: [
-            { required: true, message: 'Please enter the key', trigger: ['blur', 'change'] }
+            { required: true, message: 'Please enter the key', trigger: ['blur'] }
           ],
           value: [
-            { required: true, message: 'Please enter the value', trigger: ['blur', 'change'] }
+            { required: true, message: 'Please enter the value', trigger: ['blur'] }
           ],
           remark: [
-            { required: true, message: 'Please enter the remark', trigger: ['blur', 'change'] }
+            { required: true, message: 'Please enter the remark', trigger: ['blur'] }
           ]
         },
         orgId: null,
@@ -269,6 +353,36 @@
           {
             value: 'String DXTON_CONFIG = "DXTON_CONFIG',
             label: '短信通配置'
+          }
+        ],
+        messageTypeList: [
+          {
+            label: '学员添加短信模板',
+            value: 'message_model_orgId_0_1'
+          },
+          {
+            label: '科一考试前短信模板',
+            value: 'message_model_orgId_1_1'
+          },
+          {
+            label: '科一通过后短信模板',
+            value: 'message_model_orgId_1_2'
+          },
+          {
+            label: '科二考试前短信模板',
+            value: 'message_model_orgId_2_1'
+          },
+          {
+            label: '科二通过后短信模板',
+            value: 'message_model_orgId_2_2'
+          },
+          {
+            label: '科三考试前短信模板',
+            value: 'message_model_orgId_3_1'
+          },
+          {
+            label: '科三通过后短信模板',
+            value: 'message_model_orgId_3_2'
           }
         ]
       }
@@ -320,13 +434,23 @@
       },
       getList() {
         this.listLoading = true
-        getConfigList(this.ossConfig).then(response => {
+        getConfigList(this.config).then(response => {
+          this.configList = response.data.data.list
+          this.listLoading = false
+        })
+      },
+      getConfigListByCondition(condition) {
+        this.listLoading = true
+        getConfigList({ 'condition': condition }).then(response => {
+          console.log(response.data)
           this.configList = response.data.data.list
           this.listLoading = false
         })
       },
       handleUpdate(val) {
         this.config = val
+        this.isAdd = false
+        this.dialogMessageConfig = true
       },
       handleDelete(val) {
         this.$confirm('是否取消该配置?', '提示', {
@@ -335,6 +459,7 @@
           type: 'warning'
         }).then(() => {
           delConfig(val.configId).then(() => {
+            this.getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), this.orgId))
           })
         })
       },
@@ -347,22 +472,31 @@
         this.getList()
       },
       createClick() {
-        this.config = {}
+        this.isAdd = true
+        this.config.value = ''
+        this.dialogMessageConfig = true
       },
       cancel(formName) {
         this.btnLoading = false
         this.disabled = true
-        getByKey(this.config.key).then(response => {
+        var key = ''
+        if (this.tab === 'appCoachConfig') {
+          key = 'elk-app-coach:' + this.orgId
+        } else if (this.tab === 'appSalesmanConfig') {
+          key = 'elk-app-salesman:' + this.orgId
+        } else if (this.tab === 'appStudentConfig') {
+          key = 'elk-app-student:' + this.orgId
+        } else if (this.tab === 'messageConfig') {
+        } else if (this.tab === 'ossConfig') {
+        }
+        getByKey(key).then(response => {
           this.isAdd = true
           this.config.configId = null
           if (response.data.data) {
             this.isAdd = false
             this.config.configId = response.data.data.configId
             this.config.key = response.data.data.key
-            this.appConfig.aesKey = JSON.parse(response.data.data.value).aesKey
-            this.appConfig.appId = JSON.parse(response.data.data.value).appId
-            this.appConfig.secret = JSON.parse(response.data.data.value).secret
-            this.appConfig.token = JSON.parse(response.data.data.value).token
+            this.appConfig = JSON.parse(response.data.data.value)
           }
         })
       },
@@ -379,7 +513,7 @@
                 this.btnLoading = false
               })
             } else {
-              putConfig(this.config).then(() => {
+              addConfig(this.config).then(() => {
                 this.cancel(formName)
                 this.btnLoading = false
               })
@@ -393,7 +527,7 @@
           if (valid) {
             this.config.key = this.config.key + '_' + this.config.orgId
             this.btnLoading = true
-            putConfig(this.config).then(() => {
+            addConfig(this.config).then(() => {
               this.cancel(formName)
               this.btnLoading = false
             })
@@ -416,23 +550,44 @@
           flag = 'appConfig'
         } else if (tab.name === 'messageConfig') {
           flag = 'messageConfig'
-        } else if (tab.name === 'ossConfig') {
-          flag = 'ossConfig'
         }
-        getByKey(this.config.key).then(response => {
-          this.isAdd = true
-          this.config.configId = null
-          if (response.data.data) {
-            this.isAdd = false
-            this.config.configId = response.data.data.configId
-            this.config.key = response.data.data.key
-            if (flag === 'appConfig') {
-              this.appConfig.aesKey = JSON.parse(response.data.data.value).aesKey
-              this.appConfig.appId = JSON.parse(response.data.data.value).appId
-              this.appConfig.secret = JSON.parse(response.data.data.value).secret
-              this.appConfig.token = JSON.parse(response.data.data.value).token
-            } else if (flag === 'messageConfig') {
+
+        console.log(flag)
+        if (flag === 'appConfig') {
+          getByKey(this.config.key).then(response => {
+            this.isAdd = true
+            this.config.configId = null
+            if (response.data.data) {
+              this.isAdd = false
+              this.config.configId = response.data.data.configId
+              this.config.key = response.data.data.key
+              this.appConfig = JSON.parse(response.data.data.value)
+              console.log(response.data)
             }
+          })
+        } else if (flag === 'messageConfig') {
+          this.getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), this.orgId))
+        }
+      },
+      createMessageConfig(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.btnLoading = true
+            if (this.isAdd) {
+              this.config.key = this.messageType.replace(new RegExp('orgId', 'gm'), this.orgId)
+              for (var i = 0; i < this.messageTypeList.length; i++) {
+                if (this.messageType === this.messageTypeList[i].value) {
+                  this.config.remark = this.messageTypeList[i].label
+                }
+              }
+            }
+            console.log('config:', this.config)
+            addConfig(this.config).then(() => {
+              this.btnLoading = false
+              this.dialogMessageConfig = false
+              this.$refs[formName].resetFields()
+              this.getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), this.orgId))
+            })
           }
         })
       }

@@ -190,8 +190,7 @@
                 this.$refs[formName].resetFields()
               })
             } else if (this.dialogStatus == 'update') {
-              console.log(this.config)
-              putConfig(this.config).then(() => {
+              addConfig(this.config).then(() => {
                 this.btnLoading = false
                 this.messageConfigOption = false
                 this.$refs[formName].resetFields()

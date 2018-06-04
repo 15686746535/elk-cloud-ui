@@ -10,7 +10,7 @@ export function getConfigList(query) {
 // 添加
 export function addConfig(obj) {
   return request({
-    url: '/basis/config',
+    url: '/basis/config/save',
     method: 'post',
     data: obj
   })

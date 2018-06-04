@@ -29,7 +29,7 @@
           </el-table-column>
           <el-table-column label="参数">
             <template slot-scope="scope">
-              <span>{{scope.row.params}}</span>
+              <span :title="scope.row.params" class="text_css">{{scope.row.params}}</span>
             </template>
           </el-table-column>
           <el-table-column label="cron表达式">
@@ -61,9 +61,9 @@
              <!-- <el-button size="mini" type="danger"
                          @click="runNow(scope.row.jobId)">立即执行
               </el-button>-->
-              <el-button size="mini" type="danger"
-                         @click="delete(scope.row)">删除
-              </el-button>
+              <!--<el-button size="mini" type="danger"-->
+                         <!--@click="delete(scope.row)">删除-->
+              <!--</el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -229,3 +229,13 @@
     }
   }
 </script>
+<style>
+  .text_css{
+    color:#495060;
+    font-size: 12px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+  }
+</style>

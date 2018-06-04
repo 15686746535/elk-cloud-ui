@@ -439,7 +439,7 @@
                     </el-table-column>
                     <el-table-column align="center" label="入学日期">
                       <template slot-scope="scope">
-                        <span>{{ scope.row.enrolTime}}</span>
+                        <span>{{ scope.row.enrolTime | subTime}}</span>
                       </template>
                     </el-table-column>
                     <el-table-column align="center" label="车型">

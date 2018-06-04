@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
+    <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}" style="overflow: auto">
       <!-- 集合数量较大可以使用filterable进行 -->
       <el-select v-model="orgId" placeholder="请选择组织">
         <el-option
@@ -64,6 +64,14 @@
               <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
             </el-form-item>
 
+            <el-form-item label="短信通账号"  prop="dxtAccount">
+              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通密码"  prop="dxtPassword">
+              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
+            </el-form-item>
+
           </el-form>
 
           <div style="float: right">
@@ -76,7 +84,6 @@
 
 
         <el-tab-pane label="市场端配置" name="appSalesmanConfig">
-
           <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
 
             <el-form-item label="key"  prop="key">
@@ -97,6 +104,14 @@
 
             <el-form-item label="token"  prop="token">
               <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通账号"  prop="dxtAccount">
+              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通密码"  prop="dxtPassword">
+              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
             </el-form-item>
 
           </el-form>
@@ -112,7 +127,6 @@
 
 
         <el-tab-pane label="学员端配置" name="appStudentConfig">
-
           <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
 
             <el-form-item label="key"  prop="key">
@@ -135,6 +149,14 @@
               <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
             </el-form-item>
 
+            <el-form-item label="短信通账号"  prop="dxtAccount">
+              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="短信通密码"  prop="dxtPassword">
+              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
+            </el-form-item>
+
           </el-form>
 
           <div style="float: right">
@@ -142,6 +164,7 @@
             <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="create('appConfig')">Enter</el-button>
             <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
           </div>
+
 
         </el-tab-pane>
 
@@ -173,7 +196,9 @@
           aesKey: '',
           appId: '',
           secret: '',
-          token: ''
+          token: '',
+          dxtAccount: '',
+          dxtPassword: ''
         },
         appCoachConfig: {
           aesKey: null,
@@ -230,6 +255,12 @@
           ],
           token: [
             { required: false, message: '请输入token', trigger: 'blur' }
+          ],
+          dxtAccount: [
+            { required: true, message: '请输入短信通账号', trigger: 'blur' }
+          ],
+          dxtPassword: [
+            { required: true, message: '请输入短信通密码', trigger: 'blur' }
           ]
         },
         config: {
@@ -249,13 +280,13 @@
         },
         rules: {
           key: [
-            { required: true, message: 'Please enter the key', trigger: ['blur', 'change'] }
+            { required: true, message: 'Please enter the key', trigger: ['blur'] }
           ],
           value: [
-            { required: true, message: 'Please enter the value', trigger: ['blur', 'change'] }
+            { required: true, message: 'Please enter the value', trigger: ['blur'] }
           ],
           remark: [
-            { required: true, message: 'Please enter the remark', trigger: ['blur', 'change'] }
+            { required: true, message: 'Please enter the remark', trigger: ['blur'] }
           ]
         },
         orgId: null,
@@ -352,17 +383,24 @@
       cancel(formName) {
         this.btnLoading = false
         this.disabled = true
-        getByKey(this.config.key).then(response => {
+        var key = ''
+        if (this.tab === 'appCoachConfig') {
+          key = 'elk-app-coach:' + this.orgId
+        } else if (this.tab === 'appSalesmanConfig') {
+          key = 'elk-app-salesman:' + this.orgId
+        } else if (this.tab === 'appStudentConfig') {
+          key = 'elk-app-student:' + this.orgId
+        } else if (this.tab === 'messageConfig') {
+        } else if (this.tab === 'ossConfig') {
+        }
+        getByKey(key).then(response => {
           this.isAdd = true
           this.config.configId = null
           if (response.data.data) {
             this.isAdd = false
             this.config.configId = response.data.data.configId
             this.config.key = response.data.data.key
-            this.appConfig.aesKey = JSON.parse(response.data.data.value).aesKey
-            this.appConfig.appId = JSON.parse(response.data.data.value).appId
-            this.appConfig.secret = JSON.parse(response.data.data.value).secret
-            this.appConfig.token = JSON.parse(response.data.data.value).token
+            this.appConfig = JSON.parse(response.data.data.value)
           }
         })
       },
@@ -379,7 +417,7 @@
                 this.btnLoading = false
               })
             } else {
-              putConfig(this.config).then(() => {
+              addConfig(this.config).then(() => {
                 this.cancel(formName)
                 this.btnLoading = false
               })
@@ -393,7 +431,7 @@
           if (valid) {
             this.config.key = this.config.key + '_' + this.config.orgId
             this.btnLoading = true
-            putConfig(this.config).then(() => {
+            addConfig(this.config).then(() => {
               this.cancel(formName)
               this.btnLoading = false
             })
@@ -428,10 +466,8 @@
             this.config.configId = response.data.data.configId
             this.config.key = response.data.data.key
             if (flag === 'appConfig') {
-              this.appConfig.aesKey = JSON.parse(response.data.data.value).aesKey
-              this.appConfig.appId = JSON.parse(response.data.data.value).appId
-              this.appConfig.secret = JSON.parse(response.data.data.value).secret
-              this.appConfig.token = JSON.parse(response.data.data.value).token
+              this.appConfig = JSON.parse(response.data.data.value)
+              console.log(JSON.parse(response.data.data.value))
             } else if (flag === 'messageConfig') {
             }
           }

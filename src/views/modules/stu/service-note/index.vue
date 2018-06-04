@@ -222,13 +222,12 @@
 <script>
   import Coach from '@/components/Coach'
   import { removeAllSpace } from '@/utils/validate'
-  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
+  import { getFinanceList } from '@/api/finance/service-category'
   import { queryMoneyListById, saveServiceCharge, twoPayment } from '@/api/finance/service-charge'
   import { smalltoBIG } from '@/utils/index'
   import { mapGetters } from 'vuex'
   import { getLodop } from '@/utils/LodopFuncs'
   import { fetchStudentList, getStudent } from '@/api/student/student'
-  import { userList } from '@/api/upms/user'
 
   export default {
     name: 'table_student',

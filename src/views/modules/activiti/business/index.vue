@@ -18,11 +18,11 @@
                         <span>{{scope.row.name}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="路由" align="center" width="250">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.router}}</span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column label="路由" align="center" width="250">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{scope.row.router}}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
                 <el-table-column label="消息" align="center" width="350">
                     <template slot-scope="scope">
                         <span>{{scope.row.message}}</span>
@@ -59,7 +59,7 @@
           </el-card>
       </div>
 
-      <el-dialog  @close="getList" :title="dialogType === 'create'?'添加':'编辑'" :show-close="false" width="550px" :visible.sync="option">
+      <el-dialog  @close="getList" :title="dialogStatus === 'create'?'添加':'编辑'" :show-close="false" width="550px" :visible.sync="option">
         <el-form :model="bus"  ref="bus" :rules="rules" label-width="100px">
           <el-form-item label="业务"  prop="name">
             <el-input v-model="bus.name" placeholder="业务名称" ></el-input>
@@ -74,7 +74,7 @@
 
         <div slot="footer">
           <el-button @click="cancel('bus')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-          <el-button v-if="dialogType === 'create'" type="primary" @click="create('bus')" >确 定</el-button>
+          <el-button v-if="dialogStatus === 'create'" type="primary" @click="create('bus')" >确 定</el-button>
           <el-button v-else @click="update('bus')" type="primary">修 改</el-button>
         </div>
       </el-dialog>
@@ -93,7 +93,7 @@ export default {
     return {
       showModule: 'list',
       option: false,
-      dialogType: 'create',
+      dialogStatus: 'create',
       list: [],
       total: null,
       orgId: null,
@@ -155,7 +155,7 @@ export default {
       this.option = true
       this.bus = {}
       this.orgId = null
-      this.dialogType = 'create'
+      this.dialogStatus = 'create'
     },
     handleUpdate(val) {
       this.bus = val

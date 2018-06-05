@@ -27,6 +27,7 @@
 
     </el-card>
     <el-card :style="{height: ($store.state.app.client.height - 95) + 'px'}">
+      <!--{{permissions}}-->
       <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
@@ -112,7 +113,7 @@
 
     <el-dialog :close-on-click-modal="false" @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
 
-      <el-tabs body-style="padding:0;" type="border-card" @tab-click="handleField">
+      <el-tabs body-style="padding:0;" v-model="bespeakTabs" type="border-card" @tab-click="handleField">
         <el-tab-pane name="all" label="申请名单">
           <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
@@ -167,7 +168,7 @@
             <!--</el-table-column>-->
           </el-table>
         </el-tab-pane>
-        <el-tab-pane name="0" label="待审核">
+        <el-tab-pane name="0" label="待审核" :disabled="!permissions.stu_exam_examine">
           <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
@@ -199,7 +200,7 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane name="1" label="待约考">
+        <el-tab-pane name="1" label="待约考" :disabled="!permissions.stu_exam_bespeak">
           <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
@@ -230,7 +231,7 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane name="2" label="已约考">
+        <el-tab-pane name="2" label="已约考" :disabled="!permissions.stu_exam_bespeak_ok">
           <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
@@ -261,7 +262,7 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane name="3" label="考试名单">
+        <el-tab-pane name="3" label="考试名单" :disabled="!permissions.stu_exam_roster">
             <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
               <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
@@ -288,7 +289,7 @@
             </el-table>
           </el-tab-pane>
       </el-tabs>
-      <div slot="footer" style="margin-top: -30px">
+      <div slot="footer" style="margin-top: -30px" v-show="bespeakTabs != 'all'">
 
         <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
         <el-button-group v-if="studentListQuery.examineState === '0'">
@@ -370,6 +371,7 @@
         btnLoading: false,
         expLoading: false,
         examBespeak: [],
+        bespeakTabs: 'all',
         examBespeakList: {
           examNoteList: [],
           subject: null,
@@ -395,11 +397,15 @@
           expiryTime: [
             { required: true, message: '请选择预约截止日期', trigger: ['blur', 'change'] }
           ]
-        }
+        },
+        menuList: []
       }
     },
     created() {
       this.getList()
+      this.menuList.push('stu_exam_examine', this.permissions['stu_exam_examine'])
+      this.menuList.push('stu_exam_bespeak', this.permissions['stu_exam_bespeak'])
+      this.menuList.push('permissions', this.permissions['stu_exam_bespeak_ok'])
     },
     computed: {
       ...mapGetters([

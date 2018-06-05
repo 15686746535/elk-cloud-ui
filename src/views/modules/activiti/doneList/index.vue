@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <el-card >
-      <el-table :data="list" :height="$store.state.app.client.height - 180" v-loading="listLoading" element-loading-text="给我一点时间" border fit
+      <el-table :data="list" :height="$store.state.app.client.height - 140" v-loading="listLoading" element-loading-text="给我一点时间" border fit
                 highlight-current-row style="width: 100%">
         <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -15,16 +15,16 @@
             <span>{{scope.row.initiator}}</span>
           </template>
         </el-table-column>
-        <!--<el-table-column label="发布日期">-->
-        <!--<template slot-scope="scope">-->
-        <!--<span>{{scope.row.createTime}}</span>-->
-        <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="修改时间">-->
-        <!--<template slot-scope="scope">-->
-        <!--<span>{{scope.row.updateTime}}</span>-->
-        <!--</template>-->
-        <!--</el-table-column>-->
+        <el-table-column label="发布日期">
+        <template slot-scope="scope">
+        <span>{{scope.row.createTime | subTime}}</span>
+        </template>
+        </el-table-column>
+        <el-table-column label="完成时间">
+        <template slot-scope="scope">
+        <span>{{scope.row.updateTime | subTime}}</span>
+        </template>
+        </el-table-column>
 
         <!--<el-table-column label="操作">-->
         <!--<template slot-scope="scope">-->

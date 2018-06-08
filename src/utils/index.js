@@ -291,7 +291,7 @@ export function autoProduce(idNumber) {
   date = date.substring(0, 10)
   date = date.replace(/-/g, '/')
   birthday = new Date(date).getTime()
-  sex = idNumber.substr(16, 1) % 2
+  sex = idNumber.substr(16, 1) % 2 > 0 ? 0 : 1
   val.push(number)
   val.push(birthday)
   val.push(sex)

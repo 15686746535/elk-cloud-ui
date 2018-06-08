@@ -18,8 +18,8 @@ export function timeAgo(time) {
 
 export function sexFilter(sex) {
   const typeMap = {
-    '1': '男',
-    '0': '女'
+    '0': '男',
+    '1': '女'
   }
   return typeMap[sex]
 }

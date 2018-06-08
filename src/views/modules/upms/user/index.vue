@@ -157,8 +157,8 @@
                           <el-form-item prop="sex">
                             <span slot="label" class="text_css">性别:</span>
                             <el-radio-group v-if="edit" v-model="userEntity.sex">
-                              <el-radio label="1">男</el-radio>
-                              <el-radio label="0">女</el-radio>
+                              <el-radio label="0">男</el-radio>
+                              <el-radio label="1">女</el-radio>
                             </el-radio-group>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.sex | sexFilter}}</span>
                           </el-form-item>
@@ -507,8 +507,8 @@
       ]),
       sexVO() {
         const typeMap = {
-          1: '男',
-          0: '女'
+          0: '男',
+          1: '女'
         }
         return typeMap[this.userEntity.sex]
       },

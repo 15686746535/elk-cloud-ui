@@ -676,6 +676,7 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
+                <el-button type="primary" v-show="student.physicalExamination==='1'&&student.state==='0'" size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"><i class="el-icon-fa-car"></i> 约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
@@ -967,6 +968,106 @@
       </div>
     </el-dialog>
 
+    <el-dialog @close="isPush122 = false;btnLoading = false;$refs['student122'].resetFields()" title="录入122" width="800px" :visible.sync="isPush122">
+
+      <el-form :model="student122" :rules="studentRules122" ref="student122" label-width="80px" size="mini" >
+        <el-row :gutter="20">
+          <el-col :span="12" >
+            <el-form-item prop="orgId">
+              <span slot="label" class="text_css">部门</span>
+              <tree-select style="font-size: 12px;" height="28px" url="/upms/org/tree" v-model="student122.orgId"  placeholder="部门" ></tree-select>
+            </el-form-item>
+
+            <el-form-item prop="XM">
+              <span slot="label" class="text_css">姓名</span>
+              <el-input size="mini" class="filter-item"  placeholder="姓名"  v-model.number="student122.XM"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="SFZMHM">
+              <span slot="label" class="text_css">身份证号</span>
+              <el-input size="mini" class="filter-item"  placeholder="身份证号码"  v-model.number="student122.SFZMHM"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="CSRQ">
+              <span slot="label" class="text_css">出生日期</span>
+              <el-date-picker size="mini" value-format="yyyy-MM-dd"  type="date" placeholder="生日"  style="width: 100%" v-model="student122.CSRQ"></el-date-picker>
+            </el-form-item>
+
+            <el-form-item prop="DJZSXXDZ">
+              <span slot="label" class="text_css">登记住所</span>
+              <el-input size="mini" class="filter-item"  placeholder="登记住所"  v-model.number="student122.DJZSXXDZ"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="SJHM">
+              <span slot="label" class="text_css">手机号码</span>
+              <el-input size="mini" class="filter-item"  placeholder="手机号码"  v-model.number="student122.SJHM"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="LXDH">
+              <span slot="label" class="text_css">固定电话</span>
+              <el-input size="mini" class="filter-item"  placeholder="固定电话"  v-model.number="student122.LXDH"></el-input>
+            </el-form-item>
+
+          </el-col>
+          <el-col :span="12" >
+            <el-form-item prop="XB">
+              <span slot="label" class="text_css">性别</span>
+              <el-radio-group size="mini" v-model="student122.XB">
+                <el-radio label="0">男</el-radio>
+                <el-radio label="1">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+
+            <el-form-item prop="GJ">
+              <span slot="label" class="text_css">国籍</span>
+              <el-select style="width: 100%" size="mini" v-model="student122.GJ" clearable placeholder="国籍">
+                <el-option
+                  v-for="item in GJList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item prop="SFZYXQZ">
+              <span slot="label" class="text_css">身份证有效期</span>
+              <el-input size="mini" class="filter-item"  placeholder="身份证有效期"  v-model.number="student122.SFZYXQZ"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="YZBM">
+              <span slot="label" class="text_css">邮政编码</span>
+              <el-input size="mini" class="filter-item"  placeholder="邮政编码"  v-model.number="student122.YZBM"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="ZKCX">
+              <span slot="label" class="text_css">申请车型</span>
+              <el-select style="width: 100%" size="mini" v-model="student122.ZKCX" clearable placeholder="申请车型">
+                <el-option
+                  v-for="item in $store.state.app.motorcycleType"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item prop="ZZZM">
+              <span slot="label" class="text_css">暂住证编号</span>
+              <el-input size="mini" class="filter-item"  placeholder="暂住证编号"  v-model.number="student122.ZZZM"></el-input>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button plain @click="isPush122 = false;btnLoading = false;$refs['student122'].resetFields()">取消</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="push122('student122')">录入</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -977,7 +1078,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122 } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
@@ -986,6 +1087,7 @@
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { followUpList } from '@/api/visit/followup'
   import { getIntentionByMobile } from '@/api/visit/intention'
+  import { Message } from 'element-ui'
 
   export default {
     name: 'table_student',
@@ -1258,7 +1360,9 @@
         btnLoading: false,
         expLoading: false,
         isCreate: false,
+        isPush122: false,
         showModule: 'list',
+        data122: 'list',
         listQuery: {
           page: 1,
           limit: 20,
@@ -1351,7 +1455,48 @@
         /* 添加加载动画 */
         createLoading: false,
         infoLoading: false,
-        userList: []
+        userList: [],
+        GJList: [
+          { label: '中国', value: '156' }
+        ],
+        studentRules122: {
+          orgId: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
+          SFZMHM: [{ required: true, message: '身份证号码不能为空', trigger: 'blur' }],
+          SFZYXQZ: [{ required: true, message: '身份证有效期不能为空', trigger: 'blur' }],
+          XM: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
+          CSRQ: [{ required: true, message: '出生日期不能为空', trigger: 'blur' }],
+          DJZSXXDZ: [{ required: true, message: '登记住所不能为空', trigger: 'blur' }],
+          YZBM: [{ required: true, message: '邮政编码不能为空', trigger: 'blur' }],
+          ZKCX: [{ required: true, message: '申请车型不能为空', trigger: 'blur' }],
+          SJHM: [{ required: true, message: '手机号码不能为空', trigger: 'blur' }]
+        },
+        student122: {
+          studentId: '',
+          orgId: '',
+          SFZMHM: '', // 身份证号码
+          SFZMMC: 'A', // 身份证名称 默认A
+          SFZYXQZ: '', // 身份证有效期
+          XM: '', // 姓名
+          CSRQ: '', // 出生日期
+          GJ: '156', // 国籍 默认156
+          XB: '', // 性别 0男 1女
+          DJZSXZQH: '', // 所属辖区 ------
+          DJZSXXDZ: '', // 登记住所 ======
+          DZYX: '', // 电子邮箱
+          LXZSXZQH: '', // 住所行政区划 -----
+          LXZSXXDZ: '', // 住所详细地址 ======
+          LY: 'A', // 默认A
+          SJHM: '', // 手机号码
+          YJDZ: '', // address
+          YZBM: '', //  邮政编码
+          XZQH: '', //  所属辖区 ======
+          LXDH: '', // 固定电话
+          ZZZM: '', //  暂住证编号
+          ZKCX: '', // 申请车型
+          MODAL: '2', // 2
+          TICKET: '', // 秘钥
+          SFZC2: '2' // 2
+        }
       }
     },
     created() {
@@ -1376,6 +1521,101 @@
       }
     },
     methods: {
+      dialog122() {
+        getIntention(this.student.intentionId).then(response => {
+          console.log(this.student)
+          if (response.data.code === 0 && response.data.data) {
+            this.student122.studentId = this.student.studentId //
+            this.student122.orgId = this.student.orgId // 组织
+            this.student122.SFZMHM = this.student.idNumber // 身份证号码
+            this.student122.SFZYXQZ = response.data.data.validity // 身份证有效期
+            this.student122.SFZMMC = 'A' // 身份证名称 默认A
+            this.student122.XM = this.student.name // 姓名
+            this.student122.CSRQ = this.parseTime(this.student.birthday, '{y}-{m}-{d}') // 出生日期
+            this.student122.GJ = response.data.data.nationality // 国籍
+            this.student122.XB = this.student.sex // 性别
+
+            this.student122.DJZSXZQH = response.data.data.djzsxzqh // 所属辖区
+            this.student122.DJZSXXDZ = response.data.data.lxzsxxdz // 登记住所
+
+            this.student122.DZYX = this.student.email // 电子邮箱
+            this.student122.LXZSXZQH = response.data.data.lxzsxzqh // 住所行政区划
+            this.student122.LXZSXXDZ = response.data.data.lxzsxxdz // 住所详细地址
+
+            this.student122.LY = 'A' // 默认A
+            this.student122.SJHM = this.student.mobile // 手机号码
+            this.student122.YJDZ = response.data.data.address // address
+            this.student122.YZBM = response.data.data.postalCode // 邮政编码
+
+            this.student122.XZQH = response.data.data.lxzsxzqh // 所属辖区
+            // LXDH: '', // 固定电话
+            // ZZZM: '', //  暂住证编号
+            this.student122.ZKCX = this.student.motorcycleType // 申请车型
+            this.student122.MODAL = '2'
+            this.student122.SFZC2 = '2'
+            this.isPush122 = true
+          }
+        })
+      },
+      push122(fname) {
+        this.$refs[fname].validate((valid) => {
+          if (valid) {
+            this.btnLoading = true
+            console.log('push122 ************************** begin', this.student122)
+            push122(this.student122).then(response => {
+              console.log('push122 ************************** end')
+              console.log(response)
+              if (response.data.code === 0) {
+                Message.success('录入成功')
+              } else if (response.data.data === 500) {
+                Message.success(response.data.data.message)
+              } else {
+                Message.success('录入失败')
+              }
+              this.btnLoading = false
+              this.isPush122 = false
+              this.editList(this.student)
+            })
+          }
+        })
+      },
+      parseTime(time, cFormat) {
+        if (arguments.length === 0) {
+          return null
+        }
+        if (arguments[0] === undefined || arguments[0] == null) {
+          return null
+        }
+        if ((time + '').length === 10) {
+          time = +time * 1000
+        }
+
+        const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+        let date
+        if (typeof time === 'object') {
+          date = time
+        } else {
+          date = new Date(parseInt(time))
+        }
+        const formatObj = {
+          y: date.getFullYear(),
+          m: date.getMonth() + 1,
+          d: date.getDate(),
+          h: date.getHours(),
+          i: date.getMinutes(),
+          s: date.getSeconds(),
+          a: date.getDay()
+        }
+        const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+          let value = formatObj[key]
+          if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
+          if (result.length > 0 && value < 10) {
+            value = '0' + value
+          }
+          return value || 0
+        })
+        return time_str
+      },
       // 根据部门id查询学员信息
       searchByOrg(data) {
         this.listQuery.page = 1
@@ -1511,7 +1751,9 @@
         this.edit = false
         this.isCreate = false
         this.getList()
-        this.$refs['studentEntity'].resetFields()
+        if (this.$refs['studentEntity']) {
+          this.$refs['studentEntity'].resetFields()
+        }
       },
       // 搜索
       searchClick() {
@@ -1536,6 +1778,7 @@
         this.student.avatar = res.data
       },
       handleAvatarError(err, file, fileList) {
+        console.log(err, file, fileList)
         this.$message.error('上传失败')
       },
       beforeAvatarUpload(file) {
@@ -1660,8 +1903,7 @@
               this.examBespeak.examId = null
             })
           }
-        }
-        else if (flag === 'car') {
+        } else if (flag === 'car') {
           if (this.examBespeak.periodId === null) {
             this.$message.warning('请先选择课时')
           } else {
@@ -1675,13 +1917,22 @@
         }
       },
       matchingStudents() {
+        console.log('-------sdfsdfsdfsdf---------------------')
+        console.log(this.studentEntity.mobile)
         if (this.studentEntity.mobile) {
           this.createLoading = true
           getIntentionByMobile({ 'mobile': this.studentEntity.mobile, 'state': '0' }).then(response => {
             var flag = true
+            console.log(response)
             if (response.data.data) {
+              console.log('-------sdfsdfsdfsdf---------------------')
+              console.log(response.data.data)
               this.studentEntity.intentionId = response.data.data.intentionId
               if (!this.studentEntity.name) this.studentEntity.name = response.data.data.name
+              if (!this.studentEntity.idNumber && response.data.data.idNumber) {
+                this.studentEntity.idNumber = response.data.data.idNumber
+                this.AddGenerateInfo()
+              }
               if (!this.studentEntity.sex) this.studentEntity.sex = response.data.data.sex
               if (!this.studentEntity.source) this.studentEntity.source = response.data.data.source
               if (!this.studentEntity.wechat) this.studentEntity.wechat = response.data.data.wechat
@@ -1717,9 +1968,9 @@
       exportStudent() {
         this.expLoading = true
         exportStudent(this.listQuery).then(response => {
-          let time = new Date()
-          let blob = new Blob([response.data], { type: 'application/x-xls' })
-          let link = document.createElement('a')
+          var time = new Date()
+          var blob = new Blob([response.data], { type: 'application/x-xls' })
+          var link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
           link.download = '学员名单(' + time.toLocaleString() + ').xls'
           link.click()

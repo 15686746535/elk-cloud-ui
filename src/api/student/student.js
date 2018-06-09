@@ -62,3 +62,20 @@ export function exportStudent(query) {
     responseType: 'arraybuffer'
   })
 }
+
+/*  获取意向 */
+export function getIntention(id) {
+  return request({
+    url: '/visit/intention/' + id,
+    method: 'get'
+  })
+}
+
+export function push122(obj) {
+  return request({
+    url: '/stu/student/push122',
+    method: 'post',
+    params: obj
+  })
+}
+

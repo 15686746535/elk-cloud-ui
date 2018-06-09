@@ -34,6 +34,7 @@ export function isCoachFilter(coach) {
 }
 export function subjectFilter(subject) {
   const typeMap = {
+    '0': '未录入122',
     '1': '科目一',
     '2': '科目二',
     '3': '科目三',

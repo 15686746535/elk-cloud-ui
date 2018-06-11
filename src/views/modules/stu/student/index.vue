@@ -676,7 +676,7 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
-                <el-button type="primary" v-show="student.physicalExamination==='1'&&student.state==='0'" size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
+                <el-button type="primary" v-show="student.physicalExamination==='1'" size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"><i class="el-icon-fa-car"></i> 约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>

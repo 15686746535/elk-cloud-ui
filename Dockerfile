@@ -6,7 +6,7 @@ RUN rm -v /etc/nginx/nginx.conf
 # 加入自定义配置
 ADD nginx/nginx.conf /etc/nginx/
 # 证书文件加进来
-ADD cert /etc/nginx/cert/
+ADD cert /usr/share/nginx/html/
 # node编译的前端文件 dist
 ADD dist /usr/share/nginx/html/
 EXPOSE 80

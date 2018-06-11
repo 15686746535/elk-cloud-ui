@@ -21,6 +21,6 @@ npm run build --report
 docker build -t elk-cloud-ui:1.0 .
 
 ### 启动的docker镜像
-docker run -itd -p 7777:80 -v /mnt/:/mnt/ --name elk-cloud-ui --restart unless-stopped  elk-cloud-ui:1.0
+docker run -itd -p 80:80 -p 443:443 -v /mnt/:/mnt/ --name elk-cloud-ui --restart unless-stopped  elk-cloud-ui:1.0
 ```
 

@@ -5,6 +5,8 @@ ENV LANG en_US.UTF-8
 RUN rm -v /etc/nginx/nginx.conf
 # 加入自定义配置
 ADD nginx/nginx.conf /etc/nginx/
+# 证书文件加进来
+ADD cert /etc/nginx/cert/
 # node编译的前端文件
 ADD dist /usr/share/nginx/html/
 EXPOSE 80

@@ -7,7 +7,7 @@ RUN rm -v /etc/nginx/nginx.conf
 ADD nginx/nginx.conf /etc/nginx/
 # 证书文件加进来
 ADD cert /etc/nginx/cert/
-# node编译的前端文件
+# node编译的前端文件 dist
 ADD dist /usr/share/nginx/html/
 EXPOSE 80
 EXPOSE 443

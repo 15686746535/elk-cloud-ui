@@ -1,5 +1,11 @@
 import request from '@/utils/request'
 
+export function test() {
+  return request({
+    url: '/app/coach/contacts/contactsMerge',
+    method: 'get'
+  })
+}
 export function fetchList(query) {
   return request({
     url: '/upms/user/userPage',

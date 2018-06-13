@@ -164,7 +164,7 @@
 import PieChart from '@/components/PieChart'
 import BarPileChart from '@/components/BarPileChart'
 import { queryIndex } from '@/api/visualization/api'
-import { userList } from '@/api/upms/user'
+import { userList, test } from '@/api/upms/user'
 import { queryAgency, updateAgency, saveAgency } from '@/api/activiti/agency'
 import Coach from '@/components/Coach'
 
@@ -234,6 +234,11 @@ export default {
       })
     },
     getList() {
+      console.log('---------------')
+      test().then(response => {
+        console.log('----------------通讯录同步')
+        console.log(response)
+      })
       queryIndex().then(response => {
         var data = response.data
         this.weekData = {

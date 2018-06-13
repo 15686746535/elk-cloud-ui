@@ -115,6 +115,13 @@ module.exports = {
         pathRewrite: {
           '^/finance' : '/finance'
         }
+      },
+      '/app/coach': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/app/coach' : '/app/coach'
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

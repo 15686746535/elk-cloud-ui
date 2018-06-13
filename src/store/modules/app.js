@@ -6,7 +6,7 @@ const app = {
       opened: !+Cookies.get('sidebarStatus')
     },
     visitedViews: [],
-    iFrameUrl: 'http://52.83.97.172', // 52.83.97.172
+    iFrameUrl: 'https://www.eluchn.com', // 52.83.97.172
     motorcycleType: ['C1', 'C2', 'C3', 'C4', 'A1', 'A2', 'A3', 'B1', 'B2', 'D', 'E', 'F', 'M', 'N', 'P'],
     loading: false,
     spread: false,

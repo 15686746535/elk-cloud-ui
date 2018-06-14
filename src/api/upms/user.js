@@ -70,3 +70,11 @@ export function exportUser(query) {
     responseType: 'arraybuffer'
   })
 }
+/* 修改个人信息 */
+export function editInfo(query) {
+  return request({
+    url: '/upms/user/editInfo',
+    method: 'put',
+    data: query
+  })
+}

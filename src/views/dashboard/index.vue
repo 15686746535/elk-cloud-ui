@@ -234,11 +234,11 @@ export default {
       })
     },
     getList() {
-      console.log('---------------')
-      test().then(response => {
-        console.log('----------------通讯录同步')
-        console.log(response)
-      })
+      // console.log('---------------')
+      // test().then(response => {
+      //   console.log('----------------通讯录同步')
+      //   console.log(response)
+      // })
       queryIndex().then(response => {
         var data = response.data
         this.weekData = {

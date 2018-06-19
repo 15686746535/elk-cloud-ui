@@ -462,24 +462,43 @@
 </template>
 
 <script>
-  import { fetchList, addObj, getObj, putObj, getIntentionByMobile } from '@/api/visit/intention'
+  import { fetchList, addObj, getObj, putObj, getIntentionByMobile, getIntentionByWechat } from '@/api/visit/intention'
   import { followUpList, addFollowUp } from '@/api/visit/followup'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
   import { userList } from '@/api/upms/user'
+  import { Message } from 'element-ui'
 
   export default {
     name: 'table_intention',
     data() {
       var mobileIsExistence = (rule, value, callback) => {
-        getIntentionByMobile({ 'mobile': value, 'state': '' }).then(response => {
-          if (response.data.data) {
-            callback(new Error('电话号码已存在'))
-          } else {
-            callback()
-          }
-        })
+        if (value) {
+          getIntentionByMobile({ 'mobile': value }).then(response => {
+            if (response.data.data) {
+              callback(new Error('电话号码已存在'))
+            } else {
+              callback()
+            }
+          })
+        } else {
+          callback()
+        }
       }
+      var wechatIsExistence = (rule, value, callback) => {
+        if (value) {
+          getIntentionByWechat({ 'wechat': value }).then(response => {
+            if (response.data.data) {
+              callback(new Error('微信号已存在'))
+            } else {
+              callback()
+            }
+          })
+        } else {
+          callback()
+        }
+      }
+      // getIntentionByWechat
       return {
         intentionList: [],
         intention: {},
@@ -510,6 +529,7 @@
           introducer: null,
           followUp: true
         },
+        isRequired: true,
         alertFollowEntity: {},
         pickerOptions: {
           shortcuts: [{
@@ -562,12 +582,13 @@
             { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
+            { required: false, message: '请输入手机号', trigger: ['blur', 'change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           wechat: [
-            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] }],
+            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] },
+            { validator: wechatIsExistence, trigger: ['blur'] }
+          ],
           contactAddress: [
             { required: false, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
@@ -598,11 +619,11 @@
             { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
           ],
           mobile: [
-            { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
+            { required: false, message: '请输入手机号', trigger: ['blur', 'change'] }
           ],
           wechat: [
-            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] }],
+            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] }
+          ],
           contactAddress: [
             { required: false, message: '请输入住址', trigger: ['blur', 'change'] }
           ],
@@ -702,11 +723,17 @@
       add(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.intention.state = 0
-            addObj(this.intention).then(() => {
-              this.closeAlert(formName)
-              this.addOption = false
-            })
+            var mobile = this.intention.mobile
+            var wechat = this.intention.wechat
+            if (mobile && wechat) {
+              this.intention.state = 0
+              addObj(this.intention).then(() => {
+                this.closeAlert(formName)
+                this.addOption = false
+              })
+            } else {
+              Message.error('手机和微信至少输入一个')
+            }
           } else {
             return false
           }

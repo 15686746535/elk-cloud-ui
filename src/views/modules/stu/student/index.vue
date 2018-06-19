@@ -1921,7 +1921,7 @@
         console.log(this.studentEntity.mobile)
         if (this.studentEntity.mobile) {
           this.createLoading = true
-          getIntentionByMobile({ 'mobile': this.studentEntity.mobile, 'state': '0' }).then(response => {
+          getIntentionByMobile({ 'mobile': this.studentEntity.mobile }).then(response => {
             var flag = true
             console.log(response)
             if (response.data.data) {

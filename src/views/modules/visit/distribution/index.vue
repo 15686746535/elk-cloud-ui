@@ -71,7 +71,7 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
             <div style="float: right;">
-              <el-button size="small" style="float:right;margin: 0 5px" @click="distribution" type="primary"><i class="el-icon-refresh"></i>分配</el-button>
+              <el-button size="small" style="float:right;margin: 0 5px" @click="distribution" type="primary" v-if="permissions.visit_intention_distribution"><i class="el-icon-refresh"></i>分配</el-button>
               <el-upload class="upload-demo" action="/visit/intention/import"
                          :headers="headers"
                          style="float:right;"
@@ -80,7 +80,7 @@
                          :on-error="handleTextError"
                          :show-file-list="false"
                          :before-upload="beforeTextUpload">
-                <el-button size="small"><i class="el-icon-upload2"></i>导入</el-button>
+                <el-button size="small"  v-if="permissions.visit_intention_import"><i class="el-icon-upload2"></i>导入</el-button>
               </el-upload>
 
             </div>

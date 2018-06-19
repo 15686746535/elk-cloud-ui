@@ -14,9 +14,9 @@
       <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
         <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
           <el-button-group>
-            <el-button type="primary" @click="operationClick('create')"><i class="el-icon-plus"></i>添加</el-button>
-            <el-button type="primary" icon="edit" @click="operationClick('update')">编辑</el-button>
-            <el-button type="primary" icon="delete" @click="deleteClick">删除</el-button>
+            <el-button type="primary" @click="operationClick('create')" v-if="permissions.upms_org_add"><i class="el-icon-plus"></i>添加</el-button>
+            <el-button type="primary" icon="edit" @click="operationClick('update')" v-if="permissions.upms_org_update">编辑</el-button>
+            <el-button type="primary" icon="delete" @click="deleteClick" v-if="permissions.upms_org_del">删除</el-button>
           </el-button-group>
         </el-card>
         <el-card class="box-card" :style="{height: ($store.state.app.client.height-130) + 'px'}" style="overflow: auto">
@@ -51,6 +51,7 @@
 
 <script>
   import { fetchTree, addObj, putObj, delObj } from '@/api/upms/org'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'index',
@@ -118,6 +119,10 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'permissions',
+        'client'
+      ])
     },
     created() {
       this.getOrgList()

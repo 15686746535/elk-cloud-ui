@@ -64,7 +64,7 @@
 
               <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="revoke(scope.row)">撤 销</el-button>
+                  <el-button size="mini" type="danger" v-if="permissions.stu_revisited_del" @click="revoke(scope.row)">撤 销</el-button>
                 </template>
               </el-table-column>
 

@@ -78,7 +78,7 @@
 
             <el-table-column align="center" width="120px" label="操作">
               <template slot-scope="scope">
-                <el-button size="mini" type="success" @click="visitStudent(scope.row)">回 访</el-button>
+                <el-button size="mini" type="success" v-if="permissions.stu_revisit_add" @click="visitStudent(scope.row)">回 访</el-button>
               </template>
             </el-table-column>
 

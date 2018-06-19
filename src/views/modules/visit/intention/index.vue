@@ -78,9 +78,9 @@
               <el-tooltip placement="bottom" effect="dark">
                 <div slot="content">
                   <div style="margin: 3px 0"><el-button type="primary" size="mini" @click="editList(intention)">查  看</el-button></div>
-                  <div style="margin: 3px 0"><el-button type="success" size="mini" @click="updateState(intention, '1')">入 学</el-button></div>
-                  <div style="margin: 3px 0"><el-button type="warning" size="mini" @click="updateState(intention, '-1')">分 配</el-button></div>
-                  <div style="margin: 3px 0"><el-button type="danger" size="mini" @click="updateState(intention, '2')">关 闭</el-button></div>
+                  <div style="margin: 3px 0"><el-button type="success" size="mini" v-if="permissions.visit_intention_update" @click="updateState(intention, '1')">入 学</el-button></div>
+                  <div style="margin: 3px 0"><el-button type="warning" size="mini" v-if="permissions.visit_intention_update" @click="updateState(intention, '-1')">分 配</el-button></div>
+                  <div style="margin: 3px 0"><el-button type="danger" size="mini" v-if="permissions.visit_intention_update" @click="updateState(intention, '2')">关 闭</el-button></div>
                 </div>
                 <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
               </el-tooltip>
@@ -104,7 +104,7 @@
                         <img width="100%" height="100%" :src="followUp.avatar">
                       </el-tag>
                       <div class="username">{{followUp.name}}</div>
-                      <div class="time">{{followUp.createTime | subTime('dateTime')}}</div>
+                      <div class="time" >{{followUp.createTime | subTime('dateTime')}}</div>
                       <div style="clear: both;white-space:normal;width: 100%">
                         <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUp.content}}</p>
                       </div>
@@ -118,7 +118,7 @@
                       <el-col :span="19" >
                         <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 4}" v-model="followUp.content" placeholder="跟进内容"></el-input>
                       </el-col>
-                      <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading" type="primary" @click="addFollowUp">跟进</el-button></el-col>
+                      <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading"  type="primary"  @click="addFollowUp">跟进</el-button></el-col>
                     </el-row>
                   </div>
                 </div>
@@ -136,7 +136,7 @@
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
 
-              <el-button size="small" style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+              <el-button size="small" style="float: right" @click="create" type="primary" v-if="permissions.visit_intention_add" ><i class="el-icon-plus"></i>添加</el-button>
             </div>
 
           </el-card>
@@ -413,7 +413,7 @@
               </el-row>
               <el-row v-else>
                 <div style="float: right;" >
-                  <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
+                  <el-button type="primary" size="mini" v-if="permissions.visit_intention_update" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
                 </div>
               </el-row>
             </el-card>

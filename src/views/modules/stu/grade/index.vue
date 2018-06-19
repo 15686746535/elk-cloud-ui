@@ -150,7 +150,7 @@
 
             <div style="float: right" >
               <el-button size="small" :loading="expLoading"  @click="exportAchievement" type="info"><i class="el-icon-download"></i> 导 出</el-button>
-              <el-button size="small" @click="createClick" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
+              <el-button size="small" @click="createClick" v-if="permissions.stu_grade_update" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
             </div>
           </div>
         </el-card>

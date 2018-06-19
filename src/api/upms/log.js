@@ -37,3 +37,10 @@ export function putObj(obj) {
     data: obj
   })
 }
+export function updatelist() {
+  return request({
+    url: '/upms/upmsupdateinf/list',
+    method: 'get'
+  })
+
+}

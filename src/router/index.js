@@ -264,7 +264,8 @@ export const asyncRouterMap = [
     },
     children: [
       { menuId: 140100, path: 'message', component: _import('modules/log-record/message/index'), name: '短信发送记录', isShow: true, meta: { title: '短信发送记录', icon: 'menu' }},
-      { menuId: 140200, path: 'log', component: _import('modules/log-record/log/index'), name: '系统日志', isShow: true, meta: { title: '系统日志', icon: 'menu' }}
+      { menuId: 140200, path: 'log', component: _import('modules/log-record/log/index'), name: '系统日志', isShow: true, meta: { title: '系统日志', icon: 'menu' }},
+      { menuId: 140300, path: 'updateinfo', component: _import('modules/log-record/updateinfo/index'), name: '升级信息', isShow: true, meta: { title: '升级信息', icon: 'menu' }}
     ]
   }
 ]

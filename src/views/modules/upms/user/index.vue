@@ -136,6 +136,7 @@
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.jobNumber}}</span>
                           </el-form-item>
                         </el-col>
+
                         <el-col :span="12">
                           <el-form-item prop="idNumber">
                             <span slot="label" class="text_css">身份证:</span>

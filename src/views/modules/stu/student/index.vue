@@ -184,8 +184,8 @@
                                layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
 
-                <el-button @click="create" size="small" style="float:right;margin: 0 5px" type="primary"><i class="el-icon-plus"></i>添加</el-button>
-                <el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent" type="info"><i class="el-icon-download"></i>导出</el-button>
+                <el-button @click="create" size="small" style="float:right;margin: 0 5px" type="primary" v-if="permissions.stu_student_add"><i class="el-icon-plus"></i>添加</el-button>
+                <el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent"  v-if="permissions.stu_student_export" type="info"><i class="el-icon-download"></i>导出</el-button>
                 <el-upload class="upload-demo" action="/stu/student/import"
                            :headers="headers"
                            :on-success="handleTextSuccess"
@@ -194,7 +194,7 @@
                            :on-error="handleAvatarError"
                            :before-upload="beforeTextUpload"
                            :show-file-list="false">
-                  <el-button size="small"><i class="el-icon-upload2"></i>导入</el-button>
+                  <el-button size="small"  v-if="permissions.stu_student_import"  ><i class="el-icon-upload2"></i>导入</el-button>
                 </el-upload>
 
 
@@ -676,10 +676,10 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
-                <el-button type="primary" v-show="student.physicalExamination==='1'" size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
-                <el-button type="primary" size="mini" @click="handleBespeakCar"><i class="el-icon-fa-car"></i> 约 车</el-button>
-                <el-button type="primary" size="mini" @click="handleBespeakExam"><i class="el-icon-fa-book"></i> 约 考</el-button>
-                <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
+                <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
+                <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add"><i class="el-icon-fa-car"></i> 约 车</el-button>
+                <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add"><i class="el-icon-fa-book"></i> 约 考</el-button>
+                <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update"><i class="el-icon-edit"></i> 编 辑</el-button>
               </div>
 
             </el-card>
@@ -1921,7 +1921,7 @@
         console.log(this.studentEntity.mobile)
         if (this.studentEntity.mobile) {
           this.createLoading = true
-          getIntentionByMobile({ 'mobile': this.studentEntity.mobile, 'state': '0' }).then(response => {
+          getIntentionByMobile({ 'mobile': this.studentEntity.mobile }).then(response => {
             var flag = true
             console.log(response)
             if (response.data.data) {

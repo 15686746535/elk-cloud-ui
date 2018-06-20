@@ -62,8 +62,8 @@
           <template slot-scope="scope">
             <!--<el-button-group>-->
               <el-button size="mini" type="success" @click="see(scope.row.examId, studentListQuery.examineState)" plain>查 看</el-button>
-              <el-button size="mini" type="primary" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删 除</el-button>
+              <el-button size="mini" type="primary" v-if="permissions.stu_exam_update" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
+              <el-button size="mini" type="danger" v-if="permissions.stu_exam_del" @click="handleDelete(scope.row)">删 除</el-button>
             <!--</el-button-group>-->
           </template>
         </el-table-column>
@@ -77,7 +77,7 @@
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
 
-        <el-button style="float:right;" @click="createClick" size="small" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+        <el-button style="float:right;" @click="createClick" size="small" v-if="permissions.stu_exam_add" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
 
@@ -328,7 +328,6 @@
   import { getBatchList, delObj, addObj, putObj, exportExamList } from '@/api/student/batch'
   import { examFetchList, putExamBespeak } from '@/api/student/examnote'
   import { mapGetters } from 'vuex'
-  import { parseTime } from '@/utils/index'
 
   export default {
     name: 'table_batch',
@@ -397,15 +396,11 @@
           expiryTime: [
             { required: true, message: '请选择预约截止日期', trigger: ['blur', 'change'] }
           ]
-        },
-        menuList: []
+        }
       }
     },
     created() {
       this.getList()
-      this.menuList.push('stu_exam_examine', this.permissions['stu_exam_examine'])
-      this.menuList.push('stu_exam_bespeak', this.permissions['stu_exam_bespeak'])
-      this.menuList.push('permissions', this.permissions['stu_exam_bespeak_ok'])
     },
     computed: {
       ...mapGetters([
@@ -606,11 +601,11 @@
         }
         this.studentListQuery.subject = subject
         exportExamList(this.studentListQuery).then(response => {
-          let time = new Date()
-          let blob = new Blob([response.data], { type: 'application/x-xls' })
-          let link = document.createElement('a')
+          var time = new Date()
+          var blob = new Blob([response.data], { type: 'application/x-xls' })
+          var link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
-          link.download = '考试名单('  + time.toLocaleString()+ ').xls'
+          link.download = '考试名单(' + time.toLocaleString() + ').xls'
           link.click()
           this.expLoading = false
         })

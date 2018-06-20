@@ -19,16 +19,40 @@
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
+            <span @click="changepass=true" style="display:block;">修改密码</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登陆</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
+
+    <el-dialog @close="changepass = false;btnLoading = false;" title="输入密码" width="800px" :visible.sync="changepass">
+      <el-form :model="user" label-width="80px" >
+        <el-row :gutter="20">
+          <el-col :span="12" >
+            <el-form-item>
+              <span slot="label" class="text_css">新密码</span>
+              <el-input class="filter-item"  placeholder="密码"  v-model="user.newpassword1"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-button type="primary"  @click="handlepass">保存</el-button>
+        </el-row>
+      </el-form>
+    </el-dialog>
+
+
   </el-menu>
+
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { editInfo } from '@/api/upms/user'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
@@ -47,6 +71,12 @@ export default {
       'avatar'
     ])
   },
+  data() {
+    return {
+      changepass: false,
+      user: {}
+    }
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
@@ -54,6 +84,12 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
+      })
+    },
+    handlepass() {
+      console.log(this.$data)
+      editInfo(this.$data.user).then((res) => {
+        console.log(res)
       })
     }
   }

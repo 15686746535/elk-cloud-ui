@@ -40,7 +40,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column  align="center" label="操作" width="225">
+            <el-table-column  align="center" label="操作" width="350">
               <template slot-scope="scope">
                 <el-button size="mini" type="success"
                            @click="handleUpdate(scope.row)">编辑
@@ -49,8 +49,11 @@
                            @click="handleDelete(scope.row)">删除
                 </el-button>
                  <el-button size="mini" type="info" plain
-                            @click="handlePermission(scope.row)">权限
+                            @click="handlePermission(scope.row,'menuPermission')" >菜单
                  </el-button>
+                <el-button size="mini" type="info" plain
+                           @click="handlePermission(scope.row,'dataPermission')" >权限
+                </el-button>
               </template>
             </el-table-column>
 
@@ -62,7 +65,7 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
             <div class="" style="float: right;">
-              <el-button  type="primary" icon="el-icon-plus" @click="createClick()">添加</el-button>
+              <el-button  type="primary" icon="el-icon-plus" v-if="permissions.upms_role_add" @click="createClick()">添加</el-button>
             </div>
           </div>
         </el-card>
@@ -84,19 +87,26 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel('form')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('form')">修 改</el-button>
+        <el-button v-else type="primary"  v-if="permissions.upms_role_update"  @click="update('form')">修 改</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission">
-      <el-tabs v-model="activeName" >
-        <el-tab-pane label="菜单权限" style="height: 450px;overflow: auto" name="menuPermission">
-          <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
-        </el-tab-pane>
-        <el-tab-pane label="数据权限" style="height: 450px;overflow: auto"  name="dataPermission">
-          <my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>
-        </el-tab-pane>
-      </el-tabs>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission" width="450px" >
+      <div v-if="activeName === 'menuPermission'" style="height: 450px;overflow: auto">
+        <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
+      </div>
+      <div v-if="activeName === 'dataPermission'" style="height: 450px;overflow: auto">
+        <my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>
+      </div>
+
+      <!--<el-tabs v-model="activeName" >-->
+        <!--<el-tab-pane label="菜单权限" style="height: 450px;overflow: auto" name="menuPermission">-->
+          <!---->
+        <!--</el-tab-pane>-->
+        <!--<el-tab-pane label="数据权限" style="height: 450px;overflow: auto"  name="dataPermission">-->
+          <!---->
+        <!--</el-tab-pane>-->
+      <!--</el-tabs>-->
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="updatePermession(roleId, roleKey)">更 新</el-button>
       </div>
@@ -141,6 +151,7 @@
         },
         menuUrl: undefined,
         dataUrl: undefined,
+        permissionState: 1,
         roleId: undefined,
         roleKey: undefined,
         rules: {
@@ -221,7 +232,8 @@
         this.listQuery.page = 1
         this.getList()
       },
-      handlePermission(row) {
+      handlePermission(row, state) {
+        this.activeName = state
         this.dialogStatus = 'permission'
         this.dialogPermissionVisible = true
         this.roleId = row.roleId

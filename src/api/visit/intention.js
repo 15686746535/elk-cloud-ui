@@ -15,7 +15,15 @@ export function addObj(obj) {
     data: obj
   })
 }
-// 根据ID获取
+
+export function getIntentionByWechat(query) {
+  return request({
+    url: '/visit/intention/queryIntentionByWechat',
+    method: 'get',
+    params: query
+  })
+}
+
 export function getIntentionByMobile(query) {
   return request({
     url: '/visit/intention/queryIntentionByMobile',

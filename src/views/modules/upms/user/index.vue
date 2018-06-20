@@ -92,8 +92,8 @@
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
               <div style="float: right" >
-                <el-button size="small" :loading="expLoading"  @click="exportUser" type="info"><i class="el-icon-download"></i> 导 出</el-button>
-                <el-button size="small" @click="create" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+                <el-button size="small" :loading="expLoading"  @click="exportUser" type="info" v-if="permissions.upms_user_export"><i class="el-icon-download"></i> 导 出</el-button>
+                <el-button size="small" @click="create" type="primary" v-if="permissions.upms_user_add"><i class="el-icon-plus"></i> 添 加</el-button>
               </div>
             </div>
           </el-card>
@@ -136,6 +136,7 @@
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.jobNumber}}</span>
                           </el-form-item>
                         </el-col>
+
                         <el-col :span="12">
                           <el-form-item prop="idNumber">
                             <span slot="label" class="text_css">身份证:</span>
@@ -395,18 +396,18 @@
                       <div style="float: right;" >
                         <el-button v-if="addInfo" size="mini" type="success"  @click="add('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
                         <el-button v-if="!addInfo" size="mini" type="info" @click="cancel('userEntity')"><i class="el-icon-close"></i> 取消</el-button>
-                        <el-button v-if="!addInfo" size="mini" type="success" @click="update('userEntity')"><i class="el-icon-fa-save"></i> 保存</el-button>
+                        <el-button v-if="!addInfo" size="mini" type="success" @click="update('userEntity')" ><i class="el-icon-fa-save"></i> 保存</el-button>
                       </div>
                     </el-row>
 
 
                     <el-row v-else>
                       <div style="float: left">
-                        <el-button type="danger" size="mini" @click="quit(userEntity.userId)"><i class="el-icon-circle-close-outline"></i>办理离职</el-button>
-                        <el-button type="danger" size="mini" @click="rePassword(userEntity.userId)"><i class="el-icon-refresh"></i>重置密码</el-button>
+                        <el-button type="danger" size="mini" @click="quit(userEntity.userId)" v-if="permissions.upms_user_del"><i class="el-icon-circle-close-outline"></i>办理离职</el-button>
+                        <el-button type="danger" size="mini" @click="rePassword(userEntity.userId)" v-if="permissions.upms_user_rePassword"><i class="el-icon-refresh"></i>重置密码</el-button>
                       </div>
                       <div style="float: right;" >
-                        <el-button type="primary" size="mini" @click="editInfo"><i class="el-icon-edit"></i> 编 辑</el-button>
+                        <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.upms_user_update" ><i class="el-icon-edit"></i> 编 辑</el-button>
                       </div>
                     </el-row>
                   </el-card>

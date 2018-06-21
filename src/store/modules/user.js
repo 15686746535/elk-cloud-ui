@@ -55,7 +55,7 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({ commit }) {
+    GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
@@ -67,11 +67,21 @@ const user = {
             commit('SET_PERMISSIONS', data.permissions)
             resolve(response)
           } else {
-            setToken(null)
-            commit('SET_TOKEN', null)
-            commit('SET_REFRESH_TOKEN', null)
-            NProgress.done()
+            // setToken(null)
+            // commit('SET_TOKEN', null) 13996972487 eluchn123
+            // commit('SET_REFRESH_TOKEN', null)
             Message.error('您没有权限！')
+            logout(state.token, state.refresh_token).then(() => {
+              console.log(123)
+              commit('SET_TOKEN', '')
+              commit('SET_REFRESH_TOKEN', '')
+              commit('SET_ROLES', [])
+              NProgress.done()
+              removeToken()
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
           }
         }).catch(error => {
           reject(error)
@@ -81,8 +91,10 @@ const user = {
 
     // 登出
     LogOut({ commit, state }) {
+      console.log(123)
       return new Promise((resolve, reject) => {
         logout(state.token, state.refresh_token).then(() => {
+          console.log(123)
           commit('SET_TOKEN', '')
           commit('SET_REFRESH_TOKEN', '')
           commit('SET_ROLES', [])

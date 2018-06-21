@@ -147,7 +147,7 @@
         this.bus = bus
       },
       designFlow(modelId) {
-        this.url = this.$store.state.app.iFrameUrl + ':8114/model/create?modelId=' + modelId + '&token=' + getToken()
+        this.url = this.$store.state.app.iFrameUrl + '/model/create?modelId=' + modelId + '&token=' + getToken()
         this.showPlate = 'design'
       },
       delModel(modelId) {

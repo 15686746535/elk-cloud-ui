@@ -34,7 +34,7 @@
         listQuery: {
           campus: '',
           year: myDate.getFullYear() + '',
-          time: '2018-06'
+          time: ''
         },
         hasDown: false,
         loading: false,

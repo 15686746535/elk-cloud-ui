@@ -1,5 +1,8 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+  <div class="el-chart">
+    <!--<el-button type="primary" class="el-chart" ><i class="el-icon-el-icon-d-arrow-left"></i>返回</el-button>-->
+    <div :class="className" id="showChart" :style="{height:height,width:width}"></div>
+  </div>
 </template>
 
 <script>
@@ -23,6 +26,10 @@ export default {
       type: String,
       default: '100%'
     },
+    hasDown: {
+      type: Boolean,
+      default: false
+    },
     data: {
       type: Object,
       default: {
@@ -40,6 +47,10 @@ export default {
   watch: {
     data: function(val) {
       this.initChart()
+      console.log(val)
+      if (this.hasDown) {
+        this.onClick()
+      }
     }
   },
   computed: {
@@ -53,6 +64,15 @@ export default {
           stack: item.stack,
           barWidth: '40%',
           data: item.value,
+          label: {
+            normal: {
+              show: true,
+              position: 'top'
+              // formatter: function(value, index) { // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+              //   return value.data + '(人)'
+              // }
+            }
+          },
           animationDuration
         }
         seriesList.push(series)
@@ -61,7 +81,7 @@ export default {
     }
   },
   mounted() {
-    this.initChart()
+    // this.initChart()
     this.__resizeHanlder = debounce(() => {
       if (this.chart) {
         this.chart.resize()
@@ -77,10 +97,21 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
+  created() {
+    // this.onClick()
+  },
   methods: {
-    initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
-
+    onClick() {
+      var that = this
+      this.chart.on('click', function(params) {
+        // 控制台打印数据的名称
+        if (that.hasDown) {
+          that.$emit('callback', params)
+        }
+      })
+    },
+    initChart() { // document.getElementById('showChart') this.$el, 'macarons'
+      this.chart = echarts.init(document.getElementById('showChart'))
       this.chart.setOption({
         color: this.data.colors,
         tooltip: {
@@ -90,7 +121,7 @@ export default {
           }
         },
         grid: {
-          top: 10,
+          top: 40,
           left: '2%',
           right: '2%',
           bottom: '3%',
@@ -107,6 +138,12 @@ export default {
           type: 'value',
           axisTick: {
             show: true
+          },
+          axisLabel: {
+            show: true
+            // formatter: function(value, index) { // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+            //   return value + '(人)'
+            // }
           }
         }],
         series: this.getSeries
@@ -115,3 +152,5 @@ export default {
   }
 }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+</style>

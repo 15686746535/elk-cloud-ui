@@ -36,11 +36,10 @@ export function getObj(id) {
   })
 }
 
-export function delObj(id) {
+export function quit(id) {
   return request({
-    url: '/upms/user/quit',
-    method: 'put',
-    data: id
+    url: '/upms/user/quit/' + id,
+    method: 'put'
   })
 }
 

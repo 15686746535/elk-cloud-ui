@@ -447,7 +447,7 @@
   import { removeAllSpace } from '@/utils/validate'
   import Bar from '@/components/Bar'
   import LineChart from '@/components/LineChart'
-  import { fetchList, getObj, delObj } from '@/api/upms/user'
+  import { fetchList, getObj, quit } from '@/api/upms/user'
   import { getToken } from '@/utils/auth'
 
   export default {
@@ -611,7 +611,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          delObj({ 'userId': userId, 'quit': '0' }).then(() => {
+          quit(userId).then(() => {
             this.back()
           })
         })

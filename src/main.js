@@ -12,7 +12,6 @@ import '@/permission' // 权限
 import MyTree from './components/MyTree'
 import Dict from './components/Dict'
 import TreeSelect from './components/TreeSelect'
-import VCharts from 'v-charts'
 
 Vue.use(ElementUI, { locale })
 // 引入自定义组件。index.js是组件的默认入口
@@ -20,7 +19,6 @@ Vue.use(ElementUI, { locale })
 Vue.use(TreeSelect)
 Vue.use(MyTree)
 Vue.use(Dict)
-Vue.use(VCharts)
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {

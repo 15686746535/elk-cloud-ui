@@ -59,13 +59,29 @@
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
           <div class="notice-title">
-              <i class="el-icon-fa-volume-up"> 我的待办 ({{evenNoticeList('1').length}})</i>
+              <i class="el-icon-fa-volume-up"> {{taskMsg}}({{agencyList.length}})</i>
+            <el-dropdown class="agency-css" @command="command">
+              <span class="el-dropdown-link">
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :command="{msg:'我的待办',state:'0'}">我的待办</el-dropdown-item>
+                <el-dropdown-item :command="{msg:'我的已办',state:'1'}">我的已办</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <!--<span title="发送消息" @click="agencyClick" class="agency-css"> <i class="el-icon-caret-bottom"></i> </span>-->
           </div>
           <div class="notice-body">
-            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('1')">
+            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in agencyList">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
               <div class="msg" @click="evenNoticeListDialog(notice,'未办理')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
+            </div>
+            <div v-if="agencyList.length === 0 && !agencyLoading" style="width: 100%" align="center">
+              <img style="margin-top: 50px"  src="../../../static/img/ku_100.png"/>
+            </div>
+            <div v-if="agencyLoading" style="width: 100%" align="center">
+              <img style="margin-top: 50px"  src="../../../static/img/loading_16.gif"/>
             </div>
           </div>
         </div>
@@ -83,14 +99,21 @@
       <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
         <div class="index-box center-group bg-white">
           <div class="notice-title">
-            <i class="el-icon-fa-bell"> 提醒 ({{evenNoticeList('2').length}})</i>
+            <i class="el-icon-fa-bell"> 提醒 ({{noticeList.length}})</i>
+            <span title="刷新" @click="getNotice('0')" class="agency-css"> <i class="el-icon-refresh"></i> </span>
             <span title="发送消息" @click="agencyClick" class="agency-css"> <i class="el-icon-fa-paper-plane"></i> </span>
           </div>
           <div class="notice-body">
-            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in evenNoticeList('2')">
+            <div class="message" :style="{ top: (index*25) + 'px'}" v-for="(notice,index) in noticeList">
               <div class="time">[ {{notice.createTime | subTime}} ]</div>
               <div class="msg"  @click="evenNoticeListDialog(notice,'通知')" :title="notice.message">{{index + 1}}.{{notice.message}}</div>
               <div class="operator">[ {{notice.initiator}} ]</div>
+            </div>
+            <div v-if="noticeList.length === 0 && !noticeLoading" style="width: 100%" align="center">
+              <img style="margin-top: 50px"  src="../../../static/img/ku_100.png"/>
+            </div>
+            <div v-if="noticeLoading" style="width: 100%" align="center">
+              <img style="margin-top: 50px"  src="../../../static/img/loading_16.gif"/>
             </div>
           </div>
         </div>
@@ -151,7 +174,7 @@
               <i class="el-icon-fa-line-chart"> 本周意向展示</i>
             </div>
             <div class="chart-body">
-              <bar-pile-chart :data="weekData" ></bar-pile-chart>
+              <bar-pile-chart :data="weekData"  className="week"></bar-pile-chart>
             </div>
           </div>
         </el-col>
@@ -164,7 +187,7 @@
 import PieChart from '@/components/PieChart'
 import BarPileChart from '@/components/BarPileChart'
 import { queryIndex } from '@/api/visualization/api'
-import { userList, test } from '@/api/upms/user'
+import { userList } from '@/api/upms/user'
 import { queryAgency, updateAgency, saveAgency } from '@/api/activiti/agency'
 import Coach from '@/components/Coach'
 
@@ -178,6 +201,7 @@ export default {
   data() {
     return {
       noticeList: [],
+      agencyList: [],
       // 部门 个人（签约，意向）总数
       intentionCount: {
         myStudent: 0,
@@ -190,6 +214,9 @@ export default {
         legend: [],
         value: []
       },
+      agencyLoading: true,
+      noticeLoading: true,
+      taskMsg: '我的待办',
       userList: [],
       // 本周意向展示
       weekData: {
@@ -198,6 +225,7 @@ export default {
         seriesList: []
       },
       // 本年意向展示
+      value3: true,
       yuarData: {
         colors: [],
         xAxis: [],
@@ -228,19 +256,11 @@ export default {
     this.getUserList()
   },
   methods: {
-    evenNoticeList(type) {
-      return this.noticeList.filter(function(notice) {
-        return notice.type === type
-      })
-    },
     getList() {
-      // console.log('---------------')
-      // test().then(response => {
-      //   console.log('----------------通讯录同步')
-      //   console.log(response)
-      // })
       queryIndex().then(response => {
         var data = response.data
+        console.log(123456)
+        console.log(data)
         this.weekData = {
           colors: ['#e6a23c'],
           xAxis: ['日', '一', '二', '三', '四', '五', '六'],
@@ -257,11 +277,27 @@ export default {
         this.intentionCount = data.intentionCount
       })
       // 查询代办 、提醒
-      this.getAgency()
+      this.getAgency('0')
+      this.getNotice('0')
     },
-    getAgency() {
-      queryAgency().then(response => {
+    command(tab) {
+      this.agencyList = []
+      this.taskMsg = tab.msg
+      this.getAgency(tab.state)
+    },
+    getAgency(state) {
+      // 代办
+      this.agencyLoading = true
+      queryAgency({ type: '1', status: state }).then(response => {
+        this.agencyList = response.data.data
+        this.agencyLoading = false
+      })
+    },
+    getNotice(state) {
+      this.noticeLoading = true
+      queryAgency({ type: '2', status: state }).then(response => {
         this.noticeList = response.data.data
+        this.noticeLoading = false
       })
     },
     evenNoticeListDialog(val, str) {
@@ -273,7 +309,7 @@ export default {
       this.evenNotice.status = '1'
       updateAgency(this.evenNotice).then(() => {
         // 查询代办 、提醒
-        this.getAgency()
+        this.getNotice('0')
         this.evenNoticeListOption = false
       })
     },
@@ -290,6 +326,7 @@ export default {
           saveAgency(this.agency).then(() => {
             this.agencyOption = false
             this.btnLoading = false
+            this.getNotice('0')
             this.$refs[formName].resetFields()
           })
         }

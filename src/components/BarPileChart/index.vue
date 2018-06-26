@@ -1,8 +1,5 @@
 <template>
-  <div class="el-chart">
-    <!--<el-button type="primary" class="el-chart" ><i class="el-icon-el-icon-d-arrow-left"></i>返回</el-button>-->
     <div :class="className" id="showChart" :style="{height:height,width:width}"></div>
-  </div>
 </template>
 
 <script>
@@ -81,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    // this.initChart()
+    this.initChart()
     this.__resizeHanlder = debounce(() => {
       if (this.chart) {
         this.chart.resize()
@@ -111,7 +108,7 @@ export default {
       })
     },
     initChart() { // document.getElementById('showChart') this.$el, 'macarons'
-      this.chart = echarts.init(document.getElementById('showChart'))
+      this.chart = echarts.init(this.$el, 'macarons')
       this.chart.setOption({
         color: this.data.colors,
         tooltip: {
@@ -136,6 +133,7 @@ export default {
         }],
         yAxis: [{
           type: 'value',
+          minInterval: 1,
           axisTick: {
             show: true
           },

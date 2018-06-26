@@ -3,6 +3,8 @@ VOLUME /tmp
 ENV LANG en_US.UTF-8
 # 移除nginx本来的配置
 RUN rm -v /etc/nginx/nginx.conf
+RUN apt-get install vim-common
+#RUN apt-get install vim-common
 # 加入自定义配置
 ADD nginx/nginx.conf /etc/nginx/
 # 证书文件加进来

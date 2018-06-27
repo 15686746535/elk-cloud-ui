@@ -164,7 +164,7 @@
                   <span>
                     {{payType.mode}}：
                   </span>
-                  <input :disabled="index === 0" @change="actualMoneyCalculation" type="number" v-model.number="payType.money" style="border: none;
+                  <input :disabled="index === 0 && stuServiceBuyNoteEntity.receivablesType!='定金'" @change="actualMoneyCalculation" type="number" v-model.number="payType.money" style="border: none;
                                                                outline:none;
                                                                width: 50px;
                                                                border-bottom: #dcdfe6 1px solid;

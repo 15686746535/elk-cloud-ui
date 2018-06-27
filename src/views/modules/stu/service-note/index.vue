@@ -478,8 +478,6 @@
         this.stuServiceBuyNoteEntity.payTypeList = []
         var price = this.stuServiceBuyNoteEntity.activityPrice ? this.stuServiceBuyNoteEntity.activityPrice : this.stuServiceBuyNoteEntity.originalPrice
         console.log('金额', price)
-
-
         // 如果全款计算现金
         if (this.stuServiceBuyNoteEntity.receivablesType === '全款') {
           var other_m = 0.0

@@ -14,6 +14,10 @@
   cursor: pointer;
   text-align: center;
 }
+/* 应用主样式*/
+.desktopIcon:hover {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAABYCAYAAABvXACHAAABlklEQVR42u3dPWoCQRyGcTcrgZgEC0HcFDbCFilT7QE8Ro7hMTySB7BKaZHSZnXBUtciYmYIQki5YrHk98DgR/ny8vxnppmkExgMBnn4eA1r2ME1VGGtdrvdZzeE+jaZTIrpdPowGo1S2TRns9k8LxaLl/D1KQnBvs9msyxN06+qqg7iac5wOOydTqfufD4vu+F3L5Cs1+vDOSCe5my328N4PO7HTO/EcRsEK9h2ER3biWq9LFzHJUON1ViNhWBvrILfOoDGGl6GF6iACqgAGquxDggaa1fAsf/asYI1vKhAYzVWYzUWDghUQAXQWI3VWLgroAL7WPxBYw0vw0uwVEAF7VSBXYFdARUYXtBY+1jBUgEVaCwcEKiACqCxGquxcG14c6iACgwvaKzGaqzGuuimgtaqwAHBAcHw4lhorMZCsFRABXBA4FjBwvAyvDQWGmt4tVkF+7qu+1mWPZRlWYukOTHDkGV0wT4Gu1oul/2iKB7zPL8XT3OOx+M5ZLmPmSbxj/jSZ+fn+dSeeK4iPuYZn0/9+AYYs/qugpwusAAAAABJRU5ErkJggg==") no-repeat center center;
+}
 /* 应用图标主样式*/
 .desktopIcon .icon {
   width: 50px;

@@ -1,8 +1,9 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <div :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="padding: 20px">
+    <div :style="{height: ($store.state.app.client.height - 200) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="position: relative;top: 20px;left: 65px;">
         <div class="innerDesktop ui-droppable">
-          <div class="desktopIcon ui-draggable ui-droppable" v-for="app in appList" @click="layerOpen(app)" >
+          <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in appList" @click="layerOpen(app)"
+               :style="appStyle(index)" style="position: absolute;margin: 0px;">
             <span class="icon"><img :src="app.icon"/></span>
             <div class="text"><span>{{app.name}}</span><s></s></div>
           </div>
@@ -23,8 +24,8 @@ export default {
   },
   data() {
     return {
-      title: '测试',
-      dialog_show: false,
+      column: 0,
+      row: 0,
       appList: [
         {
           id: 123,
@@ -134,7 +135,17 @@ export default {
       ]
     }
   },
+  computed: {
+  },
   methods: {
+    appStyle(i) {
+      var column = parseInt(i / 6)
+      var row = i % 6
+      return {
+        top: row * 113 + 'px',
+        left: column * 131 + 'px'
+      }
+    },
     layerOpen(app) {
       this.$layer.open({
         type: 2,
@@ -151,8 +162,6 @@ export default {
         }
       })
     }
-  },
-  computed: {
   }
 }
 </script>

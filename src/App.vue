@@ -26,8 +26,8 @@ export default {
       this.$store.dispatch('setSpread', e.target.classList.contains('spread-true'))
     },
     setClientSize() {
-      var height = document.documentElement.clientHeight - 84 || document.body.clientHeight - 84
-      var width = document.documentElement.clientWidth - 240 || document.body.clientWidth - 240
+      var height = document.documentElement.clientHeight || document.body.clientHeight
+      var width = document.documentElement.clientWidth || document.body.clientWidth
       this.$store.dispatch('setClientHeight', height)
       this.$store.dispatch('setClientWidth', width)
     }

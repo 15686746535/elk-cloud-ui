@@ -18,7 +18,9 @@
 }
 .app-container.calendar-list-container{
   overflow: auto;
-  background: url($BackGroundImg);
+  width: 100%;
+  background-image: url($BackGroundImg);
+  background-size: cover;
 }
 .el-row{
   height: 100%;

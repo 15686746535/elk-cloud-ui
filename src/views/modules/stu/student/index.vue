@@ -1,207 +1,198 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
-      <el-row :gutter="5">
-        <el-col class="org-tree-left">
-          <el-card>
-            <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
-          </el-card>
-        </el-col>
+      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
+        <el-card body-style="padding: 5px 20px;" style="margin-bottom: 5px;height: 90px;line-height: 38px">
+          <el-row :gutter="5">
+            <el-col :xs="6" :sm="6" :md="8" :lg="7" :xl="5">
+              <el-date-picker value-format="timestamp" style="width: 100%" size="mini" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              </el-date-picker>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <el-select size="mini" style="width: 100%" v-model="listQuery.subject" clearable placeholder="科目">
+                <el-option
+                  v-for="item in subject"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" placeholder="报名点"  ></dict>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <Coach v-model="listQuery.fieldCoach" size="mini" coachType="field" placeholder="场训教练"  ></Coach>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <Coach v-model="listQuery.roadCoach" size="mini" coachType="road" placeholder="路训教练"  ></Coach>
+            </el-col>
+            <el-col class="hidden-md-and-down"  :xs="6" :sm="6" :md="6" :lg="5" :xl="3">
+              <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"  ></dict>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="3" :xl="3">
 
-        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
-          <el-card body-style="padding: 5px 20px;" style="margin-bottom: 5px;height: 90px;line-height: 38px">
-            <el-row :gutter="5">
-              <el-col :xs="6" :sm="6" :md="8" :lg="7" :xl="5">
-                <el-date-picker value-format="timestamp" style="width: 100%" size="mini" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
-                </el-date-picker>
-              </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-                <el-select size="mini" style="width: 100%" v-model="listQuery.subject" clearable placeholder="科目">
-                  <el-option
-                    v-for="item in subject"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-                <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" placeholder="报名点"  ></dict>
-              </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-                <Coach v-model="listQuery.fieldCoach" size="mini" coachType="field" placeholder="场训教练"  ></Coach>
-              </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-                <Coach v-model="listQuery.roadCoach" size="mini" coachType="road" placeholder="路训教练"  ></Coach>
-              </el-col>
-              <el-col class="hidden-md-and-down"  :xs="6" :sm="6" :md="6" :lg="5" :xl="3">
-                <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"  ></dict>
-              </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="3" :xl="3">
+              <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" clearable placeholder="车型">
+                <el-option
+                  v-for="item in $store.state.app.motorcycleType"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+              <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+            </el-col>
+            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+              <el-button type="primary"  size="mini" @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
+            </el-col>
+          </el-row>
+        </el-card>
 
-                <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" clearable placeholder="车型">
-                  <el-option
-                    v-for="item in $store.state.app.motorcycleType"
-                    :key="item"
-                    :label="item"
-                    :value="item">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-                <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              </el-col>
-              <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-                <el-button type="primary"  size="mini" @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
-              </el-col>
-            </el-row>
-          </el-card>
+        <el-card :style="{height: ($store.state.app.client.height-135) + 'px'}">
+          <el-table :data="stuList" :height="($store.state.app.client.height-225)" highlight-current-row stripe @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
+            <el-table-column align="center" label="头像" min-width="150px">
+              <template slot-scope="scope">
+                <!-- 头像 -->
+                <el-row>
+                  <el-tag class="img">
+                    <img :src="scope.row.avatar" class="img">
+                  </el-tag>
+                </el-row>
+                <el-row>
+                  <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.name}}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.mobile}}</el-col>
+                </el-row>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="个人信息" min-width="230px">
+              <template slot-scope="scope" >
+                <!-- 个人信息 -->
+                <el-col style=" line-height: 25px">
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">身份证:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.idNumber}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">性别:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">状态:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.state | subjectFilter}}</el-col>
+                  </el-row>
 
-          <el-card :style="{height: ($store.state.app.client.height-135) + 'px'}">
-              <el-table :data="stuList" :height="($store.state.app.client.height-225)" highlight-current-row stripe @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
-                <el-table-column align="center" label="头像" min-width="150px">
-                  <template slot-scope="scope">
-                    <!-- 头像 -->
-                    <el-row>
-                      <el-tag class="img">
-                        <img :src="scope.row.avatar" class="img">
-                      </el-tag>
-                    </el-row>
-                    <el-row>
-                      <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.name}}</el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.mobile}}</el-col>
-                    </el-row>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center" label="个人信息" min-width="230px">
-                  <template slot-scope="scope" >
-                    <!-- 个人信息 -->
-                    <el-col style=" line-height: 25px">
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">身份证:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.idNumber}}</el-col>
-                      </el-row>
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">性别:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
-                      </el-row>
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">状态:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.state | subjectFilter}}</el-col>
-                      </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">介绍人:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.introducers.replace(new RegExp('/','gm'), '、')}}</el-col>
+                  </el-row>
+                </el-col>
+              </template>
+            </el-table-column>
 
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">介绍人:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.introducers.replace(new RegExp('/','gm'), '、')}}</el-col>
-                      </el-row>
-                    </el-col>
-                  </template>
-                </el-table-column>
+            <el-table-column align="center" label="入学信息" min-width="230px">
+              <template slot-scope="scope">
+                <el-col style=" line-height: 25px">
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">档案号:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.archivesNumber}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">入学日期:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.enrolTime | subTime}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">期数:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.periods}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">车型:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.motorcycleType}}</el-col>
+                  </el-row>
+                </el-col>
+              </template>
+            </el-table-column>
 
-                <el-table-column align="center" label="入学信息" min-width="230px">
-                  <template slot-scope="scope">
-                    <el-col style=" line-height: 25px">
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">档案号:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.archivesNumber}}</el-col>
-                      </el-row>
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">入学日期:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.enrolTime | subTime}}</el-col>
-                      </el-row>
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">期数:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.periods}}</el-col>
-                      </el-row>
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">车型:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.motorcycleType}}</el-col>
-                      </el-row>
-                    </el-col>
-                  </template>
-                </el-table-column>
+            <el-table-column align="center" label="培训信息" min-width="230px">
+              <template slot-scope="scope">
 
-                <el-table-column align="center" label="培训信息" min-width="230px">
-                  <template slot-scope="scope">
+                <el-col style=" line-height: 25px">
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">校区:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.campus}}</el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">来源渠道:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.source}}</el-col>
+                  </el-row>
 
-                    <el-col style=" line-height: 25px">
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">校区:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.campus}}</el-col>
-                      </el-row>
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">来源渠道:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.source}}</el-col>
-                      </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">场训教练:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.fieldName}}</el-col>
+                  </el-row>
 
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">场训教练:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.fieldName}}</el-col>
-                      </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">路训教练:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.roadName}}</el-col>
+                  </el-row>
+                </el-col>
+              </template>
+            </el-table-column>
 
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">路训教练:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.roadName}}</el-col>
-                      </el-row>
-                    </el-col>
-                  </template>
-                </el-table-column>
+            <el-table-column align="center" label="费用信息" min-width="230px">
+              <template slot-scope="scope">
+                <el-col style=" line-height: 25px">
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">服务项:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.serviceNotes.replace(new RegExp('/','gm'), '、')}}</el-col>
+                  </el-row>
 
-                <el-table-column align="center" label="费用信息" min-width="230px">
-                  <template slot-scope="scope">
-                    <el-col style=" line-height: 25px">
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">服务项:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.serviceNotes.replace(new RegExp('/','gm'), '、')}}</el-col>
-                      </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">应收金额:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.receivable}}</el-col>
+                  </el-row>
 
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">应收金额:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.receivable}}</el-col>
-                      </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="7" class="table_text">欠费金额:</el-col>
+                    <el-col :span="17" class="table_text">{{scope.row.arrearage}}</el-col>
+                  </el-row>
+                </el-col>
+              </template>
+            </el-table-column>
 
-                      <el-row :gutter="10">
-                        <el-col :span="7" class="table_text">欠费金额:</el-col>
-                        <el-col :span="17" class="table_text">{{scope.row.arrearage}}</el-col>
-                      </el-row>
-                    </el-col>
-                  </template>
-                </el-table-column>
-
-              </el-table>
+          </el-table>
 
 
 
-              <div v-show="!listLoading" style="margin-top: 20px">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                               :current-page.sync="listQuery.page"
-                               background
-                               style="float:left;"
-                               :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
-                               layout="total, sizes, prev, pager, next, jumper" :total="total">
-                </el-pagination>
+          <div v-show="!listLoading" style="margin-top: 20px">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page.sync="listQuery.page"
+                           background
+                           style="float:left;"
+                           :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
 
-                <el-button @click="create" size="small" style="float:right;margin: 0 5px" type="primary" v-if="permissions.stu_student_add"><i class="el-icon-plus"></i>添加</el-button>
-                <el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent"  v-if="permissions.stu_student_export" type="info"><i class="el-icon-download"></i>导出</el-button>
-                <el-upload class="upload-demo" action="/stu/student/import"
-                           :headers="headers"
-                           :on-success="handleTextSuccess"
-                           accept=".xls,.xlsx"
-                           style="float:right;margin: 0 5px"
-                           :on-error="handleAvatarError"
-                           :before-upload="beforeTextUpload"
-                           :show-file-list="false">
-                  <el-button size="small"  v-if="permissions.stu_student_import"  ><i class="el-icon-upload2"></i>导入</el-button>
-                </el-upload>
+            <el-button @click="create" size="small" style="float:right;margin: 0 5px" type="primary" v-if="permissions.stu_student_add"><i class="el-icon-plus"></i>添加</el-button>
+            <el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent"  v-if="permissions.stu_student_export" type="info"><i class="el-icon-download"></i>导出</el-button>
+            <el-upload class="upload-demo" action="/stu/student/import"
+                       :headers="headers"
+                       :on-success="handleTextSuccess"
+                       accept=".xls,.xlsx"
+                       style="float:right;margin: 0 5px"
+                       :on-error="handleAvatarError"
+                       :before-upload="beforeTextUpload"
+                       :show-file-list="false">
+              <el-button size="small"  v-if="permissions.stu_student_import"  ><i class="el-icon-upload2"></i>导入</el-button>
+            </el-upload>
 
 
-              </div>
-            </el-card>
-        </el-col>
-      </el-row>
+          </div>
+        </el-card>
+      </el-col>
     </div>
 
     <el-card body-style="padding:0;" v-show="showModule=='info'">
@@ -1090,7 +1081,6 @@
   import { Message } from 'element-ui'
 
   export default {
-    name: 'table_student',
     components: {
       Coach
     },

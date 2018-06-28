@@ -24,8 +24,6 @@ export default {
   },
   data() {
     return {
-      column: 0,
-      row: 0,
       appList: [
         {
           id: 123,

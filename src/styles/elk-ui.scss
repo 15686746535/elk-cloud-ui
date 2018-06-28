@@ -71,7 +71,7 @@
 }
 /* 任务栏样式*/
 .vl-notify-task {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAXCAYAAABJXhw0AAABRUlEQVR42u3TUUuDUBQH8PNpepJVzlwuDTEnJPoiDba22F5qzkFCgik0SXB+7na2Llgo233Ybjf2cLg//xz/cB8uAMDZP5nTRU4XOci0Wq0r8iEIgkTMYb4NRFHs1Lndbl/TmFXP5iKyLHdJoCgKlav/Mu1RVVUjgaZpt7tc3W8yo55tYBiGzrM3F+n1encksCzL3OWmfaY9tm1bJODc28BxnPs6u65r05hVDz72c9/3+3h++6HifoP/3A4EQTDQdf0Cp8mLxWJIk7PoAdM0L3HCMBxX/LSHx3v4aD2wfv1iFEVTPHk2xHH8vH40Eg7PBs/zJJwkSebEaZoGdXmTm/aP2QPDwUBeLpeveFI4pNw/eA9kWfY2Gj12cH45ojTTHphOJgpOnufvPBtms5duURQfePJsKMsyn/v+Dc4Pr1afVGbc8wVKPsFj35kLRQAAAABJRU5ErkJggg==");
+  background: url($TaskDesk) repeat-x left bottom;
   width: 100%;
   height: 45px;
   position: absolute;

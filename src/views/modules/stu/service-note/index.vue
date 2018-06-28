@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card  style="min-height: 820px">
+  <div class="app-container1 calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}">
+    <el-card  style="height: 100%">
       <div slot="header" class="clearfix">
         <span>
           <!--<el-radio-group  @change="studentIdChange" v-model="flag">-->

@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
-    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px" :style="{width: (client.width) + 'px'}">
+  <div class="app-container1 calendar-list-container1" style="height: 100%" >
+    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;" >
       <el-row :gutter="5">
         <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
           <el-radio-group @change="handleSubject" size="mini" v-model="batchListQuery.subject">
@@ -49,9 +49,9 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :style="{width: (client.width-225) + 'px'}">
+      <el-col :style="{width: (client.width-230) + 'px'}">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 70%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -168,9 +168,7 @@
             </el-button-group>
           </div>
         </el-dialog>
-
         <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
-
           <el-table :data="notGradeStudentList" :height="($store.state.app.client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>

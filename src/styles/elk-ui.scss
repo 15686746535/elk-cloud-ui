@@ -1,6 +1,12 @@
 .app-container {
   padding: 20px;
 }
+/* 应用桌面样式*/
+.innerDesktop {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 /* 应用主样式*/
 .desktopIcon {
   width: 86px;
@@ -42,6 +48,7 @@
   -moz-user-select: none;
   font-size: 12px;
 }
+/* 应用名字样式*/
 .desktopIcon s {
   display: inline-block;
   width: 10px;
@@ -51,6 +58,7 @@
   top: 0;
   background: url($IconTextBgRight) left center no-repeat;
 }
+
 /* 应用名字样式*/
 .desktopIcon .text span {
   width: 100%;

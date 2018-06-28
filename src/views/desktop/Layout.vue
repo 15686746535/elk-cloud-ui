@@ -1,9 +1,11 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
     <div :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="padding: 20px">
-        <div class="desktopIcon ui-draggable ui-droppable" v-for="app in appList" @click="layerOpen(app)" >
-          <span class="icon"><img :src="app.icon"/></span>
-          <div class="text"><span>{{app.name}}</span><s></s></div>
+        <div class="innerDesktop ui-droppable">
+          <div class="desktopIcon ui-draggable ui-droppable" v-for="app in appList" @click="layerOpen(app)" >
+            <span class="icon"><img :src="app.icon"/></span>
+            <div class="text"><span>{{app.name}}</span><s></s></div>
+          </div>
         </div>
     </div>
     <!--任务栏-->

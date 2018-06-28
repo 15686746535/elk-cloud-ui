@@ -1,6 +1,73 @@
 .app-container {
   padding: 20px;
 }
+/* 应用主样式*/
+.desktopIcon {
+  width: 86px;
+  height: 88px;
+  cursor: pointer;
+  text-align: center;
+}
+/* 应用图标主样式*/
+.desktopIcon .icon {
+  width: 50px;
+  height: 50px;
+  margin: 5px auto;
+  outline: none;
+  -moz-user-select: none;
+  position: relative;
+}
+/* 应用图标样式*/
+.desktopIcon span {
+  display: block;
+}
+/* 应用图标样式*/
+.desktopIcon .icon img {
+  width: 50px;
+  height: 50px;
+}
+/* 应用名字主样式*/
+.desktopIcon .text {
+  display: inline-block;
+  width: auto;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  color: #fff;
+  background: url($IconTextBg) no-repeat left center;
+  position: relative;
+  padding-left: 10px;
+  margin-right: 10px;
+  outline: none;
+  -moz-user-select: none;
+  font-size: 12px;
+}
+.desktopIcon s {
+  display: inline-block;
+  width: 10px;
+  height: 22px;
+  position: absolute;
+  right: -10px;
+  top: 0;
+  background: url($IconTextBgRight) left center no-repeat;
+}
+/* 应用名字样式*/
+.desktopIcon .text span {
+  width: 100%;
+  height: 22px;
+  overflow: hidden;
+}
+/* 任务栏样式*/
+.vl-notify-task {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAXCAYAAABJXhw0AAABRUlEQVR42u3TUUuDUBQH8PNpepJVzlwuDTEnJPoiDba22F5qzkFCgik0SXB+7na2Llgo233Ybjf2cLg//xz/cB8uAMDZP5nTRU4XOci0Wq0r8iEIgkTMYb4NRFHs1Lndbl/TmFXP5iKyLHdJoCgKlav/Mu1RVVUjgaZpt7tc3W8yo55tYBiGzrM3F+n1encksCzL3OWmfaY9tm1bJODc28BxnPs6u65r05hVDz72c9/3+3h++6HifoP/3A4EQTDQdf0Cp8mLxWJIk7PoAdM0L3HCMBxX/LSHx3v4aD2wfv1iFEVTPHk2xHH8vH40Eg7PBs/zJJwkSebEaZoGdXmTm/aP2QPDwUBeLpeveFI4pNw/eA9kWfY2Gj12cH45ojTTHphOJgpOnufvPBtms5duURQfePJsKMsyn/v+Dc4Pr1afVGbc8wVKPsFj35kLRQAAAABJRU5ErkJggg==");
+  width: 100%;
+  height: 45px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 66666666666;
+}
+
 .bg-white{
   background-color:#fff;
 }
@@ -88,3 +155,7 @@ input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
 input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
   color:#b2b6bd;
 }
+
+
+
+

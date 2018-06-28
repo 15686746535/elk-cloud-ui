@@ -9,7 +9,7 @@
           <!--</el-radio-group>-->
         </span>
         <div style="float: right; padding: 3px 0" >
-          <el-select style="width: 300px;" v-model="stuServiceBuyNoteEntity.studentId" @change="studentIdChange" filterable="" remote="" reserve-keyword placeholder="请输入姓名/电话/身份证" :remote-method="getStudentList" :loading="studentListLoading">
+          <el-select style="width: 300px;" v-model="stuServiceBuyNoteEntity.studentId" @change="studentIdChange" filterable remote reserve-keyword placeholder="请输入姓名/电话/身份证" :remote-method="getStudentList" :loading="studentListLoading">
             <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
             </el-option>
           </el-select>

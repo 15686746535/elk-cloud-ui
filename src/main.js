@@ -12,6 +12,7 @@ import '@/permission' // 权限
 import MyTree from './components/MyTree'
 import Dict from './components/Dict'
 import TreeSelect from './components/TreeSelect'
+// import layer from './components/ElLayer'
 import layer from 'vue-layer'
 
 Vue.use(ElementUI, { locale })

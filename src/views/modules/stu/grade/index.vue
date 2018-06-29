@@ -23,8 +23,8 @@
         </el-col>
       </el-row>
     </el-card>
-    <el-row :gutter="5" :style="{height: ($store.state.app.client.height - 95) + 'px'}">
-      <el-col style="width: 230px;">
+    <el-row :gutter="5" :style1="{height: ($store.state.app.client.height - 95) + 'px'}" style="100%">
+      <el-col style="width: 20%">
         <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 190) + 'px'}">
@@ -49,9 +49,9 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :style="{width: (client.width-230) + 'px'}">
+      <el-col :style1="{width: (client.width-230) + 'px'}" style="width: 78%">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 70%;text-align: center;">
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height1="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 

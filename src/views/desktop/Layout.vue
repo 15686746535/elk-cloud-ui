@@ -314,9 +314,6 @@ export default {
       ]
     }
   },
-  components: {
-    student
-  },
   computed: {
   },
   mounted() {

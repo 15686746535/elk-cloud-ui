@@ -1,5 +1,5 @@
 <template>
-  <div class="" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="student" :style="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
         <el-card body-style="padding: 5px 20px;" style="margin-bottom: 5px;height: 90px;line-height: 38px">
@@ -1907,16 +1907,12 @@
         }
       },
       matchingStudents() {
-        console.log('-------sdfsdfsdfsdf---------------------')
-        console.log(this.studentEntity.mobile)
         if (this.studentEntity.mobile) {
           this.createLoading = true
           getIntentionByMobile({ 'mobile': this.studentEntity.mobile }).then(response => {
             var flag = true
             console.log(response)
             if (response.data.data) {
-              console.log('-------sdfsdfsdfsdf---------------------')
-              console.log(response.data.data)
               this.studentEntity.intentionId = response.data.data.intentionId
               if (!this.studentEntity.name) this.studentEntity.name = response.data.data.name
               if (!this.studentEntity.idNumber && response.data.data.idNumber) {
@@ -1971,8 +1967,8 @@
   }
 </script>
 
-<style>
-
+<style rel="stylesheet/scss" lang="scss" scoped>
+.student{
   .img{
     width: 50px;
     height: 50px;
@@ -1980,7 +1976,6 @@
     border-radius: 150px;
     overflow: hidden;
   }
-
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -2071,19 +2066,19 @@
     display: block;
   }
   .batchCss{
-       background-color: rgba(64,158,255,.1);
-       display: inline-block;
-       padding: 0 10px;
-       height: 32px;
-       line-height: 30px;
-       font-size: 12px;
-       color: #409eff;
-       border-radius: 4px;
-       box-sizing: border-box;
-       border: 1px solid rgba(64,158,255,.2);
-       white-space: nowrap;
-       cursor: pointer;
-     }
+    background-color: rgba(64,158,255,.1);
+    display: inline-block;
+    padding: 0 10px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #409eff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(64,158,255,.2);
+    white-space: nowrap;
+    cursor: pointer;
+  }
   .batchCss_selected{
     background-color: rgba(103,194,58,.1);
     border-color: rgba(103,194,58,.2);
@@ -2095,19 +2090,19 @@
     color: #67c23a;
   }
   .carClassCss{
-       background-color: rgba(64,158,255,.1);
-       display: inline-block;
-       padding: 0 10px;
-       height: 32px;
-       line-height: 30px;
-       font-size: 12px;
-       color: #409eff;
-       border-radius: 4px;
-       box-sizing: border-box;
-       border: 1px solid rgba(64,158,255,.2);
-       white-space: nowrap;
-       cursor: pointer;
-     }
+    background-color: rgba(64,158,255,.1);
+    display: inline-block;
+    padding: 0 10px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #409eff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(64,158,255,.2);
+    white-space: nowrap;
+    cursor: pointer;
+  }
   .carClassCss_selected{
     background-color: rgba(103,194,58,.1);
     border-color: rgba(103,194,58,.2);
@@ -2118,4 +2113,6 @@
     border-color: rgba(103,194,58,.2);
     color: #67c23a;
   }
+}
+
 </style>

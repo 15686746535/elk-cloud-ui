@@ -165,6 +165,7 @@ export default {
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+      background-color: #2d3a4b;
     }
     .login-form {
       /*position: absolute;*/

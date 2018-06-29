@@ -17,7 +17,7 @@
     <div id="smartMenu_body"  class="smart_menu_box">
       <div class="smart_menu_body">
         <ul class="smart_menu_ul">
-          <li class="smart_menu_li" v-show="appIndex"><a class="smart_menu_a">打开应用</a></li>
+          <li class="smart_menu_li" v-show="appIndex"><a class="smart_menu_a" @click="mouseOpen">打开应用</a></li>
           <!-- 分割线 -->
           <li class="smart_menu_li_separate" v-show="appIndex && appIndex < appList.length-1"></li>
           <!-- 应用移动桌面 -->
@@ -39,13 +39,13 @@
               移动应用到
             </a>
           </li>
-          <li class="smart_menu_li" v-show="appIndex && appIndex < appList.length-1"><a class="smart_menu_a">移除应用</a></li>
+          <li class="smart_menu_li" v-show="appIndex && appIndex < appList.length-1"><a class="smart_menu_a" @click="removeApp">移除应用</a></li>
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="showHome">显示桌面</a></li>
           <li class="smart_menu_li_separate" v-show="!appIndex"></li>
-          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="location.reload()">切换风格</a></li>
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="resetHome">刷新桌面</a></li>
           <!--<li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" >桌面设置</a></li>-->
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a">主题设置</a></li>
-          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="location.reload()">重置桌面</a></li>
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="resetHome">重新加载</a></li>
           <li class="smart_menu_li_separate" v-show="!appIndex"></li>
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="logout">退出系统</a></li>
         </ul>
@@ -169,6 +169,16 @@ export default {
           ul.style.top = -36 * offsetCount
         }
       }
+    },
+    removeApp() {
+      this.appList.splice(this.appIndex, 1)
+      // 这里需要传回后台保存
+    },
+    mouseOpen() {
+      this.layerOpen(this.appList[this.appIndex])
+    },
+    resetHome() {
+      location.reload()
     },
     showHome() {
       var a = document.getElementsByClassName('selected')

@@ -4,7 +4,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 import App from './App'
-import router from './router/index-copy'
+import router from './router/index'
 import store from './store'
 import * as filters from './filters' // 全局filter
 import '@/icons' // icon

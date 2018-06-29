@@ -2,12 +2,12 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick">
     <div :style="{height: ($store.state.app.client.height - 160) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="position: relative;top: 30px;left: 65px;">
         <div class="innerDesktop ui-droppable">
-          <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in permission_routers.appList" @click="layerOpen(app)" :class="app.type==='1'?'isApp':''" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
-            <span class="icon" :class="app.type==='1'?'isApp':''">
-              <div class="txInfo" :class="app.type==='1'?'isApp':''" v-if="app.msgCount > 0">{{app.msgCount}}</div>
-              <img :src="app.icon" :class="app.type==='1'?'isApp':''"/>
+          <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in appList" @click="layerOpen(app)" :app="index!==appList.length-1" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
+            <span class="icon" :app="index!==appList.length-1" >
+              <div class="txInfo" :app="index!==appList.length-1"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
+              <img :src="app.icon"  :app="index!==appList.length-1"/>
             </span>
-            <div class="text" :class="app.type==='1'?'isApp':''"><span :class="app.type==='1'?'isApp':''">{{app.name}}</span><s></s></div>
+            <div class="text" :app="index!==appList.length-1"><span :app="index!==appList.length-1">{{app.name}}</span><s></s></div>
           </div>
         </div>
     </div>
@@ -57,7 +57,7 @@
       <div id="dockContainer" class="dock_container dock_pos_left">
         <div class="dock_middle">
           <div id="default_app" class="ui-droppable">
-            <div class="desktopIcon ui-draggable ui-droppable" v-for="app in permission_routers.leftIcon" @click="layerOpen(app)" :id="'menu_'+ app.id" :title="app.name">
+            <div class="desktopIcon ui-draggable ui-droppable" v-for="app in defaultList" @click="layerOpen(app)" :id="'menu_'+ app.id" :title="app.name">
               <span class="icon">
                  <div class="txInfo" v-if="app.msgCount > 0">{{app.msgCount}}</div>
                 <img :src="app.icon"/>
@@ -77,7 +77,7 @@
                 </li>
               </ul>
               <ul class="item item_ul">
-                <li v-for="menu in permission_routers.startMenuList" :id="'item0menu_'+ menu.id" @click="layerOpen(menu)" @mouseenter="childItemTop($event,menu)">
+                <li v-for="menu in startList" :id="'item0menu_'+ menu.id" @click="layerOpen(menu)" @mouseenter="childItemTop($event,menu)">
                   <span><img :src="menu.icon"/>{{menu.name}}</span>
                   <b v-if="menu.childItem && menu.childItem.length > 0"></b>
                   <ul v-if="menu.childItem && menu.childItem.length > 0" class="item childItem item_ul" :id="'item0menu_ul_'+ menu.id">
@@ -110,7 +110,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'permission_routers',
+      'defaultList',
+      'startList',
+      'appList',
       'name',
       'avatar'
     ])
@@ -120,8 +122,8 @@ export default {
     document.oncontextmenu = function(ev) {
       var oEvent = ev || even
       var oUl = document.getElementById('smartMenu_body')
-      var clazzNames = oEvent.toElement.className
-      that.isApp = clazzNames.indexOf('isApp') > -1
+      console.log(oEvent.toElement)
+      that.isApp = oEvent.toElement.getAttribute('app')
       // 一定要加px，要不然chrom不认
       oUl.style.top = oEvent.clientY + 'px'
       oUl.style.left = oEvent.clientX + 'px'

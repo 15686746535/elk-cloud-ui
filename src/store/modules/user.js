@@ -1,5 +1,6 @@
 import { login, logout, getInfo } from '@/api/upms/login'
 import { Message } from 'element-ui'
+import { defaultMap, startMenuMap, appFormat, appMap } from '@/router'
 import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
@@ -10,6 +11,9 @@ const user = {
     avatar: '',
     notice: 0,
     permissions: [],
+    defaultList: [],
+    startList: [],
+    appList: [],
     roles: []
   },
 
@@ -34,6 +38,15 @@ const user = {
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
+    },
+    SET_DEFAULTLIST: (state, defaultList) => {
+      state.defaultList = defaultList
+    },
+    SET_STARTLIST: (state, startList) => {
+      state.startList = startList
+    },
+    SET_APPLIST: (state, appList) => {
+      state.appList = appList
     }
   },
 
@@ -66,11 +79,11 @@ const user = {
             commit('SET_AVATAR', data.avatar)
             commit('SET_NOTICE', data.notice)
             commit('SET_PERMISSIONS', data.permissions)
+            commit('SET_APPLIST', appMap)
+            commit('SET_STARTLIST', startMenuMap)
+            commit('SET_DEFAULTLIST', defaultMap)
             resolve(response)
           } else {
-            // setToken(null)
-            // commit('SET_TOKEN', null) 13996972487 eluchn123
-            // commit('SET_REFRESH_TOKEN', null)
             Message.error('您没有权限！')
             logout(state.token, state.refresh_token).then(() => {
               console.log(123)
@@ -115,22 +128,6 @@ const user = {
         resolve()
       })
     }
-    // // 动态修改权限
-    // ChangeRole({ commit }, role) {
-    //   return new Promise(resolve => {
-    //     commit('SET_TOKEN', role)
-    //     setToken(role)
-    //     getUserInfo(role).then(response => {
-    //       const data = response.data.data
-    //       commit('SET_ROLES', data.role)
-    //       commit('SET_NAME', data.name)
-    //       commit('SET_AVATAR', data.avatar)
-    //       commit('SET_INTRODUCTION', data.introduction)
-    //       resolve()
-    //     })
-    //   })
-    // }
-
   }
 }
 

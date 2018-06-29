@@ -12,11 +12,14 @@ const getters = {
   notice: state => state.user.notice,
   name: state => state.user.name,
   roles: state => state.user.roles,
-  permissions: state => state.user.permissions,
+  defaultList: state => state.user.defaultList,
+  startList: state => state.user.startList,
+  appList: state => state.user.appList,
+  permissions: state => state.user.permissions
   // introduction: state => state.user.introduction,
   // status: state => state.user.status,
   // setting: state => state.user.setting,
-  permission_routers: state => state.permission.routers
+  // permission_routers: state => state.permission.routers
   // addRouters: state => state.permission.addRouters
 }
 export default getters

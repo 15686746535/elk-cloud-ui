@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}" style="100%">
+  <div class="app-container calendar-list-container1 graduation" :style1="{height: $store.state.app.client.height + 'px'}" style="100%">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
         <el-col class="org-tree-left">
@@ -894,8 +894,8 @@
   }
 </script>
 
-<style>
-
+<style rel="stylesheet/scss" lang="scss" scoped>
+.graduation{
   .img{
     width: 50px;
     height: 50px;
@@ -1017,4 +1017,5 @@
     border-color: rgba(103,194,58,.2);
     color: #67c23a;
   }
+}
 </style>

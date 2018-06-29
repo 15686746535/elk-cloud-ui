@@ -19,19 +19,19 @@
 </template>
 
 <script>
-import helper from './helper/helper.js';
+import helper from './helper/helper.js'
 
 export default {
   data() {
     return {
-      isMin: false, //左移的距离
-      isMax: false, //左移的距离
-      width: this.options.area[0], //
-      height: this.options.area[1], //
-      left: this.options.offset[0] + 'px', //
-      top: this.options.offset[1] + 'px', //
-      moveLeft: 0, //左移的距离
-      moveTop: 0, //上移的距离
+      isMin: false, // 左移的距离
+      isMax: false, // 左移的距离
+      width: this.options.area[0],
+      height: this.options.area[1],
+      left: this.options.offset[0] + 'px',
+      top: this.options.offset[1] + 'px',
+      moveLeft: 0, // 左移的距离
+      moveTop: 0, // 上移的距离
       ismove: false,
       id: 'vlip' + new Date().getTime(),
       zindex: 0
@@ -52,73 +52,71 @@ export default {
       return {
         height: (parseInt(this.height) - 28) + 'px',
         minHeight: 'inherit',
-        overflow: 'auto',
+        overflow: 'auto'
       }
-    },
+    }
   },
   async mounted() {
-    this.getContent();
-    await helper.sleep(20);
-    if (this.options.shade) { //是否显示遮罩
+    this.getContent()
+    await helper.sleep(20)
+    if (this.options.shade) { // 是否显示遮罩
       document.getElementById(this.options.id + '_mask').addEventListener('mousemove', (event) => {
-        this.move(event);
-      });
+        this.move(event)
+      })
       document.getElementById(this.options.id + '_mask').addEventListener('mouseup', (event) => {
-        this.moveEnd(event);
-      });
+        this.moveEnd(event)
+      })
     } else {
       document.addEventListener('mousemove', (event) => {
-        this.move(event);
-      });
+        this.move(event)
+      })
       document.addEventListener('mouseup', (event) => {
-        this.moveEnd(event);
-      });
+        this.moveEnd(event)
+      })
     }
-    this.resetZIndex();
+    this.resetZIndex()
   },
   methods: {
     getStyle(el, styleProp) {
-      var x = document.getElementById(el);
+      var x = document.getElementById(el)
       if (window.getComputedStyle) {
-        var y = document.defaultView.getComputedStyle(x, null).getPropertyValue(styleProp);
+        return document.defaultView.getComputedStyle(x, null).getPropertyValue(styleProp)
       } else if (x.currentStyle) {
-        var y = x.currentStyle[styleProp];
+        return x.currentStyle[styleProp]
       }
-      return y;
     },
     resetZIndex() {
-      let max = 500;
-      let doms = document.querySelectorAll('.vl-notify-iframe');
-      let domZindex = 0;
+      var max = 500
+      var doms = document.querySelectorAll('.vl-notify-iframe')
+      var domZindex = 0
       for (let i = 0, len = doms.length; i < len; i++) {
-        let value = parseInt(this.getStyle(doms[i].id, 'z-index'));
-        if (this.options.id == doms[i].id) {
-          domZindex = value;
+        var value = parseInt(this.getStyle(doms[i].id, 'z-index'))
+        if (this.options.id === doms[i].id) {
+          domZindex = value
         }
         if (max < value) {
-          max = value;
+          max = value
         }
       }
-      if (domZindex == max && max != 500) {
-        return;
+      if (domZindex === max && max !== 500) {
+        return
       }
-      this.zindex = max + 1;
+      this.zindex = max + 1
     },
     async getContent() {
-      await helper.sleep(10);
-      let propsData = JSON.parse(JSON.stringify(this.options.content.data));
-      propsData['layerid'] = this.options.id;
-      let instance = new this.options.content.content({ //具体参数信息，请参考vue源码
+      await helper.sleep(10)
+      var propsData = JSON.parse(JSON.stringify(this.options.content.data))
+      propsData['layerid'] = this.options.id
+      var instance = new this.options.content.content({ // 具体参数信息，请参考vue源码
         parent: this.options.content.parent,
         propsData: propsData
-      });
-      instance.vm = instance.$mount();
-      document.getElementById(this.id).appendChild(instance.vm.$el);
-      this.options.layer.instancesVue[this.options.id].iframe = instance.vm;
+      })
+      instance.vm = instance.$mount()
+      document.getElementById(this.id).appendChild(instance.vm.$el)
+      this.options.layer.instancesVue[this.options.id].iframe = instance.vm
     },
     windowFull() {
-      if (this.isMax){
-          console.log(this.options.offset)
+      if (this.isMax) {
         this.width = this.options.area[0]
         this.height = this.options.area[1]
         this.left = '50%'
@@ -130,35 +128,35 @@ export default {
       }
     },
     windowMin(event) {
-      var that = document.getElementById(this.options.id);
+      var that = document.getElementById(this.options.id)
       that.style.display = 'none'
     },
     close(event) {
-      helper.clickMaskCloseAll(event, this.options.layer, this.options.id);
+      helper.clickMaskCloseAll(event, this.options.layer, this.options.id)
     },
     btnyes(event) {
-      helper.btnyes(event, this.options);
+      helper.btnyes(event, this.options)
     },
     btncancel(event) {
-      helper.btncancel(event, this.options);
+      helper.btncancel(event, this.options)
     },
     moveStart(event) {
-      helper.moveStart(event, this.options);
-      this.moveLeft = event.clientX;
-      this.moveTop = event.clientY;
-      this.ismove = true;
+      helper.moveStart(event, this.options)
+      this.moveLeft = event.clientX
+      this.moveTop = event.clientY
+      this.ismove = true
     },
     move(event) {
       if (this.ismove && !this.isMax) {
-        let o = document.getElementById(this.options.id + "");
-        o.style.left = this.options.offset[0] + (event.clientX - this.moveLeft) + "px";
-        o.style.top = this.options.offset[1] + (event.clientY - this.moveTop) + "px";
-        this.resetZIndex();
+        var o = document.getElementById(this.options.id + '')
+        o.style.left = this.options.offset[0] + (event.clientX - this.moveLeft) + 'px'
+        o.style.top = this.options.offset[1] + (event.clientY - this.moveTop) + 'px'
+        this.resetZIndex()
       }
     },
     moveEnd(event) {
-      this.ismove = false;
+      this.ismove = false
     }
-  },
+  }
 }
 </script>

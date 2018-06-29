@@ -2,12 +2,12 @@
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick">
     <div :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="position: relative;top: 30px;left: 88px;">
         <div class="innerDesktop ui-droppable">
-          <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in appList" @click="layerOpen(app)" :app="index!==appList.length-1" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
-            <span class="icon" :app="index!==appList.length-1" >
-              <div class="txInfo" :app="index!==appList.length-1"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
-              <img :src="app.icon"  :app="index!==appList.length-1"/>
+          <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in appList" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
+            <span class="icon" :app="index" >
+              <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
+              <img :src="app.icon"  :app="index"/>
             </span>
-            <div class="text" :app="index!==appList.length-1"><span :app="index!==appList.length-1">{{app.name}}</span><s></s></div>
+            <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
           </div>
         </div>
     </div>
@@ -17,12 +17,12 @@
     <div id="smartMenu_body"  class="smart_menu_box">
       <div class="smart_menu_body">
         <ul class="smart_menu_ul">
-          <li class="smart_menu_li" v-show="isApp"><a class="smart_menu_a">打开应用</a></li>
+          <li class="smart_menu_li" v-show="appIndex"><a class="smart_menu_a">打开应用</a></li>
           <!-- 分割线 -->
-          <li class="smart_menu_li_separate" v-show="isApp"></li>
+          <li class="smart_menu_li_separate" v-show="appIndex && appIndex < appList.length-1"></li>
           <!-- 应用移动桌面 -->
-          <li class="smart_menu_li" v-show="isApp" :class="isHover" @mouseenter="isHover = 'smart_menu_li_hover'" @mouseout="isHover = ''">
-            <div id="smartMenu_body_1" class="smart_menu_box"@mouseenter="isHover = 'smart_menu_li_hover'" >
+          <li class="smart_menu_li" v-show="appIndex && appIndex < appList.length-1" :class="isHover" @mouseenter="isHover = 'smart_menu_li_hover'" @mouseout="isHover = ''">
+            <div id="smartMenu_body_1" class="smart_menu_box" @mouseenter="isHover = 'smart_menu_li_hover'" >
               <div class="smart_menu_body"  @mouseenter="isHover = 'smart_menu_li_hover'">
                 <ul class="smart_menu_ul"   @mouseenter="isHover = 'smart_menu_li_hover'">
                   <li class="smart_menu_li" @mouseenter="isHover = 'smart_menu_li_hover'">
@@ -39,16 +39,15 @@
               移动应用到
             </a>
           </li>
-
-          <li class="smart_menu_li" v-show="isApp"><a class="smart_menu_a">移除应用</a></li>
-          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">显示桌面</a></li>
-          <li class="smart_menu_li_separate" v-show="!isApp"></li>
-          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">切换风格</a></li>
-          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">桌面设置</a></li>
-          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">主题设置</a></li>
-          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">重置桌面</a></li>
-          <li class="smart_menu_li_separate" v-show="!isApp"></li>
-          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a" @click="logout">退出系统</a></li>
+          <li class="smart_menu_li" v-show="appIndex && appIndex < appList.length-1"><a class="smart_menu_a">移除应用</a></li>
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="showHome">显示桌面</a></li>
+          <li class="smart_menu_li_separate" v-show="!appIndex"></li>
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="location.reload()">切换风格</a></li>
+          <!--<li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" >桌面设置</a></li>-->
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a">主题设置</a></li>
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="location.reload()">重置桌面</a></li>
+          <li class="smart_menu_li_separate" v-show="!appIndex"></li>
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="logout">退出系统</a></li>
         </ul>
       </div>
     </div>
@@ -104,7 +103,7 @@ export default {
   data() {
     return {
       startShow: false,
-      isApp: false,
+      appIndex: null,
       isHover: ''
     }
   },
@@ -122,8 +121,7 @@ export default {
     document.oncontextmenu = function(ev) {
       var oEvent = ev || even
       var oUl = document.getElementById('smartMenu_body')
-      console.log(oEvent.toElement)
-      that.isApp = oEvent.toElement.getAttribute('app')
+      that.appIndex = oEvent.toElement.getAttribute('app')
       // 一定要加px，要不然chrom不认
       oUl.style.top = oEvent.clientY + 'px'
       oUl.style.left = oEvent.clientX + 'px'
@@ -170,6 +168,16 @@ export default {
           console.log(-36 * offsetCount)
           ul.style.top = -36 * offsetCount
         }
+      }
+    },
+    showHome() {
+      var a = document.getElementsByClassName('selected')
+      for (var i = 0; i < a.length; i++) {
+        a[i].classList.remove('selected')
+      }
+      var iframe = document.getElementsByClassName('vl-notify')
+      for (var n = 0; n < iframe.length; n++) {
+        iframe[n].style.display = 'none'
       }
     },
     // 打开应用

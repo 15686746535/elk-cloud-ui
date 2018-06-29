@@ -99,7 +99,7 @@ export const appMap = [
     id: 123,
     name: '学员管理',
     content: _import('modules/stu/student'),
-    icon: getIcon('one_note'),
+    icon: getIcon('icon_one_note'),
     msgCount: 0,
     childItem: []
   },
@@ -107,7 +107,7 @@ export const appMap = [
     id: 456,
     name: '学员缴费',
     content: _import('modules/stu/serviceNote'),
-    icon: getIcon('one_note'),
+    icon: getIcon('icon_one_note'),
     msgCount: 0,
     childItem: []
   },
@@ -115,7 +115,7 @@ export const appMap = [
     id: 789,
     name: '考试安排',
     content: _import('modules/stu/batch'),
-    icon: getIcon('one_note'),
+    icon: getIcon('icon_one_note'),
     msgCount: 0,
     childItem: []
   },
@@ -123,7 +123,7 @@ export const appMap = [
     id: 777,
     name: '成绩登记',
     content: _import('modules/stu/grade'),
-    icon: getIcon('one_note'),
+    icon: getIcon('icon_one_note'),
     msgCount: 0,
     childItem: []
   },
@@ -131,7 +131,7 @@ export const appMap = [
     id: 888,
     name: '毕业学员',
     content: _import('modules/stu/graduation'),
-    icon: getIcon('one_note'),
+    icon: getIcon('icon_one_note'),
     msgCount: 0,
     childItem: []
   },
@@ -139,11 +139,28 @@ export const appMap = [
     id: 999,
     name: '学员回访',
     content: _import('modules/stu/revisit'),
-    icon: getIcon('one_note'),
+    icon: getIcon('icon_one_note'),
+    msgCount: 0,
+    childItem: []
+  },
+  {
+    id: -10086,
+    name: '添加',
+    content: _import('modules/stu/revisit'),
+    icon: getIcon('icon_add'),
     msgCount: 0,
     childItem: []
   }
 ]
+
+export const addApp = {
+  id: -10086,
+  name: '添加',
+  content: _import('modules/stu/revisit'),
+  icon: getIcon('icon_add'),
+  msgCount: 0,
+  childItem: []
+}
 
 /**
  * 格式化组件
@@ -163,7 +180,7 @@ export function appFormat(list) {
 export const constantRouterMap = [
   { path: '/login', name: '登陆', component: _import('login/index') },
   { path: '/404', name: '404' },
-  { path: '/', name: '首页', component: _import('desktop/index') }
+  { path: '/', name: '首页', redirect: '/home', component: _import('desktop/index'), children: [{ path: 'home', component: _import('dashboard/index'), name: '首页' }] }
 ]
 /**
  * 注册路由

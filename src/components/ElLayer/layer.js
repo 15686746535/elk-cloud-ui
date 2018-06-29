@@ -26,6 +26,7 @@ let Notification = (function(vue, globalOption = {
     offset: 'auto',
     tabIcon: -1,
     icon: -1,
+    genre: 'task',
     btn: '确定',
     time: 0,
     shade: true,
@@ -78,7 +79,21 @@ let Notification = (function(vue, globalOption = {
       'main': instance.vm,
       'iframe': '',
     }
+    // 构建回到桌面
     let task = document.getElementsByClassName("vl-notify-task");
+    var home = document.getElementById('home_task');
+    if (!home) {
+      var hoptions = {
+        id: 'home',
+        genre: 'home'
+      }
+      let homeInstance = new taskLayer({
+        data: hoptions
+      });
+      homeInstance.vm = homeInstance.$mount();
+
+      task[0].appendChild(homeInstance.vm.$el);
+    }
     if (options.type == 2 && task && task.length > 0) {
         let taskInstance = new taskLayer({
             data: options

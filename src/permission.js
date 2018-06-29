@@ -1,4 +1,4 @@
-import router from './router/index-copy'
+import router from './router/index'
 import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
@@ -29,11 +29,11 @@ router.beforeEach((to, from, next) => { // 开启Progress
 
 export function getInfo(to, from, next) {
   store.dispatch('GetInfo').then(res => { // 拉取用户信息
-    // const data = res.data
-    // store.dispatch('GenerateRoutes', data).then(() => { // 生成可访问的路由表
+    const data = res.data
+    store.dispatch('GenerateRoutes', data).then(() => { // 生成可访问的路由表
     // router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-    next({ ...to }) // hack方法 确保addRoutes已完成
-    // })
+      next({ ...to }) // hack方法 确保addRoutes已完成
+    })
   }).catch((e) => {
     store.dispatch('FedLogOut').then(() => {
       next({ path: '/login' })

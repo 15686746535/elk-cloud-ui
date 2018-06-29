@@ -1,4 +1,4 @@
-import { constantRouterMap } from '@/router'
+import { appMap } from '@/router'
 
 /**
  * 动态权限判断
@@ -46,17 +46,17 @@ import { constantRouterMap } from '@/router'
 
 const permission = {
   state: {
-    routers: constantRouterMap
+    routers: null
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
-      state.routers = constantRouterMap.concat(routers)
+      state.routers = routers
     }
   },
   actions: {
     GenerateRoutes({ commit }) {
       return new Promise(resolve => {
-        commit('SET_ROUTERS', constantRouterMap)
+        commit('SET_ROUTERS', appMap)
         resolve()
       })
     }

@@ -9,6 +9,8 @@
 **/
 import Vue from 'vue'
 import Router from 'vue-router'
+
+import desktop from '@/views/desktop'
 import student from '@/views/modules/stu/student'
 import servicenote from '@/views/modules/stu/service-note/index'
 import exam from '@/views/modules/stu/batch/index'
@@ -18,7 +20,26 @@ import revisit from '@/views/modules/stu/revisit/index'
 
 Vue.use(Router)
 
-export const constantRouterMap = {
+export const constantRouterMap = [
+  { path: '/login', name: '登陆', isShow: false, children: [] },
+  { path: '/404', name: '404', isShow: false, children: [] },
+  {
+    menuId: 0,
+    path: '/',
+    redirect: '/dashboard',
+    isShow: false,
+    component: desktop,
+    meta: {
+      title: '首页',
+      icon: 'menu'
+    },
+    children: [
+      { menuId: 0, path: 'dashboard', component: desktop, isShow: false, name: '首页' }
+    ]
+  }
+]
+
+export const appMap = {
   leftIcon: [
     {
       id: 'menu17',

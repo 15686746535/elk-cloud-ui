@@ -161,7 +161,7 @@ export function appFormat(list) {
  * @type {*[]}
  */
 export const constantRouterMap = [
-  { path: '/login', name: '登陆' },
+  { path: '/login', name: '登陆', component: _import('login/index') },
   { path: '/404', name: '404' },
   { path: '/', name: '首页', component: _import('desktop/index') }
 ]

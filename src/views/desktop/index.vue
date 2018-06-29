@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick">
-    <div :style="{height: ($store.state.app.client.height - 160) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="position: relative;top: 30px;left: 65px;">
+    <div :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="position: relative;top: 30px;left: 88px;">
         <div class="innerDesktop ui-droppable">
           <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in appList" @click="layerOpen(app)" :app="index!==appList.length-1" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
             <span class="icon" :app="index!==appList.length-1" >
@@ -141,7 +141,7 @@ export default {
     appStyle(i) {
       var h = this.$store.state.app.client.height - 160
       // 屏幕高度除以应用高度 取整表示一列可以显示多少个
-      var count = parseInt(h / 123)
+      var count = parseInt(h / 113)
       // 当前索引 除以每列个数 取整 表示第几列
       var column = parseInt(i / count)
       // 当前索引 取模 为当前列第几个
@@ -186,7 +186,7 @@ export default {
           content: {
             content: app.content,
             parent: this, // 当前的vue对象
-            data: app.params// props
+            data: app.params || []// props
           }
         })
       }

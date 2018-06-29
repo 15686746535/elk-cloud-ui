@@ -46,6 +46,11 @@ export default new Router({
  * 系统菜单 menuId 需要和数据库一样
  * 修改图标无需再数据库修改，只需在此修icon改即可
  * @type {*[]}
+ *  id: 'menu17',
+  name: '短消息',
+ content: student,
+ msgCount: 1,
+ icon:
  */
 export const asyncRouterMap = [
   {

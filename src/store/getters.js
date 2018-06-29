@@ -6,7 +6,6 @@ const getters = {
   motorcycleType: state => state.app.motorcycleType,
   iFrameUrl: state => state.app.iFrameUrl,
   spread: state => state.app.spread,
-  cachedViews: state => state.tagsView.cachedViews,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   notice: state => state.user.notice,

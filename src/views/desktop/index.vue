@@ -48,7 +48,7 @@
           <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">主题设置</a></li>
           <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">重置桌面</a></li>
           <li class="smart_menu_li_separate" v-show="!isApp"></li>
-          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a">退出系统</a></li>
+          <li class="smart_menu_li" v-show="!isApp"><a class="smart_menu_a" @click="logout">退出系统</a></li>
         </ul>
       </div>
     </div>
@@ -190,6 +190,11 @@ export default {
           }
         })
       }
+    },
+    logout() {
+      this.$store.dispatch('LogOut').then(() => {
+        location.reload() // 为了重新实例化vue-router对象 避免bug
+      })
     }
   }
 }

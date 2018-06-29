@@ -52,12 +52,6 @@ const app = {
     }
   },
   actions: {
-    ToggleSideBar: ({ commit }) => {
-      commit('TOGGLE_SIDEBAR')
-    },
-    addVisitedViews: ({ commit }, view) => {
-      commit('ADD_VISITED_VIEWS', view)
-    },
     setLoading: ({ commit }, loading) => {
       commit('SET_LOADING', loading)
     },
@@ -69,12 +63,6 @@ const app = {
     },
     setClientWidth: ({ commit }, width) => {
       commit('SET_CLIENT_WIDTH', width)
-    },
-    delVisitedViews: ({ commit, state }, view) => {
-      return new Promise((resolve) => {
-        commit('DEL_VISITED_VIEWS', view)
-        resolve([...state.visitedViews])
-      })
     }
   }
 }

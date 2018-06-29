@@ -305,6 +305,7 @@
   background: url($start_item_bg) repeat;
   display: none;
   width: 180px;
+  border-radius: 0 5px 5px 0;
 }
 /* 左边菜单样式*/
 #start_item .admin {
@@ -318,15 +319,18 @@
   background-position: left -92px;
   background-color: #FFF;
   padding: 0;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   float: left;
-  margin-right: 10px;
+  margin: -5px 15px 0 20px;
 }
 /* 左边菜单样式*/
-#start_item .item li:hover {
+#start_item .item.item_ul li:hover {
   background: url($start_item_over) repeat-x left bottom;
   cursor: pointer;
+  .childItem{
+    display: block;
+  }
 }
 /* 左边菜单样式*/
 #start_item ol, ul {

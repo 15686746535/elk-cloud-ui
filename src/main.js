@@ -12,27 +12,34 @@ import '@/permission' // 权限
 import MyTree from './components/MyTree'
 import Dict from './components/Dict'
 import TreeSelect from './components/TreeSelect'
-// import layer from './components/ElLayer'
-import layer from 'vue-layer'
-
+import layer from './components/ElLayer/layer.js'
+// import layer from 'vue-layer'
 Vue.use(ElementUI, { locale })
 // 引入自定义组件。index.js是组件的默认入口
+
+window.Vue1 = Vue
+var lai = layer(Vue, {
+  msgtime: 1
+})
+console.log(lai)
+Vue.prototype.$layer = lai
 
 Vue.use(TreeSelect)
 Vue.use(MyTree)
 Vue.use(Dict)
-Vue.prototype.$layer = layer(Vue)
+// Vue.prototype.$layer = layer(Vue)
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
 Vue.config.productionTip = false
-
-new Vue({
+window.app1 = new Vue({
   el: '#app',
+  render: h => h(App),
   store,
   router,
   template: '<App/>',
   components: { App }
 })
+

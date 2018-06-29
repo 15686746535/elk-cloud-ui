@@ -1,14 +1,14 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}" style="width: 100%">
     <el-row :gutter="5">
-      <el-col class="org-tree-left">
+      <el-col class="org-tree-left" style="width: 20%">
         <el-card>
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
           <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
         </el-card>
       </el-col>
 
-      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
+      <el-col :style1="{width: ($store.state.app.client.width-225) + 'px'}" style="width: 80%">
         <el-card body-style="padding:10px 20px;" style="height: 50px;">
 
           <el-row :gutter="5">
@@ -27,7 +27,7 @@
             </el-col>
           </el-row>
         </el-card>
-          <el-card :style="{height: ($store.state.app.client.height-95) + 'px',width: ($store.state.app.client.width-665) + 'px'}" style="float: left;border-radius:4px 0 0 4px;margin-top: 5px">
+          <el-card :style1="{height: ($store.state.app.client.height-95) + 'px',width: ($store.state.app.client.width-665) + 'px'}" style="float: left;border-radius:4px 0 0 4px;margin-top: 5px;width: auto">
 
             <el-table :height="($store.state.app.client.height-185)" :data="list" v-loading="listLoading" @row-click="questionClick"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
               <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>

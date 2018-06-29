@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
+  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}" >
     <div v-show="showModule=='list'">
 
       <el-card style="margin-bottom: 5px;">

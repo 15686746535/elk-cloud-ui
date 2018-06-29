@@ -1,16 +1,16 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}">
     <transition name="el-zoom-in-center">
-    <div v-show="showModule=='list'" style="height: 100%">
-      <el-row :gutter="5">
-        <el-col class="org-tree-left">
+    <div v-show="showModule=='list'" style="height: 100%;width: 100%">
+      <el-row :gutter="5" >
+        <el-col class="org-tree-left" style="width: 20%">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
             <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
 
-        <el-col :style="{width: ($store.state.app.client.width-250) + 'px'}">
+        <el-col :style1="{width: ($store.state.app.client.width-250) + 'px'}" style="width: 80%">
           <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
             <el-row :gutter="5">
               <el-col :xs="7" :sm="7" :md="7" :lg="7">

@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="app-container calendar-list-container1" :styl1e="{height: $store.state.app.client.height + 'px'}">
 
-    <el-col :style="{width: ($store.state.app.client.width) + 'px'}">
+    <el-col :style1="{width: ($store.state.app.client.width) + 'px'}">
         <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
           <!--<el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
           <!--</el-date-picker>-->

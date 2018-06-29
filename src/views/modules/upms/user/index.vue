@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'"  style="height: 100%">
       <el-row :gutter="5">
-        <el-col class="org-tree-left">
+        <el-col class="org-tree-left" style="width: 20%">
           <el-card>
             <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
             <!-- 分割线 -->
@@ -11,7 +11,7 @@
           </el-card>
         </el-col>
 
-        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
+        <el-col :style1="{width: ($store.state.app.client.width-225) + 'px'}" style="width: 80%">
           <el-card style="height: 80px">
             <div class="filter-container" style="float: left;line-height: 40px">
               |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>

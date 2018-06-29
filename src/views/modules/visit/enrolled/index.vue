@@ -1,17 +1,17 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}">
     <div v-show="showModule=='list'" style="height: 100%">
       <el-row :gutter="5">
 
 
-        <el-col class="org-tree-left">
+        <el-col class="org-tree-left" style="width: 20%">
           <el-card>
             <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
             <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
           </el-card>
         </el-col>
 
-        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
+        <el-col :style1="{width: ($store.state.app.client.width-225) + 'px'}" style="width: 80%">
           <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
 
             <el-row :gutter="10">

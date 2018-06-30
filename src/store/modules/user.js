@@ -77,6 +77,9 @@ const user = {
         })
       })
     },
+    SetDesktopABg: ({ commit }, bg) => {
+      commit('SET_DESKTOPBG', bg) // 桌面背景
+    },
     SetDesktopApp: ({ commit }, list) => {
       commit('SET_DESKTOPONELIST', desktopFilter(list, '1'))
       commit('SET_DESKTOPTWOLIST', desktopFilter(list, '2'))

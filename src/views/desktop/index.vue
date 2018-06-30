@@ -65,7 +65,7 @@
           <li class="smart_menu_li_separate" v-show="!appIndex"></li>
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="resetHome">刷新桌面</a></li>
           <!--<li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" >桌面设置</a></li>-->
-          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a">主题设置</a></li>
+          <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="layerOpen(theme)">主题设置</a></li>
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="resetHome">重新加载</a></li>
           <li class="smart_menu_li_separate" v-show="!appIndex"></li>
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="logout">退出系统</a></li>
@@ -134,6 +134,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import defect from '@/views/defect'
+import theme from '@/views/theme'
 
 export default {
   name: 'layout',
@@ -144,6 +145,7 @@ export default {
       appIndex: null,
       add: { id: -1087, name: '添加', content: defect, icon: '../../../static/icon/add_icon.png' },
       defect: { id: -9999999, name: '没找到', content: defect, icon: '../../../static/icon/defect.png' },
+      theme: { id: -88888, name: '主题设置', content: theme, icon: '../../../static/icon/defect.png' },
       isHover: ''
     }
   },

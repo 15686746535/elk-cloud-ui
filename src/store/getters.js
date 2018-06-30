@@ -8,7 +8,6 @@ const getters = {
   spread: state => state.app.spread,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
-  notice: state => state.user.notice,
   name: state => state.user.name,
   roles: state => state.user.roles,
   defaultList: state => state.user.defaultList,

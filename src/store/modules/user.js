@@ -1,6 +1,6 @@
 import { login, logout, getInfo } from '@/api/upms/login'
 import { Message } from 'element-ui'
-import { defaultMap, startFilter, appFilter } from '@/router'
+import { defaultMap, startFilter, hasAppFilter, showAppFilter, desktopFilter } from '@/router'
 import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
@@ -9,13 +9,16 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
+    desktopBg: '',
     permissions: [],
     defaultList: [],
     startList: [],
-    appList: [],
+    menuIds: [], // 拥有的菜单id
+    desktopOneList: [], // 桌面1显示的菜单
+    desktopTwoList: [], // 桌面2显示的菜单
+    hasAppList: [], // 拥有的菜单
     roles: []
   },
-
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -25,6 +28,9 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.name = name
+    },
+    SET_DESKTOPBG: (state, desktopBg) => {
+      state.desktopBg = desktopBg
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -41,8 +47,17 @@ const user = {
     SET_STARTLIST: (state, startList) => {
       state.startList = startList
     },
-    SET_APPLIST: (state, appList) => {
-      state.appList = appList
+    SET_MENUIDS: (state, menuIds) => {
+      state.menuIds = menuIds
+    },
+    SET_HASAPPLIST: (state, hasAppList) => {
+      state.hasAppList = hasAppList
+    },
+    SET_DESKTOPONELIST: (state, desktopOneList) => {
+      state.desktopOneList = desktopOneList
+    },
+    SET_DESKTOPTWOLIST: (state, desktopTwoList) => {
+      state.desktopTwoList = desktopTwoList
     }
   },
 
@@ -53,7 +68,6 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password, userInfo.randomStr, userInfo.code).then(response => {
           const data = response.data
-          console.log(response)
           setToken(data.access_token)
           commit('SET_TOKEN', data.access_token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)
@@ -63,7 +77,10 @@ const user = {
         })
       })
     },
-
+    SetDesktopApp: ({ commit }, list) => {
+      commit('SET_DESKTOPONELIST', desktopFilter(list, '1'))
+      commit('SET_DESKTOPTWOLIST', desktopFilter(list, '2'))
+    },
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
@@ -71,13 +88,80 @@ const user = {
           const data = response.data
           if (data.code === 0 && data.roles != null && data.roles.length > 0) {
             commit('SET_ROLES', data.roles)
+            commit('SET_DESKTOPBG', data.desktopBg || '01-1') // 桌面背景
             commit('SET_NAME', data.username)
             commit('SET_AVATAR', data.avatar)
-            commit('SET_NOTICE', data.notice)
+            commit('SET_MENUIDS', data.menuIds)
             commit('SET_PERMISSIONS', data.permissions)
-            var appList = appFilter(data.menuIds)
-            commit('SET_APPLIST', appList)
-            commit('SET_STARTLIST', startFilter(appList))
+            // 测试
+            data.showApp = [
+              {
+                id: 2,
+                userId: 1,
+                menuId: 20800, // 回访信息
+                desktop: '1', // 桌面1
+                sort: 0
+              },
+              {
+                id: 2,
+                userId: 1,
+                menuId: 20101, // 学员添加
+                desktop: '2', // 桌面2
+                sort: 1
+              },
+              {
+                id: 2,
+                userId: 1,
+                menuId: 20900, // 学费收取
+                desktop: '1', // 桌面1
+                sort: 2
+              },
+              {
+                id: 1,
+                userId: 1,
+                menuId: 20100, // 学员管理
+                desktop: '1', // 桌面1
+                sort: 3
+              },
+              {
+                id: 2,
+                userId: 1,
+                menuId: 20300, // 考试安排
+                desktop: '2', // 桌面1
+                sort: 4
+              },
+              {
+                id: 2,
+                userId: 1,
+                menuId: 20400, // 成绩登记
+                desktop: '1', // 桌面1
+                sort: 5
+              },
+              {
+                id: 2,
+                userId: 1,
+                menuId: 20600, // 毕业学员
+                desktop: '1', // 桌面1
+                sort: 6
+              },
+              {
+                id: 2,
+                userId: 1,
+                menuId: 20700, // 学员回访
+                desktop: '2', // 桌面2
+                sort: 7
+              }
+            ]
+            var hasAppList = hasAppFilter(data.menuIds, data.roles)
+            if (data.showApp && data.showApp.length > 0) {
+              var showApp = showAppFilter(hasAppList, data.showApp)
+              commit('SET_DESKTOPONELIST', desktopFilter(showApp, '1'))
+              commit('SET_DESKTOPTWOLIST', desktopFilter(showApp, '2'))
+            } else {
+              commit('SET_DESKTOPONELIST', hasAppList)
+            }
+            commit('SET_HASAPPLIST', hasAppList)
+            commit('SET_STARTLIST', startFilter(hasAppList))
             commit('SET_DEFAULTLIST', defaultMap)
             resolve(response)
           } else {
@@ -98,7 +182,6 @@ const user = {
         })
       })
     },
-
     // 登出
     LogOut({ commit, state }) {
       console.log(123)
@@ -115,7 +198,6 @@ const user = {
         })
       })
     },
-
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise(resolve => {

@@ -1,15 +1,36 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick">
-    <div :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}" style="position: relative;top: 30px;left: 88px;">
-        <div class="innerDesktop ui-droppable">
-          <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in appList" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
-            <span class="icon" :app="index" >
-              <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
-              <img :src="app.icon"  :app="index"/>
-            </span>
-            <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
-          </div>
+  <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
+    <div>
+      <div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"
+           style="position: relative;top: 30px;left: 88px;" v-if="showDesktop==='1'">
+        <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in desktopOneList" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
+          <span class="icon" :app="index" >
+            <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
+            <img v-if="" :src="app.icon"  :app="index"/>
+          </span>
+          <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
         </div>
+        <!-- 添加按钮 -->
+        <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset(true)" style="position: absolute;margin: 0px;">
+          <span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>
+          <div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>
+        </div>
+      </div>
+      <div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"
+           style="position: relative;top: 30px;left: 88px;" v-else>
+        <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in desktopTwoList" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
+          <span class="icon" :app="index" >
+            <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
+            <img :src="app.icon"  :app="index"/>
+          </span>
+          <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
+        </div>
+        <!-- 添加按钮 -->
+        <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset(true)" style="position: absolute;margin: 0px;">
+          <span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>
+          <div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>
+        </div>
+      </div>
     </div>
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
@@ -19,17 +40,17 @@
         <ul class="smart_menu_ul">
           <li class="smart_menu_li" v-show="appIndex"><a class="smart_menu_a" @click="mouseOpen">打开应用</a></li>
           <!-- 分割线 -->
-          <li class="smart_menu_li_separate" v-show="appIndex && appIndex < appList.length-1"></li>
+          <li class="smart_menu_li_separate" v-show="appIndex && appIndex > -1"></li>
           <!-- 应用移动桌面 -->
-          <li class="smart_menu_li" v-show="appIndex && appIndex < appList.length-1" :class="isHover" @mouseenter="isHover = 'smart_menu_li_hover'" @mouseout="isHover = ''">
+          <li class="smart_menu_li" v-show="appIndex && appIndex > -1" :class="isHover" @mouseenter="isHover = 'smart_menu_li_hover'" @mouseout="isHover = ''">
             <div id="smartMenu_body_1" class="smart_menu_box" @mouseenter="isHover = 'smart_menu_li_hover'" >
               <div class="smart_menu_body"  @mouseenter="isHover = 'smart_menu_li_hover'">
                 <ul class="smart_menu_ul"   @mouseenter="isHover = 'smart_menu_li_hover'">
                   <li class="smart_menu_li" @mouseenter="isHover = 'smart_menu_li_hover'">
-                    <a class="smart_menu_a" @mouseenter="isHover = 'smart_menu_li_hover'">桌面1</a>
+                    <a class="smart_menu_a" @mouseenter="isHover = 'smart_menu_li_hover'" @click="moveDesktop('1')">桌面1</a>
                   </li>
                   <li class="smart_menu_li" @mouseenter="isHover = 'smart_menu_li_hover'">
-                    <a class="smart_menu_a" @mouseenter="isHover = 'smart_menu_li_hover'">桌面2</a>
+                    <a class="smart_menu_a" @mouseenter="isHover = 'smart_menu_li_hover'" @click="moveDesktop('2')">桌面2</a>
                   </li>
                 </ul>
               </div>
@@ -39,7 +60,7 @@
               移动应用到
             </a>
           </li>
-          <li class="smart_menu_li" v-show="appIndex && appIndex < appList.length-1"><a class="smart_menu_a" @click="removeApp">移除应用</a></li>
+          <li class="smart_menu_li" v-show="appIndex && appIndex > -1"><a class="smart_menu_a" @click="removeApp">移除应用</a></li>
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="showHome">显示桌面</a></li>
           <li class="smart_menu_li_separate" v-show="!appIndex"></li>
           <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="resetHome">刷新桌面</a></li>
@@ -76,7 +97,7 @@
                 </li>
               </ul>
               <ul class="item item_ul">
-                <li v-for="menu in startList" :id="'item0menu_'+ menu.id" @click="layerOpen(menu)" @mouseenter="childItemTop($event,menu)">
+                <li v-for="menu in startList" :id="'item0menu_'+ menu.id" @click="layerOpen(menu)">
                   <span><img :src="menu.icon"/>{{menu.name}}</span>
                   <b v-if="menu.childItem && menu.childItem.length > 0"></b>
                   <ul v-if="menu.childItem && menu.childItem.length > 0" class="item childItem item_ul" :id="'item0menu_ul_'+ menu.id">
@@ -92,18 +113,37 @@
       </div>
 
     </div>
+    <!-- 桌面切换 -->
+    <div id="navBar" class="ui-draggable">
+      <s class="l">
+        <div class="indicator indicator_header" :title="name">
+          <img :src="avatar" class="indicator_header_img" :title="name"/>
+        </div>
+      </s>
+      <span>
+        <a href="javascript:void(0);" class="ui-droppable currTab" title="桌面1" @click="desktopSwitch($event,'1')">1</a>
+        <a href="javascript:void(0);" class="ui-droppable" title="桌面2" @click="desktopSwitch($event,'2')">2</a>
+      </span>
+      <s class="r">
+        <a class="indicator indicator_manage" href="javascript:void(0);" title="" @click="layerOpen(defect)"></a>
+      </s>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import defect from '@/views/defect'
 
 export default {
   name: 'layout',
   data() {
     return {
+      showDesktop: '1',
       startShow: false,
       appIndex: null,
+      add: { id: -1087, name: '添加', content: defect, icon: '../../../static/icon/add_icon.png' },
+      defect: { id: -9999999, name: '没找到', content: defect, icon: '../../../static/icon/defect.png' },
       isHover: ''
     }
   },
@@ -111,7 +151,9 @@ export default {
     ...mapGetters([
       'defaultList',
       'startList',
-      'appList',
+      'desktopOneList',
+      'desktopTwoList',
+      'desktopBg',
       'name',
       'avatar'
     ])
@@ -135,6 +177,23 @@ export default {
       this.startShow = e.target.id === 'start_btn'
       document.getElementById('smartMenu_body').style.display = 'none'
     },
+    setAddOffset(isone) {
+      var len = isone ? this.desktopOneList.length : this.desktopTwoList.length
+      var h = this.$store.state.app.client.height - 160
+      var count = parseInt(h / 113)
+      var column = parseInt(len / count)
+      var row = len % count
+      var top = row * 123 + 'px'
+      var left = column * 131 + 'px'
+      if (count === column) {
+        top = '0px'
+        left = (column + 1) * 131 + 'px'
+      }
+      return {
+        top: top,
+        left: left
+      }
+    },
     // 应用坐标
     appStyle(i) {
       var h = this.$store.state.app.client.height - 160
@@ -149,33 +208,47 @@ export default {
         left: column * 131 + 'px'
       }
     },
-    childItemTop(e, menu) {
-      if (menu.childItem && menu.childItem.length > 0) {
-        // 距离底边可显示区域的高
-        var h = this.$store.state.app.client.height - e.clientY - 40
-        console.log(h)
-        console.log(e)
-        // h高度可显示几个
-        var num = parseInt(h / 36)
-        // 总个数
-        var count = menu.childItem.length
-        // 需要偏移的个数
-        var offsetCount = count - num
-        if (offsetCount > 0) {
-          var ul = document.getElementById('item0menu_ul_' + menu.id)
-          console.log(ul)
-          console.log(offsetCount)
-          console.log(-36 * offsetCount)
-          ul.style.top = -36 * offsetCount
-        }
+    moveDesktop(d) {
+      if (this.showDesktop === '1') {
+        this.desktopOneList[this.appIndex].desktop = d
+      } else {
+        this.desktopTwoList[this.appIndex].desktop = d
       }
-    },
-    removeApp() {
-      this.appList.splice(this.appIndex, 1)
+      this.$store.dispatch('SetDesktopApp', this.desktopOneList.concat(this.desktopTwoList))
+      console.log(d)
+      console.log(this.desktopOneList)
       // 这里需要传回后台保存
     },
+    removeApp() {
+      if (this.showDesktop === '1') {
+        this.desktopOneList.splice(this.appIndex, 1)
+      } else {
+        this.desktopTwoList.splice(this.appIndex, 1)
+      }
+      // 这里需要传回后台保存
+    },
+    desktopSwitch(e, d) {
+      var a = document.getElementsByClassName('currTab')
+      for (var i = 0; i < a.length; i++) {
+        a[i].classList.remove('currTab')
+      }
+      e.currentTarget.classList.add('currTab')
+      this.showDesktop = d
+    },
     mouseOpen() {
-      this.layerOpen(this.appList[this.appIndex])
+      if (this.showDesktop === '1') {
+        if (this.appIndex > 0) {
+          this.layerOpen(this.desktopOneList[this.appIndex])
+        } else {
+          this.layerOpen(this.add)
+        }
+      } else {
+        if (this.appIndex > 0) {
+          this.layerOpen(this.desktopOneList[this.appIndex])
+        } else {
+          this.layerOpen(this.add)
+        }
+      }
     },
     resetHome() {
       location.reload()
@@ -207,6 +280,8 @@ export default {
             data: app.params || []// props
           }
         })
+      } else if (app.params[0] === 'out') {
+        this.logout()
       }
     },
     logout() {

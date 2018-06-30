@@ -1,6 +1,15 @@
+/*全局样式*/
 .app-container {
   padding: 20px;
 }
+/*全局样式*/
+.app-container.calendar-list-container{
+  overflow: auto;
+  width: 100%;
+  background-size: cover;
+}
+/*背景*/
+
 /* 应用桌面样式*/
 .innerDesktop {
   width: 100%;
@@ -345,8 +354,92 @@
 #start_item ol, ul {
   list-style: none;
 }
+/* 桌面切换悬浮按钮样式*/
+#navBar {
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  left: 50%;
+  z-index: 65;
+  top: 5px;
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar s {
+  display: inline-block;
+  height: 40px;
+  background-image: url($navbarbg);
+  background-repeat: no-repeat;
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar s.l {
+  background-position: left bottom;
+  width: 42px;
+  position: absolute;
+  top: 0;
+  left: -42px;
 
+  .indicator_header {
+    background: url($navbarBtn) no-repeat right bottom;
+    height: 32px;
+    margin: -3px 0 0 6px;
+    position: relative;
+    width: 32px;
+    cursor: pointer;
 
+    .indicator_header_img {
+      display: inline;
+      float: left;
+      height: 24px;
+      margin: 4px 0 0 4px;
+      width: 24px;
+    }
+  }
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar span {
+  display: inline-block;
+  height: 33px;
+  background: url($navbarMidbg) repeat-x left bottom;
+  margin-top: 7px;
+  line-height: 14px;
+
+  a {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    text-align: center;
+    font-family: 宋体, 微软雅黑, 黑体;
+    font-size: 14px;
+    color: rgb(221, 221, 221);
+    font-weight: 900;
+    text-decoration: none;
+    outline: none;
+    margin: 3px 2px 0px;
+
+    &.currTab {
+      background: url($navbarBtn) no-repeat -223px center;
+      color: #666;
+    }
+  }
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar s.r {
+  width: 42px;
+  background-position: right bottom;
+  position: absolute;
+  top: 0;
+  right: -42px;
+
+  .indicator_manage {
+    display: block;
+    background: url($navbarBtn) no-repeat left -4px;
+    margin: 8px 13px;
+    height: 24px;
+    width: 24px;
+  }
+}
 
 .bg-white{
   background-color:#fff;
@@ -363,12 +456,7 @@
 .bg-danger{
   background-color:$BgDanger;
 }
-.app-container.calendar-list-container{
-  overflow: auto;
-  width: 100%;
-  background-image: url($BackGroundImg);
-  background-size: cover;
-}
+
 .el-row{
   height: 100%;
 }
@@ -434,6 +522,193 @@ input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
 }
 input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
   color:#b2b6bd;
+}
+
+/*背景图片*/
+.app-container.calendar-list-container{
+  &.desktop-bg-01-0{
+    background-image: url($DesktopBg_01_0);
+  }
+  &.desktop-bg-01-1{
+    background-image: url($DesktopBg_01_1);
+  }
+  &.desktop-bg-01-2{
+    background-image: url($DesktopBg_01_2);
+  }
+  &.desktop-bg-01-3{
+    background-image: url($DesktopBg_01_3);
+  }
+  &.desktop-bg-01-4{
+    background-image: url($DesktopBg_01_4);
+  }
+  &.desktop-bg-01-5{
+    background-image: url($DesktopBg_01_5);
+  }
+  &.desktop-bg-01-6{
+    background-image: url($DesktopBg_01_6);
+  }
+  &.desktop-bg-01-7{
+    background-image: url($DesktopBg_01_7);
+  }
+  &.desktop-bg-01-8{
+    background-image: url($DesktopBg_01_8);
+  }
+  &.desktop-bg-01-9{
+    background-image: url($DesktopBg_01_9);
+  }
+  &.desktop-bg-01-10{
+    background-image: url($DesktopBg_01_10);
+  }
+  &.desktop-bg-01-11{
+    background-image: url($DesktopBg_01_11);
+  }
+  &.desktop-bg-01-12{
+    background-image: url($DesktopBg_01_12);
+  }
+  &.desktop-bg-01-13{
+    background-image: url($DesktopBg_01_13);
+  }
+  &.desktop-bg-01-14{
+    background-image: url($DesktopBg_01_14);
+  }
+  &.desktop-bg-01-15{
+    background-image: url($DesktopBg_01_15);
+  }
+  &.desktop-bg-01-16{
+    background-image: url($DesktopBg_01_16);
+  }
+  &.desktop-bg-01-17{
+    background-image: url($DesktopBg_01_17);
+  }
+  &.desktop-bg-01-18{
+    background-image: url($DesktopBg_01_18);
+  }
+  &.desktop-bg-01-19{
+    background-image: url($DesktopBg_01_19);
+  }
+  &.desktop-bg-01-20{
+    background-image: url($DesktopBg_01_20);
+  }
+  &.desktop-bg-02-1{
+    background-image: url($DesktopBg_02_1);
+  }
+  &.desktop-bg-02-2{
+    background-image: url($DesktopBg_02_2);
+  }
+  &.desktop-bg-02-3{
+    background-image: url($DesktopBg_02_3);
+  }
+  &.desktop-bg-02-4{
+    background-image: url($DesktopBg_02_4);
+  }
+  &.desktop-bg-02-5{
+    background-image: url($DesktopBg_02_5);
+  }
+  &.desktop-bg-02-6{
+    background-image: url($DesktopBg_02_6);
+  }
+  &.desktop-bg-02-7{
+    background-image: url($DesktopBg_02_7);
+  }
+  &.desktop-bg-02-8{
+    background-image: url($DesktopBg_02_8);
+  }
+  &.desktop-bg-02-9{
+    background-image: url($DesktopBg_02_9);
+  }
+  &.desktop-bg-02-10{
+    background-image: url($DesktopBg_02_10);
+  }
+  &.desktop-bg-02-11{
+    background-image: url($DesktopBg_02_11);
+  }
+  &.desktop-bg-02-12{
+    background-image: url($DesktopBg_02_12);
+  }
+  &.desktop-bg-02-13{
+    background-image: url($DesktopBg_02_13);
+  }
+  &.desktop-bg-02-14{
+    background-image: url($DesktopBg_02_14);
+  }
+  &.desktop-bg-02-15{
+    background-image: url($DesktopBg_02_15);
+  }
+  &.desktop-bg-02-16{
+    background-image: url($DesktopBg_02_16);
+  }
+  &.desktop-bg-02-17{
+    background-image: url($DesktopBg_02_17);
+  }
+  &.desktop-bg-02-18{
+    background-image: url($DesktopBg_02_18);
+  }
+  &.desktop-bg-02-19{
+    background-image: url($DesktopBg_02_19);
+  }
+  &.desktop-bg-02-20{
+    background-image: url($DesktopBg_02_20);
+  }
+  &.desktop-bg-03-1{
+    background-image: url($DesktopBg_03_1);
+  }
+  &.desktop-bg-03-2{
+    background-image: url($DesktopBg_03_2);
+  }
+  &.desktop-bg-03-3{
+    background-image: url($DesktopBg_03_3);
+  }
+  &.desktop-bg-03-4{
+    background-image: url($DesktopBg_03_4);
+  }
+  &.desktop-bg-03-5{
+    background-image: url($DesktopBg_03_5);
+  }
+  &.desktop-bg-03-6{
+    background-image: url($DesktopBg_03_6);
+  }
+  &.desktop-bg-03-7{
+    background-image: url($DesktopBg_03_7);
+  }
+  &.desktop-bg-03-8{
+    background-image: url($DesktopBg_03_8);
+  }
+  &.desktop-bg-03-9{
+    background-image: url($DesktopBg_03_9);
+  }
+  &.desktop-bg-03-10{
+    background-image: url($DesktopBg_03_10);
+  }
+  &.desktop-bg-03-11{
+    background-image: url($DesktopBg_03_11);
+  }
+  &.desktop-bg-03-12{
+    background-image: url($DesktopBg_03_12);
+  }
+  &.desktop-bg-03-13{
+    background-image: url($DesktopBg_03_13);
+  }
+  &.desktop-bg-03-14{
+    background-image: url($DesktopBg_03_14);
+  }
+  &.desktop-bg-03-15{
+    background-image: url($DesktopBg_03_15);
+  }
+  &.desktop-bg-03-16{
+    background-image: url($DesktopBg_03_16);
+  }
+  &.desktop-bg-03-17{
+    background-image: url($DesktopBg_03_17);
+  }
+  &.desktop-bg-03-18{
+    background-image: url($DesktopBg_03_18);
+  }
+  &.desktop-bg-03-19{
+    background-image: url($DesktopBg_03_19);
+  }
+  &.desktop-bg-03-20{
+    background-image: url($DesktopBg_03_20);
+  }
 }
 
 

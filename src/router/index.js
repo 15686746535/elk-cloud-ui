@@ -101,6 +101,7 @@ export const startMenuMap = [
  */
 export const appMap = [
   { id: 20100, pid: 20000, params: [], name: '学员管理', content: _import('modules/stu/student'), icon: iconFormat('app_stu_student'), msgCount: 0, childItem: [] },
+  { id: 20101, pid: 20100, params: [], name: '学员添加', content: _import('modules/stu/student'), icon: iconFormat('app_stu_student'), msgCount: 0, childItem: [] },
   { id: 20900, pid: 20000, params: [], name: '学费收取', content: _import('modules/stu/serviceNote'), icon: iconFormat('app_stu_service'), msgCount: 0, childItem: [] },
   { id: 20300, pid: 20000, params: [], name: '考试安排', content: _import('modules/stu/batch'), icon: iconFormat('app_stu_batch'), msgCount: 0, childItem: [] },
   { id: 20400, pid: 20000, params: [], name: '成绩登记', content: _import('modules/stu/grade'), icon: iconFormat('app_stu_grade'), msgCount: 0, childItem: [] },
@@ -108,6 +109,7 @@ export const appMap = [
   { id: 20700, pid: 20000, params: [], name: '学员回访', content: _import('modules/stu/revisit'), icon: iconFormat('app_stu_revisit'), msgCount: 0, childItem: [] },
   { id: 20800, pid: 20000, params: [], name: '回访信息', content: _import('modules/stu/revisited'), icon: iconFormat('app_stu_revisited'), msgCount: 0, childItem: [] },
   { id: 30200, pid: 30000, params: [], name: '意向信息', content: _import('modules/visit/intention'), icon: iconFormat('app_visit_intention'), msgCount: 0, childItem: [] },
+  { id: 30201, pid: 30200, params: [], name: '意向添加', content: _import('modules/visit/intention'), icon: iconFormat('app_visit_intention'), msgCount: 0, childItem: [] },
   { id: 30100, pid: 30000, params: [], name: '意向分配', content: _import('modules/visit/distribution'), icon: iconFormat('app_visit_distribution'), msgCount: 0, childItem: [] },
   { id: 30300, pid: 30000, params: [], name: '入学意向', content: _import('modules/visit/enrolled'), icon: iconFormat('app_visit_enrolled'), msgCount: 0, childItem: [] },
   { id: 30400, pid: 30000, params: [], name: '关闭意向', content: _import('modules/visit/close'), icon: iconFormat('app_visit_close'), msgCount: 0, childItem: [] },
@@ -116,15 +118,46 @@ export const appMap = [
   { id: 60400, pid: 60000, params: [], name: '离职同事', content: _import('modules/upms/quitUser'), icon: iconFormat('app_quit_user'), msgCount: 0, childItem: [] },
   { id: 60200, pid: 60000, params: [], name: '部门设置', content: _import('modules/upms/org'), icon: iconFormat('app_org'), msgCount: 0, childItem: [] },
   { id: 60300, pid: 60000, params: [], name: '职位设置', content: _import('modules/upms/role'), icon: iconFormat('app_role'), msgCount: 0, childItem: [] },
-  { id: 10001, pid: 99999, params: [], name: '密码修改', content: _import('modules/stu/student'), icon: getIcon('icon_password'), msgCount: 0, childItem: [] },
-  { id: 10004, pid: 99999, params: [], name: '系统配置', content: _import('modules/sys/configure'), icon: getIcon('icon_config'), msgCount: 0, childItem: [] },
-  { id: 10005, pid: 99999, params: [], name: '定时任务', content: _import('modules/quartz/job'), icon: getIcon('icon_timing'), msgCount: 0, childItem: [] },
-  { id: 10006, pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('icon_activiti'), msgCount: 0, childItem: [] },
-  { id: 10007, pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('icon_message'), msgCount: 0, childItem: [] },
-  { id: 10008, pid: 99999, params: [], name: '退出系统', content: _import('modules/stu/student'), icon: getIcon('icon_out_red'), msgCount: 0, childItem: [] },
+  { id: 10001, pid: 99999, params: [], name: '密码修改', content: _import('modules/stu/student'), icon: iconFormat('password'), msgCount: 0, childItem: [] },
+  { id: 10004, pid: 99999, params: [], name: '系统配置', content: _import('modules/sys/configure'), icon: iconFormat('configure'), msgCount: 0, childItem: [] },
+  { id: 10005, pid: 99999, params: [], name: '定时任务', content: _import('modules/quartz/job'), icon: iconFormat('job'), msgCount: 0, childItem: [] },
+  { id: 10006, pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: iconFormat('model'), msgCount: 0, childItem: [] },
+  { id: 10007, pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: iconFormat('business'), msgCount: 0, childItem: [] },
+  { id: 10008, pid: 99999, params: [], name: '退出系统', content: _import('modules/stu/student'), icon: iconFormat('out'), msgCount: 0, childItem: [] },
   { id: -1086, pid: -9999, params: [], name: '添加', content: _import('modules/stu/revisit'), icon: getIcon('icon_add'), msgCount: 0, childItem: [] }
 ]
 
+/**
+ * 应用 白名单
+ * @type {Array}
+ */
+export const anonList = [-1086, 10008, 10001]
+
+/**
+ * 权限过滤器
+ * @param list
+ */
+export function appFilter(permissions, roles) {
+  return appMap.filter(function(app) {
+    return anonList.concat(app.id) || permissions.concat(app.id)
+  })
+}
+
+/**
+ * 格式化开始菜单
+ * @param list
+ * @returns {*}
+ */
+export function startFilter(appList) {
+  startMenuMap.forEach(function(item, index) {
+    appList.forEach(function(app, i) {
+      if (item.id === app.pid) {
+        item.childItem.push(app)
+      }
+    })
+  })
+  return startMenuMap
+}
 /**
  * 应用图标补齐
  * @param suffix
@@ -136,34 +169,6 @@ export function iconFormat(suffix) {
   // 测试
   return getIcon('icon_one_note')
 }
-
-/**
- * 格式化应用组件
- * @param list
- */
-export function appFormat(list) {
-  list.forEach(function(item, index) {
-    item.content = _import(item.content)
-    item.icon = getIcon(item.icon)
-  })
-  list.push(addApp)
-  return list
-}
-
-/**
- * 格式化开始菜单
- * @param list
- * @returns {*}
- */
-export function startFormat(menuIds, roles) {
-  startMenuMap.forEach(function(item, index) {
-    item.content = _import(item.content)
-    item.icon = getIcon(item.icon)
-  })
-  list.push(addApp)
-  return list
-}
-
 /**
  * 桌面
  * @type {*[]}

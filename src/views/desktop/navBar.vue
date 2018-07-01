@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import defect from '@/views/defect'
+import defect from '@/views/404.vue'
 import { mapGetters } from 'vuex'
 
 export default {

@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import defect from '@/views/defect'
+import defect from '@/views/404.vue'
 import theme from '@/views/theme'
 import { mapGetters } from 'vuex'
 

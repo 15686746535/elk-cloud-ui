@@ -13,10 +13,10 @@ Vue.use(Router)
  * @type {*[]}
  */
 export const defaultMap = [
-  { id: 'menu17', name: '短消息', content: _import('defect/index'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
-  { id: 'menu20', name: '工作日志', content: _import('defect/index'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
-  { id: 'menu21', name: '日程安排', content: _import('defect/index'), icon: getIcon('schedule'), msgCount: 0, childItem: [] },
-  { id: 'menu31', name: '任务管理', content: _import('defect/index'), icon: getIcon('task'), msgCount: 0, childItem: [] }
+  { id: 'menu17', name: '短消息', content: _import('404'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
+  { id: 'menu20', name: '工作日志', content: _import('404'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
+  { id: 'menu21', name: '日程安排', content: _import('404'), icon: getIcon('schedule'), msgCount: 0, childItem: [] },
+  { id: 'menu31', name: '任务管理', content: _import('404'), icon: getIcon('task'), msgCount: 0, childItem: [] }
 ]
 /**
  * 开始菜单
@@ -138,7 +138,7 @@ export function startFilter(appList) {
 export const constantRouterMap = [
   { path: '/login', name: '登陆', component: _import('login/index') },
   { path: '/404', name: '404' },
-  { path: '/', name: '首页', redirect: '/home', component: _import('desktop/index'), children: [{ path: 'home', component: _import('dashboard/index'), name: '首页' }] }
+  { path: '/', name: '首页', redirect: '/home', component: _import('desktop/index'), children: [{ path: 'home', component: _import('desktop/index'), name: '首页' }] }
 ]
 /**
  * 注册路由

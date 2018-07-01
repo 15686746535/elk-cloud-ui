@@ -203,7 +203,7 @@ export default {
       height: 17px;
       display: inline-block;
       overflow: hidden;
-      background: url(image/icons_5859e57.png) no-repeat;
+      background: url(../../../static/icon/icons_5859e57.png) no-repeat;
       background-position: -623px -96px;
     }
   }

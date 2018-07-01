@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import defect from '@/views/defect'
+import defect from '@/views/404.vue'
 
 export default {
   name: 'el-apps',

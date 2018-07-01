@@ -4,7 +4,8 @@
 }
 /*全局样式*/
 .app-container.calendar-list-container{
-  overflow: auto;
+  overflow: hidden;
+  position: relative;
   width: 100%;
   background-size: cover;
 }
@@ -358,7 +359,7 @@
 #navBar {
   display: inline-block;
   height: 40px;
-  line-height: 40px;
+  //line-height: 40px;
   position: absolute;
   left: 50%;
   z-index: 65;
@@ -402,7 +403,7 @@
   height: 33px;
   background: url($navbarMidbg) repeat-x left bottom;
   margin-top: 7px;
-  line-height: 14px;
+  //line-height: 14px;
 
   a {
     display: inline-block;

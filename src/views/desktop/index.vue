@@ -1,37 +1,51 @@
 <template>
   <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
-    <div>
-      <div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"
-           style="position: relative;top: 30px;left: 88px;" v-if="showDesktop==='1'">
-        <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in desktopOneList" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
-          <span class="icon" :app="index" >
-            <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
-            <img v-if="" :src="app.icon"  :app="index"/>
-          </span>
-          <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
-        </div>
-        <!-- 添加按钮 -->
-        <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset(true)" style="position: absolute;margin: 0px;">
-          <span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>
-          <div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>
-        </div>
-      </div>
-      <div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"
-           style="position: relative;top: 30px;left: 88px;" v-else>
-        <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in desktopTwoList" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">
-          <span class="icon" :app="index" >
-            <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
-            <img :src="app.icon"  :app="index"/>
-          </span>
-          <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
-        </div>
-        <!-- 添加按钮 -->
-        <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset(true)" style="position: absolute;margin: 0px;">
-          <span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>
-          <div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>
-        </div>
-      </div>
-    </div>
+    <!--<div>-->
+      <!--&lt;!&ndash;<div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"&ndash;&gt;-->
+           <!--&lt;!&ndash;style="position: relative;top: 30px;left: 88px;" v-if="showDesktop==='1'">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in desktopOneList" v-dragging="{ item: app, list: desktopOneList, group: 'desktopOne' }" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">&ndash;&gt;-->
+          <!--&lt;!&ndash;<span class="icon" :app="index" >&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<img v-if="" :src="app.icon"  :app="index"/>&ndash;&gt;-->
+          <!--&lt;!&ndash;</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; 添加按钮 &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset('1')" style="position: absolute;margin: 0px;">&ndash;&gt;-->
+          <!--&lt;!&ndash;<span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"&ndash;&gt;-->
+           <!--&lt;!&ndash;style="position: relative;top: 30px;left: 88px;" v-else>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" v-for="(app2,index) in desktopTwoList"  v-dragging="{ item: app2, list: desktopTwoList, group: 'desktopTwo' }"&ndash;&gt;-->
+             <!--&lt;!&ndash;@click="layerOpen(app2)"  :app="index" :title="app2.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">&ndash;&gt;-->
+          <!--&lt;!&ndash;<span class="icon" :app="index" >&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="txInfo" :app="index"  v-if="app2.msgCount > 0">{{app.msgCount}}</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<img :src="app2.icon"  :app="index"/>&ndash;&gt;-->
+          <!--&lt;!&ndash;</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="text" :app="index"><span :app="index">{{app2.name}}</span><s></s></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; 添加按钮 &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset('2')" style="position: absolute;margin: 0px;">&ndash;&gt;-->
+          <!--&lt;!&ndash;<span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+      <!--&lt;!&ndash;<transition :name="'move_'+ showDesktop" class="aaaaaaaaaaaaaaaaaaaaa">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div  v-if="showDesktop === '2'">&ndash;&gt;-->
+
+          <!--&lt;!&ndash;<el-apps  :list="desktopTwoList" :desktop="showDesktop" @open="layerOpen"></el-apps>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</transition>&ndash;&gt;-->
+    <!--</div>-->
+    <transition :name="'move_1'"  >
+      <el-apps  :list="desktopOneList" class="apps desktop-1" id="desktop-1" desktop="1" @open="layerOpen"></el-apps>
+    </transition>
+    <transition :name="'move_2'"  >
+      <el-apps  :list="desktopTwoList" class="apps desktop-2 hide" id="desktop-2" desktop="2" @open="layerOpen"></el-apps>
+    </transition>
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
     <!--鼠标右键菜单-->
@@ -135,9 +149,13 @@
 import { mapGetters } from 'vuex'
 import defect from '@/views/defect'
 import theme from '@/views/theme'
+import ElApps from './apps.vue'
 
 export default {
   name: 'layout',
+  components: {
+    ElApps
+  },
   data() {
     return {
       showDesktop: '1',
@@ -162,6 +180,14 @@ export default {
   },
   mounted() {
     var that = this
+    this.$dragging.$on('dragged', ({ value }) => {
+      console.log(value.item)
+      console.log(value.list)
+      console.log(value.otherData)
+    })
+    this.$dragging.$on('dragend', () => {
+
+    })
     document.oncontextmenu = function(ev) {
       var oEvent = ev || even
       var oUl = document.getElementById('smartMenu_body')
@@ -180,7 +206,7 @@ export default {
       document.getElementById('smartMenu_body').style.display = 'none'
     },
     setAddOffset(isone) {
-      var len = isone ? this.desktopOneList.length : this.desktopTwoList.length
+      var len = isone === '1' ? this.desktopOneList.length : this.desktopTwoList.length
       var h = this.$store.state.app.client.height - 160
       var count = parseInt(h / 113)
       var column = parseInt(len / count)
@@ -230,12 +256,19 @@ export default {
       // 这里需要传回后台保存
     },
     desktopSwitch(e, d) {
-      var a = document.getElementsByClassName('currTab')
-      for (var i = 0; i < a.length; i++) {
-        a[i].classList.remove('currTab')
+      var currTab = document.getElementsByClassName('currTab')
+      for (var i = 0; i < currTab.length; i++) {
+        currTab[i].classList.remove('currTab')
       }
       e.currentTarget.classList.add('currTab')
       this.showDesktop = d
+      if (d === '1') {
+        document.getElementById('desktop-2').classList.add('hide')
+        document.getElementById('desktop-1').classList.remove('hide')
+      } else {
+        document.getElementById('desktop-1').classList.add('hide')
+        document.getElementById('desktop-2').classList.remove('hide')
+      }
     },
     mouseOpen() {
       if (this.showDesktop === '1') {
@@ -267,6 +300,7 @@ export default {
     },
     // 打开应用
     layerOpen(app) {
+      console.log(app)
       if (app.content) {
         this.$layer.open({
           type: 2,
@@ -303,4 +337,18 @@ export default {
   height: 100%;
   width: 100%;
 }
+/*定义动画的时间和过渡效果*/
+.apps {
+  transition: all 0.5s ease;
+}
+.apps.desktop-1.hide{
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+
+.apps.desktop-2.hide{
+  -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+
 </style>

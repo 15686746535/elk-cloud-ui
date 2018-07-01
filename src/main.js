@@ -14,6 +14,7 @@ import Dict from './components/Dict'
 import TreeSelect from './components/TreeSelect'
 import layer from './components/ElLayer/layer.js'
 Vue.use(ElementUI, { locale })
+import VueDND from 'awe-dnd'
 // 引入自定义组件。index.js是组件的默认入口
 
 window.Vue1 = Vue
@@ -25,6 +26,7 @@ Vue.prototype.$layer = lai
 Vue.use(TreeSelect)
 Vue.use(MyTree)
 Vue.use(Dict)
+Vue.use(VueDND)
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

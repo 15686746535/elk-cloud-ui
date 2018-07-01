@@ -62,7 +62,7 @@ export default {
       console.log(value.list)
     })
     this.$dragging.$on('dragend', () => {
-
+      console.log('结束移动')
     })
   },
   methods: {

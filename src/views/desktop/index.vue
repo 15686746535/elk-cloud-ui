@@ -2,13 +2,9 @@
   <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick"
        @dragstart="ondragstart">
     <!--桌面1-->
-    <div  style="width: 100%;position: relative" id="desktop-startDrag-1" >
-      <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen"></el-apps>
-    </div>
+    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen"></el-apps>
     <!--桌面2-->
-    <div  style="width: 100%;position: relative" id="desktop-startDrag-2" >
-      <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"></el-apps>
-    </div>
+    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"></el-apps>
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
     <!--鼠标右键菜单-->

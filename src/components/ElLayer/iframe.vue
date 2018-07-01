@@ -7,8 +7,8 @@
 @Last modified time: 2018-04-02 12:20:29
 -->
 <template lang="html">
-    <div :id="options.id" :class="isMax?'vl-notify-max':'vl-notify-default'" class="vl-notify vl-notify-main vl-notify-alert vl-notify-iframe"  @mousemove="move" @mouseup="moveEnd" @focus="resetZIndex" tabindex="1"
-         :style="{left:left,top:top, margin:options.offset[2],zIndex:zindex, width: width, height: height}">
+    <div :id="options.id" :class="isMax?'vl-notify-max':'vl-notify-default'" class="vl-notify vl-notify-main vl-notify-alert vl-notify-iframe"  @mousemove="move" @mouseup="moveEnd"
+         @focus="resetZIndex" tabindex="1" :style="{left:left,top:top, margin:options.offset[2],zIndex:zindex, width: width, height: height}" style="z-index: 66;">
         <h2 class="vl-notice-title" @mousedown="moveStart" @dblclick="windowFull">{{options.title}}
             <i class="icon-remove" @click="close"></i>
             <i class="icon-full" @click="windowFull"></i>
@@ -34,7 +34,7 @@ export default {
       moveTop: 0, // 上移的距离
       ismove: false,
       id: 'vlip' + new Date().getTime(),
-      zindex: 0
+      zindex: 66
     }
   },
   props: {
@@ -83,7 +83,7 @@ export default {
     resetZIndex() {
       var max = 500
       var doms = document.querySelectorAll('.vl-notify-iframe')
-      var domZindex = 0
+      var domZindex = 66
       for (let i = 0, len = doms.length; i < len; i++) {
         var value = parseInt(this.getStyle(doms[i].id, 'z-index'))
         if (this.options.id === doms[i].id) {

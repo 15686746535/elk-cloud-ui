@@ -13,8 +13,9 @@ var getCss = function(o, key) {
 }
 
 // 拖拽的实现
-export function startDrag(id, callback) {
-  var target = document.getElementById(id)
+export function startDrag(desk, callback) {
+  var target = document.getElementById('desktop-startDrag-' + desk)
+  var apps = document.getElementById('desktop-' + desk)
   var disX = 0
   // 首先获取目标元素的left、top属性值
   if (getCss(target, 'left') !== 'auto') {
@@ -29,9 +30,6 @@ export function startDrag(id, callback) {
       params.flag = true
     }
     // 当鼠标按下时表示元素可以移动，将标记设为true
-    console.log('++++++++++++++++++++')
-    console.log(event)
-    console.log(event.toElement.getAttribute('app'))
 
     /* 为了阻止拖动浏览器中元素时发生默认事件，
     例如拖动图片时会出现一个新窗口显示该图片，下面代码可以阻止这种事件发生
@@ -51,12 +49,13 @@ export function startDrag(id, callback) {
     params.flag = false
     // 当鼠标松开时再次更新元素的位置
     console.log(target.id)
-    if (target.id === 'desktop-1' && disX < -100) {
+    if (desk === '1' && disX < -100) {
       callback('2')
-    } else if (target.id === 'desktop-2' && disX > 100) {
+    } else if (desk === '2' && disX > 100) {
       callback('1')
     }
     target.style.left = '0px'
+    apps.style.left = '0px'
   }
   target.onmousemove = function(event) {
     var e = event ? event : window.event
@@ -75,6 +74,7 @@ export function startDrag(id, callback) {
       }
       // 将元素的位置更新，parsenInt为了将属性值变为数字类型
       target.style.left = parseInt(params.left) + disX + 'px'
+      apps.style.left = parseInt(params.left) + disX + 'px'
       // target.style.top = parseInt(params.top) + disY + 'px'
     }
   }

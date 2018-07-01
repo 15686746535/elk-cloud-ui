@@ -6,8 +6,8 @@
       </div>
     </s>
     <span>
-        <a href="javascript:void(0);" class="ui-droppable currTab" title="桌面1" @click="desktopSwitch($event,'1')">1</a>
-        <a href="javascript:void(0);" class="ui-droppable" title="桌面2" @click="desktopSwitch($event,'2')">2</a>
+        <a href="javascript:void(0);" class="ui-droppable currTab" title="桌面1" id="switch-1" @click="desktopSwitch('1')">1</a>
+        <a href="javascript:void(0);" class="ui-droppable" title="桌面2" id="switch-2" @click="desktopSwitch('2')">2</a>
       </span>
     <s class="r">
       <a class="indicator indicator_manage" href="javascript:void(0);" title="" @click="layerOpen(defect)"></a>
@@ -21,10 +21,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'el-nav-bar',
-  model: {
-    prop: 'value',
-    event: 'change'
-  },
   props: {
     list: Array,
     desktop: String
@@ -48,20 +44,8 @@ export default {
   mounted() {
   },
   methods: {
-    desktopSwitch(e, d) {
-      var currTab = document.getElementsByClassName('currTab')
-      for (var i = 0; i < currTab.length; i++) {
-        currTab[i].classList.remove('currTab')
-      }
-      e.currentTarget.classList.add('currTab')
-      if (d === '1') {
-        document.getElementById('desktop-2').classList.add('hide')
-        document.getElementById('desktop-1').classList.remove('hide')
-      } else {
-        document.getElementById('desktop-1').classList.add('hide')
-        document.getElementById('desktop-2').classList.remove('hide')
-      }
-      this.$emit('change', d)
+    desktopSwitch(d) {
+      this.$emit('desktopSwitch', d)
     },
     // 打开应用
     layerOpen(app) {
@@ -73,10 +57,4 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/mixin.scss";
-.app-wrapper {
-  @include clearfix;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
 </style>

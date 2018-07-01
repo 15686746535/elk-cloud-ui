@@ -1,9 +1,14 @@
 <template>
-  <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
+  <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick"
+       @dragstart="ondragstart">
     <!--桌面1-->
-    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen"></el-apps>
+    <div  style="width: 100%;position: relative" id="desktop-startDrag-1" >
+      <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen"></el-apps>
+    </div>
     <!--桌面2-->
-    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"></el-apps>
+    <div  style="width: 100%;position: relative" id="desktop-startDrag-2" >
+      <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"></el-apps>
+    </div>
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
     <!--鼠标右键菜单-->
@@ -11,7 +16,7 @@
     <!-- 主页导航栏 -->
     <el-start-bar @open="layerOpen" :startShow="startShow" @isShow="isShow"></el-start-bar>
     <!-- 桌面切换 -->
-    <el-nav-bar v-model="showDesktop" @open="layerOpen"></el-nav-bar>
+    <el-nav-bar @desktopSwitch="desktopSwitch" @open="layerOpen"></el-nav-bar>
   </div>
 </template>
 
@@ -47,9 +52,22 @@ export default {
       'avatar'
     ])
   },
+  created() {
+  },
   mounted() {
+    // var m = document.getElementById('move')
+    // m.onmousedown = function() { // down向下
+    //   alert('鼠标按下啦 思密达')
+    // }
+    //
+    // m.onmouseup = function() { // up向上
+    //   alert('鼠标抬起来啦 思密达')
+    // }
   },
   methods: {
+    ondragstart() {
+      console.log('鼠标按下啦 思密达')
+    },
     // 桌面点击事件
     desktopClick(e) {
       this.startShow = e.target.id === 'start_btn'
@@ -58,6 +76,23 @@ export default {
     },
     isShow(show) {
       this.startShow = show
+    },
+    // 移动桌面
+    desktopSwitch(desktop) {
+      var currTab = document.getElementsByClassName('currTab')
+      for (var i = 0; i < currTab.length; i++) {
+        currTab[i].classList.remove('currTab')
+      }
+      this.showDesktop = desktop
+      if (desktop === '1') {
+        document.getElementById('desktop-1').classList.remove('hide')
+        document.getElementById('desktop-2').classList.add('hide')
+        document.getElementById('switch-1').classList.add('currTab')
+      } else {
+        document.getElementById('desktop-2').classList.remove('hide')
+        document.getElementById('desktop-1').classList.add('hide')
+        document.getElementById('switch-2').classList.add('currTab')
+      }
     },
     // 打开应用
     layerOpen(app) {

@@ -23,6 +23,7 @@
 
 <script>
 const _import = require('@/router/_import_development')
+import { startDrag } from '@/utils/ragstart'
 
 export default {
   name: 'el-apps',
@@ -57,6 +58,11 @@ export default {
     }
   },
   mounted() {
+    // 注册鼠标滑动切换桌面
+    // var that = this
+    // startDrag('desktop-' + this.desktop, function(d) {
+    //   that.desktopSwitch(d)
+    // })
     this.$dragging.$on('dragged', ({ value }) => {
       console.log(value.item)
       console.log(value.list)
@@ -78,6 +84,23 @@ export default {
       return {
         top: row * 123 + 'px',
         left: column * 131 + 'px'
+      }
+    },
+    // 移动桌面
+    desktopSwitch(desktop) {
+      var currTab = document.getElementsByClassName('currTab')
+      for (var i = 0; i < currTab.length; i++) {
+        currTab[i].classList.remove('currTab')
+      }
+      this.showDesktop = desktop
+      if (desktop === '1') {
+        document.getElementById('desktop-1').classList.remove('hide')
+        document.getElementById('desktop-2').classList.add('hide')
+        document.getElementById('switch-1').classList.add('currTab')
+      } else {
+        document.getElementById('desktop-2').classList.remove('hide')
+        document.getElementById('desktop-1').classList.add('hide')
+        document.getElementById('switch-2').classList.add('currTab')
       }
     },
     // 打开应用

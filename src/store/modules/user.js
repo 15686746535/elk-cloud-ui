@@ -97,64 +97,64 @@ const user = {
             commit('SET_MENUIDS', data.menuIds)
             commit('SET_PERMISSIONS', data.permissions)
             // 测试
-            data.showApp = [
-              {
-                id: 2,
-                userId: 1,
-                menuId: 20800, // 回访信息
-                desktop: '1', // 桌面1
-                sort: 0
-              },
-              {
-                id: 2,
-                userId: 1,
-                menuId: 20101, // 学员添加
-                desktop: '2', // 桌面2
-                sort: 1
-              },
-              {
-                id: 2,
-                userId: 1,
-                menuId: 20900, // 学费收取
-                desktop: '1', // 桌面1
-                sort: 2
-              },
-              {
-                id: 1,
-                userId: 1,
-                menuId: 20100, // 学员管理
-                desktop: '1', // 桌面1
-                sort: 3
-              },
-              {
-                id: 2,
-                userId: 1,
-                menuId: 20300, // 考试安排
-                desktop: '2', // 桌面1
-                sort: 4
-              },
-              {
-                id: 2,
-                userId: 1,
-                menuId: 20400, // 成绩登记
-                desktop: '1', // 桌面1
-                sort: 5
-              },
-              {
-                id: 2,
-                userId: 1,
-                menuId: 20600, // 毕业学员
-                desktop: '1', // 桌面1
-                sort: 6
-              },
-              {
-                id: 2,
-                userId: 1,
-                menuId: 20700, // 学员回访
-                desktop: '2', // 桌面2
-                sort: 7
-              }
-            ]
+            // data.showApp = [
+            //   {
+            //     id: 2,
+            //     userId: 1,
+            //     menuId: 20800, // 回访信息
+            //     desktop: '1', // 桌面1
+            //     sort: 0
+            //   },
+            //   {
+            //     id: 2,
+            //     userId: 1,
+            //     menuId: 20101, // 学员添加
+            //     desktop: '2', // 桌面2
+            //     sort: 1
+            //   },
+            //   {
+            //     id: 2,
+            //     userId: 1,
+            //     menuId: 20900, // 学费收取
+            //     desktop: '1', // 桌面1
+            //     sort: 2
+            //   },
+            //   {
+            //     id: 1,
+            //     userId: 1,
+            //     menuId: 20100, // 学员管理
+            //     desktop: '1', // 桌面1
+            //     sort: 3
+            //   },
+            //   {
+            //     id: 2,
+            //     userId: 1,
+            //     menuId: 20300, // 考试安排
+            //     desktop: '2', // 桌面1
+            //     sort: 4
+            //   },
+            //   {
+            //     id: 2,
+            //     userId: 1,
+            //     menuId: 20400, // 成绩登记
+            //     desktop: '1', // 桌面1
+            //     sort: 5
+            //   },
+            //   {
+            //     id: 2,
+            //     userId: 1,
+            //     menuId: 20600, // 毕业学员
+            //     desktop: '1', // 桌面1
+            //     sort: 6
+            //   },
+            //   {
+            //     id: 2,
+            //     userId: 1,
+            //     menuId: 20700, // 学员回访
+            //     desktop: '2', // 桌面2
+            //     sort: 7
+            //   }
+            // ]
             var hasAppList = hasAppFilter(data.menuIds, data.roles)
             if (data.showApp && data.showApp.length > 0) {
               var showApp = showAppFilter(hasAppList, data.showApp)

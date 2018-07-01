@@ -1,45 +1,5 @@
 <template>
   <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
-    <!--<div>-->
-      <!--&lt;!&ndash;<div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"&ndash;&gt;-->
-           <!--&lt;!&ndash;style="position: relative;top: 30px;left: 88px;" v-if="showDesktop==='1'">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in desktopOneList" v-dragging="{ item: app, list: desktopOneList, group: 'desktopOne' }" @click="layerOpen(app)"  :app="index" :title="app.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">&ndash;&gt;-->
-          <!--&lt;!&ndash;<span class="icon" :app="index" >&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<img v-if="" :src="app.icon"  :app="index"/>&ndash;&gt;-->
-          <!--&lt;!&ndash;</span>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;&lt;!&ndash; 添加按钮 &ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset('1')" style="position: absolute;margin: 0px;">&ndash;&gt;-->
-          <!--&lt;!&ndash;<span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;<div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"&ndash;&gt;-->
-           <!--&lt;!&ndash;style="position: relative;top: 30px;left: 88px;" v-else>&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" v-for="(app2,index) in desktopTwoList"  v-dragging="{ item: app2, list: desktopTwoList, group: 'desktopTwo' }"&ndash;&gt;-->
-             <!--&lt;!&ndash;@click="layerOpen(app2)"  :app="index" :title="app2.name" :style="appStyle(index)" style="position: absolute;margin: 0px;">&ndash;&gt;-->
-          <!--&lt;!&ndash;<span class="icon" :app="index" >&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="txInfo" :app="index"  v-if="app2.msgCount > 0">{{app.msgCount}}</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<img :src="app2.icon"  :app="index"/>&ndash;&gt;-->
-          <!--&lt;!&ndash;</span>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="text" :app="index"><span :app="index">{{app2.name}}</span><s></s></div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;&lt;!&ndash; 添加按钮 &ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset('2')" style="position: absolute;margin: 0px;">&ndash;&gt;-->
-          <!--&lt;!&ndash;<span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-      <!--&lt;!&ndash;<transition :name="'move_'+ showDesktop" class="aaaaaaaaaaaaaaaaaaaaa">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div  v-if="showDesktop === '2'">&ndash;&gt;-->
-
-          <!--&lt;!&ndash;<el-apps  :list="desktopTwoList" :desktop="showDesktop" @open="layerOpen"></el-apps>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</transition>&ndash;&gt;-->
-    <!--</div>-->
     <transition :name="'move_1'"  >
       <el-apps  :list="desktopOneList" class="apps desktop-1" id="desktop-1" desktop="1" @open="layerOpen"></el-apps>
     </transition>

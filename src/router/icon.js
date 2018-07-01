@@ -19,5 +19,5 @@ export const IconMap = {
   users: '../../../static/icon/users.png',
   configure: '../../../static/icon/configure.png',
   // 以上是系统图标 在下方添加程序图标
-  app_default: '../../../static/icon/app/app_one_note.png', // 默认图标
+  app_default: '../../../static/icon/app/app_default.png', // 默认图标
 }

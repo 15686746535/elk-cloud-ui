@@ -72,7 +72,6 @@ let Notification = (function(vue, globalOption = {
       inst: instance,
       type: options.type
     };
-      /*<div class="vl-notify-task"></div>*/
     document.body.appendChild(instance.vm.$el);
     self.instancesVue[options.id] = {
       'mask': '',
@@ -102,7 +101,6 @@ let Notification = (function(vue, globalOption = {
 
         task[0].appendChild(taskInstance.vm.$el);
     }
-
     if (options.shade) { //是否显示遮罩
       // let layerMask = document.querySelector('.vl-notify-mask');
       // if (layerMask) {
@@ -115,6 +113,7 @@ let Notification = (function(vue, globalOption = {
       document.body.appendChild(maskInstance.vm.$el);
       self.instancesVue[options.id].mask = maskInstance.vm;
     }
+    console.log( options.id);
     return options.id;
   };
   /**

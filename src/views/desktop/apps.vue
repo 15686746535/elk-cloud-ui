@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import defect from '@/views/404.vue'
+const _import = require('@/router/_import_development')
 
 export default {
   name: 'el-apps',
@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      add: { id: -1087, name: '添加', params: {}, content: defect, icon: '../../../static/icon/add_icon.png' }
+      add: { id: 'app-add', name: '添加', params: {}, content: _import('404'), icon: '../../../static/icon/add_icon.png' }
     }
   },
   computed: {

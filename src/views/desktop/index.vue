@@ -9,7 +9,7 @@
     <!--鼠标右键菜单-->
     <el-smart-menu :desktop="showDesktop" @open="layerOpen"></el-smart-menu>
     <!-- 主页导航栏 -->
-    <el-start-bar @open="layerOpen"></el-start-bar>
+    <el-start-bar @open="layerOpen" :startShow="startShow" @isShow="isShow"></el-start-bar>
     <!-- 桌面切换 -->
     <el-nav-bar v-model="showDesktop" @open="layerOpen"></el-nav-bar>
   </div>
@@ -53,7 +53,11 @@ export default {
     // 桌面点击事件
     desktopClick(e) {
       this.startShow = e.target.id === 'start_btn'
+      console.log(e.target.id === 'start_btn')
       document.getElementById('smartMenu_body').style.display = 'none'
+    },
+    isShow(show) {
+      this.startShow = show
     },
     // 打开应用
     layerOpen(app) {

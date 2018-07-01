@@ -39,12 +39,7 @@ export default {
   },
   props: {
     options: {
-      type: Object,
-      default: function() {
-        return {
-
-        }
-      }
+      type: Object
     }
   },
   computed: {

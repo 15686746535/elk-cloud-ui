@@ -442,6 +442,21 @@
   }
 }
 
+/*定义动画的时间和过渡效果*/
+.apps {
+  transition: all 0.5s ease;
+}
+/*桌面1隐藏*/
+.apps.desktop-1.hide{
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+/*桌面2隐藏*/
+.apps.desktop-2.hide{
+  -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+
 .bg-white{
   background-color:#fff;
 }

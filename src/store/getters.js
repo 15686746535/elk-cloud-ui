@@ -16,6 +16,7 @@ const getters = {
   desktopOneList: state => state.user.desktopOneList,
   desktopTwoList: state => state.user.desktopTwoList,
   hasAppList: state => state.user.hasAppList,
+  desktopList: state => state.user.desktopList,
   permissions: state => state.user.permissions
   // introduction: state => state.user.introduction,
   // status: state => state.user.status,

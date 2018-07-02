@@ -16,7 +16,7 @@
             <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
           </div>
           <!-- 添加按钮 -->
-          <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset" style="position: absolute;margin: 0px;">
+          <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset" style="position: absolute;margin: 0px;z-index: 21;">
             <span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>
             <div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>
           </div>
@@ -93,20 +93,7 @@ export default {
     },
     // 移动桌面
     desktopSwitch(desktop) {
-      var currTab = document.getElementsByClassName('currTab')
-      for (var i = 0; i < currTab.length; i++) {
-        currTab[i].classList.remove('currTab')
-      }
-      this.showDesktop = desktop
-      if (desktop === '1') {
-        document.getElementById('desktop-1').classList.remove('hide')
-        document.getElementById('desktop-2').classList.add('hide')
-        document.getElementById('switch-1').classList.add('currTab')
-      } else {
-        document.getElementById('desktop-2').classList.remove('hide')
-        document.getElementById('desktop-1').classList.add('hide')
-        document.getElementById('switch-2').classList.add('currTab')
-      }
+      this.$emit('desktopSwitch', desktop)
     },
     // 打开应用
     layerOpen(app) {

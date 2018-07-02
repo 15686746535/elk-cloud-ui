@@ -18,6 +18,9 @@ export const IconMap = {
   car: '../../../static/icon/car.png',
   users: '../../../static/icon/users.png',
   configure: '../../../static/icon/configure.png',
+  statistics: '../../../static/icon/statistics.png',
+  money: '../../../static/icon/money.png',
+  basis: '../../../static/icon/basis.png',
   // 以上是系统图标 在下方添加程序图标
   app_default: '../../../static/icon/app/app_default.png', // 默认图标
 }

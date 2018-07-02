@@ -41,12 +41,13 @@
 <script>
 import defect from '@/views/404.vue'
 import theme from '@/views/theme'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'el-nav-bar',
   props: {
-    desktop: String
+    currentList: {
+      type: Array
+    }
   },
   data() {
     return {
@@ -57,15 +58,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'defaultList',
-      'startList',
-      'desktopOneList',
-      'desktopTwoList',
-      'desktopBg',
-      'name',
-      'avatar'
-    ])
   },
   watch: {
   },
@@ -85,23 +77,14 @@ export default {
   methods: {
     // 鼠标右键移除应用
     removeApp() {
-      if (this.desktop === '1') {
-        this.desktopOneList.splice(this.appIndex, 1)
-      } else {
-        this.desktopTwoList.splice(this.appIndex, 1)
-      }
+      this.currentList.splice(this.appIndex, 1)
       // 这里需要传回后台保存
+      this.$emit('saveDesktop', true)
     },
     // 鼠标右键移动应用
     moveDesktop(d) {
-      if (this.desktop === '1') {
-        this.desktopOneList[this.appIndex].desktop = d
-      } else {
-        this.desktopTwoList[this.appIndex].desktop = d
-      }
-      this.$store.dispatch('SetDesktopApp', this.desktopOneList.concat(this.desktopTwoList))
-      console.log(d)
-      console.log(this.desktopOneList)
+      this.currentList[this.appIndex].desktop = d
+      console.log(this.currentList[this.appIndex])
       // 这里需要传回后台保存
       this.$emit('saveDesktop', true)
     },
@@ -110,18 +93,10 @@ export default {
       this.$emit('open', app)
     },
     mouseOpen() {
-      if (this.desktop === '1') {
-        if (this.appIndex > -1) {
-          this.layerOpen(this.desktopOneList[this.appIndex])
-        } else {
-          this.layerOpen(this.add)
-        }
+      if (this.appIndex > -1) {
+        this.layerOpen(this.currentList[this.appIndex])
       } else {
-        if (this.appIndex > -1) {
-          this.layerOpen(this.desktopOneList[this.appIndex])
-        } else {
-          this.layerOpen(this.add)
-        }
+        this.layerOpen(this.add)
       }
     },
     resetHome() {

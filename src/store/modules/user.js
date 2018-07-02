@@ -4,6 +4,11 @@ import { defaultMap, startFilter, hasAppFilter, showAppFilter, desktopFilter } f
 import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
+export function showMonitor(desktopList, list) {
+  return desktopList.filter(function(app, index) {
+    return app.id === list[index].id && app.desktop === list[index].desktop
+  })
+}
 const user = {
   state: {
     token: getToken(),
@@ -16,6 +21,7 @@ const user = {
     menuIds: [], // 拥有的菜单id
     desktopOneList: [], // 桌面1显示的菜单
     desktopTwoList: [], // 桌面2显示的菜单
+    desktopList: null, // desktopOneList + desktopTwoList
     hasAppList: [], // 拥有的菜单
     roles: []
   },
@@ -58,6 +64,9 @@ const user = {
     },
     SET_DESKTOPTWOLIST: (state, desktopTwoList) => {
       state.desktopTwoList = desktopTwoList
+    },
+    SET_DESKTOPLIST: (state, desktopList) => {
+      state.desktopList = desktopList
     }
   },
 
@@ -80,9 +89,13 @@ const user = {
     SetDesktopABg: ({ commit }, bg) => {
       commit('SET_DESKTOPBG', bg) // 桌面背景
     },
-    SetDesktopApp: ({ commit }, list) => {
-      commit('SET_DESKTOPONELIST', desktopFilter(list, '1'))
-      commit('SET_DESKTOPTWOLIST', desktopFilter(list, '2'))
+    SetDesktopApp: ({ commit, state }, list) => {
+      // var desktopList = state.desktopList || list
+      var desktop1List = desktopFilter(list, '1')
+      var desktop2List = desktopFilter(list, '2')
+      commit('SET_DESKTOPONELIST', desktop1List)
+      commit('SET_DESKTOPTWOLIST', desktop2List)
+      commit('SET_DESKTOPLIST', desktop1List.concat(desktop2List))
     },
     // 获取用户信息
     GetInfo({ commit, state }) {
@@ -157,9 +170,9 @@ const user = {
             // ]
             var hasAppList = hasAppFilter(data.menuIds, data.roles)
             if (data.showApp && data.showApp.length > 0) {
-              var showApp = showAppFilter(hasAppList, data.showApp)
-              commit('SET_DESKTOPONELIST', desktopFilter(showApp, '1'))
-              commit('SET_DESKTOPTWOLIST', desktopFilter(showApp, '2'))
+              var showApps = showAppFilter(hasAppList, data.showApp)
+              commit('SET_DESKTOPONELIST', desktopFilter(showApps, '1'))
+              commit('SET_DESKTOPTWOLIST', desktopFilter(showApps, '2'))
             } else {
               commit('SET_DESKTOPONELIST', hasAppList)
             }

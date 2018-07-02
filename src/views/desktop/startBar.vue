@@ -23,7 +23,7 @@
               </li>
             </ul>
             <ul class="item item_ul">
-              <li v-for="menu in startList" :id="'item0menu_'+ menu.id" @click="layerOpen(menu)">
+              <li v-for="menu in startList" :id="'item0menu_'+ menu.id">
                 <span><img :src="menu.icon"/>{{menu.name}}</span>
                 <b v-if="menu.childItem && menu.childItem.length > 0"></b>
                 <ul v-if="menu.childItem && menu.childItem.length > 0" class="item childItem item_ul" :id="'item0menu_ul_'+ menu.id">

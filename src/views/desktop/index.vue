@@ -1,13 +1,14 @@
 <template>
   <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
     <!--桌面1-->
-    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen" @saveDesktop="saveDesktop"></el-apps>
+    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen" @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch"></el-apps>
     <!--桌面2-->
-    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"  @saveDesktop="saveDesktop"></el-apps>
+    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"  @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch"></el-apps>
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
     <!--鼠标右键菜单-->
-    <el-smart-menu :desktop="showDesktop" @open="layerOpen" @saveDesktop="saveDesktop"></el-smart-menu>
+    <el-smart-menu :currentList="showDesktop==='1'?desktopOneList:desktopTwoList"
+                   @open="layerOpen" @saveDesktop="saveDesktop"></el-smart-menu>
     <!-- 主页导航栏 -->
     <el-start-bar @open="layerOpen"></el-start-bar>
     <!-- 桌面切换 -->
@@ -36,8 +37,17 @@ export default {
       showDesktop: '1'
     }
   },
+  watch: {
+    desktopList: function(val) {
+      console.log('桌面设置已经修改', val)
+      saveApps({ appList: val }).then(() => {
+        console.log('桌面设置已经保存')
+      })
+    }
+  },
   computed: {
     ...mapGetters([
+      'desktopList',
       'defaultList',
       'startList',
       'desktopOneList',
@@ -54,10 +64,7 @@ export default {
   methods: {
     saveDesktop() {
       var list = this.desktopOneList.concat(this.desktopTwoList)
-      // console.log(JSON.stringify(list))
-      saveApps({ appList: list }).then(() => {
-        console.log('桌面设置已经保存')
-      })
+      this.$store.dispatch('SetDesktopApp', list)
     },
     // 桌面点击事件
     desktopClick(e) {

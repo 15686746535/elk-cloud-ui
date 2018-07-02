@@ -14,8 +14,8 @@
         <div class="default_tools"></div>
         <div class="default_tools"></div>
         <div id="start_block">
-          <a title="开始" id="start_btn" @click="isShow"></a>
-          <div id="start_item" v-show="startShow">
+          <a title="开始" id="start_btn"></a>
+          <div id="start_item">
             <ul class="item admin">
               <li>
                 <img :src="avatar" class="adminImg" />
@@ -48,9 +48,6 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'el-start-bar',
   props: {
-    startShow: {
-      type: Boolean
-    }
   },
   data() {
     return {
@@ -71,9 +68,6 @@ export default {
   mounted() {
   },
   methods: {
-    isShow() {
-      this.$emit('isShow', !this.startShow)
-    },
     // 打开应用
     layerOpen(app) {
       this.$emit('open', app || this.defect)

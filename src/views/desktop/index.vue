@@ -10,7 +10,7 @@
     <!--鼠标右键菜单-->
     <el-smart-menu :desktop="showDesktop" @open="layerOpen"></el-smart-menu>
     <!-- 主页导航栏 -->
-    <el-start-bar @open="layerOpen" :startShow="startShow" @isShow="isShow"></el-start-bar>
+    <el-start-bar @open="layerOpen"></el-start-bar>
     <!-- 桌面切换 -->
     <el-nav-bar @desktopSwitch="desktopSwitch" @open="layerOpen"></el-nav-bar>
   </div>
@@ -33,8 +33,7 @@ export default {
   },
   data() {
     return {
-      showDesktop: '1',
-      startShow: false
+      showDesktop: '1'
     }
   },
   computed: {
@@ -66,12 +65,8 @@ export default {
     },
     // 桌面点击事件
     desktopClick(e) {
-      this.startShow = e.target.id === 'start_btn'
-      console.log(e.target.id === 'start_btn')
+      document.getElementById('start_item').style.display = e.target.id === 'start_btn' ? 'block' : 'none'
       document.getElementById('smartMenu_body').style.display = 'none'
-    },
-    isShow(show) {
-      this.startShow = show
     },
     // 移动桌面
     desktopSwitch(desktop) {

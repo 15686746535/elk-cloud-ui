@@ -56,7 +56,7 @@ export const appMap = [
   { id: 60400, desktop: '1', pid: 60000, params: [], name: '离职同事', content: _import('modules/upms/quitUser'), icon: getIcon('app_quit_user'), msgCount: 0, childItem: [] },
   { id: 60200, desktop: '1', pid: 60000, params: [], name: '部门设置', content: _import('modules/upms/org'), icon: getIcon('app_org'), msgCount: 0, childItem: [] },
   { id: 60300, desktop: '1', pid: 60000, params: [], name: '职位设置', content: _import('modules/upms/role'), icon: getIcon('app_role'), msgCount: 0, childItem: [] },
-  { id: 10007, desktop: '1', pid: 60000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehiclePeriod'), msgCount: 0, childItem: [] },
+  { id: 80100, desktop: '1', pid: 60000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehiclePeriod'), msgCount: 0, childItem: [] },
   { id: 150110, desktop: '1', pid: 60000, params: [], name: '接送信息', content: _import('modules/bespeak/shuttle'), icon: getIcon('app_shuttle'), msgCount: 0, childItem: [] },
   // 系统设置
   { id: 10001, desktop: '1', pid: 99999, params: [], name: '密码修改', content: _import('modules/stu/student'), icon: getIcon('app_password'), msgCount: 0, childItem: [] },

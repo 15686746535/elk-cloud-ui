@@ -40,12 +40,12 @@ export default {
   },
   watch: {
     desktopList: function(val) {
-      if (val.length === 45) {
-        Message.success('ok-' + val.length)
-      } else {
-        Message.error('no-' + val.length)
-        console.log(val)
-      }
+      // if (val.length === 45) {
+      //   Message.success('ok-' + val.length)
+      // } else {
+      //   Message.error('no-' + val.length)
+      //   console.log(val)
+      // }
       console.log('桌面设置已经修改', val.length)
       saveApps({ appList: val }).then(() => {
         console.log('桌面设置已经保存')

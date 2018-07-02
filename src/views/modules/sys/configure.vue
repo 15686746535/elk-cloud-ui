@@ -201,7 +201,7 @@
             </el-table-column>
           </el-table>
 
-          <el-dialog @close="getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))" title="添加短信模板" width="550px" :visible.sync="dialogMessageConfig">
+          <el-dialog :modal="false" @close="getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))" title="添加短信模板" width="550px" :visible.sync="dialogMessageConfig">
             <el-form label-position="left" :model="config" :rules="configRules" ref="config" label-width="110px">
 
               <span v-if="isAdd">

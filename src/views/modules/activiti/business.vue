@@ -59,7 +59,7 @@
           </el-card>
       </div>
 
-      <el-dialog  @close="getList" :title="dialogStatus === 'create'?'添加':'编辑'" :show-close="false" width="550px" :visible.sync="option">
+      <el-dialog :modal="false"  @close="getList" :title="dialogStatus === 'create'?'添加':'编辑'" :show-close="false" width="550px" :visible.sync="option">
         <el-form :model="bus"  ref="bus" :rules="rules" label-width="100px">
           <el-form-item label="业务"  prop="name">
             <el-input v-model="bus.name" placeholder="业务名称" ></el-input>

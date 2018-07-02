@@ -46,7 +46,7 @@
         </el-button>
       </div>
 
-      <el-dialog @close="cancel('config')" title="Config Information" width="550px" :visible.sync="configOption">
+      <el-dialog :modal="false" @close="cancel('config')" title="Config Information" width="550px" :visible.sync="configOption">
 
         <el-form label-position="left" :model="config" :rules="rules" ref="config" label-width="110px">
           <el-form-item v-show="dialogStatus=='create'" label="org"  prop="orgId">

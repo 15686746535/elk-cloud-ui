@@ -89,7 +89,7 @@
 
 
         </el-card>
-        <el-dialog @close="getList" title="选择负责人" width="350px" :visible.sync="dialogIntentionList">
+        <el-dialog :modal="false" @close="getList" title="选择负责人" width="350px" :visible.sync="dialogIntentionList">
           <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
 
           <el-select :loading="selectLoading" v-model="intentionList.userId" clearable style="width: 100%;margin-top: 20px;" filterable placeholder="负责人">

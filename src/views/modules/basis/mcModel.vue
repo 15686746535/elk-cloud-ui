@@ -51,7 +51,7 @@
         </el-pagination>
       </div>
 </el-card>
-    <el-dialog @close="getList" title="短信模板" width="550px" :visible.sync="showModule">
+    <el-dialog :modal="false" @close="getList" title="短信模板" width="550px" :visible.sync="showModule">
 
       <el-form label-position="left" :model="msgModel"  ref="msgModel" label-width="100px">
         <el-form-item label="模板类型"  prop="username">

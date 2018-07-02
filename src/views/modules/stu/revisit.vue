@@ -95,7 +95,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="选择问卷" width="20%" :visible.sync="questionnaireOption">
+    <el-dialog :modal="false" title="选择问卷" width="20%" :visible.sync="questionnaireOption">
       <div style="width:80%;margin: 0 auto" >
         <el-select style="width: 100%" v-model="questionnaireId" placeholder="请选择">
           <el-option
@@ -114,7 +114,7 @@
 
     </el-dialog>
 
-    <el-dialog @close="closeDialog" title="回访登记" width="750px" :visible.sync="visitStudentOption">
+    <el-dialog :modal="false" @close="closeDialog" title="回访登记" width="750px" :visible.sync="visitStudentOption">
       <div :style="{height: ($store.state.app.client.height)/2 +'px'}" style="overflow: auto;margin-bottom: 10px">
 
         <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in answerList.revisitQuestionList">

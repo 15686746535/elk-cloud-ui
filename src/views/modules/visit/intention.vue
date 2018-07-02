@@ -146,7 +146,7 @@
     </div>
     </transition>
 
-    <el-dialog width="650px" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
+    <el-dialog :modal="false" width="650px" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
 
 
       <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm"  size="small">

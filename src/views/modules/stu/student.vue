@@ -681,7 +681,7 @@
 
 
 
-    <el-dialog @close="closeBespeak" title="选择批次" width="550px" :visible.sync="dialogFormBespeak">
+    <el-dialog :modal="false" @close="closeBespeak" title="选择批次" width="550px" :visible.sync="dialogFormBespeak">
       <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
         <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
           无可预约场次
@@ -700,7 +700,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog @close="closeBespeak" title="选择课时" width="550px" :visible.sync="besCarDialog">
+    <el-dialog :modal="false" @close="closeBespeak" title="选择课时" width="550px" :visible.sync="besCarDialog">
       <div :style="{height: ($store.state.app.client.height)/3 +'px'}" style="overflow: auto">
         <div v-if="carClassList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
           无可预约课时
@@ -958,7 +958,7 @@
       </div>
     </el-card>
 
-    <el-dialog  @close="isPush122 = false;btnLoading = false;$refs['student122'].resetFields()" title="录入122" width="800px" :visible.sync="isPush122">
+    <el-dialog :modal="false"  @close="isPush122 = false;btnLoading = false;$refs['student122'].resetFields()" title="录入122" width="800px" :visible.sync="isPush122">
 
       <el-form :model="student122" :rules="studentRules122" ref="student122" label-width="80px" size="mini" >
         <el-row :gutter="20">

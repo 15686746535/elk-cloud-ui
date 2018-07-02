@@ -27,10 +27,11 @@ export function startDrag(desk, callback) {
 
   target.onmousedown = function(event) {
     if (!event.toElement.getAttribute('app')) {
+      // 当鼠标按下时表示元素可以移动，将标记设为true
       params.flag = true
     }
-    // 当鼠标按下时表示元素可以移动，将标记设为true
-
+    console.log(target.style.zIndex)
+    target.style.zIndex = '50'
     /* 为了阻止拖动浏览器中元素时发生默认事件，
     例如拖动图片时会出现一个新窗口显示该图片，下面代码可以阻止这种事件发生
     */
@@ -56,6 +57,8 @@ export function startDrag(desk, callback) {
     }
     target.style.left = '0px'
     apps.style.left = '0px'
+    target.style.zIndex = '20'
+    console.log()
     disX = 0
   }
   target.onmousemove = function(event) {

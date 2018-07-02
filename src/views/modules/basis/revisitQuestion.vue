@@ -167,7 +167,7 @@
     </el-card>
 
     <!-- 添加问卷弹窗 -->
-    <el-dialog  @close="cancelQuestionnaire('revisitQuestionnaire')" title="添加问卷" :show-close="false" width="550px" :visible.sync="questionnaireOption">
+    <el-dialog :modal="false"  @close="cancelQuestionnaire('revisitQuestionnaire')" title="添加问卷" :show-close="false" width="550px" :visible.sync="questionnaireOption">
 
       <el-form :model="revisitQuestionnaire" :rules="revisitQuestionnaireRules" ref="revisitQuestionnaire" label-position="right" label-width="100px">
         <el-form-item label="问卷名字" prop="name">

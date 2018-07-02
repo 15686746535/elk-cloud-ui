@@ -76,7 +76,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog :visible.sync="iconDialog" custom-class="tabs-dialog"  width="500px" class="my-dialog">
+    <el-dialog :modal="false" :visible.sync="iconDialog" custom-class="tabs-dialog"  width="500px" class="my-dialog">
       <el-tabs type="border-card" >
         <el-tab-pane >
           <span slot="label"><i class="el-icon-menu"></i> 菜单</span>

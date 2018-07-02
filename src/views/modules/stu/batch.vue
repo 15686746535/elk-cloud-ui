@@ -82,7 +82,7 @@
     </el-card>
 
     <!-- 考试设置 -->
-    <el-dialog @close="cancel('batch')" title="考试设置" :show-close="false" width="550px" :visible.sync="batchOption">
+    <el-dialog :modal="false" @close="cancel('batch')" title="考试设置" :show-close="false" width="550px" :visible.sync="batchOption">
 
       <el-form :model="batch" :rules="batchRules" ref="batch" label-width="120px">
         <el-form-item label="考试场地" prop="examField">
@@ -111,7 +111,7 @@
     </el-dialog>
 
 
-    <el-dialog :close-on-click-modal="false" @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
+    <el-dialog :modal="false" :close-on-click-modal="false" @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
 
       <el-tabs body-style="padding:0;" v-model="bespeakTabs" type="border-card" @tab-click="handleField">
         <el-tab-pane name="all" label="申请名单">

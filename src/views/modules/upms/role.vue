@@ -72,7 +72,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
+    <el-dialog :modal="false" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="所属部门" prop="roleName">
           <tree-select url="/upms/org/tree" v-model="form.orgId"></tree-select>
@@ -91,7 +91,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission" width="450px" >
+    <el-dialog :modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission" width="450px" >
       <div v-if="activeName === 'menuPermission'" style="height: 450px;overflow: auto">
         <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
       </div>

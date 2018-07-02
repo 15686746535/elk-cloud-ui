@@ -155,7 +155,7 @@
           </div>
         </el-card>
 
-        <el-dialog @close="getGradeList" width="550px" title="成绩修改" :visible.sync="gradeEdit">
+        <el-dialog :modal="false" @close="getGradeList" width="550px" title="成绩修改" :visible.sync="gradeEdit">
           <el-button-group>
             <el-button type="success" size="small" @click="passExam">通 过</el-button>
             <el-button type="danger" size="small" @click="examOperation('2')">失 败</el-button>
@@ -168,7 +168,7 @@
             </el-button-group>
           </div>
         </el-dialog>
-        <el-dialog @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
+        <el-dialog :modal="false" @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
           <el-table :data="notGradeStudentList" :height="($store.state.app.client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
@@ -192,7 +192,7 @@
             </el-table-column>
 
           </el-table>
-          <el-dialog width="550px" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
+          <el-dialog :modal="false" width="550px" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
 
             <Coach v-show="batchListQuery.subject == 1" v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
             <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
@@ -209,7 +209,7 @@
           </div>
         </el-dialog>
 
-        <el-dialog width="550px" title="选择教练" :visible.sync="innerGradeOption1" append-to-body>
+        <el-dialog :modal="false" width="550px" title="选择教练" :visible.sync="innerGradeOption1" append-to-body>
 
           <Coach v-show="batchListQuery.subject == 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
           <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>

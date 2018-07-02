@@ -46,7 +46,7 @@
       </div>
     </el-card>
     <!-- 发送消息 -->
-    <el-dialog @clock="this.$refs['messageConfig'].resetFields()" title="添加短信配置" width="550px" :visible.sync="messageConfigOption">
+    <el-dialog :modal="false" @clock="this.$refs['messageConfig'].resetFields()" title="添加短信配置" width="550px" :visible.sync="messageConfigOption">
       <el-form :model="messageConfig" :rules="messageConfigRules" ref="messageConfig" label-position="left">
         <el-form-item prop="dxtAccount">
           <el-input v-model="messageConfig.dxtAccount" placeholder="账号"></el-input>

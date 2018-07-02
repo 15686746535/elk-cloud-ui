@@ -154,7 +154,7 @@
               </div>
 
               <!-- 添加接送信息 -->
-              <el-dialog :close-on-click-modal="false" width="450px" title="请选择接送人" :visible.sync="userListOption">
+              <el-dialog :modal="false" :close-on-click-modal="false" width="450px" title="请选择接送人" :visible.sync="userListOption">
                 <el-select v-model="shuttle.userId" collapse-tags style="width: 100%" filterable placeholder="请选择接送人">
                   <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                   </el-option>

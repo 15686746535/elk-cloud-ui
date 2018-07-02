@@ -852,7 +852,7 @@
 
       </el-tabs>
 
-      <el-dialog @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加保养日志'" width="550px" :visible.sync="repairListOption">
+      <el-dialog :modal="false" @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加保养日志'" width="550px" :visible.sync="repairListOption">
         <div v-show="flag === 'repair'">
 
           <el-form label-position="left" :model="repair" :rules="repairRules" ref="repair" label-width="100px">

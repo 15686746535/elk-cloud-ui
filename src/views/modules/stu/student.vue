@@ -195,7 +195,7 @@
       </el-col>
     </div>
 
-    <el-card body-style="padding:0;" v-show="showModule=='info'">
+    <el-card v-if="showModule=='list'" body-style="padding:0;" v-show="showModule=='info'">
       <div slot="header"  style="line-height: 30px;" class="clearfix">
         学员详细信息
         <div style="float: right"><el-button type="primary" :disabled="edit" size="mini"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button></div>
@@ -719,12 +719,11 @@
       </div>
     </el-dialog>
 
-    <el-dialog @close="backClick" title="录入详细信息" width="800px" :visible.sync="isCreate">
+    <el-card v-if="showModule=='add'" @close="backClick" title="录入详细信息" width="800px" >
       <div v-loading="createLoading" element-loading-text="努力加载中..." style="overflow-x: hidden;overflow-y: auto;line-height: 50px;height:575px">
         <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="80px" size="mini" >
           <el-row :gutter="20">
             <el-col :span="12" >
-
               <!-- 联系电话 -->
               <el-row >
                 <el-form-item prop="mobile">
@@ -953,13 +952,13 @@
           </el-row>
         </el-form>
       </div>
-      <div slot="footer" class="dialog-footer">
+      <div  class="dialog-footer">
         <el-button plain @click="reset('studentEntity')">重  置</el-button>
         <el-button type="primary" :loading="btnLoading" @click="add('studentEntity')">建 档</el-button>
       </div>
-    </el-dialog>
+    </el-card>
 
-    <el-dialog @close="isPush122 = false;btnLoading = false;$refs['student122'].resetFields()" title="录入122" width="800px" :visible.sync="isPush122">
+    <el-dialog  @close="isPush122 = false;btnLoading = false;$refs['student122'].resetFields()" title="录入122" width="800px" :visible.sync="isPush122">
 
       <el-form :model="student122" :rules="studentRules122" ref="student122" label-width="80px" size="mini" >
         <el-row :gutter="20">
@@ -1490,7 +1489,12 @@
       }
     },
     created() {
+      console.log(this.options,this.$data,this.display)
+      this.$data.showModule = this.display
       this.getList()
+    },
+    props:{
+      display:String
     },
     computed: {
       ...mapGetters([
@@ -1699,6 +1703,7 @@
             saveStudent(this.studentEntity).then(() => {
               this.backClick()
               this.btnLoading = false
+              this.showModule = 'list'
             })
           }
         })
@@ -1707,6 +1712,7 @@
       create() {
         this.isCreate = true
         this.edit = true
+        this.showModule = 'add'
         this.getIntroducerList()
       },
       /* 获取介绍人列表 */

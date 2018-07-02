@@ -56,6 +56,7 @@ export function startDrag(desk, callback) {
     }
     target.style.left = '0px'
     apps.style.left = '0px'
+    disX = 0
   }
   target.onmousemove = function(event) {
     var e = event ? event : window.event

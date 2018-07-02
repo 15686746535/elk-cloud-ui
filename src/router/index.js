@@ -34,8 +34,8 @@ export const startMenuMap = [
  * @type {*[]}
  */
 export const appMap = [
-  { id: 20100, desktop: '1', pid: 20000, params: [], name: '学员管理', content: _import('modules/stu/student'), icon: getIcon('app_stu_student'), msgCount: 0, childItem: [] },
-  { id: 20101, desktop: '1', pid: 20100, params: [], name: '学员添加', content: _import('modules/stu/student'), icon: getIcon('app_stu_student'), msgCount: 0, childItem: [] },
+  { id: 20100, desktop: '1', pid: 20000, params: { 'display' : 'list' }, name: '学员管理', content: _import('modules/stu/student'), icon: getIcon('app_stu_student'), msgCount: 0, childItem: [] },
+  { id: 20101, desktop: '1', pid: 20100, params: {'display': 'add'}, name: '学员添加', content: _import('modules/stu/student'), icon: getIcon('app_stu_student'), msgCount: 0, childItem: [] },
   { id: 20900, desktop: '1', pid: 20000, params: [], name: '学费收取', content: _import('modules/stu/serviceNote'), icon: getIcon('app_stu_service'), msgCount: 0, childItem: [] },
   { id: 20300, desktop: '1', pid: 20000, params: [], name: '考试安排', content: _import('modules/stu/batch'), icon: getIcon('app_stu_batch'), msgCount: 0, childItem: [] },
   { id: 20400, desktop: '1', pid: 20000, params: [], name: '成绩登记', content: _import('modules/stu/grade'), icon: getIcon('app_stu_grade'), msgCount: 0, childItem: [] },
@@ -57,6 +57,27 @@ export const appMap = [
   { id: 10005, desktop: '1', pid: 99999, params: [], name: '定时任务', content: _import('modules/quartz/job'), icon: getIcon('app_job'), msgCount: 0, childItem: [] },
   { id: 10006, desktop: '1', pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('app_model'), msgCount: 0, childItem: [] },
   { id: 10007, desktop: '1', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
+  { id: 10007, desktop: '1', pid: 99999, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehiclePeriod'), msgCount: 0, childItem: [] },
+  { id: 150110, desktop: '1', pid: 99999, params: [], name: '接送信息', content: _import('modules/bespeak/shuttle'), icon: getIcon('app_shuttle'), msgCount: 0, childItem: [] },
+  { id: 120600, desktop: '1', pid: 99999, params: [], name: '月招统计', content: _import('modules/visualization/recruit'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
+  { id: 120100, desktop: '1', pid: 99999, params: [], name: '顾虑统计', content: _import('modules/visualization/worry'), icon: getIcon('app_worrycount'), msgCount: 0, childItem: [] },
+  { id: 120400, desktop: '1', pid: 99999, params: [], name: '来访统计', content: _import('modules/visualization/intention'), icon: getIcon('app_intentioncount'), msgCount: 0, childItem: [] },
+  { id: 120200, desktop: '1', pid: 99999, params: [], name: '招生点数', content: _import('modules/visualization/enrolSite'), icon: getIcon('app_enrolSite'), msgCount: 0, childItem: [] },
+  { id: 120500, desktop: '1', pid: 99999, params: [], name: '来源渠道', content: _import('modules/visualization/source'), icon: getIcon('app_source'), msgCount: 0, childItem: [] },
+  { id: 120300, desktop: '1', pid: 99999, params: [], name: '在培学员', content: _import('modules/visualization/subject'), icon: getIcon('app_subject'), msgCount: 0, childItem: [] },
+  { id: 40100, desktop: '1', pid: 99999, params: [], name: '校区设置', content: _import('modules/basis/campus'), icon: getIcon('app_campus'), msgCount: 0, childItem: [] },
+  { id: 40300, desktop: '1', pid: 99999, params: [], name: '报名点设置', content: _import('modules/basis/enrollDot'), icon: getIcon('app_enroll'), msgCount: 0, childItem: [] },
+  { id: 40500, desktop: '1', pid: 99999, params: [], name: '收费设置', content: _import('modules/basis/serviceCategory'), icon: getIcon('app_service'), msgCount: 0, childItem: [] },
+  { id: 40600, desktop: '1', pid: 99999, params: [], name: '回访问题', content: _import('modules/basis/revisitQuestion'), icon: getIcon('app_question'), msgCount: 0, childItem: [] },
+  { id: 40700, desktop: '1', pid: 99999, params: [], name: '来源渠道', content: _import('modules/basis/source'), icon: getIcon('app_sourcetype'), msgCount: 0, childItem: [] },
+  { id: 40900, desktop: '1', pid: 99999, params: [], name: '顾虑问题', content: _import('modules/basis/worry'), icon: getIcon('app_worrytype'), msgCount: 0, childItem: [] },
+  { id: 41000, desktop: '1', pid: 99999, params: [], name: '考场管理', content: _import('modules/basis/examDot'), icon: getIcon('app_examdot'), msgCount: 0, childItem: [] },
+  { id: 41200, desktop: '1', pid: 99999, params: [], name: '训练场管理', content: _import('modules/basis/trainingDot'), icon: getIcon('app_training'), msgCount: 0, childItem: [] },
+  { id: 41300, desktop: '1', pid: 99999, params: [], name: '客户类型', content: _import('modules/basis/customerType'), icon: getIcon('app_customerType'), msgCount: 0, childItem: [] },
+  { id: 70100, desktop: '1', pid: 99999, params: [], name: '费用信息', content: _import('modules/finance/costNote'), icon: getIcon('app_costInfo'), msgCount: 0, childItem: [] },
+  { id: 140100, desktop: '1', pid: 99999, params: [], name: '短信记录', content: _import('modules/record/message'), icon: getIcon('app_message'), msgCount: 0, childItem: [] },
+  { id: 140200, desktop: '1', pid: 99999, params: [], name: '系统日志', content: _import('modules/record/log'), icon: getIcon('app_systemlog'), msgCount: 0, childItem: [] },
+  { id: 140300, desktop: '1', pid: 99999, params: [], name: '升级信息', content: _import('modules/record/updateinfo'), icon: getIcon('app_updateinfo'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
 

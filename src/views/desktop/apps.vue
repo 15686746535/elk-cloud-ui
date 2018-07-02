@@ -1,8 +1,7 @@
 <template>
   <div>
-
     <transition :name="'move_'+desktop"  >
-      <div style="width: 100%;position: absolute;" class="apps" :class="desktop==='1'?'desktop-'+ desktop :'hide desktop-'+ desktop" :id="'desktop-'+desktop">
+      <div style="width: 100%;position: absolute;left:0;" class="apps" :class="desktop==='1'?'desktop-'+ desktop :'hide desktop-'+ desktop" :id="'desktop-'+desktop">
         <div :id="'desktop-startDrag-'+desktop"  style="position: absolute;z-index: 20;width: 100%;left:0;"
              :style="{height: ($store.state.app.client.height - 100) + 'px'}">
         </div>

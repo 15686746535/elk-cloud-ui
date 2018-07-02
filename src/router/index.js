@@ -59,7 +59,7 @@ export const appMap = [
   { id: 10007, desktop: '1', pid: 60000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehiclePeriod'), msgCount: 0, childItem: [] },
   { id: 150110, desktop: '1', pid: 60000, params: [], name: '接送信息', content: _import('modules/bespeak/shuttle'), icon: getIcon('app_shuttle'), msgCount: 0, childItem: [] },
   // 系统设置
-  { id: 10001, desktop: '1', pid: 99999, params: [], name: '密码修改', content: _import('modules/stu/student'), icon: getIcon('app_password'), msgCount: 0, childItem: [] },
+  { id: 10001, desktop: '1', pid: 99999, params: [], name: '密码修改', content: _import('modules/upms/changepassword'), icon: getIcon('app_password'), msgCount: 0, childItem: [] },
   { id: 10004, desktop: '1', pid: 99999, params: [], name: '系统配置', content: _import('modules/sys/configure'), icon: getIcon('app_configure'), msgCount: 0, childItem: [] },
   { id: 10005, desktop: '1', pid: 99999, params: [], name: '定时任务', content: _import('modules/quartz/job'), icon: getIcon('app_job'), msgCount: 0, childItem: [] },
   { id: 10006, desktop: '1', pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('app_model'), msgCount: 0, childItem: [] },

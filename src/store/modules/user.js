@@ -4,10 +4,14 @@ import { defaultMap, startFilter, hasAppFilter, showAppFilter, desktopFilter } f
 import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
-export function showMonitor(desktopList, list) {
-  return desktopList.filter(function(app, index) {
-    return app.id === list[index].id && app.desktop === list[index].desktop
+export function showMonitor(desktopList, newlist) {
+  var isUp = false
+  desktopList.forEach(function(item, index) {
+    if (item.id !== newlist[index].id || item.desktop !== newlist[index].desktop) {
+      isUp = true
+    }
   })
+  return isUp
 }
 const user = {
   state: {
@@ -90,12 +94,14 @@ const user = {
       commit('SET_DESKTOPBG', bg) // 桌面背景
     },
     SetDesktopApp: ({ commit, state }, list) => {
-      // var desktopList = state.desktopList || list
-      var desktop1List = desktopFilter(list, '1')
-      var desktop2List = desktopFilter(list, '2')
-      commit('SET_DESKTOPONELIST', desktop1List)
-      commit('SET_DESKTOPTWOLIST', desktop2List)
-      commit('SET_DESKTOPLIST', desktop1List.concat(desktop2List))
+      var desktopList = state.desktopList
+      commit('SET_DESKTOPONELIST', desktopFilter(list, '1'))
+      commit('SET_DESKTOPTWOLIST', desktopFilter(list, '2'))
+      if (desktopList) {
+        if (showMonitor(desktopList, list)) commit('SET_DESKTOPLIST', list)
+      } else {
+        commit('SET_DESKTOPLIST', list)
+      }
     },
     // 获取用户信息
     GetInfo({ commit, state }) {
@@ -109,76 +115,18 @@ const user = {
             commit('SET_AVATAR', data.avatar)
             commit('SET_MENUIDS', data.menuIds)
             commit('SET_PERMISSIONS', data.permissions)
-            // 测试
-            // data.showApp = [
-            //   {
-            //     id: 2,
-            //     userId: 1,
-            //     menuId: 20800, // 回访信息
-            //     desktop: '1', // 桌面1
-            //     sort: 0
-            //   },
-            //   {
-            //     id: 2,
-            //     userId: 1,
-            //     menuId: 20101, // 学员添加
-            //     desktop: '2', // 桌面2
-            //     sort: 1
-            //   },
-            //   {
-            //     id: 2,
-            //     userId: 1,
-            //     menuId: 20900, // 学费收取
-            //     desktop: '1', // 桌面1
-            //     sort: 2
-            //   },
-            //   {
-            //     id: 1,
-            //     userId: 1,
-            //     menuId: 20100, // 学员管理
-            //     desktop: '1', // 桌面1
-            //     sort: 3
-            //   },
-            //   {
-            //     id: 2,
-            //     userId: 1,
-            //     menuId: 20300, // 考试安排
-            //     desktop: '2', // 桌面1
-            //     sort: 4
-            //   },
-            //   {
-            //     id: 2,
-            //     userId: 1,
-            //     menuId: 20400, // 成绩登记
-            //     desktop: '1', // 桌面1
-            //     sort: 5
-            //   },
-            //   {
-            //     id: 2,
-            //     userId: 1,
-            //     menuId: 20600, // 毕业学员
-            //     desktop: '1', // 桌面1
-            //     sort: 6
-            //   },
-            //   {
-            //     id: 2,
-            //     userId: 1,
-            //     menuId: 20700, // 学员回访
-            //     desktop: '2', // 桌面2
-            //     sort: 7
-            //   }
-            // ]
+            console.log(data.showApp)
             var hasAppList = hasAppFilter(data.menuIds, data.roles)
+            var showApps = showAppFilter(hasAppList, data.showApp)
             if (data.showApp && data.showApp.length > 0) {
-              var showApps = showAppFilter(hasAppList, data.showApp)
               commit('SET_DESKTOPONELIST', desktopFilter(showApps, '1'))
               commit('SET_DESKTOPTWOLIST', desktopFilter(showApps, '2'))
             } else {
               commit('SET_DESKTOPONELIST', hasAppList)
             }
-            commit('SET_HASAPPLIST', hasAppList)
-            commit('SET_STARTLIST', startFilter(hasAppList))
-            commit('SET_DEFAULTLIST', defaultMap)
+            commit('SET_HASAPPLIST', hasAppList) // 拥有的app
+            commit('SET_STARTLIST', startFilter(hasAppList)) // 开始菜单
+            commit('SET_DEFAULTLIST', defaultMap)// 快速启动
             resolve(response)
           } else {
             Message.error('您没有权限！')

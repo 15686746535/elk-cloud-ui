@@ -51,7 +51,7 @@ export default {
       var row = len % count
       var top = row * 123 + 'px'
       var left = column * 131 + 'px'
-      if (count === column) {
+      if (count === row) {
         top = '0px'
         left = (column + 1) * 131 + 'px'
       }

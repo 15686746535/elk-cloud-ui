@@ -103,6 +103,7 @@ export default {
       console.log(d)
       console.log(this.desktopOneList)
       // 这里需要传回后台保存
+      this.$emit('saveDesktop', true)
     },
     // 打开应用
     layerOpen(app) {

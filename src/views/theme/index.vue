@@ -234,15 +234,22 @@
   </div>
 </template>
 <script>
+import { saveBg } from '@/api/desktop'
 export default {
   name: 'bg',
   data() {
+    return {
+      icon: ''
+    }
   },
   methods: {
     imgSelected(icon) {
       console.log(icon)
       this.$store.dispatch('SetDesktopABg', icon)
       // 这里请求后台修改用户桌面背景
+      saveBg(icon).then(() => {
+        console.log('背景已经修改', icon)
+      })
     }
   }
 }

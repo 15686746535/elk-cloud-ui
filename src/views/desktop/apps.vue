@@ -30,6 +30,7 @@
 <script>
 const _import = require('@/router/_import_development')
 import { startDrag } from '@/utils/ragstart'
+import request from '@/utils/request'
 
 export default {
   name: 'el-apps',
@@ -45,8 +46,6 @@ export default {
   computed: {
     setAddOffset() {
       var len = this.list.length
-      console.log(len)
-      console.log('---------------------')
       var h = this.$store.state.app.client.height - 160
       var count = parseInt(h / 113)
       var column = parseInt(len / count)
@@ -74,11 +73,11 @@ export default {
       console.log(value.list)
     })
     this.$dragging.$on('dragend', () => {
-      console.log('结束移动')
+      // 保存应用菜单
+      this.$emit('saveDesktop', true)
     })
   },
   methods: {
-
     // 应用坐标
     appStyle(i) {
       var h = this.$store.state.app.client.height - 160

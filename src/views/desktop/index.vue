@@ -1,14 +1,13 @@
 <template>
-  <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick"
-       @dragstart="ondragstart">
+  <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
     <!--桌面1-->
-    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen"></el-apps>
+    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen" @saveDesktop="saveDesktop"></el-apps>
     <!--桌面2-->
-    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"></el-apps>
+    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"  @saveDesktop="saveDesktop"></el-apps>
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
     <!--鼠标右键菜单-->
-    <el-smart-menu :desktop="showDesktop" @open="layerOpen"></el-smart-menu>
+    <el-smart-menu :desktop="showDesktop" @open="layerOpen" @saveDesktop="saveDesktop"></el-smart-menu>
     <!-- 主页导航栏 -->
     <el-start-bar @open="layerOpen"></el-start-bar>
     <!-- 桌面切换 -->
@@ -22,6 +21,7 @@ import ElApps from './apps.vue'
 import ElNavBar from './navBar.vue'
 import ElSmartMenu from './smartMenu.vue'
 import ElStartBar from './startBar.vue'
+import { saveApps } from '@/api/desktop'
 
 export default {
   name: 'layout',
@@ -50,22 +50,20 @@ export default {
   created() {
   },
   mounted() {
-    // var m = document.getElementById('move')
-    // m.onmousedown = function() { // down向下
-    //   alert('鼠标按下啦 思密达')
-    // }
-    //
-    // m.onmouseup = function() { // up向上
-    //   alert('鼠标抬起来啦 思密达')
-    // }
   },
   methods: {
-    ondragstart() {
-      console.log('鼠标按下啦 思密达')
+    saveDesktop() {
+      var list = this.desktopOneList.concat(this.desktopTwoList)
+      // console.log(JSON.stringify(list))
+      saveApps({ appList: list }).then(() => {
+        console.log('桌面设置已经保存')
+      })
     },
     // 桌面点击事件
     desktopClick(e) {
+      // 监听点击开始按钮 打开、关闭开始菜单
       document.getElementById('start_item').style.display = e.target.id === 'start_btn' ? 'block' : 'none'
+      // 关闭鼠标右键菜单
       document.getElementById('smartMenu_body').style.display = 'none'
     },
     // 移动桌面

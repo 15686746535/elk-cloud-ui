@@ -23,4 +23,5 @@ export const IconMap = {
   basis: '../../../static/icon/basis.png',
   // 以上是系统图标 在下方添加程序图标
   app_default: '../../../static/icon/app/app_default.png', // 默认图标
+  app_out: '../../../static/icon/app/app_out.png', // 默认图标
 }

@@ -4,10 +4,14 @@ import { defaultMap, startFilter, hasAppFilter, showAppFilter, desktopFilter } f
 import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
-export function showMonitor(desktopList, list) {
-  return desktopList.filter(function(app, index) {
-    return app.id === list[index].id && app.desktop === list[index].desktop
+export function showMonitor(desktopList, newlist) {
+  var isUp = false
+  desktopList.forEach(function(item, index) {
+    if (item.id !== newlist[index].id || item.desktop !== newlist[index].desktop) {
+      isUp = true
+    }
   })
+  return isUp
 }
 const user = {
   state: {
@@ -90,12 +94,12 @@ const user = {
       commit('SET_DESKTOPBG', bg) // 桌面背景
     },
     SetDesktopApp: ({ commit, state }, list) => {
-      // var desktopList = state.desktopList || list
-      var desktop1List = desktopFilter(list, '1')
-      var desktop2List = desktopFilter(list, '2')
-      commit('SET_DESKTOPONELIST', desktop1List)
-      commit('SET_DESKTOPTWOLIST', desktop2List)
-      commit('SET_DESKTOPLIST', desktop1List.concat(desktop2List))
+      var desktopList = state.desktopList
+      commit('SET_DESKTOPONELIST', desktopFilter(list, '1'))
+      commit('SET_DESKTOPTWOLIST', desktopFilter(list, '2'))
+      if (showMonitor(desktopList, list)) {
+        commit('SET_DESKTOPLIST', list)
+      }
     },
     // 获取用户信息
     GetInfo({ commit, state }) {
@@ -169,12 +173,14 @@ const user = {
             //   }
             // ]
             var hasAppList = hasAppFilter(data.menuIds, data.roles)
+            var showApps = showAppFilter(hasAppList, data.showApp)
             if (data.showApp && data.showApp.length > 0) {
-              var showApps = showAppFilter(hasAppList, data.showApp)
               commit('SET_DESKTOPONELIST', desktopFilter(showApps, '1'))
               commit('SET_DESKTOPTWOLIST', desktopFilter(showApps, '2'))
+              commit('SET_DESKTOPLIST', hasAppList)
             } else {
               commit('SET_DESKTOPONELIST', hasAppList)
+              commit('SET_DESKTOPLIST', hasAppList)
             }
             commit('SET_HASAPPLIST', hasAppList)
             commit('SET_STARTLIST', startFilter(hasAppList))

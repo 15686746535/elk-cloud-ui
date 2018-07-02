@@ -23,6 +23,7 @@ import ElNavBar from './navBar.vue'
 import ElSmartMenu from './smartMenu.vue'
 import ElStartBar from './startBar.vue'
 import { saveApps } from '@/api/desktop'
+import { Message } from 'element-ui'
 
 export default {
   name: 'layout',
@@ -39,7 +40,13 @@ export default {
   },
   watch: {
     desktopList: function(val) {
-      console.log('桌面设置已经修改', val)
+      if (val.length === 45) {
+        Message.success('ok-' + val.length)
+      } else {
+        Message.error('no-' + val.length)
+        console.log(val)
+      }
+      console.log('桌面设置已经修改', val.length)
       saveApps({ appList: val }).then(() => {
         console.log('桌面设置已经保存')
       })

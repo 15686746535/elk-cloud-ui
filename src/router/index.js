@@ -13,9 +13,9 @@ Vue.use(Router)
  * @type {*[]}
  */
 export const defaultMap = [
-  { id: 'menu17', name: '短消息', content: _import('404'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
+  { id: 'menu17', name: '短消息', content: _import('modules/activiti/notice'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
   { id: 'menu20', name: '工作日志', content: _import('404'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
-  { id: 'menu21', name: '日程安排', content: _import('404'), icon: getIcon('schedule'), msgCount: 0, childItem: [] },
+  { id: 'menu21', name: '我的待办', content: _import('modules/activiti/agency'), icon: getIcon('schedule'), msgCount: 2, childItem: [] },
   { id: 'menu31', name: '任务管理', content: _import('404'), icon: getIcon('task'), msgCount: 0, childItem: [] }
 ]
 /**

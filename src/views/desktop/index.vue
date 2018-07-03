@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
+  <div class="app-desktop calendar-list-desktop ba-colour" :class="'desktop-bg-'+desktopBg" :style="{height: $store.state.app.client.height + 'px'}" @click="desktopClick" >
     <!--桌面1-->
     <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen" @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch"></el-apps>
     <!--桌面2-->
@@ -40,11 +40,10 @@ export default {
   },
   watch: {
     desktopList: function(val) {
-      if (val.length === 45) {
+      if (val.length === 44) {
         Message.success('ok-' + val.length)
       } else {
         Message.error('no-' + val.length)
-        console.log(val)
       }
       console.log('桌面设置已经修改', val.length)
       saveApps({ appList: val }).then(() => {
@@ -99,7 +98,6 @@ export default {
     },
     // 打开应用
     layerOpen(app) {
-      console.log(app)
       if (app.content) {
         this.$layer.open({
           type: 2,

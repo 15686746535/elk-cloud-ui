@@ -588,7 +588,6 @@
       },
       // 查询招生信息集合
       getEnrollStudentList() {
-        console.log('====')
         this.studentListLoading = true
         queryEnrollStudents(this.studentListQuery).then(response => {
           this.studentList = response.data.data.list

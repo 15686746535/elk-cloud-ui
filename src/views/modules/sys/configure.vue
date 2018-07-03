@@ -416,7 +416,6 @@
           if (valid) {
             this.btnLoading = true
             this.ossConfig.type = 1
-            console.log(this.ossConfig)
             saveConfig(this.ossConfig).then(() => {
               this.btnLoading = false
               this.disabled = true
@@ -506,7 +505,6 @@
           if (valid) {
             if (formName === 'appConfig') this.config.value = JSON.stringify(this.appConfig)
             this.btnLoading = true
-            console.log('config:', this.config)
             if (this.isAdd) {
               addConfig(this.config).then(() => {
                 this.cancel(formName)
@@ -562,7 +560,6 @@
               this.config.configId = response.data.data.configId
               this.config.key = response.data.data.key
               this.appConfig = JSON.parse(response.data.data.value)
-              console.log(response.data)
             }
           })
         } else if (flag === 'messageConfig') {

@@ -1,52 +1,41 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-row :gutter="10">
-      <el-col class="org-tree-left">
-        <el-card class="box-card">
-          <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 部门总览</span>
-          <my-tree :data="treeData"
-                   v-model="org.orgId"
-                   choiceType="folder"
-                   @node="getOrg"></my-tree>
-        </el-card>
-      </el-col>
+  <el-row style="height: 100%">
+    <el-col class="org-tree-left" style="">
+      <el-card class="box-card">
+        <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 部门总览</span>
+        <my-tree :data="treeData" v-model="org.orgId" choiceType="folder" @node="getOrg"></my-tree>
+      </el-card>
+    </el-col>
+    <el-col :span="16">
+      <el-button-group style="margin: 20px;">
+        <el-button type="primary" @click="operationClick('create')" v-if="permissions.upms_org_add"><i class="el-icon-plus"></i>添加</el-button>
+        <el-button type="primary" icon="edit" @click="operationClick('update')" v-if="permissions.upms_org_update">编辑</el-button>
+        <el-button type="primary" icon="delete" @click="deleteClick" v-if="permissions.upms_org_del">删除</el-button>
+      </el-button-group>
+      <el-form label-position="right" label-width="80px"  :rules="rules" :model="form" ref="form">
+        <el-form-item label="上级部门" prop="parentName">
+          <el-input v-model="form.parentName" readonly :disabled="option ===''" placeholder="请选择上级部门"></el-input>
+        </el-form-item>
 
-      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
-        <el-card class="box-card" style="height: 80px;margin-bottom: 10px;">
-          <el-button-group>
-            <el-button type="primary" @click="operationClick('create')" v-if="permissions.upms_org_add"><i class="el-icon-plus"></i>添加</el-button>
-            <el-button type="primary" icon="edit" @click="operationClick('update')" v-if="permissions.upms_org_update">编辑</el-button>
-            <el-button type="primary" icon="delete" @click="deleteClick" v-if="permissions.upms_org_del">删除</el-button>
-          </el-button-group>
-        </el-card>
-        <el-card class="box-card" :style="{height: ($store.state.app.client.height-130) + 'px'}" style="overflow: auto">
-          <el-form label-position="right" label-width="80px"  :rules="rules" :model="form" ref="form">
-            <el-form-item label="上级部门" prop="parentName">
-              <el-input v-model="form.parentName" readonly :disabled="option ===''" placeholder="请选择上级部门"></el-input>
-            </el-form-item>
+        <el-form-item label="部门名字" prop="orgName">
+          <el-input v-model="form.orgName" :disabled="option ===''" placeholder="请输入部门名字"></el-input>
+        </el-form-item>
+        <el-form-item label="排序"  prop="sort">
+          <el-input type="number" :min="0"  v-model.number="form.sort" :disabled="option ===''" placeholder="排序"></el-input>
+        </el-form-item>
+        <el-form-item label="备注"  prop="remark">
+          <el-input  v-model="form.remark" :disabled="option ===''" placeholder="请输入备注"></el-input>
+        </el-form-item>
 
-            <el-form-item label="部门名字" prop="orgName">
-              <el-input v-model="form.orgName" :disabled="option ===''" placeholder="请输入部门名字"></el-input>
-            </el-form-item>
-            <el-form-item label="排序"  prop="sort">
-              <el-input type="number" :min="0"  v-model.number="form.sort" :disabled="option ===''" placeholder="排序"></el-input>
-            </el-form-item>
-            <el-form-item label="备注"  prop="remark">
-              <el-input  v-model="form.remark" :disabled="option ===''" placeholder="请输入备注"></el-input>
-            </el-form-item>
-
-          </el-form>
-          <el-row :gutter="10">
-            <el-col v-if="option !== ''">
-              <el-button type="primary" icon="edit" @click="back('form')">取消</el-button>
-              <el-button type="primary" icon="delete" @click="save('form')">确定</el-button>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
-    </el-row>
-
-  </div>
+      </el-form>
+      <el-row :gutter="10">
+        <el-col v-if="option !== ''">
+          <el-button type="primary" icon="edit" @click="back('form')">取消</el-button>
+          <el-button type="primary" icon="delete" @click="save('form')">确定</el-button>
+        </el-col>
+      </el-row>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

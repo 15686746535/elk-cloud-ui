@@ -1,78 +1,65 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-row :gutter="5">
-      <el-col class="org-tree-left">
-        <el-card>
-          <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-            <!-- 分割线 -->
-            <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col>
-          </el-row>
-          <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="getList"></my-tree>
-        </el-card >
-      </el-col>
-      <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
-        <el-card>
-          <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
-          <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="getList">搜索</el-button>
-          <el-table :key='tableKey'  :height="($store.state.app.client.height-215)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
-            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-            <el-table-column align="center" label="职位名称">
-              <template slot-scope="scope">
-                <span>{{scope.row.roleName}}</span>
-              </template>
-            </el-table-column>
+  <div style="height: 100%">
+    <el-card style="height: 100%" v-show="showList">
+      <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
+      <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="getList">搜索</el-button>
+      <el-table :key='tableKey'  :height="400" :data="list" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <el-table-column align="center" label="驾校">
+          <template slot-scope="scope">
+            <span>壹鹿集团（华通驾校）</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="部门">
+          <template slot-scope="scope">
+            <span>培训部</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="职位名称">
+          <template slot-scope="scope">
+            <span>{{scope.row.roleName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="职位描述">
+          <template slot-scope="scope">
+            <span>{{scope.row.roleDesc }}</span>
+          </template>
+        </el-table-column>
 
-            <!--<el-table-column align="center" label="职位标识">-->
-              <!--<template slot-scope="scope">-->
-                <!--<span>{{scope.row.roleKey}}</span>-->
-              <!--</template>-->
-            <!--</el-table-column>-->
+        <el-table-column  align="center" label="操作" width="350">
+          <template slot-scope="scope">
+            <el-button size="mini" type="success" v-if="permissions.upms_role_update"   @click="handleUpdate(scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" v-if="permissions.upms_role_del"  @click="handleDelete(scope.row)">删除</el-button>
+            <el-button size="mini" type="info" v-if="permissions.upms_role_auth" plain @click="handlePermission(scope.row)" >授权</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float: left"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+        <div class="" style="float: right;">
+          <el-button  type="primary" icon="el-icon-plus" v-if="permissions.upms_role_add" @click="createClick()">添加</el-button>
+        </div>
+      </div>
+    </el-card>
+    <el-card style="height: 100%;overflow: auto" v-show="!showList">
+      <div style="float: left;width: 50%;height: 90%;overflow: auto" >
+        应用权限
+        <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
+      </div>
+      <div style="float: left;width: 50%;height: 90%;overflow: auto" >
+        数据权限
+        <my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>
+      </div>
+      <el-button style="float: right;" type="primary" :loading="isloading"  @click="updatePermession(roleId, roleKey)">更 新</el-button>
+      <el-button style="float: right;margin:  0 15px" type="primary" @click="showList = true">取消</el-button>
+    </el-card>
 
-            <el-table-column align="center" label="职位描述">
-              <template slot-scope="scope">
-                <span>{{scope.row.roleDesc }}</span>
-              </template>
-            </el-table-column>
 
-            <el-table-column align="center" label="创建时间">
-              <template slot-scope="scope">
-                <span>{{scope.row.createTime | parseTime('{y}-{m}-{d}')}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column  align="center" label="操作" width="350">
-              <template slot-scope="scope">
-                <el-button size="mini" type="success"
-                           @click="handleUpdate(scope.row)">编辑
-                </el-button>
-                <el-button size="mini" type="danger"
-                           @click="handleDelete(scope.row)">删除
-                </el-button>
-                 <el-button size="mini" type="info" plain
-                            @click="handlePermission(scope.row,'menuPermission')" >菜单
-                 </el-button>
-                <el-button size="mini" type="info" plain
-                           @click="handlePermission(scope.row,'dataPermission')" >权限
-                </el-button>
-              </template>
-            </el-table-column>
-
-          </el-table>
-          <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float: left"
-                           :current-page.sync="listQuery.page" background
-                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                           layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-            <div class="" style="float: right;">
-              <el-button  type="primary" icon="el-icon-plus" v-if="permissions.upms_role_add" @click="createClick()">添加</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-dialog :modal="false" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
+    <el-dialog :modal="false" @close="cancel('form')" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="所属部门" prop="roleName">
           <tree-select url="/upms/org/tree" v-model="form.orgId"></tree-select>
@@ -87,28 +74,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel('form')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
-        <el-button v-else type="primary"  v-if="permissions.upms_role_update"  @click="update('form')">修 改</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogPermissionVisible" @close="closePermission" width="450px" >
-      <div v-if="activeName === 'menuPermission'" style="height: 450px;overflow: auto">
-        <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
-      </div>
-      <div v-if="activeName === 'dataPermission'" style="height: 450px;overflow: auto">
-        <my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>
-      </div>
-
-      <!--<el-tabs v-model="activeName" >-->
-        <!--<el-tab-pane label="菜单权限" style="height: 450px;overflow: auto" name="menuPermission">-->
-          <!---->
-        <!--</el-tab-pane>-->
-        <!--<el-tab-pane label="数据权限" style="height: 450px;overflow: auto"  name="dataPermission">-->
-          <!---->
-        <!--</el-tab-pane>-->
-      <!--</el-tabs>-->
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="updatePermession(roleId, roleKey)">更 新</el-button>
+        <el-button v-else type="primary"  @click="update('form')">修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -124,7 +90,7 @@
     data() {
       return {
         change: 1,
-        activeName: 'menuPermission',
+        showList: true,
         treeData: [],
         checkedKeys: [],
         defaultProps: {
@@ -172,6 +138,7 @@
         statusOptions: ['0', '1'],
         rolesOptions: undefined,
         dialogFormVisible: false,
+        isloading: false,
         dialogPermissionVisible: false,
         dialogStatus: '',
         textMap: {
@@ -197,6 +164,7 @@
         this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
         fetchList(this.listQuery).then(response => {
           this.list = response.data.data.list
+          console.log(response.data.data.list)
           this.total = response.data.data.totalCount
           this.listLoading = false
         })
@@ -232,10 +200,8 @@
         this.listQuery.page = 1
         this.getList()
       },
-      handlePermission(row, state) {
-        this.activeName = state
-        this.dialogStatus = 'permission'
-        this.dialogPermissionVisible = true
+      handlePermission(row) {
+        this.showList = false
         this.roleId = row.roleId
         this.menuUrl = '/upms/menu/tree?roleId=' + row.roleId
         this.dataUrl = '/upms/org/tree?roleId=' + row.roleId
@@ -289,16 +255,13 @@
         })
       },
       updatePermession(roleId, roleKey) {
-        if (this.activeName === 'menuPermission') {
-          menuPermissionUpd(roleId, this.permission.menuList).then(() => {
-            this.dialogPermissionVisible = false
-          })
-        }
-        if (this.activeName === 'dataPermission') {
+        this.isloading = true
+        menuPermissionUpd(roleId, this.permission.menuList).then(() => {
           dataPermissionUpd(roleId, this.permission.dataList).then(() => {
-            this.dialogPermissionVisible = false
+            this.showList = true
+            this.isloading = false
           })
-        }
+        })
       },
       resetTemp() {
         this.form = {
@@ -311,3 +274,8 @@
     }
   }
 </script>
+<style>
+  .el-card__body{
+    height: 100%;
+  }
+</style>

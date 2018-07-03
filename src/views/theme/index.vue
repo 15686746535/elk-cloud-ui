@@ -244,7 +244,6 @@ export default {
   },
   methods: {
     imgSelected(icon) {
-      console.log(icon)
       this.$store.dispatch('SetDesktopABg', icon)
       // 这里请求后台修改用户桌面背景
       saveBg(icon).then(() => {

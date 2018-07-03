@@ -1,9 +1,9 @@
 /*全局样式*/
-.app-container {
+.app-desktop {
   padding: 20px;
 }
 /*全局样式*/
-.app-container.calendar-list-container{
+.app-desktop.calendar-list-desktop{
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -474,41 +474,48 @@
   background-color:$BgDanger;
 }
 
-.el-row{
-  height: 100%;
-}
-.el-row .el-col{
-  height: 100%;
-}
-.el-card{
-  height: 100%;
-}
+//.el-row{
+//  height: 100%;
+//}
+//.el-row .el-col{
+//  height: 100%;
+//}
+//.el-card{
+//  height: 100%;
+//}
 .org-tree-left{
-  width: 230px;
+  height: 100%;
+  width: 300px;
+  .el-card{
+    width: 300px;
+    height: 100%;
+    overflow: auto;
+    background: url($TreeBg) no-repeat center bottom;
+  }
 }
-.org-tree-left .el-card{
-  background-image:url($TreeBg);
-  /* 背景图片不重复显示*/
-  background-repeat: no-repeat;
-  /* 背景图片横向及纵向重复*/
-  /*background-repeat: repeat;*/
-  /*背景图片横向重复*/
-  /*background-repeat: repeat-x;*/
-  /*背景图片纵向重复*/
-  /*background-repeat: repeat-y;*/
-  /*固定背景图片*/
-  /*background-attachment: fixed;*/
-  /*滚动背景图片*/
-  /*background-attachment: scroll;*/
-  /*背景图片在横向的最左方显示*/
-  /*background-position-x: left;*/
-  /*背景图片在横向的最右方显示*/
-  background-position-x: center;
-  /*背景图片在纵向的最上方显示*/
-  /*background-position-y: top;*/
-  /*背景图片在纵向的最下方显示*/
-  background-position-y: bottom;
-}
+//.org-tree-left .el-card{
+//  background-image:url($TreeBg);
+//  /* 背景图片不重复显示*/
+//  background-repeat: no-repeat;
+//  /* 背景图片横向及纵向重复*/
+//  /*background-repeat: repeat;*/
+//  /*背景图片横向重复*/
+//  /*background-repeat: repeat-x;*/
+//  /*背景图片纵向重复*/
+//  /*background-repeat: repeat-y;*/
+//  /*固定背景图片*/
+//  /*background-attachment: fixed;*/
+//  /*滚动背景图片*/
+//  /*background-attachment: scroll;*/
+//  /*背景图片在横向的最左方显示*/
+//  /*background-position-x: left;*/
+//  /*背景图片在横向的最右方显示*/
+//  background-position-x: center;
+//  /*背景图片在纵向的最上方显示*/
+//  /*background-position-y: top;*/
+//  /*背景图片在纵向的最下方显示*/
+//  background-position-y: bottom;
+//}
 .org-tree-left .el-card{
   overflow: auto;
 }
@@ -542,7 +549,7 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 }
 
 /*背景图片*/
-.app-container.calendar-list-container{
+.app-desktop.calendar-list-desktop{
   &.desktop-bg-01-0{
     background-image: url($DesktopBg_01_0);
   }

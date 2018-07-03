@@ -477,29 +477,24 @@
         this.stuServiceBuyNoteEntity.realPrice = 0
         this.stuServiceBuyNoteEntity.payTypeList = []
         var price = this.stuServiceBuyNoteEntity.activityPrice ? this.stuServiceBuyNoteEntity.activityPrice : this.stuServiceBuyNoteEntity.originalPrice
-        console.log('金额', price)
         // 如果全款计算现金
         if (this.stuServiceBuyNoteEntity.receivablesType === '全款') {
           var other_m = 0.0
           for (var i = 1; i < this.payTypeList.length; i++) {
             if (this.payTypeList[i].money !== null && this.payTypeList[i].money !== 0 && this.payTypeList[i].money !== '') {
-              other_m+=this.payTypeList[i].money
+              other_m += this.payTypeList[i].money
             }
           }
-
-
-          console.log('qk', price,this.stuServiceBuyNoteEntity.realPrice,other_m)
-          console.log(this.payTypeList)
           this.payTypeList[0].money = price - other_m
           this.payTypeList[0].money = this.payTypeList[0].money <= 0 ? 0 : this.payTypeList[0].money
           // this.stuServiceBuyNoteEntity.realPrice = Number(this.stuServiceBuyNoteEntity.realPrice) + Number(this.payTypeList[0].money)
-        }else if(this.stuServiceBuyNoteEntity.receivablesType === '定转全'){
+        } else if (this.stuServiceBuyNoteEntity.receivablesType === '定转全') {
           var paymony = price - this.earnestMoney
-          this.stuServiceBuyNoteEntity.realPrice= 0
+          this.stuServiceBuyNoteEntity.realPrice = 0
           other_m = 0.0
           for (var i = 1; i < this.payTypeList.length; i++) {
             if (this.payTypeList[i].money !== null && this.payTypeList[i].money !== 0 && this.payTypeList[i].money !== '') {
-              other_m+=this.payTypeList[i].money
+              other_m += this.payTypeList[i].money
             }
           }
           this.payTypeList[0].money = paymony - other_m

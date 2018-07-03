@@ -115,7 +115,6 @@ const user = {
             commit('SET_AVATAR', data.avatar)
             commit('SET_MENUIDS', data.menuIds)
             commit('SET_PERMISSIONS', data.permissions)
-            console.log(data.showApp)
             var hasAppList = hasAppFilter(data.menuIds, data.roles)
             var showApps = showAppFilter(hasAppList, data.showApp)
             if (data.showApp && data.showApp.length > 0) {
@@ -153,7 +152,6 @@ const user = {
     },
     // 登出
     LogOut({ commit, state }) {
-      console.log(123)
       return new Promise((resolve, reject) => {
         logout(state.token, state.refresh_token).then(() => {
           console.log(123)

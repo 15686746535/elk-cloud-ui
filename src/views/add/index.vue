@@ -1,20 +1,22 @@
 <template>
   <div style="margin: 15px" align="center">
-    <table class="TableBlock" width="90%" align="center">
-      <tbody><tr><td class="TableHeader">应用</td></tr></tbody>
-    </table>
-    <table class="TableBlock" width="90%" align="center">
-      <tbody>
-        <tr v-for="i in list">
-          <td v-for="app in listFilter(i)" align="center">
+    <div style="width: 90%;" v-for="(type,index) in typeList">
+      <table class="TableBlock title" width="100%" align="center">
+        <tbody><tr><td class="TableHeader" @click="openType(index)">{{type.name}}</td></tr></tbody>
+      </table>
+      <table class="TableBlock" v-show="type.show"  width="100%" align="center" :id="'table_' + type.type">
+        <tbody>
+        <tr v-for="i in typeFilter(type.type)">
+          <td v-for="app in listFilter(i, type.type)" align="left">
             <div class="app-div" :class="app.isChoice?'selected':''" @click="selected(app, $event)">
               <img :src="app.icon" />
               <p>{{app.name}}</p>
             </div>
           </td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -26,7 +28,18 @@ export default {
   name: 'add',
   data() {
     return {
-      list: []
+      showList: {},
+      typeList: [
+        { type: '1', name: '学员管理', show: true },
+        { type: '2', name: '客户管理', show: true },
+        { type: '3', name: '车辆管理', show: true },
+        { type: '4', name: '人力资源管理', show: true },
+        { type: '5', name: '财务管理', show: true },
+        { type: '6', name: '数据统计', show: true },
+        { type: '7', name: '基础配置', show: true },
+        { type: '8', name: '日志记录', show: true },
+        { type: '9', name: '系统设置', show: true }
+      ]
     }
   },
   props: {
@@ -46,18 +59,31 @@ export default {
     }
   },
   mounted() {
-    var length = this.hasAppList.length
-    var residue = length % 4
-    var len = parseInt(length / 4)
-    if (residue > 0) len += 1
-    for (var i = 0; i < len; i++) {
-      this.list.push(i * 4)
-    }
   },
   methods: {
-    listFilter(i) {
+    typeFilter(type) {
+      var count = 0
+      var list = []
+      this.hasAppList.forEach(function(item) {
+        if (item.type === type) {
+          count += 1
+          list.push(item)
+        }
+      })
+      this.showList[type] = list
+      var residue = count % 4
+      var len = parseInt(count / 4)
+      if (residue > 0) len += 1
+      var list1 = []
+
+      for (var i = 0; i < len; i++) {
+        list1.push(i * 4)
+      }
+      return list1
+    },
+    listFilter(i, type) {
       var list = this.desktopOneList.concat(this.desktopTwoList)
-      return this.hasAppList.filter(function(app, index) {
+      return this.showList[type].filter(function(app, index) {
         app.isChoice = false
         list.forEach(function(item) {
           if (item.id === app.id) {
@@ -66,6 +92,9 @@ export default {
         })
         return index >= i && index < i + 4
       })
+    },
+    openType(index) {
+      this.typeList[index].show = !this.typeList[index].show
     },
     selected(app) {
       if (!app.isChoice) {
@@ -85,10 +114,15 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
   .TableBlock {
-    border: 1px #CCCCCE solid;
+    border-right: 1px #CCCCCE solid;
+    border-left: 1px #CCCCCE solid;
+    border-bottom: 1px #CCCCCE solid;
     line-height: 20px;
     font-size: 9pt;
-    border-collapse: collapse;
+    &.title{
+      border-collapse: collapse;
+      border-top: 1px #CCCCCE solid;
+    }
   }
 
   .TableHeader {
@@ -97,6 +131,10 @@ export default {
     FONT-SIZE: 9pt;
     background: #FAFAFC;
     line-height: 21px;
+
+  }
+  .TableHeader:hover {
+    cursor: pointer;
   }
 
   .TableBlock td {
@@ -108,7 +146,6 @@ export default {
     height: 40px !important;
     height: 40px;
     background: #E7E7E7;
-    border: 1px #CCCCCE solid;
     font-weight: bold;
     color: #2D2C2C;
     line-height: 35px;

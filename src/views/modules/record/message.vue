@@ -167,7 +167,6 @@
       messageConfigClick() {
         this.messageConfigOption = true
         getByGroupKey('dxton_config').then(response => {
-          console.log(response.data)
           this.config.key = response.data.key
           this.dialogStatus = 'create'
           if (response.data.data) {

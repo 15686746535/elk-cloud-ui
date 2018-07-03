@@ -107,7 +107,6 @@
         }
         queryCampus(this.listQuery).then(response => {
           var data = response.data.data
-          console.log(data)
           this.loading = false
           this.hasDown = false
           this.data = {

@@ -84,7 +84,6 @@ export default {
     // 鼠标右键移动应用
     moveDesktop(d) {
       this.currentList[this.appIndex].desktop = d
-      console.log(this.currentList[this.appIndex])
       // 这里需要传回后台保存
       this.$emit('saveDesktop', true)
     },

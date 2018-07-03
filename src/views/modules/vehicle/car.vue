@@ -1209,8 +1209,6 @@
         this.infoLoading = true
         getObj(val.vehicleEntity.vehicleId)
           .then(response => {
-            console.log('==================')
-            console.log(response.data)
             this.vehicleEntity = response.data.data.vehicleEntity === null ? {} : response.data.data.vehicleEntity
             this.technicalEntity = response.data.data.technicalEntity === null ? {} : response.data.data.technicalEntity
             this.safetyEntity = response.data.data.safetyEntity === null ? {} : response.data.data.safetyEntity

@@ -1489,12 +1489,11 @@
       }
     },
     created() {
-      console.log(this.options,this.$data,this.display)
       this.$data.showModule = this.display
       this.getList()
     },
-    props:{
-      display:String
+    props: {
+      display: String
     },
     computed: {
       ...mapGetters([
@@ -1917,7 +1916,6 @@
           this.createLoading = true
           getIntentionByMobile({ 'mobile': this.studentEntity.mobile }).then(response => {
             var flag = true
-            console.log(response)
             if (response.data.data) {
               this.studentEntity.intentionId = response.data.data.intentionId
               if (!this.studentEntity.name) this.studentEntity.name = response.data.data.name

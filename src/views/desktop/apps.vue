@@ -11,7 +11,7 @@
                :app="index" :title="app.name"  :style="appStyle(index)" style="position: absolute;margin: 0px;z-index: 21;">
             <span class="icon" :app="index" >
               <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
-              <img v-if="" :src="app.icon"  :app="index"/>
+              <img :src="app.icon"  :app="index"/>
             </span>
             <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
           </div>
@@ -29,7 +29,6 @@
 <script>
 const _import = require('@/router/_import_development')
 import { startDrag } from '@/utils/ragstart'
-import request from '@/utils/request'
 
 export default {
   name: 'el-apps',
@@ -39,7 +38,7 @@ export default {
   },
   data() {
     return {
-      add: { id: 'app-add', name: '添加', params: {}, content: _import('404'), icon: '../../../static/icon/add_icon.png' }
+      add: { id: 'app-add', name: '添加', params: { desktop: this.desktop }, content: _import('add/index'), icon: '../../../static/icon/add_icon.png' }
     }
   },
   computed: {

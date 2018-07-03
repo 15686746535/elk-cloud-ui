@@ -41,6 +41,10 @@ export default {
       'desktopOneList'
     ])
   },
+  watch: {
+    desktopList: function(val) {
+    }
+  },
   mounted() {
     var length = this.hasAppList.length
     var residue = length % 4
@@ -49,12 +53,12 @@ export default {
     for (var i = 0; i < len; i++) {
       this.list.push(i * 4)
     }
-    console.log('list', this.list)
   },
   methods: {
     listFilter(i) {
       var list = this.desktopOneList.concat(this.desktopTwoList)
       return this.hasAppList.filter(function(app, index) {
+        app.isChoice = false
         list.forEach(function(item) {
           if (item.id === app.id) {
             app.isChoice = true

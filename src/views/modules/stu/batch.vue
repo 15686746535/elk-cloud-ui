@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container1 calendar-list-container1" :style="{height: $store.state.app.client.height + 'px'}" >
-    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px">
-      <el-row :gutter="5">
+  <div style="height: 100%">
+    <el-card v-show="!examOption" style="height: 100%; ">
+      <el-row :gutter="5" style="height: 50px">
         <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
           <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
             <el-radio-button label="1">科目一</el-radio-button>
@@ -24,11 +24,8 @@
           <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
         </el-col>
       </el-row>
-
-    </el-card>
-    <el-card :style="{height: ($store.state.app.client.height - 95) + 'px'}">
       <!--{{permissions}}-->
-      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
+      <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="tableHeight - 190" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
           <template slot-scope="scope">
@@ -80,42 +77,11 @@
         <el-button style="float:right;" @click="createClick" size="small" v-if="permissions.stu_exam_add" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
-
-    <!-- 考试设置 -->
-    <el-dialog :modal="false" @close="cancel('batch')" title="考试设置" :show-close="false" width="550px" :visible.sync="batchOption">
-
-      <el-form :model="batch" :rules="batchRules" ref="batch" label-width="120px">
-        <el-form-item label="考试场地" prop="examField">
-          <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
-          <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
-          <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
-          <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
-        </el-form-item>
-        <!--<el-form-item label="人数"  prop="stuCount">-->
-          <!--<el-input v-model.number="batch.stuCount" placeholder="人数" ></el-input>-->
-        <!--</el-form-item>-->
-        <el-form-item label="考试时间" prop="examTime">
-          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="预约截止日期" prop="expiryTime">
-          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="预约截止日期" v-model="batch.expiryTime"></el-date-picker>
-        </el-form-item>
-
-      </el-form>
-
-      <div slot="footer">
-        <el-button @click="cancel('batch')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" :loading="btnLoading" type="primary" @click="create('batch')">确 定</el-button>
-        <el-button v-else type="primary" :loading="btnLoading" @click="update('batch')">修 改</el-button>
-      </div>
-    </el-dialog>
-
-
-    <el-dialog :modal="false" :close-on-click-modal="false" @close="closeExamOption" title="考试计划操作" :visible.sync="examOption">
-
-      <el-tabs body-style="padding:0;" v-model="bespeakTabs" type="border-card" @tab-click="handleField">
+    <el-card v-show="examOption" style="height: 100%; ">
+      <el-button @click="examOption = false" size="small" type="danger" style="position: absolute;z-index: 66;right: 40px;top: 54px;">返回</el-button>
+      <el-tabs body-style="padding:0;" v-model="bespeakTabs" type="border-card" @tab-click="handleField" style="height: 100%; ">
         <el-tab-pane name="all" label="申请名单">
-          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 160" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
               <template slot-scope="scope">
@@ -162,14 +128,14 @@
               </template>
             </el-table-column>
             <!--<el-table-column align="center" label="操作">-->
-              <!--<template slot-scope="scope">-->
-                <!--<el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>-->
-              <!--</template>-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>-->
+            <!--</template>-->
             <!--</el-table-column>-->
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="0" label="待审核" :disabled="!permissions.stu_exam_examine">
-          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 160" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -201,7 +167,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="1" label="待约考" :disabled="!permissions.stu_exam_bespeak">
-          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -232,7 +198,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="2" label="已约考" :disabled="!permissions.stu_exam_bespeak_ok">
-          <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员">
@@ -263,62 +229,89 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="3" label="考试名单" :disabled="!permissions.stu_exam_roster">
-            <el-table :data="examBespeak" :height="($store.state.app.client.height/2)" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
-              <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-              <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-              <el-table-column align="center"  label="学员">
-                <template slot-scope="scope">
-                  <span>{{scope.row.name}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column  align="center" label="电话"  width="130">
-                <template slot-scope="scope">
-                  <span>{{scope.row.mobile}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column  align="center" label="车型">
-                <template slot-scope="scope">
-                  <span>{{scope.row.motorcycleType}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column  align="center" label="考试时间" width="100">
-                <template slot-scope="scope">
-                  <span>{{scope.row.examTime | subTime}}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
-      </el-tabs>
-      <div slot="footer" style="margin-top: -30px" v-show="bespeakTabs != 'all'">
-
-        <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
-        <el-button-group v-if="studentListQuery.examineState === '0'">
-          <el-button @click="operation('5','examCancel')" size="small" type="danger" round>失败</el-button>
-          <el-button @click="operation('1','examExamine')" size="small" type="success" round>通过</el-button>
-        </el-button-group>
-        <el-button-group v-else-if="studentListQuery.examineState === '1'">
-          <el-button @click="operation('0','examCancel')" size="small" type="info" round>撤销</el-button>
-          <el-button @click="operation('2','examExamine')" size="small" type="success" round>已约</el-button>
-        </el-button-group>
-        <el-button-group v-else-if="studentListQuery.examineState === '2'">
-          <el-button @click="operation('4','examExamine')" size="small" type="danger" round>失败</el-button>
-          <el-button @click="operation('1','examCancel')" size="small" type="info" round>撤销</el-button>
-          <el-button @click="operation('3','examExamine')" size="small" type="success" round>成功</el-button>
-        </el-button-group>
-
-        <div  v-else-if="studentListQuery.examineState === '3'">
-          <el-button-group style="float: left">
+          <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+            <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+            <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+            <el-table-column align="center"  label="学员">
+              <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="电话"  width="130">
+              <template slot-scope="scope">
+                <span>{{scope.row.mobile}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="车型">
+              <template slot-scope="scope">
+                <span>{{scope.row.motorcycleType}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考试时间" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.examTime | subTime}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <div style="float: right;margin-top: 10px;margin-right: 20px;">
+          <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
+          <el-button-group v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'">
+            <el-button @click="operation('5','examCancel')" size="small" type="danger" round>失败</el-button>
+            <el-button @click="operation('1','examExamine')" size="small" type="success" round>通过</el-button>
+          </el-button-group>
+          <el-button-group v-if="studentListQuery.examineState === '1'">
+            <el-button @click="operation('0','examCancel')" size="small" type="info" round>撤销</el-button>
+            <el-button @click="operation('2','examExamine')" size="small" type="success" round>已约</el-button>
+          </el-button-group>
+          <el-button-group v-if="studentListQuery.examineState === '2'">
+            <el-button @click="operation('4','examExamine')" size="small" type="danger" round>失败</el-button>
+            <el-button @click="operation('1','examCancel')" size="small" type="info" round>撤销</el-button>
+            <el-button @click="operation('3','examExamine')" size="small" type="success" round>成功</el-button>
+          </el-button-group>
+          <el-button-group v-if="studentListQuery.examineState === '3'" style="float: left">
             <el-button type="primary" size="small" :loading="expLoading" @click="exportExamList" round>导出名单</el-button>
           </el-button-group>
-          <el-button-group>
+          <el-button-group v-if="studentListQuery.examineState === '3'">
             <el-button @click="operation('6','examCancel')" size="small" type="danger" round>取消约考</el-button>
           </el-button-group>
         </div>
-        <span v-else>
-        </span>
-      </div>
+      </el-tabs>
+    </el-card>
+    <!-- 考试设置 -->
+    <el-dialog :modal="false" @close="cancel('batch')" title="考试设置" :show-close="false" width="550px" :visible.sync="batchOption">
+      <el-form :model="batch" :rules="batchRules" ref="batch" label-width="120px">
+        <el-form-item label="考试场地" prop="examField">
+          <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
+          <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
+          <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
+          <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
+        </el-form-item>
+        <!--<el-form-item label="人数"  prop="stuCount">-->
+          <!--<el-input v-model.number="batch.stuCount" placeholder="人数" ></el-input>-->
+        <!--</el-form-item>-->
+        <el-form-item label="考试时间" prop="examTime">
+          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="预约截止日期" prop="expiryTime">
+          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="预约截止日期" v-model="batch.expiryTime"></el-date-picker>
+        </el-form-item>
 
+      </el-form>
+
+      <div slot="footer">
+        <el-button @click="cancel('batch')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" :loading="btnLoading" type="primary" @click="create('batch')">确 定</el-button>
+        <el-button v-else type="primary" :loading="btnLoading" @click="update('batch')">修 改</el-button>
+      </div>
     </el-dialog>
+
+
+    <!--<el-dialog :modal="false" :close-on-click-modal="false" @close="closeExamOption" title="考试计划操作" :visible.sync="">-->
+
+      <!---->
+
+    <!--</el-dialog>-->
 
 
   </div>
@@ -331,8 +324,17 @@
 
   export default {
     name: 'table_batch',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       return {
+        tableHeight: this.area[1],
         batch: {
           subject: '1'
         },

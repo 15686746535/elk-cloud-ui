@@ -1,7 +1,6 @@
 <template>
-  <div class="student">
-    <el-card :modal="false"  title="修改密码" width="100px" :visible.sync="showdialog">
-
+  <div style="height: 100%">
+    <el-card  style="height: 100%" :modal="false"  title="修改密码" width="100px" :visible.sync="showdialog">
       <el-form label-width="80px" >
         <el-row :gutter="20">
           <el-col :span="24" >
@@ -20,8 +19,7 @@
           </el-col>
         </el-row>
       </el-form>
-
-      <div class="dialog-footer">
+      <div class="dialog-footer" align="center">
         <!--<el-button plain>取消</el-button>-->
         <el-button type="primary" @click="changepassword">修改</el-button>
       </div>

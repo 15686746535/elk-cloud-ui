@@ -1,15 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <div v-show="showModule=='list'">
-      <!--<el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 60px">-->
-      <!--<div class="filter-container">-->
-      <!--<div style="float: right">-->
-      <!--<el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="接送人/接送名单" v-model="shuttleLogQuery.condition"></el-input>-->
-      <!--<el-button class="filter-item" type="primary"  @click="searchClick">搜索</el-button>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</el-card>-->
-      <el-card :style="{height: ($store.state.app.client.height - 45) + 'px'}">
+  <div style="height: 100%">
+    <div v-show="showModule=='list'" style="height: 100%">
+      <el-card style="height: 100%">
         <div class="filter-container">
           <div style="float: left;line-height: 40px">
             |&nbsp;<span style="font-size: 18px;font-weight: 600;font-family: '微软雅黑 Light'">接送列表</span>
@@ -19,7 +11,7 @@
             <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
           </div>
         </div>
-        <el-table :data="shuttleLog"  :height="($store.state.app.client.height-195)"  v-loading="shuttleLogLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+        <el-table :data="shuttleLog"  :height="(tableHeight-195)"  v-loading="shuttleLogLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-table :data="props.row.studentList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
@@ -88,8 +80,8 @@
         </div>
       </el-card>
     </div>
-    <div v-show="showModule=='info'">
-      <el-card :style="{height: ($store.state.app.client.height - 45) + 'px'}">
+    <div v-show="showModule=='info'"  style="height: 100%">
+      <el-card  style="height: 100%">
         <el-row class="filter-container">
           <div style="float: left;line-height: 40px">
             |&nbsp;<span style="font-size: 18px;font-weight: 600;font-family: '微软雅黑 Light'">接送列表</span>
@@ -100,7 +92,7 @@
         </el-row>
         <el-row :gutter="5">
           <el-col :span="8">
-            <el-card :style="{height: ($store.state.app.client.height - 145) + 'px'}" shadow="never">
+            <el-card :style="{height: (tableHeight - 145) + 'px'}" shadow="never">
               <div class="filter-container">
                 <div style="line-height: 28px">
                   |&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">未安排名单</span>
@@ -170,15 +162,14 @@
 
           <!-- 已安排名单 -->
           <el-col :span="16">
-            <el-card :style="{height: ($store.state.app.client.height - 145) + 'px'}" shadow="never">
+            <el-card :style="{height: (tableHeight - 145) + 'px'}" shadow="never">
 
               <div class="filter-container">
                 <div style="float: left;line-height: 28px">
                   |&nbsp;<span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">已安排名单</span>
                 </div>
               </div>
-
-              <el-table :data="shuttledList"  :height="($store.state.app.client.height-260)"  v-loading="shuttledListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
+              <el-table :data="shuttledList"  :height="(tableHeight-260)"  v-loading="shuttledListLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-table :data="props.row.studentList" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%">
@@ -259,6 +250,14 @@
 
   export default {
     name: 'table_shuttle',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     computed: {
       ...mapGetters([
         'permissions',
@@ -267,6 +266,7 @@
     },
     data() {
       return {
+        tableHeight: this.area[1],
         /* 接送名单 */
         shuttleLog: [],
         shuttleLogTotal: null,

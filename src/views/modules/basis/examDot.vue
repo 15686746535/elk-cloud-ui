@@ -1,17 +1,15 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card style="margin-bottom: 5px;height: 80px">
-      <el-radio-group @change="handleSubject" v-model="listQuery.type">
-        <el-radio-button label="dict_exam_field1">科目一</el-radio-button>
-        <el-radio-button label="dict_exam_field2">科目二</el-radio-button>
-        <el-radio-button label="dict_exam_field3">科目三</el-radio-button>
-        <el-radio-button label="dict_exam_field4">科目四</el-radio-button>
-      </el-radio-group>
-
-
-    </el-card>
-    <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :height="$store.state.app.client.height-205"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+  <div style="height: 100%">
+    <el-card style="height: 100%">
+      <div style="margin-bottom: 5px;height: 80px">
+        <el-radio-group @change="handleSubject" v-model="listQuery.type">
+          <el-radio-button label="dict_exam_field1">科目一</el-radio-button>
+          <el-radio-button label="dict_exam_field2">科目二</el-radio-button>
+          <el-radio-button label="dict_exam_field3">科目三</el-radio-button>
+          <el-radio-button label="dict_exam_field4">科目四</el-radio-button>
+        </el-radio-group>
+      </div>
+      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :height="tableHeight-205"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
         <el-table-column align="center"  label="考试场地">
@@ -87,8 +85,17 @@
 
   export default {
     name: 'table_sys_dict',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       return {
+        tableHeight: this.area[1],
         list: [],
         lists: [],
         total: null,

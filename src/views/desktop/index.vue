@@ -14,9 +14,9 @@
     <!-- 桌面切换 -->
     <el-nav-bar @desktopSwitch="desktopSwitch" @open="layerOpen"></el-nav-bar>
     <!--悬浮工作台 -->
-    <el-tool-right></el-tool-right>
+    <el-tool-intention></el-tool-intention>
   </div>
-</template>
+</template>i
 
 <script>
 import { mapGetters } from 'vuex'
@@ -24,7 +24,7 @@ import ElApps from './apps.vue'
 import ElNavBar from './navBar.vue'
 import ElSmartMenu from './smartMenu.vue'
 import ElStartBar from './startBar.vue'
-import ElToolRight from './toolRight.vue'
+import ElToolIntention from './ToolIntention.vue'
 import { saveApps } from '@/api/desktop'
 import { Message } from 'element-ui'
 
@@ -34,7 +34,7 @@ export default {
     ElApps,
     ElSmartMenu,
     ElStartBar,
-    ElToolRight,
+    ElToolIntention,
     ElNavBar
   },
   data() {

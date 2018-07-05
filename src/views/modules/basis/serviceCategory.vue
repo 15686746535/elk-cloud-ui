@@ -1,11 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <!--<el-card style="margin-bottom: 5px;height: 80px">-->
-      <!--<el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="createClick" type="primary" icon="edit">添加-->
-      <!--</el-button>-->
-    <!--</el-card>-->
-    <el-card :style="{height: ($store.state.app.client.height - 45) + 'px'}">
-      <el-table :data="list" v-loading="listLoading"  :height="$store.state.app.client.height-125"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+  <div style="height: 100%">
+    <el-card style="height: 100%">
+      <el-table :data="list" v-loading="listLoading"  :height="tableHeight-125"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
       </el-table-column>
       <el-table-column align="center" label="收费服务">
@@ -39,7 +35,7 @@
           <span>{{ scope.row.createTime | subTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" width="200" >
         <template slot-scope="scope">
           <el-button v-if="update_menu" size="small" type="success"
                      @click="handleUpdate(scope.row)">编辑
@@ -106,8 +102,17 @@
 
   export default {
     name: 'finance_service_category',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       return {
+        tableHeight: this.area[1],
         list: [],
         lists: [],
         total: null,

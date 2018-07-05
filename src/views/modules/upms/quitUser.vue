@@ -1,102 +1,82 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div style="height: 100%">
     <div v-show="showModule=='list'"  style="height: 100%">
-      <el-row :gutter="5">
-        <el-col class="org-tree-left">
-          <el-card>
-            <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-            <!-- 分割线 -->
-            <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
-            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
-          </el-card>
-        </el-col>
-
-        <el-col :style="{width: ($store.state.app.client.width-225) + 'px'}">
-          <el-card style="height: 80px">
-            <div class="filter-container" style="float: left;line-height: 40px">
-              |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
-            </div>
-            <div style="float: right">
-              <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
-
-            </div>
-          </el-card>
-
-          <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-125) + 'px'}">
-            <!-- 身份卡循环 -->
-            <el-table :data="userList" :height="($store.state.app.client.height-220)" highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
-              <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
-              <el-table-column align="center" label="头像" width="200">
-                <template slot-scope="scope">
-                  <!-- 头像 -->
-                  <el-row>
-                    <el-tag class="img">
-                      <img :src="scope.row.avatar" class="img">
-                    </el-tag>
-                  </el-row>
-                  <el-row>
-                    <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.name}}</el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.mobile}}</el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="个人信息" width="300">
-                <template slot-scope="scope" >
-                  <!-- 个人信息 -->
-                  <el-col style="line-height: 25px">
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">工号:</el-col>
-                      <el-col :span="17" class="table_text">{{scope.row.jobNumber}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">职位:</el-col>
-                      <el-col :span="17" class="table_text">
-                        {{scope.row.roles}}
-                      </el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">生日:</el-col>
-                      <el-col :span="17" class="table_text">{{scope.row.birthday | subTime}}</el-col>
-                    </el-row>
-
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">工作电话:</el-col>
-                      <el-col :span="17" class="table_text">
-                        {{scope.row.workMobile}}
-                      </el-col>
-                    </el-row>
+      <el-card style="height: 100%" >
+        <div style="margin-bottom: 15px">
+          <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+          <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
+        </div>
+        <!-- 身份卡循环 -->
+        <el-table :data="userList" :height="(tableHeight-200)" highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
+          <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
+          <el-table-column align="center" label="头像" width="200">
+            <template slot-scope="scope">
+              <!-- 头像 -->
+              <el-row>
+                <el-tag class="img">
+                  <img :src="scope.row.avatar" class="img">
+                </el-tag>
+              </el-row>
+              <el-row>
+                <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.name}}</el-col>
+              </el-row>
+              <el-row>
+                <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.mobile}}</el-col>
+              </el-row>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="个人信息" width="300">
+            <template slot-scope="scope" >
+              <!-- 个人信息 -->
+              <el-col style="line-height: 25px">
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">工号:</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.jobNumber}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">职位:</el-col>
+                  <el-col :span="17" class="table_text">
+                    {{scope.row.roles}}
                   </el-col>
-                </template>
-              </el-table-column>
-              <el-table-column label="招生记录">
-                <template slot-scope="scope">
-                  <bar :data="scope.row.recruits"></bar>
-                </template>
-              </el-table-column>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">生日:</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.birthday | subTime}}</el-col>
+                </el-row>
 
-              <el-table-column label="来访信息">
-                <template slot-scope="scope">
-                  <LineChart :chart-data="scope.row.visits"></LineChart>
-                </template>
-              </el-table-column>
-            </el-table>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">工作电话:</el-col>
+                  <el-col :span="17" class="table_text">
+                    {{scope.row.workMobile}}
+                  </el-col>
+                </el-row>
+              </el-col>
+            </template>
+          </el-table-column>
+          <el-table-column label="招生记录">
+            <template slot-scope="scope">
+              <bar :data="scope.row.recruits"></bar>
+            </template>
+          </el-table-column>
 
-            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                             :current-page.sync="listQuery.page"
-                             background
-                             style="float: left"
-                             size="mini"
-                             :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
-                             layout="total, sizes, prev, pager, next, jumper" :total="total">
-              </el-pagination>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
+          <el-table-column label="来访信息">
+            <template slot-scope="scope">
+              <LineChart :chart-data="scope.row.visits"></LineChart>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                         :current-page.sync="listQuery.page"
+                         background
+                         style="float: left"
+                         size="mini"
+                         :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
+                         layout="total, sizes, prev, pager, next, jumper" :total="total">
+          </el-pagination>
+        </div>
+      </el-card>
     </div>
 
     <div v-show="showModule=='info'">
@@ -452,6 +432,14 @@
 
   export default {
     name: 'index',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     computed: {
       ...mapGetters([
         'permissions',
@@ -476,6 +464,7 @@
     },
     data() {
       return {
+        tableHeight: this.area[1],
         // 模块标记
         showModule: 'list',
         // 员工集合

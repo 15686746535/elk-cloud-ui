@@ -31,7 +31,7 @@ import { mapGetters } from 'vuex'
 import { removeAllSpace } from '@/utils/validate'
 import { followUpList, addFollowUp } from '@/api/visit/followup'
 export default {
-  name: 'tool-right',
+  name: 'tool-intention',
   data() {
     return {
       btnLoading: false,

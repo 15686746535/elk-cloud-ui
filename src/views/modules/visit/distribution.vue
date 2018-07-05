@@ -1,111 +1,103 @@
 <template>
-  <div class="app-container calendar-list-container1" :styl1e="{height: $store.state.app.client.height + 'px'}">
+  <div style="height: 100%">
+    <el-card style="height: 100%">
+      <el-row :gutter="10" style="margin-bottom: 15px">
+        <el-col :xs="6" :sm="6" :md="5" :lg="4">
+          <dict dictType="dict_customer_type" size="mini" v-model="listQuery.customerType" placeholder="类别"></dict>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="5" :lg="4">
+          <dict dictType="dict_source" size="mini" v-model="listQuery.source" placeholder="来源渠道"></dict>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="5" :lg="4">
+          <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="5" :lg="4">
+          <el-button size="mini" type="primary"  icon="search" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
+        </el-col>
+      </el-row>
+      <el-table :data="list" :height="(tableHeight-175)" @selection-change="handleSelectionChange"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <el-table-column  align="center" label="姓名">
+          <template slot-scope="scope">
+            <span>{{scope.row.name}}</span>
+          </template>
+        </el-table-column>
 
-    <el-col :style1="{width: ($store.state.app.client.width) + 'px'}">
-        <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
-          <!--<el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">-->
-          <!--</el-date-picker>-->
-          <el-row :gutter="10">
-            <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <dict dictType="dict_customer_type" size="mini" v-model="listQuery.customerType" placeholder="类别"></dict>
-            </el-col>
-            <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <dict dictType="dict_source" size="mini" v-model="listQuery.source" placeholder="来源渠道"></dict>
-            </el-col>
-            <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/微信" v-model="listQuery.condition"></el-input>
-            </el-col>
-            <el-col :xs="6" :sm="6" :md="5" :lg="4">
-              <el-button size="mini" type="primary"  icon="search" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
-            </el-col>
-          </el-row>
-        </el-card>
-
-        <el-card :style="{height: ($store.state.app.client.height-95) + 'px'}">
-          <el-table :data="list" :height="($store.state.app.client.height-175)" @selection-change="handleSelectionChange"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-            <el-table-column  align="center" label="姓名">
-              <template slot-scope="scope">
-                <span>{{scope.row.name}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="性别">
-              <template slot-scope="scope">
-                <span>{{scope.row.sex | sexFilter}}</span>
-              </template>
-            </el-table-column>
+        <el-table-column align="center" label="性别">
+          <template slot-scope="scope">
+            <span>{{scope.row.sex | sexFilter}}</span>
+          </template>
+        </el-table-column>
 
 
-            <el-table-column align="center" label="类别">
-              <template slot-scope="scope">
-                <span>{{scope.row.customerType}}</span>
-              </template>
-            </el-table-column>
+        <el-table-column align="center" label="类别">
+          <template slot-scope="scope">
+            <span>{{scope.row.customerType}}</span>
+          </template>
+        </el-table-column>
 
-            <el-table-column align="center" label="渠道">
-              <template slot-scope="scope">
-                <span>{{scope.row.source}}</span>
-              </template>
-            </el-table-column>
+        <el-table-column align="center" label="渠道">
+          <template slot-scope="scope">
+            <span>{{scope.row.source}}</span>
+          </template>
+        </el-table-column>
 
-            <el-table-column align="center" label="电话">
-              <template slot-scope="scope">
-                <span>{{scope.row.mobile}}</span>
-              </template>
-            </el-table-column>
+        <el-table-column align="center" label="电话">
+          <template slot-scope="scope">
+            <span>{{scope.row.mobile}}</span>
+          </template>
+        </el-table-column>
 
-            <el-table-column align="center" label="微信">
-              <template slot-scope="scope">
-                <span>{{scope.row.wechat}}</span>
-              </template>
-            </el-table-column>
+        <el-table-column align="center" label="微信">
+          <template slot-scope="scope">
+            <span>{{scope.row.wechat}}</span>
+          </template>
+        </el-table-column>
 
-          </el-table>
-          <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px;clear: both">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page.sync="listQuery.page"
-                           background style="float: left"
-                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                           layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-            <div style="float: right;">
-              <el-button size="small" style="float:right;margin: 0 5px" @click="distribution" type="primary" v-if="permissions.visit_intention_distribution"><i class="el-icon-refresh"></i>分配</el-button>
-              <el-upload class="upload-demo" action="/visit/intention/import"
-                         :headers="headers"
-                         style="float:right;"
-                         :on-success="handleTextSuccess"
-                         accept=".xls,.xlsx"
-                         :on-error="handleTextError"
-                         :show-file-list="false"
-                         :before-upload="beforeTextUpload">
-                <el-button size="small"  v-if="permissions.visit_intention_import"><i class="el-icon-upload2"></i>导入</el-button>
-              </el-upload>
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px;clear: both">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page"
+                       background style="float: left"
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+        <div style="float: right;">
+          <el-button size="small" style="float:right;margin: 0 5px" @click="distribution" type="primary" v-if="permissions.visit_intention_distribution"><i class="el-icon-refresh"></i>分配</el-button>
+          <el-upload class="upload-demo" action="/visit/intention/import"
+                     :headers="headers"
+                     style="float:right;"
+                     :on-success="handleTextSuccess"
+                     accept=".xls,.xlsx"
+                     :on-error="handleTextError"
+                     :show-file-list="false"
+                     :before-upload="beforeTextUpload">
+            <el-button size="small"  v-if="permissions.visit_intention_import"><i class="el-icon-upload2"></i>导入</el-button>
+          </el-upload>
 
-            </div>
-          </div>
+        </div>
+      </div>
 
 
 
-        </el-card>
-        <el-dialog :modal="false" @close="getList" title="选择负责人" width="350px" :visible.sync="dialogIntentionList">
-          <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
+    </el-card>
+    <el-dialog :modal="false" @close="getList" title="选择负责人" width="350px" :visible.sync="dialogIntentionList">
+      <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
 
-          <el-select :loading="selectLoading" v-model="intentionList.userId" clearable style="width: 100%;margin-top: 20px;" filterable placeholder="负责人">
-            <el-option
-              v-for="item in userList"
-              :key="item.userId"
-              :label="item.name"
-              :value="item.userId">
-            </el-option>
-          </el-select>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="closeIntention" size="small">取 消</el-button>
-            <el-button type="primary" @click="redistribution" size="small">确 定</el-button>
-          </div>
-        </el-dialog>
-      </el-col>
+      <el-select :loading="selectLoading" v-model="intentionList.userId" clearable style="width: 100%;margin-top: 20px;" filterable placeholder="负责人">
+        <el-option
+          v-for="item in userList"
+          :key="item.userId"
+          :label="item.name"
+          :value="item.userId">
+        </el-option>
+      </el-select>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeIntention" size="small">取 消</el-button>
+        <el-button type="primary" @click="redistribution" size="small">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -118,8 +110,17 @@
 
   export default {
     name: 'table_intention',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       return {
+        tableHeight: this.area[1],
         list: [],
         total: null,
         listLoading: true,

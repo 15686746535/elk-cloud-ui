@@ -1,12 +1,12 @@
 <template>
-    <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-      <div v-show="isShow('list')">
-          <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
+    <div style="height: 100%;">
+      <div v-show="isShow('list')" style="height: 100%;">
+          <el-card style="height: 100%;">
             <div class="filter-container" style="padding-bottom: 20px;">
               <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.condition"></el-input>
               <el-button class="filter-item" type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
             </div>
-            <el-table :data="list" v-loading="listLoading" :height="$store.state.app.client.height - 225" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+            <el-table :data="list" v-loading="listLoading" :height="tableHeight - 225" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
                 <el-table-column label="组织" align="center" width="150">
                     <template slot-scope="scope" >
@@ -58,7 +58,6 @@
             </div>
           </el-card>
       </div>
-
       <el-dialog :modal="false"  @close="getList" :title="dialogStatus === 'create'?'添加':'编辑'" :show-close="false" width="550px" :visible.sync="option">
         <el-form :model="bus"  ref="bus" :rules="rules" label-width="100px">
           <el-form-item label="业务"  prop="name">
@@ -78,7 +77,6 @@
           <el-button v-else @click="update('bus')" type="primary">修 改</el-button>
         </div>
       </el-dialog>
-
     </div>
 </template>
 
@@ -87,10 +85,19 @@ import { busPage, addBusiness, putBusiness, delObj } from '@/api/activiti/busine
 
 export default {
   name: 'active_business',
+  props: {
+    area: Array
+  },
+  watch: {
+    area: function(val) {
+      this.tableHeight = val[1]
+    }
+  },
   directives: {
   },
   data() {
     return {
+      tableHeight: this.area[1],
       showModule: 'list',
       option: false,
       dialogStatus: 'create',

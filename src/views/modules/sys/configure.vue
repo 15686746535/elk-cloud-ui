@@ -1,208 +1,207 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}" style="overflow: auto">
-      <!-- 集合数量较大可以使用filterable进行 -->
-      <el-select v-model="orgId" placeholder="请选择组织">
-        <el-option
-          v-for="item in groupList"
-          :key="item.orgId"
-          :label="item.orgName"
-          :value="item.orgId">
-        </el-option>
-      </el-select>
-      <div style="clear: both"></div>
-      <el-tabs tab-position="top" style="height: 200px;" v-model="tab" @tab-click="groupIdChange">
-        <el-tab-pane label="云存储配置" name="ossConfig">
-          <el-form label-position="left" :model="ossConfig" :rules="ossRules" ref="ossConfig" label-width="110px">
-            <el-form-item label="域名"  prop="qiniuDomain">
-              <el-input :disabled="disabled" v-model="ossConfig.qiniuDomain" placeholder="域名" ></el-input>
-            </el-form-item>
+  <el-card style="height: 100%;overflow: auto;">
+    <!-- 集合数量较大可以使用filterable进行 -->
+    <el-select v-model="orgId" placeholder="请选择组织">
+      <el-option
+        v-for="item in groupList"
+        :key="item.orgId"
+        :label="item.orgName"
+        :value="item.orgId">
+      </el-option>
+    </el-select>
+    <div style="clear: both"></div>
+    <el-tabs tab-position="top" style="height: 200px;" v-model="tab" @tab-click="groupIdChange">
+      <el-tab-pane label="云存储配置" name="ossConfig">
+        <el-form label-position="left" :model="ossConfig" :rules="ossRules" ref="ossConfig" label-width="110px">
+          <el-form-item label="域名"  prop="qiniuDomain">
+            <el-input :disabled="disabled" v-model="ossConfig.qiniuDomain" placeholder="域名" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="前缀"  prop="qiniuPrefix">
-              <el-input :disabled="disabled" v-model="ossConfig.qiniuPrefix" placeholder="前缀" ></el-input>
-            </el-form-item>
+          <el-form-item label="前缀"  prop="qiniuPrefix">
+            <el-input :disabled="disabled" v-model="ossConfig.qiniuPrefix" placeholder="前缀" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="AccessKey"  prop="qiniuAccessKey">
-              <el-input :disabled="disabled" v-model="ossConfig.qiniuAccessKey" placeholder="AccessKey" ></el-input>
-            </el-form-item>
+          <el-form-item label="AccessKey"  prop="qiniuAccessKey">
+            <el-input :disabled="disabled" v-model="ossConfig.qiniuAccessKey" placeholder="AccessKey" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="SecretKey"  prop="qiniuSecretKey">
-              <el-input :disabled="disabled" v-model="ossConfig.qiniuSecretKey" placeholder="SecretKey" ></el-input>
-            </el-form-item>
+          <el-form-item label="SecretKey"  prop="qiniuSecretKey">
+            <el-input :disabled="disabled" v-model="ossConfig.qiniuSecretKey" placeholder="SecretKey" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="空间名"  prop="qiniuBucketName">
-              <el-input :disabled="disabled" v-model="ossConfig.qiniuBucketName" placeholder="空间名" ></el-input>
-            </el-form-item>
-          </el-form>
-          <div class="dialog-footer" style="float: right;">
-            <el-button v-if="!disabled" @click="$refs['ossConfig'].resetFields();qiniuConfig();">取消</el-button>
-            <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="qiniuSave('ossConfig')">保存</el-button>
-            <el-button v-if="disabled"  type="success" @click="disabled = false">编辑</el-button>
-          </div>
+          <el-form-item label="空间名"  prop="qiniuBucketName">
+            <el-input :disabled="disabled" v-model="ossConfig.qiniuBucketName" placeholder="空间名" ></el-input>
+          </el-form-item>
+        </el-form>
+        <div class="dialog-footer" style="float: right;">
+          <el-button v-if="!disabled" @click="$refs['ossConfig'].resetFields();qiniuConfig();">取消</el-button>
+          <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="qiniuSave('ossConfig')">保存</el-button>
+          <el-button v-if="disabled"  type="success" @click="disabled = false">编辑</el-button>
+        </div>
 
-        </el-tab-pane>
-        <el-tab-pane label="教练端配置" name="appCoachConfig">
-          <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
+      </el-tab-pane>
+      <el-tab-pane label="教练端配置" name="appCoachConfig">
+        <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
 
-            <el-form-item label="key"  prop="key">
-              <el-input :disabled="true" v-model="config.key" placeholder="key" ></el-input>
-            </el-form-item>
+          <el-form-item label="key"  prop="key">
+            <el-input :disabled="true" v-model="config.key" placeholder="key" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="aesKey"  prop="aesKey">
-              <el-input :disabled="disabled" v-model="appConfig.aesKey" placeholder="aesKey" ></el-input>
-            </el-form-item>
+          <el-form-item label="aesKey"  prop="aesKey">
+            <el-input :disabled="disabled" v-model="appConfig.aesKey" placeholder="aesKey" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="appId"  prop="appId">
-              <el-input :disabled="disabled" v-model="appConfig.appId" placeholder="appId" ></el-input>
-            </el-form-item>
+          <el-form-item label="appId"  prop="appId">
+            <el-input :disabled="disabled" v-model="appConfig.appId" placeholder="appId" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="secret"  prop="secret">
-              <el-input :disabled="disabled" v-model="appConfig.secret" placeholder="secret" ></el-input>
-            </el-form-item>
+          <el-form-item label="secret"  prop="secret">
+            <el-input :disabled="disabled" v-model="appConfig.secret" placeholder="secret" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="token"  prop="token">
-              <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
-            </el-form-item>
+          <el-form-item label="token"  prop="token">
+            <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="短信通账号"  prop="dxtAccount">
-              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
-            </el-form-item>
+          <el-form-item label="短信通账号"  prop="dxtAccount">
+            <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+          </el-form-item>
 
-            <el-form-item label="短信通密码"  prop="dxtPassword">
-              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
-            </el-form-item>
+          <el-form-item label="短信通密码"  prop="dxtPassword">
+            <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
+          </el-form-item>
 
-          </el-form>
+        </el-form>
 
-          <div style="float: right">
-            <el-button v-if="!disabled" @click="cancel('appConfig')">Cancel</el-button>
-            <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="create('appConfig')">Enter</el-button>
-            <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
-          </div>
+        <div style="float: right;padding-bottom: 30px;">
+          <el-button v-if="!disabled" @click="cancel('appConfig')">Cancel</el-button>
+          <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="create('appConfig')">Enter</el-button>
+          <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
+        </div>
 
-        </el-tab-pane>
-
-
-        <el-tab-pane label="市场端配置" name="appSalesmanConfig">
-          <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
-
-            <el-form-item label="key"  prop="key">
-              <el-input :disabled="true" v-model="config.key" placeholder="key" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="aesKey"  prop="aesKey">
-              <el-input :disabled="disabled" v-model="appConfig.aesKey" placeholder="aesKey" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="appId"  prop="appId">
-              <el-input :disabled="disabled" v-model="appConfig.appId" placeholder="appId" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="secret"  prop="secret">
-              <el-input :disabled="disabled" v-model="appConfig.secret" placeholder="secret" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="token"  prop="token">
-              <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="短信通账号"  prop="dxtAccount">
-              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="短信通密码"  prop="dxtPassword">
-              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
-            </el-form-item>
-
-          </el-form>
-
-          <div style="float: right">
-            <el-button v-if="!disabled" @click="cancel('appConfig')">Cancel</el-button>
-            <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="create('appConfig')">Enter</el-button>
-            <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
-          </div>
+      </el-tab-pane>
 
 
-        </el-tab-pane>
+      <el-tab-pane label="市场端配置" name="appSalesmanConfig">
+        <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
+
+          <el-form-item label="key"  prop="key">
+            <el-input :disabled="true" v-model="config.key" placeholder="key" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="aesKey"  prop="aesKey">
+            <el-input :disabled="disabled" v-model="appConfig.aesKey" placeholder="aesKey" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="appId"  prop="appId">
+            <el-input :disabled="disabled" v-model="appConfig.appId" placeholder="appId" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="secret"  prop="secret">
+            <el-input :disabled="disabled" v-model="appConfig.secret" placeholder="secret" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="token"  prop="token">
+            <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="短信通账号"  prop="dxtAccount">
+            <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="短信通密码"  prop="dxtPassword">
+            <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
+          </el-form-item>
+
+        </el-form>
+
+        <div style="float: right;padding-bottom: 30px;">
+          <el-button v-if="!disabled" @click="cancel('appConfig')">Cancel</el-button>
+          <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="create('appConfig')">Enter</el-button>
+          <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
+        </div>
 
 
-        <el-tab-pane label="学员端配置" name="appStudentConfig">
-          <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
-
-            <el-form-item label="key"  prop="key">
-              <el-input :disabled="true" v-model="config.key" placeholder="key" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="aesKey"  prop="aesKey">
-              <el-input :disabled="disabled" v-model="appConfig.aesKey" placeholder="aesKey" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="appId"  prop="appId">
-              <el-input :disabled="disabled" v-model="appConfig.appId" placeholder="appId" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="secret"  prop="secret">
-              <el-input :disabled="disabled" v-model="appConfig.secret" placeholder="secret" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="token"  prop="token">
-              <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="短信通账号"  prop="dxtAccount">
-              <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
-            </el-form-item>
-
-            <el-form-item label="短信通密码"  prop="dxtPassword">
-              <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
-            </el-form-item>
-
-          </el-form>
-
-          <div style="float: right">
-            <el-button v-if="!disabled" @click="cancel('appConfig')">Cancel</el-button>
-            <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="create('appConfig')">Enter</el-button>
-            <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
-          </div>
+      </el-tab-pane>
 
 
-        </el-tab-pane>
+      <el-tab-pane label="学员端配置" name="appStudentConfig">
+        <el-form label-position="left" :model="appConfig" :rules="appRules" ref="appConfig" label-width="110px">
+
+          <el-form-item label="key"  prop="key">
+            <el-input :disabled="true" v-model="config.key" placeholder="key" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="aesKey"  prop="aesKey">
+            <el-input :disabled="disabled" v-model="appConfig.aesKey" placeholder="aesKey" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="appId"  prop="appId">
+            <el-input :disabled="disabled" v-model="appConfig.appId" placeholder="appId" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="secret"  prop="secret">
+            <el-input :disabled="disabled" v-model="appConfig.secret" placeholder="secret" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="token"  prop="token">
+            <el-input :disabled="disabled" v-model="appConfig.token" placeholder="token" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="短信通账号"  prop="dxtAccount">
+            <el-input :disabled="disabled" v-model="appConfig.dxtAccount" placeholder="短信通账号" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="短信通密码"  prop="dxtPassword">
+            <el-input type="password" :disabled="disabled" v-model="appConfig.dxtPassword" placeholder="短信通密码" ></el-input>
+          </el-form-item>
+
+        </el-form>
+
+        <div style="float: right;padding-bottom: 30px;">
+          <el-button v-if="!disabled" @click="cancel('appConfig')">Cancel</el-button>
+          <el-button v-if="!disabled" type="success" :loading="btnLoading" @click="create('appConfig')">Enter</el-button>
+          <el-button v-if="disabled" type="success" :loading="btnLoading" @click="disabled = false">Update</el-button>
+        </div>
 
 
-        <el-tab-pane label="短信模板配置" name="messageConfig">
+      </el-tab-pane>
 
-          <el-table :data="configList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <el-table-column type="index" align="center" label="id" width="50">
-            </el-table-column>
-            <el-table-column label="value">
-              <template slot-scope="scope">
-                <span class="table_text" :title="scope.row.value">{{ scope.row.value }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="remark" width="200">
-              <template slot-scope="scope">
-                <span class="table_text">{{ scope.row.remark}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="createTime" width="120">
-              <template slot-scope="scope">
-                <span class="table_text">{{ scope.row.createTime | subTime }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="operation" width="180">
-              <template slot-scope="scope">
-                <el-button v-if="basis_configure_update" size="mini" type="success"
-                           @click="handleUpdate(scope.row)">编辑
-                </el-button>
-                <el-button v-if="basis_configure_del" size="mini" type="danger"
-                           @click="handleDelete(scope.row)">删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
 
-          <el-dialog :modal="false" @close="getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))" title="添加短信模板" width="550px" :visible.sync="dialogMessageConfig">
-            <el-form label-position="left" :model="config" :rules="configRules" ref="config" label-width="110px">
+      <el-tab-pane label="短信模板配置" name="messageConfig">
+
+        <el-table :data="configList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+          <el-table-column type="index" align="center" label="id" width="50">
+          </el-table-column>
+          <el-table-column label="value">
+            <template slot-scope="scope">
+              <span class="table_text" :title="scope.row.value">{{ scope.row.value }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="remark" width="200">
+            <template slot-scope="scope">
+              <span class="table_text">{{ scope.row.remark}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="createTime" width="120">
+            <template slot-scope="scope">
+              <span class="table_text">{{ scope.row.createTime | subTime }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="operation" width="180">
+            <template slot-scope="scope">
+              <el-button v-if="basis_configure_update" size="mini" type="success"
+                         @click="handleUpdate(scope.row)">编辑
+              </el-button>
+              <el-button v-if="basis_configure_del" size="mini" type="danger"
+                         @click="handleDelete(scope.row)">删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <el-dialog :modal="false" @close="getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))" title="添加短信模板" width="550px" :visible.sync="dialogMessageConfig">
+          <el-form label-position="left" :model="config" :rules="configRules" ref="config" label-width="110px">
 
               <span v-if="isAdd">
 
@@ -220,26 +219,24 @@
 
               </span>
 
-              <el-form-item label="value"  prop="value">
-                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="config.value" placeholder="请输入模板"></el-input>
-              </el-form-item>
-            </el-form>
+            <el-form-item label="value"  prop="value">
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="config.value" placeholder="请输入模板"></el-input>
+            </el-form-item>
+          </el-form>
 
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogMessageConfig = false; getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-              <el-button :loading="btnLoading" type="primary" @click="createMessageConfig('config')"><i class="el-icon-fa-save"></i> 确 定</el-button>
-            </div>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogMessageConfig = false; getConfigListByCondition('message_model_orgId'.replace(new RegExp('orgId', 'gm'), orgId))"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+            <el-button :loading="btnLoading" type="primary" @click="createMessageConfig('config')"><i class="el-icon-fa-save"></i> 确 定</el-button>
+          </div>
 
-          </el-dialog>
-          <div style="clear: both;height: 20px;width: 100%"></div>
-          <el-button style="float: right" type="primary" @click="createClick">添加</el-button>
+        </el-dialog>
+        <div style="clear: both;height: 20px;width: 100%"></div>
+        <el-button style="float: right;padding-bottom: 30px;" type="primary" @click="createClick">添加</el-button>
 
-        </el-tab-pane>
+      </el-tab-pane>
 
-      </el-tabs>
-
-    </el-card>
-  </div>
+    </el-tabs>
+  </el-card>
 </template>
 
 <script>

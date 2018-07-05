@@ -1,13 +1,13 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}" >
-    <el-card style="margin-bottom: 5px;height: 80px; ">
-      <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.name"></el-input>
-      <el-button class="filter-item" type="primary" @click="searchClick">搜索</el-button>
+  <div  style="height: 100%">
+    <el-card style="height: 100%">
+      <div style="margin-bottom: 5px;height: 80px; ">
+        <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="listQuery.name"></el-input>
+        <el-button class="filter-item" type="primary" @click="searchClick">搜索</el-button>
 
-      <el-button class="filter-item" style="float: right" @click="messageConfigClick" type="primary">配置短信密钥</el-button>
-    </el-card>
-    <el-card :style="{height: ($store.state.app.client.height - 125) + 'px'}">
-      <el-table :height="$store.state.app.client.height - 225" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
+        <el-button class="filter-item" style="float: right" @click="messageConfigClick" type="primary">配置短信密钥</el-button>
+      </div>
+      <el-table :height="tableHeight - 225" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit
                 highlight-current-row style="width: 100%">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column  align="center" label="内容">
@@ -78,6 +78,14 @@
 
   export default {
     name: 'table_message',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     computed: {
       ...mapGetters([
         'permissions',
@@ -86,6 +94,7 @@
     },
     data() {
       return {
+        tableHeight: this.area[1],
         config: {
           key: null,
           value: null

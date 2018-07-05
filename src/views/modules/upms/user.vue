@@ -1,149 +1,134 @@
 <template>
-  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}">
+  <div style="height: 100%">
     <div v-show="showModule=='list'"  style="height: 100%">
-      <el-row :gutter="5">
-        <el-col class="org-tree-left" style="width: 20%">
-          <el-card>
-            <el-row><span style="font-size: 16px;font-weight: 600;font-family: '微软雅黑 Light'">部门筛选</span>
-            <!-- 分割线 -->
-            <el-col> <hr style="border: none; border-bottom:1px solid #d3dce6; "/> </el-col></el-row>
-            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
-          </el-card>
-        </el-col>
+      <el-card style="height: 100%" >
+        <div style="height: 80px;border-bottom: 1px solid #ccc;">
+          <div class="filter-container" style="float: left;line-height: 40px">
+            |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
+          </div>
+          <div style="float: right">
+            <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+            <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
+          </div>
+        </div>
 
-        <el-col :style1="{width: ($store.state.app.client.width-225) + 'px'}" style="width: 80%">
-          <el-card style="height: 80px">
-            <div class="filter-container" style="float: left;line-height: 40px">
-              |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
-            </div>
-            <div style="float: right">
-              <el-input @keyup.enter.native="searchClick" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
+        <!-- 身份卡循环 -->
+        <el-table :data="userList" :height="(tableHeight-220)" highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
+          <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
+          <el-table-column align="center" label="头像" width="100">
+            <template slot-scope="scope">
+              <!-- 头像 -->
+              <el-row>
+                <el-tag class="img">
+                  <img :src="scope.row.avatar" class="img">
+                </el-tag>
+              </el-row>
+              <el-row>
+                <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;font-weight: 600;">{{scope.row.jobNumber}}</el-col>
+              </el-row>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="个人信息" min-width="150px">
+            <template slot-scope="scope" >
+              <!-- 个人信息 -->
+              <el-col style="line-height: 25px">
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">姓名</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text" style="font-weight: 600;">{{scope.row.name}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">性别</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.sex==='0'?'男':'女'}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">生日</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.birthday | subTime}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">身份证</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.idNumber}}</el-col>
+                </el-row>
+              </el-col>
+            </template>
+          </el-table-column>
 
-            </div>
-          </el-card>
+          <el-table-column align="center" label="联系方式" min-width="150px">
+            <template slot-scope="scope" >
+              <!-- 个人信息 -->
+              <el-col style="line-height: 25px">
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">手机号</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.mobile}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">微信</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.wechat}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">QQ</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.qq }}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">联系地址</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.contactAddress}}</el-col>
+                </el-row>
+              </el-col>
+            </template>
+          </el-table-column>
 
-          <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-125) + 'px'}">
-            <!-- 身份卡循环 -->
-            <el-table :data="userList" :height="($store.state.app.client.height-220)" highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
-              <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
-              <el-table-column align="center" label="头像" width="100">
-                <template slot-scope="scope">
-                  <!-- 头像 -->
-                  <el-row>
-                    <el-tag class="img">
-                      <img :src="scope.row.avatar" class="img">
-                    </el-tag>
-                  </el-row>
-                  <el-row>
-                    <el-col style="color: #7c7c7c;text-align: center;font-size: 14px;font-weight: 600;">{{scope.row.jobNumber}}</el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="个人信息" min-width="150px">
-                <template slot-scope="scope" >
-                  <!-- 个人信息 -->
-                  <el-col style="line-height: 25px">
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">姓名</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text" style="font-weight: 600;">{{scope.row.name}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">性别</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.sex==='0'?'男':'女'}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">生日</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.birthday | subTime}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">身份证</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.idNumber}}</el-col>
-                    </el-row>
-                  </el-col>
-                </template>
-              </el-table-column>
+          <el-table-column align="center" label="工作信息" min-width="150px">
+            <template slot-scope="scope" >
+              <!-- 个人信息 -->
+              <el-col style="line-height: 25px">
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">电话</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.workMobile}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">职位</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.roles}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">入职日期</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.joinedTime | subTime}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">转正日期</el-col>
+                  <el-col :span="2" class="table_text">：</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.positiveTime | subTime}}</el-col>
+                </el-row>
+              </el-col>
+            </template>
+          </el-table-column>
+        </el-table>
 
-              <el-table-column align="center" label="联系方式" min-width="150px">
-                <template slot-scope="scope" >
-                  <!-- 个人信息 -->
-                  <el-col style="line-height: 25px">
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">手机号</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.mobile}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">微信</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.wechat}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">QQ</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.qq }}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">联系地址</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.contactAddress}}</el-col>
-                    </el-row>
-                  </el-col>
-                </template>
-              </el-table-column>
-
-              <el-table-column align="center" label="工作信息" min-width="150px">
-                <template slot-scope="scope" >
-                  <!-- 个人信息 -->
-                  <el-col style="line-height: 25px">
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">电话</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.workMobile}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">职位</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.roles}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">入职日期</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.joinedTime | subTime}}</el-col>
-                    </el-row>
-                    <el-row :gutter="10">
-                      <el-col :span="7" class="table_text">转正日期</el-col>
-                      <el-col :span="2" class="table_text">：</el-col>
-                      <el-col :span="15" class="table_text">{{scope.row.positiveTime | subTime}}</el-col>
-                    </el-row>
-                  </el-col>
-                </template>
-              </el-table-column>
-            </el-table>
-
-            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                             :current-page.sync="listQuery.page"
-                             background
-                             style="float: left"
-                             size="mini"
-                             :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
-                             layout="total, sizes, prev, pager, next, jumper" :total="total">
-              </el-pagination>
-              <div style="float: right" >
-                <el-button size="small" :loading="expLoading"  @click="exportUser" type="info" v-if="permissions.upms_user_export"><i class="el-icon-download"></i> 导 出</el-button>
-                <el-button size="small" @click="create" type="primary" v-if="permissions.upms_user_add"><i class="el-icon-plus"></i> 添 加</el-button>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
+        <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                         :current-page.sync="listQuery.page"
+                         background
+                         style="float: left"
+                         size="mini"
+                         :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
+                         layout="total, sizes, prev, pager, next, jumper" :total="total">
+          </el-pagination>
+          <div style="float: right" >
+            <el-button size="small" :loading="expLoading"  @click="exportUser" type="info" v-if="permissions.upms_user_export"><i class="el-icon-download"></i> 导 出</el-button>
+            <el-button size="small" @click="create" type="primary" v-if="permissions.upms_user_add"><i class="el-icon-plus"></i> 添 加</el-button>
+          </div>
+        </div>
+      </el-card>
     </div>
-
     <div v-show="showModule=='info'">
       <el-card>
         <div slot="header" class="clearfix">
@@ -235,7 +220,7 @@
               </el-row>
               <el-row>
                 <el-card shadow="hover" style="margin-top: 5px;">
-                  <el-card body-style="padding:10px;" :style="{height: ($store.state.app.client.height-423) + 'px'}" shadow="never" style="border: none;min-height: 350px;" >
+                  <el-card body-style="padding:10px;" :style="{height: (tableHeight-423) + 'px'}" shadow="never" style="border: none;min-height: 350px;" >
                     <el-row :gutter="10" style="height: 50px">
                       <el-col :span="8">
 
@@ -460,15 +445,15 @@
 
             <el-col :span="10">
               <el-row>
-                <el-card shadow="hover" body-style="padding:0" :style="{height: ($store.state.app.client.height-150) + 'px'}" style="min-height: 633px;">
-                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 300px;">-->
+                <el-card shadow="hover" body-style="padding:0" :style="{height: (tableHeight-150) + 'px'}" style="min-height: 633px;">
+                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: (tableHeight-510) + 'px'}" style="min-height: 300px;">-->
                   <div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">
                     <div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">
                       招生信息
                     </div>
                   </div>
 
-                  <el-table :data="studentList" v-loading="studentListLoading" :height="$store.state.app.client.height-192" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;min-height: 633px;">
+                  <el-table :data="studentList" v-loading="studentListLoading" :height="tableHeight-192" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;min-height: 633px;">
                     <el-table-column type="index" align="center" label="编号" width="50">
                     </el-table-column>
                     <el-table-column align="center" label="姓名">
@@ -505,7 +490,7 @@
               <!--  操作日志  -->
 
               <!--<el-row>-->
-                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: ($store.state.app.client.height-510) + 'px'}" style="min-height: 300px;margin-top: 5px">-->
+                <!--<el-card shadow="hover" body-style="padding:0"  :style="{height: (tableHeight-510) + 'px'}" style="min-height: 300px;margin-top: 5px">-->
                   <!--<div style="height: 40px;width: 100%;background-color: rgb(245, 247, 250);border-bottom:1px solid rgb(235, 239, 245)">-->
                     <!--<div style="background-color: #ffffff;width: 100px;height: 40px;line-height: 40px;color: #409eff;font-size: 14px;text-align: center;border-right:1px solid rgb(235, 239, 245)">-->
                       <!--操作日志-->
@@ -525,8 +510,6 @@
       </el-card>
 
     </div>
-
-
   </div>
 
 
@@ -544,6 +527,14 @@
 
   export default {
     name: 'index',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     computed: {
       ...mapGetters([
         'permissions',
@@ -622,6 +613,7 @@
         }
       }
       return {
+        tableHeight: this.area[1],
         // 编辑标记
         edit: false,
         // 模块标记

@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 60px">
-      <div class="filter-container">
-        <div style="height: 40px; float: left">
+  <div style="height: 100%">
+    <el-card style="height: 100%">
+      <div class="filter-container" >
+        <div style="height: 40px; float: left;margin-bottom: 20px">
           <el-radio-group @change="searchClick" v-model="vehiclePeriodListQuery.subject">
             <el-radio-button :label="2">科目二</el-radio-button>
             <el-radio-button :label="3">科目三</el-radio-button>
@@ -18,9 +18,8 @@
           <el-button type="primary"  @click="searchClick">搜索</el-button>
         </div>
       </div>
-    </el-card>
-    <el-card :style="{height: ($store.state.app.client.height - 105) + 'px'}">
-      <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="($store.state.app.client.height-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+
+      <el-table :data="vehiclePeriodList" v-loading="vehiclePeriodListLoading" :height="(tableHeight-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-row style="text-align: center">
@@ -304,6 +303,14 @@
 
   export default {
     name: 'table_vehicle_period',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     computed: {
       ...mapGetters([
         'permissions',
@@ -315,6 +322,7 @@
     },
     data() {
       return {
+        tableHeight: this.area[1],
         vehiclePeriod: {
           coachId: null,
           count: null,

@@ -1,9 +1,7 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
-  <div class="app-container calendar-list-container" :style="{height: client.height + 'px'}">
-    <!--<el-card style="margin-bottom: 5px;height: 80px">-->
-    <!--</el-card>-->
-    <el-card :style="{height: (client.height - 40) + 'px'}">
-      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :height="$store.state.app.client.height-125"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+  <div style="height: 100%">
+    <el-card style="height: 100%">
+      <el-table :key='tableKey' :data="list" v-loading="listLoading"  :height="tableHeight-125"  element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" align="center" label="编号" width="50">
         </el-table-column>
         <el-table-column align="center"  label="客户类型">
@@ -79,8 +77,17 @@
 
   export default {
     name: 'table_menu',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       return {
+        tableHeight: this.area[1],
         list: [],
         lists: [],
         total: null,

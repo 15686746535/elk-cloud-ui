@@ -1,13 +1,13 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
+  <div style="height: 100%;">
     <transition name="el-zoom-in-center">
-      <div v-show="isShow('list')">
-        <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}">
+      <div v-show="isShow('list')" style="height: 100%;">
+        <el-card style="height: 100%;">
           <div class="filter-container" style="padding-bottom: 20px;">
             <el-input @keyup.enter.native="search" style="width: 200px;margin: 0" class="filter-item" placeholder="关键字" v-model="listQuery.condition"></el-input>
             <el-button type="primary" @click="search" >搜索</el-button>
           </div>
-          <el-table :data="modelList"  v-loading="tableLoading" border :height="$store.state.app.client.height - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="modelList"  v-loading="tableLoading" border :height="tableHeight - 225" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column prop="name" label="流程名字" align="center" width="250">
               <template slot-scope="scope"><!--defaultFlag-->
@@ -19,7 +19,7 @@
                 <span>{{scope.row.status === '0'?'未部署':'已部署'}}</span><span style="color: #67c23a">{{scope.row.defaultFlag === '0'?'':'[默认]' }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="orgName" label="机构" align="center" width="300"></el-table-column>
+            <el-table-column prop="orgName" label="机构" align="center" width="190"></el-table-column>
             <el-table-column prop="createTime" label="创建时间" align="center" width="200">
               <template slot-scope="scope">
                 <span>{{scope.row.createTime | subTime }}</span>
@@ -54,16 +54,16 @@
       </div>
     </transition>
     <transition name="el-zoom-in-center">
-      <div v-show="isShow('design')">
+      <div v-show="isShow('design')"  :style="{height:tableHeight-33+'px'}">
       <span @click="openList">
         <svg-icon class="close-iframe" icon-class="close" ></svg-icon>
       </span>
-        <iframe ref="iframe" :src="url" frameborder="0" style="border:0;" :height="($store.state.app.client.height-60)+'px'" width="100%"></iframe>
+        <iframe ref="iframe" :src="url" frameborder="0" style="border:0;" :height="(tableHeight-60)+'px'" width="100%"></iframe>
       </div>
     </transition>
     <transition name="el-zoom-in-center">
-      <div v-show="isShow('img')">
-        <el-card :style="{height: ($store.state.app.client.height - 40) + 'px'}" style="overflow: auto">
+      <div v-show="isShow('img')"  style="height: 100%;">
+        <el-card  style="height: 100%;">
           <span @click="openList">
             <svg-icon class="close-iframe" icon-class="close" ></svg-icon>
           </span>
@@ -82,10 +82,19 @@
 
   export default {
     name: 'active_model',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     components: {
     },
     data() {
       return {
+        tableHeight: this.area[1],
         showPlate: 'list',
         option: false,
         dialogType: 'create',

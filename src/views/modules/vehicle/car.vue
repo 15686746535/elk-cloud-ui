@@ -1,171 +1,142 @@
 <template>
-  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}" >
-    <div v-show="showModule=='list'">
+  <div style="height: 100%">
+    <el-card  v-show="showModule=='list'" style="height: 100%">
+      <el-row :gutter="20" style="margin-bottom: 15px">
+        <el-col :xs="6" :sm="5" :md="4" :lg="4">
+          <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="车牌/负责人" v-model="listQuery.condition"></el-input>
+        </el-col>
+        <el-col :span="4">
+          <el-button class="filter-item" type="primary" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
+        </el-col>
+      </el-row>
+      <el-table :data="list" :height="(tableHeight - 220)" border style="width: 100%"  highlight-current-row @row-dblclick="editList" v-loading="listLoading"
+                element-loading-text="给我一点时间">
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <!-- 基本信息 -->
+        <el-table-column align="center" label="基本信息">
+          <template slot-scope="scope">
+            <el-row :gutter="10">
+              <el-col :span="10">
+                <el-tag class="img">
+                  <img :src="scope.row.vehicleEntity.vehiclePhoto" class="img">
+                </el-tag>
+              </el-col>
 
-      <el-card style="margin-bottom: 5px;">
-        <el-row :gutter="20">
-          <!--<el-col :xs="6" :sm="5" :md="4" :lg="4">-->
-            <!--<el-select style="width: 100%" v-model="listQuery.plate" placeholder="请选择车牌">-->
-              <!--<el-option v-for="item in plates" :key="item.value" :label="item.label" :value="item.value">-->
-              <!--</el-option>-->
-            <!--</el-select>-->
-          <!--</el-col>-->
-          <!--<el-col :xs="6" :sm="5" :md="4" :lg="4">-->
-            <!--<el-select style="width: 100%" v-model="listQuery.username" placeholder="请选择负责人">-->
-              <!--<el-option v-for="item in userNames" :key="item.value" :label="item.label" :value="item.value">-->
-              <!--</el-option>-->
-            <!--</el-select>-->
-          <!--</el-col>-->
-          <!--<el-col :xs="0" :sm="5" :md="4" :lg="4">-->
-            <!--<dict dictType="dict_source" v-model="listQuery.vehicleState" placeholder="请选择车辆状态"></dict>-->
-          <!--</el-col>-->
-          <el-col :xs="6" :sm="5" :md="4" :lg="4">
-            <el-input @keyup.enter.native="searchClick" class="filter-item" placeholder="车牌/负责人" v-model="listQuery.condition"></el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-button class="filter-item" type="primary" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
-          </el-col>
-        </el-row>
-      </el-card>
-      <el-card :style="{height: ($store.state.app.client.height - 130) + 'px'}">
+              <el-col style="line-height: 25px" :span="14">
+                <el-row :gutter="10">
+                  <el-col :span="8" class="table_text">车辆牌照：</el-col>
+                  <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.plateNumber}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="8" class="table_text">责任人：</el-col>
+                  <el-col :span="16" class="table_text">
+                    {{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.name}}
+                  </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="8" class="table_text">所属机构：</el-col>
+                  <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.affiliation}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="8" class="table_text">车辆状态：</el-col>
+                  <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.vehicleState}}</el-col>
+                </el-row>
+              </el-col>
 
+            </el-row>
 
-        <el-table :data="list" :height="($store.state.app.client.height - 220)" border style="width: 100%"  highlight-current-row @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
-          <!--<el-table-column align="center" label="编号" width="50px">-->
-          <!--<template slot-scope="scope">-->
-          <!--<span>{{scope.row.vehicleEntity.vehicleId}}</span>-->
-          <!--</template>-->
-          <!--</el-table-column>-->
-          <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-          <!-- 基本信息 -->
-          <el-table-column align="center" label="基本信息">
-            <template slot-scope="scope">
+          </template>
+        </el-table-column>
+
+        <!-- 证件信息 -->
+        <el-table-column align="center" label="证件信息">
+          <template slot-scope="scope">
+            <el-col style="line-height: 25px">
               <el-row :gutter="10">
-                <el-col :span="10">
-                  <el-tag class="img">
-                    <img :src="scope.row.vehicleEntity.vehiclePhoto" class="img">
-                  </el-tag>
-                </el-col>
-
-                <el-col style="line-height: 25px" :span="14">
-                  <el-row :gutter="10">
-                    <el-col :span="8" class="table_text">车辆牌照：</el-col>
-                    <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.plateNumber}}</el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="8" class="table_text">责任人：</el-col>
-                    <el-col :span="16" class="table_text">
-                      {{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.name}}
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="8" class="table_text">所属机构：</el-col>
-                    <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.affiliation}}</el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="8" class="table_text">车辆状态：</el-col>
-                    <el-col :span="16" class="table_text">{{scope.row.vehicleEntity==null?null:scope.row.vehicleEntity.vehicleState}}</el-col>
-                  </el-row>
-                </el-col>
-
+                <el-col :span="7" class="table_text">标识卡到期日期：</el-col>
+                <el-col :span="17" class="table_text">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.identificationEnd | subTime}}</el-col>
               </el-row>
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">评定日期：</el-col>
+                <el-col :span="17" class="table_text">
+                  {{scope.row.certificateEntity==null?null:scope.row.certificateEntity.evaluation | subTime}}
+                </el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">强制报销日期：</el-col>
+                <el-col :span="17" class="table_text">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.scrap | subTime}}</el-col>
+              </el-row>
+            </el-col>
 
-            </template>
-          </el-table-column>
+          </template>
+        </el-table-column>
 
-          <!-- 证件信息 -->
-          <el-table-column align="center" label="证件信息">
-            <template slot-scope="scope">
-              <el-col style="line-height: 25px">
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">标识卡到期日期：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.identificationEnd | subTime}}</el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">评定日期：</el-col>
-                  <el-col :span="17" class="table_text">
-                    {{scope.row.certificateEntity==null?null:scope.row.certificateEntity.evaluation | subTime}}
-                  </el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">强制报销日期：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.certificateEntity==null?null:scope.row.certificateEntity.scrap | subTime}}</el-col>
-                </el-row>
-              </el-col>
+        <!-- 技术信息 -->
+        <el-table-column align="center" label="技术信息">
+          <template slot-scope="scope">
+            <el-col style="line-height: 25px">
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">排量/功率：</el-col>
+                <el-col :span="17" class="table_text">{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.displacement}}</el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">总质量：</el-col>
+                <el-col :span="17" class="table_text">
+                  {{scope.row.technicalEntity==null?null:scope.row.technicalEntity.weight}}
+                </el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">制造厂商名称：</el-col>
+                <el-col :span="17" class="table_text">{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.manufacturer}}</el-col>
+              </el-row>
+            </el-col>
 
-            </template>
-          </el-table-column>
+          </template>
+        </el-table-column>
 
-          <!-- 技术信息 -->
-          <el-table-column align="center" label="技术信息">
-            <template slot-scope="scope">
-              <el-col style="line-height: 25px">
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">排量/功率：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.displacement}}</el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">总质量：</el-col>
-                  <el-col :span="17" class="table_text">
-                    {{scope.row.technicalEntity==null?null:scope.row.technicalEntity.weight}}
-                  </el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">制造厂商名称：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.technicalEntity==null?null:scope.row.technicalEntity.manufacturer}}</el-col>
-                </el-row>
-              </el-col>
+        <!-- 安全信息 -->
+        <el-table-column align="center" label="安全信息">
+          <template slot-scope="scope">
+            <el-col style="line-height: 25px">
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">安装GPS：</el-col>
+                <el-col :span="17" class="table_text">{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.gps}}</el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">三角架：</el-col>
+                <el-col :span="17" class="table_text">
+                  {{scope.row.safetyEntity==null?null:scope.row.safetyEntity.tripod}}
+                </el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :span="7" class="table_text">发动机灭火器：</el-col>
+                <el-col :span="17" class="table_text">{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.extinguisher}}</el-col>
+              </el-row>
+            </el-col>
 
-            </template>
-          </el-table-column>
-
-          <!-- 安全信息 -->
-          <el-table-column align="center" label="安全信息">
-            <template slot-scope="scope">
-              <el-col style="line-height: 25px">
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">安装GPS：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.gps}}</el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">三角架：</el-col>
-                  <el-col :span="17" class="table_text">
-                    {{scope.row.safetyEntity==null?null:scope.row.safetyEntity.tripod}}
-                  </el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">发动机灭火器：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.safetyEntity==null?null:scope.row.safetyEntity.extinguisher}}</el-col>
-                </el-row>
-              </el-col>
-
-            </template>
-          </el-table-column>
+          </template>
+        </el-table-column>
 
 
-        </el-table>
+      </el-table>
 
 
-        <div v-show="!listLoading" style="margin-top: 20px">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="listQuery.page" background
-                         :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
-                         style="float: left"
-                         layout="total, sizes, prev, pager, next, jumper" :total="total">
-          </el-pagination>
-          <el-button style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
-        </div>
-      </el-card>
-    </div>
-
-    <el-card v-show="showModule=='info'"  v-loading="infoLoading" element-loading-text="给我一点时间"  style="overflow: auto">
+      <div v-show="!listLoading" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
+                       style="float: left"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+        <el-button style="float: right" @click="create" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
+      </div>
+    </el-card>
+    <el-card v-show="showModule=='info'" style="height: 100%;overflow: auto"  v-loading="infoLoading" element-loading-text="给我一点时间" >
       <el-card class="box-card1">
-
         <div slot="header" class="clearfix">
           |&nbsp;<span style="font-weight: 600">基础信息</span>
           <el-button type="primary" size="mini" style="float: right" @click="back"><i class="el-icon-back"></i> 返 回</el-button>
         </div>
-
         <el-form :model="vehicleEntity" :rules="vehicleEntityRules" ref="vehicleEntity"  label-width="100px" size="mini">
           <el-row>
             <el-col style="width: 300px;margin-right: 22px">
@@ -355,11 +326,8 @@
             </el-row>
           </el-row>
         </el-form>
-
       </el-card>
-
       <el-tabs v-model="activeName" v-if="vehicleEntity.vehicleId" type="border-card" @tab-click="handleClick" style="margin-top: 10px" >
-
         <el-tab-pane label="证件信息" name="1" style="line-height: 50px;">
 
           <el-form :model="certificateEntity" :rules="certificateEntityRules" ref="certificateEntity"  label-width="140px" size="mini">
@@ -524,7 +492,6 @@
           </el-form>
 
         </el-tab-pane>
-
         <el-tab-pane label="技术信息" name="2" style="line-height: 50px;">
 
           <el-form :model="technicalEntity" :rules="technicalEntityRules" ref="technicalEntity"  label-width="100px" size="mini">
@@ -636,7 +603,6 @@
             </el-row>
           </el-form>
         </el-tab-pane>
-
         <el-tab-pane label="安全信息" name="3" style="line-height: 50px;">
 
           <el-form :model="safetyEntity" :rules="safetyEntityRules" ref="safetyEntity"  label-width="100px" size="mini">
@@ -720,7 +686,6 @@
 
 
         </el-tab-pane>
-
         <el-tab-pane label="图片相册" name="4">
           <el-row class="panel-group" :gutter="20">
             <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
@@ -790,10 +755,8 @@
           </el-row>
 
         </el-tab-pane>
-
         <el-tab-pane label="维修日志" name="5">
           <el-table v-loading="repairListLoading" element-loading-text="我已经全速加载了..." :data="repairList" stripe border fit highlight-current-row style="width: 100%">
-            <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
             <el-table-column prop="description" label="维修事项" width="180">
             </el-table-column>
@@ -831,25 +794,6 @@
           </div>
 
         </el-tab-pane>
-        <!--<el-tab-pane label="费用日志" name="7">-->
-
-          <!--<el-table :height="($store.state.app.client.height-205)" v-loading="maintainListLoading" element-loading-text="= = 我已经全速加载了..." :data="maintainList" stripe border fit highlight-current-row style="width: 100%">-->
-            <!--&lt;!&ndash;<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>&ndash;&gt;-->
-            <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
-            <!--<el-table-column prop="date" label="费用事项" width="180">-->
-            <!--</el-table-column>-->
-            <!--<el-table-column prop="name" label="记录时间" width="180">-->
-            <!--</el-table-column>-->
-            <!--<el-table-column prop="address" label="费用">-->
-            <!--</el-table-column>-->
-            <!--<el-table-column prop="address" label="记录人">-->
-            <!--</el-table-column>-->
-            <!--<el-table-column prop="address" label="备注">-->
-            <!--</el-table-column>-->
-          <!--</el-table>-->
-
-        <!--</el-tab-pane>-->
-
       </el-tabs>
 
       <el-dialog :modal="false" @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加保养日志'" width="550px" :visible.sync="repairListOption">
@@ -914,6 +858,14 @@
 
   export default {
     name: 'table_vehicle',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     computed: {
       ...mapGetters([
         'permissions',
@@ -927,6 +879,7 @@
     },
     data() {
       return {
+        tableHeight: this.area[1],
         // 车牌集合
         plates: [],
         // 负责人集合

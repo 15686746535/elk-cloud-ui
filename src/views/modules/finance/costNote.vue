@@ -1,8 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-    <el-card>
-
-      <el-table :data="financeList" :height="($store.state.app.client.height-140)" highlight-current-row stripe v-loading="listLoading" element-loading-text="给我一点时间">
+  <div style="height: 100%">
+    <el-card style="height: 100%">
+      <el-table :data="financeList" :height="(tableHeight-140)" highlight-current-row stripe v-loading="listLoading" element-loading-text="给我一点时间">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-row style="text-align: center">
@@ -80,8 +79,17 @@
 
   export default {
     name: 'table_log',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       return {
+        tableHeight: this.area[1],
         financeList: [],
         // 分页数据
         listQuery: {

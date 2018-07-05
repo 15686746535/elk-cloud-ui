@@ -7,12 +7,12 @@
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center" label="驾校">
           <template slot-scope="scope">
-            <span>壹鹿集团（华通驾校）</span>
+            <span>{{scope.row.groupName}}（{{scope.row.companyName}}）</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="部门">
           <template slot-scope="scope">
-            <span>培训部</span>
+            <span>{{scope.row.orgName}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="职位名称">

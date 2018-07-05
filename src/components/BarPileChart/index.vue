@@ -42,8 +42,10 @@ export default {
     }
   },
   watch: {
+    width: function(val) {
+      this.initChart()
+    },
     data: function(val) {
-      console.log('xxxxx', val)
       this.initChart()
       if (this.hasDown) {
         this.onClick()

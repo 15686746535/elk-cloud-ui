@@ -9,7 +9,7 @@
             <el-button type="primary"  @click="getList" ><i class="el-icon-search"></i>搜索</el-button>
           </el-col>
           <el-col style="width: 100%">
-            <bar-pile-chart :data="data" :style="{height: (tableHeight-80) + 'px',width: tableWidth - 40 + 'px'}" ></bar-pile-chart>
+            <bar-pile-chart :data="data" :width="tableWidth - 40 + 'px'" :height="tableHeight-80 + 'px'" ></bar-pile-chart>
           </el-col>
         </el-row>
 
@@ -30,7 +30,6 @@
       area: function(val) {
         this.tableWidth = val[0]
         this.tableHeight = val[1]
-        this.data.size = val[0]
       }
     },
     components: {
@@ -46,7 +45,6 @@
         },
         interval: [],
         data: {
-          size: this.area[0],
           colors: [],
           xAxis: [],
           seriesList: []

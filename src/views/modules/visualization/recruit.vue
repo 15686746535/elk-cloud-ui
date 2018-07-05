@@ -1,22 +1,20 @@
 <template>
-  <div class="app-container calendar-list-container" :style="{height: $store.state.app.client.height + 'px'}">
-      <el-card>
-        <el-row>
-          <el-col v-show="hasDown">
-             <dict  v-model="listQuery.campus" dictType="dict_campus" style="width: 220px;"  placeholder="校区"></dict>
-              <el-date-picker v-model="listQuery.year" type="year" placeholder="选择年"></el-date-picker>
-            <el-button type="primary"  @click="getList"  :loading="loading"><i class="el-icon-search"></i>搜索</el-button>
-          </el-col>
-          <el-col v-show="!hasDown">
-            <el-button type="primary"  @click="getList" :loading="loading"><i class="el-icon-d-arrow-left"></i>返回</el-button>
-          </el-col>
-          <el-col style="margin-top: 20px;">
-            <bar-pile-chart :data="data" :style="{height: ($store.state.app.client.height-180) + 'px'}" :hasDown="hasDown" @callback="down" ></bar-pile-chart>
-          </el-col>
-        </el-row>
+  <el-card style="height: 100%;width: 100%;overflow: auto">
+    <el-row>
+      <el-col v-show="hasDown">
+        <dict  v-model="listQuery.campus" dictType="dict_campus" style="width: 220px;"  placeholder="校区"></dict>
+        <el-date-picker v-model="listQuery.year" type="year" placeholder="选择年"></el-date-picker>
+        <el-button type="primary"  @click="getList"  :loading="loading"><i class="el-icon-search"></i>搜索</el-button>
+      </el-col>
+      <el-col v-show="!hasDown">
+        <el-button type="primary"  @click="getList" :loading="loading"><i class="el-icon-d-arrow-left"></i>返回</el-button>
+      </el-col>
+      <el-col :style="{width: $store.state.app.client.width - 40 + 'px'}">
+        <bar-pile-chart :data="data" :style="{height: ($store.state.app.client.height-170) + 'px',width: $store.state.app.client.width - 40 + 'px'}" :hasDown="hasDown" @callback="down"></bar-pile-chart>
+      </el-col>
+    </el-row>
 
-      </el-card>
-  </div>
+  </el-card>
 </template>
 
 <script>

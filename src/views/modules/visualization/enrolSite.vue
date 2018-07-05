@@ -1,20 +1,17 @@
 <template>
-  <div style="height: 100%; width: 100%">
-    <el-card style="height: 100%; width: 100%">
-        <el-row style="width: 100%">
-          <el-col>
-            <el-date-picker value-format="yyyy-MM-dd" v-model="interval" type="daterange" align="left" style="margin-bottom: 0px;"
-                            unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
-            </el-date-picker>
-            <el-button type="primary"  @click="getList" ><i class="el-icon-search"></i>搜索</el-button>
-          </el-col>
-          <el-col style="width: 100%">
-            <bar-pile-chart :data="data" :width="tableWidth - 40 + 'px'" :height="tableHeight-80 + 'px'" ></bar-pile-chart>
-          </el-col>
-        </el-row>
-
-      </el-card>
-  </div>
+  <el-card style="height: 100%;width: 100%;overflow: auto">
+    <el-row>
+      <el-col>
+        <el-date-picker value-format="yyyy-MM-dd" v-model="interval" type="daterange" align="left" style="margin-bottom: 0px;"
+                        unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+        </el-date-picker>
+        <el-button type="primary"  @click="getList" ><i class="el-icon-search"></i>搜索</el-button>
+      </el-col>
+      <el-col :style="{width: $store.state.app.client.width - 40 + 'px'}">
+        <bar-pile-chart :data="data" :style="{height: ($store.state.app.client.height-170) + 'px',width: $store.state.app.client.width - 40 + 'px'}" ></bar-pile-chart>
+      </el-col>
+    </el-row>
+  </el-card>
 </template>
 
 <script>
@@ -23,22 +20,11 @@
 
   export default {
     name: 'enrol_site',
-    props: {
-      area: Array
-    },
-    watch: {
-      area: function(val) {
-        this.tableWidth = val[0]
-        this.tableHeight = val[1]
-      }
-    },
     components: {
       BarPileChart
     },
     data() {
       return {
-        tableHeight: this.area[1],
-        tableWidth: this.area[0],
         listQuery: {
           beginTime: null,
           endTime: null

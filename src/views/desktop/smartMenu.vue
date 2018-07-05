@@ -77,6 +77,7 @@ export default {
   methods: {
     // 鼠标右键移除应用
     removeApp() {
+      console.log(this.appIndex)
       this.currentList.splice(this.appIndex, 1)
       // 这里需要传回后台保存
       this.$emit('saveDesktop', true)

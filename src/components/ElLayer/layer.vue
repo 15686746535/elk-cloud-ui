@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       id: '',
-      type: 0, //0（alert默认）1（页面层）2（iframe层）3（loading）4（tips层）,5(msg)
+      type: 0, // 0（alert默认）1（页面层）2（iframe层）3（loading）4（tips层）,5(msg)
       title: '信息',
       content: '',
       area: 'auto',
@@ -49,7 +49,6 @@ export default {
   },
   mounted() {},
   methods: {
-
   },
   watch: {
 

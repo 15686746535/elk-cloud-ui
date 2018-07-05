@@ -13,6 +13,8 @@
     <el-start-bar @open="layerOpen"></el-start-bar>
     <!-- 桌面切换 -->
     <el-nav-bar @desktopSwitch="desktopSwitch" @open="layerOpen"></el-nav-bar>
+    <!--悬浮工作台 -->
+    <el-tool-right></el-tool-right>
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import ElApps from './apps.vue'
 import ElNavBar from './navBar.vue'
 import ElSmartMenu from './smartMenu.vue'
 import ElStartBar from './startBar.vue'
+import ElToolRight from './toolRight.vue'
 import { saveApps } from '@/api/desktop'
 import { Message } from 'element-ui'
 
@@ -31,6 +34,7 @@ export default {
     ElApps,
     ElSmartMenu,
     ElStartBar,
+    ElToolRight,
     ElNavBar
   },
   data() {
@@ -103,7 +107,6 @@ export default {
           type: 2,
           id: app.id, // title
           title: app.name, // title
-          area: ['1024px', '600px'], // 默认 宽 高
           shadeClose: false, // 点击遮罩关闭
           tabIcon: app.icon, // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示

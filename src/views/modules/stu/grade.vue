@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container1 calendar-list-container1" style="height: 100%" >
+  <div class="" style="height: 100%;padding: 5px" >
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;" >
       <el-row :gutter="5">
         <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
@@ -23,35 +23,26 @@
         </el-col>
       </el-row>
     </el-card>
-    <el-row :gutter="5" :style1="{height: ($store.state.app.client.height - 95) + 'px'}" style="100%">
+    <el-row :gutter="5"  style="100%">
       <el-col style="width: 20%">
         <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
-          <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
-          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: ($store.state.app.client.height - 190) + 'px'}">
+          <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览{{pageHeight}}</span>
+          <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (pageHeight - 190) + 'px'}">
             <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)">
-                <{{batch.examTime | subTime}}> {{batch.examField}}
+                {{batch.examTime | subTime}}{{batch.examField}}
               </div>
             </div>
           </div>
           <div class="loading-more">
             <span v-if="batchTotalPage > batchListQuery.page" @click="batchHandleCurrentChange"><i class="el-icon-fa-angle-double-down"></i></span>
             <span v-else>到底了</span>
-            <!--<el-button type="primary" size="mini" style="float: right" @click="batchHandleCurrentChange">加载更多</el-button>-->
-            <!--<el-pagination-->
-              <!--small-->
-              <!--@current-change="batchHandleCurrentChange"-->
-              <!--layout="prev, pager, next"-->
-              <!--:current-page="batchListQuery.page"-->
-              <!--:page-size="batchListQuery.limit"-->
-              <!--:total="batchTotal">-->
-            <!--</el-pagination>-->
           </div>
         </el-card>
       </el-col>
       <el-col :style1="{width: (client.width-230) + 'px'}" style="width: 78%">
         <el-card>
-          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height1="$store.state.app.client.height - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
+          <el-table :data="gradeStudentList" v-loading="studentListLoading"  :height="pageHeight - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
             <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
@@ -72,18 +63,6 @@
                 <span>{{scope.row.idNumber}}</span>
               </template>
             </el-table-column>
-
-            <!--<el-table-column align="center" label="科目">-->
-              <!--<template slot-scope="scope">-->
-                <!--<span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>-->
-              <!--</template>-->
-            <!--</el-table-column>-->
-
-            <!--<el-table-column align="center" label="批次" width="195">-->
-              <!--<template slot-scope="scope">-->
-                <!--<span><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>-->
-              <!--</template>-->
-            <!--</el-table-column>-->
 
             <el-table-column align="center" label="期数" width="100">
               <template slot-scope="scope">
@@ -229,7 +208,6 @@
   import { examFetchList, putExamNote, putRowExamNote, exportAchievement } from '@/api/student/examnote'
   import { getBatchs } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
-  import { removeAllSpace } from '@/utils/validate'
   import Coach from '@/components/Coach'
 
 export default {
@@ -265,6 +243,7 @@ export default {
         innerGradeOption: false,
         innerGradeOption1: false,
         gradeEdit: false,
+        pageHeight: this.area[1],
         gradeOptionLoading: false,
         btnLoading: false,
         pickerOptions: {
@@ -314,6 +293,14 @@ export default {
         }
       }
     },
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.pageHeight = val[1]
+      }
+    },
     created() {
       this.getBatchList()
     },
@@ -332,7 +319,6 @@ export default {
             this.gradeStudentList = response.data.data.list
             this.studentTotal = response.data.data.totalCount
             this.studentListLoading = false
-          } else {
           }
         })
       },
@@ -388,7 +374,6 @@ export default {
               this.studentTotal = response.data.data.totalCount
               this.examParameter.examStateOld = '0'
               this.gradeOptionLoading = false
-            } else {
             }
           })
         } else {

@@ -57,13 +57,14 @@ let Notification = (function(vue, globalOption = {
             return false;
         }
     } else {
-        options.id = `notification_${new Date().getTime()}_${  seed++}`;;
+        options.id = `notification_${new Date().getTime()}_${  seed++}`;
     }
     options.layer = self;
     let instance = new NotificationConstructor({
       data: options
     });
     if (options.type == 2) {
+      options.area = ['1024px', '600px']; // 默认 宽 高
       options.content.content = vue.extend(options.content.content);
     }
     instance.id = options.id;

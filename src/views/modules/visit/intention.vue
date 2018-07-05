@@ -1,79 +1,55 @@
 <template>
-  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}">
+  <div class="intention_body" style="height: 100%;padding: 5px;width: 100%;">
     <transition name="el-zoom-in-center">
-    <div v-show="showModule=='list'" style="height: 100%;width: 100%">
-      <el-row :gutter="5" >
-        <el-col class="org-tree-left" style="width: 20%">
-          <el-card>
-            <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-            <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
-          </el-card>
-        </el-col>
-
-        <el-col :style1="{width: ($store.state.app.client.width-250) + 'px'}" style="width: 80%">
-          <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;">
-            <el-row :gutter="5">
-              <el-col :xs="7" :sm="7" :md="7" :lg="7">
-                <el-date-picker value-format="timestamp" size="mini" style="width: 100%;" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
-                </el-date-picker>
-              </el-col>
-
-              <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer" clearable filterable placeholder="负责人">
-                  <el-option
-                    v-for="item in userList"
-                    :key="item.userId"
-                    :label="item.name"
-                    :value="item.userId">
-                  </el-option>
-                </el-select>
-              </el-col>
-
-              <el-col :xs="3" :sm="3" :md="3" :lg="3">
-                <dict dictType="dict_customer_type" size="mini" v-model="listQuery.customerType" placeholder="类型"></dict>
-              </el-col>
-
-              <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                <dict dictType="dict_source" size="mini" v-model="listQuery.source" placeholder="来源渠道"></dict>
-              </el-col>
-
-              <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                <el-input @keyup.enter.native="searchClick" size="mini" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-              </el-col>
-
-              <el-col :xs="2" :sm="2" :md="2" :lg="2">
-                <el-button class="filter-item" type="primary" size="mini" icon="search" @click="searchClick">搜索</el-button>
-              </el-col>
-
-            </el-row>
-          </el-card>
-          <el-card :style="{height: ($store.state.app.client.height-95) + 'px'}" style="overflow: hidden">
-            <div class="intentions"  :style="{height: (client.height-185) + 'px'}" style="border-bottom: 1px solid #b2b6bd;" v-loading="listLoading" element-loading-text="给我一点时间" >
-
+      <div v-show="showModule=='list'" style="height: 100%;width: 100%">
+        <el-card style="height: 100%; padding: 12px;">
+          <!--检索-->
+          <el-row :gutter="5" style="margin-bottom: 15px;">
+            <el-col :xs="7" :sm="7" :md="7" :lg="7">
+              <el-date-picker value-format="timestamp" size="mini" style="width: 100%;" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+              </el-date-picker>
+            </el-col>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4">
+              <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer" clearable filterable placeholder="负责人">
+                <el-option
+                  v-for="item in userList"
+                  :key="item.userId"
+                  :label="item.name"
+                  :value="item.userId">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :xs="3" :sm="3" :md="3" :lg="3">
+              <dict dictType="dict_customer_type" size="mini" v-model="listQuery.customerType" placeholder="类型"></dict>
+            </el-col>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4">
+              <dict dictType="dict_source" size="mini" v-model="listQuery.source" placeholder="来源渠道"></dict>
+            </el-col>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4">
+              <el-input @keyup.enter.native="searchClick" size="mini" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+            </el-col>
+            <el-col :xs="2" :sm="2" :md="2" :lg="2">
+              <el-button class="filter-item" type="primary" size="mini" icon="search" @click="searchClick">搜索</el-button>
+            </el-col>
+          </el-row>
+          <!--列表-->
+          <div class="intentions"  :style="{height: (tableHeight-185) + 'px'}" style="border-bottom: 1px solid #b2b6bd;"  v-loading="listLoading" element-loading-text="给我一点时间" >
             <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
               <div style="width: 100%;height: 25px">
                 <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
                 <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
               </div>
-
               <!-- 分割线 -->
               <div style="width: 100%;float: left;border: none;border-bottom:1px solid #9fcfff;"></div>
-
               <div style="width: 100%;height: 25px">
                 <div class="intention_text" style="width: 50%;float: left">性别：{{intention.sex | sexFilter}}</div>
                 <div class="intention_text" style="width: 50%;float: left">负责人：{{intention.userName}}</div>
               </div>
-
               <div class="intention_text" style="width: 100%;float: left">电话：{{intention.mobile}}</div>
-
               <div class="intention_text" style="width: 100%;float: left">微信：{{intention.wechat}}</div>
-
               <div class="intention_text" style="width: 100%;float: left">住址：{{intention.contactAddress}}</div>
-
               <div class="intention_text" style="width: 100%;float: left">顾虑：{{intention.worry}}</div>
-
               <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
-
 
               <el-tooltip placement="bottom" effect="dark">
                 <div slot="content">
@@ -84,67 +60,58 @@
                 </div>
                 <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
               </el-tooltip>
-
-
             </div>
+          </div>
+          <!--分页插件-->
+          <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page.sync="listQuery.page"
+                           background
+                           style="float: left"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
 
-            <div v-show="followShow">
-              <div :style="{height: (client.height-1) + 'px'}" class="alert_follow" style="border-radius: 6px 0 0 5px;">
-                <div style="width: 100%;background-color: #e9e9e9;height: 40px;line-height: 40px;border-radius: 5px 0 0 0; ">
-                  <div style="border: 5px solid #e9e9e9;border-left-color:#b7b7b7; height: 40px; width: 6px;float: left"></div>
-                  <span class="text_css" style="font-size: 16px;padding-left: 10px">{{alertFollowEntity.name}}</span>
-                  <span class="text_css" style="font-size: 14px;padding-left: 10px">{{alertFollowEntity.mobile}}</span>
-                  <div @click="followShow = !followShow" style="float: right;cursor: pointer;margin-right: 10px;"><svg-icon icon-class="closeLink"></svg-icon></div>
-                </div>
-                <div style="width: 100%;height: 100%;">
+            <el-button size="small" style="float: right" @click="create" type="primary" v-if="permissions.visit_intention_add" ><i class="el-icon-plus"></i>添加</el-button>
+          </div>
 
-                  <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
-                    <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 15px;" v-for="followUp in followUps">
-                      <el-tag class="avatar">
-                        <img width="100%" height="100%" :src="followUp.avatar">
-                      </el-tag>
-                      <div class="username">{{followUp.name}}</div>
-                      <div class="time" >{{followUp.createTime | subTime('dateTime')}}</div>
-                      <div style="clear: both;white-space:normal;width: 100%">
-                        <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUp.content}}</p>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-                  <div style="padding: 0 5px;">
-                    <el-row :gutter="5">
-                      <el-col :span="19" >
-                        <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 4}" v-model="followUp.content" placeholder="跟进内容"></el-input>
-                      </el-col>
-                      <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading"  type="primary"  @click="addFollowUp">跟进</el-button></el-col>
-                    </el-row>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            </div>
-            <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                             :current-page.sync="listQuery.page"
-                             background
-                             style="float: left"
-                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                             layout="total, sizes, prev, pager, next, jumper" :total="total">
-              </el-pagination>
-
-              <el-button size="small" style="float: right" @click="create" type="primary" v-if="permissions.visit_intention_add" ><i class="el-icon-plus"></i>添加</el-button>
-            </div>
-
-          </el-card>
-        </el-col>
-      </el-row>
-
-    </div>
+        </el-card>
+      </div>
     </transition>
+
+
+    <div v-show="followShow">
+      <div :style="{height: (client.height-1) + 'px'}" class="alert_follow" style="border-radius: 6px 0 0 5px;">
+        <div style="width: 100%;background-color: #e9e9e9;height: 40px;line-height: 40px;border-radius: 5px 0 0 0; ">
+          <div style="border: 5px solid #e9e9e9;border-left-color:#b7b7b7; height: 40px; width: 6px;float: left"></div>
+          <span class="text_css" style="font-size: 16px;padding-left: 10px">{{alertFollowEntity.name}}</span>
+          <span class="text_css" style="font-size: 14px;padding-left: 10px">{{alertFollowEntity.mobile}}</span>
+          <div @click="followShow = !followShow" style="float: right;cursor: pointer;margin-right: 10px;"><svg-icon icon-class="closeLink"></svg-icon></div>
+        </div>
+        <div style="width: 100%;height: 100%;">
+          <div :style="{height: (client.height-150) + 'px'}"  style="width: 100%;overflow: auto;margin-bottom: 10px;padding: 35px">
+            <div style="border-left: 2px solid #9fcfff;min-height: 100px;padding-bottom: 15px;" v-for="followUp in followUps">
+              <el-tag class="avatar">
+                <img width="100%" height="100%" :src="followUp.avatar">
+              </el-tag>
+              <div class="username">{{followUp.name}}</div>
+              <div class="time" >{{followUp.createTime | subTime('dateTime')}}</div>
+              <div style="clear: both;white-space:normal;width: 100%">
+                <p style="font-size: 12px;margin-left: 35px;border-radius: 10px;white-space:normal;color: #606266;line-height: 16px;">{{followUp.content}}</p>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 0 5px;">
+            <el-row :gutter="5">
+              <el-col :span="19" >
+                <el-input type="textarea"  @keyup.enter.native="addFollowUp" maxlength="200" :autosize="{ minRows: 4, maxRows: 4}" v-model="followUp.content" placeholder="跟进内容"></el-input>
+              </el-col>
+              <el-col :span="5" ><el-button style="width: 100%;height: 96px;" :loading="btnLoading"  type="primary"  @click="addFollowUp">跟进</el-button></el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <el-dialog :modal="false" width="650px" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
 
@@ -255,7 +222,6 @@
     </el-dialog>
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='info'">
-
       <el-row>
         <el-card style="margin-bottom: 5px;height: 60px;" body-style="padding:10px 20px">
           <div style="float: left;height: 40px;line-height: 40px;">
@@ -399,8 +365,6 @@
                   </el-col>
                 </el-row>
 
-
-
               </el-form>
             </el-card>
             <el-card shadow="never" body-style="padding:10px;" style="border: none;">
@@ -440,9 +404,6 @@
                   </div>
                 </div>
               </div>
-
-
-
               <div style="padding: 0 5px;">
                 <el-row :gutter="5">
                   <el-col :span="19" >
@@ -457,7 +418,6 @@
       </el-row>
     </div>
     </transition>
-
   </div>
 </template>
 
@@ -471,6 +431,14 @@
 
   export default {
     name: 'table_intention',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       var mobileIsExistence = (rule, value, callback) => {
         if (value) {
@@ -502,6 +470,7 @@
       return {
         intentionList: [],
         intention: {},
+        tableHeight: this.area[1],
         total: null,
         addInfo: false,
         listLoading: true,
@@ -806,8 +775,12 @@
       // 来访信息点击事件
       intentionClick(e, val) {
         this.alertFollowEntity = val
-        this.getFollowUp(val)
-        this.followShow = true
+        var intention = {
+          intentionId: val.intentionId,
+          name: val.name
+        }
+        this.$store.dispatch('setIntention', intention)
+        document.getElementById('vl-tool-right').classList.add('show')
         var a = document.getElementsByClassName('intention')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('intention_selected')
@@ -858,8 +831,8 @@
   }
   .intention {
     float: left;
-    width: 242px;
-    height: 218px;
+    width: 228px;
+    height: 214px;
     margin:5px;
     cursor: pointer;
     border: 1px solid #449ffb;
@@ -873,7 +846,7 @@
     height: 25px;
     border-radius: 5px 0px;
     float: right;
-    margin: -17px -6px;
+    margin: -21px -6px;
     cursor: pointer;
     background-color: #449ffb;
     transition: background-color 0.2s;

@@ -5,12 +5,18 @@ import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 export function showMonitor(desktopList, newlist) {
+  console.log(desktopList)
+  console.log(newlist)
   var isUp = false
-  desktopList.forEach(function(item, index) {
-    if (item.id !== newlist[index].id || item.desktop !== newlist[index].desktop) {
-      isUp = true
-    }
-  })
+  if (desktopList.length === newlist.length) {
+    desktopList.forEach(function(item, index) {
+      if (item.id !== newlist[index].id || item.desktop !== newlist[index].desktop) {
+        isUp = true
+      }
+    })
+  } else {
+    isUp = true
+  }
   return isUp
 }
 const user = {
@@ -21,6 +27,7 @@ const user = {
     desktopBg: '',
     permissions: [],
     defaultList: [],
+    intention: {},
     startList: [],
     menuIds: [], // 拥有的菜单id
     desktopOneList: [], // 桌面1显示的菜单
@@ -71,10 +78,16 @@ const user = {
     },
     SET_DESKTOPLIST: (state, desktopList) => {
       state.desktopList = desktopList
+    },
+    SET_INTENTION: (state, intention) => {
+      state.intention = intention
     }
   },
 
   actions: {
+    setIntention: ({ commit }, intention) => {
+      commit('SET_INTENTION', intention)
+    },
     // 登录
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
@@ -98,7 +111,11 @@ const user = {
       commit('SET_DESKTOPONELIST', desktopFilter(list, '1'))
       commit('SET_DESKTOPTWOLIST', desktopFilter(list, '2'))
       if (desktopList) {
-        if (showMonitor(desktopList, list)) commit('SET_DESKTOPLIST', list)
+        console.log('修改')
+        if (showMonitor(desktopList, list)) {
+          console.log('修改2')
+          commit('SET_DESKTOPLIST', list)
+        }
       } else {
         commit('SET_DESKTOPLIST', list)
       }

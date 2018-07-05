@@ -42,6 +42,14 @@ export default {
       type: Object
     }
   },
+  watch: {
+    'options.area': function(val) {
+      // console.log('val===')
+      // console.log(val)
+      // console.log(this.instance)
+      // // this.propsData.area = [parseInt(val[0]), parseInt(val[1])]
+    }
+  },
   computed: {
     contentStyle() {
       return {
@@ -101,26 +109,30 @@ export default {
     async getContent() {
       await helper.sleep(10)
       var propsData = JSON.parse(JSON.stringify(this.options.content.data))
+      propsData.area = [parseInt(this.width), parseInt(this.height)]
       propsData['layerid'] = this.options.id
-      var instance = new this.options.content.content({ // 具体参数信息，请参考vue源码
+      this.instance = new this.options.content.content({ // 具体参数信息，请参考vue源码
         parent: this.options.content.parent,
         propsData: propsData
       })
-      instance.vm = instance.$mount()
-      document.getElementById(this.id).appendChild(instance.vm.$el)
-      this.options.layer.instancesVue[this.options.id].iframe = instance.vm
+      // this.instance = instance
+      this.instance.vm = this.instance.$mount()
+      document.getElementById(this.id).appendChild(this.instance.vm.$el)
+      this.options.layer.instancesVue[this.options.id].iframe = this.instance.vm
     },
     windowFull() {
       if (this.isMax) {
-        this.width = this.options.area[0]
-        this.height = this.options.area[1]
+        this.width = '1024px'
+        this.height = '600px'
         this.left = '50%'
         this.top = '50%'
         this.isMax = false
       } else {
         this.height = (document.documentElement.clientHeight - 45) + 'px'
+        this.width = document.documentElement.clientWidth + 'px'
         this.isMax = true
       }
+      this.instance.area = [parseInt(this.width), parseInt(this.height)]
     },
     windowMin(event) {
       var that = document.getElementById(this.options.id)

@@ -1,126 +1,94 @@
 <template>
-  <div class="app-container calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}" style="100%">
-    <el-row :gutter="5">
-      <el-col class="org-tree-left" style="width: 20%">
-        <el-card>
-          <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">权限筛选</span>
-          <my-tree url="/upms/org/tree" v-model="listQuery.orgId"  @node="searchByOrg"></my-tree>
-        </el-card>
-      </el-col>
+  <div style="height: 100%">
+    <el-card style="height: 100%" v-show="showList">
+      <el-row :gutter="5" style="margin-bottom: 15px;">
+        <el-col :xs="15" :sm="15" :md="15" :lg="17" :xl="19">
+          <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
+            <el-radio-button label="1">科目一</el-radio-button>
+            <el-radio-button label="2">科目二</el-radio-button>
+            <el-radio-button label="3">科目三</el-radio-button>
+          </el-radio-group>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+          <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+        </el-col>
+        <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
+          <el-button size="mini" type="primary"  @click="searchClick">搜索</el-button>
+        </el-col>
+      </el-row>
+      <el-table  :height="(tableHeight-185)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
+        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+        <el-table-column align="center" label="姓名">
+          <template slot-scope="scope">
+            <span>{{scope.row.name}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="165px" label="身份证">
+          <template slot-scope="scope">
+            <span>{{scope.row.idNumber}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="性别">
+          <template slot-scope="scope">
+            <span>{{scope.row.sex | sexFilter}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="车型">
+          <template slot-scope="scope">
+            <span>{{scope.row.motorcycleType}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="电话">
+          <template slot-scope="scope">
+            <span>{{scope.row.mobile}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="期数">
+          <template slot-scope="scope">
+            <span>{{scope.row.periods}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="通过时间">
+          <template slot-scope="scope">
+            <span>{{scope.row.passTime | subTime}}</span>
+          </template>
+        </el-table-column>
 
-      <el-col :style1="{width: ($store.state.app.client.width-225) + 'px'}" style="width: 80%">
-        <el-card body-style="padding:10px 20px;" style="height: 50px;">
+        <el-table-column align="center" width="120px" label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="success" v-if="permissions.stu_revisit_add" @click="visitStudent(scope.row)">回 访</el-button>
+          </template>
+        </el-table-column>
 
-          <el-row :gutter="5">
-            <el-col :xs="15" :sm="15" :md="15" :lg="17" :xl="19">
-              <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
-                <el-radio-button label="1">科目一</el-radio-button>
-                <el-radio-button label="2">科目二</el-radio-button>
-                <el-radio-button label="3">科目三</el-radio-button>
-              </el-radio-group>
-            </el-col>
-            <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-              <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
-            </el-col>
-            <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
-              <el-button size="mini" type="primary"  @click="searchClick">搜索</el-button>
-            </el-col>
-          </el-row>
-        </el-card>
-        <el-card style="margin-top: 5px;"  :style="{height: ($store.state.app.client.height-95) + 'px'}">
+      </el-table>
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page.sync="listQuery.page" background
+                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+      </div>
+    </el-card>
 
-          <el-table  :height="($store.state.app.client.height-185)" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <!--<el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>-->
-            <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-            <el-table-column align="center" label="姓名">
-              <template slot-scope="scope">
-                <span>{{scope.row.name}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" width="165px" label="身份证">
-              <template slot-scope="scope">
-                <span>{{scope.row.idNumber}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="性别">
-              <template slot-scope="scope">
-                <span>{{scope.row.sex | sexFilter}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="车型">
-              <template slot-scope="scope">
-                <span>{{scope.row.motorcycleType}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="电话">
-              <template slot-scope="scope">
-                <span>{{scope.row.mobile}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="期数">
-              <template slot-scope="scope">
-                <span>{{scope.row.periods}}</span>
-              </template>
-            </el-table-column>
-            <!--<el-table-column align="center" width="210px" label="是否回访">
-              <template slot-scope="scope">
-                <el-tag class="subject">
-                  <el-tag v-if="scope.row.revisitFlag == 1" class="pass">已回访</el-tag>
-                  <el-tag v-else class="noPass">未回访</el-tag>
-                </el-tag>
-              </template>
-            </el-table-column>-->
-            <el-table-column align="center" label="通过时间">
-              <template slot-scope="scope">
-                <span>{{scope.row.passTime | subTime}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" width="120px" label="操作">
-              <template slot-scope="scope">
-                <el-button size="mini" type="success" v-if="permissions.stu_revisit_add" @click="visitStudent(scope.row)">回 访</el-button>
-              </template>
-            </el-table-column>
-
-          </el-table>
-          <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page.sync="listQuery.page" background
-                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                           layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-          </div>
-        </el-card>
-
-      </el-col>
-    </el-row>
-
-    <el-dialog :modal="false" title="选择问卷" width="20%" :visible.sync="questionnaireOption">
-      <div style="width:80%;margin: 0 auto" >
-        <el-select style="width: 100%" v-model="questionnaireId" placeholder="请选择">
+    <el-card style="height: 100%" v-show="!showList">
+      <div style="width: 200px;">
+        <el-select style="width: 100%" v-model="questionnaireId" placeholder="请选择问卷" @change="getRevisitQuestion">
           <el-option
             v-for="item in questionnaireList"
             :key="item.questionnaireId"
             :label="item.name"
-            :value="item.questionnaireId">
+            :value="item.questionnaireId" >
           </el-option>
         </el-select>
       </div>
 
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="questionnaireOption = false">取 消</el-button>
-        <el-button type="primary" size="small" @click="getRevisitQuestion">确 定</el-button>
-      </div>
-
-    </el-dialog>
-
-    <el-dialog :modal="false" @close="closeDialog" title="回访登记" width="750px" :visible.sync="visitStudentOption">
-      <div :style="{height: ($store.state.app.client.height)/2 +'px'}" style="overflow: auto;margin-bottom: 10px">
+      <div :style="{height: tableHeight/2 +'px'}" style="overflow: auto;margin-bottom: 10px">
 
         <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in answerList.revisitQuestionList">
           <el-row>
             <el-col :span="2">
-              <span style="color: #001528;font-size: 14px;font-weight: 600">{{revisit+1}}、</span>
+              <span style="color: #001528;font-size: 14px;font-weight: 600">{{index+1}}、</span>
             </el-col>
             <el-col :span="22">
               <el-row><span style="color: #001528;font-size: 14px;font-weight: 600">{{question.question}}</span></el-row>
@@ -145,14 +113,27 @@
         </div>
 
       </div>
-
       <div>
         <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 3}" v-model="answerList.remark" placeholder="备注"></el-input>
       </div>
-      <div slot="footer" class="dialog-footer">
+      <div style="padding: 20px;" align="center">
         <el-button @click="closeDialog" size="small" ><i class="el-icon-fa-undo"></i> 取 消</el-button>
         <el-button @click="saveQuestion" size="small" type="primary" ><i class="el-icon-fa-save"></i> 确 定</el-button>
       </div>
+    </el-card>
+
+    <el-dialog :modal="false" title="" width="20%" :visible.sync="questionnaireOption">
+      <div style="width:80%;margin: 0 auto" >
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="questionnaireOption = false">取 消</el-button>
+        <el-button type="primary" size="small" @click="">确 定</el-button>
+      </div>
+
+    </el-dialog>
+
+    <el-dialog :modal="false" @close="closeDialog" title="回访登记" width="750px" :visible.sync="visitStudentOption">
+
     </el-dialog>
   </div>
 </template>
@@ -171,6 +152,7 @@
       return {
         revisitStudent: {},
         list: [],
+        showList: true,
         questionnaireList: [],
         answerList: {
           revisitQuestionList: [],
@@ -199,11 +181,20 @@
           subject: 1
         },
         questionnaireId: null,
+        tableHeight: this.area[1],
         questionListQuery: {
           page: 1,
           limit: 0,
           subject: 1
         }
+      }
+    },
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
       }
     },
     created() {
@@ -257,24 +248,23 @@
       },
       /* 回访 */
       visitStudent(val) {
+        this.showList = false
         this.answerList.examId = val.examId
         this.answerList.studentId = val.studentId
         this.questionnaireListQuery.subject = this.listQuery.subject
         getRevisitQuestionnaireList(this.questionnaireListQuery).then(response => {
-          this.questionnaireOption = true
           this.questionnaireList = response.data.data.list
           this.questionnaireId = this.questionnaireList[0].questionnaireId
+          this.getRevisitQuestion()
         })
       },
       getRevisitQuestion() {
         getQuestion(this.questionnaireId).then(response => {
           this.answerList.revisitQuestionList = response.data.data
-          this.visitStudentOption = true
         })
       },
       closeDialog() {
-        this.visitStudentOption = false
-        this.questionnaireOption = false
+        this.showList = true
         this.getList()
       },
       saveQuestion() {

@@ -28,6 +28,7 @@ let Notification = (function(vue, globalOption = {
     btn: '确定',
     time: 0,
     shade: true,
+    test: 'xasdfggfhdfsdfasdfsdfdgfdfgdfgfdg',
     yes: '',
     cancel: '',
     tips: [0, {}], // 支持上右下左四个方向，通过1-4进行方向设定,可以设定tips: [1, '#c00']
@@ -60,7 +61,8 @@ let Notification = (function(vue, globalOption = {
     console.log('layer.js', 60)
     options.layer = self
     let instance = new NotificationConstructor({
-      data: options
+      data: options,
+      propsData: options
     })
     if (options.type == 2) {
       options.area = ['1024px', '600px'] // 默认 宽 高

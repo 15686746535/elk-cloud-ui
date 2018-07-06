@@ -35,19 +35,27 @@ export default {
       cancel: ''
     }
   },
+  props: {
+    test: {
+      type: String
+    }
+  },
   computed: {
     getActiveName() {
-      let comps = ['pzalert', 'pzpage', 'pziframe', 'pzloading', 'pztips', 'pzmsg'];
-      return comps[this.$data.type];
+      var comps = ['pzalert', 'pzpage', 'pziframe', 'pzloading', 'pztips', 'pzmsg']
+      return comps[this.$data.type]
     },
-    "isMsg": function() {
-      return this.type == 5 ? true : false;
+    'isMsg': function() {
+      return this.type === 5 ? true : false
     },
-    "isTips": function() {
-      return this.type == 4 ? true : false;
-    },
+    'isTips': function() {
+      return this.type === 4 ? true : false
+    }
   },
-  mounted() {},
+  mounted() {
+    console.log('layer.vue', 56, this.test)
+    console.log('layer.vue', 56, this.$data)
+  },
   methods: {
   },
   watch: {

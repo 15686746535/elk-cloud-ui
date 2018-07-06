@@ -10,7 +10,7 @@ let Notification = (function(vue, globalOption = {
   msgtime: 1.5, //msg消失时间
 }) {
   // console.log('lay',NotificationConstructor)
-  let NotificationConstructor = vue.extend(require('./layer.vue'))
+  let NotificationConstructor = vue.extend(require('./layer.vue').default)
   let maskLayer = vue.extend(require('./mask.vue').default)
   let taskColumnLayer = vue.extend(require('./taskColumn.vue').default)
   let taskLayer = vue.extend(require('./task.vue').default)
@@ -70,7 +70,8 @@ let Notification = (function(vue, globalOption = {
     }
     console.log('layer.js', 67)
     let instance = new NotificationConstructor({
-      data: options
+      data: options,
+      props: { options: options }
     })
     console.log('layer.js', 71)
     instance.id = options.id

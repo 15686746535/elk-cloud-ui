@@ -42,9 +42,18 @@ export default {
       ]
     }
   },
+
   props: {
+    area: Array,
     desktop: {
       type: String
+    }
+  },
+  watch: {
+    desktopList: function(val) {
+    },
+    area: function(val) {
+      this.tableHeight = val[1]
     }
   },
   computed: {
@@ -53,10 +62,6 @@ export default {
       'desktopTwoList',
       'desktopOneList'
     ])
-  },
-  watch: {
-    desktopList: function(val) {
-    }
   },
   mounted() {
   },

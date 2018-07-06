@@ -143,7 +143,7 @@ const user = {
             commit('SET_ROLES', data.roles || []) // 用户角色集合
             commit('SET_DESKTOPBG', data.desktopBg || '01-1') // 桌面背景
             commit('SET_NAME', data.username) // 用户名
-            commit('SET_AVATAR', data.avatar) // 头像
+            commit('SET_AVATAR', data.avatar || '../../../static/img/usreicon_40.png') // 头像
             commit('SET_MENUIDS', data.menuIds || []) // 拥有的菜单
             commit('SET_PERMISSIONS', data.permissions || {}) // 按钮权限集合
             console.log(showApps)

@@ -18,7 +18,7 @@
           <div id="start_item">
             <ul class="item admin">
               <li>
-                <img :src="'../../../static/img/usreicon_40.png'" class="adminImg" />
+                <img :src="avatar" class="adminImg" />
                 {{name}}
               </li>
             </ul>

@@ -45,6 +45,7 @@ let Notification = (function(vue, globalOption = {
    * @return {[type]}         [description]
    */
   self.open = function(options) {
+    console.log('layer.js', 48)
     options = mergeJson(options, defOptions)
     if (options.id) {
       // 传入id
@@ -56,6 +57,7 @@ let Notification = (function(vue, globalOption = {
     } else {
       options.id = `notification_${new Date().getTime()}_${  seed++}`
     }
+    console.log('layer.js', 60)
     options.layer = self
     let instance = new NotificationConstructor({
       data: options
@@ -70,6 +72,7 @@ let Notification = (function(vue, globalOption = {
       inst: instance,
       type: options.type
     }
+    console.log('layer.js', 75)
     document.body.appendChild(instance.vm.$el)
     self.instancesVue[options.id] = {
       'mask': '',
@@ -79,6 +82,7 @@ let Notification = (function(vue, globalOption = {
     // 构建回到桌面
     var task = document.getElementsByClassName('vl-notify-task')
     var home = document.getElementById('home_task')
+    console.log('layer.js', 85)
     if (!home) {
       var hoptions = {
         id: 'home',
@@ -91,6 +95,7 @@ let Notification = (function(vue, globalOption = {
 
       task[0].appendChild(homeInstance.vm.$el)
     }
+    console.log('layer.js', 98)
     if (options.type == 2 && task && task.length > 0) {
       let taskInstance = new taskLayer({
         data: options
@@ -106,10 +111,12 @@ let Notification = (function(vue, globalOption = {
       let maskInstance = new maskLayer({
         data: options
       })
+      console.log('layer.js', 114)
       maskInstance.vm = maskInstance.$mount()
       document.body.appendChild(maskInstance.vm.$el)
       self.instancesVue[options.id].mask = maskInstance.vm
     }
+    console.log('layer.js', 119)
     return options.id
   }
   /**

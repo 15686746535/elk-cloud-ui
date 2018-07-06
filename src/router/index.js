@@ -122,10 +122,14 @@ export function hasAppFilter(permissions, roles) {
  * @param desktop
  */
 export function desktopFilter(list, desktop) {
-  return list.filter(function(app) {
-    // admin 拥有全部
-    return app.desktop === desktop
-  })
+  if (list) {
+    return list.filter(function(app) {
+      // admin 拥有全部
+      return app.desktop === desktop
+    })
+  } else {
+    return null
+  }
 }
 
 /**

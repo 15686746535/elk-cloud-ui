@@ -126,27 +126,31 @@ const user = {
         getInfo().then(response => {
           const data = response.data
           if (data.code === 0 && data.roles != null && data.roles.length > 0) {
-            commit('SET_ROLES', data.roles)
-            commit('SET_DESKTOPBG', data.desktopBg || '01-1') // 桌面背景
-            commit('SET_NAME', data.username)
-            commit('SET_AVATAR', data.avatar)
-            commit('SET_MENUIDS', data.menuIds)
-            commit('SET_PERMISSIONS', data.permissions)
+            // 获取拥有的应用集合
             var hasAppList = hasAppFilter(data.menuIds, data.roles)
+            // 获取需要展示的集合
             var showApps = showAppFilter(hasAppList, data.showApp)
-            if (data.showApp && data.showApp.length > 0) {
-              commit('SET_DESKTOPONELIST', desktopFilter(showApps, '1'))
-              commit('SET_DESKTOPTWOLIST', desktopFilter(showApps, '2'))
-            } else {
-              commit('SET_DESKTOPONELIST', hasAppList)
-            }
-            commit('SET_HASAPPLIST', hasAppList) // 拥有的app
+            // 修改提醒数量
+            // 短消息
+            defaultMap[0].msgCount = data.agencyList ? data.agencyList[1] : 0
+            // 工作日志
+            defaultMap[1].msgCount = 0
+            // 我的待办
+            defaultMap[2].msgCount = data.agencyList ? data.agencyList[0] : 0
+            // 任务管理
+            defaultMap[3].msgCount = 0
+            // 修改全局数据
+            commit('SET_ROLES', data.roles || []) // 用户角色集合
+            commit('SET_DESKTOPBG', data.desktopBg || '01-1') // 桌面背景
+            commit('SET_NAME', data.username) // 用户名
+            commit('SET_AVATAR', data.avatar) // 头像
+            commit('SET_MENUIDS', data.menuIds || []) // 拥有的菜单
+            commit('SET_PERMISSIONS', data.permissions || {}) // 按钮权限集合
+            console.log(showApps)
+            commit('SET_DESKTOPONELIST', desktopFilter(showApps, '1') || hasAppList) // 桌面1应用集合
+            commit('SET_DESKTOPTWOLIST', desktopFilter(showApps, '2') || []) // 桌面2应用集合
+            commit('SET_HASAPPLIST', hasAppList || []) // 拥有的应用集合
             commit('SET_STARTLIST', startFilter(hasAppList)) // 开始菜单
-            // 需要后台查询
-            defaultMap[0].msgCount = data.agencyList[1] || 0 // 短消息 data.agencyList[0]
-            defaultMap[1].msgCount = 0 // 工作日志
-            defaultMap[2].msgCount = data.agencyList[0] || 0 // 我的待办
-            defaultMap[3].msgCount = 0 // 任务管理
             commit('SET_DEFAULTLIST', defaultMap)// 快速启动
             resolve(response)
           } else {

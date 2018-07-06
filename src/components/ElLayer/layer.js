@@ -60,16 +60,18 @@ let Notification = (function(vue, globalOption = {
     }
     console.log('layer.js', 60)
     options.layer = self
-    let instance = new NotificationConstructor({
-      data: options,
-      propsData: options
-    })
     if (options.type == 2) {
       options.area = ['1024px', '600px'] // 默认 宽 高
       options.content.content = vue.extend(options.content.content)
     }
+    console.log('layer.js', 67)
+    let instance = new NotificationConstructor({
+      data: options
+    })
+    console.log('layer.js', 71)
     instance.id = options.id
     instance.vm = instance.$mount()
+    console.log('layer.js', 74)
     self.instances[options.id] = {
       inst: instance,
       type: options.type

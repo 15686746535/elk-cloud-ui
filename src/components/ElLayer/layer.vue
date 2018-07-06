@@ -35,13 +35,9 @@ export default {
       cancel: ''
     }
   },
-  props: {
-    test: {
-      type: String
-    }
-  },
   computed: {
     getActiveName() {
+      console.log('layer.vue', 40, this.$data)
       var comps = ['pzalert', 'pzpage', 'pziframe', 'pzloading', 'pztips', 'pzmsg']
       return comps[this.$data.type]
     },
@@ -51,15 +47,6 @@ export default {
     'isTips': function() {
       return this.type === 4 ? true : false
     }
-  },
-  mounted() {
-    console.log('layer.vue', 56, this.test)
-    console.log('layer.vue', 56, this.$data)
-  },
-  methods: {
-  },
-  watch: {
-
   },
   components: {
     pzalert,

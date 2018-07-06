@@ -35,17 +35,21 @@ export default {
       cancel: ''
     }
   },
+  props: {
+    options: Object
+  },
+  mounted() {
+  },
   computed: {
     getActiveName() {
-      console.log('layer.vue', 40, this.$data)
       var comps = ['pzalert', 'pzpage', 'pziframe', 'pzloading', 'pztips', 'pzmsg']
       return comps[this.$data.type]
     },
     'isMsg': function() {
-      return this.type === 5 ? true : false
+      return this.type === 5
     },
     'isTips': function() {
-      return this.type === 4 ? true : false
+      return this.type === 4
     }
   },
   components: {
@@ -54,7 +58,7 @@ export default {
     pzmsg,
     pztips,
     pzpage,
-    pziframe,
+    pziframe
   }
 }
 </script>

@@ -27,7 +27,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column  align="center" label="操作" width="350">
+        <el-table-column  align="center" label="操作" width="250">
           <template slot-scope="scope">
             <el-button size="mini" type="success" v-if="permissions.upms_role_update"   @click="handleUpdate(scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" v-if="permissions.upms_role_del"  @click="handleDelete(scope.row)">删除</el-button>

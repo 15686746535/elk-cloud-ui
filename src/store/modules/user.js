@@ -5,8 +5,6 @@ import NProgress from 'nprogress' // Progress 进度条
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 export function showMonitor(desktopList, newlist) {
-  console.log(desktopList)
-  console.log(newlist)
   var isUp = false
   if (desktopList.length === newlist.length) {
     desktopList.forEach(function(item, index) {
@@ -111,9 +109,7 @@ const user = {
       commit('SET_DESKTOPONELIST', desktopFilter(list, '1'))
       commit('SET_DESKTOPTWOLIST', desktopFilter(list, '2'))
       if (desktopList) {
-        console.log('修改')
         if (showMonitor(desktopList, list)) {
-          console.log('修改2')
           commit('SET_DESKTOPLIST', list)
         }
       } else {
@@ -175,7 +171,6 @@ const user = {
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         logout(state.token, state.refresh_token).then(() => {
-          console.log(123)
           commit('SET_TOKEN', '')
           commit('SET_REFRESH_TOKEN', '')
           commit('SET_ROLES', [])

@@ -7,13 +7,12 @@
  */
 
 let Notification = (function(vue, globalOption = {
-  msgtime: 1.5, //msg消失时间
+  msgtime: 1.5 // msg消失时间
 }) {
   // console.log('lay',NotificationConstructor)
   let NotificationConstructor = vue.extend(require('./layer.vue').default)
-  let maskLayer = vue.extend(require('./mask.vue').default)
-  let taskColumnLayer = vue.extend(require('./taskColumn.vue').default)
-  let taskLayer = vue.extend(require('./task.vue').default)
+  let MaskLayer = vue.extend(require('./mask.vue').default)
+  let TaskLayer = vue.extend(require('./task.vue').default)
   let self = {}
   const defOptions = {
     type: 0, // 0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
@@ -28,7 +27,6 @@ let Notification = (function(vue, globalOption = {
     btn: '确定',
     time: 0,
     shade: true,
-    test: 'xasdfggfhdfsdfasdfsdfdgfdfgdfgfdg',
     yes: '',
     cancel: '',
     tips: [0, {}], // 支持上右下左四个方向，通过1-4进行方向设定,可以设定tips: [1, '#c00']
@@ -46,7 +44,6 @@ let Notification = (function(vue, globalOption = {
    * @return {[type]}         [description]
    */
   self.open = function(options) {
-    console.log('layer.js', 48)
     options = mergeJson(options, defOptions)
     if (options.id) {
       // 传入id
@@ -56,32 +53,23 @@ let Notification = (function(vue, globalOption = {
         return false
       }
     } else {
-      options.id = `notification_${new Date().getTime()}_${  seed++}`
+      options.id = `notification_${new Date().getTime()}_${seed++}`
     }
-    console.log('layer.js', 60)
     options.layer = self
-    console.log('layer.js', 63)
     if (options.type === 2) {
-      console.log('layer.js', 65)
       options.area = ['1024px', '600px'] // 默认 宽 高
-      console.log('layer.js', 67)
       options.content.content = vue.extend(options.content.content)
-      console.log('layer.js', 69)
     }
-    console.log('layer.js', 67)
-    let instance = new NotificationConstructor({
+    var instance = new NotificationConstructor({
       data: options,
-      props: { options: options }
+      propsData: { options: options }
     })
-    console.log('layer.js', 71)
     instance.id = options.id
     instance.vm = instance.$mount()
-    console.log('layer.js', 74)
     self.instances[options.id] = {
       inst: instance,
       type: options.type
     }
-    console.log('layer.js', 75)
     document.body.appendChild(instance.vm.$el)
     self.instancesVue[options.id] = {
       'mask': '',
@@ -91,22 +79,20 @@ let Notification = (function(vue, globalOption = {
     // 构建回到桌面
     var task = document.getElementsByClassName('vl-notify-task')
     var home = document.getElementById('home_task')
-    console.log('layer.js', 85)
     if (!home) {
       var hoptions = {
         id: 'home',
         genre: 'home'
       }
-      let homeInstance = new taskLayer({
+      var homeInstance = new TaskLayer({
         data: hoptions
       })
       homeInstance.vm = homeInstance.$mount()
 
       task[0].appendChild(homeInstance.vm.$el)
     }
-    console.log('layer.js', 98)
-    if (options.type == 2 && task && task.length > 0) {
-      let taskInstance = new taskLayer({
+    if (options.type === 2 && task && task.length > 0) {
+      var taskInstance = new TaskLayer({
         data: options
       })
       taskInstance.vm = taskInstance.$mount()
@@ -117,15 +103,13 @@ let Notification = (function(vue, globalOption = {
       // if (layerMask) {
       //   document.body.removeChild(layerMask)
       // }
-      let maskInstance = new maskLayer({
+      var maskInstance = new MaskLayer({
         data: options
       })
-      console.log('layer.js', 114)
       maskInstance.vm = maskInstance.$mount()
       document.body.appendChild(maskInstance.vm.$el)
       self.instancesVue[options.id].mask = maskInstance.vm
     }
-    console.log('layer.js', 119)
     return options.id
   }
   /**
@@ -136,7 +120,7 @@ let Notification = (function(vue, globalOption = {
    * @return {[type]}         [description]
    */
   self.alert = function(content, options, yes) {
-    switch (typeof(options)) {
+    switch (typeof (options)) {
       case 'function':
         yes = options
         options = {}
@@ -147,7 +131,7 @@ let Notification = (function(vue, globalOption = {
         options = {}
         break
     }
-    yes = typeof(yes) === 'function' ? yes : ''
+    yes = typeof (yes) === 'function' ? yes : ''
 
     options.content = content || ''
     options.yes = yes
@@ -161,7 +145,7 @@ let Notification = (function(vue, globalOption = {
    * @return {[type]}         [description]
    */
   self.confirm = function(content, options, yes, cancel) {
-    switch (typeof(options)) {
+    switch (typeof (options)) {
       case 'function':
         cancel = yes
         yes = options
@@ -173,8 +157,8 @@ let Notification = (function(vue, globalOption = {
         options = {}
         break
     }
-    yes = typeof(yes) === 'function' ? yes : ''
-    cancel = typeof(cancel) === 'function' ? cancel : 'cancel'
+    yes = typeof (yes) === 'function' ? yes : ''
+    cancel = typeof (cancel) === 'function' ? cancel : 'cancel'
 
     options.content = content || ''
     options.yes = yes
@@ -190,7 +174,7 @@ let Notification = (function(vue, globalOption = {
    * @return {[type]}         [description]
    */
   self.msg = function(content, options, end) {
-    switch (typeof(options)) {
+    switch (typeof (options)) {
       case 'function':
         end = options
         options = {}
@@ -201,7 +185,7 @@ let Notification = (function(vue, globalOption = {
         options = {}
         break
     }
-    end = typeof(end) === 'function' ? end : ''
+    end = typeof (end) === 'function' ? end : ''
     options.type = 5
     options.time = options.time ? options.time : globalOption.msgtime
     options.content = content || 'this is a msg!!'
@@ -214,7 +198,7 @@ let Notification = (function(vue, globalOption = {
   }
   // loading
   self.loading = function(icon, options) {
-    if (typeof(icon) === 'object') {
+    if (typeof (icon) === 'object') {
       options = icon
       icon = 0
     }
@@ -249,7 +233,7 @@ let Notification = (function(vue, globalOption = {
     options.content = content || ''
     options.title = follow || 'body'
     options.tips = options.tips || [0, {}]
-    if (typeof(options.tips) !== 'object') {
+    if (typeof (options.tips) !== 'object') {
       options.tips = [options.tips, {}]
     }
     if (options.shade == undefined) {
@@ -280,9 +264,9 @@ let Notification = (function(vue, globalOption = {
    * @return {[type]}    [description]
    */
   self.close = function(id) {
-    let oElm = document.getElementById(id)
-    let layerMask = document.getElementById(id + '_mask')
-    let layerTask = document.getElementById(id + '_task')
+    var oElm = document.getElementById(id)
+    var layerMask = document.getElementById(id + '_mask')
+    var layerTask = document.getElementById(id + '_task')
     if (layerMask) {
       document.body.removeChild(layerMask)
       if (self.instancesVue[id].mask) {
@@ -290,8 +274,8 @@ let Notification = (function(vue, globalOption = {
       }
     }
     if (layerTask) {
-        let task = document.getElementsByClassName("vl-notify-task")
-        task[0].removeChild(layerTask)
+      var task = document.getElementsByClassName('vl-notify-task')
+      task[0].removeChild(layerTask)
     }
     if (oElm) {
       document.body.removeChild(oElm)
@@ -302,12 +286,12 @@ let Notification = (function(vue, globalOption = {
       }
     } else {
       setTimeout(function() {
-        let oElm = document.getElementById(id)
+        oElm = document.getElementById(id)
         if (oElm) {
           document.body.removeChild(oElm)
           delete self.instances[id]
           self.instancesVue[id].main.$destroy()
-          if (self.instancesVue[id].iframe != '') {
+          if (self.instancesVue[id].iframe !== '') {
             self.instancesVue[id].iframe.$destroy()
           }
         }

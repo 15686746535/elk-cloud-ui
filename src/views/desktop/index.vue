@@ -44,14 +44,14 @@ export default {
   },
   watch: {
     desktopList: function(val) {
-      if (val.length === 44) {
-        Message.success('ok-' + val.length)
-      } else {
-        Message.error('no-' + val.length)
-      }
-      console.log('桌面设置已经修改', val.length)
+      // if (val.length === 44) {
+      //   Message.success('ok-' + val.length)
+      // } else {
+      //   Message.error('no-' + val.length)
+      // }
+      console.log('桌面设置开始保存', val.length)
       saveApps({ appList: val }).then(() => {
-        console.log('桌面设置已经保存')
+        console.log('桌面设置保存成功')
       })
     }
   },

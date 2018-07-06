@@ -108,10 +108,8 @@ export default {
       this.zindex = max + 1
     },
     async getContent() {
-      console.log('iframe.vue', 110)
       await helper.sleep(10)
       var propsData = JSON.parse(JSON.stringify(this.options.content.data))
-      console.log('iframe.vue', 113)
       propsData.area = [parseInt(this.width), parseInt(this.height)]
       propsData['layerid'] = this.options.id
       console.log('iframe.vue', propsData)
@@ -119,12 +117,9 @@ export default {
         parent: this.options.content.parent,
         propsData: propsData
       })
-      console.log('iframe.vue', 121)
-      // this.instance = instance
       this.instance.vm = this.instance.$mount()
       document.getElementById(this.id).appendChild(this.instance.vm.$el)
       this.options.layer.instancesVue[this.options.id].iframe = this.instance.vm
-      console.log('iframe.vue', 113)
     },
     windowFull() {
       if (this.isMax) {

@@ -60,9 +60,13 @@ let Notification = (function(vue, globalOption = {
     }
     console.log('layer.js', 60)
     options.layer = self
-    if (options.type == 2) {
+    console.log('layer.js', 63)
+    if (options.type === 2) {
+      console.log('layer.js', 65)
       options.area = ['1024px', '600px'] // 默认 宽 高
+      console.log('layer.js', 67)
       options.content.content = vue.extend(options.content.content)
+      console.log('layer.js', 69)
     }
     console.log('layer.js', 67)
     let instance = new NotificationConstructor({

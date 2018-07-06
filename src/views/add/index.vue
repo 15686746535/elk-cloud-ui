@@ -10,7 +10,7 @@
           <td v-for="app in listFilter(i, type.type)" align="left">
             <div class="app-div" :class="app.isChoice?'selected':''" @click="selected(app, $event)">
               <img :src="app.icon" />
-              <p>{{app.name}}</p>
+              <p>{{app.name}}{{tableHeight}}</p>
             </div>
           </td>
         </tr>
@@ -28,6 +28,7 @@ export default {
   name: 'add',
   data() {
     return {
+      tableHeight: this.area[1],
       showList: {},
       typeList: [
         { type: '1', name: '学员管理', show: true },

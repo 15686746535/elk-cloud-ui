@@ -526,7 +526,7 @@
   import { getToken } from '@/utils/auth'
 
   export default {
-    name: 'index',
+    name: 'user',
     props: {
       area: Array
     },

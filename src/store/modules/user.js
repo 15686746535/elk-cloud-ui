@@ -143,9 +143,9 @@ const user = {
             commit('SET_HASAPPLIST', hasAppList) // 拥有的app
             commit('SET_STARTLIST', startFilter(hasAppList)) // 开始菜单
             // 需要后台查询
-            defaultMap[0].msgCount = 10 // 短消息
+            defaultMap[0].msgCount = data.agencyList[1] || 0 // 短消息 data.agencyList[0]
             defaultMap[1].msgCount = 0 // 工作日志
-            defaultMap[2].msgCount = 2 // 我的待办
+            defaultMap[2].msgCount = data.agencyList[0] || 0 // 我的待办
             defaultMap[3].msgCount = 0 // 任务管理
             commit('SET_DEFAULTLIST', defaultMap)// 快速启动
             resolve(response)

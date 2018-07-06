@@ -3,11 +3,12 @@
     <el-card style="height: 100%" v-show="showList">
       <el-input @keyup.enter.native="searchClick" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.roleName"></el-input>
       <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="getList">搜索</el-button>
-      <el-table :key='tableKey'  :height="400" :data="list" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
+      <el-table :key='tableKey'  :height="tableHeight-220" :data="list" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center" label="驾校">
           <template slot-scope="scope">
-            <span>{{scope.row.groupName}}（{{scope.row.companyName}}）</span>
+            <span>{{scope.row.groupName}}</span>
+            <span v-if="scope.row.companyName">（{{scope.row.companyName}}）</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="部门">
@@ -87,8 +88,17 @@
 
   export default {
     name: 'table_role',
+    props: {
+      area: Array
+    },
+    watch: {
+      area: function(val) {
+        this.tableHeight = val[1]
+      }
+    },
     data() {
       return {
+        tableHeight: this.area[1],
         change: 1,
         showList: true,
         treeData: [],

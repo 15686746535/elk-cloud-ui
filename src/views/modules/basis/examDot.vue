@@ -17,6 +17,11 @@
             <span>{{ scope.row.label }}</span>
           </template>
         </el-table-column>
+        <el-table-column align="center"  label="场地编号">
+          <template slot-scope="scope">
+            <span>{{ scope.row.value }}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="描述">
           <template slot-scope="scope">
             <span>{{ scope.row.description }}</span>
@@ -60,6 +65,9 @@
       <el-form label-position="left" :model="dict" :rules="rules" ref="dict" label-width="100px">
         <el-form-item label="考试场地"  prop="label">
           <el-input v-model="dict.label" placeholder="考试场地" ></el-input>
+        </el-form-item>
+        <el-form-item label="编号" prop="description">
+          <el-input v-model="dict.value" placeholder="编号" ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="dict.description" placeholder="描述" ></el-input>
@@ -115,6 +123,9 @@
           ],
           sort: [
             { required: true, type: 'number', message: '请填写考试场地排序等级', trigger: ['blur', 'change'] }
+          ],
+          value: [
+            { required: true, message: '请填写考编号', trigger: ['blur', 'change'] }
           ]
         },
         dict: {},
@@ -194,7 +205,6 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            this.dict.value = this.dict.label
             this.dict.type = this.listQuery.type
             addObj(this.dict)
               .then(() => {
@@ -219,7 +229,6 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            this.dict.value = this.dict.label
             putObj(this.dict).then(() => {
               this.getList()
               set[formName].resetFields()

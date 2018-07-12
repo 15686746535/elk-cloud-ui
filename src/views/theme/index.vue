@@ -7,72 +7,72 @@
       <tbody>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/1.jpg" width="200" height="84" border="0" @click="imgSelected('01-1')"/>
+          <img src="../../../static/bg/01/1.jpg" width="200" height="84" border="0" @click="imgSelected('01/1')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/2.jpg" width="200" height="84" border="0" @click="imgSelected('01-2')"/>
+          <img src="../../../static/bg/01/2.jpg" width="200" height="84" border="0" @click="imgSelected('01/2')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/3.jpg" width="200" height="84" border="0" @click="imgSelected('01-3')"/>
+          <img src="../../../static/bg/01/3.jpg" width="200" height="84" border="0" @click="imgSelected('01/3')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/4.jpg" width="200" height="84" border="0" @click="imgSelected('01-4')"/>
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/5.jpg" width="200" height="84" border="0" @click="imgSelected('01-5')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/6.jpg" width="200" height="84" border="0" @click="imgSelected('01-6')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/7.jpg" width="200" height="84" border="0" @click="imgSelected('01-7')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/8.jpg" width="200" height="84" border="0" @click="imgSelected('01-8')"/>
+          <img src="../../../static/bg/01/4.jpg" width="200" height="84" border="0" @click="imgSelected('01/4')"/>
         </td>
       </tr>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/9.jpg" width="200" height="84" border="0" @click="imgSelected('01-9')"/>
+          <img src="../../../static/bg/01/5.jpg" width="200" height="84" border="0" @click="imgSelected('01/5')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/10.jpg" width="200" height="84" border="0" @click="imgSelected('01-10')"/>
+          <img src="../../../static/bg/01/6.jpg" width="200" height="84" border="0" @click="imgSelected('01/6')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/11.jpg" width="200" height="84" border="0" @click="imgSelected('01-11')"/>
+          <img src="../../../static/bg/01/7.jpg" width="200" height="84" border="0" @click="imgSelected('01/7')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/12.jpg" width="200" height="84" border="0" @click="imgSelected('01-12')"/>
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/13.jpg" width="200" height="84" border="0" @click="imgSelected('01-13')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/14.jpg" width="200" height="84" border="0" @click="imgSelected('01-14')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/15.jpg" width="200" height="84" border="0" @click="imgSelected('01-15')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/16.jpg" width="200" height="84" border="0" @click="imgSelected('01-16')"/>
+          <img src="../../../static/bg/01/8.jpg" width="200" height="84" border="0" @click="imgSelected('01/8')"/>
         </td>
       </tr>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/17.jpg" width="200" height="84" border="0" @click="imgSelected('01-17')"/>
+          <img src="../../../static/bg/01/9.jpg" width="200" height="84" border="0" @click="imgSelected('01/9')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/18.jpg" width="200" height="84" border="0" @click="imgSelected('01-18')"/>
+          <img src="../../../static/bg/01/10.jpg" width="200" height="84" border="0" @click="imgSelected('01/10')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/19.jpg" width="200" height="84" border="0" @click="imgSelected('01-19')"/>
+          <img src="../../../static/bg/01/11.jpg" width="200" height="84" border="0" @click="imgSelected('01/11')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/20.jpg" width="200" height="84" border="0" @click="imgSelected('01-20')"/>
+          <img src="../../../static/bg/01/12.jpg" width="200" height="84" border="0" @click="imgSelected('01/12')"/>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/13.jpg" width="200" height="84" border="0" @click="imgSelected('01/13')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/14.jpg" width="200" height="84" border="0" @click="imgSelected('01/14')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/15.jpg" width="200" height="84" border="0" @click="imgSelected('01/15')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/16.jpg" width="200" height="84" border="0" @click="imgSelected('01/16')"/>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/17.jpg" width="200" height="84" border="0" @click="imgSelected('01/17')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/18.jpg" width="200" height="84" border="0" @click="imgSelected('01/18')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/19.jpg" width="200" height="84" border="0" @click="imgSelected('01/19')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/20.jpg" width="200" height="84" border="0" @click="imgSelected('01/20')"/>
         </td>
       </tr>
       </tbody>
@@ -84,72 +84,72 @@
       <tbody>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/1.jpg" width="200" height="84" border="0" @click="imgSelected('02-1')"/>
+          <img src="../../../static/bg/02/1.jpg" width="200" height="84" border="0" @click="imgSelected('02/1')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/2.jpg" width="200" height="84" border="0" @click="imgSelected('02-2')"/>
+          <img src="../../../static/bg/02/2.jpg" width="200" height="84" border="0" @click="imgSelected('02/2')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/3.jpg" width="200" height="84" border="0" @click="imgSelected('02-3')"/>
+          <img src="../../../static/bg/02/3.jpg" width="200" height="84" border="0" @click="imgSelected('02/3')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/4.jpg" width="200" height="84" border="0" @click="imgSelected('02-4')"/>
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/5.jpg" width="200" height="84" border="0" @click="imgSelected('02-5')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/6.jpg" width="200" height="84" border="0" @click="imgSelected('02-6')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/7.jpg" width="200" height="84" border="0" @click="imgSelected('02-7')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/8.jpg" width="200" height="84" border="0" @click="imgSelected('02-8')"/>
+          <img src="../../../static/bg/02/4.jpg" width="200" height="84" border="0" @click="imgSelected('02/4')"/>
         </td>
       </tr>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/9.jpg" width="200" height="84" border="0" @click="imgSelected('02-9')"/>
+          <img src="../../../static/bg/02/5.jpg" width="200" height="84" border="0" @click="imgSelected('02/5')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/10.jpg" width="200" height="84" border="0" @click="imgSelected('02-10')"/>
+          <img src="../../../static/bg/02/6.jpg" width="200" height="84" border="0" @click="imgSelected('02/6')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/11.jpg" width="200" height="84" border="0" @click="imgSelected('02-11')"/>
+          <img src="../../../static/bg/02/7.jpg" width="200" height="84" border="0" @click="imgSelected('02/7')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/12.jpg" width="200" height="84" border="0" @click="imgSelected('02-12')"/>
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/13.jpg" width="200" height="84" border="0" @click="imgSelected('02-13')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/14.jpg" width="200" height="84" border="0" @click="imgSelected('02-14')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/15.jpg" width="200" height="84" border="0" @click="imgSelected('02-15')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/16.jpg" width="200" height="84" border="0" @click="imgSelected('02-16')"/>
+          <img src="../../../static/bg/02/8.jpg" width="200" height="84" border="0" @click="imgSelected('02/8')"/>
         </td>
       </tr>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/17.jpg" width="200" height="84" border="0" @click="imgSelected('02-17')"/>
+          <img src="../../../static/bg/02/9.jpg" width="200" height="84" border="0" @click="imgSelected('02/9')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/18.jpg" width="200" height="84" border="0" @click="imgSelected('02-18')"/>
+          <img src="../../../static/bg/02/10.jpg" width="200" height="84" border="0" @click="imgSelected('02/10')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/19.jpg" width="200" height="84" border="0" @click="imgSelected('02-19')"/>
+          <img src="../../../static/bg/02/11.jpg" width="200" height="84" border="0" @click="imgSelected('02/11')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/02/20.jpg" width="200" height="84" border="0" @click="imgSelected('02-20')"/>
+          <img src="../../../static/bg/02/12.jpg" width="200" height="84" border="0" @click="imgSelected('02/12')"/>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/13.jpg" width="200" height="84" border="0" @click="imgSelected('02/13')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/14.jpg" width="200" height="84" border="0" @click="imgSelected('02/14')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/15.jpg" width="200" height="84" border="0" @click="imgSelected('02/15')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/16.jpg" width="200" height="84" border="0" @click="imgSelected('02/16')"/>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/17.jpg" width="200" height="84" border="0" @click="imgSelected('02/17')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/18.jpg" width="200" height="84" border="0" @click="imgSelected('02/18')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/19.jpg" width="200" height="84" border="0" @click="imgSelected('02/19')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/02/20.jpg" width="200" height="84" border="0" @click="imgSelected('02/20')"/>
         </td>
       </tr>
       </tbody>
@@ -161,72 +161,72 @@
       <tbody>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/1.jpg" width="200" height="84" border="0" @click="imgSelected('03-1')"/>
+          <img src="../../../static/bg/03/1.jpg" width="200" height="84" border="0" @click="imgSelected('03/1')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/2.jpg" width="200" height="84" border="0" @click="imgSelected('03-2')"/>
+          <img src="../../../static/bg/03/2.jpg" width="200" height="84" border="0" @click="imgSelected('03/2')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/3.jpg" width="200" height="84" border="0" @click="imgSelected('03-3')"/>
+          <img src="../../../static/bg/03/3.jpg" width="200" height="84" border="0" @click="imgSelected('03/3')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/4.jpg" width="200" height="84" border="0" @click="imgSelected('03-4')"/>
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/5.jpg" width="200" height="84" border="0" @click="imgSelected('03-5')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/6.jpg" width="200" height="84" border="0" @click="imgSelected('03-6')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/7.jpg" width="200" height="84" border="0" @click="imgSelected('03-7')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/8.jpg" width="200" height="84" border="0" @click="imgSelected('03-8')"/>
+          <img src="../../../static/bg/03/4.jpg" width="200" height="84" border="0" @click="imgSelected('03/4')"/>
         </td>
       </tr>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/9.jpg" width="200" height="84" border="0" @click="imgSelected('03-9')"/>
+          <img src="../../../static/bg/03/5.jpg" width="200" height="84" border="0" @click="imgSelected('03/5')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/10.jpg" width="200" height="84" border="0" @click="imgSelected('03-10')"/>
+          <img src="../../../static/bg/03/6.jpg" width="200" height="84" border="0" @click="imgSelected('03/6')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/11.jpg" width="200" height="84" border="0" @click="imgSelected('03-11')"/>
+          <img src="../../../static/bg/03/7.jpg" width="200" height="84" border="0" @click="imgSelected('03/7')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/12.jpg" width="200" height="84" border="0" @click="imgSelected('03-12')"/>
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/13.jpg" width="200" height="84" border="0" @click="imgSelected('03-13')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/14.jpg" width="200" height="84" border="0" @click="imgSelected('03-14')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/15.jpg" width="200" height="84" border="0" @click="imgSelected('03-15')"/>
-        </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/16.jpg" width="200" height="84" border="0" @click="imgSelected('03-16')"/>
+          <img src="../../../static/bg/03/8.jpg" width="200" height="84" border="0" @click="imgSelected('03/8')"/>
         </td>
       </tr>
       <tr>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/17.jpg" width="200" height="84" border="0" @click="imgSelected('03-17')"/>
+          <img src="../../../static/bg/03/9.jpg" width="200" height="84" border="0" @click="imgSelected('03/9')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/18.jpg" width="200" height="84" border="0" @click="imgSelected('03-18')"/>
+          <img src="../../../static/bg/03/10.jpg" width="200" height="84" border="0" @click="imgSelected('03/10')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/19.jpg" width="200" height="84" border="0" @click="imgSelected('03-19')"/>
+          <img src="../../../static/bg/03/11.jpg" width="200" height="84" border="0" @click="imgSelected('03/11')"/>
         </td>
         <td align="center" style="height: 105px">
-          <img src="../../../static/bg/03/20.jpg" width="200" height="84" border="0" @click="imgSelected('03-20')"/>
+          <img src="../../../static/bg/03/12.jpg" width="200" height="84" border="0" @click="imgSelected('03/12')"/>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/13.jpg" width="200" height="84" border="0" @click="imgSelected('03/13')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/14.jpg" width="200" height="84" border="0" @click="imgSelected('03/14')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/15.jpg" width="200" height="84" border="0" @click="imgSelected('03/15')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/16.jpg" width="200" height="84" border="0" @click="imgSelected('03/16')"/>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/17.jpg" width="200" height="84" border="0" @click="imgSelected('03/17')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/18.jpg" width="200" height="84" border="0" @click="imgSelected('03/18')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/19.jpg" width="200" height="84" border="0" @click="imgSelected('03/19')"/>
+        </td>
+        <td align="center" style="height: 105px">
+          <img src="../../../static/bg/03/20.jpg" width="200" height="84" border="0" @click="imgSelected('03/20')"/>
         </td>
       </tr>
       </tbody>
@@ -244,6 +244,7 @@ export default {
   },
   methods: {
     imgSelected(icon) {
+      icon = '/static/bg/' + icon + '.jpg'
       this.$store.dispatch('SetDesktopABg', icon)
       // 这里请求后台修改用户桌面背景
       saveBg(icon).then(() => {

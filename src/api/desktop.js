@@ -10,7 +10,8 @@ export function saveApps(obj) {
 }
 export function saveBg(bg) {
   return request({
-    url: '/upms/user/saveBg/' + bg,
-    method: 'post'
+    url: '/upms/user/saveBg',
+    method: 'post',
+    data: { bg: bg }
   })
 }

@@ -64,4 +64,7 @@ export const IconMap = {
   app_training: '../../../static/icon/app/app_training.png',
   app_service: '../../../static/icon/app/app_service.png',
   app_sourcetype: '../../../static/icon/app/app_sourcetype.png',
+  app_enrol_site: '../../../static/icon/app/app_enrol_site.png',
+  app_visit_add: '../../../static/icon/app/app_visit_add.png',
+  app_job: '../../../static/icon/app/app_job.png'
 }

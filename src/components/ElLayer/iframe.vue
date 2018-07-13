@@ -112,7 +112,6 @@ export default {
       var propsData = JSON.parse(JSON.stringify(this.options.content.data))
       propsData.area = [parseInt(this.width), parseInt(this.height)]
       propsData['layerid'] = this.options.id
-      console.log('iframe.vue', propsData)
       this.instance = new this.options.content.content({ // 具体参数信息，请参考vue源码
         parent: this.options.content.parent,
         propsData: propsData

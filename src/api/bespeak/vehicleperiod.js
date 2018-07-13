@@ -39,13 +39,7 @@ export function deleteVehiclePeriodStudent(obj) {
     params: obj
   })
 }
-// 根据ID获取
-export function getVehiclePeriod(id) {
-  return request({
-    url: '/bespeak/vehicleperiod/' + id,
-    method: 'get'
-  })
-}
+
 // 根据ID获取约车日志
 export function getVehiclePeriodByStudentId(id) {
   return request({
@@ -75,3 +69,19 @@ export function putVehiclePeriod(obj) {
     data: obj
   })
 }
+
+export function disableVehicle(obj) {
+  return request({
+    url: '/bespeak/vehicleperiod/disableVehicle',
+    method: 'post',
+    data: { vid: obj.vid, state: obj.state }
+  })
+}
+export function disablePeriod(obj) {
+  return request({
+    url: '/bespeak/vehicleperiod/disablePeriod',
+    method: 'post',
+    data: { pid: obj.pid, state: obj.state }
+  })
+}
+

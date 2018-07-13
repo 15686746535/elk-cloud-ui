@@ -7,8 +7,7 @@
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
     <!--鼠标右键菜单-->
-    <el-smart-menu :currentList="showDesktop==='1'?desktopOneList:desktopTwoList"
-                   @open="layerOpen" @saveDesktop="saveDesktop"></el-smart-menu>
+    <el-smart-menu :currentList="showDesktop==='1'?desktopOneList:desktopTwoList" @open="layerOpen" @saveDesktop="saveDesktop"></el-smart-menu>
     <!-- 主页导航栏 -->
     <el-start-bar @open="layerOpen"></el-start-bar>
     <!-- 桌面切换 -->

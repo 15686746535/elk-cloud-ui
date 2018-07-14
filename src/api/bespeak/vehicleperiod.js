@@ -7,6 +7,22 @@ export function getVehiclePeriodList(query) {
     params: query
   })
 }
+export function queryCarList(query) {
+  return request({
+    url: '/bespeak/vehicleperiod/queryCarList',
+    method: 'get',
+    params: query
+  })
+}
+
+export function queryCoachList(query) {
+  return request({
+    url: '/upms/user/userList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询集合
 export function getShuttledList(query) {
   return request({
@@ -16,9 +32,9 @@ export function getShuttledList(query) {
   })
 }
 // 添加
-export function addVehiclePeriod(obj) {
+export function saveVehiclePeriod(obj) {
   return request({
-    url: '/bespeak/vehicleperiod',
+    url: '/bespeak/vehicleperiod/save',
     method: 'post',
     data: obj
   })
@@ -85,3 +101,9 @@ export function disablePeriod(obj) {
   })
 }
 
+export function getTrainingField(type) {
+  return request({
+    url: '/basis/dict/getByType/' + type,
+    method: 'get'
+  })
+}

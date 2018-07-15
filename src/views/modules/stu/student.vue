@@ -189,7 +189,7 @@
       </el-card>
     </div>
     <!--详情-->
-    <el-card v-show="showModule=='info'" body-style="padding:0;" >
+    <el-card v-show="showModule=='info'" body-style="padding:10px;" >
       <el-row >
         <el-col :span="area[1] === 600?24:12" style="height: 100%;">
           <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px" size="mini">
@@ -197,7 +197,7 @@
                      v-loading="infoLoading" element-loading-text="努力匹配中..."
                      shadow="never" style="border-radius:0 4px 0 0;line-height: 40px;overflow-y: auto;">
               <!-- 基本信息 -->
-              <el-row class="title" style="line-height: 60px;height: 60px">
+              <el-row class="title" style="line-height: 60px;height: 60px;">
 
                 <el-col :span="3">
                   <div style="height: 50px;margin-top: 5px;margin-left: -40px;">
@@ -523,9 +523,9 @@
                     <span>{{ scope.row.subject | subjectFilter}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center"  label="教练">
+                <el-table-column align="center"  label="签到">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.name}}</span>
+                    <span>{{ scope.row.sign === '0'?'否':'是'}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center"  label="车牌">
@@ -540,48 +540,13 @@
                 </el-table-column>
                 <el-table-column align="center"  label="时间">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.studyTime}}</span>
+                    <span>{{ scope.row.trainDate | subTime('dateTime')}}  {{scope.row.period}}</span>
                   </template>
                 </el-table-column>
 
               </el-table>
-
-
             </el-tab-pane>
-            <el-tab-pane label="接送日志" name="6">
 
-              <el-table :data="shuttleLogList" stripe style="width: 100%">
-
-                <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                <el-table-column align="center"  label="接送地址">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.deliveryAddress}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="接送教练">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.name}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="接送时间">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.shuttleTime | subTime}} {{ scope.row.relayTime}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="接送状态">
-                  <template slot-scope="scope">
-                    <el-tag v-show="scope.row.state === '0'" type="info" style="color: #fff;" color="#E6A23C">未接送</el-tag>
-                    <el-tag v-show="scope.row.state === '1'" type="info" style="color: #fff;" color="#67C23A">已接送</el-tag>
-                    <el-tag v-show="scope.row.state === '2'" type="info" style="color: #fff;" color="#F56C6C">已取消</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="未接送原因">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.undeliveredReason}}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
           </el-tabs>
         </el-col>
       </el-row>
@@ -852,7 +817,7 @@
         </div>
         <div v-else v-for="carClass in carClassList"  style="float: left;margin: 5px">
           <div class="carClassCss" @click="carClassClick($event,carClass)" style="float: left;">
-            <{{carClass.beginTime | parseTime('{y}-{m}-{d} {h}:{i}')}} - {{carClass.endTime | parseTime('{h}:{i}')}}>
+            明天{{carClass.period}}
             <span>【{{carClass.number}}/{{carClass.count}}】</span>
           </div>
 
@@ -1339,7 +1304,7 @@
         },
         carBespeak: {
           studentId: null,
-          periodId: null
+          pid: null
         },
         carClassList: [],
         batchListQuery: {
@@ -1794,7 +1759,8 @@
       },
       /* 约车 */
       carClassClick(e, carClass) {
-        this.examBespeak.periodId = carClass.periodId
+        console.log(carClass)
+        this.examBespeak.pid = carClass.pid
         var a = document.getElementsByClassName('carClassCss')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('carClassCss_selected')
@@ -1814,14 +1780,15 @@
             })
           }
         } else if (flag === 'car') {
-          if (this.examBespeak.periodId === null) {
+          if (this.examBespeak.pid === null) {
             this.$message.warning('请先选择课时')
           } else {
             this.btnLoading = true
-            bespeakVehiclePeriod(this.examBespeak).then(() => {
+            bespeakVehiclePeriod({ studentId: this.examBespeak.studentId, pid: this.examBespeak.pid }).then(() => {
               this.besCarDialog = false
               this.btnLoading = false
-              this.examBespeak.periodId = null
+              this.examBespeak.pid = null
+              this.editList(this.student)
             })
           }
         }
@@ -1862,10 +1829,16 @@
         if (this.student.state === '3') coachId = this.student.roadCoach
         this.examBespeak.subject = this.student.state
         if (coachId) {
-          getClassByCoachId(coachId).then(response => {
-            this.carClassList = response.data.data
-            this.besCarDialog = true
-          })
+          if (this.student.bespCarFlag === '0') {
+            getClassByCoachId({ coachId: coachId }).then(response => {
+              console.log(21212)
+              console.log(response)
+              this.carClassList = response.data.data
+              this.besCarDialog = true
+            })
+          } else {
+            this.$message.warning('该学员已预约')
+          }
         } else {
           this.$message.warning('该学员未分配当前科目教练')
         }

@@ -16,21 +16,23 @@
       <el-table :data="list" v-loading="loading" :height="(tableHeight-195)" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
-            <el-row v-for="period in props.row.periodList" style="border-bottom: 1px dashed #ccc;margin-bottom: 12px">
-              <el-col :span="8" >{{period.period}}</el-col>
-              <el-col :span="4">{{period.number}}/{{period.count}}</el-col>
-              <el-col :span="4">
-                <el-switch v-if="period.studentList.length === 0" title="禁用、启用" v-model="period.state" @change="periodDisabled(period)"  active-value="0" inactive-value="1"></el-switch>
-                <el-switch title="已有学员预约，不能修改" v-model="period.state" :disabled="true" active-value="0" inactive-value="1" v-else></el-switch>
-              </el-col>
-              <el-col :span="8">
+            <div v-for="period in props.row.periodList">
+              <el-row  style="border-bottom: 1px dashed #ccc;margin-bottom: 12px">
+                <el-col :span="8" >{{period.period}}</el-col>
+                <el-col :span="4">{{period.number}}/{{period.count}}</el-col>
+                <el-col :span="4">
+                  <el-switch v-if="period.studentList.length === 0" title="禁用、启用" v-model="period.state" @change="periodDisabled(period)"  active-value="0" inactive-value="1"></el-switch>
+                  <el-switch title="已有学员预约，不能修改" v-model="period.state" :disabled="true" active-value="0" inactive-value="1" v-else></el-switch>
+                </el-col>
+                <el-col :span="8">
                 <span  v-for="(stu,i) in period.studentList">
                     <a href="javascript:void(0) " class="period-student" @click="deleteStu(stu,period.pid)" >{{stu.name}}</a>
                   <span v-if="i+1<period.studentList.length">、</span>
                 </span>
-                <span v-if="period.studentList.length === 0" >无人预约</span>
-              </el-col>
-            </el-row>
+                  <span v-if="period.studentList.length === 0" >无人预约</span>
+                </el-col>
+              </el-row>
+            </div>
           </template>
         </el-table-column>
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>

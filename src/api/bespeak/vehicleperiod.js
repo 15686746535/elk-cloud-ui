@@ -66,8 +66,9 @@ export function getVehiclePeriodByStudentId(id) {
 // 根据ID获取约车日志
 export function getClassByCoachId(id) {
   return request({
-    url: '/bespeak/vehicleperiod/getClassByCoachId/' + id,
-    method: 'get'
+    url: '/bespeak/vehicleperiod/findPeriodList',
+    method: 'get',
+    params: id
   })
 }
 // 删除

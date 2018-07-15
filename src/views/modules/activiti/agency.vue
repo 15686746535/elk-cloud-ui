@@ -21,7 +21,8 @@
           <div class="operator">[ {{notice.initiator}} ]</div>
         </div>
         <div v-if="agencyList.length === 0 && !loading" style="width: 100%" align="center">
-          <img style="margin-top: 50px"  src="../../../../static/img/ku_100.png"/>
+          <img style="margin-top: 50px"  src="../../../../static/img/xiao_001.png"/>
+          <p style="color: #2d8df9">{{taskMsg === '我的待办'?'任务都完成了':'没有已完成的任务'}}</p>
         </div>
         <div v-if="loading" style="width: 100%" align="center">
           <img style="margin-top: 50px"  src="../../../../static/img/loading_16.gif"/>

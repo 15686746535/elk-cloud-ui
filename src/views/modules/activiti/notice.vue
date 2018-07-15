@@ -14,7 +14,8 @@
             <div class="operator">[ {{notice.initiator}} ]</div>
           </div>
           <div v-if="noticeList.length === 0 && !loading" style="width: 100%" align="center">
-            <img style="margin-top: 50px"  src="../../../../static/img/ku_100.png"/>
+            <img style="margin-top: 50px"  src="../../../../static/img/xiao_001.png"/>
+            <p style="color: #2d8df9">没有最新消息</p>
           </div>
           <div v-if="loading" style="width: 100%" align="center">
             <img style="margin-top: 50px"  src="../../../../static/img/loading_16.gif"/>

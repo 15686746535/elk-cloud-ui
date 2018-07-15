@@ -23,7 +23,6 @@ export const IconMap = {
   basis: '../../../static/icon/basis.png',
   // 以上是系统图标 在下方添加程序图标
   app_default: '../../../static/icon/app/app_default.png', // 默认图标
-  app_out: '../../../static/icon/app/app_out.png', // 默认图标
   app_stu_student: '../../../static/icon/app/app_stu_student.png',
   app_stu_add: '../../../static/icon/app/app_stu_add.png',
   app_stu_service: '../../../static/icon/app/app_stu_service.png',
@@ -66,5 +65,6 @@ export const IconMap = {
   app_sourcetype: '../../../static/icon/app/app_sourcetype.png',
   app_enrol_site: '../../../static/icon/app/app_enrol_site.png',
   app_visit_add: '../../../static/icon/app/app_visit_add.png',
-  app_job: '../../../static/icon/app/app_job.png'
+  app_job: '../../../static/icon/app/app_job.png',
+  app_out: '../../../static/icon/app/app_power_exit.png'
 }

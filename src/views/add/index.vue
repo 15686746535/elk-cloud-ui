@@ -1,6 +1,6 @@
 <template>
   <div style="margin: 15px" align="center">
-    <div style="width: 90%;" v-for="(type,index) in typeList">
+    <div style="width: 90%;" v-for="(type,index) in typeList" v-if="typeFilter(type.type).length > 0">
       <table class="TableBlock title" width="100%" align="center">
         <tbody><tr><td class="TableHeader" @click="openType(index)">{{type.name}}</td></tr></tbody>
       </table>

@@ -248,8 +248,8 @@
                     <el-form-item prop="sex">
                       <span slot="label" class="text_css">性别:</span>
                       <template v-if="edit">
-                        <el-radio size="mini" v-model="student.sex" label="0">男</el-radio>
-                        <el-radio size="mini" v-model="student.sex" label="1">女</el-radio>
+                        <el-radio size="mini" v-model="student.sex" label="1">男</el-radio>
+                        <el-radio size="mini" v-model="student.sex" label="0">女</el-radio>
                       </template>
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.sex | sexFilter}}</div>
                     </el-form-item>
@@ -694,8 +694,8 @@
                 <el-form-item prop="sex">
                   <span slot="label" class="text_css">性别</span>
                   <el-radio-group size="mini" v-model="studentEntity.sex">
-                    <el-radio label="0">男</el-radio>
-                    <el-radio label="1">女</el-radio>
+                    <el-radio label="1">男</el-radio>
+                    <el-radio label="0">女</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-row>
@@ -876,8 +876,8 @@
             <el-form-item prop="XB">
               <span slot="label" class="text_css">性别</span>
               <el-radio-group size="mini" v-model="student122.XB">
-                <el-radio label="0">男</el-radio>
-                <el-radio label="1">女</el-radio>
+                <el-radio label="1">男</el-radio>
+                <el-radio label="0">女</el-radio>
               </el-radio-group>
             </el-form-item>
 

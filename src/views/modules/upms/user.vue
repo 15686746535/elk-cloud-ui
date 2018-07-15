@@ -40,7 +40,7 @@
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">性别</el-col>
                   <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.sex==='0'?'男':'女'}}</el-col>
+                  <el-col :span="15" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">生日</el-col>
@@ -89,12 +89,12 @@
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">电话</el-col>
+                  <el-col :span="7" class="table_text">工作电话</el-col>
                   <el-col :span="2" class="table_text">：</el-col>
                   <el-col :span="15" class="table_text">{{scope.row.workMobile}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">职位</el-col>
+                  <el-col :span="7" class="table_text">所属职位</el-col>
                   <el-col :span="2" class="table_text">：</el-col>
                   <el-col :span="15" class="table_text">{{scope.row.roles}}</el-col>
                 </el-row>
@@ -186,8 +186,8 @@
                           <el-form-item prop="sex">
                             <span slot="label" class="text_css">性别:</span>
                             <el-radio-group v-if="edit" v-model="userEntity.sex">
-                              <el-radio label="0">男</el-radio>
-                              <el-radio label="1">女</el-radio>
+                              <el-radio label="1">男</el-radio>
+                              <el-radio label="0">女</el-radio>
                             </el-radio-group>
                             <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.sex | sexFilter}}</span>
                           </el-form-item>
@@ -827,6 +827,7 @@
           this.userList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
+          console.log(this.userList)
         })
       },
       // 查询招生信息集合

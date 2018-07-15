@@ -308,14 +308,7 @@
       ...mapGetters([
         'permissions',
         'client'
-      ]),
-      sexVO() {
-        const typeMap = {
-          1: '男',
-          0: '女'
-        }
-        return typeMap[this.student.sex]
-      }
+      ])
     },
     methods: {
       evenFinanceList(code) {

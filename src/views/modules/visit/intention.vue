@@ -634,14 +634,7 @@
       ...mapGetters([
         'permissions',
         'client'
-      ]),
-      sexVO() {
-        const typeMap = {
-          0: '男',
-          1: '女'
-        }
-        return typeMap[this.student.sex]
-      }
+      ])
     },
     methods: {
       intervalTime() {

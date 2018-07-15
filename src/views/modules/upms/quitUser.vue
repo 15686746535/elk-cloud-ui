@@ -445,13 +445,6 @@
         'permissions',
         'client'
       ]),
-      sexVO() {
-        const typeMap = {
-          1: '男',
-          0: '女'
-        }
-        return typeMap[this.userEntity.sex]
-      },
       headers() {
         return {
           'Authorization': 'Bearer ' + getToken()

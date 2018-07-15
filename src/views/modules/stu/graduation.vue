@@ -685,14 +685,7 @@
       ...mapGetters([
         'permissions',
         'client'
-      ]),
-      sexVO() {
-        const typeMap = {
-          1: '男',
-          0: '女'
-        }
-        return typeMap[this.student.sex]
-      }
+      ])
     },
     methods: {
       // 根据部门id查询学员信息

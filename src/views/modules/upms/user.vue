@@ -409,9 +409,21 @@
                             <el-radio label="0">不是</el-radio>
                             <el-radio label="16">场训</el-radio>
                             <el-radio label="32">路训</el-radio>
-                            <el-radio label="48">都是</el-radio>
+                            <el-radio label="48">场训&路训</el-radio>
                           </el-radio-group>
                           <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.iscoach | isCoachFilter}}</span>
+                        </el-form-item>
+
+                      </el-col>
+
+                    </el-row>
+                    <el-row :gutter="20" style="height: 50px">
+                      <el-col :span="24">
+
+                        <el-form-item label-width="120px" prop="remark">
+                          <span slot="label" class="text_css">备注:</span>
+                          <el-input  v-if="edit"  type="textarea" v-model="userEntity.remark" :autosize="{ minRows: 4, maxRows: 4}" placeholder="备注"></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.remark}}</span>
                         </el-form-item>
 
                       </el-col>
@@ -526,7 +538,7 @@
   import { getToken } from '@/utils/auth'
 
   export default {
-    name: 'user',
+    name: 'user-list',
     props: {
       area: Array
     },
@@ -540,13 +552,6 @@
         'permissions',
         'client'
       ]),
-      sexVO() {
-        const typeMap = {
-          0: '男',
-          1: '女'
-        }
-        return typeMap[this.userEntity.sex]
-      },
       headers() {
         return {
           'Authorization': 'Bearer ' + getToken()

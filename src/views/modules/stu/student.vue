@@ -372,11 +372,11 @@
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.haveCar === '1'?'是':'否'}}</div>
                     </el-form-item>
                   </el-row>
-                  <!-- 历史费用 -->
-                  <el-row style="margin: 0 10px">
-                    <el-form-item prop="company">
-                      <span slot="label" class="text_css">* 历史费用:</span>
-                      <div style="padding-left: 16px;font-size: 12px;" >{{student.serviceRemark}}</div>
+                  <el-row >
+                    <el-form-item prop="remark">
+                      <span slot="label"  class="text_css">备注:</span>
+                      <el-input v-if="edit"   type="textarea" v-model="student.remark" :autosize="{ minRows: 4, maxRows: 4}" placeholder="备注"></el-input>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.remark}}</div>
                     </el-form-item>
                   </el-row>
                 </el-col>
@@ -442,6 +442,13 @@
                       <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >
                         <span v-for="(introducerName,index) in student.introducerNameList" >{{introducerName}}<span v-if="student.introducerNameList.length !== (student+1)">、</span></span>
                       </div>
+                    </el-form-item>
+                  </el-row>
+                  <!-- 历史费用 -->
+                  <el-row style="margin: 0 10px" v-if="student.serviceRemark!==null&&student.serviceRemark!==''">
+                    <el-form-item prop="company">
+                      <span slot="label" class="text_css">历史费用:</span>
+                      <div style="padding-left: 16px;font-size: 12px;" >{{student.serviceRemark}}</div>
                     </el-form-item>
                   </el-row>
                 </el-col>
@@ -552,8 +559,8 @@
       </el-row>
     </el-card>
     <!--添加-->
-    <el-card v-show="showModule=='add'" @close="backClick" title="录入详细信息" width="800px" >
-      <div v-loading="createLoading" element-loading-text="努力加载中..." style="overflow-x: hidden;overflow-y: auto;line-height: 50px;height:575px">
+    <el-card v-show="showModule=='add'" @close="backClick" title="录入详细信息" width="800px"  style="height: 100%">
+      <div v-loading="createLoading" element-loading-text="努力加载中..." style="line-height: 50px;">
         <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="80px" size="mini" >
           <el-row :gutter="20">
             <el-col :span="12" >
@@ -782,6 +789,12 @@
 
             </el-col>
 
+          </el-row>
+          <el-row :gutter="20">
+            <el-form-item prop="remark">
+              <span slot="label"  class="text_css">备注</span>
+              <el-input  type="textarea" v-model="studentEntity.remark" :autosize="{ minRows: 4, maxRows: 4}" placeholder="备注"></el-input>
+            </el-form-item>
           </el-row>
         </el-form>
       </div>
@@ -1380,13 +1393,6 @@
         'permissions',
         'client'
       ]),
-      sexVO() {
-        const typeMap = {
-          0: '男',
-          1: '女'
-        }
-        return typeMap[this.student.sex]
-      },
       headers() {
         return {
           'Authorization': 'Bearer ' + getToken()

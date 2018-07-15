@@ -1406,7 +1406,7 @@
             this.student122.XM = this.student.name // 姓名
             this.student122.CSRQ = this.parseTime(this.student.birthday, '{y}-{m}-{d}') // 出生日期
             this.student122.GJ = response.data.data.nationality // 国籍
-            this.student122.XB = this.student.sex // 性别
+            this.student122.XB = this.student.sex === '1' ? '0' : '1' // 性别
 
             this.student122.DJZSXZQH = response.data.data.djzsxzqh // 所属辖区
             this.student122.DJZSXXDZ = response.data.data.lxzsxxdz // 登记住所

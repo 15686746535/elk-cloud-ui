@@ -1608,6 +1608,7 @@
       },
       // 修改
       update(formName) {
+        console.log(this.student)
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.btnLoading = true

@@ -696,7 +696,7 @@
           if (valid) {
             var mobile = this.intention.mobile
             var wechat = this.intention.wechat
-            if (mobile && wechat) {
+            if (mobile || wechat) {
               this.intention.state = 0
               addObj(this.intention).then(() => {
                 this.closeAlert(formName)

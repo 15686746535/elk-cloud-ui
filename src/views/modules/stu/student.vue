@@ -396,7 +396,22 @@
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.motorcycleType}}</div>
                     </el-form-item>
                   </el-row>
-                  <!-- 报名点 -->
+                  <!-- 练车类型 -->
+                  <el-row>
+                    <el-form-item prop="serviceType">
+                      <span slot="label" class="text_css">练车类型:</span>
+                      <el-select v-if="edit" style="width: 100%" size="mini" v-model="student.serviceType" clearable placeholder="练车类型">
+                        <el-option
+                          v-for="item in $store.state.app.vehicleType"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.serviceType | serviceTypeFilter}}</div>
+                    </el-form-item>
+                  </el-row>
+                   <!--报名点-->
                   <el-row>
                     <el-form-item prop="enrolSite">
                       <span slot="label" class="text_css">报名点:</span>
@@ -648,7 +663,7 @@
               <!-- 所学车型 -->
               <el-row >
                 <el-form-item prop="motorcycleType">
-                  <span slot="label"  class="text_css">所学车型</span>
+                  <span slot="label"  class="text_css">1111111111所学车型</span>
                   <el-select v-if="edit" style="width: 100%" size="mini" v-model="studentEntity.motorcycleType" clearable placeholder="车型">
                     <el-option
                       v-for="item in $store.state.app.motorcycleType"
@@ -660,7 +675,20 @@
                   <!--<dict size="mini" v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>-->
                 </el-form-item>
               </el-row>
-
+              <el-row>
+                <el-form-item prop="serviceType">
+                  <span slot="label"  class="text_css">练车类型:</span>
+                  <el-select v-if="edit" style="width: 100%" size="mini" v-model="studentEntity.serviceType" clearable placeholder="练车类型">
+                    <el-option
+                      v-for="item in $store.state.app.vehicleType"
+                      :key="item.value"
+                      :label="item.name"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                  <!--<dict size="mini" v-model="studentEntity.motorcycleType" dictType="dict_motorcycle_type" style="width: 100%;"  placeholder="所学车型"></dict>-->
+                </el-form-item>
+              </el-row>
               <!-- 来源渠道 -->
               <el-row >
                 <el-form-item prop="source">
@@ -1057,6 +1085,7 @@
           enrolSite: null,
           source: null,
           motorcycleType: null,
+          vehicleType:null,
           delFlag: null,
           remark: null,
           operator: null,
@@ -1102,7 +1131,7 @@
         studentEntityRules: {
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
+            { pattern: /^1[123456789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           idNumber: [
@@ -1166,7 +1195,7 @@
         studentRules: {
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
+            { pattern: /^1[123456789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
           ],
           idNumber: [
             { required: true, message: '请输入身份证', trigger: ['blur', 'change'] },

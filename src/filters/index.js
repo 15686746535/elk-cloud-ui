@@ -44,6 +44,13 @@ export function subjectFilter(subject) {
   }
   return typeMap[subject]
 }
+export function serviceTypeFilter(subject) {
+  const typeMap = {
+    '1': '一人一车',
+    '2': '两人一车'
+  }
+  return typeMap[subject]
+}
 // export function sendFilter(status) {
 //   const typeMap = {
 //     '0': '暂未发送',

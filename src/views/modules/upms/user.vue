@@ -684,7 +684,7 @@
         userEntityRules: {
           mobile: [
             { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
-            { pattern: /^1[2345789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
+            { pattern: /^1[23456789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
           iscoach: [

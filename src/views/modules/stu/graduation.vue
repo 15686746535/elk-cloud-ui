@@ -344,6 +344,13 @@
                       <div style="padding-left: 16px;font-size: 12px;">{{student.motorcycleType}}</div>
                     </el-form-item>
                   </el-row>
+                  <!--服务类型-->
+                  <el-row>
+                    <el-form-item prop="motorcycleType">
+                      <span slot="label" class="text_css">服务类型:</span>
+                      <div style="padding-left: 16px;font-size: 12px;">{{student.motorcycleType}}</div>
+                    </el-form-item>
+                  </el-row>
                   <!-- 报名点 -->
                   <el-row>
                     <el-form-item prop="enrolSite">

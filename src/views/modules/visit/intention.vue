@@ -430,7 +430,7 @@
 </template>
 
 <script>
-  import { fetchList, addObj, getObj, putObj, getIntentionByMobile, getIntentionByWechat } from '@/api/visit/intention'
+  import { fetchList, addObj, getObj, putObj, queryIntention } from '@/api/visit/intention'
   import { followUpList, addFollowUp } from '@/api/visit/followup'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
@@ -451,7 +451,8 @@
     data() {
       var mobileIsExistence = (rule, value, callback) => {
         if (value) {
-          getIntentionByMobile({ 'mobile': value }).then(response => {
+          this.intention.intentionId
+          queryIntention({ mobile: value, intentionId: this.intention.intentionId }).then(response => {
             if (response.data.data) {
               callback(new Error('电话号码已存在'))
             } else {
@@ -464,7 +465,7 @@
       }
       var wechatIsExistence = (rule, value, callback) => {
         if (value) {
-          getIntentionByWechat({ 'wechat': value }).then(response => {
+          queryIntention({ wechat: value, intentionId: this.intention.intentionId }).then(response => {
             if (response.data.data) {
               callback(new Error('微信号已存在'))
             } else {
@@ -475,7 +476,6 @@
           callback()
         }
       }
-      // getIntentionByWechat
       return {
         intentionList: [],
         intention: {},
@@ -566,41 +566,6 @@
           wechat: [
             { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] },
             { validator: wechatIsExistence, trigger: ['blur'] }
-          ],
-          contactAddress: [
-            { required: false, message: '请输入住址', trigger: ['blur', 'change'] }
-          ],
-          customerType: [
-            { required: true, message: '请选择客户类型', trigger: ['blur', 'change'] }
-          ],
-          source: [
-            { required: true, message: '请选择来源渠道', trigger: ['blur', 'change'] }
-          ],
-          worry: [
-            { required: true, message: '请选择客户顾虑', trigger: ['blur', 'change'] }
-          ],
-          applyType: [
-            { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
-          ],
-          visitTime: [
-            { required: true, message: '请选择来访时间', trigger: ['blur', 'change'] }
-          ],
-          content: [
-            { required: false, message: '请输入资讯内容', trigger: ['blur', 'change'] }
-          ]
-        },
-        editRules: {
-          name: [
-            { required: true, message: '请输入名字', trigger: ['blur', 'change'] }
-          ],
-          sex: [
-            { required: true, message: '请选择性别', trigger: ['blur', 'change'] }
-          ],
-          mobile: [
-            { required: false, message: '请输入手机号', trigger: ['blur', 'change'] }
-          ],
-          wechat: [
-            { required: false, message: '请输入客户微信', trigger: ['blur', 'change'] }
           ],
           contactAddress: [
             { required: false, message: '请输入住址', trigger: ['blur', 'change'] }

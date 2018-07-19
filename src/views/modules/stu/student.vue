@@ -1085,7 +1085,7 @@
           enrolSite: null,
           source: null,
           motorcycleType: null,
-          vehicleType:null,
+          vehicleType: null,
           delFlag: null,
           remark: null,
           operator: null,

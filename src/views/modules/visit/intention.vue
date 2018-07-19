@@ -249,7 +249,7 @@
                   |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">基本信息</span>
                 </div>
               </div>
-              <el-form :model="intention" :rules="editRules" ref="intention" label-width="120px" size="mini" class="demo-ruleForm">
+              <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" size="mini" class="demo-ruleForm">
 
                 <el-row :gutter="5"  style="line-height: 50px;height: 50px;">
                   <el-col :span="12">
@@ -696,14 +696,15 @@
           if (valid) {
             var mobile = this.intention.mobile
             var wechat = this.intention.wechat
-            if (mobile || wechat) {
+            console.log()
+            if (!mobile && !wechat) {
+              Message.error('手机和微信至少输入一个')
+            } else {
               this.intention.state = 0
               addObj(this.intention).then(() => {
                 this.closeAlert(formName)
                 this.showModule = 'list'
               })
-            } else {
-              Message.error('手机和微信至少输入一个')
             }
           } else {
             return false

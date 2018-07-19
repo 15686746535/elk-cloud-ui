@@ -2,7 +2,7 @@
 var path = require('path')
 const url = 'https://www.eluchn.com/'
 // const url = 'http://127.0.0.1:8003'
-// const url = 'http://192.168.1.177:8003'
+// const url = 'http://192.168.1.80:8003'
 
 
 module.exports = {

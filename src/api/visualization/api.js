@@ -67,3 +67,12 @@ export function queryCampus(params) {
     params: params
   })
 }
+
+// 招生详情统计
+export function queryIntroducer(params) {
+  return request({
+    url: '/visualization/queryIntroducer',
+    method: 'get',
+    params: params
+  })
+}

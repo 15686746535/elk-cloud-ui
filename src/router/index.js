@@ -70,7 +70,7 @@ export const appMap = [
   { id: 120200, desktop: '1', type: '6', pid: 80000, params: [], name: '网点统计', content: _import('modules/visualization/enrolSite'), icon: getIcon('app_enrol_site'), msgCount: 0, childItem: [] },
   { id: 120500, desktop: '1', type: '6', pid: 80000, params: [], name: '来源统计', content: _import('modules/visualization/source'), icon: getIcon('app_source'), msgCount: 0, childItem: [] },
   { id: 120300, desktop: '1', type: '6', pid: 80000, params: [], name: '在培统计', content: _import('modules/visualization/subject'), icon: getIcon('app_subject'), msgCount: 0, childItem: [] },
-  // { id: 120600, desktop: '1', type: '6', pid: 80000, params: [], name: '招生统计', content: _import('modules/visualization/kpi'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
+  { id: 120600, desktop: '1', type: '6', pid: 80000, params: [], name: '招生统计', content: _import('modules/visualization/kpi'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
   // 基础配置
   { id: 40100, desktop: '1', type: '7', pid: 90000, params: [], name: '校区设置', content: _import('modules/basis/campus'), icon: getIcon('app_campus'), msgCount: 0, childItem: [] },
   { id: 40300, desktop: '1', type: '7', pid: 90000, params: [], name: '网点设置', content: _import('modules/basis/enrollDot'), icon: getIcon('app_enroll'), msgCount: 0, childItem: [] },

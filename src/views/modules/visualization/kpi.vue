@@ -88,83 +88,6 @@
 
     </el-card>
 
-    <el-card v-show="!showList" style="height: 100%;overflow: auto;">
-      <el-form :model="vehicle" :rules="vehicleRules"  ref="vehicle" label-position="left" label-width="100px">
-        <el-row :gutter="20">
-          <el-col>
-            <el-form-item prop="serviceType">
-              <span slot="label" class="text_css">类型</span>
-              <el-cascader v-model="bespType" :options="serviceTypeList" @change="typeChange" style="width: 100%" placeholder="请选择课时类型"></el-cascader>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row >
-          <el-col>
-            <el-form-item prop="fieldAddress">
-              <span slot="label" class="text_css">训练场地</span>
-              <el-cascader v-model="bespField" :options="fieldAddressList" @change="fieldChange" style="width: 100%"></el-cascader>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-form-item prop="dateList">
-            <span slot="label" class="text_css">培训日期</span>
-            <el-select v-model="vehicle.dateList" style="width: 100%" multiple collapse-tags placeholder="请选择培训日期">
-              <el-option
-                v-for="item in dateList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-row>
-
-        <el-row>
-          <el-form-item prop="coachList">
-            <span slot="label" class="text_css">车辆/教练</span><!--height: 255px; :style="{height:tableHeight-306 + 'px' }"-->
-            <div class="coach-list" :style="{height:coachHeight + 'px' }" :class="coachRules.clazz">
-              <div v-for="(coach,cindex) in vehicle.coachList">
-                <el-col :span="6">
-                  <el-select v-model="coach.vehicleId"  style="width: 100%" collapse-tags placeholder="请选择训练车辆">
-                    <el-option
-                      v-for="item in vehicleList"
-                      :key="item.vehicleId"
-                      :label="item.plateNumber"
-                      :value="item.vehicleId"
-                      :disabled="item.disabled">
-                    </el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="16">
-                  <el-select v-model="coach.coachList" style="width: 100%" multiple collapse-tags placeholder="请选择培训教练" @change="setCoachList" >
-                    <el-option
-                      v-for="item in userList"
-                      :key="item.userId"
-                      :label="item.name"
-                      :value="item.userId">
-                    </el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="2">
-                  <i class="el-icon-remove remove-coach-btn" @click="removeCoach(cindex)"></i>
-                  <i v-if="cindex+1===vehicle.coachList.length" class="el-icon-circle-plus add-coach-btn" @click="addCoach(cindex)"></i>
-                </el-col>
-              </div>
-            </div>
-            <p v-show="!coachRules.required" class="coach-error-msg">请正确选择车辆/教练</p>
-          </el-form-item>
-        </el-row>
-        <el-row>
-          <el-col :span="6" :offset="18">
-            <el-button @click="cancel('vehicle')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-            <el-button type="primary" @click="save('vehicle')" :loading="saveLoading">保 存</el-button><!---->
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
   </div>
 </template>
 
@@ -178,6 +101,7 @@
     getTrainingField,
     queryCarList,
     queryCoachList } from '@/api/bespeak/vehicleperiod'
+  import  { queryIntroducer } from '@/api/visualization/api'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
   import { parseTime } from '@/utils/index'
@@ -323,11 +247,17 @@
       }
     },
     created() {
-      this.getPageList()
-      this.getDateList()
-      this.trainingField()
+      this.getData()
+      // this.getPageList()
+      // this.getDateList()
+      // this.trainingField()
     },
     methods: {
+      getData(){
+        queryIntroducer(this.query).then(res=>{
+          this.list = res.data.data.list
+        })
+      },
       /* 获取数据 */
       getPageList() {
         this.loading = true

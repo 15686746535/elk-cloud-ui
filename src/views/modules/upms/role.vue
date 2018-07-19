@@ -47,14 +47,14 @@
       </div>
     </el-card>
     <el-card style="height: 100%;overflow: auto" v-show="!showList">
-      <div style="float: left;width: 50%;height: 90%;overflow: auto" >
+      <div style="float: left;width: 100%;height: 90%;overflow: auto" >
         应用权限
         <my-tree v-if="menuUrl" :url="menuUrl" v-model="permission.menuList" :checkbox="true" ></my-tree>
       </div>
-      <div style="float: left;width: 50%;height: 90%;overflow: auto" >
-        数据权限
-        <my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>
-      </div>
+      <!--<div style="float: left;width: 50%;height: 90%;overflow: auto" >-->
+        <!--数据权限-->
+        <!--<my-tree v-if="dataUrl" :url="dataUrl" v-model="permission.dataList" :checkbox="true" ></my-tree>-->
+      <!--</div>-->
       <el-button style="float: right;" type="primary" :loading="isloading"  @click="updatePermession(roleId, roleKey)">更 新</el-button>
       <el-button style="float: right;margin:  0 15px" type="primary" @click="showList = true">取消</el-button>
     </el-card>
@@ -70,6 +70,16 @@
         </el-form-item>
         <el-form-item label="描述" prop="roleDesc">
           <el-input v-model="form.roleDesc" placeholder="描述"></el-input>
+        </el-form-item>
+        <el-form-item label="数据权限" prop="scope">
+            <el-select  v-model="form.scope" clearable placeholder="数据权限">
+              <el-option
+                v-for="item in scopelist"
+                :key="item.value"
+                :label="item.name"
+                :value="item.value">
+              </el-option>
+            </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -98,6 +108,24 @@
     },
     data() {
       return {
+        scopelist: [
+          {
+            name: '集团级别',
+            value: 'group'
+          },
+          {
+            name: '校区级别',
+            value: 'company'
+          },
+          {
+            name: '所在部门及下级',
+            value: 'department'
+          },
+          {
+            name: '个人级别',
+            value: 'mine'
+          }
+        ],
         tableHeight: this.area[1],
         change: 1,
         showList: true,
@@ -267,10 +295,10 @@
       updatePermession(roleId, roleKey) {
         this.isloading = true
         menuPermissionUpd(roleId, this.permission.menuList).then(() => {
-          dataPermissionUpd(roleId, this.permission.dataList).then(() => {
-            this.showList = true
-            this.isloading = false
-          })
+          // dataPermissionUpd(roleId, this.permission.dataList).then(() => {
+          this.showList = true
+          this.isloading = false
+          // })
         })
       },
       resetTemp() {

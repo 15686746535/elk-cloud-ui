@@ -68,19 +68,20 @@
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="角色名称"></el-input>
         </el-form-item>
+        <el-form-item label="数据权限" prop="scope">
+          <el-select style="width: 100%"  v-model="form.scope" clearable placeholder="数据权限">
+            <el-option
+              v-for="item in scopelist"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="描述" prop="roleDesc">
           <el-input v-model="form.roleDesc" placeholder="描述"></el-input>
         </el-form-item>
-        <el-form-item label="数据权限" prop="scope">
-            <el-select  v-model="form.scope" clearable placeholder="数据权限">
-              <el-option
-                v-for="item in scopelist"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
-              </el-option>
-            </el-select>
-        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel('form')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
@@ -169,6 +170,13 @@
               min: 1,
               max: 20,
               message: '长度在 3 到 20 个字符',
+              trigger: ['blur', 'change']
+            }
+          ],
+          scope: [
+            {
+              required: true,
+              message: '数据范围',
               trigger: ['blur', 'change']
             }
           ]

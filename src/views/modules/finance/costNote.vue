@@ -14,8 +14,7 @@
                 <el-col :span="12">金额</el-col>
               </el-col>
               <span v-for="(payType,index) in props.row.payTypeList">
-
-                <el-col v-if="costNote/2 === 0" :span="12" style="border-bottom: 1px solid #ebeef5;border-right: 1px solid #ebeef5;line-height: 40px">
+                <el-col v-if="index/2 === 0" :span="12" style="border-bottom: 1px solid #ebeef5;border-right: 1px solid #ebeef5;line-height: 40px">
                   <el-col :span="12">{{payType.mode}}</el-col>
                   <el-col :span="12">{{payType.money}}</el-col>
                 </el-col>
@@ -43,7 +42,7 @@
         </el-table-column>
         <el-table-column align="center"  label="收款金额">
           <template slot-scope="scope">
-            <span>{{ scope.row.realPrice}}</span>
+            <span>{{ scope.row.money}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center"  label="收款人">
@@ -116,6 +115,7 @@
         getServiceChargeList(this.listQuery).then(response => {
           this.financeList = response.data.data.list
           this.total = response.data.totalCount
+          console.log(this.financeList)
         })
       },
       // 改变页容量

@@ -663,7 +663,7 @@
               <!-- 所学车型 -->
               <el-row >
                 <el-form-item prop="motorcycleType">
-                  <span slot="label"  class="text_css">1111111111所学车型</span>
+                  <span slot="label"  class="text_css">所学车型</span>
                   <el-select v-if="edit" style="width: 100%" size="mini" v-model="studentEntity.motorcycleType" clearable placeholder="车型">
                     <el-option
                       v-for="item in $store.state.app.motorcycleType"

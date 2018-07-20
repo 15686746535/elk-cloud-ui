@@ -2,7 +2,7 @@
   <div class="student" style="height: 100%;">
     <el-card style="height: 100%">
       <div style="height: 80px;">
-          <el-input @keyup.enter.native="getList" style="width: 300px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
+          <el-input @keyup.enter.native="getList" style="width: 300px;" class="filter-item" placeholder="完整的 姓名/电话/身份证" v-model="listQuery.accurate"></el-input>
           <el-button class="filter-item" type="primary"  @click="getList"><i class="el-icon-search"></i> 搜 索</el-button>
       </div>
       <el-table :data="stuList" :height="tableHeight - 220" highlight-current-row stripe v-loading="listLoading" element-loading-text="给我一点时间">
@@ -146,7 +146,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          orgId: null,
+          orgId: 2,
           accurate: this.accurate
         }
       }

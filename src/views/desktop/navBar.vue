@@ -9,7 +9,7 @@
       <a href="javascript:void(0);" class="ui-droppable currTab" title="桌面1" id="switch-1" @click="desktopSwitch('1')">1</a>
       <a href="javascript:void(0);" class="ui-droppable" title="桌面2" id="switch-2" @click="desktopSwitch('2')">2</a>
     </span>
-    <span v-show="isSerch" style="margin-left: -4px;margin-top: 6px!important;">
+    <span v-show="isSerch" style="margin-left: -5px;margin-top: 6px!important;">
      <el-input size="mini" class="accurate"  v-model="accurate" placeholder="请输入内容"></el-input>
     </span>
     <s class="r">

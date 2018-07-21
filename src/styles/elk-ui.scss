@@ -436,13 +436,21 @@
 
   .indicator_manage {
     display: block;
-    background: url($navbarBtn) no-repeat left -4px;
+    background: url($navbarBtn) no-repeat -108px -4px;
     margin: 8px 13px;
     height: 24px;
     width: 24px;
   }
 }
-
+.accurate.el-input--mini{
+  position: relative!important;
+  top: 0px!important;
+  .el-input__inner {
+    height: 26px!important;
+    line-height: 26px!important;
+    border-top-color: #656565!important;
+  }
+}
 /*定义动画的时间和过渡效果*/
 .apps {
   transition: all 0.5s ease;

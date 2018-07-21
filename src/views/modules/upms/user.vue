@@ -33,24 +33,20 @@
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">姓名</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text" style="font-weight: 600;">{{scope.row.name}}</el-col>
+                  <el-col :span="7" class="table_text">姓名：</el-col>
+                  <el-col :span="17" class="table_text" style="font-weight: 600;">{{scope.row.name}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">性别</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
+                  <el-col :span="7" class="table_text">性别：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">生日</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.birthday | subTime}}</el-col>
+                  <el-col :span="7" class="table_text">生日：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.birthday | subTime}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">身份证</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.idNumber}}</el-col>
+                  <el-col :span="7" class="table_text">身份证：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.idNumber}}</el-col>
                 </el-row>
               </el-col>
             </template>
@@ -61,24 +57,20 @@
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">手机号</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.mobile}}</el-col>
+                  <el-col :span="7" class="table_text">手机号：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.mobile}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">微信</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.wechat}}</el-col>
+                  <el-col :span="7" class="table_text">微信：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.wechat}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">QQ</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.qq }}</el-col>
+                  <el-col :span="7" class="table_text">QQ：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.qq }}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">联系地址</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.contactAddress}}</el-col>
+                  <el-col :span="7" class="table_text">联系地址：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.contactAddress}}</el-col>
                 </el-row>
               </el-col>
             </template>
@@ -89,24 +81,20 @@
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">工作电话</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.workMobile}}</el-col>
+                  <el-col :span="7" class="table_text">工作电话：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.workMobile}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">所属职位</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.roles}}</el-col>
+                  <el-col :span="7" class="table_text">所属职位：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.roles}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">入职日期</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.joinedTime | subTime}}</el-col>
+                  <el-col :span="7" class="table_text">入职日期：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.joinedTime | subTime}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">转正日期</el-col>
-                  <el-col :span="2" class="table_text">：</el-col>
-                  <el-col :span="15" class="table_text">{{scope.row.positiveTime | subTime}}</el-col>
+                  <el-col :span="7" class="table_text">转正日期：</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.positiveTime | subTime}}</el-col>
                 </el-row>
               </el-col>
             </template>

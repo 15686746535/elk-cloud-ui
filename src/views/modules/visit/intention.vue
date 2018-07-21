@@ -33,8 +33,8 @@
             </el-col>
           </el-row>
           <!--列表-->
-          <div class="intentions"  :style="{height: (tableHeight-185) + 'px'}" style="border-bottom: 1px solid #b2b6bd;"  v-loading="listLoading" element-loading-text="给我一点时间" >
-            <div class="intention" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
+          <div class="intentions"  :style="{height: (tableHeight-185) + 'px'}" style="border-bottom: 1px solid #b2b6bd;"   v-loading="listLoading" element-loading-text="给我一点时间" >
+            <div :class="'intention '+((new Date().getTime()-intention.updateTime>60*60*1000*24*3)?'red':'normal')" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
               <div style="width: 100%;height: 25px">
                 <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
                 <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
@@ -50,6 +50,7 @@
               <div class="intention_text" style="width: 100%;float: left">住址：{{intention.contactAddress}}</div>
               <div class="intention_text" style="width: 100%;float: left">顾虑：{{intention.worry}}</div>
               <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
+              <!--<div class="intention_text" style="width: 100%;float: left">跟进时间：{{intention.updateTime}}</div>-->
 
               <el-tooltip placement="bottom" effect="dark">
                 <div slot="content">
@@ -808,6 +809,9 @@
     box-shadow: 5px 3px 3px #ffffff;
     padding: 5px;
     transition: border-color 0.2s,box-shadow 0.2s;
+  }
+  .red{
+    border-color: red;
   }
   .intention_btn{
     width: 60px;

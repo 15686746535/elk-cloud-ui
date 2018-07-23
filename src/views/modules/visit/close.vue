@@ -56,7 +56,7 @@
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
-        <el-button class="filter-item" style="float: right" v-if="permissions.visit_close_enable" size="small" @click="open" type="success" icon="plus">再分配</el-button>
+        <el-button class="filter-item" style="float: right" v-if="permissions.visit_close_enable" size="small" @click="open" type="success" icon="plus">移入公海</el-button>
       </div>
 
     </el-card>
@@ -238,7 +238,7 @@
         return false
       },
       open() {
-        this.$confirm('是否将选择信息重新分配', '提示', {
+        this.$confirm('是否将选择信息移入公海', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'info'

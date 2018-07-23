@@ -1,227 +1,227 @@
 <template>
-  <div class="app-container1 calendar-list-container1" :style1="{height: $store.state.app.client.height + 'px'}">
-    <el-card  style="height: 100%">
-      <div slot="header" class="clearfix">
-        <span>
-          <!--<el-radio-group  @change="studentIdChange" v-model="flag">-->
-            <!--<el-radio-button :label="true">添加收费</el-radio-button>-->
-            <!--<el-radio-button :label="false">补齐费用</el-radio-button>-->
-          <!--</el-radio-group>-->
-        </span>
-        <div style="float: right; padding: 3px 0" >
-          <el-select style="width: 300px;" v-model="stuServiceBuyNoteEntity.studentId" @change="studentIdChange" filterable remote reserve-keyword placeholder="请输入姓名/电话/身份证" :remote-method="getStudentList" :loading="studentListLoading">
-            <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
-            </el-option>
-          </el-select>
-        </div>
-      </div>
-
-      <div v-loading="infoLoading" element-loading-text="别急,一会儿就好~">
-
-        <el-col style="border: 1px solid #1f2d3d;font-size: 12px;">
-          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d;font-size: 12px;">
-            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              {{dateTime}}
+  <div class="app-container1 calendar-list-container" style="height: 100%;">
+    <el-card  style="height: 100%;overflow: auto">
+      <div v-loading="loading" element-loading-text="别急,一会儿就好~" style="width: 100%;border: 1px dashed #1f2d3d;padding: 0 10px">
+        <!-- 标题 -->
+        <el-row style="text-align: center;">
+          <p style="font-size: 18px;"><span>重庆壹路驾驶培训有限公司</span><span style="margin-left: 35px;">收款收据</span></p>
+          <p style="position: absolute;bottom: 0px;margin: 5px;font-size: 12px;right: 10px;">
+            {{finance.serialNumber}}号
+          </p>
+        </el-row>
+        <!-- 学员信息 -->
+        <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
+            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              {{finance.dateTime}}
             </el-col>
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              <span class="text_css">校区：{{student.campus}}</span>
+              <span class="text_css">校区：{{finance.campus}}</span>
             </el-col>
-            <el-col :span="6" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              <el-radio-group @change="studentIdChange" v-model="stuServiceBuyNoteEntity.receivablesType">
+            <el-col :span="7" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <el-radio-group @change="studentIdChange" v-model="finance.receivablesType">
                 <el-radio label="全款"></el-radio>
                 <el-radio label="定金"></el-radio>
                 <el-radio label="定转全"></el-radio>
               </el-radio-group>
-
             </el-col>
-            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              <span class="text_css">姓名：{{student.name}}</span>
+            <el-col :span="2" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <span class="text_css">车型：{{finance.motorcycleType}}</span>
             </el-col>
-            <el-col :span="7" style="line-height: 50px;padding: 0 10px">
-
-              <span class="text_css">身份证：{{student.idNumber}}</span>
-
+            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+              <el-row>
+                <el-col :span="6">
+                  <span class="text_css">姓名：</span>
+                </el-col>
+                <el-col :span="18">
+                  <el-select class="student-search"  v-model="finance.studentId" @change="studentIdChange" filterable remote reserve-keyword placeholder=""
+                             :remote-method="getStudentList" :loading="studentListLoading">
+                    <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
+                    </el-option>
+                  </el-select>
+                </el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="6" style="line-height: 50px;padding: 0 10px">
+              <el-row>
+                <el-col :span="5">
+                  <el-row style="line-height: 16px;margin-top: 8px;">身份</el-row>
+                  <el-row style="line-height: 16px;">证号：</el-row>
+                </el-col>
+                <el-col :span="19">
+                  <el-select class="student-search"  v-model="finance.studentId" @change="studentIdChange" filterable remote reserve-keyword placeholder=""
+                             :remote-method="getStudentList" :loading="studentListLoading">
+                    <el-option v-for="student in studentList" :key="student.studentId" :label="student.idNumber" :value="student.studentId">
+                    </el-option>
+                  </el-select>
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
-
-          <!-- 项目 -->
-          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
-            <el-col :span="1" style="padding: 0 10px;">
-              <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">项目</div>
-            </el-col>
-            <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
-              <el-row style="line-height: 30px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-                <span class="text_css">车型：{{student.motorcycleType}}</span>
-              </el-row>
-              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-                <el-col class="text_css" :span="1">
-                  <span >代收费：</span>
-                </el-col>
-                <el-col :span="23">
-                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                    <el-checkbox v-for="finance in evenFinanceList('001')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                      {{finance.name}} {{finance.price}}元
-                      <span v-if="finance.priceType === '1'">
-                      /份*&nbsp;<input @change="calculation" type="number" min="1" :disabled="!flag" v-model.number="finance.number"
-                                      style="border: none; outline:none; width: 50px; border-bottom: #dcdfe6 1px solid; font-size: 12px;"/>份
+        <!-- 项目 -->
+        <el-row  style="border: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
+          <el-col :span="1" style="padding: 0 10px;">
+            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">项目</div>
+          </el-col>
+          <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
+            <el-row style="line-height: 40px;border-bottom: 1px solid #1f2d3d;">
+              <el-col class="text_css" :span="2" style="padding-left:10px;">
+                <span >代收费：</span>
+              </el-col>
+              <el-col :span="22">
+                <el-checkbox-group @change="calculation" v-model="finance.financeList">
+                  <el-checkbox v-for="service in evenFinanceList('001')" :label="service" :disabled="flag" :key="service.categoryId">
+                    {{service.name}}
+                    <span v-if="service.priceType === '1'">
+                      ×&nbsp;<input @change="calculation" type="number" min="1" :disabled="flag" v-model.number="service.number"
+                                      style="border: none; outline:none; width: 30px; border-bottom: #dcdfe6 1px solid; font-size: 12px;"/>
                     </span>
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </el-col>
+                    <span v-else>{{service.price}}元</span>
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-col>
 
-              </el-row>
-              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-                <el-col class="text_css" :span="1">
-                  <span >培训费：</span>
-                </el-col>
-                <el-col :span="23">
-                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                    <el-checkbox v-for="finance in evenFinanceList('002')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                      {{finance.name}} {{finance.price}}元
-                      <span v-if="finance.priceType === '1'">
-                      /份*&nbsp;<input @change="calculation" type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
-                                                                 outline:none;
-                                                                 width: 50px;
-                                                                 border-bottom: #dcdfe6 1px solid;
-                                                                 font-size: 12px;"/>份
+            </el-row>
+            <el-row style="line-height: 40px;border-bottom: 1px solid #1f2d3d;">
+              <el-col class="text_css" :span="2" style="padding-left:10px;">
+                <span >培训费：</span>
+              </el-col>
+              <el-col :span="22">
+                <el-checkbox-group @change="calculation" v-model="finance.financeList">
+                  <el-checkbox v-for="service in evenFinanceList('002')" :label="service" :disabled="flag" :key="service.categoryId">
+                    {{service.name}}
+                    <span v-if="service.priceType === '1'">
+                      ×&nbsp;<input @change="calculation" type="number" min="1"
+                                      :disabled="flag"
+                                      v-model.number="service.number"
+                                      style="border: none;
+                                      outline:none;
+                                      width: 30px;
+                                      border-bottom: #dcdfe6 1px solid;
+                                      font-size: 12px;"/>
                     </span>
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </el-col>
-              </el-row>
-              <el-row style="line-height: 40px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-                <el-col class="text_css" :span="1">
-                  <span >服务包：</span>
-                </el-col>
-                <el-col :span="23">
-                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                    <el-checkbox v-for="finance in evenFinanceList('003')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                      {{finance.name}} {{finance.price}}元
-                      <span v-if="finance.priceType === '1'">
-                    /份*&nbsp;<input @change="calculation"  type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
+                    <span v-else>{{service.price}}元</span>
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-col>
+            </el-row>
+            <el-row style="line-height: 40px;border-bottom: 1px solid #1f2d3d;">
+              <el-col class="text_css" :span="2" style="padding-left:10px;">
+                <span >服务包：</span>
+              </el-col>
+              <el-col :span="22">
+                <el-checkbox-group @change="calculation" v-model="finance.financeList">
+                  <el-checkbox v-for="service in evenFinanceList('003')" :label="service" :disabled="flag" :key="service.categoryId">
+                    {{service.name}}
+                    <span v-if="service.priceType === '1'">
+                    ×&nbsp;<input @change="calculation"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
                                                                outline:none;
-                                                               width: 50px;
+                                                               width: 30px;
                                                                border-bottom: #dcdfe6 1px solid;
-                                                               font-size: 12px;"/>份
+                                                               font-size: 12px;"/>
                     </span>
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </el-col>
-              </el-row>
-              <el-row style="line-height: 40px;padding: 0 10px;">
-                <el-col class="text_css" :span="1">
-                  <span >优惠包：</span>
-                </el-col>
-                <el-col :span="23">
-                  <el-checkbox-group @change="calculation" v-model="stuServiceBuyNoteEntity.financeList">
-                    <el-checkbox v-for="finance in evenFinanceList('004')" :label="finance" :disabled="!flag" :key="finance.categoryId">
-                      {{finance.name}} {{finance.price}}元
-                      <span v-if="finance.priceType === '1'">
-                      /份*&nbsp;<input @change="calculation"  type="number" min="1" :disabled="!flag" v-model.number="finance.number" style="border: none;
+                    <span v-else>{{service.price}}元</span>
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-col>
+            </el-row>
+            <el-row style="line-height: 40px;">
+              <el-col class="text_css" :span="2" style="padding-left:10px;">
+                <span >优惠包：</span>
+              </el-col>
+              <el-col :span="22">
+                <el-checkbox-group @change="calculation" v-model="finance.financeList">
+                  <el-checkbox v-for="service in evenFinanceList('004')" :label="service" :disabled="flag" :key="service.categoryId">
+                    {{service.name}}
+                    <span v-if="service.priceType === '1'">
+                      ×&nbsp;<input @change="calculation"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
                                                                  outline:none;
-                                                                 width: 50px;
+                                                                 width: 30px;
                                                                  border-bottom: #dcdfe6 1px solid;
-                                                                 font-size: 12px;"/>份
+                                                                 font-size: 12px;"/>
                     </span>
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-
-          <!-- 收款 -->
-          <el-row :gutter="5" style="border-bottom: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
-            <el-col :span="1" style="padding: 0 10px;">
-              <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">收款</div>
-            </el-col>
-            <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
-              <el-row style="line-height: 50px;padding: 0 10px">
-                <div class="text_css" style="width: 150px;float: left">
-                  原价：￥{{stuServiceBuyNoteEntity.originalPrice}}
-                </div>
-
-                <div v-if="stuServiceBuyNoteEntity.activityPrice !== stuServiceBuyNoteEntity.originalPrice" class="text_css" style="width: 150px;float: left">
-                  活动价：￥{{stuServiceBuyNoteEntity.activityPrice}}
-                </div>
-
-              </el-row>
-              <el-row style="line-height: 50px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
-                <div class="text_css" style="width: 150px;float: left">已收定金：￥{{earnestMoney}}</div>
-
-                <div class="text_css" style="width: 150px;float: left">
-                  本次实收金额：￥{{stuServiceBuyNoteEntity.realPrice}}
-                </div>
-
-                <div class="text_css" style="float: left">，人名币大写：{{stuServiceBuyNoteEntity.realPrice | smalltoBIG}}</div>
-              </el-row>
-              <el-row  class="text_css"  style="line-height: 50px;padding: 0 10px">
-                <el-col :span="2">
-                  <span >本次收款方式：</span>
-                </el-col>
-                <el-col :span="22">
-                <span v-for="(payType,index) in payTypeList">
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+        <!-- 收款 -->
+        <el-row style="border: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
+          <el-col :span="1" style="padding: 0 10px;">
+            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 60px">收款</div>
+          </el-col>
+          <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
+            <el-row style="line-height: 35px;padding: 0 10px">
+              <div class="text_css" style="width: 150px;float: left">
+                原价：￥{{finance.originalPrice}}
+              </div>
+              <div v-if="finance.activityPrice !== 0" class="text_css" style="width: 150px;float: left">
+                活动价：￥{{finance.activityPrice + finance.originalPrice}}
+              </div>
+            </el-row>
+            <el-row style="line-height: 35px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+              <div class="text_css" style="width: 150px;float: left" v-show="finance.earnestMoney !== 0">已收定金：￥{{finance.earnestMoney}}</div>
+              <div class="text_css" style="width: 150px;float: left">
+                本次实收金额：￥<span class="hasMoney">{{finance.realPrice}}</span>
+              </div>
+              <div class="text_css" style="float: left">人名币大写：{{finance.realPrice | smalltoBIG}}</div>
+            </el-row>
+            <el-row  class="text_css"  style="line-height: 50px;padding: 0 10px">
+              <el-col :span="3">
+                <span >本次收款方式：</span>
+              </el-col>
+              <el-col :span="21">
+                <span v-for="(payType,index) in finance.payTypeList">
                   <span>
                     {{payType.mode}}：
                   </span>
-                  <input :disabled="serviceNote === 0 && stuServiceBuyNoteEntity.receivablesType!='定金'" @change="actualMoneyCalculation" type="number" v-model.number="payType.money" style="border: none;
+                  <!-- -->
+                  <input :disabled="index === 0 && finance.receivablesType!='定金'" :class="payType.money!==0?'hasMoney':''" @change="actualMoneyCalculation" type="number" v-model.number="payType.money" style="border: none;
                                                                outline:none;
                                                                width: 50px;
                                                                border-bottom: #dcdfe6 1px solid;
                                                                font-size: 12px;
                                                                color: #606266;"/>元
-                  <span v-if="payTypeList.length !== (serviceNote+1)">，</span>
+                  <span v-if="finance.payTypeList.length !== (index+1)">，</span>
                 </span>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-
-
-          <el-row :gutter="5" style="line-height: 50px;padding: 0 10px;border-top: none;font-size: 12px;height: 100%">
-            <el-col :span="6" style="border-right: 1px solid #1f2d3d;text-align: center">
-              <el-checkbox v-model="studyCard" label="学时卡已发放"></el-checkbox>
-              <el-checkbox v-model="healthForm" label="体检表已发放"></el-checkbox>
-            </el-col>
-            <el-col :span="5" style="border-right: 1px solid #1f2d3d;">
-            <span class="text_css">销售员：
-              <span v-for="(introducerName,index) in student.introducerNameList">
-                {{introducerName}}<span v-if="student.introducerNameList.length !== (serviceNote+1)">、</span>
-              </span>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+        <!-- 销售员 备注 -->
+        <el-row style="line-height: 50px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
+          <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center">
+            <el-checkbox v-model="finance.studyCard" label="学时卡已发放"></el-checkbox>
+            <el-checkbox v-model="finance.healthForm" label="体检表已发放"></el-checkbox>
+          </el-col>
+          <el-col :span="4" style="border-right: 1px solid #1f2d3d;padding-left: 10px;">
+            <span class="text_css">销售员：{{finance.introducer}}
             </span>
-            </el-col>
-            <el-col :span="13">
-              <el-row>
-                <el-col :span="2">备注：</el-col>
-                <el-col :span="21"><input v-model="stuServiceBuyNoteEntity.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-
-        </el-col>
-
+          </el-col>
+          <el-col :span="12">
+            <el-row>
+              <el-col :span="3" style="padding-left: 10px;">备注：</el-col>
+              <el-col :span="21"><input v-model="finance.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+        <!-- 落款 制单人 -->
+        <el-row style="line-height: 40px;">
+          <el-col :offset="3" :span="7">单位盖章：</el-col>
+          <el-col :span="7">收款人：{{finance.payee}}</el-col>
+          <el-col :span="7">复核人：</el-col>
+        </el-row>
       </div>
-
-      <div v-if="stuServiceBuyNoteEntity.studentId" style="float: right;margin-top: 20px;">
-        <span style="cursor: pointer" @click="createOneFormPage">
-          <i class="el-icon-printer"></i>
-        </span>
-        <el-button type="primary" :loading="btnLoading" @click="stuBuyServiceNote"><i class="el-icon-fa-save"></i> 提 交</el-button>
-      </div>
-
-
-
-
-
-
-
+      <!-- 按钮 -->
+      <el-row style="padding: 10px">
+        <el-button type="primary" :loading="btnLoading" @click="stuBuyServiceNote" style="float: right" :disabled="btnDisabled"><i class="el-icon-fa-save"></i> 提 交</el-button>
+      </el-row>
     </el-card>
   </div>
 </template>
 
 <script>
   import Coach from '@/components/Coach'
-  import { removeAllSpace } from '@/utils/validate'
   import { getFinanceList } from '@/api/finance/service-category'
   import { queryMoneyListById, saveServiceCharge, twoPayment } from '@/api/finance/service-charge'
   import { smalltoBIG } from '@/utils/index'
@@ -230,7 +230,7 @@
   import { fetchStudentList, getStudent } from '@/api/student/student'
 
   export default {
-    name: 'table_student',
+    name: 'finance',
     components: {
       Coach
     },
@@ -239,14 +239,36 @@
         financeList: [],
         studentList: [],
         student: {},
+        finance: {
+          studentId: null, // 学员Id
+          campus: '', // 学员校区
+          motorcycleType: '', // 学员车型
+          serialNumber: 20180721001, // 流水号
+          originalPrice: 0, // 原始价格 就是所选服务不包括优惠的价格
+          activityPrice: 0, // 活动价格 优惠
+          realPrice: 0, // 实收价格
+          earnestMoney: 0, // 已收定金
+          remark: '', // 备注
+          introducer: '', // 销售员
+          payee: '', // 收款人
+          receivablesType: '全款',
+          dateTime: '',
+          payTypeList: [
+            { mode: '现金', money: 0 },
+            { mode: '支付宝', money: 0 },
+            { mode: '微信', money: 0 },
+            { mode: '收钱吧', money: 0 },
+            { mode: '刷卡', money: 0 },
+            { mode: '其他', money: 0 }
+          ],
+          financeList: []
+        },
         dateTime: null,
-        studentListLoading: false,
-        infoLoading: false,
+        loading: false,
         btnLoading: false,
-        studyCard: false,
-        healthForm: false,
-        earnestMoney: 0,
-        flag: true,
+        btnDisabled: true,
+        flag: false,
+        studentListLoading: false,
         financeListQuery: {
           page: 1,
           limit: 0,
@@ -256,75 +278,23 @@
           page: 1,
           limit: 0,
           condition: null
-        },
-        stuServiceBuyNoteEntity: {
-          studentId: null, // 学员Id
-          originalPrice: 0, // 原始价格
-          activityPrice: 0, // 活动价格
-          realPrice: 0, // 实收价格
-          remark: '', // 实收价格
-          receivablesType: '全款',
-          payTypeList: [],
-          financeList: []
-        },
-        payTypeList: [
-          {
-            mode: '现金',
-            money: 0
-          },
-          {
-            mode: '支付宝',
-            money: 0
-          },
-          {
-            mode: '微信',
-            money: 0
-          },
-          {
-            mode: '收钱吧',
-            money: 0
-          },
-          {
-            mode: '刷卡',
-            money: 0
-          },
-          {
-            mode: '其他',
-            money: 0
-          }
-          // ,
-          // {
-          //   mode: '老系统转入',
-          //   money: 0
-          // }
-        ]
+        }
       }
     },
     created() {
       this.getFinanceList()
-      this.dateTime = new Date().getFullYear() + '年' + (new Date().getMonth() + 1) + '月' + new Date().getDate() + '日'
+      this.finance.dateTime = new Date().getFullYear() + '年' + (new Date().getMonth() + 1) + '月' + new Date().getDate() + '日'
+      this.finance.payee = this.name
     },
     computed: {
       ...mapGetters([
         'permissions',
+        'name',
         'client'
       ])
     },
     methods: {
-      evenFinanceList(code) {
-        return this.financeList.filter(function(finance) {
-          return finance.code === code
-        })
-      },
-      // 获取所有服务包
-      getFinanceList() {
-        this.listLoading = true
-        getFinanceList(this.financeListQuery).then(response => {
-          this.financeList = response.data.data.list
-          this.listLoading = false
-        })
-      },
-      // 获取所有学员
+      // 获取所有学员 ok
       getStudentList(query) {
         if (query) {
           this.studentListLoading = true
@@ -337,202 +307,198 @@
           this.studentList = []
         }
       },
+      // 获取所有服务包 ok
+      getFinanceList() {
+        this.loading = true
+        getFinanceList(this.financeListQuery).then(response => {
+          this.financeList = response.data.data.list
+          this.loading = false
+        })
+      },
+      // 类型过滤器 ok
+      evenFinanceList(code) {
+        return this.financeList.filter(function(finance) {
+          return finance.code === code
+        })
+      },
       /* 根据学员id查询学员 */
       studentIdChange() {
         this.clean()
-        if (this.stuServiceBuyNoteEntity.receivablesType === '全款' || this.stuServiceBuyNoteEntity.receivablesType === '定金') {
+        this.financeList = []
+        this.finance.financeList = []
+        if (this.finance.receivablesType === '定转全') {
           this.flag = true
-        } else {
-          this.flag = false
-        }
-        if (this.flag) {
-          // 一次收费查询
-          this.getFinanceList()
-          if (this.stuServiceBuyNoteEntity.studentId) {
-            this.infoLoading = true
-            getStudent(this.stuServiceBuyNoteEntity.studentId).then(response => {
-              this.stuServiceBuyNoteEntity.originalPrice = 0
-              this.stuServiceBuyNoteEntity.activityPrice = 0
-              this.stuServiceBuyNoteEntity.realPrice = 0
-              this.earnestMoney = 0
-              this.stuServiceBuyNoteEntity.financeList = []
-              this.stuServiceBuyNoteEntity.payTypeList = []
-              this.student = response.data.data
-              this.infoLoading = false
-              this.clean()
-              this.calculation()
-              this.actualMoneyCalculation()
+          // 二次收费查询
+          if (this.finance.studentId) {
+            this.loading = true
+            queryMoneyListById(this.finance.studentId).then(response => {
+              var list = response.data.data
+              if (list) {
+                var financeList = []
+                var earnestMoney = 0 // 已收定金
+                var originalPrice = 0 // 原始价格 就是所选服务不包括优惠的价格
+                var activityPrice = 0 // 活动价格 优惠
+                for (var i = 0; i < list.length; i++) {
+                  var financeNote = list[i]
+                  earnestMoney += financeNote.money
+                  for (var a = 0; a < financeNote.financeList.length; a++) {
+                    var finance = financeNote.financeList[a]
+                    var flag = true
+                    for (var b = 0; b < financeList.length; b++) {
+                      if (finance.noteId === financeList[b].noteId) {
+                        flag = false
+                        break
+                      }
+                    }
+                    if (flag) {
+                      financeList.push(finance)
+                      if (finance.code === '004') {
+                        activityPrice += finance.price * finance.number
+                      } else {
+                        originalPrice += finance.price * finance.number
+                      }
+                    }
+                  }
+                }
+                this.finance.activityPrice = activityPrice
+                this.finance.originalPrice = originalPrice
+                this.finance.earnestMoney = earnestMoney
+                this.financeList = financeList
+                var realPrice = originalPrice + activityPrice - earnestMoney
+                this.finance.realPrice = realPrice
+                this.finance.payTypeList[0].money = originalPrice + activityPrice - earnestMoney
+                this.loading = false
+                if (realPrice > 0) this.btnDisabled = false
+              }
             })
           }
         } else {
-          // 二次收费查询
-          this.financeList = []
-          if (this.stuServiceBuyNoteEntity.studentId) {
-            this.infoLoading = true
-            queryMoneyListById(this.stuServiceBuyNoteEntity.studentId).then(response => {
-              this.stuServiceBuyNoteEntity.originalPrice = 0
-              this.stuServiceBuyNoteEntity.activityPrice = 0
-              this.stuServiceBuyNoteEntity.realPrice = 0
-              this.student = response.data.data
-              this.financeList = this.student.financeList
-              this.stuServiceBuyNoteEntity.financeList = this.student.financeList
-              this.earnestMoney = 0
-              for (var i = 0; i < this.student.payTypeList.length; i++) {
-                this.earnestMoney = this.earnestMoney + this.student.payTypeList[i].money
-                // for (var j = 0; j < this.payTypeList.length; j++) {
-                //   if (this.payTypeList[j].mode === this.student.payTypeList[i].mode) {
-                //     this.payTypeList[j].money = this.student.payTypeList[i].money
-                //   }
-                // }
+          // 一次收费查询
+          this.getFinanceList()
+          this.flag = false
+          if (this.finance.studentId) {
+            this.loading = true
+            getStudent(this.finance.studentId).then(response => {
+              var stu = response.data.data
+              // 已经购买的服务包
+              this.finance.financeList = []
+              // 学员车型
+              this.finance.motorcycleType = stu.motorcycleType
+              // 介绍人
+              if (stu.introducerNameList) {
+                this.finance.introducer = stu.introducerNameList[0]
               }
-              this.calculation()
-              this.actualMoneyCalculation()
-              this.infoLoading = false
+              // 校区
+              this.finance.campus = stu.campus
+              this.loading = false
             })
           }
         }
       },
-      stuBuyServiceNote() {
-        this.btnLoading = true
-        if (this.flag) {
-          saveServiceCharge(this.stuServiceBuyNoteEntity).then(() => {
-            // this.$confirm('是否打印?', '提示', {
-            //   confirmButtonText: '确定',
-            //   cancelButtonText: '取消',
-            //   type: 'warning'
-            // }).then(() => {
-            //
-            // })
-            // this.stuServiceBuyNoteEntity = {
-            //   studentId: null, // 学员Id
-            //   originalPrice: 0, // 原始价格
-            //   activityPrice: 0, // 活动价格
-            //   realPrice: 0, // 实收价格
-            //   remark: null, // 实收价格
-            //   receivablesType: null,
-            //   payTypeList: [],
-            //   financeList: []
-            // }
-            // this.student = {}
-            // this.clean()
-            this.btnLoading = false
-          })
-        } else {
-          twoPayment(this.stuServiceBuyNoteEntity).then(() => {
-            // this.stuServiceBuyNoteEntity = {
-            //   studentId: null, // 学员Id
-            //   originalPrice: 0, // 原始价格
-            //   activityPrice: 0, // 活动价格
-            //   realPrice: 0, // 实收价格
-            //   remark: null, // 实收价格
-            //   receivablesType: null,
-            //   payTypeList: [],
-            //   financeList: []
-            // }
-            // this.student = {}
-            // this.clean()
-            // this.flag = true
-            this.btnLoading = false
-          })
-        }
+      // 初始化金额
+      clean() {
+        this.finance.originalPrice = 0
+        this.finance.activityPrice = 0
+        this.finance.realPrice = 0
+        this.finance.earnestMoney = 0
+        this.finance.payTypeList = [
+          { mode: '现金', money: 0 },
+          { mode: '支付宝', money: 0 },
+          { mode: '微信', money: 0 },
+          { mode: '收钱吧', money: 0 },
+          { mode: '刷卡', money: 0 },
+          { mode: '其他', money: 0 }
+        ]
       },
       /* 计算价格 */
       calculation() {
-        this.stuServiceBuyNoteEntity.originalPrice = 0
-        this.stuServiceBuyNoteEntity.activityPrice = 0
-        var activityPrice = 0
-        /* 先计算未参加活动的价格 */
-        for (var i = 0; i < this.stuServiceBuyNoteEntity.financeList.length; i++) {
-          if (this.stuServiceBuyNoteEntity.financeList[i].code !== '004') {
-            if (this.stuServiceBuyNoteEntity.financeList[i].priceType === '0') {
-              this.stuServiceBuyNoteEntity.originalPrice = this.stuServiceBuyNoteEntity.originalPrice + this.stuServiceBuyNoteEntity.financeList[i].price
-            } else {
-              this.stuServiceBuyNoteEntity.originalPrice = this.stuServiceBuyNoteEntity.originalPrice + (this.stuServiceBuyNoteEntity.financeList[i].price * this.stuServiceBuyNoteEntity.financeList[i].number)
-            }
-          }
-        }
-        /* 再计算参加活动的价格 */
-        for (var i = 0; i < this.stuServiceBuyNoteEntity.financeList.length; i++) {
-          if (this.stuServiceBuyNoteEntity.financeList[i].code === '004') {
-            if (this.stuServiceBuyNoteEntity.financeList[i].priceType === '0') {
-              activityPrice = activityPrice + this.stuServiceBuyNoteEntity.financeList[i].price
-            } else {
-              activityPrice = activityPrice + (this.stuServiceBuyNoteEntity.financeList[i].price * this.stuServiceBuyNoteEntity.financeList[i].number)
-            }
-          }
-        }
-        this.stuServiceBuyNoteEntity.activityPrice = activityPrice + this.stuServiceBuyNoteEntity.originalPrice
         this.clean()
-        this.actualMoneyCalculation()
+        // 原始价格 就是所选服务不包括优惠的价格
+        var originalPrice = 0
+        // 活动价格 优惠
+        var activityPrice = 0
+        var financeList = this.finance.financeList
+        for (var i = 0; i < financeList.length; i++) {
+          var finance = financeList[i]
+          if (finance.code === '004') {
+            activityPrice += finance.price * finance.number
+          } else {
+            originalPrice += finance.price * finance.number
+          }
+        }
+        this.finance.activityPrice = activityPrice
+        this.finance.originalPrice = originalPrice
+        this.finance.realPrice = originalPrice + activityPrice
+        this.finance.payTypeList[0].money = originalPrice + activityPrice
+        if (financeList.length > 0 && this.finance.studentId) {
+          this.btnDisabled = false
+        }
       },
-      /* 计算应收费用 */
+      // 输入收款金额
       actualMoneyCalculation() {
-        this.stuServiceBuyNoteEntity.realPrice = 0
-        this.stuServiceBuyNoteEntity.payTypeList = []
-        var price = this.stuServiceBuyNoteEntity.activityPrice ? this.stuServiceBuyNoteEntity.activityPrice : this.stuServiceBuyNoteEntity.originalPrice
-        // 如果全款计算现金
-        if (this.stuServiceBuyNoteEntity.receivablesType === '全款') {
-          var other_m = 0.0
-          for (var i = 1; i < this.payTypeList.length; i++) {
-            if (this.payTypeList[i].money !== null && this.payTypeList[i].money !== 0 && this.payTypeList[i].money !== '') {
-              other_m += this.payTypeList[i].money
-            }
-          }
-          this.payTypeList[0].money = price - other_m
-          this.payTypeList[0].money = this.payTypeList[0].money <= 0 ? 0 : this.payTypeList[0].money
-          // this.stuServiceBuyNoteEntity.realPrice = Number(this.stuServiceBuyNoteEntity.realPrice) + Number(this.payTypeList[0].money)
-        } else if (this.stuServiceBuyNoteEntity.receivablesType === '定转全') {
-          var paymony = price - this.earnestMoney
-          this.stuServiceBuyNoteEntity.realPrice = 0
-          other_m = 0.0
-          for (var i = 1; i < this.payTypeList.length; i++) {
-            if (this.payTypeList[i].money !== null && this.payTypeList[i].money !== 0 && this.payTypeList[i].money !== '') {
-              other_m += this.payTypeList[i].money
-            }
-          }
-          this.payTypeList[0].money = paymony - other_m
-          this.payTypeList[0].money = this.payTypeList[0].money <= 0 ? 0 : this.payTypeList[0].money
+        var isNotDeposit = this.finance.receivablesType !== '定金'
+        var payTypeList = this.finance.payTypeList
+        // 现金
+        var cash = this.finance.activityPrice + this.finance.originalPrice - this.finance.earnestMoney
+        var realPrice = 0
+        var other = 0 // 其他收费方式
+        for (var i = 1; i < payTypeList.length; i++) {
+          var payType = payTypeList[i]
+          if (!payType.money) payType.money = 0
+          other += payType.money
+          realPrice += payType.money
         }
-
-        for (var i = 0; i < this.payTypeList.length; i++) {
-          if (this.payTypeList[i].money !== null && this.payTypeList[i].money !== 0 && this.payTypeList[i].money !== '') {
-            this.stuServiceBuyNoteEntity.payTypeList.push(this.payTypeList[i])
-          }
-          this.stuServiceBuyNoteEntity.realPrice = Number(this.stuServiceBuyNoteEntity.realPrice) + Number(this.payTypeList[i].money)
+        if (isNotDeposit) cash = cash - other
+        if (cash < 0) cash = 0
+        // 实收
+        realPrice = realPrice + cash
+        if (cash > realPrice) realPrice = cash
+        this.finance.realPrice = realPrice
+        payTypeList[0].money = cash
+        this.finance.payTypeList = payTypeList
+        if (realPrice > 0) {
+          this.btnDisabled = false
+        }
+        if (this.finance.financeList.length > 0 && this.finance.studentId) {
+          this.btnDisabled = false
         }
       },
-      clean() {
-        this.payTypeList = [
-          {
-            mode: '现金',
-            money: 0
-          },
-          {
-            mode: '支付宝',
-            money: 0
-          },
-          {
-            mode: '微信',
-            money: 0
-          },
-          {
-            mode: '收钱吧',
-            money: 0
-          },
-          {
-            mode: '刷卡',
-            money: 0
-          },
-          {
-            mode: '其他',
-            money: 0
-          }//,
-          // {
-          //   mode: '老系统转入',
-          //   money: null
-          // }
-        ]
+      createCharge() {
+        saveServiceCharge(this.finance).then(() => {
+          this.btnLoading = false
+          this.clean()
+          this.finance.studentId = null
+        })
       },
+      complementCharge() {
+        twoPayment(this.finance).then(() => {
+          this.btnLoading = false
+          this.clean()
+          this.finance.studentId = null
+        })
+      },
+      stuBuyServiceNote() {
+        this.btnLoading = true
+        this.$confirm('是否打印?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (this.flag) {
+            this.createCharge()
+          } else {
+            this.complementCharge()
+          }
+          this.createOneFormPage()
+        }).catch(() => {
+          if (this.flag) {
+            this.createCharge()
+          } else {
+            this.complementCharge()
+          }
+        })
+      },
+      // 打印
       createOneFormPage() {
         var LODOP = getLodop()
         var dsfStr = ''
@@ -624,7 +590,7 @@
         LODOP.ADD_PRINT_TEXT(91, 531, 73, 20, '身份证号：')
         LODOP.ADD_PRINT_TEXT(91, 605, 120, 20, this.student.idNumber)
 
-        LODOP.ADD_PRINT_TEXT(132, 72, 100, 20, '车型：' + (this.student.motorcycleType == undefined ? '' : this.student.motorcycleType))
+        LODOP.ADD_PRINT_TEXT(132, 72, 100, 20, '车型：' + (this.student.motorcycleType === undefined ? '' : this.student.motorcycleType))
         LODOP.ADD_PRINT_LINE(160, 69, 159, 729, 0, 1) // 车型
 
         LODOP.ADD_PRINT_TEXT(167, 72, 100, 20, '代收费：')
@@ -704,18 +670,22 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .text_css{
-    color:#495060;
-    font-size: 12px;
-    word-break:keep-all;/* 不换行 */
-    white-space:nowrap;/* 不换行 */
-    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
-    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
-  }
-  input:disabled{
-    border: 1px solid #DDD;
-    background: none;
-    color:#c0c4cc;
-    cursor:not-allowed;
+
+.text_css{
+  color:#495060;
+  font-size: 12px;
+  word-break:keep-all;/* 不换行 */
+  white-space:nowrap;/* 不换行 */
+  overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+  text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+input:disabled{
+  border: 1px solid #DDD;
+  background: none;
+  color:#c0c4cc;
+  cursor:not-allowed;
+}
+  .hasMoney{
+    color: red!important;
   }
 </style>

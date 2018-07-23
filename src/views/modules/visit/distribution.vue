@@ -15,7 +15,7 @@
           <el-button size="mini" type="primary"  icon="search" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
         </el-col>
       </el-row>
-      <el-table :data="list" :height="(tableHeight-175)" @selection-change="handleSelectionChange"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+      <el-table :data="list" :height="(tableHeight-175)" @selection-change="handleSelectionChange" @row-click="follow"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
         <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column  align="center" label="姓名">
@@ -54,7 +54,6 @@
             <span>{{scope.row.wechat}}</span>
           </template>
         </el-table-column>
-
       </el-table>
       <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px;clear: both">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -192,6 +191,15 @@
         } else {
           this.dialogIntentionList = true
         }
+      },
+      follow(row, event, column) {
+        console.log(row)
+        var intention = {
+          intentionId: row.intentionId,
+          name: row.name
+        }
+        this.$store.dispatch('setIntention', intention)
+        document.getElementById('vl-tool-right').classList.add('show')
       },
       handleSelectionChange(val) {
         this.intentionList.intentionIds = []

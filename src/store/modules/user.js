@@ -20,6 +20,7 @@ export function showMonitor(desktopList, newlist) {
 const user = {
   state: {
     token: getToken(),
+    username: '',
     name: '',
     avatar: '',
     desktopBg: '',
@@ -43,6 +44,9 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.name = name
+    },
+    SET_USERNAME: (state, username) => {
+      state.username = username
     },
     SET_DESKTOPBG: (state, desktopBg) => {
       state.desktopBg = desktopBg
@@ -138,7 +142,8 @@ const user = {
             // 修改全局数据
             commit('SET_ROLES', data.roles || []) // 用户角色集合
             commit('SET_DESKTOPBG', data.desktopBg || '/static/bg/01/1.jpg') // 桌面背景
-            commit('SET_NAME', data.username) // 用户名
+            commit('SET_NAME', data.name || 'ADMIN') // 用户名
+            commit('SET_USERNAME', data.username) // 用户名
             commit('SET_AVATAR', data.avatar || '../../../static/img/usreicon_40.png') // 头像
             commit('SET_MENUIDS', data.menuIds || []) // 拥有的菜单
             commit('SET_PERMISSIONS', data.permissions || {}) // 按钮权限集合

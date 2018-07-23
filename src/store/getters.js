@@ -10,6 +10,7 @@ const getters = {
   desktopBg: state => state.user.desktopBg,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
+  username: state => state.user.username,
   roles: state => state.user.roles,
   defaultList: state => state.user.defaultList,
   startList: state => state.user.startList,

@@ -50,13 +50,12 @@
               <div class="intention_text" style="width: 100%;float: left">住址：{{intention.contactAddress}}</div>
               <div class="intention_text" style="width: 100%;float: left">顾虑：{{intention.worry}}</div>
               <div class="intention_text" style="width: 100%;float: left">渠道：{{intention.source}}</div>
-              <!--<div class="intention_text" style="width: 100%;float: left">跟进时间：{{intention.updateTime}}</div>-->
 
               <el-tooltip placement="bottom" effect="dark">
                 <div slot="content">
                   <div style="margin: 3px 0"><el-button type="primary" size="mini" @click="editList(intention)">查  看</el-button></div>
                   <div style="margin: 3px 0"><el-button type="success" size="mini" v-if="permissions.visit_intention_update" @click="updateState(intention, '1')">入 学</el-button></div>
-                  <div style="margin: 3px 0"><el-button type="warning" size="mini" v-if="permissions.visit_intention_update" @click="updateState(intention, '-1')">分 配</el-button></div>
+                  <div style="margin: 3px 0"><el-button type="warning" size="mini" v-if="permissions.visit_intention_update" @click="updateState(intention, '-1')">公 海</el-button></div>
                   <div style="margin: 3px 0"><el-button type="danger" size="mini" v-if="permissions.visit_intention_update" @click="updateState(intention, '2')">关 闭</el-button></div>
                 </div>
                 <div class="intention_btn"><svg-icon icon-class="wrench"></svg-icon>操作</div>
@@ -809,9 +808,6 @@
     box-shadow: 5px 3px 3px #ffffff;
     padding: 5px;
     transition: border-color 0.2s,box-shadow 0.2s;
-  }
-  .red{
-    border-color: red;
   }
   .intention_btn{
     width: 60px;

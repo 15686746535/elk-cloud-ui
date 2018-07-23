@@ -30,11 +30,14 @@
 import { mapGetters } from 'vuex'
 import { removeAllSpace } from '@/utils/validate'
 import { followUpList, addFollowUp } from '@/api/visit/followup'
+import intention from '@/views/modules/visit/intention.vue'
+
 export default {
   name: 'tool-intention',
   data() {
     return {
       btnLoading: false,
+      app: { id: 30200, params: { display: 'list' }, name: '意向信息', content: intention, icon: '../../../static/icon/app/app_visit_intention.png' },
       followUpList: [],
       followUp: {}
     }
@@ -70,6 +73,7 @@ export default {
           this.getFollowUp(this.intention.intentionId)
           this.btnLoading = false
           this.followUp.content = null
+          this.$emit('open', this.app)
         })
       }
     }

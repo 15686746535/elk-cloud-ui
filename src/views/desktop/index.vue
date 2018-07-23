@@ -13,7 +13,7 @@
     <!-- 桌面切换 -->
     <el-nav-bar @desktopSwitch="desktopSwitch" @open="layerOpen"></el-nav-bar>
     <!--悬浮工作台 -->
-    <el-tool-intention></el-tool-intention>
+    <el-tool-intention @open="layerOpen"></el-tool-intention>
   </div>
 </template>i
 

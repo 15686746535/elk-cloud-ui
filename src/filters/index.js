@@ -18,8 +18,8 @@ export function timeAgo(time) {
 
 export function sexFilter(sex) {
   const typeMap = {
-    '0': '男',
-    '1': '女'
+    '1': '男',
+    '0': '女'
   }
   return typeMap[sex]
 }
@@ -41,6 +41,13 @@ export function subjectFilter(subject) {
     '4': '科目四',
     '5': '毕业',
     '-1': '退学'
+  }
+  return typeMap[subject]
+}
+export function serviceTypeFilter(subject) {
+  const typeMap = {
+    '1': '一人一车',
+    '2': '两人一车'
   }
   return typeMap[subject]
 }
@@ -131,7 +138,7 @@ export function parseTime(time, cFormat) {
 }
 
 export function formatTime(time, option) {
-  time = +time * 1000
+  // time = +time * 1000
   const d = new Date(time)
   const now = Date.now()
 

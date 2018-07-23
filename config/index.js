@@ -1,8 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-// const url = 'http://52.83.97.172:8003'
-// const url = 'http://192.168.1.166:8003'
-const url = 'http://127.0.0.1:8003'
+const url = 'https://www.eluchn.com/'
+// const url = 'http://127.0.0.1:8003'
+// const url = 'http://192.168.1.80:8003'
 
 
 module.exports = {
@@ -114,6 +114,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/finance' : '/finance'
+        }
+      },
+      '/app/coach': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/app/coach' : '/app/coach'
         }
       }
     },

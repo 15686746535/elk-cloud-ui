@@ -59,4 +59,20 @@ export function queryRecruit(params) {
     params: params
   })
 }
+// 每月招收人数统计
+export function queryCampus(params) {
+  return request({
+    url: '/visualization/queryCampus',
+    method: 'get',
+    params: params
+  })
+}
 
+// 招生详情统计
+export function queryIntroducer(params) {
+  return request({
+    url: '/visualization/queryIntroducer',
+    method: 'get',
+    params: params
+  })
+}

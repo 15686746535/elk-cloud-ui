@@ -2,9 +2,9 @@
   <div id="app" @click="appClack($event)">
     <router-view></router-view>
     <!--加载框-->
-    <div v-loading.fullscreen.lock="$store.state.app.loading"
-         element-loading-text="玩儿命加载中···"
-         element-loading-background="rgba(246, 246, 246, 0.2)"></div>
+    <!--<div v-loading.fullscreen.lock="$store.state.app.loading"-->
+         <!--element-loading-text="玩儿命加载中···"-->
+         <!--element-loading-background="rgba(246, 246, 246, 0.2)"></div>-->
   </div>
 </template>
 
@@ -26,8 +26,8 @@ export default {
       this.$store.dispatch('setSpread', e.target.classList.contains('spread-true'))
     },
     setClientSize() {
-      var height = document.documentElement.clientHeight - 84 || document.body.clientHeight - 84
-      var width = document.documentElement.clientWidth - 240 || document.body.clientWidth - 240
+      var height = document.documentElement.clientHeight || document.body.clientHeight
+      var width = document.documentElement.clientWidth || document.body.clientWidth
       this.$store.dispatch('setClientHeight', height)
       this.$store.dispatch('setClientWidth', width)
     }

@@ -29,8 +29,6 @@ service.interceptors.response.use(
     if (res.code === 500) {
       Message.error(res.msg)
     }
-    console.log(123456789)
-    console.log(res)
     // 网关异常统一拦截
     if (res.code === 500) {
       Message.error(res.message)
@@ -47,8 +45,6 @@ service.interceptors.response.use(
   },
   error => {
     const res = error.response
-    console.log(123456789)
-    console.log(res)
     if (res) {
       if (res.status === 478 || res.status === 403) {
         Message.error('您没有权限！')

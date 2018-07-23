@@ -6,8 +6,9 @@ const app = {
       opened: !+Cookies.get('sidebarStatus')
     },
     visitedViews: [],
-    iFrameUrl: 'http://127.0.0.1', // 52.83.97.172
+    iFrameUrl: 'https://www.eluchn.com', // 52.83.97.172
     motorcycleType: ['C1', 'C2', 'C3', 'C4', 'A1', 'A2', 'A3', 'B1', 'B2', 'D', 'E', 'F', 'M', 'N', 'P'],
+    vehicleType:[{name:'一人一车',value:1},{name:"两人一车",value:2}],
     loading: false,
     spread: false,
     client: {
@@ -52,12 +53,6 @@ const app = {
     }
   },
   actions: {
-    ToggleSideBar: ({ commit }) => {
-      commit('TOGGLE_SIDEBAR')
-    },
-    addVisitedViews: ({ commit }, view) => {
-      commit('ADD_VISITED_VIEWS', view)
-    },
     setLoading: ({ commit }, loading) => {
       commit('SET_LOADING', loading)
     },
@@ -69,12 +64,6 @@ const app = {
     },
     setClientWidth: ({ commit }, width) => {
       commit('SET_CLIENT_WIDTH', width)
-    },
-    delVisitedViews: ({ commit, state }, view) => {
-      return new Promise((resolve) => {
-        commit('DEL_VISITED_VIEWS', view)
-        resolve([...state.visitedViews])
-      })
     }
   }
 }

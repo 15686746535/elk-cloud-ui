@@ -1,6 +1,481 @@
-.app-container {
+/*全局样式*/
+.app-desktop {
   padding: 20px;
 }
+/*全局样式*/
+.app-desktop.calendar-list-desktop{
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  background-size: cover;
+}
+/*背景*/
+
+/* 应用桌面样式*/
+.innerDesktop {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+/* 应用主样式*/
+.desktopIcon {
+  width: 86px;
+  height: 88px;
+  cursor: pointer;
+  text-align: center;
+
+  .icon {
+    width: 50px;
+    height: 50px;
+    margin: 5px auto;
+    outline: none;
+    -moz-user-select: none;
+    position: relative;
+
+    //i {
+    //  width: 50px;
+    //  height: 50px;
+    //  display: block;
+    //  border: 1px solid;
+    //  border-radius: 5px;
+    //  background: url($icon_148) no-repeat center center;
+    //}
+    img {
+      width: 50px;
+      height: 50px;
+    }
+    .txInfo {
+      width: 30px;
+      height: 32px;
+      text-align: center;
+      line-height: 28px;
+      color: #fff;
+      font-size: 12px;
+      position: absolute;
+      right: -8px;
+      top: -8px;
+      background: url($tixing) no-repeat center center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+  span {
+    display: block;
+  }
+
+  .text {
+    display: inline-block;
+    width: auto;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    color: #fff;
+    background: url($IconTextBg) no-repeat left center;
+    position: relative;
+    padding-left: 10px;
+    margin-right: 10px;
+    outline: none;
+    -moz-user-select: none;
+    font-size: 12px;
+
+    span {
+      width: 100%;
+      height: 22px;
+      overflow: hidden;
+    }
+  }
+  s {
+    display: inline-block;
+    width: 10px;
+    height: 22px;
+    position: absolute;
+    right: -10px;
+    top: 0;
+    background: url($IconTextBgRight) left center no-repeat;
+  }
+}
+/* 应用主样式*/
+.desktopIcon:hover {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAABYCAYAAABvXACHAAABlklEQVR42u3dPWoCQRyGcTcrgZgEC0HcFDbCFilT7QE8Ro7hMTySB7BKaZHSZnXBUtciYmYIQki5YrHk98DgR/ny8vxnppmkExgMBnn4eA1r2ME1VGGtdrvdZzeE+jaZTIrpdPowGo1S2TRns9k8LxaLl/D1KQnBvs9msyxN06+qqg7iac5wOOydTqfufD4vu+F3L5Cs1+vDOSCe5my328N4PO7HTO/EcRsEK9h2ER3biWq9LFzHJUON1ViNhWBvrILfOoDGGl6GF6iACqgAGquxDggaa1fAsf/asYI1vKhAYzVWYzUWDghUQAXQWI3VWLgroAL7WPxBYw0vw0uwVEAF7VSBXYFdARUYXtBY+1jBUgEVaCwcEKiACqCxGquxcG14c6iACgwvaKzGaqzGuuimgtaqwAHBAcHw4lhorMZCsFRABXBA4FjBwvAyvDQWGmt4tVkF+7qu+1mWPZRlWYukOTHDkGV0wT4Gu1oul/2iKB7zPL8XT3OOx+M5ZLmPmSbxj/jSZ+fn+dSeeK4iPuYZn0/9+AYYs/qugpwusAAAAABJRU5ErkJggg==") no-repeat center center;
+}
+
+/* 任务栏样式*/
+.vl-notify-task {
+  background: url($TaskDesk) repeat-x left bottom;
+  width: 100%;
+  height: 45px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 66666666666;
+}
+/* 右键菜单样式*/
+.smart_menu_box {
+  display: none;
+  width: 140px;
+  position: absolute;
+  z-index: 201105;
+}
+/* 右键菜单样式*/
+.smart_menu_body {
+  padding: 1px;
+  border: 1px solid #B8CBCB;
+  background-color: #fff;
+  -moz-box-shadow: 2px 2px 5px #666;
+   -webkit-box-shadow: 2px 2px 5px #666;
+   box-shadow: 2px 2px 5px #666;
+}
+/* 右键菜单样式*/
+.smart_menu_ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+/* 右键菜单样式*/
+.smart_menu_a {
+  display: block;
+  height: 25px;
+  line-height: 24px;
+  padding: 0 5px 0 25px;
+  color: #333;
+  font-size: 12px;
+  text-decoration: none;
+  overflow: hidden;
+}
+/* 右键菜单样式*/
+.smart_menu_a:hover, .smart_menu_a_hover {
+  background-color: #348CCC;
+  color: #fff;
+  text-decoration: none;
+}
+/* 右键菜单样式*/
+.smart_menu_li {
+  position: relative;
+}
+/* 右键菜单样式*/
+.smart_menu_li_hover{
+  background-color: #348CCC;
+}
+/* 右键菜单样式*/
+.smart_menu_li_hover .smart_menu_box {
+  display: block;
+  top: -1px;
+  left: 120px;
+}
+
+/* 右键菜单样式*/
+.smart_menu_triangle {
+  width: 0;
+  height: 0;
+  border: 5px dashed transparent;
+  border-left: 5px solid #666;
+  overflow: hidden;
+  position: absolute;
+  top: 7px;
+  right: 5px;
+}
+/* 右键菜单样式*/
+.smart_menu_li_separate {
+  line-height: 0;
+  margin: 3px;
+  border-bottom: 1px solid #B8CBCB;
+  font-size: 0;
+}
+/* 左边菜单样式*/
+#leftBar {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 73px;
+  display: none;
+}
+/* 左边菜单样式*/
+.dock_container {
+  height: 576px;
+  left: 0;
+  margin: -290px 0 0;
+  position: absolute;
+  top: 50%;
+  width: 73px;
+  box-sizing: initial;
+}
+/* 左边菜单样式*/
+.dock_pos_left .dock_middle {
+  background: url($dock_l) no-repeat scroll 0 0;
+}
+/* 左边菜单样式*/
+.dock_middle {
+  height: 566px;
+  padding-top: 10px;
+}
+/* 左边菜单样式*/
+#default_app {
+  width: 63px;
+  height: 445px;
+  position: relative;
+
+  .desktopIcon:hover{
+    background: url($default_appbtn_bg) no-repeat center center;
+  }
+
+  .desktopIcon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto;
+    padding: 2px;
+    .text {
+      display: none;
+    }
+  }
+}
+/* 左边菜单样式*/
+.default_tools {
+  width: 60px;
+  height: 30px;
+  overflow: hidden;
+  zoom: -1;
+  margin-left: 3px;
+  margin-top: 1px;
+}
+/* 左边菜单样式*/
+#start_block {
+  width: 63px;
+  height: 50px;
+}
+/* 左边菜单样式*/
+#start_btn {
+  display: block;
+  width: 48px;
+  height: 48px;
+  background: url($start_btn) no-repeat center bottom;
+  margin: 4px auto 0 auto;
+  outline: none;
+  z-index: 501;
+  cursor: pointer;
+}
+/* 左边菜单样式*/
+#start_btn:hover {
+  background-position: center top;
+}
+/* 左边菜单样式*/
+#start_item {
+  width: 180px;
+  height: auto;
+  padding: 5px 0;
+  background: url($start_item_bg) repeat;
+  position: absolute;
+  z-index: 500;
+  left: 68px;
+  bottom: 0px;
+  display: none;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 5px #444;
+  -webkit-box-shadow: 2px 2px 5px #444;
+  box-shadow: 2px 2px 5px #444;
+}
+/* 左边菜单样式*/
+#start_item .item {
+  width: 100%;
+  height: auto;
+  font-size: 12px;
+  margin: 0;
+  padding: 5px 0;
+}
+/* 左边菜单样式*/
+#start_item .item li {
+  width: 98%;
+  height: 24px;
+  padding: 6px 0;
+  line-height: 24px;
+  margin: 0 auto;
+  color: #FFF;
+  position: relative;
+}
+/* 左边菜单样式*/
+#start_item .item li span {
+  display: inline-block;
+  height: 24px;
+  padding-right: 20px;
+  margin-left: 15px;
+}
+/* 左边菜单样式*/
+#start_item .item li span img {
+  width: 24px;
+  height: 24px;
+  float: left;
+  margin-right: 5px;
+}
+/* 左边菜单样式*/
+#start_item .item li b {
+  width: 10px;
+  height: 24px;
+  background: url($item_child) no-repeat center center;
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+  top: 6px;
+}
+#start_item .childItem {
+  position: absolute;
+  bottom: -10px;
+  right: -181px;
+  z-index: 6666666666;
+  background: url($start_item_bg) repeat;
+  display: none;
+  width: 180px;
+  border-radius: 0 5px 5px 0;
+}
+/* 左边菜单样式*/
+#start_item .admin {
+  border-bottom: 1px solid #444;
+  padding: 5px 0;
+  border-top: none;
+}
+/* 左边菜单样式*/
+#start_item .item li .adminImg {
+  border: 1px solid #E0E0E0;
+  background-position: left -92px;
+  background-color: #FFF;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin: -5px 15px 0 20px;
+}
+/* 左边菜单样式*/
+#start_item .item.item_ul li:hover {
+  background: url($start_item_over) repeat-x left bottom;
+  cursor: pointer;
+  .childItem{
+    display: block;
+  }
+}
+/* 左边菜单样式*/
+#start_item ol, ul {
+  list-style: none;
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar {
+  display: inline-block;
+  height: 40px;
+  //line-height: 40px;
+  position: absolute;
+  left: 50%;
+  z-index: 65;
+  top: 5px;
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar s {
+  display: inline-block;
+  height: 40px;
+  background-image: url($navbarbg);
+  background-repeat: no-repeat;
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar s.l {
+  background-position: left bottom;
+  width: 42px;
+  position: absolute;
+  top: 0;
+  left: -42px;
+
+  .indicator_header {
+    background: url($navbarBtn) no-repeat right bottom;
+    height: 32px;
+    margin: -3px 0 0 6px;
+    position: relative;
+    width: 32px;
+    cursor: pointer;
+
+    .indicator_header_img {
+      display: inline;
+      float: left;
+      height: 24px;
+      margin: 4px 0 0 4px;
+      width: 24px;
+    }
+  }
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar span {
+  display: inline-block;
+  height: 33px;
+  background: url($navbarMidbg) repeat-x left bottom;
+  margin-top: 7px;
+  //line-height: 14px;
+
+  a {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    text-align: center;
+    font-family: 宋体, 微软雅黑, 黑体;
+    font-size: 14px;
+    color: rgb(221, 221, 221);
+    font-weight: 900;
+    text-decoration: none;
+    outline: none;
+    margin: 3px 2px 0px;
+
+    &.currTab {
+      background: url($navbarBtn) no-repeat -223px center;
+      color: #666;
+    }
+  }
+}
+/* 桌面切换悬浮按钮样式*/
+#navBar s.r {
+  width: 42px;
+  background-position: right bottom;
+  position: absolute;
+  top: 0;
+  right: -42px;
+
+  .indicator_manage {
+    display: block;
+    background: url($navbarBtn) no-repeat -108px -4px;
+    margin: 8px 13px;
+    height: 24px;
+    width: 24px;
+  }
+}
+.accurate.el-input--mini{
+  position: relative!important;
+  top: 0px!important;
+  .el-input__inner {
+    height: 26px!important;
+    line-height: 26px!important;
+    border-top-color: #656565!important;
+  }
+}
+.student-search{
+  .el-input .el-input__inner{
+    padding: 0 0 0 10px!important;
+    border: none!important;
+  }
+}
+/*定义动画的时间和过渡效果*/
+.apps {
+  transition: all 0.5s ease;
+}
+/*桌面1隐藏*/
+.apps.desktop-1.hide{
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+/*桌面2隐藏*/
+.apps.desktop-2.hide{
+  -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+
+.intention_body .el-card__body {
+  padding: 0px!important;
+}
+
 .bg-white{
   background-color:#fff;
 }
@@ -16,45 +491,49 @@
 .bg-danger{
   background-color:$BgDanger;
 }
-.app-container.calendar-list-container{
-  overflow: auto;
-  background: url($BackGroundImg);
-}
-.el-row{
-  height: 100%;
-}
-.el-row .el-col{
-  height: 100%;
-}
-.el-card{
-  height: 100%;
-}
+
+//.el-row{
+//  height: 100%;
+//}
+//.el-row .el-col{
+//  height: 100%;
+//}
+//.el-card{
+//  height: 100%;
+//}
 .org-tree-left{
-  width: 230px;
+  height: 100%;
+  width: 300px;
+  .el-card{
+    width: 300px;
+    height: 100%;
+    overflow: auto;
+    background: url($TreeBg) no-repeat center bottom;
+  }
 }
-.org-tree-left .el-card{
-  background-image:url($TreeBg);
-  /* 背景图片不重复显示*/
-  background-repeat: no-repeat;
-  /* 背景图片横向及纵向重复*/
-  /*background-repeat: repeat;*/
-  /*背景图片横向重复*/
-  /*background-repeat: repeat-x;*/
-  /*背景图片纵向重复*/
-  /*background-repeat: repeat-y;*/
-  /*固定背景图片*/
-  /*background-attachment: fixed;*/
-  /*滚动背景图片*/
-  /*background-attachment: scroll;*/
-  /*背景图片在横向的最左方显示*/
-  /*background-position-x: left;*/
-  /*背景图片在横向的最右方显示*/
-  background-position-x: center;
-  /*背景图片在纵向的最上方显示*/
-  /*background-position-y: top;*/
-  /*背景图片在纵向的最下方显示*/
-  background-position-y: bottom;
-}
+//.org-tree-left .el-card{
+//  background-image:url($TreeBg);
+//  /* 背景图片不重复显示*/
+//  background-repeat: no-repeat;
+//  /* 背景图片横向及纵向重复*/
+//  /*background-repeat: repeat;*/
+//  /*背景图片横向重复*/
+//  /*background-repeat: repeat-x;*/
+//  /*背景图片纵向重复*/
+//  /*background-repeat: repeat-y;*/
+//  /*固定背景图片*/
+//  /*background-attachment: fixed;*/
+//  /*滚动背景图片*/
+//  /*background-attachment: scroll;*/
+//  /*背景图片在横向的最左方显示*/
+//  /*background-position-x: left;*/
+//  /*背景图片在横向的最右方显示*/
+//  background-position-x: center;
+//  /*背景图片在纵向的最上方显示*/
+//  /*background-position-y: top;*/
+//  /*背景图片在纵向的最下方显示*/
+//  background-position-y: bottom;
+//}
 .org-tree-left .el-card{
   overflow: auto;
 }

@@ -1,5 +1,11 @@
 import request from '@/utils/request'
 
+export function test() {
+  return request({
+    url: '/app/coach/contacts/contactsMerge',
+    method: 'get'
+  })
+}
 export function fetchList(query) {
   return request({
     url: '/upms/user/userPage',
@@ -30,11 +36,10 @@ export function getObj(id) {
   })
 }
 
-export function delObj(id) {
+export function quit(id) {
   return request({
-    url: '/upms/user/quit',
-    method: 'put',
-    data: id
+    url: '/upms/user/quit/' + id,
+    method: 'put'
   })
 }
 

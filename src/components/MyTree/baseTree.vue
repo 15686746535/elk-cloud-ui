@@ -342,6 +342,9 @@
       data: function(val) {
         this.treeList = val
         this.nodeList()
+      },
+      url: function(val) {
+        this.getTreeData()
       }
     },
     created() {

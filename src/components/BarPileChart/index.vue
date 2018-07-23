@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+    <div :class="className" id="showChart" :style="{height:height,width:width}"></div>
 </template>
 
 <script>
@@ -23,6 +23,10 @@ export default {
       type: String,
       default: '100%'
     },
+    hasDown: {
+      type: Boolean,
+      default: false
+    },
     data: {
       type: Object,
       default: {
@@ -38,8 +42,14 @@ export default {
     }
   },
   watch: {
+    width: function(val) {
+      this.initChart()
+    },
     data: function(val) {
       this.initChart()
+      if (this.hasDown) {
+        this.onClick()
+      }
     }
   },
   computed: {
@@ -53,6 +63,15 @@ export default {
           stack: item.stack,
           barWidth: '40%',
           data: item.value,
+          label: {
+            normal: {
+              show: true,
+              position: 'top'
+              // formatter: function(value, index) { // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+              //   return value.data + '(人)'
+              // }
+            }
+          },
           animationDuration
         }
         seriesList.push(series)
@@ -77,10 +96,21 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
+  created() {
+    // this.onClick()
+  },
   methods: {
-    initChart() {
+    onClick() {
+      var that = this
+      this.chart.on('click', function(params) {
+        // 控制台打印数据的名称
+        if (that.hasDown) {
+          that.$emit('callback', params)
+        }
+      })
+    },
+    initChart() { // document.getElementById('showChart') this.$el, 'macarons'
       this.chart = echarts.init(this.$el, 'macarons')
-
       this.chart.setOption({
         color: this.data.colors,
         tooltip: {
@@ -90,7 +120,7 @@ export default {
           }
         },
         grid: {
-          top: 10,
+          top: 40,
           left: '2%',
           right: '2%',
           bottom: '3%',
@@ -105,8 +135,15 @@ export default {
         }],
         yAxis: [{
           type: 'value',
+          minInterval: 1,
           axisTick: {
             show: true
+          },
+          axisLabel: {
+            show: true
+            // formatter: function(value, index) { // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+            //   return value + '(人)'
+            // }
           }
         }],
         series: this.getSeries
@@ -115,3 +152,5 @@ export default {
   }
 }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+</style>

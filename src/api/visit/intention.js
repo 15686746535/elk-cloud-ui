@@ -16,17 +16,16 @@ export function addObj(obj) {
   })
 }
 
-export function getIntentionByWechat(query) {
+export function getIntentionByMobile(query) {
   return request({
-    url: '/visit/intention/queryIntentionByWechat',
+    url: '/visit/intention/queryIntention',
     method: 'get',
     params: query
   })
 }
-
-export function getIntentionByMobile(query) {
+export function queryIntention(query) {
   return request({
-    url: '/visit/intention/queryIntentionByMobile',
+    url: '/visit/intention/queryIntention',
     method: 'get',
     params: query
   })

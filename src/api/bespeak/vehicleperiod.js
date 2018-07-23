@@ -7,6 +7,22 @@ export function getVehiclePeriodList(query) {
     params: query
   })
 }
+export function queryCarList(query) {
+  return request({
+    url: '/bespeak/vehicleperiod/queryCarList',
+    method: 'get',
+    params: query
+  })
+}
+
+export function queryCoachList(query) {
+  return request({
+    url: '/upms/user/userList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询集合
 export function getShuttledList(query) {
   return request({
@@ -16,9 +32,9 @@ export function getShuttledList(query) {
   })
 }
 // 添加
-export function addVehiclePeriod(obj) {
+export function saveVehiclePeriod(obj) {
   return request({
-    url: '/bespeak/vehicleperiod',
+    url: '/bespeak/vehicleperiod/save',
     method: 'post',
     data: obj
   })
@@ -39,13 +55,7 @@ export function deleteVehiclePeriodStudent(obj) {
     params: obj
   })
 }
-// 根据ID获取
-export function getVehiclePeriod(id) {
-  return request({
-    url: '/bespeak/vehicleperiod/' + id,
-    method: 'get'
-  })
-}
+
 // 根据ID获取约车日志
 export function getVehiclePeriodByStudentId(id) {
   return request({
@@ -56,8 +66,9 @@ export function getVehiclePeriodByStudentId(id) {
 // 根据ID获取约车日志
 export function getClassByCoachId(id) {
   return request({
-    url: '/bespeak/vehicleperiod/getClassByCoachId/' + id,
-    method: 'get'
+    url: '/bespeak/vehicleperiod/findPeriodList',
+    method: 'get',
+    params: id
   })
 }
 // 删除
@@ -73,5 +84,27 @@ export function putVehiclePeriod(obj) {
     url: '/bespeak/vehicleperiod',
     method: 'put',
     data: obj
+  })
+}
+
+export function disableVehicle(obj) {
+  return request({
+    url: '/bespeak/vehicleperiod/disableVehicle',
+    method: 'post',
+    data: { vid: obj.vid, state: obj.state }
+  })
+}
+export function disablePeriod(obj) {
+  return request({
+    url: '/bespeak/vehicleperiod/disablePeriod',
+    method: 'post',
+    data: { pid: obj.pid, state: obj.state }
+  })
+}
+
+export function getTrainingField(type) {
+  return request({
+    url: '/basis/dict/getByType/' + type,
+    method: 'get'
   })
 }

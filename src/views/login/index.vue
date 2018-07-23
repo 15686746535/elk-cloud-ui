@@ -165,6 +165,7 @@ export default {
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+      background-color: #2d3a4b;
     }
     .login-form {
       /*position: absolute;*/
@@ -202,7 +203,7 @@ export default {
       height: 17px;
       display: inline-block;
       overflow: hidden;
-      background: url(image/icons_5859e57.png) no-repeat;
+      background: url(../../../static/icon/icons_5859e57.png) no-repeat;
       background-position: -623px -96px;
     }
   }

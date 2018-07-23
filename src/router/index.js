@@ -54,6 +54,7 @@ export const appMap = [
   { id: 30300, desktop: '1', type: '2', pid: 30000, params: [], name: '入学意向', content: _import('modules/visit/enrolled'), icon: getIcon('app_visit_enrolled'), msgCount: 0, childItem: [] },
   { id: 30400, desktop: '1', type: '2', pid: 30000, params: [], name: '关闭意向', content: _import('modules/visit/close'), icon: getIcon('app_visit_close'), msgCount: 0, childItem: [] },
   // 车辆管理
+
   { id: 50100, desktop: '1', type: '3', pid: 50000, params: [], name: '车辆信息', content: _import('modules/vehicle/car'), icon: getIcon('app_car'), msgCount: 0, childItem: [] },
   // 人力资源
   { id: 60100, desktop: '1', type: '4', pid: 60000, params: [], name: '同事信息', content: _import('modules/upms/user'), icon: getIcon('app_user'), msgCount: 0, childItem: [] },

@@ -55,7 +55,20 @@
             <span>{{ scope.row.createTime | subTime}}</span>
           </template>
         </el-table-column>
-
+        <el-table-column align="center"  label="状态">
+          <template slot-scope="scope">
+            <el-tag size="mini" type="primary" v-if="!scope.row.state">待审核</el-tag>
+            <el-tag size="mini" type="info" v-if="scope.row.state==1" >已通过</el-tag>
+            <el-tag size="mini" type="danger" v-if="scope.row.state==-1">已作废</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column align="center"  label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" v-if="!scope.row.state" @click="updateFinaceStateHandle(scope.row.chargeId,1)">通过</el-button>
+            <el-button size="mini" type="info" v-if="scope.row.state==1" @click="updateFinaceStateHandle(scope.row.chargeId,0)">反审核</el-button>
+            <el-button size="mini" type="danger" v-if="!scope.row.state" @click="updateFinaceStateHandle(scope.row.chargeId,-1)">作废</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -74,7 +87,7 @@
 <script>
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-  import { getServiceChargeList } from '@/api/finance/service-charge'
+  import { getServiceChargeList, updateFinaceState } from '@/api/finance/service-charge'
 
   export default {
     name: 'table_log',
@@ -121,6 +134,16 @@
       // 改变页容量
       handleSizeChange(val) {
         this.listQuery.limit = val
+      },
+      updateFinaceStateHandle(chargeid, state) {
+        // console.log(dat,row)
+        var dat = {
+          chargeid: chargeid,
+          state: state
+        }
+        updateFinaceState(dat).then(res => {
+          this.created()
+        })
       },
       // 改变当前页
       handleCurrentChange(val) {

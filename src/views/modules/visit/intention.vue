@@ -809,6 +809,9 @@
     padding: 5px;
     transition: border-color 0.2s,box-shadow 0.2s;
   }
+  .red{
+    border-color: red;
+  }
   .intention_btn{
     width: 60px;
     height: 25px;

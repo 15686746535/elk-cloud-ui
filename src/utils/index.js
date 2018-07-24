@@ -301,10 +301,9 @@ export function autoProduce(idNumber) {
 export function randomNumBoth(Min, Max) {
   var Range = Max - Min
   var Rand = Math.random()
-  var num = Min + Math.round(Rand * Range) //四舍五入
+  var num = Min + Math.round(Rand * Range) // 四舍五入
   return num
 }
-
 
 /* 转化为人名币  大写 */
 export function smalltoBIG(n) {

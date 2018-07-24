@@ -476,6 +476,7 @@
               </div>
               <div v-else style="float: right;">
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
+                <el-button type="primary" size="mini" @click="serviceNoteBuy"  v-if="permissions.stu_service_charge_add"><i class="el-icon-fa-car"></i> 收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add"><i class="el-icon-fa-car"></i> 约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update"><i class="el-icon-edit"></i> 编 辑</el-button>
@@ -574,7 +575,7 @@
       </el-row>
     </el-card>
     <!--添加-->
-    <el-card v-show="showModule=='add'" @close="backClick" title="录入详细信息" width="800px"  style="height: 100%">
+    <el-card v-show="showModule=='add'" @close="backClick" title="录入详细信息" width="800px"  style="height: 100%;overflow: auto">
       <div v-loading="createLoading" element-loading-text="努力加载中..." style="line-height: 50px;">
         <el-form :model="studentEntity" :rules="studentEntityRules" ref="studentEntity" label-width="80px" size="mini" >
           <el-row :gutter="20">
@@ -765,7 +766,7 @@
                   <span slot="label" class="text_css">是否有车</span>
                   <el-radio-group v-model="studentEntity.haveCar">
                     <el-radio label="1">是</el-radio>
-                    <el-radio label="0">否</el-radio>
+                    <el-radio label="0" >否</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-row>
@@ -992,6 +993,7 @@
   import { followUpList } from '@/api/visit/followup'
   import { getIntentionByMobile } from '@/api/visit/intention'
   import { Message } from 'element-ui'
+  import finance from '@/views/modules/stu/serviceNote.vue'
 
   export default {
     components: {
@@ -1069,9 +1071,9 @@
           studyTime: null,
           latitude: null,
           longitude: null,
-          physicalExamination: null,
-          haveCar: null,
-          addDrive: null,
+          physicalExamination: '0',
+          haveCar: '0',
+          addDrive: '0',
           state: null,
           graduationTime: null,
           periodOfValidity: null,
@@ -1113,9 +1115,9 @@
           studyTime: null,
           latitude: null,
           longitude: null,
-          physicalExamination: null,
-          haveCar: null,
-          addDrive: null,
+          physicalExamination: '0',
+          haveCar: '0',
+          addDrive: '0',
           state: null,
           graduationTime: null,
           periodOfValidity: null,
@@ -1401,6 +1403,34 @@
           MODAL: '2', // 2
           TICKET: '', // 秘钥
           SFZC2: '2' // 2
+        },
+        finance: {
+          studentId: null, // 学员Id
+          campus: '', // 学员校区
+          name: '', // 姓名
+          idNumber: '', // 身份证
+          motorcycleType: '', // 学员车型
+          serialNumber: 20180721001, // 流水号
+          title: '重庆壹路驾驶培训有限公司',
+          originalPrice: 0, // 原始价格 就是所选服务不包括优惠的价格
+          activityPrice: 0, // 活动价格 优惠
+          realPrice: 0, // 实收价格
+          earnestMoney: 0, // 已收定金
+          remark: '', // 备注
+          introducer: '', // 销售员
+          payee: '', // 收款人
+          reviser: '', // 校订者 修改人
+          receivablesType: '全款',
+          paytime: new Date(),
+          payTypeList: [
+            { mode: '现金', money: 0 },
+            { mode: '支付宝', money: 0 },
+            { mode: '微信', money: 0 },
+            { mode: '收钱吧', money: 0 },
+            { mode: '刷卡', money: 0 },
+            { mode: '其他', money: 0 }
+          ], // 支付方式
+          financeList: []
         }
       }
     },
@@ -1857,6 +1887,21 @@
             this.createLoading = false
           })
         }
+      },
+      serviceNoteBuy() {
+        this.$layer.open({
+          type: 2,
+          id: this.student.studentId + '_stu', // title
+          title: '￥' + this.student.name + ' 学费收取', // title
+          shadeClose: false, // 点击遮罩关闭
+          tabIcon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
+          shade: false, // 遮罩 默认不显示
+          content: {
+            content: finance,
+            parent: this, // 当前的vue对象
+            data: { student: this.student }// props
+          }
+        })
       },
       handleBespeakCar() {
         var coachId

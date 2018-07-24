@@ -94,6 +94,20 @@ export function subTime(time, cFormat) {
     }
   }
 }
+
+export function parseSerial(value) {
+  var number
+  if (value < 10) {
+    number = '000' + value // 0001  -  0009
+  } else if (value >= 10 && value < 100) {
+    number = '00' + value // 0010  - 0099
+  } else if (value >= 100 && value < 1000) {
+    number = '0' + value // 0100  - 0999
+  } else if (value >= 1000) {
+    number = '' + value // 0100  - 0999
+  }
+  return number
+}
 export function parseJson(value, column) {
   value = JSON.parse(value)
   if (column === 'cost') return value.cost

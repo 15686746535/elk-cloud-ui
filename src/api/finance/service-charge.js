@@ -52,3 +52,10 @@ export function putServiceCharge(obj) {
     data: obj
   })
 }
+
+export function querySerialNumber() {
+  return request({
+    url: '/finance/service/querySerialNumber',
+    method: 'get'
+  })
+}

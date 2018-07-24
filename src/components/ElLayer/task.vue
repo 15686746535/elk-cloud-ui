@@ -154,7 +154,7 @@ export default {
       margin-right: 6px;
       line-height: 43px;
       font-size: 12px;
-      color: #FFF;
+      color: #000;
       overflow: hidden;
   }
   .selected{

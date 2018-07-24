@@ -451,10 +451,49 @@
     border-top-color: #656565!important;
   }
 }
-.student-search{
-  .el-input .el-input__inner{
-    padding: 0 0 0 10px!important;
-    border: none!important;
+
+#service-note{
+  .el-checkbox {
+    margin-left: 0px!important;
+    margin-right: 15px!important;
+  }
+  .student-search{
+    .el-input .el-input__inner{
+      padding: 0px!important;
+      border: none!important;
+    }
+  }
+  .note-border-date{
+    input {
+      padding: 0!important;
+      border: none!important;
+    }
+  }
+  .dict-not-border{
+    input {
+      padding: 0!important;
+      border: none!important;
+      color: #303133!important;
+    }
+  }
+  .receivables-type{
+    input {
+      padding: 0!important;
+      border: none!important;
+      color: #303133!important;
+    }
+    .el-input__suffix{
+      display: none!important;
+    }
+  }
+}
+
+.receivables-type{
+  .el-radio+.el-radio {
+    margin-left: 10px!important;
+  }
+  .el-radio__label{
+    padding-left: 2px!important;
   }
 }
 /*定义动画的时间和过渡效果*/

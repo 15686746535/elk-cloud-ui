@@ -90,8 +90,12 @@
           </el-row>
         <!-- 项目 -->
         <el-row  style="border: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
-          <el-col :span="1" style="padding: 0 10px;">
-            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 75px">项目</div>
+          <el-col :span="1" style="padding: 0 10px;height: 100%">
+            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 80px">
+              <div>
+                项目
+              </div>
+            </div>
           </el-col>
           <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
             <el-row style="line-height: 40px;border-bottom: 1px solid #1f2d3d;">
@@ -207,12 +211,13 @@
                     {{payType.mode}}：
                   </span>
                   <!-- -->
-                  <input :disabled="index === 0 && finance.receivablesType!='定金'" :class="payType.money!==0?'hasMoney':''" @change="actualMoneyCalculation" type="number" v-model.number="payType.money" style="border: none;
-                                                               outline:none;
-                                                               width: 50px;
-                                                               border-bottom: #dcdfe6 1px solid;
-                                                               font-size: 12px;
-                                                               color: #606266;"/>元
+                  <el-input-number v-model="payType.money" controls-position="right" :min="0" size="small" class="money-input-number"
+                                   :disabled="index === 0 && finance.receivablesType!='定金'"
+                                   :class="payType.money!==0?'hasMoney':''"
+                                   @change="actualMoneyCalculation" style="border: none; outline:none;width: 50px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;">
+
+                  </el-input-number>
+                  元
                   <span v-if="finance.payTypeList.length !== (index+1)">，</span>
                 </span>
               </el-col>
@@ -338,7 +343,6 @@
     },
     created() {
       if (this.student) {
-        this.finance.payee = this.name
         this.getStudentList(this.student.name)
         this.finance.studentId = this.student.studentId
         this.getStudent()
@@ -346,7 +350,7 @@
       if (this.editFinance) {
         console.log(this.editFinance)
       } else {
-        this.getSerialNumber()
+        this.finance.payee = this.name
       }
     },
     computed: {
@@ -363,6 +367,7 @@
         this.finance.financeList = []
         if (this.finance.studentId) {
           this.loading = true
+          this.getSerialNumber()
           getStudent(this.finance.studentId).then(response => {
             var stu = response.data.data
             // 学员车型
@@ -525,24 +530,36 @@
       actualMoneyCalculation() {
         var isNotDeposit = this.finance.receivablesType !== '定金'
         var payTypeList = this.finance.payTypeList
-        // 现金
-        var cash = this.finance.activityPrice + this.finance.originalPrice - this.finance.earnestMoney
+        // 应收账款
+        var receivable = this.finance.activityPrice + this.finance.originalPrice - this.finance.earnestMoney
+        // 实收
         var realPrice = 0
-        var other = 0 // 其他收费方式
+        // 现金
+        var cash = 0
+        // 其他收费方式
+        var other = 0
         for (var i = 1; i < payTypeList.length; i++) {
           var payType = payTypeList[i]
-          if (!payType.money) payType.money = 0
+          if (payType.money < 0) payType.money = 0
           other += payType.money
-          realPrice += payType.money
         }
-        if (isNotDeposit) cash = cash - other
-        if (cash < 0) cash = 0
-        // 实收
-        realPrice = realPrice + cash
-        if (cash > realPrice) realPrice = cash
+        if (isNotDeposit) {
+          // 现金 = 应收账款 - 其他收费方式
+          cash = receivable - other
+          // 如果实际收款大于应收账款（超收） 则修改现金为0
+          if (cash < 0) cash = 0
+          // 修改现金金额
+          payTypeList[0].money = cash
+          this.finance.payTypeList = payTypeList
+          // 实收金额 = 现金 + 其他收费方式
+          realPrice = other + cash
+          // 如果其他收款填写负数 则会出现本次实收小于现金则修正
+          if (cash > realPrice) realPrice = cash
+        } else {
+          realPrice = other + payTypeList[0].money
+        }
+
         this.finance.realPrice = realPrice
-        payTypeList[0].money = cash
-        this.finance.payTypeList = payTypeList
         if (realPrice > 0) {
           this.btnDisabled = false
         }

@@ -125,20 +125,31 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
+          console.log(data)
           if (data.code === 0 && data.roles != null && data.roles.length > 0) {
             // 获取拥有的应用集合
             var hasAppList = hasAppFilter(data.menuIds, data.roles)
             // 获取需要展示的集合
             var showApps = showAppFilter(hasAppList, data.showApp)
-            // 修改提醒数量
+            // 修改提醒数量  1代办 2消息
             // 短消息
-            defaultMap[0].msgCount = data.agencyList ? data.agencyList[1] : 0
+            defaultMap[0].msgCount = 0
             // 工作日志
             defaultMap[1].msgCount = 0
             // 我的待办
-            defaultMap[2].msgCount = data.agencyList ? data.agencyList[0] : 0
+            defaultMap[2].msgCount = 0
             // 任务管理
             defaultMap[3].msgCount = 0
+            data.agencyList.forEach(function(agency) {
+              if (agency.type === '1') {
+                // 我的待办
+                defaultMap[2].msgCount = agency.count
+              }
+              if (agency.type === '2') {
+                // 短消息
+                defaultMap[0].msgCount = agency.count
+              }
+            })
             // 修改全局数据
             commit('SET_ROLES', data.roles || []) // 用户角色集合
             commit('SET_DESKTOPBG', data.desktopBg || '/static/bg/01/1.jpg') // 桌面背景

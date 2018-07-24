@@ -5,20 +5,14 @@
       <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="getList">搜索</el-button>
       <el-table :key='tableKey'  :height="tableHeight-220" :data="list" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-        <el-table-column align="center" label="驾校">
-          <template slot-scope="scope">
-            <span>{{scope.row.groupName}}</span>
-            <span v-if="scope.row.companyName">（{{scope.row.companyName}}）</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="部门">
-          <template slot-scope="scope">
-            <span>{{scope.row.orgName}}</span>
-          </template>
-        </el-table-column>
         <el-table-column align="center" label="职位名称">
           <template slot-scope="scope">
             <span>{{scope.row.roleName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="数据权限">
+          <template slot-scope="scope">
+            <span>{{scope.row.scope}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="职位描述">

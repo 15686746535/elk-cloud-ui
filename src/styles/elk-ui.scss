@@ -486,6 +486,21 @@
       display: none!important;
     }
   }
+  .money-input-number{
+    span {
+      display: none!important;
+    }
+    input {
+      border: none!important;
+      padding: 0!important;
+    }
+    &.hasMoney {
+      input {
+        color: red !important;
+      }
+    }
+  }
+
 }
 
 .receivables-type{

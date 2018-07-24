@@ -61,7 +61,7 @@ export function querySerialNumber() {
 }
 export function updateFinaceState(dat) {
   return request({
-    url: '/finance/service/updatestate',
+    url: '/finance/service/charge/updatestate',
     method: 'post',
     data: dat
   })

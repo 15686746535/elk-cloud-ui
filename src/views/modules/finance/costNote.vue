@@ -57,16 +57,16 @@
         </el-table-column>
         <el-table-column align="center"  label="状态">
           <template slot-scope="scope">
-            <el-tag size="mini" type="primary" v-if="!scope.row.state">待审核</el-tag>
+            <el-tag size="mini" type="primary" v-if="scope.row.state==0">待审核</el-tag>
             <el-tag size="mini" type="info" v-if="scope.row.state==1" >已通过</el-tag>
             <el-tag size="mini" type="danger" v-if="scope.row.state==-1">已作废</el-tag>
           </template>
         </el-table-column>
         <el-table-column align="center"  label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" v-if="!scope.row.state" @click="updateFinaceStateHandle(scope.row.chargeId,1)">通过</el-button>
+            <el-button size="mini" type="primary" v-if="scope.row.state==0" @click="updateFinaceStateHandle(scope.row.chargeId,1)">通过</el-button>
             <el-button size="mini" type="info" v-if="scope.row.state==1" @click="updateFinaceStateHandle(scope.row.chargeId,0)">反审核</el-button>
-            <el-button size="mini" type="danger" v-if="!scope.row.state" @click="updateFinaceStateHandle(scope.row.chargeId,-1)">作废</el-button>
+            <el-button size="mini" type="danger" v-if="scope.row.state==0" @click="updateFinaceStateHandle(scope.row.chargeId,-1)">作废</el-button>
           </template>
         </el-table-column>
       </el-table>

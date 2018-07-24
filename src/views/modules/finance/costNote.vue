@@ -138,11 +138,11 @@
       updateFinaceStateHandle(chargeid, state) {
         // console.log(dat,row)
         var dat = {
-          chargeid: chargeid,
+          chargeId: chargeid,
           state: state
         }
         updateFinaceState(dat).then(res => {
-          this.created()
+          this.getServiceChargeList()
         })
       },
       // 改变当前页

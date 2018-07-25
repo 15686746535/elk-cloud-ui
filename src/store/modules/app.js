@@ -8,7 +8,7 @@ const app = {
     visitedViews: [],
     iFrameUrl: 'https://www.eluchn.com', // 52.83.97.172
     motorcycleType: ['C1', 'C2', 'C3', 'C4', 'A1', 'A2', 'A3', 'B1', 'B2', 'D', 'E', 'F', 'M', 'N', 'P'],
-    vehicleType:[{name:'一人一车',value:1},{name:"两人一车",value:2}],
+    vehicleType: [{ name: '一人一车', value: 1 }, { name: '两人一车', value: 2 }],
     loading: false,
     spread: false,
     client: {

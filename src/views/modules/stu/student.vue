@@ -189,35 +189,25 @@
       </el-card>
     </div>
     <!--详情-->
-    <el-card v-show="showModule=='info'" body-style="padding:10px;" >
-      <el-row >
+    <el-card v-show="showModule=='info'" style="height: 100%;overflow: auto;position: relative;">
+      <el-button type="primary" :disabled="edit" size="mini"  @click="backClick" style="position: absolute;top: 25px;right: 35px;z-index: 6666;"><i class="el-icon-back"></i> 返 回</el-button>
+      <div style="position: absolute;top: 15px;left: 16px;z-index: 6666;">
+        <el-upload :disabled="!edit"  style="height: 50px;" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers" accept=".png,.jpg"
+                   :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
+          <img :src="student.avatar" class="avatar">
+        </el-upload>
+      </div>
+      <el-row style="height: 100%;" :gutter="10">
         <el-col :span="area[1] === 600?24:12" style="height: 100%;">
           <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px" size="mini">
             <el-card body-style="padding: 0;"
                      v-loading="infoLoading" element-loading-text="努力匹配中..."
                      shadow="never" style="border-radius:0 4px 0 0;line-height: 40px;overflow-y: auto;">
+
               <!-- 基本信息 -->
-              <el-row class="title" style="line-height: 60px;height: 60px;">
-
-                <el-col :span="3">
-                  <div style="height: 50px;margin-top: 5px;margin-left: -40px;">
-                    <el-upload :disabled="!edit"  style="height: 50px;" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers" accept=".png,.jpg"
-                               :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
-                      <img :src="student.avatar" class="avatar">
-                    </el-upload>
-                  </div>
-                </el-col>
-
-                <el-col :span="17">基本信息</el-col>
-
-                <el-col :span="4">
-                  <el-button type="primary" :disabled="edit" size="mini"  @click="backClick"><i class="el-icon-back"></i> 返 回</el-button>
-                </el-col>
-
-              </el-row>
-
+              <el-row class="title" style="line-height: 35px;height: 35px;">基本信息</el-row>
               <!--基本信息-->
-              <el-row >
+              <el-row :gutter="15" style="padding: 0 20px">
                 <el-col :span="12">
                   <!-- 档案号 -->
                   <el-row>
@@ -315,8 +305,8 @@
                 </el-col>
               </el-row>
               <!-- 入学信息 -->
-              <el-row class="title" style="line-height: 60px;height: 60px">入学信息</el-row>
-              <el-row>
+              <el-row class="title" style="line-height: 35px;height: 35px">入学信息</el-row>
+              <el-row :gutter="15" style="padding: 0 20px;height: 374px">
                 <el-col :span="12">
                   <!-- 入学日期 -->
                   <el-row>
@@ -375,7 +365,7 @@
                   <el-row >
                     <el-form-item prop="remark">
                       <span slot="label"  class="text_css">备注:</span>
-                      <el-input v-if="edit"   type="textarea" v-model="student.remark" :autosize="{ minRows: 4, maxRows: 4}" placeholder="备注"></el-input>
+                      <el-input v-if="edit"   type="textarea" v-model="student.remark" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注"></el-input>
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.remark}}</div>
                     </el-form-item>
                   </el-row>
@@ -476,7 +466,7 @@
               </div>
               <div v-else style="float: right;">
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
-                <el-button type="primary" size="mini" @click="serviceNoteBuy"  v-if="permissions.stu_service_charge_add"><i class="el-icon-fa-car"></i> 收 费</el-button>
+                <el-button type="primary" size="mini" @click="serviceNoteBuy"  v-if="permissions.stu_service_charge_add"><i class="el-icon-goods"></i> 收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add"><i class="el-icon-fa-car"></i> 约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update"><i class="el-icon-edit"></i> 编 辑</el-button>
@@ -486,13 +476,12 @@
           </el-form>
         </el-col>
         <el-col :span="area[1] === 600?24:12"  >
-          <el-tabs v-model="activeName" type="border-card"  @tab-click="handleClick" style="height: 100%;border-radius: 4px 0 0 4px;">
+          <el-tabs v-model="activeName" type="border-card"  @tab-click="handleClick" style="height: 799px;border-radius: 4px 0 0 4px;">
             <!--<el-tab-pane label="最近信息" name="1">-->
             <!--</el-tab-pane>-->
             <el-tab-pane label="考试情况" name="1" style="height: 100%">
               <el-table :data="examNoteList" stripe style="width: 100%;">
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-
                 <el-table-column align="center"  label="考试日期">
                   <template slot-scope="scope">
                     <span>{{ scope.row.examTime | subTime}}</span>
@@ -519,7 +508,45 @@
               </el-table>
 
             </el-tab-pane>
-            <!--<el-tab-pane label="费用情况" name="3">-->
+            <el-tab-pane label="费用情况" name="3">
+              <el-table :data="financeList" stripe style="width: 100%;">
+                <el-table-column type="expand">
+                  <template slot-scope="props">
+                    <div style="line-height: 22px;">
+                      <span v-for="(service,index) in props.row.financeList">
+                      <span style="text-decoration: underline">{{service.code+'_'+service.name + '('+service.price+'*'+service.number+')'}}</span>
+                      <span v-if="index+1 < props.row.financeList.length">、</span>
+                      </span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="单号" width="150">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费金额">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.money}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费时间">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.paytime | parseTime('{y}-{m}-{d}')}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费类型">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.receivablesType}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费方式">
+                  <template slot-scope="scope">
+                    <p v-for="type in scope.row.payTypeList">{{type.mode + '('+type.money+')'}}</p>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
             <el-tab-pane label="来访跟进信息" name="4">
               <div style="line-height: 160px;height: 160px;color: #909399;text-align: center;font-size: 14px" v-if="followUpList.length === 0">
                 无跟进信息
@@ -983,7 +1010,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122 } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122, getFinanceList } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
@@ -1404,34 +1431,7 @@
           TICKET: '', // 秘钥
           SFZC2: '2' // 2
         },
-        finance: {
-          studentId: null, // 学员Id
-          campus: '', // 学员校区
-          name: '', // 姓名
-          idNumber: '', // 身份证
-          motorcycleType: '', // 学员车型
-          serialNumber: 20180721001, // 流水号
-          title: '重庆壹路驾驶培训有限公司',
-          originalPrice: 0, // 原始价格 就是所选服务不包括优惠的价格
-          activityPrice: 0, // 活动价格 优惠
-          realPrice: 0, // 实收价格
-          earnestMoney: 0, // 已收定金
-          remark: '', // 备注
-          introducer: '', // 销售员
-          payee: '', // 收款人
-          reviser: '', // 校订者 修改人
-          receivablesType: '全款',
-          paytime: new Date(),
-          payTypeList: [
-            { mode: '现金', money: 0 },
-            { mode: '支付宝', money: 0 },
-            { mode: '微信', money: 0 },
-            { mode: '收钱吧', money: 0 },
-            { mode: '刷卡', money: 0 },
-            { mode: '其他', money: 0 }
-          ], // 支付方式
-          financeList: []
-        }
+        financeList: []
       }
     },
     created() {
@@ -1561,6 +1561,8 @@
       },
       // 双击行  编辑
       editList(val) {
+        this.activeName = '1'
+        this.financeList = []
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
           this.student = response.data.data
@@ -1577,13 +1579,27 @@
         if (tab.label === '考试情况') {
           this.getExam()
         } else if (tab.label === '费用情况') {
-          // this.getExam()
+          this.getFinance()
         } else if (tab.label === '来访跟进信息') {
           this.getFollowUpList()
         } else if (tab.label === '约车日志') {
           this.getVehiclePeriod()
         } else if (tab.label === '接送日志') {
           this.getShuttleLog()
+        }
+      },
+      /* 费用情况 */
+      getFinance() {
+        if (this.student.studentId) {
+          getFinanceList(this.student.studentId).then(response => {
+            console.log('getFinanceList', JSON.stringify(response.data.data))
+            if (response.data.code === 0) {
+              var list = response.data.data
+              this.financeList = list.filter(function(item) {
+                return item.state !== '-1'
+              })
+            }
+          })
         }
       },
       /* 考试日志 */
@@ -2012,9 +2028,9 @@
     text-align: center;
   }
   .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
   }
   .avatar_img {
     line-height: 180px;

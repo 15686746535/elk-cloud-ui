@@ -65,8 +65,6 @@ export const appMap = [
   // 财务
   { id: 70100, desktop: '1', type: '5', pid: 70000, params: [], name: '收费记录', content: _import('modules/finance/costNote'), icon: getIcon('app_cost_info'), msgCount: 0, childItem: [] },
   // 统计
-
-
   { id: 120600, desktop: '1', type: '6', pid: 80000, params: [], name: '招生人数统计', content: _import('modules/visualization/recruit'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
   { id: 120100, desktop: '1', type: '6', pid: 80000, params: [], name: '顾虑统计', content: _import('modules/visualization/worry'), icon: getIcon('app_worrycount'), msgCount: 0, childItem: [] },
   { id: 120400, desktop: '1', type: '6', pid: 80000, params: [], name: '来访统计', content: _import('modules/visualization/intention'), icon: getIcon('app_intentioncount'), msgCount: 0, childItem: [] },

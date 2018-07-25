@@ -12,8 +12,8 @@
         <!-- 学员信息 -->
         <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              <el-date-picker v-model="finance.paytime" type="date" placeholder="" format="yyyy年MM月dd日" :clearable="false"  style="width: 100%;font-size: 12px;"
-                              value-format="yyyy-MM-dd" prefix-icon="no" class="note-border-date"></el-date-picker>
+              <el-date-picker v-model="finance.paytime" type="date" placeholder="" format="yyyy年MM月dd日" value-format="timestamp" :clearable="false"
+                              style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
             </el-col>
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
               <el-row>
@@ -260,7 +260,7 @@
 <script>
   import Coach from '@/components/Coach'
   import { getFinanceList } from '@/api/finance/service-category'
-  import { queryMoneyListById, saveServiceCharge, querySerialNumber } from '@/api/finance/service-charge'
+  import { queryMoneyListById, saveServiceCharge, querySerialNumber, getServiceByChargeId } from '@/api/finance/service-charge'
   import { getLodop } from '@/utils/LodopFuncs'
   import { mapGetters } from 'vuex'
   import { fetchStudentList, getStudent } from '@/api/student/student'
@@ -273,7 +273,7 @@
     props: {
       layerid: String,
       student: Object,
-      editFinance: Object
+      chargeId: Number
     },
     watch: {
       param: function(val) {
@@ -301,8 +301,8 @@
           name: '', // 姓名
           idNumber: '', // 身份证
           motorcycleType: '', // 学员车型
-          serialNumber: 1, // 流水号
-          serialPrefix: 'YL', // 流水号 前缀
+          serialNumber: null, // 流水号
+          serialPrefix: '', // 流水号 前缀
           title: '', // 收据标题 公司名字
           originalPrice: 0, // 原始价格 就是所选服务不包括优惠的价格
           activityPrice: 0, // 活动价格 优惠
@@ -313,7 +313,7 @@
           payee: '', // 收款人
           reviser: '', // 校订者 修改人
           receivablesType: '全款',
-          paytime: new Date(),
+          paytime: null,
           payTypeList: [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -347,9 +347,10 @@
         this.finance.studentId = this.student.studentId
         this.getStudent()
       }
-      if (this.editFinance) {
-        console.log(this.editFinance)
+      if (this.chargeId) {
+        this.getService()
       } else {
+        this.finance.paytime = new Date().getTime()
         this.finance.payee = this.name
       }
     },
@@ -361,6 +362,49 @@
       ])
     },
     methods: {
+      getService() {
+        this.getFinanceList()
+        this.loading = true
+        getServiceByChargeId(this.chargeId).then(response => {
+          var finance = response.data.data
+          var payTypeList = [
+            { mode: '现金', money: 0 },
+            { mode: '支付宝', money: 0 },
+            { mode: '微信', money: 0 },
+            { mode: '收钱吧', money: 0 },
+            { mode: '刷卡', money: 0 },
+            { mode: '其他', money: 0 }
+          ]
+          payTypeList.forEach(function(type) {
+            finance.payTypeList.forEach(function(item) {
+              if (type.mode === item.mode) {
+                type.money = item.money
+              }
+            })
+          })
+          var financeList = []
+          var financeAllList = this.financeList
+          for (var i = 0; i < finance.financeList.length; i++) {
+            for (var j = 0; j < financeAllList.length; j++) {
+              if (financeAllList[j].categoryId === finance.financeList[i].categoryId) {
+                financeList.push(financeAllList[j])
+                continue
+              }
+            }
+          }
+          this.setReceivablesList([finance.receivablesType])
+          finance.financeList = financeList
+          finance.payTypeList = payTypeList
+          // 校订者 修改人
+          finance.reviser = this.name
+
+          this.finance = finance
+          this.isEdit = true
+          this.loading = false
+          console.log(finance)
+          console.log(this.finance)
+        })
+      },
       getStudent(receivable) {
         this.clean()
         this.financeList = []
@@ -415,7 +459,6 @@
               }
             }
             var realPrice = originalPrice + activityPrice - earnestMoney
-            // 费用已经缴清
             if (realPrice > 0) {
               // 费用未经缴清
               this.finance.activityPrice = activityPrice // 活动价格 优惠
@@ -430,19 +473,24 @@
               this.btnDisabled = false
               this.finance.receivablesType = '定转全'
             }
+            // 费用已经缴清
+            if (realPrice < 0) realPrice = 0
             if (realPrice === 0 || receivable === '购买服务包') {
               this.finance.receivablesType = '购买服务包'
               this.clean()
               this.flag = false
               this.getFinanceList()
+              // 已经购买的服务包
+              this.finance.financeList = []
             }
-            console.log(receivables)
             this.setReceivablesList(receivables)
             this.loading = false
           } else {
             this.flag = false
             this.setReceivablesList(['全款', '定金'])
             this.getFinanceList()
+            // 已经购买的服务包
+            this.finance.financeList = []
           }
         })
       },
@@ -471,9 +519,8 @@
       getFinanceList() {
         this.loading = true
         getFinanceList(this.financeListQuery).then(response => {
-          this.financeList = response.data.data.list
-          // 已经购买的服务包
-          this.finance.financeList = []
+          var list = response.data.data.list
+          this.financeList = list || []
           this.loading = false
         })
       },
@@ -505,6 +552,7 @@
       /* 计算价格 */
       calculation() {
         this.clean()
+        console.log(this.finance.financeList)
         // 原始价格 就是所选服务不包括优惠的价格
         var originalPrice = 0
         // 活动价格 优惠
@@ -569,6 +617,7 @@
       },
       // 保存
       saveServiceNote() {
+        console.log('保存', this.finance)
         saveServiceCharge(this.finance).then(() => {
           this.$layer.close(this.layerid)
         })

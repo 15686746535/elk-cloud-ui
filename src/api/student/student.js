@@ -79,3 +79,10 @@ export function push122(obj) {
   })
 }
 
+export function getFinanceList(id) {
+  return request({
+    url: '/finance/service/charge/' + id,
+    method: 'get'
+  })
+}
+

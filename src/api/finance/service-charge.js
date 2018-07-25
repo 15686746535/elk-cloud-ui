@@ -66,3 +66,10 @@ export function updateFinaceState(dat) {
     data: dat
   })
 }
+
+export function getServiceByChargeId(chargeId) {
+  return request({
+    url: '/finance/service/charge/update/' + chargeId,
+    method: 'get'
+  })
+}

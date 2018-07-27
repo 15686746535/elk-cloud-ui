@@ -1443,7 +1443,7 @@
       },
       'student.introducer': function(val) {
         if (val) {
-          this.student.introducerList = [val]
+          this.student.introducerIdList = [val]
         }
       },
       'studentEntity.introducer': function(val) {

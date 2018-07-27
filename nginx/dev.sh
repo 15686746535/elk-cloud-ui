@@ -1,5 +1,5 @@
-sed "s/www.eluchn.com/www.eluchn.com/g" ./nginx/nginx.conf
-sed "s/www.eluchn.com/www.eluchn.com/g" ./config/index.js
+sed "s/www.eluchn.com/test.eluchn.com/g" ./nginx/nginx.conf
+sed "s/www.eluchn.com/test.eluchn.com/g" ./config/index.js
 npm install
 npm run build
 docker build -t elk-cloud-ui:latest .

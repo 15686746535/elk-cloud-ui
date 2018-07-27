@@ -21,7 +21,7 @@
         <!--</el-table-column>-->
       </div>
 
-      <el-table :data="financeList" :height="(tableHeight-180)" border @select="selectRow"  highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
+      <el-table :data="financeList" :height="(tableHeight-180)" :summary-method="getSummaries" show-summary border @select="selectRow"  highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
         <el-table-column type="expand">
           <template slot-scope="props">
             <div class="service-mode">
@@ -44,19 +44,19 @@
             <span>{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="name" label="学员" min-width="140"></el-table-column>
+        <el-table-column align="center" prop="name" label="学员" min-width="100"></el-table-column>
         <!--<el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>-->
-        <el-table-column align="center" prop="campus" label="校区" min-width="120"></el-table-column>
+        <el-table-column align="center" prop="campus" label="校区" min-width="120" :filters="campusFilters" :filter-method="filterCampus" filter-placement="bottom-end"></el-table-column>
         <el-table-column align="center"  prop="finances"  label="购买服务" min-width="100" :filters="financeFilters" :filter-method="filterFinance" filter-placement="bottom-end">
           <template slot-scope="scope">
             <div style="width: 100%;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">{{scope.row.finances}}</div>
           </template>
         </el-table-column>
-        <el-table-column align="center"  prop="payTypes"  label="收费方式" min-width="100" :filters="payTypeFilters" :filter-method="filterPayType" filter-placement="bottom-end">
-          <template slot-scope="scope">
-            <div style="width: 100%;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">{{scope.row.payTypes}}</div>
-          </template>
-        </el-table-column>
+        <!--<el-table-column align="center"  prop="payTypes"  label="收费方式" min-width="100" :filters="payTypeFilters" :filter-method="filterPayType" filter-placement="bottom-end">-->
+          <!--<template slot-scope="scope">-->
+            <!--<div style="width: 100%;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">{{scope.row.payTypes}}</div>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column align="center"  prop="state"  label="状态" min-width="90" :filters="stateFilters" :filter-method="filterState" filter-placement="bottom-end">
           <template slot-scope="scope">
             <span v-if="scope.row.state==='0'">未审核</span>
@@ -64,13 +64,18 @@
             <span v-if="scope.row.state==='-1'">已作废</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="money" label="金额" min-width="70"></el-table-column>
+        <el-table-column align="center" prop="cash" label="现金" min-width="70"></el-table-column>
+        <el-table-column align="center" prop="alipay" label="支付宝" min-width="90"></el-table-column>
+        <el-table-column align="center" prop="wechat" label="微信" min-width="70"></el-table-column>
+        <el-table-column align="center" prop="collectmoney" label="收钱吧" min-width="90"></el-table-column>
+        <el-table-column align="center" prop="brushcard" label="刷卡" min-width="70"></el-table-column>
+        <el-table-column align="center" prop="other" label="其他" min-width="70"></el-table-column>
+        <el-table-column align="center" prop="money" label="合计" min-width="70"></el-table-column>
         <el-table-column align="center"  label="介绍人" min-width="100">
           <template slot-scope="scope">
             <span v-if="scope.row.introducerList && scope.row.introducerList.length>0">{{ scope.row.introducerList[0].name}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="motorcycleType" label="车型" min-width="70"></el-table-column>
         <el-table-column align="center" prop="motorcycleType" label="车型" min-width="70"></el-table-column>
         <el-table-column align="center" prop="receivablesType" label="收费类型" min-width="130"></el-table-column>
         <el-table-column align="center"  label="时间" min-width="120">
@@ -126,15 +131,8 @@
         tableHeight: this.area[1],
         financeList: [],
         financeFilters: [],
+        campusFilters: [],
         interval: [],
-        payTypeFilters: [
-          { text: '现金', value: '现金' },
-          { text: '支付宝', value: '支付宝' },
-          { text: '微信', value: '微信' },
-          { text: '收钱吧', value: '收钱吧' },
-          { text: '刷卡', value: '刷卡' },
-          { text: '其他', value: '其他' }
-        ],
         stateFilters: [
           { text: '未审核', value: '0' },
           { text: '已审核', value: '1' },
@@ -174,8 +172,39 @@
       filterState(value, row) {
         return row.state === value
       },
-      filterPayType(value, row) {
-        return row.payTypes.indexOf(value) > -1
+      filterCampus(value, row) {
+        return row.campus === value
+      },
+      getSummaries(param) {
+        const { columns, data } = param
+        const sums = []
+        var columnList = ['cash', 'alipay', 'wechat', 'collectmoney', 'brushcard', 'other', 'money']
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '合'
+            return
+          }
+          if (index === 1) {
+            sums[index] = '计'
+            return
+          }
+          if (columnList.indexOf(column.property) > -1) {
+            const values = data.map(item => Number(item[column.property]))
+            if (!values.every(value => isNaN(value))) {
+              sums[index] = values.reduce((prev, curr) => {
+                const value = Number(curr)
+                if (!isNaN(value)) {
+                  return prev + curr
+                } else {
+                  return prev
+                }
+              }, 0)
+            }
+          } else {
+            sums[index] = 'N/A'
+          }
+        })
+        return sums
       },
       filterFinance(value, row) {
         return row.finances.indexOf(value) > -1
@@ -185,14 +214,14 @@
           var list = []
           var total = 0
           var financeFilters = []
+          var campusFilters = []
           if (response.data.code === 0) {
             list = response.data.data.list
             total = response.data.data.totalCount
             var finances
-            var payTypes
             list.forEach(function(item) {
               finances = ''
-              payTypes = ''
+              // 购买服务
               item.financeList.forEach(function(fin) {
                 finances += fin.name + '、'
                 var hasFinance = false
@@ -205,14 +234,48 @@
                   financeFilters.push({ text: fin.name, value: fin.name })
                 }
               })
+              // 校区
+              var hasCampus = false
+              campusFilters.forEach(function(cam) {
+                if (item.campus === cam.value) {
+                  hasCampus = true
+                }
+              })
+              if (!hasCampus) {
+                campusFilters.push({ text: item.campus, value: item.campus })
+              }
+              // 支付方式
+              item.cash = 0 // 现金
+              item.alipay = 0 // 支付宝
+              item.wechat = 0 // 微信
+              item.collectmoney = 0 // 收钱吧
+              item.brushcard = 0 // 刷卡
+              item.other = 0 // 其他
               item.payTypeList.forEach(function(type) {
-                payTypes += type.mode + '、'
+                if (type.mode === '现金') {
+                  item.cash = type.money
+                }
+                if (type.mode === '支付宝') {
+                  item.alipay = type.money
+                }
+                if (type.mode === '微信') {
+                  item.wechat = type.money
+                }
+                if (type.mode === '收钱吧') {
+                  item.collectmoney = type.money
+                }
+                if (type.mode === '刷卡') {
+                  item.brushcard = type.money
+                }
+                if (type.mode === '其他') {
+                  item.other = type.money
+                }
               })
               item.finances = finances
-              item.payTypes = payTypes
             })
           }
           this.financeFilters = financeFilters
+          this.campusFilters = campusFilters
           this.financeList = list
           this.total = total
           console.log(response.data.data.totalCount)

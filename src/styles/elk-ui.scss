@@ -570,6 +570,11 @@
   .el-table--border, .el-table--group {
     border: 1px solid #a6a7a9!important;
   }
+  .el-table__footer{
+    .el-table_1_column_1{
+      border-right: none!important;
+    }
+  }
 }
 
 

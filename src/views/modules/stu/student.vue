@@ -442,7 +442,7 @@
                     <el-form-item prop="introducerNameList">
                       <span slot="label"  class="text_css">* 介绍人:</span>
 
-                      <el-select v-show="edit" v-model="student.introducer" filterable placeholder="请选择介绍人" style="width: 100%" >
+                      <el-select v-show="edit" v-model="student.introducerId" filterable placeholder="请选择介绍人" style="width: 100%" >
                         <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                         </el-option>
                       </el-select>
@@ -837,7 +837,7 @@
               <el-row >
                 <el-form-item prop="introducerList">
                   <span slot="label"  class="text_css">介绍人</span>
-                  <el-select v-model="studentEntity.introducer" filterable placeholder="请选择介绍人" style="width: 100%" >
+                  <el-select v-model="studentEntity.introducerId" filterable placeholder="请选择介绍人" style="width: 100%" >
                     <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                     </el-option>
                   </el-select>
@@ -1103,7 +1103,7 @@
           roadCoach: null,
           fieldCoach: null,
           incrementList: [],
-          introducer: null,
+          introducerId: null,
           introducerList: [],
           serviceType: null,
           arrearage: null,
@@ -1146,7 +1146,7 @@
           periodOfValidity: null,
           aboardTime: null,
           incrementList: [],
-          introducer: null,
+          introducerId: null,
           introducerList: [],
           serviceType: null,
           arrearage: null,
@@ -1441,12 +1441,13 @@
       area: function(val) {
         this.tableHeight = val[1]
       },
-      'student.introducer': function(val) {
+      'student.introducerId': function(val) {
+        console.log(val)
         if (val) {
           this.student.introducerIdList = [val]
         }
       },
-      'studentEntity.introducer': function(val) {
+      'studentEntity.introducerId': function(val) {
         if (val) {
           this.studentEntity.introducerList = [val]
         }
@@ -1570,12 +1571,14 @@
         this.financeList = []
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
-          this.student = response.data.data
-          if (this.student.introducerIdList && this.student.introducerIdList.length > 0) {
-            this.student.introducer = this.student.introducerIdList[0]
+          var student = response.data.data
+          if (student.introducerIdList && student.introducerIdList.length > 0) {
+            console.log('aaaaaaaaaaaa')
+            student.introducerId = student.introducerIdList[0]
           }
           this.examBespeak.studentId = this.student.studentId
-          if (this.student.introducerIdList === null) this.student.introducerIdList = [] // 防止介绍人为null
+          if (student.introducerIdList === null) student.introducerIdList = [] // 防止介绍人为null
+          this.student = student
           this.getIntroducerList()
           this.getExam()
           this.infoLoading = false

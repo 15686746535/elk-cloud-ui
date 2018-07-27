@@ -5,7 +5,8 @@
       <el-card body-style="padding: 5px 20px;" style="margin-bottom: 5px;height: 90px;line-height: 38px">
         <el-row :gutter="5">
           <el-col :xs="6" :sm="6" :md="8" :lg="7" :xl="5">
-            <el-date-picker value-format="timestamp" style="width: 100%" size="mini" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+            <el-date-picker value-format="timestamp" style="width: 100%" size="mini" v-model="listQuery.interval" type="daterange" align="left"
+                            unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
             </el-date-picker>
           </el-col>
           <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
@@ -198,7 +199,7 @@
         </el-upload>
       </div>
       <el-row style="height: 100%;" :gutter="10">
-        <el-col :span="area[1] === 600?24:12" style="height: 100%;">
+        <el-col :span="area[1] === 600?24:12" style="height: 799px;">
           <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px" size="mini">
             <el-card body-style="padding: 0;"
                      v-loading="infoLoading" element-loading-text="努力匹配中..."

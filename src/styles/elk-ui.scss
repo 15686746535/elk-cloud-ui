@@ -503,6 +503,76 @@
 
 }
 
+.cost-note{
+  .header{
+    float: left;
+    height: 41px;
+    padding: 0 5px;
+    background-color: #d5eaa9;
+    width: 36px;
+    border-right: 1px solid #a6a7a9;
+  }
+  .buy-service{
+    border-left: 1px solid #a6a7a9;
+  }
+  .pay-type{
+  }
+  .el-table td, .el-table th {
+    padding: 5px!important;
+    &.el-table__expanded-cell{
+      padding: 0!important;
+    }
+    &.el-table-column--selection{
+      padding: 0!important;
+      .cell {
+        padding-left: 10px!important;
+        padding-right: 14px!important;
+      }
+    }
+  }
+
+  .service-mode{
+    font-size: 12px;
+    line-height: 20px;
+    //margin-left: 82px;
+
+    .title {
+      border-bottom: 1px solid #a6a7a9;
+      border-right: 1px solid #a6a7a9;
+      padding: 0 10px;
+    }
+    .money {
+      border-right: 1px solid #a6a7a9;
+      padding: 0 10px;
+    }
+  }
+
+  .el-table--striped .el-table__body tr.el-table__row--striped td {
+    background: #e8e8e5!important;
+  }
+
+  .el-table--enable-row-hover .el-table__body tr:hover>td {
+    background-color: #ececae!important;
+  }
+
+
+  .el-table--striped .el-table__body tr.el-table__row--striped.current-row td, .el-table__body tr.current-row>td, .el-table__body tr.hover-row.current-row>td, .el-table__body tr.hover-row.el-table__row--striped.current-row>td, .el-table__body tr.hover-row.el-table__row--striped>td, .el-table__body tr.hover-row>td {
+    background-color: #ececae!important;
+  }
+
+  .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
+    border-right: 1px solid #a6a7a9!important;
+  }
+
+  .el-table td, .el-table th.is-leaf {
+    border-bottom: 1px solid #a6a7a9!important;
+  }
+  .el-table--border, .el-table--group {
+    border: 1px solid #a6a7a9!important;
+  }
+}
+
+
 .receivables-type{
   .el-radio+.el-radio {
     margin-left: 10px!important;

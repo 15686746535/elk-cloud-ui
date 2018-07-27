@@ -15,7 +15,7 @@
         <!-- 身份卡循环 -->
         <el-table :data="userList" :height="(tableHeight-220)" highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
           <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
-          <el-table-column align="center" label="头像" width="100">
+          <el-table-column align="center" label="" width="100">
             <template slot-scope="scope">
               <!-- 头像 -->
               <el-row>
@@ -28,73 +28,61 @@
               </el-row>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="个人信息" min-width="150px">
+          <el-table-column align="left" label="" min-width="85px">
             <template slot-scope="scope" >
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">姓名：</el-col>
-                  <el-col :span="17" class="table_text" style="font-weight: 600;">{{scope.row.name}}</el-col>
+                <el-row>
+                  <el-col class="table_text">姓名：<saan style="font-weight: 600;">{{scope.row.name}}</saan></el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">性别：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.sex | sexFilter}}</el-col>
+                  <el-col class="table_text">性别：{{scope.row.sex | sexFilter}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">生日：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.birthday | subTime}}</el-col>
+                  <el-col class="table_text">生日：{{scope.row.birthday | subTime}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">身份证：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.idNumber}}</el-col>
+                  <el-col class="table_text">身份证：{{scope.row.idNumber}}</el-col>
                 </el-row>
               </el-col>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="联系方式" min-width="150px">
+          <el-table-column align="center" label="" min-width="110px">
             <template slot-scope="scope" >
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">手机号：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.mobile}}</el-col>
+                <el-row>
+                  <el-col class="table_text">手机号：{{scope.row.mobile}}</el-col>
                 </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">微信：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.wechat}}</el-col>
+                <el-row>
+                  <el-col class="table_text">微信：{{scope.row.wechat}}</el-col>
                 </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">QQ：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.qq }}</el-col>
+                <el-row >
+                  <el-col class="table_text">QQ：{{scope.row.qq }}</el-col>
                 </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">联系地址：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.contactAddress}}</el-col>
+                <el-row >
+                  <el-col class="table_text" :title="scope.row.contactAddress">联系地址：{{scope.row.contactAddress}}</el-col>
                 </el-row>
               </el-col>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="工作信息" min-width="150px">
+          <el-table-column align="center" label="" min-width="150px">
             <template slot-scope="scope" >
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">工作电话：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.workMobile}}</el-col>
+                <el-row >
+                  <el-col class="table_text">工作电话：{{scope.row.workMobile}}</el-col>
                 </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">所属职位：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.roles}}</el-col>
+                <el-row >
+                  <el-col  class="table_text">所属职位：{{scope.row.roles}}</el-col>
                 </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">入职日期：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.joinedTime | subTime}}</el-col>
+                <el-row >
+                  <el-col class="table_text">入职日期：{{scope.row.joinedTime | subTime}}</el-col>
                 </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">转正日期：</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.positiveTime | subTime}}</el-col>
+                <el-row >
+                  <el-col class="table_text">转正日期：{{scope.row.positiveTime | subTime}}</el-col>
                 </el-row>
               </el-col>
             </template>
@@ -959,10 +947,10 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .img{
-    width: 65px;
-    height: 65px;
+    width: 70px;
+    height: 70px;
     padding: 0;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     overflow: hidden;
   }
 

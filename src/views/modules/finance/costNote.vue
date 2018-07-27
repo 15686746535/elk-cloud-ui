@@ -64,6 +64,13 @@
             <span v-if="scope.row.state==='-1'">已作废</span>
           </template>
         </el-table-column>
+        <el-table-column align="center" prop="money" label="金额" min-width="70"></el-table-column>
+        <el-table-column align="center"  label="介绍人" min-width="100">
+          <template slot-scope="scope">
+            <span v-if="scope.row.introducerList && scope.row.introducerList.length>0">{{ scope.row.introducerList[0].name}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="motorcycleType" label="车型" min-width="70"></el-table-column>
         <el-table-column align="center" prop="motorcycleType" label="车型" min-width="70"></el-table-column>
         <el-table-column align="center" prop="receivablesType" label="收费类型" min-width="130"></el-table-column>
         <el-table-column align="center"  label="时间" min-width="120">

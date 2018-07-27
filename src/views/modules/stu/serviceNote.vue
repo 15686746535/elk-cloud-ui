@@ -12,7 +12,7 @@
         <!-- 学员信息 -->
         <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              <el-date-picker v-model="finance.paytime" type="date" placeholder="" format="yyyy年MM月dd日" value-format="timestamp" :clearable="false"
+              <el-date-picker v-model="finance.paytime" @change="btnDisabled = false" type="date" placeholder="" format="yyyy年MM月dd日" value-format="timestamp" :clearable="false"
                               style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
             </el-col>
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
@@ -103,11 +103,11 @@
                 <span >代收费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('001')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('001')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="calculation" type="number" min="1" :disabled="flag" v-model.number="service.number"
+                      ×&nbsp;<input @change="changeFinanceList" type="number" min="1" :disabled="flag" v-model.number="service.number"
                                       style="border: none; outline:none; width: 30px; border-bottom: #dcdfe6 1px solid; font-size: 12px;"/>
                     </span>
                     <span v-else>{{service.price}}元</span>
@@ -121,11 +121,11 @@
                 <span >培训费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('002')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('002')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="calculation" type="number" min="1"
+                      ×&nbsp;<input @change="changeFinanceList" type="number" min="1"
                                       :disabled="flag"
                                       v-model.number="service.number"
                                       style="border: none;
@@ -144,11 +144,11 @@
                 <span >服务包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('003')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('003')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                    ×&nbsp;<input @change="calculation"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
+                    ×&nbsp;<input @change="changeFinanceList"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
                                                                outline:none;
                                                                width: 30px;
                                                                border-bottom: #dcdfe6 1px solid;
@@ -164,11 +164,11 @@
                 <span >优惠包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('004')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('004')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="calculation"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
+                      ×&nbsp;<input @change="changeFinanceList"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
                                                                  outline:none;
                                                                  width: 30px;
                                                                  border-bottom: #dcdfe6 1px solid;
@@ -237,7 +237,7 @@
           <el-col :span="12">
             <el-row>
               <el-col :span="3" style="padding-left: 10px;">备注：</el-col>
-              <el-col :span="21"><input v-model="finance.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
+              <el-col :span="21"><input v-model="finance.remark" @change="btnDisabled = false"  style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
             </el-row>
           </el-col>
         </el-row>
@@ -322,7 +322,8 @@
             { mode: '刷卡', money: 0 },
             { mode: '其他', money: 0 }
           ], // 支付方式
-          financeList: []
+          financeList: [],
+          financeIdList: []
         },
         loading: false,
         btnLoading: false,
@@ -367,6 +368,7 @@
         this.loading = true
         getServiceByChargeId(this.chargeId).then(response => {
           var finance = response.data.data
+          console.log(response)
           var payTypeList = [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -382,18 +384,30 @@
               }
             })
           })
+          var financeIdList = []
           var financeList = []
-          var financeAllList = this.financeList
-          for (var i = 0; i < finance.financeList.length; i++) {
-            for (var j = 0; j < financeAllList.length; j++) {
-              if (financeAllList[j].categoryId === finance.financeList[i].categoryId) {
-                financeList.push(financeAllList[j])
-                continue
+          if (finance.financeList && finance.financeList.length > 0) {
+            finance.financeList.forEach(function(item) {
+              financeIdList.push(item.categoryId)
+            })
+          }
+          if (finance.receivablesType === '定转全') {
+            this.flag = true
+            queryMoneyListById(finance.studentId).then(response => {
+              var list = response.data.data
+              if (list && list.length > 0) {
+                list.forEach(function(item) {
+                  item.financeList.forEach(function(fin) {
+                    financeIdList.push(fin.categoryId)
+                    financeList.push(fin)
+                  })
+                })
               }
-            }
+            })
+            finance.financeList = financeList
           }
           this.setReceivablesList([finance.receivablesType])
-          finance.financeList = financeList
+          finance.financeIdList = financeIdList
           finance.payTypeList = payTypeList
           // 校订者 修改人
           finance.reviser = this.name
@@ -430,8 +444,10 @@
         queryMoneyListById(studentId).then(response => {
           var list = response.data.data
           console.log(list)
+          this.getFinanceList()
           if (list && list.length > 0) {
             var financeList = []
+            var financeIdList = []
             var earnestMoney = 0 // 已收定金
             var originalPrice = 0 // 原始价格 就是所选服务不包括优惠的价格
             var activityPrice = 0 // 活动价格 优惠
@@ -439,24 +455,18 @@
             for (var i = 0; i < list.length; i++) {
               var financeNote = list[i]
               earnestMoney += financeNote.money
+              //
               for (var a = 0; a < financeNote.financeList.length; a++) {
                 var finance = financeNote.financeList[a]
-                var flag = true
-                for (var b = 0; b < financeList.length; b++) {
-                  if (finance.noteId === financeList[b].noteId) {
-                    flag = false
-                    break
-                  }
-                }
-                if (flag) {
-                  financeList.push(finance)
-                  if (finance.code === '004') {
-                    activityPrice += finance.price * finance.number
-                  } else {
-                    originalPrice += finance.price * finance.number
-                  }
+                financeIdList.push(finance.categoryId)
+                financeList.push(finance)
+                if (finance.code === '004') {
+                  activityPrice += finance.price * finance.number
+                } else {
+                  originalPrice += finance.price * finance.number
                 }
               }
+            // aa
             }
             var realPrice = originalPrice + activityPrice - earnestMoney
             if (realPrice > 0) {
@@ -465,8 +475,8 @@
               this.finance.originalPrice = originalPrice // 原始价格 就是所选服务不包括优惠的价格
               this.finance.earnestMoney = earnestMoney // 已收定金
               this.finance.financeList = financeList
+              this.finance.financeIdList = financeIdList
               this.finance.realPrice = realPrice
-              this.financeList = financeList
               this.finance.payTypeList[0].money = originalPrice + activityPrice - earnestMoney
               receivables.push('定转全')
               this.flag = true
@@ -479,18 +489,18 @@
               this.finance.receivablesType = '购买服务包'
               this.clean()
               this.flag = false
-              this.getFinanceList()
               // 已经购买的服务包
               this.finance.financeList = []
+              this.finance.financeIdList = []
             }
             this.setReceivablesList(receivables)
             this.loading = false
           } else {
             this.flag = false
             this.setReceivablesList(['全款', '定金'])
-            this.getFinanceList()
             // 已经购买的服务包
             this.finance.financeList = []
+            this.finance.financeIdList = []
           }
         })
       },
@@ -550,6 +560,19 @@
         ]
       },
       /* 计算价格 */
+      changeFinanceList() {
+        var financeList = []
+        var financeIdList = this.finance.financeIdList
+        this.financeList.forEach(function(item) {
+          financeIdList.forEach(function(id) {
+            if (item.categoryId === id) {
+              financeList.push(item)
+            }
+          })
+        })
+        this.finance.financeList = financeList
+        this.calculation()
+      },
       calculation() {
         this.clean()
         console.log(this.finance.financeList)
@@ -579,7 +602,9 @@
         var isNotDeposit = this.finance.receivablesType !== '定金'
         var payTypeList = this.finance.payTypeList
         // 应收账款
-        var receivable = this.finance.activityPrice + this.finance.originalPrice - this.finance.earnestMoney
+        var earnestMoney = this.finance.earnestMoney || 0
+        var receivable = this.finance.activityPrice + this.finance.originalPrice - earnestMoney
+        console.log(receivable)
         // 实收
         var realPrice = 0
         // 现金
@@ -619,7 +644,11 @@
       saveServiceNote() {
         console.log('保存', this.finance)
         saveServiceCharge(this.finance).then(() => {
-          this.$layer.close(this.layerid)
+          if (!this.isEdit) {
+            this.$layer.close(this.layerid)
+          }
+          this.btnDisabled = true
+          this.btnLoading = false
         })
       },
       getSerialNumber() {

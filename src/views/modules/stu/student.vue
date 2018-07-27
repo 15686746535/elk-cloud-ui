@@ -1571,6 +1571,9 @@
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
           this.student = response.data.data
+          if (this.student.introducerIdList && this.student.introducerIdList.length > 0) {
+            this.student.introducer = this.student.introducerIdList[0]
+          }
           this.examBespeak.studentId = this.student.studentId
           if (this.student.introducerIdList === null) this.student.introducerIdList = [] // 防止介绍人为null
           this.getIntroducerList()

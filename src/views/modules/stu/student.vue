@@ -441,7 +441,8 @@
                   <el-row style="margin: 0 10px">
                     <el-form-item prop="introducerNameList">
                       <span slot="label"  class="text_css">* 介绍人:</span>
-                      <el-select v-show="edit" v-model="student.introducerIdList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
+
+                      <el-select v-show="edit" v-model="student.introducer" filterable placeholder="请选择介绍人" style="width: 100%" >
                         <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                         </el-option>
                       </el-select>
@@ -836,7 +837,7 @@
               <el-row >
                 <el-form-item prop="introducerList">
                   <span slot="label"  class="text_css">介绍人</span>
-                  <el-select v-model="studentEntity.introducerList" collapse-tags style="width: 100%" multiple placeholder="请选择介绍人">
+                  <el-select v-model="studentEntity.introducer" filterable placeholder="请选择介绍人" style="width: 100%" >
                     <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                     </el-option>
                   </el-select>
@@ -1067,13 +1068,6 @@
           }
         })
       }
-      var introducerListReg = (rule, value, callback) => {
-        if (value.length > 0) {
-          callback()
-        } else {
-          callback(new Error('请选择介绍人'))
-        }
-      }
       return {
         student: {
           studentId: null,
@@ -1109,6 +1103,7 @@
           roadCoach: null,
           fieldCoach: null,
           incrementList: [],
+          introducer: null,
           introducerList: [],
           serviceType: null,
           arrearage: null,
@@ -1151,6 +1146,7 @@
           periodOfValidity: null,
           aboardTime: null,
           incrementList: [],
+          introducer: null,
           introducerList: [],
           serviceType: null,
           arrearage: null,
@@ -1217,9 +1213,8 @@
           enrolSite: [
             { required: true, message: '请选择报名点', trigger: ['blur', 'change'] }
           ],
-          introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] },
-            { validator: introducerListReg, trigger: ['blur', 'change'] }
+          introducer: [
+            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] }
           ]
         },
         studentRules: {
@@ -1279,9 +1274,8 @@
           enrolSite: [
             { required: true, message: '请选择报名点', trigger: ['blur', 'change'] }
           ],
-          introducerList: [
-            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] },
-            { validator: introducerListReg, trigger: ['blur', 'change'] }
+          introducer: [
+            { required: true, message: '请选择介绍人', trigger: ['blur', 'change'] }
           ]
         },
         stuList: [],
@@ -1446,6 +1440,16 @@
     watch: {
       area: function(val) {
         this.tableHeight = val[1]
+      },
+      'student.introducer': function(val) {
+        if (val) {
+          this.student.introducerList = [val]
+        }
+      },
+      'studentEntity.introducer': function(val) {
+        if (val) {
+          this.studentEntity.introducerList = [val]
+        }
       }
     },
     computed: {

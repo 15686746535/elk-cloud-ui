@@ -20,6 +20,13 @@ export function userList(query) {
     params: query
   })
 }
+export function getUserList(query) {
+  return request({
+    url: '/upms/user/introList',
+    method: 'get',
+    params: query
+  })
+}
 // isCoach
 export function addObj(obj) {
   return request({

@@ -1016,7 +1016,7 @@
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
-  import { userList } from '@/api/upms/user'
+  import { getUserList } from '@/api/upms/user'
   import { getVehiclePeriodByStudentId, getClassByCoachId, bespeakVehiclePeriod } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { followUpList } from '@/api/visit/followup'
@@ -1682,7 +1682,7 @@
       },
       /* 获取介绍人列表 */
       getIntroducerList() {
-        userList().then(response => {
+        getUserList().then(response => {
           this.userList = response.data.data
         })
       },

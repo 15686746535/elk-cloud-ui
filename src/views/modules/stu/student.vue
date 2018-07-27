@@ -1573,7 +1573,6 @@
         getStudent(val.studentId).then(response => {
           var student = response.data.data
           if (student.introducerIdList && student.introducerIdList.length > 0) {
-            console.log('aaaaaaaaaaaa')
             student.introducerId = student.introducerIdList[0]
           }
           this.examBespeak.studentId = this.student.studentId

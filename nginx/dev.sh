@@ -1,3 +1,4 @@
+pwd
 sed -i "s/www.eluchn.com/test.eluchn.com/g" ./nginx/nginx.conf
 sed -i "s/www.eluchn.com/test.eluchn.com/g" ./config/index.js
 npm install

@@ -152,12 +152,13 @@
               </el-row>
 
               <el-row>
-                <el-col :span="12">
-                  <el-form-item prop="visitTime">
-                    <span slot="label" class="text_css">来访时间</span>
-                    <el-date-picker  type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
-                  </el-form-item>
-                </el-col>
+                <!--<el-col :span="12">-->
+                  <!--<el-form-item prop="visitTime">-->
+                    <!--<span slot="label" class="text_css">来访时间</span>-->
+                    <!--<el-date-picker  type="date" placeholder="来访时间" value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>-->
+                  <!--</el-form-item>-->
+                <!--</el-col>-->
+                <!---->
                 <el-col :span="12">
                   <el-form-item prop="applyType">
                     <span slot="label" class="text_css">车型</span>
@@ -355,8 +356,7 @@
                   <el-col :span="12">
                     <el-form-item prop="visitTime">
                       <span slot="label" class="text_css">来访时间</span>
-                      <el-date-picker v-if="edit" type="date" placeholder="来访时间"  value-format="timestamp" style="width: 100%" v-model="intention.visitTime"></el-date-picker>
-                      <div style="padding-left: 16px;font-size: 12px;" v-else>{{intention.visitTime | subTime('data')}}</div>
+                      <div style="padding-left: 16px;font-size: 12px;" >{{intention.visitTime | subTime('data')}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
@@ -582,9 +582,6 @@
           applyType: [
             { required: true, message: '请选择所学车型', trigger: ['blur', 'change'] }
           ],
-          visitTime: [
-            { required: true, message: '请选择来访时间', trigger: ['blur', 'change'] }
-          ],
           content: [
             { required: false, message: '请输入资讯内容', trigger: ['blur', 'change'] }
           ]
@@ -666,6 +663,7 @@
               Message.error('手机和微信至少输入一个')
             } else {
               this.intention.state = 0
+              this.intention.visitTime = new Date().getTime()
               addObj(this.intention).then(() => {
                 this.closeAlert(formName)
                 this.showModule = 'list'

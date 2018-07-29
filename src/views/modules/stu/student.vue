@@ -468,7 +468,7 @@
               </div>
               <div v-else style="float: right;">
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
-                <el-button type="primary" size="mini" @click="serviceNoteBuy"  v-if="permissions.stu_service_charge_add"><i class="el-icon-goods"></i> 收 费</el-button>
+                <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add"><i class="el-icon-goods"></i> 收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add"><i class="el-icon-fa-car"></i> 约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update"><i class="el-icon-edit"></i> 编 辑</el-button>
@@ -524,7 +524,7 @@
                 </el-table-column>
                 <el-table-column align="left"  label="单号" width="150">
                   <template slot-scope="scope">
-                    <span>{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</span>
+                    <a href="javascript:void(0) " style="color: -webkit-link;cursor: pointer;text-decoration: underline;" @click="openService(scope.row)">{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</a>
                   </template>
                 </el-table-column>
                 <el-table-column align="left"  label="缴费金额">
@@ -1602,7 +1602,6 @@
       getFinance() {
         if (this.student.studentId) {
           getFinanceList(this.student.studentId).then(response => {
-            console.log('getFinanceList', JSON.stringify(response.data.data))
             if (response.data.code === 0) {
               var list = response.data.data
               this.financeList = list.filter(function(item) {
@@ -1914,18 +1913,26 @@
           })
         }
       },
-      serviceNoteBuy() {
+      openService(row) { // openFinace
+        var id = this.student.studentId + '_stu'
+        var title = '￥' + this.student.name + ' 学费收取'
+        var data = { student: this.student }
+        if (row && row.chargeId) {
+          id = row.chargeId + '_info'
+          title = '收费详情'
+          data = { charge: { chargeId: row.chargeId, pageLevel: 'info' }}
+        }
         this.$layer.open({
           type: 2,
-          id: this.student.studentId + '_stu', // title
-          title: '￥' + this.student.name + ' 学费收取', // title
+          id: id, // title
+          title: title, // title
           shadeClose: false, // 点击遮罩关闭
           tabIcon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示
           content: {
             content: finance,
             parent: this, // 当前的vue对象
-            data: { student: this.student }// props
+            data: data // props
           }
         })
       },

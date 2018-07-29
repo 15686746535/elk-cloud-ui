@@ -234,11 +234,12 @@
             </el-row>
           </el-col>
         </el-row>
+
         <!-- 销售员 备注 -->
         <el-row style="line-height: 50px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
           <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center">
-            <el-checkbox v-model="finance.studyCard" label="学时卡已发放" :disabled="pageLevel==='info'"></el-checkbox>
-            <el-checkbox v-model="finance.healthForm" label="体检表已发放" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="periodcard" label="学时卡已发放" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="healthform" label="体检表已发放" :disabled="pageLevel==='info'"></el-checkbox>
           </el-col>
           <el-col :span="4" style="border-right: 1px solid #1f2d3d;padding-left: 10px;">
             <span class="text_css">销售员：{{finance.introducer}}
@@ -256,7 +257,7 @@
           <el-col :offset="1" :span="6">单位盖章：</el-col>
           <el-col :span="6">制单人：{{finance.payee}}</el-col>
           <el-col :span="6">修改人：{{finance.reviser}}</el-col>
-          <el-col :span="5">复核人：</el-col>
+          <el-col :span="5">复核人：{{finance.auditor}}</el-col>
         </el-row>
       </div>
       <!-- 按钮 -->
@@ -316,6 +317,7 @@
           introducer: '', // 销售员
           payee: '', // 收款人
           reviser: '', // 校订者 修改人
+          auditor: '', // 校订者 修改人
           receivablesType: '全款',
           paytime: null,
           payTypeList: [
@@ -334,6 +336,8 @@
         btnDisabled: true,
         flag: false,
         studentListLoading: false,
+        periodcard: false,
+        healthform: false,
         financeListQuery: {
           page: 1,
           limit: 0,
@@ -420,12 +424,12 @@
           finance.payTypeList = payTypeList
           // 校订者 修改人
           finance.reviser = this.name
-
+          this.periodcard = false
+          this.healthform = false
+          if (finance.periodcard === '1') this.periodcard = true
+          if (finance.healthform === '1') this.healthform = true
           this.finance = finance
           this.loading = false
-          console.log(finance)
-          console.log(this.finance)
-          console.log(this.pageLevel)
         })
       },
       getStudent(receivable) {
@@ -461,9 +465,13 @@
             var originalPrice = 0 // 原始价格 就是所选服务不包括优惠的价格
             var activityPrice = 0 // 活动价格 优惠
             var receivables = ['购买服务包']
+            var periodcard = false
+            var healthform = false
             for (var i = 0; i < list.length; i++) {
               var financeNote = list[i]
               earnestMoney += financeNote.money
+              if (!periodcard && earnestMoney.periodcard === '1') periodcard = true
+              if (!healthform && earnestMoney.healthform === '1') healthform = true
               //
               for (var a = 0; a < financeNote.financeList.length; a++) {
                 var finance = financeNote.financeList[a]
@@ -477,6 +485,8 @@
               }
             // aa
             }
+            this.periodcard = periodcard
+            this.healthform = periodcard
             var realPrice = originalPrice + activityPrice - earnestMoney
             if (realPrice > 0) {
               // 费用未经缴清
@@ -652,6 +662,8 @@
       // 保存
       saveServiceNote() {
         console.log('保存', this.finance)
+        this.finance.periodcard = this.periodcard ? '1' : '0'
+        this.finance.healthform = this.healthform ? '1' : '0'
         saveServiceCharge(this.finance).then(() => {
           if (this.pageLevel === 'add') {
             this.$layer.close(this.layerid)

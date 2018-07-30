@@ -128,7 +128,7 @@
                 <span >代收费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('001')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
@@ -146,7 +146,7 @@
                 <span >培训费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('002')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
@@ -169,7 +169,7 @@
                 <span >服务包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('003')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
@@ -189,7 +189,7 @@
                 <span >优惠包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('004')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">

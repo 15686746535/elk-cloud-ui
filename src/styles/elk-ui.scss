@@ -586,6 +586,17 @@
     padding-left: 2px!important;
   }
 }
+.service-checkbox-group{
+  .is-checked {
+    .el-checkbox__inner{
+      background-color: #ff2e34!important;
+      border-color: #ff2e34!important;
+    }
+    .el-checkbox__label{
+      color: #ff2e34!important;
+    }
+  }
+}
 /*定义动画的时间和过渡效果*/
 .apps {
   transition: all 0.5s ease;

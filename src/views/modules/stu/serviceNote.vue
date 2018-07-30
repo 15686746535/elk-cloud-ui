@@ -26,6 +26,7 @@
         </el-row>
         <!-- 学员信息 -->
         <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
+           <!--时间-->
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
               <div  v-if="pageLevel === 'info'">
                 {{finance.paytime | parseTime('{y}年{m}月{d}日')}}
@@ -35,17 +36,19 @@
                                 style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
               </div>
             </el-col>
-            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
+            <!--校区-->
+            <el-col :span="5" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
               <el-row>
-                <el-col :span="8">
+                <el-col :span="6">
                   <span class="text_css">校区：</span>
                 </el-col>
-                <el-col :span="16">
+                <el-col :span="18">
                   {{finance.campus}}
                   <!--<dict v-model="" dictType="dict_campus" class="dict-not-border" style="width: 100%;"  placeholder="请选择校区"></dict>-->
                 </el-col>
               </el-row>
             </el-col>
+            <!--收费类型-->
             <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
 
               <el-row>
@@ -63,16 +66,12 @@
                   </div>
                 </el-col>
               </el-row>
-              <!--<el-radio-group  v-model="finance.receivablesType" class="receivables-type">-->
-                <!--receivablesList-->
-                <!--<el-radio label="全款"></el-radio>-->
-                <!--<el-radio label="定金"></el-radio>-->
-                <!--<el-radio label="定转全"></el-radio>-->
-              <!--</el-radio-group>-->
             </el-col>
-            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+            <!--车型-->
+            <el-col :span="2" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
               <span class="text_css">车型：{{finance.motorcycleType}}</span>
             </el-col>
+            <!--姓名-->
             <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
               <el-row>
                 <el-col :span="8">
@@ -92,7 +91,8 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="7" style="line-height: 50px;padding: 0 10px">
+            <!--身份证号-->
+            <el-col :span="6" style="line-height: 50px;padding: 0 10px">
               <el-row>
                 <el-col :span="5">
                   <el-row style="line-height: 16px;margin-top: 8px;">身份</el-row>

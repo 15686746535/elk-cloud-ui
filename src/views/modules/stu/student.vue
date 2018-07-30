@@ -146,13 +146,17 @@
             <template slot-scope="scope">
               <el-col style=" line-height: 25px">
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">服务项:</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.serviceNotes.replace(new RegExp('/','gm'), '、')}}</el-col>
+                  <el-col :span="7" class="table_text">服务项:{{scope.row.serviceNotes}}</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.serviceNotes?'双击查看详情':'无'}}</el-col>
                 </el-row>
 
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">应收金额:</el-col>
                   <el-col :span="17" class="table_text">{{scope.row.receivable}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">已收金额:</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.receivable - scope.row.arrearage}}</el-col>
                 </el-row>
 
                 <el-row :gutter="10">
@@ -468,7 +472,7 @@
               </div>
               <div v-else style="float: right;">
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
-                <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add"><i class="el-icon-goods"></i> 收 费</el-button>
+                <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add"><i class="el-icon-fa-money"></i> 收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add"><i class="el-icon-fa-car"></i> 约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update"><i class="el-icon-edit"></i> 编 辑</el-button>

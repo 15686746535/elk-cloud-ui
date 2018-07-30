@@ -14,7 +14,6 @@
         <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
       </el-button-group>
     </div>
-    <img class="examine-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
     <el-card style="padding-top: 30px;height: 100%;overflow: auto">
       <div v-loading="loading" element-loading-text="别急,一会儿就好~" style="width: 100%;border: 1px dashed #1f2d3d;padding: 0 10px">
         <!-- 标题 -->
@@ -23,6 +22,7 @@
           <p style="position: absolute;bottom: 0px;margin: 5px;font-size: 12px;right: 10px;">
             流水号：{{finance.serialPrefix}}{{finance.paytime | parseTime('{y}{m}')}}{{finance.serialNumber | parseSerial}}
           </p>
+          <img class="examine-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
         </el-row>
         <!-- 学员信息 -->
         <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
@@ -436,8 +436,10 @@
           this.setReceivablesList([finance.receivablesType])
           finance.financeIdList = financeIdList
           finance.payTypeList = payTypeList
-          // 校订者 修改人
-          finance.reviser = this.name
+          if (this.pageLevel === 'edit') {
+            // 校订者 修改人
+            finance.reviser = this.name
+          }
           this.periodcard = false
           this.healthform = false
           if (finance.periodcard === '1') this.periodcard = true
@@ -448,6 +450,8 @@
       },
       updateFinace() {
         this.pageLevel = 'edit'
+        // 校订者 修改人
+        this.finance.reviser = this.name
         if (this.finance.receivablesType !== '定转全') {
           this.flag = false
         }
@@ -956,7 +960,7 @@ input:disabled{
 .examine-state {
   position: absolute;
   width: 150px;
-  top: 52px;
-  right: 35px;
+  top: -30px;
+  right: 25px;
 }
 </style>

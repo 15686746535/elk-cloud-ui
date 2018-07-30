@@ -6,7 +6,7 @@
         <el-date-picker value-format="timestamp" style="width: 250px" size="mini" v-model="interval" type="daterange"
                         align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" >
         </el-date-picker>
-        <el-input size="mini" @keyup.enter.native="searchClick" placeholder="姓名/电话/身份证" clearable v-model="listQuery.condition" style="width: 150px;"></el-input>
+        <el-input size="mini" @keyup.enter.native="searchClick" placeholder="姓名/身份证/流水号" clearable v-model="listQuery.condition" style="width: 150px;"></el-input>
         <el-button size="mini" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
         <el-button size="mini" type="warning" v-if="finance&&finance.state==0&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)">审核</el-button>
         <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)">反审核</el-button>
@@ -64,6 +64,8 @@
             <span v-if="scope.row.state==='-1'">已作废</span>
           </template>
         </el-table-column>
+        <el-table-column align="center" prop="introducerName"  label="介绍人" min-width="100" :filters="introducerFilters" :filter-method="filterIntroducer" filter-placement="bottom-end">
+        </el-table-column>
         <el-table-column align="center" prop="cash" label="现金" min-width="70"></el-table-column>
         <el-table-column align="center" prop="alipay" label="支付宝" min-width="90"></el-table-column>
         <el-table-column align="center" prop="wechat" label="微信" min-width="70"></el-table-column>
@@ -71,14 +73,10 @@
         <el-table-column align="center" prop="brushcard" label="刷卡" min-width="70"></el-table-column>
         <el-table-column align="center" prop="other" label="其他" min-width="70"></el-table-column>
         <el-table-column align="center" prop="money" label="合计" min-width="70"></el-table-column>
-        <el-table-column align="center"  label="介绍人" min-width="100">
-          <template slot-scope="scope">
-            <span v-if="scope.row.introducerList && scope.row.introducerList.length>0">{{ scope.row.introducerList[0].name}}</span>
-          </template>
-        </el-table-column>
         <el-table-column align="center" prop="motorcycleType" label="车型" min-width="70"></el-table-column>
         <el-table-column align="center" prop="receivablesType" label="收费类型" min-width="130"></el-table-column>
-        <el-table-column align="center"  label="时间" min-width="120">
+        <el-table-column align="center" prop="idNumber" label="身份证号" min-width="200"></el-table-column>
+        <el-table-column align="center" prop="paytime" label="时间" min-width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.paytime | subTime}}</span>
           </template>
@@ -93,7 +91,7 @@
                        background
                        style="float: left"
                        size="mini"
-                       :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
+                       :page-sizes="[10,20,30,50,100,200]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
       </div>
@@ -130,8 +128,31 @@
       return {
         tableHeight: this.area[1],
         financeList: [],
+        showColumns: {
+          serialNumber: true,
+          name: true,
+          campus: true,
+          finances: true,
+          state: true,
+          introducerName: true,
+          cash: true, // 现金
+          alipay: true, // 支付宝
+          wechat: true, // 微信
+          collectmoney: true, // 收钱吧
+          brushcard: true, // 刷卡
+          other: true, //
+          money: true, //
+          motorcycleType: true, //
+          receivablesType: true, //
+          idNumber: true, //
+          paytime: true, //
+          payee: true, //
+          reviser: true, //
+          auditor: true //
+        },
         financeFilters: [],
         campusFilters: [],
+        introducerFilters: [],
         interval: [],
         stateFilters: [
           { text: '未审核', value: '0' },
@@ -175,6 +196,9 @@
       filterCampus(value, row) {
         return row.campus === value
       },
+      filterIntroducer(value, row) {
+        return row.introducerName === value
+      },
       getSummaries(param) {
         const { columns, data } = param
         const sums = []
@@ -215,6 +239,7 @@
           var total = 0
           var financeFilters = []
           var campusFilters = []
+          var introducerFilters = []
           if (response.data.code === 0) {
             list = response.data.data.list
             total = response.data.data.totalCount
@@ -243,6 +268,21 @@
               })
               if (!hasCampus) {
                 campusFilters.push({ text: item.campus, value: item.campus })
+              }
+              if (item.introducerList && item.introducerList.length > 0) {
+                //  介绍人 introducerList
+                item.introducerName = item.introducerList[0].name
+                var hasIntroducer = false
+                introducerFilters.forEach(function(int) {
+                  if (item.introducerName === int.value) {
+                    hasIntroducer = true
+                  }
+                })
+                if (!hasIntroducer) {
+                  introducerFilters.push({ text: item.introducerName, value: item.introducerName })
+                }
+              } else {
+                item.introducerName = ''
               }
               // 支付方式
               item.cash = 0 // 现金
@@ -276,6 +316,8 @@
           }
           this.financeFilters = financeFilters
           this.campusFilters = campusFilters
+          introducerFilters.push({ text: '', value: '' })
+          this.introducerFilters = introducerFilters
           this.financeList = list
           this.total = total
           console.log(response.data.data.totalCount)

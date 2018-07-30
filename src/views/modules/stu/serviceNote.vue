@@ -564,7 +564,7 @@
             this.loading = false
           } else {
             this.flag = false
-            this.setReceivablesList(['全款', '定金'])
+            this.setReceivablesList(['全款', '定金', '购买服务包'])
             // 已经购买的服务包
             this.finance.financeList = []
             this.finance.financeIdList = []

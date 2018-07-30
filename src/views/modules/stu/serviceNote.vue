@@ -12,8 +12,13 @@
         <!-- 学员信息 -->
         <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
-              <el-date-picker v-model="finance.paytime" type="date" placeholder="" format="yyyy年MM月dd日" value-format="timestamp" :clearable="false"
-                              style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
+              <div  v-if="pageLevel === 'info'">
+                {{finance.paytime | parseTime('{y}年{m}月{d}日')}}
+              </div>
+              <div v-else>
+                <el-date-picker v-model="finance.paytime" @change="btnDisabled = false" type="date" placeholder="" format="yyyy年MM月dd日" value-format="timestamp" :clearable="false"
+                                style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
+              </div>
             </el-col>
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
               <el-row>
@@ -33,9 +38,14 @@
                   <span class="text_css">收费类型：</span>
                 </el-col>
                 <el-col :span="14">
-                  <el-select v-model="finance.receivablesType" placeholder="" @change="receivablesTypeChange" class="receivables-type">
-                    <el-option v-for="item in receivablesList" :key="item.type" :label="item.type" :value="item.type" :disabled="item.disabled"></el-option>
-                  </el-select>
+                  <div v-if="pageLevel === 'info'">
+                    {{finance.receivablesType}}
+                  </div>
+                  <div v-else>
+                    <el-select v-model="finance.receivablesType" placeholder="" @change="receivablesTypeChange" class="receivables-type">
+                      <el-option v-for="item in receivablesList" :key="item.type" :label="item.type" :value="item.type" :disabled="item.disabled"></el-option>
+                    </el-select>
+                  </div>
                 </el-col>
               </el-row>
               <!--<el-radio-group  v-model="finance.receivablesType" class="receivables-type">-->
@@ -54,15 +64,15 @@
                   <span class="text_css">姓名：</span>
                 </el-col>
                 <el-col :span="16">
-                  <div v-if="isEdit">
-                    {{finance.name}}
-                  </div>
-                  <div v-else>
+                  <div  v-if="pageLevel === 'add'">
                     <el-select class="student-search"  v-model="finance.studentId" @change="getStudent" filterable remote reserve-keyword placeholder=""
                                :remote-method="getStudentList" :loading="studentListLoading">
                       <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
                       </el-option>
                     </el-select>
+                  </div>
+                  <div v-else>
+                    {{finance.name}}
                   </div>
                 </el-col>
               </el-row>
@@ -74,15 +84,15 @@
                   <el-row style="line-height: 16px;">证号：</el-row>
                 </el-col>
                 <el-col :span="19">
-                  <div v-if="isEdit">
-                    {{finance.idNumber}}
-                  </div>
-                  <div v-else>
+                  <div  v-if="pageLevel === 'add'">
                     <el-select class="student-search"  v-model="finance.studentId" @change="getStudent" filterable remote reserve-keyword placeholder=""
                                :remote-method="getStudentList" :loading="studentListLoading">
                       <el-option v-for="student in studentList" :key="student.studentId" :label="student.idNumber" :value="student.studentId">
                       </el-option>
                     </el-select>
+                  </div>
+                  <div v-else>
+                    {{finance.idNumber}}
                   </div>
                 </el-col>
               </el-row>
@@ -103,11 +113,11 @@
                 <span >代收费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('001')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('001')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="calculation" type="number" min="1" :disabled="flag" v-model.number="service.number"
+                      ×&nbsp;<input @change="changeFinanceList" type="number" min="1" :disabled="flag" v-model.number="service.number"
                                       style="border: none; outline:none; width: 30px; border-bottom: #dcdfe6 1px solid; font-size: 12px;"/>
                     </span>
                     <span v-else>{{service.price}}元</span>
@@ -121,11 +131,11 @@
                 <span >培训费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('002')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('002')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="calculation" type="number" min="1"
+                      ×&nbsp;<input @change="changeFinanceList" type="number" min="1"
                                       :disabled="flag"
                                       v-model.number="service.number"
                                       style="border: none;
@@ -144,11 +154,11 @@
                 <span >服务包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('003')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('003')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                    ×&nbsp;<input @change="calculation"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
+                    ×&nbsp;<input @change="changeFinanceList"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
                                                                outline:none;
                                                                width: 30px;
                                                                border-bottom: #dcdfe6 1px solid;
@@ -164,11 +174,11 @@
                 <span >优惠包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="calculation" v-model="finance.financeList">
-                  <el-checkbox v-for="service in evenFinanceList('004')" :label="service" :disabled="flag" :key="service.categoryId">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                  <el-checkbox v-for="service in evenFinanceList('004')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="calculation"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
+                      ×&nbsp;<input @change="changeFinanceList"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
                                                                  outline:none;
                                                                  width: 30px;
                                                                  border-bottom: #dcdfe6 1px solid;
@@ -212,7 +222,7 @@
                   </span>
                   <!-- -->
                   <el-input-number v-model="payType.money" controls-position="right" :min="0" size="small" class="money-input-number"
-                                   :disabled="index === 0 && finance.receivablesType!='定金'"
+                                   :disabled="(index === 0 && finance.receivablesType!='定金' ) || pageLevel==='info'"
                                    :class="payType.money!==0?'hasMoney':''"
                                    @change="actualMoneyCalculation" style="border: none; outline:none;width: 50px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;">
 
@@ -224,11 +234,12 @@
             </el-row>
           </el-col>
         </el-row>
+
         <!-- 销售员 备注 -->
         <el-row style="line-height: 50px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
           <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center">
-            <el-checkbox v-model="finance.studyCard" label="学时卡已发放"></el-checkbox>
-            <el-checkbox v-model="finance.healthForm" label="体检表已发放"></el-checkbox>
+            <el-checkbox v-model="periodcard" label="学时卡已发放" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="healthform" label="体检表已发放" :disabled="pageLevel==='info'"></el-checkbox>
           </el-col>
           <el-col :span="4" style="border-right: 1px solid #1f2d3d;padding-left: 10px;">
             <span class="text_css">销售员：{{finance.introducer}}
@@ -237,7 +248,7 @@
           <el-col :span="12">
             <el-row>
               <el-col :span="3" style="padding-left: 10px;">备注：</el-col>
-              <el-col :span="21"><input v-model="finance.remark" style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
+              <el-col :span="21"><input v-model="finance.remark" @change="btnDisabled = false"  :disabled="pageLevel==='info'"  style="border: none;outline:none;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;width: 100%"/></el-col>
             </el-row>
           </el-col>
         </el-row>
@@ -246,7 +257,7 @@
           <el-col :offset="1" :span="6">单位盖章：</el-col>
           <el-col :span="6">制单人：{{finance.payee}}</el-col>
           <el-col :span="6">修改人：{{finance.reviser}}</el-col>
-          <el-col :span="5">复核人：</el-col>
+          <el-col :span="5">复核人：{{finance.auditor}}</el-col>
         </el-row>
       </div>
       <!-- 按钮 -->
@@ -273,15 +284,9 @@
     props: {
       layerid: String,
       student: Object,
-      chargeId: Number
+      charge: Object
     },
     watch: {
-      param: function(val) {
-        if (val) {
-          this.isEdit = true
-          this.finance = val
-        }
-      }
     },
     data() {
       return {
@@ -294,7 +299,7 @@
           { type: '购买服务包', disabled: true }
         ],
         receivables: false,
-        isEdit: false,
+        pageLevel: 'add', // add edit info
         finance: {
           studentId: null, // 学员Id
           campus: '', // 学员校区
@@ -312,6 +317,7 @@
           introducer: '', // 销售员
           payee: '', // 收款人
           reviser: '', // 校订者 修改人
+          auditor: '', // 校订者 修改人
           receivablesType: '全款',
           paytime: null,
           payTypeList: [
@@ -322,13 +328,16 @@
             { mode: '刷卡', money: 0 },
             { mode: '其他', money: 0 }
           ], // 支付方式
-          financeList: []
+          financeList: [],
+          financeIdList: []
         },
         loading: false,
         btnLoading: false,
         btnDisabled: true,
         flag: false,
         studentListLoading: false,
+        periodcard: false,
+        healthform: false,
         financeListQuery: {
           page: 1,
           limit: 0,
@@ -347,7 +356,12 @@
         this.finance.studentId = this.student.studentId
         this.getStudent()
       }
-      if (this.chargeId) {
+      if (this.charge) {
+        console.log(this.charge)
+        this.pageLevel = this.charge.pageLevel
+        if (this.pageLevel === 'info') {
+          this.flag = true
+        }
         this.getService()
       } else {
         this.finance.paytime = new Date().getTime()
@@ -365,8 +379,9 @@
       getService() {
         this.getFinanceList()
         this.loading = true
-        getServiceByChargeId(this.chargeId).then(response => {
+        getServiceByChargeId(this.charge.chargeId).then(response => {
           var finance = response.data.data
+          console.log(response)
           var payTypeList = [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -382,27 +397,39 @@
               }
             })
           })
+          var financeIdList = []
           var financeList = []
-          var financeAllList = this.financeList
-          for (var i = 0; i < finance.financeList.length; i++) {
-            for (var j = 0; j < financeAllList.length; j++) {
-              if (financeAllList[j].categoryId === finance.financeList[i].categoryId) {
-                financeList.push(financeAllList[j])
-                continue
+          if (finance.financeList && finance.financeList.length > 0) {
+            finance.financeList.forEach(function(item) {
+              financeIdList.push(item.categoryId)
+            })
+          }
+          if (finance.receivablesType === '定转全') {
+            this.flag = true
+            queryMoneyListById(finance.studentId).then(response => {
+              var list = response.data.data
+              if (list && list.length > 0) {
+                list.forEach(function(item) {
+                  item.financeList.forEach(function(fin) {
+                    financeIdList.push(fin.categoryId)
+                    financeList.push(fin)
+                  })
+                })
               }
-            }
+            })
+            finance.financeList = financeList
           }
           this.setReceivablesList([finance.receivablesType])
-          finance.financeList = financeList
+          finance.financeIdList = financeIdList
           finance.payTypeList = payTypeList
           // 校订者 修改人
           finance.reviser = this.name
-
+          this.periodcard = false
+          this.healthform = false
+          if (finance.periodcard === '1') this.periodcard = true
+          if (finance.healthform === '1') this.healthform = true
           this.finance = finance
-          this.isEdit = true
           this.loading = false
-          console.log(finance)
-          console.log(this.finance)
         })
       },
       getStudent(receivable) {
@@ -430,34 +457,36 @@
         queryMoneyListById(studentId).then(response => {
           var list = response.data.data
           console.log(list)
+          this.getFinanceList()
           if (list && list.length > 0) {
             var financeList = []
+            var financeIdList = []
             var earnestMoney = 0 // 已收定金
             var originalPrice = 0 // 原始价格 就是所选服务不包括优惠的价格
             var activityPrice = 0 // 活动价格 优惠
             var receivables = ['购买服务包']
+            var periodcard = false
+            var healthform = false
             for (var i = 0; i < list.length; i++) {
               var financeNote = list[i]
               earnestMoney += financeNote.money
+              if (!periodcard && earnestMoney.periodcard === '1') periodcard = true
+              if (!healthform && earnestMoney.healthform === '1') healthform = true
+              //
               for (var a = 0; a < financeNote.financeList.length; a++) {
                 var finance = financeNote.financeList[a]
-                var flag = true
-                for (var b = 0; b < financeList.length; b++) {
-                  if (finance.noteId === financeList[b].noteId) {
-                    flag = false
-                    break
-                  }
-                }
-                if (flag) {
-                  financeList.push(finance)
-                  if (finance.code === '004') {
-                    activityPrice += finance.price * finance.number
-                  } else {
-                    originalPrice += finance.price * finance.number
-                  }
+                financeIdList.push(finance.categoryId)
+                financeList.push(finance)
+                if (finance.code === '004') {
+                  activityPrice += finance.price * finance.number
+                } else {
+                  originalPrice += finance.price * finance.number
                 }
               }
+            // aa
             }
+            this.periodcard = periodcard
+            this.healthform = periodcard
             var realPrice = originalPrice + activityPrice - earnestMoney
             if (realPrice > 0) {
               // 费用未经缴清
@@ -465,8 +494,8 @@
               this.finance.originalPrice = originalPrice // 原始价格 就是所选服务不包括优惠的价格
               this.finance.earnestMoney = earnestMoney // 已收定金
               this.finance.financeList = financeList
+              this.finance.financeIdList = financeIdList
               this.finance.realPrice = realPrice
-              this.financeList = financeList
               this.finance.payTypeList[0].money = originalPrice + activityPrice - earnestMoney
               receivables.push('定转全')
               this.flag = true
@@ -479,18 +508,18 @@
               this.finance.receivablesType = '购买服务包'
               this.clean()
               this.flag = false
-              this.getFinanceList()
               // 已经购买的服务包
               this.finance.financeList = []
+              this.finance.financeIdList = []
             }
             this.setReceivablesList(receivables)
             this.loading = false
           } else {
             this.flag = false
             this.setReceivablesList(['全款', '定金'])
-            this.getFinanceList()
             // 已经购买的服务包
             this.finance.financeList = []
+            this.finance.financeIdList = []
           }
         })
       },
@@ -550,6 +579,19 @@
         ]
       },
       /* 计算价格 */
+      changeFinanceList() {
+        var financeList = []
+        var financeIdList = this.finance.financeIdList
+        this.financeList.forEach(function(item) {
+          financeIdList.forEach(function(id) {
+            if (item.categoryId === id) {
+              financeList.push(item)
+            }
+          })
+        })
+        this.finance.financeList = financeList
+        this.calculation()
+      },
       calculation() {
         this.clean()
         console.log(this.finance.financeList)
@@ -579,7 +621,9 @@
         var isNotDeposit = this.finance.receivablesType !== '定金'
         var payTypeList = this.finance.payTypeList
         // 应收账款
-        var receivable = this.finance.activityPrice + this.finance.originalPrice - this.finance.earnestMoney
+        var earnestMoney = this.finance.earnestMoney || 0
+        var receivable = this.finance.activityPrice + this.finance.originalPrice - earnestMoney
+        console.log(receivable)
         // 实收
         var realPrice = 0
         // 现金
@@ -618,8 +662,14 @@
       // 保存
       saveServiceNote() {
         console.log('保存', this.finance)
+        this.finance.periodcard = this.periodcard ? '1' : '0'
+        this.finance.healthform = this.healthform ? '1' : '0'
         saveServiceCharge(this.finance).then(() => {
-          this.$layer.close(this.layerid)
+          if (this.pageLevel === 'add') {
+            this.$layer.close(this.layerid)
+          }
+          this.btnDisabled = true
+          this.btnLoading = false
         })
       },
       getSerialNumber() {
@@ -651,174 +701,174 @@
           // 保存
           this.saveServiceNote()
         })
-      }
+      },
       // 打印
-      // createOneFormPage() {
-      //   var LODOP = getLodop()
-      //   var dsfStr = ''
-      //   var pxfStr = ''
-      //   var fwbStr = ''
-      //   var yhbStr = ''
-      //
-      //   var dsf = 0
-      //   var pxf = 0
-      //   var fwb = 0
-      //   var yhb = 0
-      //
-      //   for (var j = 0; j < this.stuServiceBuyNoteEntity.financeList.length; j++) {
-      //     if (this.stuServiceBuyNoteEntity.financeList[j].code === '001') {
-      //       if (50 - (dsfStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-      //         dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-      //       } else {
-      //         dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-      //         dsf = dsf + 20
-      //       }
-      //     }
-      //
-      //     if (this.stuServiceBuyNoteEntity.financeList[j].code === '002') {
-      //       if (50 - (pxfStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-      //         pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-      //       } else {
-      //         pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-      //         pxf = pxf + 20
-      //       }
-      //     }
-      //     if (this.stuServiceBuyNoteEntity.financeList[j].code === '003') {
-      //       if (50 - (fwbStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-      //         fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-      //       } else {
-      //         fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-      //         fwb = fwb + 20
-      //       }
-      //     }
-      //     if (this.stuServiceBuyNoteEntity.financeList[j].code === '004') {
-      //       if (50 - (yhbStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
-      //         yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
-      //       } else {
-      //         yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
-      //         yhb = yhb + 20
-      //       }
-      //     }
-      //   }
-      //
-      //   var a = dsf
-      //   var b = dsf + pxf
-      //   var c = dsf + pxf + fwb
-      //   var d = dsf + pxf + fwb + yhb
-      //
-      //   LODOP.PRINT_INITA(1, 0, 761, (550 + d), '打印控件功能演示_Lodop功能_在线编辑获得程序代码')
-      //   LODOP.SET_PRINT_MODE('PRINT_NOCOLLATE', 1)
-      //
-      //   LODOP.ADD_PRINT_TEXT(167, 127, 600, (20 + dsf), dsfStr)
-      //   LODOP.ADD_PRINT_TEXT((198 + a), 127, 600, (20 + pxf), pxfStr)
-      //   LODOP.ADD_PRINT_TEXT((235 + b), 127, 600, (20 + fwb), fwbStr)
-      //   LODOP.ADD_PRINT_TEXT((266 + c), 127, 600, (20 + yhb), yhbStr)
-      //
-      //   if (this.studyCard) {
-      //     LODOP.ADD_PRINT_LINE((433 + d), 47, (420 + d), 57, 0, 1)
-      //     LODOP.ADD_PRINT_LINE((425 + d), 42, (434 + d), 48, 0, 1)
-      //   }
-      //   if (this.healthForm) {
-      //     LODOP.ADD_PRINT_LINE((433 + d), 175, (420 + d), 185, 0, 1)
-      //     LODOP.ADD_PRINT_LINE((423 + d), 170, (432 + d), 176, 0, 1)
-      //   }
-      //
-      //   LODOP.ADD_PRINT_TEXT(16, 242, 300, 53, '重庆壹路驾校培训有限公司\r\n收款收据')
-      //   LODOP.SET_PRINT_STYLEA(0, 'FontSize', 16)
-      //   LODOP.SET_PRINT_STYLEA(0, 'Alignment', 2)
-      //   LODOP.ADD_PRINT_TEXT(51, 563, 173, 20, '单据编号：年月+流水号')
-      //   LODOP.SET_PRINT_STYLEA(0, 'FontSize', 11)
-      //   LODOP.ADD_PRINT_RECT(77, 25, 702, (376 + d), 0, 1)
-      //   LODOP.ADD_PRINT_LINE(122, 26, 121, 728, 0, 1)
-      //   LODOP.ADD_PRINT_TEXT(90, 26, 100, 20, this.dateTime)
-      //   LODOP.ADD_PRINT_LINE(77, 137, 121, 138, 0, 1)
-      //   LODOP.ADD_PRINT_TEXT(90, 139, 45, 20, '校区：')
-      //   LODOP.ADD_PRINT_TEXT(90, 184, 45, 20, this.student.campus)
-      //   LODOP.ADD_PRINT_LINE(121, 275, 77, 276, 0, 1)
-      //   LODOP.ADD_PRINT_TEXT(91, 349, 60, 20, this.stuServiceBuyNoteEntity.receivablesType)
-      //   LODOP.ADD_PRINT_LINE(121, 407, 77, 408, 0, 1)
-      //   LODOP.ADD_PRINT_TEXT(91, 280, 69, 20, '收款类型：')
-      //   LODOP.ADD_PRINT_TEXT(91, 411, 46, 20, '姓名：')
-      //   LODOP.ADD_PRINT_TEXT(90, 458, 65, 21, this.student.name)
-      //   LODOP.ADD_PRINT_LINE(121, 527, 77, 528, 0, 1)
-      //   LODOP.ADD_PRINT_TEXT(91, 531, 73, 20, '身份证号：')
-      //   LODOP.ADD_PRINT_TEXT(91, 605, 120, 20, this.student.idNumber)
-      //
-      //   LODOP.ADD_PRINT_TEXT(132, 72, 100, 20, '车型：' + (this.student.motorcycleType === undefined ? '' : this.student.motorcycleType))
-      //   LODOP.ADD_PRINT_LINE(160, 69, 159, 729, 0, 1) // 车型
-      //
-      //   LODOP.ADD_PRINT_TEXT(167, 72, 100, 20, '代收费：')
-      //   // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓代收费
-      //
-      //   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑代收费
-      //   LODOP.ADD_PRINT_LINE((191 + a), 69, (190 + a), 729, 0, 1) // 代收费
-      //
-      //   LODOP.ADD_PRINT_TEXT((198 + a), 73, 100, 20, '培训费：')// 内容，参数（上边距，左边距，内容显示宽度，内容显示高度）
-      //   // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓培训费
-      //
-      //   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑培训费
-      //   LODOP.ADD_PRINT_LINE((224 + b), 69, (223 + b), 729, 0, 1) // 培训费
-      //
-      //   LODOP.ADD_PRINT_TEXT((235 + b), 74, 100, 20, '服务包：')
-      //   // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓服务包
-      //
-      //   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑服务包
-      //   LODOP.ADD_PRINT_LINE((262 + c), 69, (261 + c), 729, 0, 1) // 服务包
-      //
-      //   LODOP.ADD_PRINT_TEXT((266 + c), 74, 100, 20, '优惠包：')
-      //   // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓优惠包
-      //
-      //   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑优惠包
-      //   LODOP.ADD_PRINT_LINE((295 + d), 27, (294 + d), 728, 0, 1)// 项目底
-      //
-      //   LODOP.ADD_PRINT_LINE(125, 68, (407 + d), 69, 0, 1)// 项目 收款
-      //   // 线，竖杠(上边距1,1左边距,上边距2,2左边距,intLineStyle, intLineWidth)
-      //   // intLineStyle:线条类型，默认为0；0--实线 1--破折线 2--点线 3--点划线 4--双点划线
-      //   // intLineWidth:线条宽，默认是1，整数型，单位是(打印)像素，非实线的线条宽也是0
-      //   // 内容，参数（上边距，左边距，内容显示宽度，内容显示高度）
-      //
-      //   LODOP.ADD_PRINT_TEXT((307 + d), 78, 169, 20, '原价：￥' + this.stuServiceBuyNoteEntity.originalPrice)
-      //   LODOP.ADD_PRINT_TEXT((333 + d), 76, 148, 20, '已收定金：￥' + this.earnestMoney)
-      //   LODOP.ADD_PRINT_TEXT((333 + d), 235, 166, 20, '本次实收金额：￥' + this.stuServiceBuyNoteEntity.realPrice)
-      //   LODOP.ADD_PRINT_TEXT((334 + d), 436, 234, 20, '实收大写：' + smalltoBIG(this.stuServiceBuyNoteEntity.realPrice))
-      //   LODOP.ADD_PRINT_LINE((362 + d), 69, (361 + d), 728, 0, 1)// 收款价格底
-      //
-      //   LODOP.ADD_PRINT_TEXT((320 + d), 32, 24, 60, '收\r\n\r\n款')
-      //
-      //   LODOP.ADD_PRINT_TEXT((372 + d), 77, 94, 20, '本次收款方式：')
-      //   LODOP.ADD_PRINT_TEXT((372 + d), 167, 89, 20, '现金：' + this.payTypeList[0].money + '元')
-      //   LODOP.ADD_PRINT_TEXT((372 + d), 254, 100, 20, '支付宝：' + this.payTypeList[1].money + '元')
-      //   LODOP.ADD_PRINT_TEXT((372 + d), 350, 90, 20, '微信：' + this.payTypeList[2].money + '元')
-      //   LODOP.ADD_PRINT_TEXT((372 + d), 438, 100, 20, '收钱吧：' + this.payTypeList[3].money + '元')
-      //   LODOP.ADD_PRINT_TEXT((372 + d), 538, 90, 20, '刷卡：' + this.payTypeList[4].money + '元')
-      //   LODOP.ADD_PRINT_TEXT((372 + d), 623, 100, 20, '其他：' + this.payTypeList[5].money + '元')
-      //
-      //   LODOP.ADD_PRINT_LINE((407 + d), 27, (406 + d), 728, 0, 1)// 收款底
-      //   // LODOP.ADD_PRINT_LINE(244,68,121,69,0,1);
-      //   // 收款1
-      //
-      //   LODOP.ADD_PRINT_TEXT((176 + (d / 2)), 33, 24, 56, '项\r\n\r\n目')// 内容，参数（上边距，左边距，内容显示宽度，内容显示高度）
-      //
-      //   LODOP.ADD_PRINT_TEXT((420 + d), 55, 100, 20, '学时卡已发放')
-      //   LODOP.ADD_PRINT_RECT((424 + d), 42, 12, 12, 0, 1)
-      //   LODOP.ADD_PRINT_TEXT((420 + d), 186, 100, 20, '体检表已发放')
-      //   LODOP.ADD_PRINT_RECT((424 + d), 171, 12, 12, 0, 1)
-      //   LODOP.ADD_PRINT_LINE((406 + d), 296, (451 + d), 297, 0, 1)
-      //   LODOP.ADD_PRINT_LINE((406 + d), 426, (451 + d), 427, 0, 1)
-      //
-      //   var introducerName = ''
-      //   for (var i = 0; i < this.student.introducerNameList; i++) {
-      //     introducerName = introducerName + this.student.introducerNameList[i] + '、'
-      //   }
-      //
-      //   LODOP.ADD_PRINT_TEXT((421 + d), 312, 100, 20, '销售员：' + introducerName)
-      //   LODOP.ADD_PRINT_TEXT((419 + d), 430, 303, 20, '备注' + this.stuServiceBuyNoteEntity.remark)
-      //
-      //   LODOP.ADD_PRINT_TEXT((459 + d), 531, 57, 25, '复核人：')
-      //   LODOP.ADD_PRINT_TEXT((459 + d), 64, 75, 25, '单位盖章：')
-      //   LODOP.ADD_PRINT_TEXT((459 + d), 291, 65, 25, '收款人：')
-      //   LODOP.PREVIEW()
-      // }
+      createOneFormPage() {
+        var LODOP = getLodop()
+        var dsfStr = ''
+        var pxfStr = ''
+        var fwbStr = ''
+        var yhbStr = ''
+
+        var dsf = 0
+        var pxf = 0
+        var fwb = 0
+        var yhb = 0
+
+        for (var j = 0; j < this.stuServiceBuyNoteEntity.financeList.length; j++) {
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '001') {
+            if (50 - (dsfStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              dsfStr = dsfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              dsf = dsf + 20
+            }
+          }
+
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '002') {
+            if (50 - (pxfStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              pxfStr = pxfStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              pxf = pxf + 20
+            }
+          }
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '003') {
+            if (50 - (fwbStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              fwbStr = fwbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              fwb = fwb + 20
+            }
+          }
+          if (this.stuServiceBuyNoteEntity.financeList[j].code === '004') {
+            if (50 - (yhbStr.length % 50) > (this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   ').length) {
+              yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '   '
+            } else {
+              yhbStr = yhbStr + this.stuServiceBuyNoteEntity.financeList[j].name + '×' + this.stuServiceBuyNoteEntity.financeList[j].number + '\r\n'
+              yhb = yhb + 20
+            }
+          }
+        }
+
+        var a = dsf
+        var b = dsf + pxf
+        var c = dsf + pxf + fwb
+        var d = dsf + pxf + fwb + yhb
+
+        LODOP.PRINT_INITA(1, 0, 761, (550 + d), '打印控件功能演示_Lodop功能_在线编辑获得程序代码')
+        LODOP.SET_PRINT_MODE('PRINT_NOCOLLATE', 1)
+
+        LODOP.ADD_PRINT_TEXT(167, 127, 600, (20 + dsf), dsfStr)
+        LODOP.ADD_PRINT_TEXT((198 + a), 127, 600, (20 + pxf), pxfStr)
+        LODOP.ADD_PRINT_TEXT((235 + b), 127, 600, (20 + fwb), fwbStr)
+        LODOP.ADD_PRINT_TEXT((266 + c), 127, 600, (20 + yhb), yhbStr)
+
+        if (this.studyCard) {
+          LODOP.ADD_PRINT_LINE((433 + d), 47, (420 + d), 57, 0, 1)
+          LODOP.ADD_PRINT_LINE((425 + d), 42, (434 + d), 48, 0, 1)
+        }
+        if (this.healthForm) {
+          LODOP.ADD_PRINT_LINE((433 + d), 175, (420 + d), 185, 0, 1)
+          LODOP.ADD_PRINT_LINE((423 + d), 170, (432 + d), 176, 0, 1)
+        }
+
+        LODOP.ADD_PRINT_TEXT(16, 242, 300, 53, '重庆壹路驾校培训有限公司\r\n收款收据')
+        LODOP.SET_PRINT_STYLEA(0, 'FontSize', 16)
+        LODOP.SET_PRINT_STYLEA(0, 'Alignment', 2)
+        LODOP.ADD_PRINT_TEXT(51, 563, 173, 20, '单据编号：年月+流水号')
+        LODOP.SET_PRINT_STYLEA(0, 'FontSize', 11)
+        LODOP.ADD_PRINT_RECT(77, 25, 702, (376 + d), 0, 1)
+        LODOP.ADD_PRINT_LINE(122, 26, 121, 728, 0, 1)
+        LODOP.ADD_PRINT_TEXT(90, 26, 100, 20, this.dateTime)
+        LODOP.ADD_PRINT_LINE(77, 137, 121, 138, 0, 1)
+        LODOP.ADD_PRINT_TEXT(90, 139, 45, 20, '校区：')
+        LODOP.ADD_PRINT_TEXT(90, 184, 45, 20, this.student.campus)
+        LODOP.ADD_PRINT_LINE(121, 275, 77, 276, 0, 1)
+        LODOP.ADD_PRINT_TEXT(91, 349, 60, 20, this.stuServiceBuyNoteEntity.receivablesType)
+        LODOP.ADD_PRINT_LINE(121, 407, 77, 408, 0, 1)
+        LODOP.ADD_PRINT_TEXT(91, 280, 69, 20, '收款类型：')
+        LODOP.ADD_PRINT_TEXT(91, 411, 46, 20, '姓名：')
+        LODOP.ADD_PRINT_TEXT(90, 458, 65, 21, this.student.name)
+        LODOP.ADD_PRINT_LINE(121, 527, 77, 528, 0, 1)
+        LODOP.ADD_PRINT_TEXT(91, 531, 73, 20, '身份证号：')
+        LODOP.ADD_PRINT_TEXT(91, 605, 120, 20, this.student.idNumber)
+
+        LODOP.ADD_PRINT_TEXT(132, 72, 100, 20, '车型：' + (this.student.motorcycleType === undefined ? '' : this.student.motorcycleType))
+        LODOP.ADD_PRINT_LINE(160, 69, 159, 729, 0, 1) // 车型
+
+        LODOP.ADD_PRINT_TEXT(167, 72, 100, 20, '代收费：')
+        // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓代收费
+
+        // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑代收费
+        LODOP.ADD_PRINT_LINE((191 + a), 69, (190 + a), 729, 0, 1) // 代收费
+
+        LODOP.ADD_PRINT_TEXT((198 + a), 73, 100, 20, '培训费：')// 内容，参数（上边距，左边距，内容显示宽度，内容显示高度）
+        // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓培训费
+
+        // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑培训费
+        LODOP.ADD_PRINT_LINE((224 + b), 69, (223 + b), 729, 0, 1) // 培训费
+
+        LODOP.ADD_PRINT_TEXT((235 + b), 74, 100, 20, '服务包：')
+        // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓服务包
+
+        // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑服务包
+        LODOP.ADD_PRINT_LINE((262 + c), 69, (261 + c), 729, 0, 1) // 服务包
+
+        LODOP.ADD_PRINT_TEXT((266 + c), 74, 100, 20, '优惠包：')
+        // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓优惠包
+
+        // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑优惠包
+        LODOP.ADD_PRINT_LINE((295 + d), 27, (294 + d), 728, 0, 1)// 项目底
+
+        LODOP.ADD_PRINT_LINE(125, 68, (407 + d), 69, 0, 1)// 项目 收款
+        // 线，竖杠(上边距1,1左边距,上边距2,2左边距,intLineStyle, intLineWidth)
+        // intLineStyle:线条类型，默认为0；0--实线 1--破折线 2--点线 3--点划线 4--双点划线
+        // intLineWidth:线条宽，默认是1，整数型，单位是(打印)像素，非实线的线条宽也是0
+        // 内容，参数（上边距，左边距，内容显示宽度，内容显示高度）
+
+        LODOP.ADD_PRINT_TEXT((307 + d), 78, 169, 20, '原价：￥' + this.stuServiceBuyNoteEntity.originalPrice)
+        LODOP.ADD_PRINT_TEXT((333 + d), 76, 148, 20, '已收定金：￥' + this.earnestMoney)
+        LODOP.ADD_PRINT_TEXT((333 + d), 235, 166, 20, '本次实收金额：￥' + this.stuServiceBuyNoteEntity.realPrice)
+        LODOP.ADD_PRINT_TEXT((334 + d), 436, 234, 20, '实收大写：' + smalltoBIG(this.stuServiceBuyNoteEntity.realPrice))
+        LODOP.ADD_PRINT_LINE((362 + d), 69, (361 + d), 728, 0, 1)// 收款价格底
+
+        LODOP.ADD_PRINT_TEXT((320 + d), 32, 24, 60, '收\r\n\r\n款')
+
+        LODOP.ADD_PRINT_TEXT((372 + d), 77, 94, 20, '本次收款方式：')
+        LODOP.ADD_PRINT_TEXT((372 + d), 167, 89, 20, '现金：' + this.payTypeList[0].money + '元')
+        LODOP.ADD_PRINT_TEXT((372 + d), 254, 100, 20, '支付宝：' + this.payTypeList[1].money + '元')
+        LODOP.ADD_PRINT_TEXT((372 + d), 350, 90, 20, '微信：' + this.payTypeList[2].money + '元')
+        LODOP.ADD_PRINT_TEXT((372 + d), 438, 100, 20, '收钱吧：' + this.payTypeList[3].money + '元')
+        LODOP.ADD_PRINT_TEXT((372 + d), 538, 90, 20, '刷卡：' + this.payTypeList[4].money + '元')
+        LODOP.ADD_PRINT_TEXT((372 + d), 623, 100, 20, '其他：' + this.payTypeList[5].money + '元')
+
+        LODOP.ADD_PRINT_LINE((407 + d), 27, (406 + d), 728, 0, 1)// 收款底
+        // LODOP.ADD_PRINT_LINE(244,68,121,69,0,1);
+        // 收款1
+
+        LODOP.ADD_PRINT_TEXT((176 + (d / 2)), 33, 24, 56, '项\r\n\r\n目')// 内容，参数（上边距，左边距，内容显示宽度，内容显示高度）
+
+        LODOP.ADD_PRINT_TEXT((420 + d), 55, 100, 20, '学时卡已发放')
+        LODOP.ADD_PRINT_RECT((424 + d), 42, 12, 12, 0, 1)
+        LODOP.ADD_PRINT_TEXT((420 + d), 186, 100, 20, '体检表已发放')
+        LODOP.ADD_PRINT_RECT((424 + d), 171, 12, 12, 0, 1)
+        LODOP.ADD_PRINT_LINE((406 + d), 296, (451 + d), 297, 0, 1)
+        LODOP.ADD_PRINT_LINE((406 + d), 426, (451 + d), 427, 0, 1)
+
+        var introducerName = ''
+        for (var i = 0; i < this.student.introducerNameList; i++) {
+          introducerName = introducerName + this.student.introducerNameList[i] + '、'
+        }
+
+        LODOP.ADD_PRINT_TEXT((421 + d), 312, 100, 20, '销售员：' + introducerName)
+        LODOP.ADD_PRINT_TEXT((419 + d), 430, 303, 20, '备注' + this.stuServiceBuyNoteEntity.remark)
+
+        LODOP.ADD_PRINT_TEXT((459 + d), 531, 57, 25, '复核人：')
+        LODOP.ADD_PRINT_TEXT((459 + d), 64, 75, 25, '单位盖章：')
+        LODOP.ADD_PRINT_TEXT((459 + d), 291, 65, 25, '收款人：')
+        LODOP.PREVIEW()
+      }
     }
   }
 </script>

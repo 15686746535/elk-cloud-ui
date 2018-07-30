@@ -96,17 +96,12 @@ export function subTime(time, cFormat) {
 }
 
 export function parseSerial(value) {
-  var number = ''
-  if (value && value < 10) {
-    number = '000' + value // 0001  -  0009
-  } else if (value >= 10 && value < 100) {
-    number = '00' + value // 0010  - 0099
-  } else if (value >= 100 && value < 1000) {
-    number = '0' + value // 0100  - 0999
-  } else if (value >= 1000) {
-    number = '' + value // 0100  - 0999
+  var number = '0000'
+  if (value) {
+    number = '0000' + value
   }
-  return number
+  if (value > 9999) return value
+  return number.substring(number.length - 4)
 }
 export function parseJson(value, column) {
   value = JSON.parse(value)

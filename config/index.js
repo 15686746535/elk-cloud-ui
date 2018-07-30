@@ -1,6 +1,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 const url = 'https://www.eluchn.com/'
+// const url = 'https://test.eluchn.com/'
 // const url = 'http://127.0.0.1:8003'
 // const url = 'http://192.168.1.80:8003'
 

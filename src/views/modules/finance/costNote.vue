@@ -10,7 +10,7 @@
         <el-button size="mini" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
         <el-button size="mini" type="warning" v-if="finance&&finance.state==0" @click="updateFinaceStateHandle(finance.chargeId,1)">审核</el-button>
         <el-button size="mini" type="info" v-if="finance&&finance.state==1" @click="updateFinaceStateHandle(finance.chargeId,0)">反审核</el-button>
-        <el-button size="mini" type="info" v-if="finance&&finance.state==0" @click="updateFinace(finance)">修改</el-button>
+        <el-button size="mini" type="info" v-if="finance&&finance.state==0" @click="openFinace(finance,'edit')">修改</el-button>
         <el-button size="mini" type="danger" v-if="finance&&finance.state==0" @click="updateFinaceStateHandle(finance.chargeId,-1)">作废</el-button>
 
         <!--<el-table-column align="center"  label="操作" width="230">-->
@@ -41,7 +41,7 @@
         <el-table-column type="selection" width="35"></el-table-column>
         <el-table-column align="center"  label="流水号" min-width="130">
           <template slot-scope="scope">
-            <span>{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</span>
+            <a href="javascript:void(0) " style="color: -webkit-link;cursor: pointer;text-decoration: underline;" @click="openFinace(scope.row,'info')">{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</a>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="name" label="学员" min-width="100"></el-table-column>
@@ -291,18 +291,22 @@
         this.listQuery.limit = val
         this.getServiceChargeList()
       },
-      updateFinace(row) {
+      openFinace(row, edit) {
+        var charge = {
+          chargeId: row.chargeId,
+          pageLevel: edit
+        }
         this.$layer.open({
           type: 2,
           id: row.chargeId + '_cost', // title
-          title: '收费修改 ' + row.name, // title
+          title: '收费详情', // title
           shadeClose: false, // 点击遮罩关闭
           tabIcon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示
           content: {
             content: finance,
             parent: this, // 当前的vue对象
-            data: { chargeId: row.chargeId }// props
+            data: { charge: charge }// props
           }
         })
       },

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container1 calendar-list-container" id="service-note" style="height: 100%;">
     <div class="btn-group">
-      <el-button type="primary" size="mini" v-if="pageLevel !== 'info'" :loading="btnLoading" @click="stuBuyServiceNote" :disabled="btnDisabled" icon="el-icon-fa-save">保存</el-button>
+      <el-button type="primary" size="mini" v-if="pageLevel !== 'info'" :loading="btnLoading" @click="saveServiceNote" :disabled="btnDisabled" icon="el-icon-fa-save">保存</el-button>
       <el-button-group>
         <el-button type="warning" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
         <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>

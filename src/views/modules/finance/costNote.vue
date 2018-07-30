@@ -7,12 +7,14 @@
                         align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" >
         </el-date-picker>
         <el-input size="mini" @keyup.enter.native="searchClick" placeholder="姓名/身份证/流水号" clearable v-model="listQuery.condition" style="width: 150px;"></el-input>
-        <el-button size="mini" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
-        <el-button size="mini" type="warning" v-if="finance&&finance.state==0&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)">审核</el-button>
-        <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)">反审核</el-button>
-        <el-button size="mini" type="info" v-if="finance&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')">修改</el-button>
-        <el-button size="mini" type="danger" v-if="finance&&finance.state==0&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)">作废</el-button>
-
+        <el-button size="mini" type="primary"  @click="searchClick" icon="el-icon-search">搜索</el-button>
+        <el-button-group>
+          <el-button size="mini" type="warning" v-if="finance&&finance.state==0&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)" icon="el-icon-share">审核</el-button>
+          <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)"  icon="el-icon-refresh">反审核</el-button>
+          <el-button size="mini" type="info" v-if="finance&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')" icon="el-icon-edit">修改</el-button>
+          <el-button size="mini" type="danger" v-if="finance&&finance.state==0&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)" icon="el-icon-delete">作废</el-button>
+          <el-button size="mini" type="primary" @click="download" icon="el-icon-download">导出</el-button>
+        </el-button-group>
         <!--<el-table-column align="center"  label="操作" width="230">-->
         <!--<template slot-scope="scope">-->
         <!--<el-button size="mini" type="primary" v-if="scope.row.state==0" @click="updateFinaceStateHandle(scope.row.chargeId,1)">审核</el-button>-->
@@ -29,11 +31,6 @@
               <div v-for="(service, i) in props.row.financeList" style="float: left">
                 <div class="title" :class="'border_'+i">{{service.name}}</div>
                 <div class="money" :class="'border_'+i">{{service.price}}×{{service.number}}</div>
-              </div>
-              <div class="pay-type header">收费方式</div>
-              <div v-for="(type, a) in props.row.payTypeList" style="float: left" >
-                <div class="title" :class="'border_'+ a">{{type.mode}}</div>
-                <div class="money" :class="'border_'+ a">{{type.money}}</div>
               </div>
             </div>
           </template>
@@ -102,7 +99,7 @@
 <script>
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-  import { getServiceChargeList, updateFinaceState } from '@/api/finance/service-charge'
+  import { getServiceChargeList, updateFinaceState, downloadExcel } from '@/api/finance/service-charge'
   import finance from '@/views/modules/stu/serviceNote.vue'
 
   export default {
@@ -350,6 +347,21 @@
             parent: this, // 当前的vue对象
             data: { charge: charge }// props
           }
+        })
+      },
+      download() {
+        downloadExcel(this.listQuery).then(response => {
+          console.log(response)
+          var time = new Date()
+          var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
+          var downloadElement = document.createElement('a')
+          var href = window.URL.createObjectURL(blob) // 创建下载的链接
+          downloadElement.href = href
+          downloadElement.download = '费用信息(' + time.toLocaleString() + ').xls' // 下载后文件名
+          document.body.appendChild(downloadElement)
+          downloadElement.click() // 点击下载
+          document.body.removeChild(downloadElement) // 下载完成移除元素
+          window.URL.revokeObjectURL(href) // 释放掉blob对象
         })
       },
       updateFinaceStateHandle(chargeid, state) {

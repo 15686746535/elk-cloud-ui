@@ -92,7 +92,6 @@
               </el-col>
             </template>
           </el-table-column>
-
           <el-table-column align="center" label="入学信息" min-width="230px">
             <template slot-scope="scope">
               <el-col style=" line-height: 25px">
@@ -115,7 +114,6 @@
               </el-col>
             </template>
           </el-table-column>
-
           <el-table-column align="center" label="培训信息" min-width="230px">
             <template slot-scope="scope">
 
@@ -141,12 +139,11 @@
               </el-col>
             </template>
           </el-table-column>
-
           <el-table-column align="center" label="费用信息" min-width="230px">
             <template slot-scope="scope">
               <el-col style=" line-height: 25px">
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">服务项:{{scope.row.serviceNotes}}</el-col>
+                  <el-col :span="7" class="table_text">服务项:</el-col>
                   <el-col :span="17" class="table_text">{{scope.row.serviceNotes?'双击查看详情':'无'}}</el-col>
                 </el-row>
 
@@ -166,7 +163,6 @@
               </el-col>
             </template>
           </el-table-column>
-
         </el-table>
         <div v-show="!listLoading" class="page-util">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -374,6 +370,12 @@
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.remark}}</div>
                     </el-form-item>
                   </el-row>
+                  <el-row >
+                    <el-form-item prop="remark">
+                      <span slot="label"  class="text_css">修改时间:</span>
+                      <div style="padding-left: 16px;font-size: 12px;">{{student.updateTime | subTime('{y}-{m}-{d} {h}:{i}:{s}')}}</div>
+                    </el-form-item>
+                  </el-row>
                 </el-col>
                 <el-col :span="12">
                   <!-- 所学车型 -->
@@ -453,6 +455,12 @@
                       <div style="padding-left: 16px;font-size: 12px;"  v-show="!edit" >
                         <span v-for="(introducerName,index) in student.introducerNameList" >{{introducerName}}<span v-if="student.introducerNameList.length !== (student+1)">、</span></span>
                       </div>
+                    </el-form-item>
+                  </el-row>
+                  <el-row style="margin: 0 10px" >
+                    <el-form-item prop="company">
+                      <span slot="label" class="text_css">修改人:</span>
+                      <div style="padding-left: 16px;font-size: 12px;" >{{student.operator}}</div>
                     </el-form-item>
                   </el-row>
                   <!-- 历史费用 -->

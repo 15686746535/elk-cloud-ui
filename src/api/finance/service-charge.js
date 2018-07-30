@@ -73,3 +73,11 @@ export function getServiceByChargeId(chargeId) {
     method: 'get'
   })
 }
+
+export function getChargeId(params) {
+  return request({
+    url: '/finance/service/charge/paging',
+    method: 'get',
+    params: params
+  })
+}

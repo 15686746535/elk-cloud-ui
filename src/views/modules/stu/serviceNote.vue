@@ -1,6 +1,21 @@
 <template>
   <div class="app-container1 calendar-list-container" id="service-note" style="height: 100%;">
-    <el-card  style="height: 100%;overflow: auto">
+    <div class="btn-group">
+      <el-button type="primary" size="mini" v-if="pageLevel !== 'info'" :loading="btnLoading" @click="stuBuyServiceNote" :disabled="btnDisabled" icon="el-icon-fa-save">保存</el-button>
+      <el-button-group>
+        <el-button type="warning" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
+        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>
+        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
+        <el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>
+      </el-button-group>
+
+      <el-button-group v-if="pageLevel === 'info'">
+        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
+        <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+      </el-button-group>
+    </div>
+    <img class="examine-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
+    <el-card style="padding-top: 30px;height: 100%;overflow: auto">
       <div v-loading="loading" element-loading-text="别急,一会儿就好~" style="width: 100%;border: 1px dashed #1f2d3d;padding: 0 10px">
         <!-- 标题 -->
         <el-row style="text-align: center;">
@@ -238,8 +253,8 @@
         <!-- 销售员 备注 -->
         <el-row style="line-height: 50px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
           <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center">
-            <el-checkbox v-model="periodcard" label="学时卡已发放" :disabled="pageLevel==='info'"></el-checkbox>
-            <el-checkbox v-model="healthform" label="体检表已发放" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="periodcard" label="学时卡已发放" @change="btnDisabled = false" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="healthform" label="体检表已发放" @change="btnDisabled = false" :disabled="pageLevel==='info'"></el-checkbox>
           </el-col>
           <el-col :span="4" style="border-right: 1px solid #1f2d3d;padding-left: 10px;">
             <span class="text_css">销售员：{{finance.introducer}}
@@ -260,10 +275,6 @@
           <el-col :span="5">复核人：{{finance.auditor}}</el-col>
         </el-row>
       </div>
-      <!-- 按钮 -->
-      <el-row style="padding: 10px">
-        <el-button type="primary" :loading="btnLoading" @click="stuBuyServiceNote" style="float: right" :disabled="btnDisabled"><i class="el-icon-fa-save"></i> 提 交</el-button>
-      </el-row>
     </el-card>
   </div>
 </template>
@@ -271,7 +282,7 @@
 <script>
   import Coach from '@/components/Coach'
   import { getFinanceList } from '@/api/finance/service-category'
-  import { queryMoneyListById, saveServiceCharge, querySerialNumber, getServiceByChargeId } from '@/api/finance/service-charge'
+  import { queryMoneyListById, saveServiceCharge, querySerialNumber, getServiceByChargeId, updateFinaceState, getChargeId } from '@/api/finance/service-charge'
   import { getLodop } from '@/utils/LodopFuncs'
   import { mapGetters } from 'vuex'
   import { fetchStudentList, getStudent } from '@/api/student/student'
@@ -357,18 +368,22 @@
         this.getStudent()
       }
       if (this.charge) {
-        console.log(this.charge)
         this.pageLevel = this.charge.pageLevel
         if (this.pageLevel === 'info') {
           this.flag = true
         }
-        this.getService()
+        this.getService(this.charge.chargeId)
       } else {
         this.finance.paytime = new Date().getTime()
         this.finance.payee = this.name
       }
     },
     computed: {
+      getExamineIcon() {
+        if (this.finance.state === '-1') return '/static/icon/icon-fail.png'
+        if (this.finance.state === '1') return '/static/icon/icon-adopt.png'
+        return ''
+      },
       ...mapGetters([
         'permissions',
         'name',
@@ -376,12 +391,11 @@
       ])
     },
     methods: {
-      getService() {
+      getService(chargeId) {
         this.getFinanceList()
         this.loading = true
-        getServiceByChargeId(this.charge.chargeId).then(response => {
+        getServiceByChargeId(chargeId).then(response => {
           var finance = response.data.data
-          console.log(response)
           var payTypeList = [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -430,6 +444,40 @@
           if (finance.healthform === '1') this.healthform = true
           this.finance = finance
           this.loading = false
+        })
+      },
+      updateFinace() {
+        this.pageLevel = 'edit'
+        if (this.finance.receivablesType !== '定转全') {
+          this.flag = false
+        }
+      },
+      paging(chargeId, pag) {
+        getChargeId({ chargeId: chargeId, pag: pag }).then(res => {
+          if (res.data.data) {
+            this.getService(res.data.data)
+          } else {
+            var msg = pag > 0 ? '没有下一单了' : '没有上一单了'
+            this.$message.error(msg)
+          }
+        })
+      },
+      updateFinaceState(chargeid, state) {
+        // console.log(dat,row)
+        var dat = {
+          chargeId: chargeid,
+          state: state
+        }
+        this.$confirm('是否提交审核?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          updateFinaceState(dat).then(res => {
+            this.pageLevel = 'info'
+            this.flag = true
+            this.getService(this.charge.chargeId)
+          })
         })
       },
       getStudent(receivable) {
@@ -668,6 +716,8 @@
           if (this.pageLevel === 'add') {
             this.$layer.close(this.layerid)
           }
+          this.flag = true
+          this.pageLevel = 'info'
           this.btnDisabled = true
           this.btnLoading = false
         })
@@ -889,7 +939,24 @@ input:disabled{
   color:#c0c4cc;
   cursor:not-allowed;
 }
-  .hasMoney{
-    color: red!important;
-  }
+.hasMoney{
+  color: red!important;
+}
+.btn-group {
+  width: 98%;
+  height: 40px;
+  /* border-bottom: 1px solid; */
+  position: fixed;
+  padding: 5px;
+  background-color: #fff;
+  z-index: 666;
+  -webkit-box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.09);
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.08);
+}
+.examine-state {
+  position: absolute;
+  width: 150px;
+  top: 52px;
+  right: 35px;
+}
 </style>

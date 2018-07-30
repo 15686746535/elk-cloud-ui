@@ -8,10 +8,10 @@
         </el-date-picker>
         <el-input size="mini" @keyup.enter.native="searchClick" placeholder="姓名/电话/身份证" clearable v-model="listQuery.condition" style="width: 150px;"></el-input>
         <el-button size="mini" type="primary"  @click="searchClick"><i class="el-icon-search"></i>搜索</el-button>
-        <el-button size="mini" type="warning" v-if="finance&&finance.state==0" @click="updateFinaceStateHandle(finance.chargeId,1)">审核</el-button>
-        <el-button size="mini" type="info" v-if="finance&&finance.state==1" @click="updateFinaceStateHandle(finance.chargeId,0)">反审核</el-button>
-        <el-button size="mini" type="info" v-if="finance&&finance.state==0" @click="openFinace(finance,'edit')">修改</el-button>
-        <el-button size="mini" type="danger" v-if="finance&&finance.state==0" @click="updateFinaceStateHandle(finance.chargeId,-1)">作废</el-button>
+        <el-button size="mini" type="warning" v-if="finance&&finance.state==0&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)">审核</el-button>
+        <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)">反审核</el-button>
+        <el-button size="mini" type="info" v-if="finance&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')">修改</el-button>
+        <el-button size="mini" type="danger" v-if="finance&&finance.state==0&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)">作废</el-button>
 
         <!--<el-table-column align="center"  label="操作" width="230">-->
         <!--<template slot-scope="scope">-->

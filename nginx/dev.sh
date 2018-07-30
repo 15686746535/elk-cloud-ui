@@ -1,6 +1,8 @@
 pwd
 sed -i "s/www.eluchn.com/test.eluchn.com/g" ./nginx/nginx.conf
+sed -i "s/www.eluchn.com/test.eluchn.com/g" ./nginx/nginx_dev.conf
 sed -i "s/www.eluchn.com/test.eluchn.com/g" ./config/index.js
+sed -i "s/ADD nginx\/nginx.conf \/etc\/nginx\//ADD nginx\/nginx_dev.conf \/etc\/nginx\/nginx.conf/g" ./Dockerfile
 npm install
 npm run build
 docker build -t elk-cloud-ui:latest .

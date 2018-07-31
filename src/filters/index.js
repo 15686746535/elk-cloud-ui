@@ -70,6 +70,7 @@ export function serviceTypeFilter(subject) {
 //   }
 //   return typeMap[status]
 // }
+
 export function subTime(time, cFormat) {
   if (arguments[0] === undefined || arguments[0] == null) {
     return null

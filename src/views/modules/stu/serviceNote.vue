@@ -1,36 +1,54 @@
 <template>
   <div class="app-container1 calendar-list-container" id="service-note" style="height: 100%;">
-    <el-card  style="height: 100%;overflow: auto">
+    <div class="btn-group">
+      <el-button type="primary" size="mini" v-if="pageLevel !== 'info'" :loading="btnLoading" @click="saveServiceNote" :disabled="btnDisabled" icon="el-icon-fa-save">保存</el-button>
+      <el-button-group>
+        <el-button type="warning" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
+        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>
+        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
+        <el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>
+      </el-button-group>
+
+      <el-button-group v-if="pageLevel === 'info'">
+        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
+        <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+      </el-button-group>
+    </div>
+    <el-card style="padding-top: 30px;height: 100%;overflow: auto">
       <div v-loading="loading" element-loading-text="别急,一会儿就好~" style="width: 100%;border: 1px dashed #1f2d3d;padding: 0 10px">
         <!-- 标题 -->
         <el-row style="text-align: center;">
           <p style="font-size: 18px;"><span>{{finance.title}}</span><span style="margin-left: 35px;">收款收据</span></p>
           <p style="position: absolute;bottom: 0px;margin: 5px;font-size: 12px;right: 10px;">
-            流水号：{{finance.serialPrefix}}{{finance.paytime | parseTime('{y}{m}')}}{{finance.serialNumber | parseSerial}}
+            流水号：{{finance.serialPrefix}}{{finance.month}}{{finance.serialNumber | parseSerial}}
           </p>
+          <img class="examine-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
         </el-row>
         <!-- 学员信息 -->
         <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
+           <!--时间-->
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
               <div  v-if="pageLevel === 'info'">
-                {{finance.paytime | parseTime('{y}年{m}月{d}日')}}
+                {{parsePaytime}}
               </div>
               <div v-else>
-                <el-date-picker v-model="finance.paytime" @change="btnDisabled = false" type="date" placeholder="" format="yyyy年MM月dd日" value-format="timestamp" :clearable="false"
+                <el-date-picker v-model="finance.paytime" @change="dateChange" type="date" placeholder="" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" :clearable="false"
                                 style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
               </div>
             </el-col>
-            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
+            <!--校区-->
+            <el-col :span="5" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
               <el-row>
-                <el-col :span="8">
+                <el-col :span="6">
                   <span class="text_css">校区：</span>
                 </el-col>
-                <el-col :span="16">
+                <el-col :span="18">
                   {{finance.campus}}
                   <!--<dict v-model="" dictType="dict_campus" class="dict-not-border" style="width: 100%;"  placeholder="请选择校区"></dict>-->
                 </el-col>
               </el-row>
             </el-col>
+            <!--收费类型-->
             <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
 
               <el-row>
@@ -48,16 +66,12 @@
                   </div>
                 </el-col>
               </el-row>
-              <!--<el-radio-group  v-model="finance.receivablesType" class="receivables-type">-->
-                <!--receivablesList-->
-                <!--<el-radio label="全款"></el-radio>-->
-                <!--<el-radio label="定金"></el-radio>-->
-                <!--<el-radio label="定转全"></el-radio>-->
-              <!--</el-radio-group>-->
             </el-col>
-            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+            <!--车型-->
+            <el-col :span="2" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
               <span class="text_css">车型：{{finance.motorcycleType}}</span>
             </el-col>
+            <!--姓名-->
             <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
               <el-row>
                 <el-col :span="8">
@@ -77,7 +91,8 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="7" style="line-height: 50px;padding: 0 10px">
+            <!--身份证号-->
+            <el-col :span="6" style="line-height: 50px;padding: 0 10px">
               <el-row>
                 <el-col :span="5">
                   <el-row style="line-height: 16px;margin-top: 8px;">身份</el-row>
@@ -113,7 +128,7 @@
                 <span >代收费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('001')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
@@ -131,7 +146,7 @@
                 <span >培训费：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('002')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
@@ -154,7 +169,7 @@
                 <span >服务包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('003')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
@@ -174,7 +189,7 @@
                 <span >优惠包：</span>
               </el-col>
               <el-col :span="22">
-                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList">
+                <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
                   <el-checkbox v-for="service in evenFinanceList('004')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
@@ -238,8 +253,8 @@
         <!-- 销售员 备注 -->
         <el-row style="line-height: 50px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
           <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center">
-            <el-checkbox v-model="periodcard" label="学时卡已发放" :disabled="pageLevel==='info'"></el-checkbox>
-            <el-checkbox v-model="healthform" label="体检表已发放" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="periodcard" label="学时卡已发放" @change="btnDisabled = false" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="healthform" label="体检表已发放" @change="btnDisabled = false" :disabled="pageLevel==='info'"></el-checkbox>
           </el-col>
           <el-col :span="4" style="border-right: 1px solid #1f2d3d;padding-left: 10px;">
             <span class="text_css">销售员：{{finance.introducer}}
@@ -260,10 +275,6 @@
           <el-col :span="5">复核人：{{finance.auditor}}</el-col>
         </el-row>
       </div>
-      <!-- 按钮 -->
-      <el-row style="padding: 10px">
-        <el-button type="primary" :loading="btnLoading" @click="stuBuyServiceNote" style="float: right" :disabled="btnDisabled"><i class="el-icon-fa-save"></i> 提 交</el-button>
-      </el-row>
     </el-card>
   </div>
 </template>
@@ -271,7 +282,7 @@
 <script>
   import Coach from '@/components/Coach'
   import { getFinanceList } from '@/api/finance/service-category'
-  import { queryMoneyListById, saveServiceCharge, querySerialNumber, getServiceByChargeId } from '@/api/finance/service-charge'
+  import { queryMoneyListById, saveServiceCharge, querySerialNumber, getServiceByChargeId, updateFinaceState, getChargeId } from '@/api/finance/service-charge'
   import { getLodop } from '@/utils/LodopFuncs'
   import { mapGetters } from 'vuex'
   import { fetchStudentList, getStudent } from '@/api/student/student'
@@ -320,6 +331,7 @@
           auditor: '', // 校订者 修改人
           receivablesType: '全款',
           paytime: null,
+          month: null,
           payTypeList: [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -341,6 +353,7 @@
         financeListQuery: {
           page: 1,
           limit: 0,
+          status: 0,
           condition: null
         },
         studentListQuery: {
@@ -351,24 +364,42 @@
       }
     },
     created() {
+      if (this.charge) {
+        this.pageLevel = this.charge.pageLevel
+        if (this.pageLevel === 'info') {
+          this.flag = true
+        }
+        this.getService(this.charge.chargeId)
+      } else {
+        var date = new Date()
+        var year = date.getFullYear()
+        var month = date.getMonth() + 1
+        var day = date.getDate()
+        if (month < 10) month = '0' + month
+        if (day < 10) day = '0' + day
+        this.finance.paytime = year + '-' + month + '-' + day
+        this.getSerialNumber()
+        this.finance.payee = this.name
+      }
       if (this.student) {
         this.getStudentList(this.student.name)
         this.finance.studentId = this.student.studentId
         this.getStudent()
       }
-      if (this.charge) {
-        console.log(this.charge)
-        this.pageLevel = this.charge.pageLevel
-        if (this.pageLevel === 'info') {
-          this.flag = true
-        }
-        this.getService()
-      } else {
-        this.finance.paytime = new Date().getTime()
-        this.finance.payee = this.name
-      }
     },
     computed: {
+      parsePaytime() {
+        var time = this.finance.paytime
+        if (time) {
+          return time.substring(0, 4) + '年' + time.substring(5, 7) + '月' + time.substring(8, 11) + '日'
+        }
+        return ''
+      },
+      getExamineIcon() {
+        if (this.finance.state === '-1') return '/static/icon/icon-fail.png'
+        if (this.finance.state === '1') return '/static/icon/icon-adopt.png'
+        return ''
+      },
       ...mapGetters([
         'permissions',
         'name',
@@ -376,12 +407,12 @@
       ])
     },
     methods: {
-      getService() {
+      getService(chargeId) {
         this.getFinanceList()
         this.loading = true
-        getServiceByChargeId(this.charge.chargeId).then(response => {
+        getServiceByChargeId(chargeId).then(response => {
           var finance = response.data.data
-          console.log(response)
+
           var payTypeList = [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -422,14 +453,57 @@
           this.setReceivablesList([finance.receivablesType])
           finance.financeIdList = financeIdList
           finance.payTypeList = payTypeList
-          // 校订者 修改人
-          finance.reviser = this.name
+          if (this.pageLevel === 'edit') {
+            // 校订者 修改人
+            finance.reviser = this.name
+          }
           this.periodcard = false
           this.healthform = false
           if (finance.periodcard === '1') this.periodcard = true
           if (finance.healthform === '1') this.healthform = true
+          finance.paytime = finance.paytime.substring(0, 10)
+          var time = finance.paytime.replace('-', '')
+          time = time.substring(0, 6)
+          finance.month = time
+          console.log(finance)
           this.finance = finance
           this.loading = false
+        })
+      },
+      updateFinace() {
+        this.pageLevel = 'edit'
+        // 校订者 修改人
+        this.finance.reviser = this.name
+        if (this.finance.receivablesType !== '定转全') {
+          this.flag = false
+        }
+      },
+      paging(chargeId, pag) {
+        getChargeId({ chargeId: chargeId, pag: pag }).then(res => {
+          if (res.data.data) {
+            this.getService(res.data.data)
+          } else {
+            var msg = pag > 0 ? '没有下一单了' : '没有上一单了'
+            this.$message.error(msg)
+          }
+        })
+      },
+      updateFinaceState(chargeid, state) {
+        // console.log(dat,row)
+        var dat = {
+          chargeId: chargeid,
+          state: state
+        }
+        this.$confirm('是否提交审核?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          updateFinaceState(dat).then(res => {
+            this.pageLevel = 'info'
+            this.flag = true
+            this.getService(this.charge.chargeId)
+          })
         })
       },
       getStudent(receivable) {
@@ -438,7 +512,6 @@
         this.finance.financeList = []
         if (this.finance.studentId) {
           this.loading = true
-          this.getSerialNumber()
           getStudent(this.finance.studentId).then(response => {
             var stu = response.data.data
             // 学员车型
@@ -516,7 +589,7 @@
             this.loading = false
           } else {
             this.flag = false
-            this.setReceivablesList(['全款', '定金'])
+            this.setReceivablesList(['全款', '定金', '购买服务包'])
             // 已经购买的服务包
             this.finance.financeList = []
             this.finance.financeIdList = []
@@ -668,22 +741,35 @@
           if (this.pageLevel === 'add') {
             this.$layer.close(this.layerid)
           }
+          this.flag = true
+          this.pageLevel = 'info'
           this.btnDisabled = true
           this.btnLoading = false
         })
       },
+      dateChange() {
+        this.btnDisabled = false
+        this.getSerialNumber()
+      },
       getSerialNumber() {
-        querySerialNumber().then(res => {
-          if (res.data.code === 0) {
-            this.finance.serialNumber = res.data.data.serialNumber
-            this.finance.serialPrefix = res.data.data.serialPrefix
-            this.finance.title = res.data.data.title
-          } else {
-            this.finance.title = ''
-            this.finance.serialPrefix = ''
-            this.finance.serialNumber = null
-          }
-        })
+        console.log(this.finance)
+        var time = this.finance.paytime
+        this.finance.title = ''
+        this.finance.serialPrefix = ''
+        this.finance.serialNumber = null
+        if (time) {
+          time = time.replace('-', '')
+          time = time.substring(0, 6)
+          this.finance.month = time
+          querySerialNumber(time).then(res => {
+            console.log(res)
+            if (res.data.code === 0) {
+              this.finance.serialNumber = res.data.data.serialNumber
+              this.finance.serialPrefix = res.data.data.serialPrefix
+              this.finance.title = res.data.data.title
+            }
+          })
+        }
       },
       // 是否打印
       stuBuyServiceNote() {
@@ -889,7 +975,24 @@ input:disabled{
   color:#c0c4cc;
   cursor:not-allowed;
 }
-  .hasMoney{
-    color: red!important;
-  }
+.hasMoney{
+  color: red!important;
+}
+.btn-group {
+  width: 98%;
+  height: 40px;
+  /* border-bottom: 1px solid; */
+  position: fixed;
+  padding: 5px;
+  background-color: #fff;
+  z-index: 666;
+  -webkit-box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.09);
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.08);
+}
+.examine-state {
+  position: absolute;
+  width: 150px;
+  top: -30px;
+  right: 25px;
+}
 </style>

@@ -92,7 +92,6 @@
               </el-col>
             </template>
           </el-table-column>
-
           <el-table-column align="center" label="入学信息" min-width="230px">
             <template slot-scope="scope">
               <el-col style=" line-height: 25px">
@@ -115,7 +114,6 @@
               </el-col>
             </template>
           </el-table-column>
-
           <el-table-column align="center" label="培训信息" min-width="230px">
             <template slot-scope="scope">
 
@@ -141,18 +139,21 @@
               </el-col>
             </template>
           </el-table-column>
-
           <el-table-column align="center" label="费用信息" min-width="230px">
             <template slot-scope="scope">
               <el-col style=" line-height: 25px">
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">服务项:</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.serviceNotes.replace(new RegExp('/','gm'), '、')}}</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.serviceNotes?'双击查看详情':'无'}}</el-col>
                 </el-row>
 
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">应收金额:</el-col>
                   <el-col :span="17" class="table_text">{{scope.row.receivable}}</el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :span="7" class="table_text">已收金额:</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.receivable - scope.row.arrearage}}</el-col>
                 </el-row>
 
                 <el-row :gutter="10">
@@ -162,7 +163,6 @@
               </el-col>
             </template>
           </el-table-column>
-
         </el-table>
         <div v-show="!listLoading" class="page-util">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -199,7 +199,7 @@
         </el-upload>
       </div>
       <el-row style="height: 100%;" :gutter="10">
-        <el-col :span="area[1] === 600?24:12" style="height: 799px;">
+        <el-col :span="area[1] === 600?24:12" style="padding-bottom: 30px">
           <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px" size="mini">
             <el-card body-style="padding: 0;"
                      v-loading="infoLoading" element-loading-text="努力匹配中..."
@@ -370,6 +370,12 @@
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.remark}}</div>
                     </el-form-item>
                   </el-row>
+                  <el-row >
+                    <el-form-item prop="remark">
+                      <span slot="label"  class="text_css">修改时间:</span>
+                      <div style="padding-left: 16px;font-size: 12px;">{{student.updateTime | subTime('{y}-{m}-{d} {h}:{i}:{s}')}}</div>
+                    </el-form-item>
+                  </el-row>
                 </el-col>
                 <el-col :span="12">
                   <!-- 所学车型 -->
@@ -451,6 +457,12 @@
                       </div>
                     </el-form-item>
                   </el-row>
+                  <el-row style="margin: 0 10px" >
+                    <el-form-item prop="company">
+                      <span slot="label" class="text_css">修改人:</span>
+                      <div style="padding-left: 16px;font-size: 12px;" >{{student.operator}}</div>
+                    </el-form-item>
+                  </el-row>
                   <!-- 历史费用 -->
                   <el-row style="margin: 0 10px" v-if="student.serviceRemark!==null&&student.serviceRemark!==''">
                     <el-form-item prop="company">
@@ -468,7 +480,7 @@
               </div>
               <div v-else style="float: right;">
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
-                <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add"><i class="el-icon-goods"></i> 收 费</el-button>
+                <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add"><i class="el-icon-fa-money"></i> 收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add"><i class="el-icon-fa-car"></i> 约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add"><i class="el-icon-fa-book"></i> 约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update"><i class="el-icon-edit"></i> 编 辑</el-button>
@@ -477,11 +489,9 @@
             </el-card>
           </el-form>
         </el-col>
-        <el-col :span="area[1] === 600?24:12"  >
-          <el-tabs v-model="activeName" type="border-card"  @tab-click="handleClick" style="height: 799px;border-radius: 4px 0 0 4px;">
-            <!--<el-tab-pane label="最近信息" name="1">-->
-            <!--</el-tab-pane>-->
-            <el-tab-pane label="考试情况" name="1" style="height: 100%">
+        <el-col :span="area[1] === 600?24:12" style="padding-bottom: 50px;">
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <el-tab-pane label="考试情况" name="1">
               <el-table :data="examNoteList" stripe style="width: 100%;">
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
                 <el-table-column align="center"  label="考试日期">
@@ -508,7 +518,6 @@
                 </el-table-column>
 
               </el-table>
-
             </el-tab-pane>
             <el-tab-pane label="费用情况" name="3">
               <el-table :data="financeList" stripe style="width: 100%;">
@@ -534,7 +543,7 @@
                 </el-table-column>
                 <el-table-column align="left"  label="缴费时间">
                   <template slot-scope="scope">
-                    <span>{{scope.row.paytime | parseTime('{y}-{m}-{d}')}}</span>
+                    <span>{{scope.row.paytime.substring(0,10)}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="left"  label="缴费类型">
@@ -565,7 +574,6 @@
                   </div>
                 </div>
               </div>
-
             </el-tab-pane>
             <el-tab-pane label="约车日志" name="5">
               <el-table :data="vehiclePeriodList" stripe style="width: 100%">
@@ -598,8 +606,21 @@
 
               </el-table>
             </el-tab-pane>
-
           </el-tabs>
+          <!--<el-tabs v-model="activeName" type="border-card"  @tab-click="handleClick" style="height: 799px;border-radius: 4px 0 0 4px;">-->
+            <!--&lt;!&ndash;<el-tab-pane label="最近信息" name="1">&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-tab-pane>&ndash;&gt;-->
+            <!--<el-tab-pane label="考试情况" name="1" style="height: 100%">-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="费用情况" name="3">-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="来访跟进信息" name="4">-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="约车日志" name="5">-->
+              <!---->
+            <!--</el-tab-pane>-->
+
+          <!--</el-tabs>-->
         </el-col>
       </el-row>
     </el-card>

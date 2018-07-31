@@ -53,9 +53,9 @@ export function putServiceCharge(obj) {
   })
 }
 
-export function querySerialNumber() {
+export function querySerialNumber(time) {
   return request({
-    url: '/finance/service/charge/querySerialNumber',
+    url: '/finance/service/charge/querySerialNumber/' + time,
     method: 'get'
   })
 }
@@ -71,5 +71,22 @@ export function getServiceByChargeId(chargeId) {
   return request({
     url: '/finance/service/charge/update/' + chargeId,
     method: 'get'
+  })
+}
+
+export function getChargeId(params) {
+  return request({
+    url: '/finance/service/charge/paging',
+    method: 'get',
+    params: params
+  })
+}
+export function downloadExcel(params) {
+  return request({
+    // url: '/finance/service/charge/downloadExcel',
+    url: '/stu/student/exportStudent',
+    method: 'get',
+    params: params,
+    responseType: 'arraybuffer'
   })
 }

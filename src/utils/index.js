@@ -2,6 +2,10 @@
  * Created by jiachenpan on 16/11/18.
  */
 
+export function parseStr(time) {
+  return time.substring(0, 4) + '年' + time.substring(5, 7) + '月' + time.substring(9, 11) + '年'
+}
+
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

@@ -20,7 +20,7 @@
         <el-row style="text-align: center;">
           <p style="font-size: 18px;"><span>{{finance.title}}</span><span style="margin-left: 35px;">收款收据</span></p>
           <p style="position: absolute;bottom: 0px;margin: 5px;font-size: 12px;right: 10px;">
-            流水号：{{finance.serialPrefix}}{{finance.paytime | parseTime('{y}{m}')}}{{finance.serialNumber | parseSerial}}
+            流水号：{{finance.serialPrefix}}{{finance.month}}{{finance.serialNumber | parseSerial}}
           </p>
           <img class="examine-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
         </el-row>
@@ -331,6 +331,7 @@
           auditor: '', // 校订者 修改人
           receivablesType: '全款',
           paytime: null,
+          month: null,
           payTypeList: [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -745,6 +746,7 @@
         if (time) {
           time = time.replace('-', '')
           time = time.substring(0, 6)
+          this.finance.month = time
           querySerialNumber(time).then(res => {
             console.log(res)
             if (res.data.code === 0) {

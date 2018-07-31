@@ -35,14 +35,25 @@
           <span>{{ scope.row.createTime | subTime }}</span>
         </template>
       </el-table-column>
+        <el-table-column align="center" label="状态">
+          <template slot-scope="scope">
+            <el-switch title="禁用、启用" v-model="scope.row.status" @change="handleDisable(scope.row)" :active-value="0" :inactive-value="-1"></el-switch>
+          </template>
+        </el-table-column>
       <el-table-column align="center" label="操作" width="200" >
         <template slot-scope="scope">
           <el-button v-if="update_menu" size="small" type="success"
                      @click="handleUpdate(scope.row)">编辑
           </el-button>
-          <el-button v-if="del_menu" size="mini" type="danger"
-                     @click="handleDelete(scope.row)">删除
-          </el-button>
+          <!--<el-button v-if="del_menu" size="mini" type="danger"-->
+                     <!--@click="handleDelete(scope.row)">删除-->
+          <!--</el-button>-->
+          <!--<el-button v-if="update_menu&&scope.row.status==0" size="mini" type="info"-->
+                     <!--@click="handleDisable(scope.row)">禁用-->
+          <!--</el-button>-->
+          <!--<el-button v-if="update_menu&&scope.row.status==-1" size="mini" type="primary"-->
+                     <!--@click="handleDisable(scope.row)">启用-->
+          <!--</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -229,6 +240,25 @@
               this.dialogFormVisible = false
               this.getList()
             })
+        })
+      },
+      handleDisable(row) {
+        var dat = {}
+        dat.categoryId = row.categoryId
+        dat.status = row.status
+        console.log(dat)
+        putFinance(dat).then((res) => {
+          this.dialogFormVisible = false
+          this.getList()
+        })
+      },
+      handleEnable(row) {
+        var dat = {}
+        dat.categoryId = row.categoryId
+        dat.status = 0
+        putFinance().then(() => {
+          this.dialogFormVisible = false
+          this.getList()
         })
       },
       createClick() {

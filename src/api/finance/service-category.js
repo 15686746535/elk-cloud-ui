@@ -22,6 +22,13 @@ export function delFinance(id) {
     method: 'delete'
   })
 }
+// 删除
+// export function disableFinance(id) {
+//   return request({
+//     url: '/finance/service/category/' + id,
+//     method: 'update'
+//   })
+// }
 // 更新
 export function putFinance(obj) {
   return request({

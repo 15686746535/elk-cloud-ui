@@ -13,7 +13,7 @@
           <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)"  icon="el-icon-refresh">反审核</el-button>
           <el-button size="mini" type="info" v-if="finance&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')" icon="el-icon-edit">修改</el-button>
           <el-button size="mini" type="danger" v-if="finance&&finance.state==0&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)" icon="el-icon-delete">作废</el-button>
-          <el-button size="mini" type="primary" @click="download" icon="el-icon-download">导出</el-button>
+          <el-button size="mini" type="primary" @click="download" :loading="downloadLading"  icon="el-icon-download">导出</el-button>
         </el-button-group>
         <!--<el-table-column align="center"  label="操作" width="230">-->
         <!--<template slot-scope="scope">-->
@@ -177,6 +177,7 @@
         },
         finance: null,
         total: null,
+        downloadLading: false,
         listLoading: false
       }
     },
@@ -361,20 +362,22 @@
         })
       },
       download() {
-        this.$message.error('开发中...')
-        // downloadExcel(this.listQuery).then(response => {
-        //   console.log(response)
-        //   var time = new Date()
-        //   var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
-        //   var downloadElement = document.createElement('a')
-        //   var href = window.URL.createObjectURL(blob) // 创建下载的链接
-        //   downloadElement.href = href
-        //   downloadElement.download = '费用信息(' + time.toLocaleString() + ').xls' // 下载后文件名
-        //   document.body.appendChild(downloadElement)
-        //   downloadElement.click() // 点击下载
-        //   document.body.removeChild(downloadElement) // 下载完成移除元素
-        //   window.URL.revokeObjectURL(href) // 释放掉blob对象
-        // })
+        // this.$message.error('开发中...')
+        this.downloadLading = true
+        downloadExcel(this.listQuery).then(response => {
+          console.log(response)
+          var time = new Date()
+          var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
+          var downloadElement = document.createElement('a')
+          var href = window.URL.createObjectURL(blob) // 创建下载的链接
+          downloadElement.href = href
+          downloadElement.download = '费用信息(' + time.toLocaleString() + ').xls' // 下载后文件名
+          document.body.appendChild(downloadElement)
+          downloadElement.click() // 点击下载
+          document.body.removeChild(downloadElement) // 下载完成移除元素
+          window.URL.revokeObjectURL(href) // 释放掉blob对象
+          this.downloadLading = false
+        })
       },
       updateFinaceStateHandle(chargeid, state) {
         // console.log(dat,row)

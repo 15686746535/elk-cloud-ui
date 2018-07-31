@@ -113,8 +113,18 @@
       },
       interval: function(val) {
         if (val) {
-          this.listQuery.beginTime = val[0]
-          this.listQuery.endTime = val[1]
+          var bt = new Date(val[0])
+          var bm = bt.getMonth() + 1
+          var bd = bt.getDate()
+          if (bm < 10) bm = '0' + bm
+          if (bd < 10) bd = '0' + bd
+          this.listQuery.BTime = bt.getFullYear() + '-' + bm + '-' + bd + ' 00:00:00'
+          var et = new Date(val[1])
+          var em = bt.getMonth() + 1
+          var ed = bt.getDate()
+          if (em < 10) em = '0' + em
+          if (ed < 10) ed = '0' + ed
+          this.listQuery.ETime = et.getFullYear() + '-' + em + '-' + ed + ' 23:59:59'
         } else {
           this.listQuery.beginTime = null
           this.listQuery.endTime = null
@@ -160,8 +170,8 @@
         listQuery: {
           page: 1,
           limit: 20,
-          beginTime: null,
-          endTime: null,
+          BTime: null,
+          ETime: null,
           condition: ''
         },
         finance: null,

@@ -53,9 +53,9 @@ export function putServiceCharge(obj) {
   })
 }
 
-export function querySerialNumber() {
+export function querySerialNumber(time) {
   return request({
-    url: '/finance/service/charge/querySerialNumber',
+    url: '/finance/service/charge/querySerialNumber/' + time,
     method: 'get'
   })
 }

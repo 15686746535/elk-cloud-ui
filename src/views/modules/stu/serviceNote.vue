@@ -32,7 +32,7 @@
                 {{finance.paytime | parseTime('{y}年{m}月{d}日')}}
               </div>
               <div v-else>
-                <el-date-picker v-model="finance.paytime" @change="btnDisabled = false" type="date" placeholder="" format="yyyy年MM月dd日" value-format="timestamp" :clearable="false"
+                <el-date-picker v-model="finance.paytime" @change="dateChange" type="date" placeholder="" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" :clearable="false"
                                 style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
               </div>
             </el-col>
@@ -362,11 +362,6 @@
       }
     },
     created() {
-      if (this.student) {
-        this.getStudentList(this.student.name)
-        this.finance.studentId = this.student.studentId
-        this.getStudent()
-      }
       if (this.charge) {
         this.pageLevel = this.charge.pageLevel
         if (this.pageLevel === 'info') {
@@ -374,8 +369,20 @@
         }
         this.getService(this.charge.chargeId)
       } else {
-        this.finance.paytime = new Date().getTime()
+        var date = new Date()
+        var year = date.getFullYear()
+        var month = date.getMonth() + 1
+        var day = date.getDate()
+        if (month < 10) month = '0' + month
+        if (day < 10) day = '0' + day
+        this.finance.paytime = year + '-' + month + '-' + day
+        this.getSerialNumber()
         this.finance.payee = this.name
+      }
+      if (this.student) {
+        this.getStudentList(this.student.name)
+        this.finance.studentId = this.student.studentId
+        this.getStudent()
       }
     },
     computed: {
@@ -490,7 +497,6 @@
         this.finance.financeList = []
         if (this.finance.studentId) {
           this.loading = true
-          this.getSerialNumber()
           getStudent(this.finance.studentId).then(response => {
             var stu = response.data.data
             // 学员车型
@@ -726,18 +732,28 @@
           this.btnLoading = false
         })
       },
+      dateChange() {
+        this.btnDisabled = false
+        this.getSerialNumber()
+      },
       getSerialNumber() {
-        querySerialNumber().then(res => {
-          if (res.data.code === 0) {
-            this.finance.serialNumber = res.data.data.serialNumber
-            this.finance.serialPrefix = res.data.data.serialPrefix
-            this.finance.title = res.data.data.title
-          } else {
-            this.finance.title = ''
-            this.finance.serialPrefix = ''
-            this.finance.serialNumber = null
-          }
-        })
+        console.log(this.finance)
+        var time = this.finance.paytime
+        this.finance.title = ''
+        this.finance.serialPrefix = ''
+        this.finance.serialNumber = null
+        if (time) {
+          time = time.replace('-', '')
+          time = time.substring(0, 6)
+          querySerialNumber(time).then(res => {
+            console.log(res)
+            if (res.data.code === 0) {
+              this.finance.serialNumber = res.data.data.serialNumber
+              this.finance.serialPrefix = res.data.data.serialPrefix
+              this.finance.title = res.data.data.title
+            }
+          })
+        }
       },
       // 是否打印
       stuBuyServiceNote() {

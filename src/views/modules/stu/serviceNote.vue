@@ -29,7 +29,7 @@
            <!--时间-->
             <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
               <div  v-if="pageLevel === 'info'">
-                {{finance.paytime | parseTime('{y}年{m}月{d}日')}}
+                {{parsePaytime}}
               </div>
               <div v-else>
                 <el-date-picker v-model="finance.paytime" @change="dateChange" type="date" placeholder="" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" :clearable="false"
@@ -387,6 +387,13 @@
       }
     },
     computed: {
+      parsePaytime() {
+        var time = this.finance.paytime
+        if (time) {
+          return time.substring(0, 4) + '年' + time.substring(5, 7) + '月' + time.substring(8, 11) + '日'
+        }
+        return ''
+      },
       getExamineIcon() {
         if (this.finance.state === '-1') return '/static/icon/icon-fail.png'
         if (this.finance.state === '1') return '/static/icon/icon-adopt.png'
@@ -404,6 +411,7 @@
         this.loading = true
         getServiceByChargeId(chargeId).then(response => {
           var finance = response.data.data
+
           var payTypeList = [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -452,6 +460,11 @@
           this.healthform = false
           if (finance.periodcard === '1') this.periodcard = true
           if (finance.healthform === '1') this.healthform = true
+          finance.paytime = finance.paytime.substring(0, 10)
+          var time = finance.paytime.replace('-', '')
+          time = time.substring(0, 6)
+          finance.month = time
+          console.log(finance)
           this.finance = finance
           this.loading = false
         })

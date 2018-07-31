@@ -353,6 +353,7 @@
         financeListQuery: {
           page: 1,
           limit: 0,
+          status: 0,
           condition: null
         },
         studentListQuery: {

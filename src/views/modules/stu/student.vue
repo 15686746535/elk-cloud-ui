@@ -199,7 +199,7 @@
         </el-upload>
       </div>
       <el-row style="height: 100%;" :gutter="10">
-        <el-col :span="area[1] === 600?24:12" style="height: 799px;">
+        <el-col :span="area[1] === 600?24:12" style="padding-bottom: 30px">
           <el-form :model="student" :rules="studentRules" ref="student" label-position="left" label-width="80px" size="mini">
             <el-card body-style="padding: 0;"
                      v-loading="infoLoading" element-loading-text="努力匹配中..."
@@ -489,11 +489,9 @@
             </el-card>
           </el-form>
         </el-col>
-        <el-col :span="area[1] === 600?24:12"  >
-          <el-tabs v-model="activeName" type="border-card"  @tab-click="handleClick" style="height: 799px;border-radius: 4px 0 0 4px;">
-            <!--<el-tab-pane label="最近信息" name="1">-->
-            <!--</el-tab-pane>-->
-            <el-tab-pane label="考试情况" name="1" style="height: 100%">
+        <el-col :span="area[1] === 600?24:12" style="padding-bottom: 50px;">
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <el-tab-pane label="考试情况" name="1">
               <el-table :data="examNoteList" stripe style="width: 100%;">
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
                 <el-table-column align="center"  label="考试日期">
@@ -520,7 +518,6 @@
                 </el-table-column>
 
               </el-table>
-
             </el-tab-pane>
             <el-tab-pane label="费用情况" name="3">
               <el-table :data="financeList" stripe style="width: 100%;">
@@ -577,7 +574,6 @@
                   </div>
                 </div>
               </div>
-
             </el-tab-pane>
             <el-tab-pane label="约车日志" name="5">
               <el-table :data="vehiclePeriodList" stripe style="width: 100%">
@@ -610,8 +606,21 @@
 
               </el-table>
             </el-tab-pane>
-
           </el-tabs>
+          <!--<el-tabs v-model="activeName" type="border-card"  @tab-click="handleClick" style="height: 799px;border-radius: 4px 0 0 4px;">-->
+            <!--&lt;!&ndash;<el-tab-pane label="最近信息" name="1">&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-tab-pane>&ndash;&gt;-->
+            <!--<el-tab-pane label="考试情况" name="1" style="height: 100%">-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="费用情况" name="3">-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="来访跟进信息" name="4">-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="约车日志" name="5">-->
+              <!---->
+            <!--</el-tab-pane>-->
+
+          <!--</el-tabs>-->
         </el-col>
       </el-row>
     </el-card>

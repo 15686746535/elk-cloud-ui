@@ -113,12 +113,13 @@
       },
       interval: function(val) {
         if (val) {
+          // 时间检索  开始时间为选择的开始时间前一天的23:59:59   结束时间为选择时间的23:59:59
           var bt = new Date(val[0])
           var bm = bt.getMonth() + 1
-          var bd = bt.getDate()
+          var bd = bt.getDate() - 1
           if (bm < 10) bm = '0' + bm
           if (bd < 10) bd = '0' + bd
-          this.listQuery.BTime = bt.getFullYear() + '-' + bm + '-' + bd + ' 00:00:00'
+          this.listQuery.BTime = bt.getFullYear() + '-' + bm + '-' + bd + ' 23:59:59'
           var et = new Date(val[1])
           var em = bt.getMonth() + 1
           var ed = bt.getDate()

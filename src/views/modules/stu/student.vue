@@ -546,7 +546,7 @@
                 </el-table-column>
                 <el-table-column align="left"  label="缴费时间">
                   <template slot-scope="scope">
-                    <span>{{scope.row.paytime | parseTime('{y}-{m}-{d}')}}</span>
+                    <span>{{scope.row.paytime.substring(0,10)}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="left"  label="缴费类型">

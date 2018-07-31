@@ -151,10 +151,10 @@
                   <el-col :span="7" class="table_text">应收金额:</el-col>
                   <el-col :span="17" class="table_text">{{scope.row.receivable}}</el-col>
                 </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">已收金额:</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.receivable - scope.row.arrearage}}</el-col>
-                </el-row>
+                <!--<el-row :gutter="10">-->
+                  <!--<el-col :span="7" class="table_text">已收金额:</el-col>-->
+                  <!--<el-col :span="17" class="table_text">{{scope.row.receivable - scope.row.arrearage}}</el-col>-->
+                <!--</el-row>-->
 
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">欠费金额:</el-col>

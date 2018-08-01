@@ -479,11 +479,12 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
-                <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122"><i class="el-icon-fa-bars"></i> 录入122</el-button>
-                <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add"><i class="el-icon-fa-money"></i> 收 费</el-button>
-                <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add"><i class="el-icon-fa-car"></i> 约 车</el-button>
-                <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add"><i class="el-icon-fa-book"></i> 约 考</el-button>
-                <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update"><i class="el-icon-edit"></i> 编 辑</el-button>
+                <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
+                <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
+                <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
+                <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add" icon="el-icon-fa-book">约 考</el-button>
+                <el-button type="danger" size="mini" @click="outSchool" v-if="permissions.stu_student_update" icon="el-icon-edit">退 学</el-button>
+                <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update" icon="el-icon-edit">编 辑</el-button>
               </div>
 
             </el-card>
@@ -1712,6 +1713,18 @@
         })
       },
       // 修改
+      outSchool() {
+        this.$confirm('确定退学?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.student.state = '-1'
+          putStudent(this.student).then(res => {
+            this.backClick()
+          })
+        })
+      },
       update(formName) {
         console.log(this.student)
         this.$refs[formName].validate((valid) => {

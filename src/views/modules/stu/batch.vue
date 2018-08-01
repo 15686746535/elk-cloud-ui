@@ -58,7 +58,7 @@
         <el-table-column align="center" label="操作" width="240">
           <template slot-scope="scope">
             <!--<el-button-group>-->
-              <el-button size="mini" type="success" @click="see(scope.row.examId, studentListQuery.examineState)" plain>查 看</el-button>
+              <el-button size="mini" type="success" @click="look(scope.row.examId)" plain>查 看</el-button>
               <el-button size="mini" type="primary" v-if="permissions.stu_exam_update" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
               <el-button size="mini" type="danger" v-if="permissions.stu_exam_del" @click="handleDelete(scope.row)">删 除</el-button>
             <!--</el-button-group>-->
@@ -78,7 +78,7 @@
       </div>
     </el-card>
     <el-card v-show="examOption" style="height: 100%; ">
-      <el-button @click="examOption = false" size="small" type="danger" style="position: absolute;z-index: 66;right: 40px;top: 54px;">返回</el-button>
+      <el-button @click="close" size="small" type="danger" style="position: absolute;z-index: 66;right: 40px;top: 54px;">返回</el-button>
       <el-tabs body-style="padding:0;" v-model="bespeakTabs" type="border-card" @tab-click="handleField" style="height: 100%; ">
         <el-tab-pane name="all" label="申请名单">
           <el-table :data="examBespeak" :height="tableHeight - 160" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
@@ -447,6 +447,13 @@
         this.batch = val
         this.dialogStatus = 'update'
         this.batchOption = true
+      },
+      close() {
+        this.examOption = false
+      },
+      look(examId) {
+        this.bespeakTabs = 'all'
+        this.see(examId, null)
       },
       see(examId, state) {
         this.examBespeakLoading = true

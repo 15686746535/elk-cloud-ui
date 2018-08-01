@@ -243,14 +243,9 @@
         })
       },
       handleDisable(row) {
-        var dat = {}
-        dat.categoryId = row.categoryId
-        dat.status = row.status
+        var dat = { categoryId: row.categoryId, status: row.status, number: 1 }
         console.log(dat)
-        putFinance(dat).then((res) => {
-          this.dialogFormVisible = false
-          this.getList()
-        })
+        putFinance(dat)
       },
       handleEnable(row) {
         var dat = {}

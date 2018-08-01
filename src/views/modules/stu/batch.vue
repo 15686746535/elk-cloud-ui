@@ -252,6 +252,11 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
+            <el-table-column  align="center" label="考场" width="130">
+              <template slot-scope="scope">
+                <span>{{scope.row.examField}}</span>
+              </template>
+            </el-table-column>
             <el-table-column  align="center" label="入学时间" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.enrolTime | subTime}}</span>

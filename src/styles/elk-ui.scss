@@ -493,10 +493,12 @@
     input {
       border: none!important;
       padding: 0!important;
+      height: 16px;
     }
     &.hasMoney {
       input {
         color: red !important;
+        height: 16px;
       }
     }
   }

@@ -18,26 +18,26 @@
       <div v-loading="loading" element-loading-text="别急,一会儿就好~" style="width: 100%;border: 1px dashed #1f2d3d;padding: 0 10px">
         <!-- 标题 -->
         <el-row style="text-align: center;">
-          <p style="font-size: 18px;"><span>{{finance.title}}</span><span style="margin-left: 35px;">收款收据</span></p>
+          <p style="font-size: 16px;font-weight: 600;"><span>{{finance.title}}</span><span style="margin-left: 35px;">收款收据</span></p>
           <p style="position: absolute;bottom: 0px;margin: 5px;font-size: 12px;right: 10px;">
-            流水号：{{finance.serialPrefix}}{{finance.month}}{{finance.serialNumber | parseSerial}}
+            流水号：<span v-if="finance.serialNumber">{{finance.serialPrefix}}{{finance.month}}{{finance.serialNumber | parseSerial}}</span>
           </p>
           <img class="examine-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
         </el-row>
         <!-- 学员信息 -->
         <el-row  style="border: 1px solid #1f2d3d;border-collapse: collapse;font-size: 12px;">
            <!--时间-->
-            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+            <el-col :span="3" style="border-right: 1px solid #1f2d3d;line-height: 40px;padding: 0 10px">
               <div  v-if="pageLevel === 'info'">
                 {{parsePaytime}}
               </div>
-              <div v-else>
+              <div v-else style="height: 40px;">
                 <el-date-picker v-model="finance.paytime" @change="dateChange" type="date" placeholder="" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" :clearable="false"
-                                style="width: 100%;font-size: 12px;" prefix-icon="no" class="note-border-date"></el-date-picker>
+                                style="width: 100%;font-size: 12px;height: 40px;" prefix-icon="no" class="note-border-date"></el-date-picker>
               </div>
             </el-col>
             <!--校区-->
-            <el-col :span="5" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
+            <el-col :span="5" style="border-right: 1px solid #1f2d3d;line-height: 40px;padding: 0 0 0 10px">
               <el-row>
                 <el-col :span="6">
                   <span class="text_css">校区：</span>
@@ -49,7 +49,7 @@
               </el-row>
             </el-col>
             <!--收费类型-->
-            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 40px;padding: 0 10px">
 
               <el-row>
                 <el-col :span="10">
@@ -59,8 +59,8 @@
                   <div v-if="pageLevel === 'info'">
                     {{finance.receivablesType}}
                   </div>
-                  <div v-else>
-                    <el-select v-model="finance.receivablesType" placeholder="" @change="receivablesTypeChange" class="receivables-type">
+                  <div v-else style="height: 40px;">
+                    <el-select v-model="finance.receivablesType" style="height: 40px;" placeholder="" @change="receivablesTypeChange" class="receivables-type">
                       <el-option v-for="item in receivablesList" :key="item.type" :label="item.type" :value="item.type" :disabled="item.disabled"></el-option>
                     </el-select>
                   </div>
@@ -68,18 +68,18 @@
               </el-row>
             </el-col>
             <!--车型-->
-            <el-col :span="2" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 10px">
+            <el-col :span="2" style="border-right: 1px solid #1f2d3d;line-height: 40px;padding: 0 10px">
               <span class="text_css">车型：{{finance.motorcycleType}}</span>
             </el-col>
             <!--姓名-->
-            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 50px;padding: 0 0 0 10px">
+            <el-col :span="4" style="border-right: 1px solid #1f2d3d;line-height: 40px;padding: 0 0 0 10px">
               <el-row>
                 <el-col :span="8">
                   <span class="text_css">姓名：</span>
                 </el-col>
                 <el-col :span="16">
-                  <div  v-if="pageLevel === 'add'">
-                    <el-select class="student-search"  v-model="finance.studentId" @change="getStudent" filterable remote reserve-keyword placeholder=""
+                  <div  v-if="pageLevel === 'add'" style="height: 40px;">
+                    <el-select class="student-search"  style="height: 40px;" v-model="finance.studentId" @change="getStudent" filterable remote reserve-keyword placeholder=""
                                :remote-method="getStudentList" :loading="studentListLoading">
                       <el-option v-for="student in studentList" :key="student.studentId" :label="student.name" :value="student.studentId">
                       </el-option>
@@ -92,15 +92,15 @@
               </el-row>
             </el-col>
             <!--身份证号-->
-            <el-col :span="6" style="line-height: 50px;padding: 0 10px">
+            <el-col :span="6" style="line-height: 40px;padding: 0 10px">
               <el-row>
                 <el-col :span="5">
-                  <el-row style="line-height: 16px;margin-top: 8px;">身份</el-row>
+                  <el-row style="line-height: 16px;margin-top: 4px;">身份</el-row>
                   <el-row style="line-height: 16px;">证号：</el-row>
                 </el-col>
                 <el-col :span="19">
-                  <div  v-if="pageLevel === 'add'">
-                    <el-select class="student-search"  v-model="finance.studentId" @change="getStudent" filterable remote reserve-keyword placeholder=""
+                  <div  v-if="pageLevel === 'add'" style="height: 40px;">
+                    <el-select class="student-search" style="height: 40px;" v-model="finance.studentId" @change="getStudent" filterable remote reserve-keyword placeholder=""
                                :remote-method="getStudentList" :loading="studentListLoading">
                       <el-option v-for="student in studentList" :key="student.studentId" :label="student.idNumber" :value="student.studentId">
                       </el-option>
@@ -114,16 +114,16 @@
             </el-col>
           </el-row>
         <!-- 项目 -->
-        <el-row  style="border: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
-          <el-col :span="1" style="padding: 0 10px;height: 100%">
-            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 80px">
-              <div>
-                项目
-              </div>
+        <el-row  style="border: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%;">
+          <el-col :span="1" style="padding: 0 10px;height: 100%;">
+            <div >
+              <div style="margin: 25px 0 0 3px;">项</div>
+              <div style="position: absolute;bottom: 25px;left: 14px;">目</div>
             </div>
           </el-col>
           <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
-            <el-row style="line-height: 40px;border-bottom: 1px solid #1f2d3d;">
+            <!--代收费-->
+            <el-row style="line-height: 30px;border-bottom: 1px solid #1f2d3d;">
               <el-col class="text_css" :span="2" style="padding-left:10px;">
                 <span >代收费：</span>
               </el-col>
@@ -132,8 +132,9 @@
                   <el-checkbox v-for="service in evenFinanceList('001')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="changeFinanceList" type="number" min="1" :disabled="flag" v-model.number="service.number"
-                                      style="border: none; outline:none; width: 30px; border-bottom: #dcdfe6 1px solid; font-size: 12px;"/>
+                      ×&nbsp;<el-input-number :min="1" :max="9999" size="small" class="money-input-number" v-model="service.number" :disabled="flag" @change="changeFinanceList"
+                                              style="border: none; outline:none;width: 35px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;height: 23px">
+                    </el-input-number>
                     </span>
                     <span v-else>{{service.price}}元</span>
                   </el-checkbox>
@@ -141,7 +142,8 @@
               </el-col>
 
             </el-row>
-            <el-row style="line-height: 40px;border-bottom: 1px solid #1f2d3d;">
+            <!--培训费-->
+            <el-row style="line-height: 30px;border-bottom: 1px solid #1f2d3d;">
               <el-col class="text_css" :span="2" style="padding-left:10px;">
                 <span >培训费：</span>
               </el-col>
@@ -150,21 +152,17 @@
                   <el-checkbox v-for="service in evenFinanceList('002')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="changeFinanceList" type="number" min="1"
-                                      :disabled="flag"
-                                      v-model.number="service.number"
-                                      style="border: none;
-                                      outline:none;
-                                      width: 30px;
-                                      border-bottom: #dcdfe6 1px solid;
-                                      font-size: 12px;"/>
+                      ×&nbsp;<el-input-number :min="1" :max="9999" size="small" class="money-input-number" v-model="service.number" :disabled="flag" @change="changeFinanceList"
+                                              style="border: none; outline:none;width: 35px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;height: 23px">
+                    </el-input-number>
                     </span>
                     <span v-else>{{service.price}}元</span>
                   </el-checkbox>
                 </el-checkbox-group>
               </el-col>
             </el-row>
-            <el-row style="line-height: 40px;border-bottom: 1px solid #1f2d3d;">
+            <!--服务包-->
+            <el-row style="line-height: 30px;border-bottom: 1px solid #1f2d3d;">
               <el-col class="text_css" :span="2" style="padding-left:10px;">
                 <span >服务包：</span>
               </el-col>
@@ -173,18 +171,17 @@
                   <el-checkbox v-for="service in evenFinanceList('003')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                    ×&nbsp;<input @change="changeFinanceList"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
-                                                               outline:none;
-                                                               width: 30px;
-                                                               border-bottom: #dcdfe6 1px solid;
-                                                               font-size: 12px;"/>
+                    ×&nbsp;<el-input-number :min="1" :max="9999" size="small" class="money-input-number" v-model="service.number" :disabled="flag" @change="changeFinanceList"
+                                            style="border: none; outline:none;width: 35px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;height: 23px">
+                    </el-input-number>
                     </span>
                     <span v-else>{{service.price}}元</span>
                   </el-checkbox>
                 </el-checkbox-group>
               </el-col>
             </el-row>
-            <el-row style="line-height: 40px;">
+            <!--优惠包-->
+            <el-row style="line-height: 30px;">
               <el-col class="text_css" :span="2" style="padding-left:10px;">
                 <span >优惠包：</span>
               </el-col>
@@ -193,11 +190,9 @@
                   <el-checkbox v-for="service in evenFinanceList('004')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
                     {{service.name}}
                     <span v-if="service.priceType === '1'">
-                      ×&nbsp;<input @change="changeFinanceList"  type="number" min="1" :disabled="flag" v-model.number="service.number" style="border: none;
-                                                                 outline:none;
-                                                                 width: 30px;
-                                                                 border-bottom: #dcdfe6 1px solid;
-                                                                 font-size: 12px;"/>
+                      ×&nbsp;<el-input-number :min="1" :max="9999" size="small" class="money-input-number" v-model="service.number" :disabled="flag" @change="changeFinanceList"
+                                              style="border: none; outline:none;width: 35px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;height: 23px">
+                    </el-input-number>
                     </span>
                   </el-checkbox>
                 </el-checkbox-group>
@@ -208,10 +203,10 @@
         <!-- 收款 -->
         <el-row style="border: 1px solid #1f2d3d; border-top: none;font-size: 12px;height: 100%">
           <el-col :span="1" style="padding: 0 10px;">
-            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 60px">收款</div>
+            <div style="width: 12px; word-wrap: break-word; margin: 0 auto;line-height: 48px">收款</div>
           </el-col>
           <el-col :span="23" style="border-left: 1px solid #1f2d3d;">
-            <el-row style="line-height: 35px;padding: 0 10px">
+            <el-row style="line-height: 30px;padding: 0 10px">
               <div class="text_css" style="width: 150px;float: left">
                 原价：￥{{finance.originalPrice}}
               </div>
@@ -219,14 +214,14 @@
                 活动价：￥{{finance.activityPrice + finance.originalPrice}}
               </div>
             </el-row>
-            <el-row style="line-height: 35px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
+            <el-row style="line-height: 30px;padding: 0 10px;border-bottom: 1px solid #1f2d3d;">
               <div class="text_css" style="width: 150px;float: left" v-show="finance.earnestMoney !== 0">已收金额：￥{{finance.earnestMoney}}</div>
               <div class="text_css" style="width: 150px;float: left">
                 本次实收金额：￥<span class="hasMoney">{{finance.realPrice}}</span>
               </div>
               <div class="text_css" style="float: left">人名币大写：{{finance.realPrice | smalltoBIG}}</div>
             </el-row>
-            <el-row  class="text_css"  style="line-height: 50px;padding: 0 10px">
+            <el-row  class="text_css"  style="line-height: 35px;padding: 0 10px">
               <el-col :span="3">
                 <span >本次收款方式：</span>
               </el-col>
@@ -239,7 +234,7 @@
                   <el-input-number v-model="payType.money" controls-position="right" :min="0" size="small" class="money-input-number"
                                    :disabled="(index === 0 && finance.receivablesType!='定金' ) || pageLevel==='info'"
                                    :class="payType.money!==0?'hasMoney':''"
-                                   @change="actualMoneyCalculation" style="border: none; outline:none;width: 50px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;">
+                                   @change="actualMoneyCalculation" style="border: none; outline:none;width: 50px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;height: 23px">
 
                   </el-input-number>
                   元
@@ -249,12 +244,11 @@
             </el-row>
           </el-col>
         </el-row>
-
         <!-- 销售员 备注 -->
-        <el-row style="line-height: 50px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
-          <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center">
-            <el-checkbox v-model="periodcard" label="学时卡已发放" @change="btnDisabled = false" :disabled="pageLevel==='info'"></el-checkbox>
-            <el-checkbox v-model="healthform" label="体检表已发放" @change="btnDisabled = false" :disabled="pageLevel==='info'"></el-checkbox>
+        <el-row style="line-height: 35px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
+          <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center;height: 35px;">
+            <el-checkbox v-model="periodcard" label="学时卡已发放" @change="btnDisabled = false" style="height: 35px;" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="healthform" label="体检表已发放" @change="btnDisabled = false" style="height: 35px;" :disabled="pageLevel==='info'"></el-checkbox>
           </el-col>
           <el-col :span="4" style="border-right: 1px solid #1f2d3d;padding-left: 10px;">
             <span class="text_css">销售员：{{finance.introducer}}
@@ -268,7 +262,7 @@
           </el-col>
         </el-row>
         <!-- 落款 制单人 -->
-        <el-row style="line-height: 40px;">
+        <el-row style="line-height: 30px;font-size: 14px;">
           <el-col :offset="1" :span="6">单位盖章：</el-col>
           <el-col :span="6">制单人：{{finance.payee}}</el-col>
           <el-col :span="6">修改人：{{finance.reviser}}</el-col>
@@ -407,9 +401,11 @@
       ])
     },
     methods: {
+      // 查看收据详情
       getService(chargeId) {
         this.getFinanceList()
         this.loading = true
+        var that = this
         getServiceByChargeId(chargeId).then(response => {
           var finance = response.data.data
 
@@ -444,6 +440,8 @@
                   item.financeList.forEach(function(fin) {
                     financeIdList.push(fin.categoryId)
                     financeList.push(fin)
+                    // that.financeList.forEach(function(fall) {
+                    // })
                   })
                 })
               }
@@ -470,6 +468,7 @@
           this.loading = false
         })
       },
+      // 点击修改
       updateFinace() {
         this.pageLevel = 'edit'
         // 校订者 修改人
@@ -478,6 +477,7 @@
           this.flag = false
         }
       },
+      // 上一单  下一单
       paging(chargeId, pag) {
         getChargeId({ chargeId: chargeId, pag: pag }).then(res => {
           if (res.data.data) {
@@ -488,6 +488,7 @@
           }
         })
       },
+      // 审核
       updateFinaceState(chargeid, state) {
         // console.log(dat,row)
         var dat = {
@@ -506,6 +507,7 @@
           })
         })
       },
+      // 获取学员信息
       getStudent(receivable) {
         this.clean()
         this.financeList = []
@@ -526,6 +528,7 @@
           })
         }
       },
+      // 获取已经收费的信息
       queryMoneyList(studentId, receivable) {
         queryMoneyListById(studentId).then(response => {
           var list = response.data.data
@@ -596,6 +599,7 @@
           }
         })
       },
+      // 获取可选的收费方式
       setReceivablesList(optional) {
         this.receivablesList.forEach(function(item) {
           item.disabled = true
@@ -651,7 +655,7 @@
           { mode: '其他', money: 0 }
         ]
       },
-      /* 计算价格 */
+      /* 选择的府服务发生变化 */
       changeFinanceList() {
         var financeList = []
         var financeIdList = this.finance.financeIdList
@@ -665,6 +669,7 @@
         this.finance.financeList = financeList
         this.calculation()
       },
+      /* 计算价格 */
       calculation() {
         this.clean()
         console.log(this.finance.financeList)
@@ -747,10 +752,12 @@
           this.btnLoading = false
         })
       },
+      // 修改日期
       dateChange() {
         this.btnDisabled = false
         this.getSerialNumber()
       },
+      // 获取订单号
       getSerialNumber() {
         console.log(this.finance)
         var time = this.finance.paytime

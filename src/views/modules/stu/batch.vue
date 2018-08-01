@@ -232,7 +232,7 @@
           <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-            <el-table-column align="center"  label="学员">
+            <el-table-column align="center"  label="学员" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.name}}</span>
               </template>
@@ -242,9 +242,19 @@
                 <span>{{scope.row.mobile}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="车型">
+            <el-table-column  align="center" label="身份证"  width="180">
+              <template slot-scope="scope">
+                <span>{{scope.row.idNumber}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="车型" width="80">
               <template slot-scope="scope">
                 <span>{{scope.row.motorcycleType}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="入学时间" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.enrolTime | subTime}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="考试时间" width="100">
@@ -446,6 +456,7 @@
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list
           this.examBespeakLoading = false
+          console.log(response.data.data.list)
         })
         // this.examBespeakList.examId = examId
         this.examOption = true

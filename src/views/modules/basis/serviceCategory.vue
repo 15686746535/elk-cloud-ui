@@ -30,6 +30,11 @@
           <span>{{ scope.row.remark }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="排序">
+        <template slot-scope="scope">
+          <span>{{ scope.row.sort}}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | subTime }}</span>
@@ -40,7 +45,7 @@
             <el-switch title="禁用、启用" v-model="scope.row.status" @change="handleDisable(scope.row)" :active-value="0" :inactive-value="-1"></el-switch>
           </template>
         </el-table-column>
-      <el-table-column align="center" label="操作" width="200" >
+      <el-table-column align="center" label="操作" >
         <template slot-scope="scope">
           <el-button v-if="update_menu" size="small" type="success"
                      @click="handleUpdate(scope.row)">编辑
@@ -67,9 +72,10 @@
       <el-button v-if="add_menu" size="small" style="float: right" @click="createClick" type="primary"><i class="el-icon-plus"></i>添加</el-button>
     </div>
     </el-card>
+
+
     <el-dialog :modal="false" @close="cancel('serviceCategory')" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="serviceCategory" :rules="rules" ref="serviceCategory" label-width="100px">
-
         <el-form-item label="服务类型" prop="code">
           <el-select v-model="serviceCategory.code" style="width: 100%" placeholder="请选择服务类型">
             <el-option
@@ -88,7 +94,9 @@
         <el-form-item label="价格" prop="price">
           <el-input type="number" v-model.number="serviceCategory.price" placeholder="价格" ></el-input>
         </el-form-item>
-
+        <el-form-item label="排序" prop="sort">
+          <el-input type="number" v-model.number="serviceCategory.sort" placeholder="排序" ></el-input>
+        </el-form-item>
         <el-form-item label="收费类型" prop="priceType">
           <el-radio v-model="serviceCategory.priceType" label="0">单次收费</el-radio>
           <el-radio v-model="serviceCategory.priceType" label="1">多次收费</el-radio>
@@ -135,6 +143,7 @@
         serviceCategory: {
           name: null,
           price: null,
+          sort: 1,
           priceType: null,
           code: null,
           remark: null,

@@ -7,7 +7,6 @@
  * @Last modified time: 2018-03-23 18:27:59
  */
 export default class helper {
-
   /**
    * 点击mask关闭弹窗
    * @param  {[type]} event [description]
@@ -15,9 +14,9 @@ export default class helper {
    * @return {[type]}       [description]
    */
   static clickMaskCloseAll(event, layer, id) {
-    let mask = event.target.getAttribute("class");
-    if (mask && (mask.indexOf("notify-mask") > -1 || mask.indexOf("icon-remove") > -1)) {
-      layer.close(id);
+    var mask = event.target.getAttribute('class')
+    if (mask && (mask.indexOf('notify-mask') > -1 || mask.indexOf('icon-remove') > -1)) {
+      layer.close(id)
     }
   }
   /**
@@ -26,10 +25,10 @@ export default class helper {
    * @return {[type]}       [description]
    */
   static btnyes(event, options) {
-    if (typeof(options.yes) == "function") {
-      options.yes();
+    if (typeof (options.yes) === 'function') {
+      options.yes()
     } else {
-      options.layer.close(options.id);
+      options.layer.close(options.id)
     }
   }
   /**
@@ -38,10 +37,10 @@ export default class helper {
    * @return {[type]}       [description]
    */
   static btncancel(event, options) {
-    if (typeof(options.cancel) == "function") {
-      options.cancel();
+    if (typeof (options.cancel) === 'function') {
+      options.cancel()
     } else {
-      options.layer.close(options.id);
+      options.layer.close(options.id)
     }
   }
   /**
@@ -51,17 +50,17 @@ export default class helper {
    * @return {[type]}         [description]
    */
   static moveStart(event, options) {
-    options.offset = options.offset == 'auto' ? [] : options.offset;
-    if (options.offset.length == 0) {
-      options.offset.push(document.getElementById(options.id + "").offsetLeft);
-      options.offset.push(document.getElementById(options.id + "").offsetTop);
-      options.offset.push(0);
+    options.offset = options.offset === 'auto' ? [] : options.offset
+    if (options.offset.length === 0) {
+      options.offset.push(document.getElementById(options.id + '').offsetLeft)
+      options.offset.push(document.getElementById(options.id + '').offsetTop)
+      options.offset.push(0)
     }
-    if (options.offset.length == 2) {
-      options.offset.push(0);
+    if (options.offset.length === 2) {
+      options.offset.push(0)
     }
-    options.offset[0] = (document.getElementById(options.id + "").offsetLeft);
-    options.offset[1] = (document.getElementById(options.id + "").offsetTop);
+    options.offset[0] = (document.getElementById(options.id + '').offsetLeft)
+    options.offset[1] = (document.getElementById(options.id + '').offsetTop)
   }
   /**
    * 拖动弹窗
@@ -71,9 +70,9 @@ export default class helper {
    */
   static move(event, options, ismove) {
     if (ismove) {
-      let o = document.getElementById(options.id + "_alert");
-      o.style.left = options.offset[0] + (event.clientX - this.moveLeft) + "px";
-      o.style.top = options.offset[1] + (event.clientY - this.moveTop) + "px";
+      var o = document.getElementById(options.id + '_alert')
+      o.style.left = options.offset[0] + (event.clientX - this.moveLeft) + 'px'
+      o.style.top = options.offset[1] + (event.clientY - this.moveTop) + 'px'
     }
   }
   /**
@@ -84,6 +83,4 @@ export default class helper {
   static sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
-
-
 }

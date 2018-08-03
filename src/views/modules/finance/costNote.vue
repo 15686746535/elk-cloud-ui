@@ -105,6 +105,7 @@
   export default {
     name: 'table_log',
     props: {
+      layerid: String,
       area: Array
     },
     watch: {
@@ -184,6 +185,7 @@
     computed: {
       ...mapGetters([
         'permissions',
+        'prohibit',
         'client'
       ])
     },
@@ -332,11 +334,6 @@
           console.log(response.data.data.totalCount)
         })
       },
-      searchClick() {
-        this.listQuery.page = 1
-        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
-        this.getServiceChargeList()
-      },
       // 改变页容量
       handleSizeChange(val) {
         this.listQuery.limit = val
@@ -361,7 +358,15 @@
           }
         })
       },
+      searchClick() {
+        this.$store.dispatch('pushProhibit', this.layerid)
+        console.log(this.prohibit)
+        this.listQuery.page = 1
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
+        this.getServiceChargeList()
+      },
       download() {
+        this.$store.dispatch('pushProhibit', this.layerid)
         // this.$message.error('开发中...')
         this.downloadLading = true
         downloadExcel(this.listQuery).then(response => {
@@ -377,6 +382,7 @@
           document.body.removeChild(downloadElement) // 下载完成移除元素
           window.URL.revokeObjectURL(href) // 释放掉blob对象
           this.downloadLading = false
+          this.$store.dispatch('removeProhibit', this.layerid)
         })
       },
       updateFinaceStateHandle(chargeid, state) {

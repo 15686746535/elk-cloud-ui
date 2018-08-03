@@ -9,6 +9,7 @@ const app = {
     iFrameUrl: 'https://www.eluchn.com', // 52.83.97.172
     motorcycleType: ['C1', 'C2', 'C3', 'C4', 'A1', 'A2', 'A3', 'B1', 'B2', 'D', 'E', 'F', 'M', 'N', 'P'],
     vehicleType: [{ name: '一人一车', value: 1 }, { name: '两人一车', value: 2 }],
+    prohibit: [], // 禁止关闭的窗口
     loading: false,
     spread: false,
     client: {
@@ -24,6 +25,15 @@ const app = {
         Cookies.set('sidebarStatus', 0)
       }
       state.sidebar.opened = !state.sidebar.opened
+    },
+    PUSH_PROHIBIT: (state, id) => {
+      state.prohibit.push(id)
+    },
+    REMOVE_PROHIBIT: (state, id) => {
+      var index = state.prohibit.indexOf(id)
+      if (index > -1) {
+        state.prohibit.splice(index, 1)
+      }
     },
     SET_SPREAD: (state, spread) => {
       state.spread = spread
@@ -53,6 +63,12 @@ const app = {
     }
   },
   actions: {
+    pushProhibit: ({ commit }, id) => {
+      commit('PUSH_PROHIBIT', id)
+    },
+    removeProhibit: ({ commit }, id) => {
+      commit('REMOVE_PROHIBIT', id)
+    },
     setLoading: ({ commit }, loading) => {
       commit('SET_LOADING', loading)
     },

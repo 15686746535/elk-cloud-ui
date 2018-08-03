@@ -400,6 +400,7 @@
   export default {
     name: 'table_batch',
     props: {
+      layerid: String,
       area: Array
     },
     watch: {
@@ -684,15 +685,22 @@
         } else if (this.listQuery.subject === '4') {
           subject = '四'
         }
+        console.log(this.layerid)
+        this.$store.dispatch('pushProhibit', this.layerid)
         this.studentListQuery.subject = subject
         exportExamList(this.studentListQuery).then(response => {
           var time = new Date()
-          var blob = new Blob([response.data], { type: 'application/x-xls' })
-          var link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = '考试名单(' + time.toLocaleString() + ').xls'
-          link.click()
+          var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
+          var downloadElement = document.createElement('a')
+          var href = window.URL.createObjectURL(blob) // 创建下载的链接
+          downloadElement.href = href
+          downloadElement.download = '考试名单(' + time.toLocaleString() + ').xls' // 下载后文件名
+          document.body.appendChild(downloadElement)
+          downloadElement.click() // 点击下载
+          document.body.removeChild(downloadElement) // 下载完成移除元素
+          window.URL.revokeObjectURL(href) // 释放掉blob对象
           this.expLoading = false
+          this.$store.dispatch('removeProhibit', this.layerid)
         })
       }
     }

@@ -798,9 +798,12 @@
           <el-table v-loading="maintainListLoading" element-loading-text="我已经全速加载了..." :data="mileList" stripe border fit highlight-current-row style="width: 100%">
             <el-table-column type="index" label="序号"  align="center" width="50">
             </el-table-column>
-            <el-table-column prop="description" label="里程" width="180">
+            <el-table-column prop="mile" label="里程" width="210">
             </el-table-column>
-            <el-table-column prop="maintainTime" label="时间" width="180">
+            <el-table-column prop="date"  label="时间" width="250">
+              <template slot-scope="scope">
+                {{scope.row.date | subTime}}
+              </template>
             </el-table-column>
               <el-table-column prop="operator" label="操作人">
             </el-table-column>
@@ -816,6 +819,9 @@
             <el-table-column type="index" label="序号"  align="center" width="50">
             </el-table-column>
             <el-table-column prop="operate_time" label="加油日期" width="180">
+              <template slot-scope="scope">
+                {{scope.row.operate_time | subTime}}
+              </template>
             </el-table-column>
             <el-table-column prop="cost" label="金额" width="180">
             </el-table-column>
@@ -823,7 +829,7 @@
             </el-table-column>
           </el-table>
           <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
-            <el-button style="margin-top: -8px;float: right" @click="createClick('oilconsumptiomn')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+            <el-button style="margin-top: -8px;float: right" @click="createClick('oilconsumption')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
           </div>
 
         </el-tab-pane>
@@ -891,7 +897,7 @@
           </div>
           <div style="clear: both"></div>
         </div>
-
+        {{flag}}
         <div v-show="flag === 'oilconsumption'">
           <el-form label-position="left" :model="oilconsumption"  ref="oilconsumption" label-width="100px">
             <el-form-item label="加油金额" prop="cost">
@@ -902,7 +908,7 @@
             </el-form-item>
           </el-form>
           <div slot="footer" style="float: right">
-            <el-button type="primary" :loading="btnLoading" @click="createRepair('mile', mile)">确 定</el-button>
+            <el-button type="primary" :loading="btnLoading" @click="createRepair('oilconsumption', oilconsumption)">确 定</el-button>
           </div>
           <div style="clear: both"></div>
         </div>
@@ -944,6 +950,7 @@
         tableHeight: this.area[1],
         // 车牌集合
         plates: [],
+        oilconsumption:{},
         // 负责人集合
         userNames: [],
         // 单个车辆信息
@@ -1236,15 +1243,16 @@
             this.certificateEntity = response.data.data.certificateEntity === null ? {} : response.data.data.certificateEntity
             this.maintainList = response.data.data.maintainEntityList === null ? [] : response.data.data.maintainEntityList
             this.repairList = response.data.data.repairEntityList === null ? [] : response.data.data.repairEntityList
-            this.mileList = response.data.data.mileEntityList === null ? [] : response.data.data.mileEntityList
+            var t = response.data.data.mileageEntityList === null ? [] : response.data.data.mileageEntityList
+            this.mileList = t
             this.repairListLoading = false
             this.maintainListLoading = false
             this.timeGroup()
-            console.log(response.data.data,'here data')
+            console.log(t,'here data')
+            console.log(this.mileList,'look',this.data,JSON.stringify(response.data.data))
           })
         this.showModule = 'info'
         this.addInfo = false
-        console.log(this.mileList,'look')
       },
       // 所有编辑方法
       editInfo(key) {

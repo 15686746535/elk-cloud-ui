@@ -107,6 +107,7 @@ export default {
           id: app.id, // title
           title: app.name, // title
           shadeClose: false, // 点击遮罩关闭
+          prohibit: this.$store.state.app.prohibit,
           tabIcon: app.icon, // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示
           content: {

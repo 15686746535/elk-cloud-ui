@@ -43,6 +43,11 @@
         </el-table-column>
         <el-table-column align="center" prop="name" label="学员" min-width="100"></el-table-column>
         <!--<el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>-->
+        <el-table-column align="center"  prop="stuState"  label="学员状态" min-width="100" :filters="subjectFilters" :filter-method="subjectFinance" filter-placement="bottom-end">
+          <template slot-scope="scope">
+            <div style="width: 100%;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">{{scope.row.stuState | subjectFilter}}</div>
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="campus" label="校区" min-width="120" :filters="campusFilters" :filter-method="filterCampus" filter-placement="bottom-end"></el-table-column>
         <el-table-column align="center"  prop="finances"  label="购买服务" min-width="100" :filters="financeFilters" :filter-method="filterFinance" filter-placement="bottom-end">
           <template slot-scope="scope">
@@ -105,6 +110,7 @@
   export default {
     name: 'table_log',
     props: {
+      layerid: String,
       area: Array
     },
     watch: {
@@ -162,6 +168,14 @@
         campusFilters: [],
         introducerFilters: [],
         interval: [],
+        subjectFilters: [
+          { text: '科目一', value: '1' },
+          { text: '科目二', value: '2' },
+          { text: '科目三', value: '3' },
+          { text: '科目四', value: '4' },
+          { text: '毕业', value: '5' },
+          { text: '退学', value: '-1' }
+        ],
         stateFilters: [
           { text: '未审核', value: '0' },
           { text: '已审核', value: '1' },
@@ -184,6 +198,7 @@
     computed: {
       ...mapGetters([
         'permissions',
+        'prohibit',
         'client'
       ])
     },
@@ -204,6 +219,9 @@
       },
       filterCampus(value, row) {
         return row.campus === value
+      },
+      subjectFinance(value, row) {
+        return row.stuState === value
       },
       filterIntroducer(value, row) {
         return row.introducerName === value
@@ -332,11 +350,6 @@
           console.log(response.data.data.totalCount)
         })
       },
-      searchClick() {
-        this.listQuery.page = 1
-        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
-        this.getServiceChargeList()
-      },
       // 改变页容量
       handleSizeChange(val) {
         this.listQuery.limit = val
@@ -361,11 +374,18 @@
           }
         })
       },
+      searchClick() {
+        this.$store.dispatch('pushProhibit', this.layerid)
+        console.log(this.prohibit)
+        this.listQuery.page = 1
+        this.listQuery.condition = removeAllSpace(this.listQuery.condition)
+        this.getServiceChargeList()
+      },
       download() {
+        this.$store.dispatch('pushProhibit', this.layerid)
         // this.$message.error('开发中...')
         this.downloadLading = true
         downloadExcel(this.listQuery).then(response => {
-          console.log(response)
           var time = new Date()
           var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
           var downloadElement = document.createElement('a')
@@ -377,6 +397,7 @@
           document.body.removeChild(downloadElement) // 下载完成移除元素
           window.URL.revokeObjectURL(href) // 释放掉blob对象
           this.downloadLading = false
+          this.$store.dispatch('removeProhibit', this.layerid)
         })
       },
       updateFinaceStateHandle(chargeid, state) {

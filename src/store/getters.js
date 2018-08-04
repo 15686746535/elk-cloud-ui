@@ -3,6 +3,7 @@ const getters = {
   visitedViews: state => state.app.visitedViews,
   loading: state => state.app.loading,
   client: state => state.app.client,
+  prohibit: state => state.app.prohibit,
   motorcycleType: state => state.app.motorcycleType,
   iFrameUrl: state => state.app.iFrameUrl,
   spread: state => state.app.spread,

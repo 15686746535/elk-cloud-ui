@@ -794,6 +794,45 @@
           </div>
 
         </el-tab-pane>
+        <el-tab-pane label="里程日志" name="7">
+          <el-table v-loading="maintainListLoading" element-loading-text="我已经全速加载了..." :data="mileList" stripe border fit highlight-current-row style="width: 100%">
+            <el-table-column type="index" label="序号"  align="center" width="50">
+            </el-table-column>
+            <el-table-column prop="mile" label="里程" width="210">
+            </el-table-column>
+            <el-table-column prop="date"  label="时间" width="250">
+              <template slot-scope="scope">
+                {{scope.row.date | subTime}}
+              </template>
+            </el-table-column>
+              <el-table-column prop="operator" label="操作人">
+            </el-table-column>
+          </el-table>
+          <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
+            <el-button style="margin-top: -8px;float: right" @click="createClick('mile')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+          </div>
+        </el-tab-pane>
+
+
+        <el-tab-pane label="耗油日志" name="8">
+          <el-table element-loading-text="我已经全速加载了..." :data="OilconsumptionList" stripe border fit highlight-current-row style="width: 100%">
+            <el-table-column type="index" label="序号"  align="center" width="50">
+            </el-table-column>
+            <el-table-column prop="operate_time" label="加油日期" width="180">
+              <template slot-scope="scope">
+                {{scope.row.operate_time | subTime}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="cost" label="金额" width="180">
+            </el-table-column>
+            <el-table-column prop="operator" label="操作人">
+            </el-table-column>
+          </el-table>
+          <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
+            <el-button style="margin-top: -8px;float: right" @click="createClick('oilconsumption')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+          </div>
+
+        </el-tab-pane>
       </el-tabs>
 
       <el-dialog :modal="false" @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加保养日志'" width="550px" :visible.sync="repairListOption">
@@ -821,7 +860,6 @@
         </div>
 
         <div v-show="flag === 'maintain'">
-
           <el-form label-position="left" :model="maintain" :rules="maintainRules" ref="maintain" label-width="100px">
             <el-form-item label="保养内容" prop="description">
               <el-input v-model="maintain.description" placeholder="保养内容" ></el-input>
@@ -843,6 +881,36 @@
           <div style="clear: both"></div>
 
 
+        </div>
+        <div v-show="flag === 'mile'">
+          <el-form label-position="left" :model="mile"  ref="mile" label-width="100px">
+            <el-form-item label="新增里程" prop="description">
+              <el-input v-model="mile.mile" placeholder="新增里程" ></el-input>
+            </el-form-item>
+            <el-form-item label="时间" prop="maintainTime">
+              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="时间" v-model="mile.date"></el-date-picker>
+            </el-form-item>
+          </el-form>
+
+          <div slot="footer" style="float: right">
+            <el-button type="primary" :loading="btnLoading" @click="createRepair('mile', mile)">确 定</el-button>
+          </div>
+          <div style="clear: both"></div>
+        </div>
+        {{flag}}
+        <div v-show="flag === 'oilconsumption'">
+          <el-form label-position="left" :model="oilconsumption"  ref="oilconsumption" label-width="100px">
+            <el-form-item label="加油金额" prop="cost">
+              <el-input v-model="oilconsumption.cost" placeholder="加油金额" ></el-input>
+            </el-form-item>
+            <el-form-item label="时间" prop="operate_time">
+              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="时间" v-model="oilconsumption.operate_time"></el-date-picker>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" style="float: right">
+            <el-button type="primary" :loading="btnLoading" @click="createRepair('oilconsumption', oilconsumption)">确 定</el-button>
+          </div>
+          <div style="clear: both"></div>
         </div>
       </el-dialog>
     </el-card>
@@ -882,6 +950,7 @@
         tableHeight: this.area[1],
         // 车牌集合
         plates: [],
+        oilconsumption:{},
         // 负责人集合
         userNames: [],
         // 单个车辆信息
@@ -914,6 +983,7 @@
           viStart: null
         },
         maintainList: [],
+        mileList: [],
         repairList: [],
         maintain: {
           description: null,
@@ -926,6 +996,11 @@
           repairTime: null,
           cost: null,
           remark: null
+        },
+        mile: {
+          vehicleId: null,
+          mile: 0,
+          date: null
         },
         // 负责人集合
         userList: [],
@@ -1168,9 +1243,13 @@
             this.certificateEntity = response.data.data.certificateEntity === null ? {} : response.data.data.certificateEntity
             this.maintainList = response.data.data.maintainEntityList === null ? [] : response.data.data.maintainEntityList
             this.repairList = response.data.data.repairEntityList === null ? [] : response.data.data.repairEntityList
+            var t = response.data.data.mileageEntityList === null ? [] : response.data.data.mileageEntityList
+            this.mileList = t
             this.repairListLoading = false
             this.maintainListLoading = false
             this.timeGroup()
+            console.log(t,'here data')
+            console.log(this.mileList,'look',this.data,JSON.stringify(response.data.data))
           })
         this.showModule = 'info'
         this.addInfo = false

@@ -2,12 +2,15 @@
   <div :style="{width:width}" class="spread-true">
     <!--<div class="ran-mask-all" v-show="isOpen" @click="cancel"></div>-->
     <div class="ran-select">
-      <input class="ran-input el-input__inner hover  spread-true" :class="$store.state.app.spread?'selected':''" @click="choice" :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
-      <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="$store.state.app.spread?'ran-select-icon-open':'ran-select-icon-close'"></i>
-      <i class="ran-select-icon el-icon-error hover" v-if="currentId != null " @click="clean" :class="$store.state.app.spread?'ran-select-icon-open':'ran-select-icon-close'"></i>
-      <div v-show="$store.state.app.spread" class="ran-arrow"></div>
+      <input class="ran-input el-input__inner hover  spread-true" :class="$store.state.app.spread===id?'selected':''"
+             @focus="choice"
+             @blur="cancel"
+             :style="{height:height}" :placeholder=placeholder v-model="label" readonly  placeholder="请选择"/>
+      <i class="ran-select-icon el-icon-arrow-up hover" @click="choice" :class="$store.state.app.spread===id?'ran-select-icon-open':'ran-select-icon-close'"></i>
+      <i class="ran-select-icon el-icon-error hover" v-if="currentId != null " @click="clean" :class="$store.state.app.spread===id?'ran-select-icon-open':'ran-select-icon-close'"></i>
+      <div v-show="$store.state.app.spread===id" class="ran-arrow"></div>
       <el-collapse-transition>
-        <div v-show="$store.state.app.spread" class="ran-select-dropdown" :style="{minWidth:width}">
+        <div v-show="$store.state.app.spread===id" class="ran-select-dropdown" :style="{minWidth:width}">
           <div class="not-data" v-show="noData">
             没有数据
           </div>
@@ -38,6 +41,10 @@
       width: {
         type: String,
         default: '100%'
+      },
+      id: {
+        type: String,
+        default: 'tree-select' + new Date().getTime()
       },
       height: {
         type: String,
@@ -136,10 +143,14 @@
         })
       },
       cancel() {
-        this.$store.dispatch('setSpread', false)
+        this.$store.dispatch('setSpread', null)
       },
       choice() {
-        this.$store.dispatch('setSpread', !this.$store.state.app.spread)
+        if (this.$store.state.app.spread === this.id) {
+          this.cancel()
+        } else {
+          this.$store.dispatch('setSpread', this.id)
+        }
       }
     }
   }

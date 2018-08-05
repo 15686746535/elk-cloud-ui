@@ -7,6 +7,14 @@ export function fetchList(query) {
     params: query
   })
 }
+export function getCommonPage(query) {
+  return request({
+    url: '/visit/intention/getCommonPage',
+    method: 'get',
+    params: query
+  })
+}
+
 // 添加
 export function addObj(obj) {
   return request({

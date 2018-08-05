@@ -9,8 +9,8 @@
                             unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
             </el-date-picker>
           </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
-            <el-select size="mini" style="width: 100%" v-model="listQuery.subject" clearable placeholder="科目">
+          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
+            <el-select size="mini" style="width: 100%" v-model="listQuery.subject" clearable filterable placeholder="科目">
               <el-option
                 v-for="item in subject"
                 :key="item.value"
@@ -19,21 +19,31 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+          <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
             <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" placeholder="报名点"  ></dict>
           </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
             <Coach v-model="listQuery.fieldCoach" size="mini" coachType="field" placeholder="场训教练"  ></Coach>
           </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
             <Coach v-model="listQuery.roadCoach" size="mini" coachType="road" placeholder="路训教练"  ></Coach>
           </el-col>
-          <el-col class="hidden-md-and-down"  :xs="6" :sm="6" :md="6" :lg="5" :xl="3">
+          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
+            <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer"  clearable filterable placeholder="介绍人">
+              <el-option
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.name"
+                :value="item.userId">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col class="hidden-md-and-down"  :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
             <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"  ></dict>
           </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="3" :xl="3">
+          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
 
-            <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" clearable placeholder="车型">
+            <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" clearable filterable placeholder="车型">
               <el-option
                 v-for="item in $store.state.app.motorcycleType"
                 :key="item"
@@ -42,7 +52,7 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="5" :xl="4">
+          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
             <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
           </el-col>
           <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
@@ -879,7 +889,8 @@
         </el-form>
       </div>
       <div  class="dialog-footer">
-        <el-button plain @click="reset('studentEntity')">重  置</el-button>
+
+        <el-button plain @click="reset('studentEntity')">取 消</el-button>
         <el-button type="primary" :loading="btnLoading" @click="add('studentEntity')">建 档</el-button>
       </div>
     </el-card>
@@ -921,8 +932,6 @@
         <el-button :loading="btnLoading" type="primary" @click="createBespeak('car')">确 定</el-button>
       </div>
     </el-dialog>
-
-
 
     <el-dialog :modal="false"  @close="isPush122 = false;btnLoading = false;$refs['student122'].resetFields()" title="录入122" width="800px" :visible.sync="isPush122">
 
@@ -1320,6 +1329,7 @@
           interval: [],
           subject: null,
           roadCoach: null,
+          introducer: null,
           fieldCoach: null,
           source: null,
           motorcycleType: null,
@@ -1454,6 +1464,7 @@
     created() {
       this.$data.showModule = this.display
       this.getList()
+      this.getIntroducerList()
     },
     props: {
       display: String,
@@ -1600,7 +1611,6 @@
           this.examBespeak.studentId = this.student.studentId
           if (student.introducerIdList === null) student.introducerIdList = [] // 防止介绍人为null
           this.student = student
-          this.getIntroducerList()
           this.getExam()
           this.infoLoading = false
         })
@@ -1694,7 +1704,6 @@
             saveStudent(this.studentEntity).then(() => {
               this.backClick()
               this.btnLoading = false
-              this.showModule = 'list'
             })
           }
         })
@@ -1704,7 +1713,6 @@
         this.isCreate = true
         this.edit = true
         this.showModule = 'add'
-        this.getIntroducerList()
       },
       /* 获取介绍人列表 */
       getIntroducerList() {
@@ -1824,8 +1832,13 @@
         }
       },
       reset(formName) {
-        this.$refs[formName].resetFields()
-        this.btnLoading = false
+        this.$confirm('是否取消保存?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.backClick()
+        })
       },
       getFieldCoach(coach) {
         this.student.fieldCoachName = coach.name

@@ -1,20 +1,26 @@
 <template>
   <div class="app-container1 calendar-list-container" id="service-note" style="height: 100%;">
     <div class="btn-group">
-      <el-button type="primary" size="mini" v-if="pageLevel !== 'info'" :loading="btnLoading" @click="saveServiceNote" :disabled="btnDisabled" icon="el-icon-fa-save">保存</el-button>
-      <el-button-group>
-        <el-button type="warning" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
+      <el-button type="primary" size="mini" v-if="pageLevel !== 'info'&&pageShow==='bill'" :loading="btnLoading" @click="saveServiceNote" :disabled="btnDisabled" icon="el-icon-fa-save">保存</el-button>
+      <el-button-group v-if="pageShow==='bill'">
+        <el-button type="warning" size="mini"  v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
         <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>
         <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
         <el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>
       </el-button-group>
 
-      <el-button-group v-if="pageLevel === 'info'">
+      <el-button-group v-if="pageLevel === 'info'&&pageShow==='bill'">
         <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
         <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
       </el-button-group>
+
+      <el-button-group>
+        <el-button type="info" size="mini" v-if="pageShow==='config'" @click="pageShow = 'bill'" icon="el-icon-back">取消</el-button>
+        <el-button type="primary" size="mini" v-if="pageShow==='config'" @click="pageShow = 'bill'" icon="el-icon-fa-save">保存</el-button>
+        <el-button type="success" size="mini" v-if="pageShow==='bill'" @click="updateConfig" icon="el-icon-setting">配置</el-button>
+      </el-button-group>
     </div>
-    <el-card style="padding-top: 30px;height: 100%;overflow: auto">
+    <el-card v-show="pageShow==='bill'" style="padding-top: 30px;height: 100%;overflow: auto">
       <div v-loading="loading" element-loading-text="别急,一会儿就好~" style="width: 100%;border: 1px dashed #1f2d3d;padding: 0 10px">
         <!-- 标题 -->
         <el-row style="text-align: center;">
@@ -270,6 +276,36 @@
         </el-row>
       </div>
     </el-card>
+    <div v-show="pageShow==='config'" style="padding-top: 30px;height: 100%;overflow: auto">
+      <el-form :model="receiptConfig" :rules="rules" ref="receiptConfig" label-width="100px">
+        <el-form-item label="流水号前缀" prop="roleName">
+          <el-input v-model="receiptConfig.serialPrefix" placeholder="流水号前缀"></el-input>
+        </el-form-item>
+        <el-form-item label="收据表头" prop="roleName">
+          <el-input v-model="receiptConfig.title" placeholder="收据表头"></el-input>
+        </el-form-item>
+        <el-form-item label="收据表头" prop="roleName">
+          <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
+            <el-checkbox v-for="service in evenFinanceList('001')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
+              {{service.name}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+
+        <template>
+          <el-transfer
+            filterable
+            :filter-method="filterMethod"
+            filter-placeholder="请输入城市拼音"
+            v-model="value2"
+            :data="data2">
+          </el-transfer>
+        </template>
+      </el-form>
+
+
+
+    </div>
   </div>
 </template>
 
@@ -296,6 +332,23 @@
     data() {
       return {
         financeList: [],
+        groupList: [],
+        receiptConfig: {
+          serialPrefix: '',
+          title: '',
+          showList: [],
+          groupList: [
+            { name: '', group: [] }
+          ]
+        },
+        rules: {
+          serialPrefix: [
+            { required: true, message: '流水号前缀', trigger: ['blur', 'change'] }
+          ],
+          title: [
+            { required: true, message: '收据表头', trigger: ['blur', 'change'] }
+          ]
+        },
         studentList: [],
         receivablesList: [
           { type: '全款', disabled: false },
@@ -304,6 +357,7 @@
           { type: '购买服务包', disabled: true }
         ],
         receivables: false,
+        pageShow: 'bill', // bill config
         pageLevel: 'add', // add edit info
         finance: {
           studentId: null, // 学员Id
@@ -344,12 +398,6 @@
         studentListLoading: false,
         periodcard: false,
         healthform: false,
-        financeListQuery: {
-          page: 1,
-          limit: 0,
-          status: 0,
-          condition: null
-        },
         studentListQuery: {
           page: 1,
           limit: 0,
@@ -358,6 +406,7 @@
       }
     },
     created() {
+      this.getFinanceList()
       if (this.charge) {
         this.pageLevel = this.charge.pageLevel
         if (this.pageLevel === 'info') {
@@ -403,12 +452,11 @@
     methods: {
       // 查看收据详情
       getService(chargeId) {
-        this.getFinanceList()
         this.loading = true
         var that = this
         getServiceByChargeId(chargeId).then(response => {
           var finance = response.data.data
-
+          console.log(response)
           var payTypeList = [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },
@@ -468,6 +516,9 @@
           this.loading = false
         })
       },
+      updateConfig() {
+        this.pageShow = 'config' // bill config
+      },
       // 点击修改
       updateFinace() {
         this.pageLevel = 'edit'
@@ -510,7 +561,6 @@
       // 获取学员信息
       getStudent(receivable) {
         this.clean()
-        this.financeList = []
         this.finance.financeList = []
         if (this.finance.studentId) {
           this.loading = true
@@ -525,15 +575,15 @@
             // 校区
             this.finance.campus = stu.campus
             this.queryMoneyList(this.finance.studentId, receivable)
+            this.loading = false
           })
         }
       },
       // 获取已经收费的信息
       queryMoneyList(studentId, receivable) {
+        this.loading = true
         queryMoneyListById(studentId).then(response => {
           var list = response.data.data
-          console.log(list)
-          this.getFinanceList()
           if (list && list.length > 0) {
             var financeList = []
             var financeIdList = []
@@ -591,12 +641,14 @@
             this.setReceivablesList(receivables)
             this.loading = false
           } else {
+            console.log(121212)
             this.flag = false
             this.setReceivablesList(['全款', '定金', '购买服务包'])
             // 已经购买的服务包
             this.finance.financeList = []
             this.finance.financeIdList = []
           }
+          this.loading = false
         })
       },
       // 获取可选的收费方式
@@ -624,9 +676,10 @@
       // 获取所有服务包 ok
       getFinanceList() {
         this.loading = true
-        getFinanceList(this.financeListQuery).then(response => {
-          var list = response.data.data.list
-          this.financeList = list || []
+        getFinanceList().then(response => {
+          var data = response.data
+          this.financeList = data.list || []
+          this.groupList = data.groupList || []
           this.loading = false
         })
       },
@@ -739,6 +792,14 @@
       },
       // 保存
       saveServiceNote() {
+        if (!this.finance.serialNumber) {
+          this.$message.error('流水号异常，无法保存！')
+          return false
+        }
+        if (!this.finance.studentId) {
+          this.$message.error('未选择学员，无法保存！')
+          return false
+        }
         console.log('保存', this.finance)
         this.finance.periodcard = this.periodcard ? '1' : '0'
         this.finance.healthform = this.healthform ? '1' : '0'

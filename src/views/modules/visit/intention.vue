@@ -10,7 +10,7 @@
               </el-date-picker>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4">
-              <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer" clearable filterable placeholder="负责人">
+              <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer"  clearable filterable placeholder="负责人">
                 <el-option
                   v-for="item in userList"
                   :key="item.userId"
@@ -36,8 +36,9 @@
           <div class="intentions"  :style="{height: (tableHeight-185) + 'px'}" style="border-bottom: 1px solid #b2b6bd;"   v-loading="listLoading" element-loading-text="给我一点时间" >
             <div :class="'intention '+((new Date().getTime()-intention.updateTime>60*60*1000*24*3)?'red':'normal')" v-for="intention in intentionList" @click="intentionClick($event,intention)"  @dblclick="editList(intention)">
               <div style="width: 100%;height: 25px">
-                <div class="intention_text" style="width: 50%;float: left;font-size: 18px;">{{intention.name}}</div>
-                <div class="intention_text" style="width: 50%;float: left;font-size: 16px;text-align: right">{{intention.customerType}}</div>
+                <div class="intention_text" style="width: 40%;float: left;font-size: 14px;font-weight: 600;">{{intention.name}}</div>
+                <div class="intention_text" style="width: 20%;float: left;font-size: 14px;font-weight: 600;">{{intention.customerType}}</div>
+                <div class="intention_text" style="width: 40%;float: left;font-size: 14px;text-align: right">{{intention.visitTime | parseTime('{y}/{m}/{d}')}}</div>
               </div>
               <!-- 分割线 -->
               <div style="width: 100%;float: left;border: none;border-bottom:1px solid #9fcfff;"></div>
@@ -83,7 +84,7 @@
       <div v-show="showModule=='add'" style="height: 100%;width: 100%">
         <el-card style="height: 100%; padding: 12px;">
           <div style="width: 100%;height: 50px">
-            <el-button type="danger" style="float: right;margin: 10px;" @click="back">返回</el-button>
+            <!--<el-button type="danger" style="float: right;margin: 10px;" @click="back">返回</el-button>-->
           </div>
           <div>
             <el-form :model="intention" :rules="rules" ref="intention" label-width="120px" class="demo-ruleForm"  size="small">
@@ -185,7 +186,7 @@
               </el-row>
             </el-form>
             <div style="width: 100%;" align="center">
-              <el-button  @click="closeAlert('intention')">取 消</el-button>
+              <el-button  @click="back">取 消</el-button>
               <el-button  @click="add('intention')" type="primary">录 入</el-button>
             </div>
           </div>
@@ -226,9 +227,6 @@
       </div>
     </div>
 
-    <el-dialog :modal="false" width="650px" :close-on-click-modal="false" @close="back" title="录入意向" :visible.sync="addOption">
-
-    </el-dialog>
     <transition name="el-zoom-in-center">
     <div v-show="showModule=='info'">
       <el-row>
@@ -453,8 +451,17 @@
         if (value) {
           this.intention.intentionId
           queryIntention({ mobile: value, intentionId: this.intention.intentionId }).then(response => {
-            if (response.data.data) {
-              callback(new Error('电话号码已存在'))
+            var intention = response.data.data
+            if (intention) {
+              var msg = '意向已'
+              if (intention.state === '0') {
+                msg += '存在，负责人：' + intention.operator
+              } else if (intention.state === '-1') {
+                msg += '存在公海'
+              } else {
+                msg += '入学，负责人：' + intention.operator
+              }
+              callback(new Error(msg))
             } else {
               callback()
             }
@@ -466,8 +473,17 @@
       var wechatIsExistence = (rule, value, callback) => {
         if (value) {
           queryIntention({ wechat: value, intentionId: this.intention.intentionId }).then(response => {
-            if (response.data.data) {
-              callback(new Error('微信号已存在'))
+            var intention = response.data.data
+            if (intention) {
+              var msg = '意向已'
+              if (intention.state === '0') {
+                msg += '存在，负责人：' + intention.operator
+              } else if (intention.state === '-1') {
+                msg += '存在公海'
+              } else {
+                msg += '入学，负责人：' + intention.operator
+              }
+              callback(new Error(msg))
             } else {
               callback()
             }
@@ -730,13 +746,19 @@
       },
       // 返回
       back() {
-        this.showModule = 'list'
-        this.addInfo = false
-        this.intention = {}
-        this.edit = false
-        this.addOption = false
-        this.getList()
-        this.getUserList()
+        this.$confirm('是否取消保存?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.showModule = 'list'
+          this.addInfo = false
+          this.intention = {}
+          this.edit = false
+          this.addOption = false
+          this.getList()
+          this.getUserList()
+        })
       },
       // 来访信息点击事件
       intentionClick(e, val) {

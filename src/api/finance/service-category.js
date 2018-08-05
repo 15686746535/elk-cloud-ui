@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查询集合
 export function getFinanceList(query) {
   return request({
-    url: '/finance/service/category/getPage',
+    url: '/finance/service/category/getList',
     method: 'get',
     params: query
   })

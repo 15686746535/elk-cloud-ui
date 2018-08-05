@@ -7,7 +7,7 @@
             |&nbsp;<span style="font-size: 20px;font-weight: 600;font-family: '微软雅黑 Light'">同事列表</span>
           </div>
           <div style="float: right">
-            <tree-select url="/upms/org/tree" v-model="listQuery.orgId" style="width: 150px;float: left;margin-right: 5px;" placeholder="所属部门"></tree-select>
+            <tree-select url="/upms/org/tree" id="serch" v-model="listQuery.orgId" style="width: 150px;float: left;margin-right: 5px;" placeholder="所属部门"></tree-select>
             <el-input @keyup.enter.native="searchClick" style="width: 150px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
             <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
           </div>

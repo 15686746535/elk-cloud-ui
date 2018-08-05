@@ -104,7 +104,7 @@
   import { mapGetters } from 'vuex'
   import { userList } from '@/api/upms/user'
   import { removeAllSpace } from '@/utils/validate'
-  import { fetchList, putIntention } from '@/api/visit/intention'
+  import { getCommonPage, putIntention } from '@/api/visit/intention'
   import { getToken } from '@/utils/auth'
 
   export default {
@@ -165,7 +165,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchList(this.listQuery).then(response => {
+        getCommonPage(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false

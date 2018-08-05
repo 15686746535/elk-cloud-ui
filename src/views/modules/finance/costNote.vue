@@ -261,6 +261,7 @@
         return row.finances.indexOf(value) > -1
       },
       getServiceChargeList() {
+        this.listLoading = true
         getServiceChargeList(this.listQuery).then(response => {
           var list = []
           var total = 0
@@ -347,7 +348,7 @@
           this.introducerFilters = introducerFilters
           this.financeList = list
           this.total = total
-          console.log(response.data.data.totalCount)
+          this.listLoading = false
         })
       },
       // 改变页容量
@@ -365,6 +366,7 @@
           id: row.chargeId + '_cost', // title
           title: '收费详情', // title
           shadeClose: false, // 点击遮罩关闭
+          prohibit: this.$store.state.app.prohibit,
           tabIcon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示
           content: {
@@ -375,8 +377,6 @@
         })
       },
       searchClick() {
-        this.$store.dispatch('pushProhibit', this.layerid)
-        console.log(this.prohibit)
         this.listQuery.page = 1
         this.listQuery.condition = removeAllSpace(this.listQuery.condition)
         this.getServiceChargeList()

@@ -23,7 +23,9 @@ export default {
   },
   methods: {
     appClack(e) {
-      this.$store.dispatch('setSpread', e.target.classList.contains('spread-true'))
+      if (!e.target.classList.contains('spread-true')) {
+        this.$store.dispatch('setSpread', null)
+      }
     },
     setClientSize() {
       var height = document.documentElement.clientHeight || document.body.clientHeight
@@ -41,7 +43,7 @@ export default {
   @import 'assets/fa-icon/fontawesome/font-awesome.min.css';
   [class^="el-icon-fa"], [class*=" el-icon-fa"] {
     display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome!important;
+    font: normal normal normal 12px/1 FontAwesome!important;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

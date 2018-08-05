@@ -11,7 +11,7 @@ const app = {
     vehicleType: [{ name: '一人一车', value: 1 }, { name: '两人一车', value: 2 }],
     prohibit: [], // 禁止关闭的窗口
     loading: false,
-    spread: false,
+    spread: null,
     client: {
       height: 0, /* 页面高度*/
       width: 0 /* 页面宽度*/

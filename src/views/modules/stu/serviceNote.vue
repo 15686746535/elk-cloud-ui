@@ -292,15 +292,15 @@
           </el-checkbox-group>
         </el-form-item>
 
-        <template>
-          <el-transfer
-            filterable
-            :filter-method="filterMethod"
-            filter-placeholder="请输入城市拼音"
-            v-model="value2"
-            :data="data2">
-          </el-transfer>
-        </template>
+        <!--<template>-->
+          <!--<el-transfer-->
+            <!--filterable-->
+            <!--:filter-method="filterMethod"-->
+            <!--filter-placeholder="请输入城市拼音"-->
+            <!--v-model="value2"-->
+            <!--:data="data2">-->
+          <!--</el-transfer>-->
+        <!--</template>-->
       </el-form>
 
 

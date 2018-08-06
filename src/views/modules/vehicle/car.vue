@@ -837,6 +837,26 @@
           <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
             <el-button style="margin-top: -8px;float: right" @click="createClick('oilconsumption')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
           </div>
+        </el-tab-pane>
+
+        <el-tab-pane label="保险管理" name="9">
+          <el-table element-loading-text="我已经全速加载了..." :data="insuranceList" stripe border fit highlight-current-row style="width: 100%">
+            <el-table-column type="index" label="序号"  align="center" width="50">
+            </el-table-column>
+            <el-table-column prop="cost" label="金额" width="180">
+            </el-table-column>
+            <el-table-column prop="operator" label="操作人">
+            </el-table-column>
+            <el-table-column prop="" label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" type="danger" @click="handleDel('insurance',scope.row)">删除</el-button>
+                <el-button size="mini" type="primary" @click="insurance=scope.row,createClick('insurance')">修改</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
+            <el-button style="margin-top: -8px;float: right" @click="createClick('insurance')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+          </div>
 
         </el-tab-pane>
       </el-tabs>
@@ -903,6 +923,33 @@
           </div>
           <div style="clear: both"></div>
         </div>
+        <div v-show="flag === 'insurance'">
+          <el-form label-position="left" :model="insurance"  ref="insurance" label-width="100px">
+            <el-form-item label="保险公司名称" prop="description">
+              <el-input v-model="insurance.companyName" placeholder="保险公司名称" ></el-input>
+            </el-form-item>
+            <el-form-item label="保险类型" prop="description">
+              <el-input v-model="insurance.type" placeholder="保险类型" ></el-input>
+            </el-form-item>
+            <el-form-item label="订单号" prop="description">
+              <el-input v-model="insurance.orderNum" placeholder="订单号" ></el-input>
+            </el-form-item>
+            <el-form-item label="保额" prop="description">
+              <el-input v-model="insurance.coverage" placeholder="保额" ></el-input>
+            </el-form-item>
+            <el-form-item label="起始时间" prop="description">
+              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="时间" v-model="insurance.startTime"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间" prop="description">
+              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="时间" v-model="insurance.endTime"></el-date-picker>
+            </el-form-item>
+
+          </el-form>
+          <div slot="footer" style="float: right">
+            <el-button type="primary" :loading="btnLoading" @click="createRepair('insurance', insurance)">确 定</el-button>
+          </div>
+          <div style="clear: both"></div>
+        </div>
         <div v-show="flag === 'oilconsumption'">
           <el-form label-position="left" :model="oilconsumption"  ref="oilconsumption" label-width="100px">
             <el-form-item label="加油金额" prop="cost">
@@ -962,6 +1009,8 @@
         vehicleEntity: {},
         technicalEntity: {},
         safetyEntity: {},
+        insuranceList:[],
+        insurance:{},
         certificateEntity: {
           bottleEnd: null,
           bottleStart: null,

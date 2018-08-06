@@ -56,6 +56,7 @@ export const appMap = [
   // 车辆管理
 
   { id: 50100, desktop: '1', type: '3', pid: 50000, params: [], name: '车辆信息', content: _import('modules/vehicle/car'), icon: getIcon('app_car'), msgCount: 0, childItem: [] },
+  { id: 50200, desktop: '1', type: '3', pid: 50000, params: [], name: '车辆保险', content: _import('modules/vehicle/insurance'), icon: getIcon('app_car'), msgCount: 0, childItem: [] },
   // 人力资源
   { id: 60100, desktop: '1', type: '4', pid: 60000, params: [], name: '同事信息', content: _import('modules/upms/user'), icon: getIcon('app_user'), msgCount: 0, childItem: [] },
   { id: 60400, desktop: '1', type: '4', pid: 60000, params: [], name: '离职同事', content: _import('modules/upms/quitUser'), icon: getIcon('app_quit_user'), msgCount: 0, childItem: [] },

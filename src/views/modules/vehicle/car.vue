@@ -903,7 +903,6 @@
           </div>
           <div style="clear: both"></div>
         </div>
-        {{flag}}
         <div v-show="flag === 'oilconsumption'">
           <el-form label-position="left" :model="oilconsumption"  ref="oilconsumption" label-width="100px">
             <el-form-item label="加油金额" prop="cost">

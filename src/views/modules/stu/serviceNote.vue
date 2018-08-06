@@ -16,9 +16,19 @@
 
       <el-button-group>
         <el-button type="info" size="mini" v-if="pageShow==='config'" @click="pageShow = 'bill'" icon="el-icon-back">取消</el-button>
-        <el-button type="primary" size="mini" v-if="pageShow==='config'" @click="pageShow = 'bill'" icon="el-icon-fa-save">保存</el-button>
+        <el-button type="primary" size="mini" v-if="pageShow==='config'" @click="saveConfig" icon="el-icon-fa-save">保存</el-button>
         <el-button type="success" size="mini" v-if="pageShow==='bill'" @click="updateConfig" icon="el-icon-setting">配置</el-button>
+
       </el-button-group>
+
+      <el-dropdown @command="groupSelect"  v-if="pageShow==='bill'&&pageLevel !== 'info'">
+        <el-button type="primary" size="mini">
+          快捷选择<i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item v-for="group in groupList" :command="group">{{group.name}}</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
     <el-card v-show="pageShow==='bill'" style="padding-top: 30px;height: 100%;overflow: auto">
       <div v-loading="loading" element-loading-text="别急,一会儿就好~" style="width: 100%;border: 1px dashed #1f2d3d;padding: 0 10px">
@@ -276,42 +286,76 @@
         </el-row>
       </div>
     </el-card>
-    <div v-show="pageShow==='config'" style="padding-top: 30px;height: 100%;overflow: auto">
+    <div v-show="pageShow==='config'" style="padding: 20px;padding-top: 55px;height: 100%;overflow: auto">
       <el-form :model="receiptConfig" :rules="rules" ref="receiptConfig" label-width="100px">
-        <el-form-item label="流水号前缀" prop="roleName">
+        <el-form-item label="流水号前缀" prop="serialPrefix">
           <el-input v-model="receiptConfig.serialPrefix" placeholder="流水号前缀"></el-input>
         </el-form-item>
-        <el-form-item label="收据表头" prop="roleName">
+        <el-form-item label="收据表头" prop="title">
           <el-input v-model="receiptConfig.title" placeholder="收据表头"></el-input>
         </el-form-item>
-        <el-form-item label="收据表头" prop="roleName">
-          <el-checkbox-group @change="changeFinanceList" v-model="finance.financeIdList" class="service-checkbox-group">
-            <el-checkbox v-for="service in evenFinanceList('001')" :label="service.categoryId" :disabled="flag" :key="service.categoryId">
+
+        <el-form-item label="代收费" prop="roleName">
+          <el-checkbox-group @change="changeShowList"  v-model="receiptConfig.showList" class="service-checkbox-group">
+            <el-checkbox v-for="service in evenFinanceAll('001')" :label="service.categoryId" :key="service.categoryId">
+              {{service.name}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="培训费" prop="roleName">
+          <el-checkbox-group @change="changeShowList"   v-model="receiptConfig.showList" class="service-checkbox-group">
+            <el-checkbox v-for="service in evenFinanceAll('002')" :label="service.categoryId" :key="service.categoryId">
+              {{service.name}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="服务包" prop="roleName">
+          <el-checkbox-group @change="changeShowList"   v-model="receiptConfig.showList" class="service-checkbox-group">
+            <el-checkbox v-for="service in evenFinanceAll('003')" :label="service.categoryId" :key="service.categoryId">
+              {{service.name}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="优惠包" prop="roleName">
+          <el-checkbox-group @change="changeShowList"   v-model="receiptConfig.showList" class="service-checkbox-group">
+            <el-checkbox v-for="service in evenFinanceAll('004')" :label="service.categoryId" :key="service.categoryId">
               {{service.name}}
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
 
-        <!--<template>-->
-          <!--<el-transfer-->
-            <!--filterable-->
-            <!--:filter-method="filterMethod"-->
-            <!--filter-placeholder="请输入城市拼音"-->
-            <!--v-model="value2"-->
-            <!--:data="data2">-->
-          <!--</el-transfer>-->
-        <!--</template>-->
+        <el-form-item label="常用服务组" prop="roleName">
+          <div v-for="(group,index) in receiptConfig.groupList">
+            <el-row>
+              <el-col :span="7">
+                <el-input v-model="group.name" placeholder="组名"></el-input>
+              </el-col>
+              <el-col :span="13">
+                <el-select v-model="group.group" style="width: 100%;" multiple filterable collapse-tags placeholder="请选择">
+                  <el-option
+                    v-for="item in financeShow"
+                    :key="item.categoryId"
+                    :label="item.name"
+                    :value="item.categoryId">
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="4">
+                <el-button style="padding: 9px;margin-left: 10px;" size="mini" type="danger" @click="deleteGroup(index)"   icon="el-icon-delete" plain circle></el-button>
+                <el-button v-if="index + 1 === receiptConfig.groupList.length" style="padding: 9px;" @click="addGroup(index)" size="mini" type="success"  icon="el-icon-plus" plain circle></el-button>
+              </el-col>
+            </el-row>
+          </div>
+        </el-form-item>
       </el-form>
-
-
-
     </div>
   </div>
 </template>
 
 <script>
   import Coach from '@/components/Coach'
-  import { getFinanceList } from '@/api/finance/service-category'
+  import { remRepeat } from '@/utils/index'
+  import { getFinanceList, getFinancePage, getConfig, saveConfig } from '@/api/finance/service-category'
   import { queryMoneyListById, saveServiceCharge, querySerialNumber, getServiceByChargeId, updateFinaceState, getChargeId } from '@/api/finance/service-charge'
   import { getLodop } from '@/utils/LodopFuncs'
   import { mapGetters } from 'vuex'
@@ -331,15 +375,15 @@
     },
     data() {
       return {
-        financeList: [],
-        groupList: [],
+        financeList: [], // 可选服务
+        groupList: [], // 服务组
+        financeAll: [], // 所有服务
+        financeShow: [], // 所有服务
         receiptConfig: {
           serialPrefix: '',
           title: '',
           showList: [],
-          groupList: [
-            { name: '', group: [] }
-          ]
+          groupList: []
         },
         rules: {
           serialPrefix: [
@@ -451,6 +495,21 @@
     },
     methods: {
       // 查看收据详情
+      getConfig() {
+        getConfig().then(response => {
+          if (response.data.code === 0) {
+            var receiptConfig = response.data.data
+            var financeShow = []
+            this.financeAll.forEach(function(item) {
+              receiptConfig.showList.forEach(function(id) {
+                if (item.categoryId === id) financeShow.push(item)
+              })
+            })
+            this.receiptConfig = receiptConfig
+            this.financeShow = financeShow
+          }
+        })
+      },
       getService(chargeId) {
         this.loading = true
         var that = this
@@ -478,6 +537,8 @@
             finance.financeList.forEach(function(item) {
               financeIdList.push(item.categoryId)
             })
+            var li = finance.financeList.concat(this.financeList)
+            this.financeList = remRepeat(li, 'categoryId')
           }
           if (finance.receivablesType === '定转全') {
             this.flag = true
@@ -517,7 +578,40 @@
         })
       },
       updateConfig() {
-        this.pageShow = 'config' // bill config
+        getFinancePage({ page: 1, limit: 0, status: 0 }).then(response => {
+          var data = response.data.data
+          this.financeAll = data.list
+          console.log(data)
+          this.pageShow = 'config' // bill config
+          this.getConfig()
+        })
+      },
+      groupSelect(group) {
+        console.log(group)
+        this.finance.financeIdList = group.group
+        this.changeFinanceList()
+      },
+      saveConfig() {
+        saveConfig(this.receiptConfig).then(response => {
+          this.pageShow = 'bill' // bill config
+          this.getFinanceList()
+        })
+      },
+      deleteGroup(index) {
+        this.receiptConfig.groupList.splice(index, 1)
+      },
+      addGroup(index) {
+        this.receiptConfig.groupList.splice(index + 1, 0, {})
+      },
+      changeShowList() {
+        var showList = this.receiptConfig.showList
+        var financeShow = []
+        this.financeAll.forEach(function(item) {
+          if (showList.indexOf(item.categoryId) > -1) {
+            financeShow.push(item)
+          }
+        })
+        this.financeShow = financeShow
       },
       // 点击修改
       updateFinace() {
@@ -620,6 +714,8 @@
               this.finance.originalPrice = originalPrice // 原始价格 就是所选服务不包括优惠的价格
               this.finance.earnestMoney = earnestMoney // 已收定金
               this.finance.financeList = financeList
+              var li = financeList.concat(this.financeList)
+              this.financeList = remRepeat(li, 'categoryId')
               this.finance.financeIdList = financeIdList
               this.finance.realPrice = realPrice
               this.finance.payTypeList[0].money = originalPrice + activityPrice - earnestMoney
@@ -681,6 +777,12 @@
           this.financeList = data.list || []
           this.groupList = data.groupList || []
           this.loading = false
+          console.log(data)
+        })
+      },
+      evenFinanceAll(code) {
+        return this.financeAll.filter(function(finance) {
+          return finance.code === code
         })
       },
       // 类型过滤器 ok

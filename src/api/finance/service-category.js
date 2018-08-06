@@ -7,6 +7,14 @@ export function getFinanceList(query) {
     params: query
   })
 }
+// 查询集合
+export function getFinancePage(query) {
+  return request({
+    url: '/finance/service/category/getPage',
+    method: 'get',
+    params: query
+  })
+}
 // 添加
 export function addFinance(obj) {
   return request({
@@ -35,5 +43,18 @@ export function putFinance(obj) {
     url: '/finance/service/category',
     method: 'put',
     data: obj
+  })
+}
+export function getConfig(params) {
+  return request({
+    url: '/finance/service/category/getConfig',
+    method: 'get'
+  })
+}
+export function saveConfig(data) {
+  return request({
+    url: '/finance/service/category/saveConfig',
+    method: 'post',
+    data: data
   })
 }

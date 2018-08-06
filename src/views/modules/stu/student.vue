@@ -1043,7 +1043,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122, getFinanceList } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122, getFinanceByStudentId } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
@@ -1633,7 +1633,7 @@
       /* 费用情况 */
       getFinance() {
         if (this.student.studentId) {
-          getFinanceList(this.student.studentId).then(response => {
+          getFinanceByStudentId(this.student.studentId).then(response => {
             if (response.data.code === 0) {
               var list = response.data.data
               this.financeList = list.filter(function(item) {

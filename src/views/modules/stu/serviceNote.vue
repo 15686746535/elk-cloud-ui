@@ -354,6 +354,7 @@
 
 <script>
   import Coach from '@/components/Coach'
+  import { remRepeat } from '@/utils/index'
   import { getFinanceList, getFinancePage, getConfig, saveConfig } from '@/api/finance/service-category'
   import { queryMoneyListById, saveServiceCharge, querySerialNumber, getServiceByChargeId, updateFinaceState, getChargeId } from '@/api/finance/service-charge'
   import { getLodop } from '@/utils/LodopFuncs'
@@ -536,6 +537,8 @@
             finance.financeList.forEach(function(item) {
               financeIdList.push(item.categoryId)
             })
+            var li = finance.financeList.concat(this.financeList)
+            this.financeList = remRepeat(li, 'categoryId')
           }
           if (finance.receivablesType === '定转全') {
             this.flag = true
@@ -711,6 +714,8 @@
               this.finance.originalPrice = originalPrice // 原始价格 就是所选服务不包括优惠的价格
               this.finance.earnestMoney = earnestMoney // 已收定金
               this.finance.financeList = financeList
+              var li = financeList.concat(this.financeList)
+              this.financeList = remRepeat(li, 'categoryId')
               this.finance.financeIdList = financeIdList
               this.finance.realPrice = realPrice
               this.finance.payTypeList[0].money = originalPrice + activityPrice - earnestMoney

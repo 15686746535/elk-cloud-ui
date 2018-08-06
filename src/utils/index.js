@@ -6,6 +6,23 @@ export function parseStr(time) {
   return time.substring(0, 4) + '年' + time.substring(5, 7) + '月' + time.substring(9, 11) + '年'
 }
 
+export function remRepeat(list, key) {
+  var merge = []
+  var has
+  list.forEach(function(item) {
+    has = false
+    merge.forEach(function(m) {
+      if (item[key] === m[key]) {
+        has = true
+      }
+    })
+    if (!has) {
+      merge.push(item)
+    }
+  })
+  return merge
+}
+
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

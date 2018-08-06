@@ -815,17 +815,23 @@
 
 
         <el-tab-pane label="耗油日志" name="8">
-          <el-table element-loading-text="我已经全速加载了..." :data="OilconsumptionList" stripe border fit highlight-current-row style="width: 100%">
+          <el-table element-loading-text="我已经全速加载了..." :data="oilconsumptionList" stripe border fit highlight-current-row style="width: 100%">
             <el-table-column type="index" label="序号"  align="center" width="50">
             </el-table-column>
-            <el-table-column prop="operate_time" label="加油日期" width="180">
+            <el-table-column prop="operateTime" label="加油日期" width="180">
               <template slot-scope="scope">
-                {{scope.row.operate_time | subTime}}
+                {{scope.row.operateTime | subTime}}
               </template>
             </el-table-column>
             <el-table-column prop="cost" label="金额" width="180">
             </el-table-column>
             <el-table-column prop="operator" label="操作人">
+            </el-table-column>
+            <el-table-column prop="" label="操作">
+              <template slot-scope="scope">
+              <el-button size="mini" type="danger" @click="handleDel('oilconsumption',scope.row)">删除</el-button>
+              <el-button size="mini" type="primary" @click="oilconsumption=scope.row,createClick('oilconsumption')">修改</el-button>
+              </template>
             </el-table-column>
           </el-table>
           <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
@@ -903,8 +909,8 @@
             <el-form-item label="加油金额" prop="cost">
               <el-input v-model="oilconsumption.cost" placeholder="加油金额" ></el-input>
             </el-form-item>
-            <el-form-item label="时间" prop="operate_time">
-              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="时间" v-model="oilconsumption.operate_time"></el-date-picker>
+            <el-form-item label="时间" prop="operateTime">
+              <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="时间" v-model="oilconsumption.operateTime"></el-date-picker>
             </el-form-item>
           </el-form>
           <div slot="footer" style="float: right">
@@ -918,7 +924,7 @@
 </template>
 
 <script>
-  import { fetchList, getObj, addObj, putObj } from '@/api/vehicle/vehicle'
+  import { fetchList, getObj, addObj, delVehicleSub, putObj } from '@/api/vehicle/vehicle'
   import { removeAllSpace } from '@/utils/validate'
   import { userList } from '@/api/upms/user'
   import { mapGetters } from 'vuex'
@@ -950,7 +956,7 @@
         tableHeight: this.area[1],
         // 车牌集合
         plates: [],
-        oilconsumption:{},
+        oilconsumption: {},
         // 负责人集合
         userNames: [],
         // 单个车辆信息
@@ -985,6 +991,7 @@
         maintainList: [],
         mileList: [],
         repairList: [],
+        oilconsumptionList: [],
         maintain: {
           description: null,
           maintainTime: null,
@@ -1244,12 +1251,13 @@
             this.maintainList = response.data.data.maintainEntityList === null ? [] : response.data.data.maintainEntityList
             this.repairList = response.data.data.repairEntityList === null ? [] : response.data.data.repairEntityList
             var t = response.data.data.mileageEntityList === null ? [] : response.data.data.mileageEntityList
+            this.oilconsumptionList = response.data.data.oilconsumptionEntityList === null ? [] : response.data.data.oilconsumptionEntityList
             this.mileList = t
             this.repairListLoading = false
             this.maintainListLoading = false
             this.timeGroup()
-            console.log(t,'here data')
-            console.log(this.mileList,'look',this.data,JSON.stringify(response.data.data))
+            console.log(t, 'here data')
+            console.log(this.mileList, 'look', this.data, JSON.stringify(response.data.data))
           })
         this.showModule = 'info'
         this.addInfo = false
@@ -1358,6 +1366,23 @@
               this.editList({ 'vehicleEntity': this.vehicleEntity })
             })
           }
+        })
+      },
+      handleDel(key, obj) {
+        this.$confirm('确认删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if(key=='oilconsumption'){
+            key = key+'/'+obj.consumptionId
+          }
+          delVehicleSub(key, obj).then(() => {
+            this.btnLoading = false
+            this.infoLoading = false
+            this.repairListOption = false
+            this.editList({ 'vehicleEntity': this.vehicleEntity })
+          })
         })
       }
     }

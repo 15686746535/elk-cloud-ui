@@ -115,7 +115,7 @@
 </template>
 
 <script>
-  import { getFinanceList, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
+  import { getFinancePage, addFinance, putFinance, delFinance } from '@/api/finance/service-category'
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
@@ -224,7 +224,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        getFinanceList(this.listQuery).then(response => {
+        getFinancePage(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false

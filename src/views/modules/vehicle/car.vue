@@ -843,9 +843,23 @@
           <el-table element-loading-text="我已经全速加载了..." :data="insuranceList" stripe border fit highlight-current-row style="width: 100%">
             <el-table-column type="index" label="序号"  align="center" width="50">
             </el-table-column>
-            <el-table-column prop="cost" label="金额" width="180">
+            <el-table-column prop="companyName" label="保险公司名称" width="180">
             </el-table-column>
-            <el-table-column prop="operator" label="操作人">
+            <el-table-column prop="type" label="保险类型">
+            </el-table-column>
+            <el-table-column prop="orderNum" label="订单号">
+            </el-table-column>
+            <el-table-column prop="coverage" label="保额"  align="center" width="50">
+            </el-table-column>
+            <el-table-column prop="startTime" label="起始时间" width="180">
+              <template slot-scope="scope">
+                {{scope.row.startTime | subTime}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="endTime" label="结束时间" width="180">
+              <template slot-scope="scope">
+                {{scope.row.startTime | subTime}}
+              </template>
             </el-table-column>
             <el-table-column prop="" label="操作">
               <template slot-scope="scope">
@@ -937,6 +951,7 @@
             <el-form-item label="保额" prop="description">
               <el-input v-model="insurance.coverage" placeholder="保额" ></el-input>
             </el-form-item>
+
             <el-form-item label="起始时间" prop="description">
               <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="时间" v-model="insurance.startTime"></el-date-picker>
             </el-form-item>
@@ -1300,12 +1315,11 @@
             this.repairList = response.data.data.repairEntityList === null ? [] : response.data.data.repairEntityList
             var t = response.data.data.mileageEntityList === null ? [] : response.data.data.mileageEntityList
             this.oilconsumptionList = response.data.data.oilconsumptionEntityList === null ? [] : response.data.data.oilconsumptionEntityList
+            this.insuranceList = response.data.data.insuranceEntityList === null ? [] : response.data.data.insuranceEntityList
             this.mileList = t
             this.repairListLoading = false
             this.maintainListLoading = false
             this.timeGroup()
-            console.log(t, 'here data')
-            console.log(this.mileList, 'look', this.data, JSON.stringify(response.data.data))
           })
         this.showModule = 'info'
         this.addInfo = false

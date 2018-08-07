@@ -1974,6 +1974,7 @@
           id: id, // title
           title: title, // title
           shadeClose: false, // 点击遮罩关闭
+          prohibit: this.$store.state.app.prohibit,
           tabIcon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示
           content: {

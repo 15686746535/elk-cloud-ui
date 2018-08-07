@@ -7,7 +7,7 @@
         <el-button type="primary"  @click="getList"  :loading="loading"><i class="el-icon-search"></i>搜索</el-button>
       </el-col>
       <el-col v-show="!hasDown">
-        <el-button type="primary"  @click="getList" :loading="loading"><i class="el-icon-d-arrow-left"></i>返回</el-button>
+        <el-button type="primary"  @click="getList" :loading="loading" icon="el-icon-d-arrow-left">返回</el-button>
       </el-col>
       <el-col :style="{width: $store.state.app.client.width - 40 + 'px'}">
         <bar-pile-chart :data="data" :style="{height: ($store.state.app.client.height-170) + 'px',width: $store.state.app.client.width - 40 + 'px'}" :hasDown="hasDown" @callback="down"></bar-pile-chart>

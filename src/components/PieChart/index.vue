@@ -24,6 +24,7 @@ export default {
     data: {
       type: Object,
       default: {
+        name: 'pre',
         legend: [],
         value: []
       }
@@ -49,6 +50,7 @@ export default {
       }
     }, 100)
     window.addEventListener('resize', this.__resizeHanlder)
+    this.callback()
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -59,6 +61,13 @@ export default {
     this.chart = null
   },
   methods: {
+    callback() {
+      var that = this
+      this.chart.on('click', function(params) {
+        // 控制台打印数据的名称
+        that.$emit('callback', params)
+      })
+    },
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
 
@@ -69,20 +78,49 @@ export default {
         },
         legend: {
           left: 'center',
-          bottom: '8',
+          top: '20',
           data: this.data.legend
         },
         calculable: true,
         series: [
           {
-            name: '转换率',
+            name: this.data.name,
             type: 'pie',
-            roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '45%'],
+            radius: [0, '50%'],
+            selectedMode: 'single',
             data: this.data.value,
-            animationEasing: 'cubicInOut',
-            animationDuration: 2600
+            label: {
+              normal: {
+                formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                backgroundColor: '#eee',
+                borderColor: '#aaa',
+                borderWidth: 1,
+                borderRadius: 4,
+                rich: {
+                  a: {
+                    color: '#999',
+                    lineHeight: 22,
+                    align: 'center'
+                  },
+                  hr: {
+                    borderColor: '#aaa',
+                    width: '100%',
+                    borderWidth: 0.5,
+                    height: 0
+                  },
+                  b: {
+                    fontSize: 16,
+                    lineHeight: 33
+                  },
+                  per: {
+                    color: '#eee',
+                    backgroundColor: '#334455',
+                    padding: [2, 4],
+                    borderRadius: 2
+                  }
+                }
+              }
+            }
           }
         ]
       })

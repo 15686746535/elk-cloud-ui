@@ -22,7 +22,16 @@ export function remRepeat(list, key) {
   })
   return merge
 }
-
+export function parseSubject(subject) {
+  const typeMap = {
+    '1': '科一',
+    '2': '科二',
+    '3': '科三',
+    '4': '科四',
+    '-1': '退学'
+  }
+  return typeMap[subject]
+}
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

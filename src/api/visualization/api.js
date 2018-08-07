@@ -76,3 +76,11 @@ export function queryIntroducer(params) {
     params: params
   })
 }
+export function queryRate(params) {
+  return request({
+    url: '/visualization/queryRate',
+    method: 'get',
+    params: params
+  })
+}
+

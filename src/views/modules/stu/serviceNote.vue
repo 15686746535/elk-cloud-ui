@@ -263,8 +263,8 @@
         <!-- 销售员 备注 -->
         <el-row style="line-height: 35px;border: 1px solid #1f2d3d;border-top: none;font-size: 12px;height: 100%">
           <el-col :span="8" style="border-right: 1px solid #1f2d3d;text-align: center;height: 35px;">
-            <el-checkbox v-model="periodcard" label="学时卡已发放" @change="btnDisabled = false" style="height: 35px;" :disabled="pageLevel==='info'"></el-checkbox>
-            <el-checkbox v-model="healthform" label="体检表已发放" @change="btnDisabled = false" style="height: 35px;" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="periodcard" label="学时卡已发放" class="service-checkbox-group" @change="btnDisabled = false" style="height: 35px;" :disabled="pageLevel==='info'"></el-checkbox>
+            <el-checkbox v-model="healthform" label="体检表已发放" class="service-checkbox-group" @change="btnDisabled = false" style="height: 35px;" :disabled="pageLevel==='info'"></el-checkbox>
           </el-col>
           <el-col :span="4" style="border-right: 1px solid #1f2d3d;padding-left: 10px;">
             <span class="text_css">销售员：{{finance.introducer}}

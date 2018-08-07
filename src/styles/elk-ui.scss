@@ -598,6 +598,15 @@
       color: #409EFF!important;
     }
   }
+  &.is-checked {
+    .el-checkbox__inner{
+      background-color: #409EFF!important;
+      border-color: #409EFF!important;
+    }
+    .el-checkbox__label{
+      color: #409EFF!important;
+    }
+  }
 }
 /*定义动画的时间和过渡效果*/
 .apps {

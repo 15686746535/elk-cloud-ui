@@ -8,6 +8,7 @@
           </div>
           <div style="float: right">
             <tree-select url="/upms/org/tree" id="serch" v-model="listQuery.orgId" style="width: 150px;float: left;margin-right: 5px;" placeholder="所属部门"></tree-select>
+            <el-date-picker v-model="listQuery.joinedTime" type="date" style="width: 150px;" placeholder="选择入职日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd"> </el-date-picker>
             <el-input @keyup.enter.native="searchClick" style="width: 150px;" class="filter-item" placeholder="姓名/电话/身份证" v-model="listQuery.condition"></el-input>
             <el-button class="filter-item" type="primary"  @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
           </div>
@@ -522,6 +523,11 @@
     watch: {
       area: function(val) {
         this.tableHeight = val[1]
+      },
+      'listQuery.joinedTime': function(val) {
+        if (!val || val === '') {
+          this.listQuery.joinedTime = null
+        }
       }
     },
     computed: {
@@ -613,6 +619,7 @@
           page: 1,
           limit: 20,
           orgId: null,
+          joinedTime: null,
           quit: '0',
           condition: null
         },

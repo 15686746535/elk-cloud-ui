@@ -1906,6 +1906,7 @@
         e.currentTarget.classList.add('carClassCss_selected')
       },
       createBespeak(flag) {
+        this.examBespeak.studentId = this.student.studentId
         if (flag === 'exam') {
           if (this.examBespeak.examId === null) {
             this.$message.warning('请先选择报考批次')

@@ -746,19 +746,19 @@
       },
       // 返回
       back() {
-        this.$confirm('是否取消保存?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.showModule = 'list'
-          this.addInfo = false
-          this.intention = {}
-          this.edit = false
-          this.addOption = false
-          this.getList()
-          this.getUserList()
-        })
+        // this.$confirm('是否取消保存?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        this.showModule = 'list'
+        this.addInfo = false
+        this.intention = {}
+        this.edit = false
+        this.addOption = false
+        this.getList()
+        this.getUserList()
+        // })
       },
       // 来访信息点击事件
       intentionClick(e, val) {

@@ -1465,8 +1465,12 @@
       this.$data.showModule = this.display
       this.getList()
       this.getIntroducerList()
+      if (this.linkId) {
+        this.editList({ studentId: this.linkId })
+      }
     },
     props: {
+      linkId: Number,
       display: String,
       area: Array
     },
@@ -1600,11 +1604,13 @@
       },
       // 双击行  编辑
       editList(val) {
+        console.log(val)
         this.activeName = '1'
         this.financeList = []
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
           var student = response.data.data
+          console.log(student)
           if (student.introducerIdList && student.introducerIdList.length > 0) {
             student.introducerId = student.introducerIdList[0]
           }

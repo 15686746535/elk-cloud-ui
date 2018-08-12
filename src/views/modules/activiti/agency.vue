@@ -3,15 +3,15 @@
     <div class="index-box center-group bg-white">
       <div class="notice-title">
         <i class="el-icon-fa-volume-up"> {{taskMsg}}({{agencyList.length}})</i>
-        <el-dropdown class="agency-css" @command="command">
-              <span class="el-dropdown-link">
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :command="{msg:'我的待办',state:'0'}">我的待办</el-dropdown-item>
-            <el-dropdown-item :command="{msg:'我的已办',state:'1'}">我的已办</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <!--<el-dropdown class="agency-css" @command="command">-->
+              <!--<span class="el-dropdown-link">-->
+                <!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+              <!--</span>-->
+          <!--<el-dropdown-menu slot="dropdown">-->
+            <!--<el-dropdown-item :command="{msg:'我的待办',state:'0'}">我的待办</el-dropdown-item>-->
+            <!--<el-dropdown-item :command="{msg:'我的已办',state:'1'}">我的已办</el-dropdown-item>-->
+          <!--</el-dropdown-menu>-->
+        <!--</el-dropdown>-->
         <!--<span title="发送消息" @click="agencyClick" class="agency-css"> <i class="el-icon-caret-bottom"></i> </span>-->
       </div>
       <div class="notice-body">
@@ -40,12 +40,12 @@ export default {
   data() {
     return {
       agencyList: [],
-      taskMsg: '我的待办',
+      taskMsg: '我的已办',
       loading: false
     }
   },
   created() {
-    this.getAgency('0')
+    this.getAgency('1')
   },
   methods: {
     getAgency(state) {

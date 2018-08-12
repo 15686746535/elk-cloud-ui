@@ -438,6 +438,7 @@
   export default {
     name: 'table_intention',
     props: {
+      linkId: Number,
       display: String,
       area: Array
     },
@@ -607,6 +608,9 @@
     created() {
       this.getList()
       this.getUserList()
+      if (this.linkId) {
+        this.getIntervalInfo(this.linkId)
+      }
     },
     computed: {
       ...mapGetters([
@@ -633,6 +637,13 @@
       searchByOrg() {
         this.listQuery.page = 1
         this.getList()
+      },
+      getIntervalInfo(id) {
+        getObj(id).then(response => {
+          if (response.data.code === 0) {
+            this.editList(response.data.data)
+          }
+        })
       },
       // 双击行  编辑
       editList(val) {
@@ -674,7 +685,6 @@
           if (valid) {
             var mobile = this.intention.mobile
             var wechat = this.intention.wechat
-            console.log()
             if (!mobile && !wechat) {
               Message.error('手机和微信至少输入一个')
             } else {

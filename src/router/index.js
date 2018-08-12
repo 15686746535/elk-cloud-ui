@@ -14,8 +14,8 @@ Vue.use(Router)
  */
 export const defaultMap = [
   { id: 'menu17', name: '短消息', content: _import('modules/activiti/notice'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
-  { id: 'menu20', name: '工作日志', content: _import('404'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
-  { id: 'menu21', name: '我的待办', content: _import('modules/activiti/agency'), icon: getIcon('schedule'), msgCount: 2, childItem: [] },
+  { id: 'menu20', name: '我的日程', content: _import('modules/activiti/schedule'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
+  { id: 'menu21', name: '今日完成', content: _import('modules/activiti/agency'), icon: getIcon('schedule'), msgCount: 2, childItem: [] },
   { id: 'menu31', name: '任务管理', content: _import('404'), icon: getIcon('task'), msgCount: 0, childItem: [] }
 ]
 /**
@@ -108,6 +108,20 @@ export const anonList = [-1086, 10008, 10001, 30100]
 export const addApp = [
   { id: -1086, desktop: '1', pid: -9999, params: [], name: '添加', content: _import('modules/stu/revisit'), icon: getIcon('icon_add'), msgCount: 0, childItem: [] },
 ]
+/**
+ * 权限过滤器
+ * @param list
+ */
+export function getApp(appid) {
+  console.log('appid', appid)
+  var APP = null
+  appMap.forEach(function(app, index) {
+    if (app.id === appid) {
+      APP = app
+    }
+  })
+  return APP
+}
 
 /**
  * 权限过滤器

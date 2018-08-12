@@ -142,8 +142,8 @@ const user = {
             defaultMap[3].msgCount = 0
             data.agencyList.forEach(function(agency) {
               if (agency.type === '1') {
-                // 我的待办
-                defaultMap[2].msgCount = agency.count
+                // 日程
+                defaultMap[1].msgCount = agency.count
               }
               if (agency.type === '2') {
                 // 短消息

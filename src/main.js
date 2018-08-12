@@ -13,7 +13,6 @@ import MyTree from './components/MyTree'
 import Dict from './components/Dict'
 import TreeSelect from './components/TreeSelect'
 import layer from './components/ElLayer/layer.js'
-import 'vue-event-calendar/dist/style.css' // 1.1.10之后的版本，css被放在了单独的文件中，方便替换
 import vueEventCalendar from './components/Calendar'
 Vue.use(vueEventCalendar, {
   locale: 'zh', // 可以设置语言，支持中文和英文

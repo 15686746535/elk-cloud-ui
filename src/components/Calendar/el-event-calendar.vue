@@ -48,7 +48,7 @@ export default {
         let validate = true
         events.forEach((event, index) => {
           if (!event.date) {
-            console.error('Vue-Event-Calendar-Error:' + 'Prop events Wrong at index ' + index)
+            console.error('El-Event-Calendar-Error:' + 'Prop events Wrong at index ' + index)
             validate = false
           }
         })

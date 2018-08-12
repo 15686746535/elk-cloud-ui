@@ -26,7 +26,7 @@
           快捷选择<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="group in groupList" :command="group">{{group.name}}</el-dropdown-item>
+          <el-dropdown-item v-for="group in groupList" :command="group" :key="group.name">{{group.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>

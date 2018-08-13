@@ -17,7 +17,9 @@
     </div>
     <div id="vl-tool-footer" ><!--@keyup.enter.native="addFollowUp"   v-model="followUp.content"   @click="addFollowUp"  :loading="btnLoading"-->
       <div class="in-content">
-        <el-input type="textarea" @keyup.enter.native="addFollowUp" v-model="followUp.content" :autosize="{ minRows: 4, maxRows: 4}" placeholder="跟进内容"></el-input>
+        <el-date-picker v-model="followUp.nextTime" type="date" placeholder="下次跟进时间" format="yyyy-MM-dd" value-format="timestamp" style="width: 100%">
+        </el-date-picker>
+        <el-input type="textarea" @keyup.enter.native="addFollowUp" v-model="followUp.content" :autosize="{ minRows: 2, maxRows: 2}" placeholder="跟进内容"></el-input>
       </div>
       <div  class="in-btn">
         <el-button style="width: 100%;height: 96px;"  @click="addFollowUp"  :loading="btnLoading"  type="primary" >跟进</el-button>
@@ -73,6 +75,7 @@ export default {
           this.getFollowUp(this.intention.intentionId)
           this.btnLoading = false
           this.followUp.content = null
+          this.followUp.nextTime = null
           this.$emit('open', this.app)
         })
       }
@@ -89,7 +92,7 @@ export default {
   top: 0;
   background-color: #fff;//#1c2f4087;
   width: 360px;
-  z-index: 666666;
+  z-index: 2000;
   border-left: 1px solid #cccccc;
   border-bottom: 1px solid #cccccc;
   border-radius: 0 0 0 5px;

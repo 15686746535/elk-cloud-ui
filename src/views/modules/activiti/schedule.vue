@@ -56,12 +56,17 @@ export default {
       if (event.appId) {
         var app = getApp(event.appId)
         if (app && event.linkId) {
-          app.params = {
-            display: 'info',
-            linkId: event.linkId
+          var open = {
+            id: event.appId,
+            title: event.title,
+            content: app.content,
+            icon: app.icon,
+            params: {
+              display: 'info',
+              linkId: event.linkId
+            }
           }
-          app.name = event.title
-          this.layerOpen(app)
+          this.layerOpen(open)
         }
       }
     },
@@ -70,7 +75,7 @@ export default {
       this.$layer.open({
         type: 2,
         id: app.id + '_schedule', // title
-        title: app.name, // title
+        title: app.title, // title
         shadeClose: false, // 点击遮罩关闭
         prohibit: this.$store.state.app.prohibit,
         tabIcon: app.icon, // 应用图标 任务栏显示

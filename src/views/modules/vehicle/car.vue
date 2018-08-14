@@ -838,7 +838,7 @@
             </el-table-column>
           </el-table>
           <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
-            <el-button style="margin-top: -8px;float: right" @click="createClick('oilconsumption')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+            <el-button style="margin-top: -8px;float: right" @click="oilconsumption={},createClick('oilconsumption')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
           </div>
         </el-tab-pane>
 
@@ -872,13 +872,13 @@
             </el-table-column>
           </el-table>
           <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
-            <el-button style="margin-top: -8px;float: right" @click="createClick('insurance')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+            <el-button style="margin-top: -8px;float: right" @click="insurance={},createClick('insurance')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
           </div>
 
         </el-tab-pane>
       </el-tabs>
 
-      <el-dialog :modal="false" @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加保养日志'" width="550px" :visible.sync="repairListOption">
+      <el-dialog :modal="false" @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加'" width="550px" :visible.sync="repairListOption">
         <div v-show="flag === 'repair'">
 
           <el-form label-position="left" :model="repair" :rules="repairRules" ref="repair" label-width="100px">
@@ -1027,8 +1027,8 @@
         vehicleEntity: {},
         technicalEntity: {},
         safetyEntity: {},
-        insuranceList:[],
-        insurance:{},
+        insuranceList: [],
+        insurance: {},
         certificateEntity: {
           bottleEnd: null,
           bottleStart: null,
@@ -1439,8 +1439,8 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          if(key=='oilconsumption'){
-            key = key+'/'+obj.consumptionId
+          if (key == 'oilconsumption') {
+            key = key + '/' + obj.consumptionId
           }
           delVehicleSub(key, obj).then(() => {
             this.btnLoading = false

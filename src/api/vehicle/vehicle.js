@@ -24,10 +24,12 @@ export function addObj(key, obj) {
 
 // 删除车辆信息
 export function delVehicleSub(key, obj) {
+  if (key=='insurance') {
+    key += '/del/'+obj.insuranceId
+  }
   return request({
     url: '/vehicle/' + key,
     method: 'delete',
-    data: obj
   })
 }
 // 根据ID获取

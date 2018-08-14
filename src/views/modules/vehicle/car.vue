@@ -878,7 +878,7 @@
         </el-tab-pane>
       </el-tabs>
 
-      <el-dialog :modal="false" @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加保养日志'" width="550px" :visible.sync="repairListOption">
+      <el-dialog :modal="false" @close="editList({ 'vehicleEntity': vehicleEntity })" :title="flag === 'repair'?'添加维修日志':'添加'" width="550px" :visible.sync="repairListOption">
         <div v-show="flag === 'repair'">
 
           <el-form label-position="left" :model="repair" :rules="repairRules" ref="repair" label-width="100px">
@@ -1027,8 +1027,8 @@
         vehicleEntity: {},
         technicalEntity: {},
         safetyEntity: {},
-        insuranceList:[],
-        insurance:{},
+        insuranceList: [],
+        insurance: {},
         certificateEntity: {
           bottleEnd: null,
           bottleStart: null,
@@ -1412,6 +1412,12 @@
         this.repairListOption = true
         this.flag = key
         this.$refs[key].resetFields()
+        if (key == 'insurance') {
+          this.insurance = {}
+        }
+        if (key == 'oilconsumption') {
+          this.oilconsumption = {}
+        }
         // if (this.edit === 'repair') {
         //   this.update(this.edit, this.repair)
         // } else if (this.edit === 'maintain') {
@@ -1439,8 +1445,8 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          if(key=='oilconsumption'){
-            key = key+'/'+obj.consumptionId
+          if (key == 'oilconsumption') {
+            key = key + '/' + obj.consumptionId
           }
           delVehicleSub(key, obj).then(() => {
             this.btnLoading = false

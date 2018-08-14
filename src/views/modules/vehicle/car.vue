@@ -838,7 +838,7 @@
             </el-table-column>
           </el-table>
           <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
-            <el-button style="margin-top: -8px;float: right" @click="createClick('oilconsumption')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+            <el-button style="margin-top: -8px;float: right" @click="oilconsumption={},createClick('oilconsumption')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
           </div>
         </el-tab-pane>
 
@@ -872,7 +872,7 @@
             </el-table-column>
           </el-table>
           <div v-show="!maintainListLoading" class="pagination-container" style="margin-top: 20px">
-            <el-button style="margin-top: -8px;float: right" @click="createClick('insurance')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
+            <el-button style="margin-top: -8px;float: right" @click="insurance={},createClick('insurance')" type="primary" ><i class="el-icon-plus"></i> 添 加</el-button>
           </div>
 
         </el-tab-pane>
@@ -1412,12 +1412,6 @@
         this.repairListOption = true
         this.flag = key
         this.$refs[key].resetFields()
-        if (key == 'insurance') {
-          this.insurance = {}
-        }
-        if (key == 'oilconsumption') {
-          this.oilconsumption = {}
-        }
         // if (this.edit === 'repair') {
         //   this.update(this.edit, this.repair)
         // } else if (this.edit === 'maintain') {

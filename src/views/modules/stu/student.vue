@@ -470,7 +470,7 @@
                   <el-row style="margin: 0 10px" >
                     <el-form-item prop="company">
                       <span slot="label" class="text_css">修改人:</span>
-                      <div style="padding-left: 16px;font-size: 12px;" >{{student.operator}}</div>
+                      <div style="padding-left: 16px;font-size: 12px;" >{{student.operatorName}}</div>
                     </el-form-item>
                   </el-row>
                   <!-- 历史费用 -->
@@ -1610,7 +1610,6 @@
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
           var student = response.data.data
-          console.log(student)
           if (student.introducerIdList && student.introducerIdList.length > 0) {
             student.introducerId = student.introducerIdList[0]
           }

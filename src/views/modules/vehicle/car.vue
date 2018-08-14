@@ -781,6 +781,9 @@
             <el-table-column prop="description" label="保养内容" width="180">
             </el-table-column>
             <el-table-column prop="maintainTime" label="保养时间" width="180">
+              <template slot-scope="scope">
+                {{scope.row.maintainTime | subTime}}
+              </template>
             </el-table-column>
             <el-table-column prop="cost" label="保养费用">
             </el-table-column>

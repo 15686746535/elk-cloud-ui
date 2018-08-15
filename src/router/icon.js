@@ -24,6 +24,7 @@ export const IconMap = {
   // 以上是系统图标 在下方添加程序图标
   app_default: '../../../static/icon/app/app_default.png', // 默认图标
   app_stu_student: '../../../static/icon/app/app_stu_student.png',
+  app_stu_complaint: '../../../static/icon/app/app_complaint.png',
   app_stu_add: '../../../static/icon/app/app_stu_add.png',
   app_stu_service: '../../../static/icon/app/app_stu_service.png',
   app_stu_batch: '../../../static/icon/app/app_stu_batch.png',

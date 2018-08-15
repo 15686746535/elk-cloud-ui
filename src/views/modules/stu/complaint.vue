@@ -1,17 +1,17 @@
 <template>
   <div class="complaint" style="height: 100%;">
     <el-card style="height: 100%" v-show="showModule=='list'">
-      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.condition"></el-input>
+      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.condition" clearable></el-input>
       <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="search">搜索</el-button>
       <!--数据表格-->
-      <el-table :key='0'  :height="tableHeight-200" :data="list" @row-dblclick="info" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
-        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-        <el-table-column label="学员" width="80">
+      <el-table :key='0'  :height="tableHeight-190" :data="list" @row-dblclick="info" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
+        <el-table-column type="index" label="序号" fixed align="center" width="50"></el-table-column>
+        <el-table-column label="学员" fixed width="80">
           <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="联系电话" width="110">
+        <el-table-column label="联系电话" fixed width="110">
           <template slot-scope="scope">
             <span>{{scope.row.mobile}}</span>
           </template>
@@ -59,6 +59,11 @@
             <span>{{scope.row.receiver}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="核实处理时间" width="100">
+          <template slot-scope="scope">
+            <span>{{scope.row.answerTime | subTime}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="核实处理结果" width="130">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.answer" placement="top-start">
@@ -66,11 +71,6 @@
                 <span>{{scope.row.answer}}</span>
               </div>
             </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="回复时间" width="100">
-          <template slot-scope="scope">
-            <span>{{scope.row.answerTime | subTime}}</span>
           </template>
         </el-table-column>
         <el-table-column label="抽查回访" width="130">
@@ -84,7 +84,11 @@
         </el-table-column>
         <el-table-column label="备注" width="130">
           <template slot-scope="scope">
-            <span>{{scope.row.remark}}</span>
+            <el-tooltip class="item" effect="dark" :content="scope.row.remark" placement="top-start">
+              <div class="table_text">
+                <span>{{scope.row.remark}}</span>
+              </div>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column label="受理日期" width="100">
@@ -94,12 +98,13 @@
         </el-table-column>
       </el-table>
       <!--分页插件-->
-      <div v-show="!listLoading" class="pagination-container">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
+        <el-pagination style="float: left" @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page"
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
+        <el-button style="float: right" @click="create" v-if="permissions.stu_complaint_add" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
       </div>
     </el-card>
     <el-card style="height: 100%;overflow: auto" v-show="showModule=='info'">
@@ -112,6 +117,10 @@
             </el-option>
           </el-select>
           <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.name}}</div>
+        </el-form-item>
+        <el-form-item prop="source" v-if="!edit">
+          <span slot="label" class="text_css">联系方式：</span>
+          <div style="padding-left: 16px;font-size: 12px;">{{complaint.mobile}}</div>
         </el-form-item>
         <el-form-item prop="source">
           <span slot="label" class="text_css">受理方式：</span>
@@ -146,6 +155,11 @@
           <tree-select v-if="edit"   url="/upms/org/tree" id="dutyOrg" v-model="complaint.dutyOrg" style="height: 40px;width: 100%;"  placeholder="责任部门"></tree-select>
           <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.orgName}}</div>
         </el-form-item>
+        <el-form-item prop="answerTime">
+          <span slot="label" class="text_css">核实处理时间：</span>
+          <el-date-picker v-if="edit" v-model="complaint.answerTime" type="date" placeholder="回复时间" format="yyyy-MM-dd" value-format="timestamp"> </el-date-picker>
+          <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.answerTime | subTime}}</div>
+        </el-form-item>
         <el-form-item prop="answer">
           <span slot="label" class="text_css">核实处理结果：</span>
           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 2}" v-if="edit"  v-model="complaint.answer" placeholder="核实处理结果"></el-input>
@@ -172,12 +186,14 @@
         <el-row v-if="edit">
           <div  align="center">
             <el-button type="info" @click="cancel('complaint')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
-            <el-button type="success"  @click="update('complaint')"><i class="el-icon-fa-save"></i> 保 存</el-button>
+            <el-button type="success" v-if="!isAdd" :loading="btnLoading"  @click="update('complaint')"><i class="el-icon-fa-save"></i> 保 存</el-button>
+            <el-button type="success" v-if="isAdd" :loading="btnLoading" @click="add('complaint')"><i class="el-icon-fa-save"></i> 创 建</el-button>
           </div>
         </el-row>
         <el-row v-else>
           <div align="center">
-            <el-button type="primary" @click="setEdit"><i class="el-icon-edit"></i> 编 辑</el-button>
+            <el-button type="info" @click="cancel(null)"><i class="el-icon-fa-undo"></i> 取 消</el-button>
+            <el-button type="primary" @click="setEdit"  v-if="permissions.stu_complaint_update"><i class="el-icon-edit"></i> 编 辑</el-button>
           </div>
         </el-row>
       </el-form>
@@ -188,6 +204,7 @@
 <script>
 import { fetchList, putObj, addObj } from '@/api/basis/complaint'
 import { fetchStudentList } from '@/api/student/student'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'table_complaint',
@@ -213,6 +230,12 @@ export default {
       return typeMap[type]
     }
   },
+  computed: {
+    ...mapGetters([
+      'permissions',
+      'client'
+    ])
+  },
   data() {
     return {
       tableHeight: this.area[1],
@@ -224,31 +247,29 @@ export default {
       isAdd: false,
       studentListLoading: false,
       listLoading: true,
+      btnLoading: false,
       showModule: 'list',
       rules: {
         studentId: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
+          { required: true, message: '此处必填', trigger: ['blur', 'change'] }
         ],
         source: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
+          { required: true, message: '此处必填', trigger: ['blur', 'change'] }
         ],
         type: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
+          { required: true, message: '此处必填', trigger: ['blur', 'change'] }
         ],
         category: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
+          { required: true, message: '此处必填', trigger: ['blur', 'change'] }
         ],
         content: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
+          { required: true, message: '此处必填', trigger: ['blur', 'change'] }
         ],
         appeal: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
+          { required: true, message: '此处必填', trigger: ['blur', 'change'] }
         ],
         dutyOrg: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
-        ],
-        answer: [
-          { required: true, message: '此处未必填', trigger: ['blur', 'change'] }
+          { required: true, message: '此处必填', trigger: ['blur', 'change'] }
         ]
       },
       listQuery: {
@@ -306,7 +327,7 @@ export default {
       this.edit = true
     },
     create() {
-      this.complaint = {}
+      this.complaint = { type: '1' }
       this.showModule = 'info'
       this.edit = true
       this.isAdd = true
@@ -314,8 +335,11 @@ export default {
     add(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          addObj(this.intention).then(() => {
-            this.cancel(formName)
+          this.btnLoading = true
+          addObj(this.complaint).then(response => {
+            if (response.data.code === 0) {
+              this.cancel(formName)
+            }
           })
         }
       })
@@ -323,8 +347,11 @@ export default {
     update(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          putObj(this.intention).then(() => {
-            this.cancel(formName)
+          this.btnLoading = true
+          putObj(this.complaint).then(response => {
+            if (response.data.code === 0) {
+              this.cancel(formName)
+            }
           })
         }
       })
@@ -334,9 +361,13 @@ export default {
       this.getList()
     },
     cancel(formName) {
-      this.$refs[formName].resetFields()
+      console.log(formName)
+      if (formName) {
+        this.$refs[formName].resetFields()
+      }
       this.edit = false
       this.isAdd = false
+      this.btnLoading = false
       this.showModule = 'list'
       this.getList()
     }

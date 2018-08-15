@@ -16,7 +16,7 @@ export const defaultMap = [
   { id: 'menu17', name: '短消息', content: _import('modules/activiti/notice'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
   { id: 'menu20', name: '我的日程', content: _import('modules/activiti/schedule'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
   { id: 'menu21', name: '今日完成', content: _import('modules/activiti/agency'), icon: getIcon('schedule'), msgCount: 0, childItem: [] },
-  { id: 'menu31', name: '任务管理', content: _import('modules/stu/complaint'), icon: getIcon('task'), msgCount: 0, childItem: [] }
+  { id: 'menu31', name: '任务管理', content: _import('404'), icon: getIcon('task'), msgCount: 0, childItem: [] }
 ]
 /**
  * 开始菜单
@@ -47,6 +47,7 @@ export const appMap = [
   { id: 20700, desktop: '1', type: '1', pid: 20000, params: [], name: '学员回访', content: _import('modules/stu/revisit'), icon: getIcon('app_stu_revisit'), msgCount: 0, childItem: [] },
   { id: 20800, desktop: '1', type: '1', pid: 20000, params: [], name: '回访信息', content: _import('modules/stu/revisited'), icon: getIcon('app_stu_revisited'), msgCount: 0, childItem: [] },
   { id: 80100, desktop: '1', type: '1', pid: 20000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehicle_period'), msgCount: 0, childItem: [] },
+  { id: 21000, desktop: '1', type: '1', pid: 20000, params: [], name: '投诉建议', content: _import('modules/stu/complaint'), icon: getIcon('app_stu_complaint'), msgCount: 0, childItem: [] },
   // 客户公客
   { id: 30200, desktop: '1', type: '2', pid: 30000, params: { display: 'list' }, name: '意向信息', content: _import('modules/visit/intention'), icon: getIcon('app_visit_intention'), msgCount: 0, childItem: [] },
   { id: 30201, desktop: '1', type: '2', pid: 30200, params: { display: 'add' }, name: '意向添加', content: _import('modules/visit/intention'), icon: getIcon('app_visit_add'), msgCount: 0, childItem: [] },

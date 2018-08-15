@@ -232,10 +232,29 @@
 .default_tools {
   width: 60px;
   height: 30px;
+  line-height: 30px;
   overflow: hidden;
   zoom: -1;
   margin-left: 3px;
   margin-top: 1px;
+  .l{
+    margin-left: 5px;
+  }
+  .r{
+    margin-left: 10px;
+  }
+  i{
+    color: #f7f7f7;
+    font-size: 16px;
+  }
+  i:hover{
+    color: #67C23A;
+  }
+}
+.units{
+  .el-progress__text{
+    color: #fff!important;
+  }
 }
 /* 左边菜单样式*/
 #start_block {

@@ -14,6 +14,8 @@
     <el-nav-bar @desktopSwitch="desktopSwitch" @open="layerOpen"></el-nav-bar>
     <!--悬浮工作台 -->
     <el-tool-intention @open="layerOpen"></el-tool-intention>
+
+    <el-unit></el-unit>
   </div>
 </template>i
 
@@ -24,8 +26,8 @@ import ElNavBar from './navBar.vue'
 import ElSmartMenu from './smartMenu.vue'
 import ElStartBar from './startBar.vue'
 import ElToolIntention from './ToolIntention.vue'
+import ElUnit from './unit.vue'
 import { saveApps } from '@/api/desktop'
-import { Message } from 'element-ui'
 
 export default {
   name: 'layout',
@@ -34,6 +36,7 @@ export default {
     ElSmartMenu,
     ElStartBar,
     ElToolIntention,
+    ElUnit,
     ElNavBar
   },
   data() {

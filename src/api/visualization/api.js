@@ -1,11 +1,5 @@
 import request from '@/utils/request'
 
-export function queryIndex() {
-  return request({
-    url: '/visualization/index',
-    method: 'get'
-  })
-}
 // 顾虑问题统计
 export function queryWorry(params) {
   return request({

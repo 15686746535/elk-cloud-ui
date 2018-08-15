@@ -697,7 +697,7 @@
               Message.error('手机和微信至少输入一个')
             } else {
               this.intention.state = 0
-              this.intention.visitTime = new Date().getTime()
+              this.intention.visitTime = new Date()
               addObj(this.intention).then(() => {
                 this.closeAlert(formName)
                 this.showModule = 'list'

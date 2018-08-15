@@ -11,8 +11,14 @@
             <div class="text"><span>{{app.name}}</span><s></s></div>
           </div>
         </div>
-        <div class="default_tools"></div>
-        <div class="default_tools"></div>
+        <div class="default_tools">
+          <i class="el-icon-time l" title="招生任务" @click="unit(1)"></i>
+          <i class="el-icon-date r" title="" @click="unit(2)"></i>
+        </div>
+        <div class="default_tools">
+          <i class="el-icon-news l" title="" @click="unit(3)"></i>
+          <i class="el-icon-more r" title="" @click="unit(4)"></i>
+        </div>
         <div id="start_block">
           <a title="开始" id="start_btn"></a>
           <div id="start_item">
@@ -51,7 +57,14 @@ export default {
   },
   data() {
     return {
-      defect: { id: -9999999, name: '没找到', content: defect, icon: '../../../static/icon/defect.png' }
+      defect: { id: -9999999, name: '没找到', content: defect, icon: '../../../static/icon/defect.png' },
+      index: 0,
+      msg: {
+        1: '开发中...',
+        2: '开发中，别点了！！！',
+        3: '都说了别点了！！！',
+        4: '咋不听劝呢！！！'
+      }
     }
   },
   computed: {
@@ -71,6 +84,30 @@ export default {
     // 打开应用
     layerOpen(app) {
       this.$emit('open', app || this.defect)
+    },
+    unit(i) {
+      switch (i) {
+        case 1:
+
+          break
+        case 2:
+          this.amuse()
+          break
+        case 3:
+          this.amuse()
+          break
+        case 4:
+          this.amuse()
+          break
+      }
+    },
+    amuse() {
+      if (this.index < 4) {
+        this.index += 1
+      } else {
+        this.index = 1
+      }
+      this.$message.error(this.msg[this.index])
     }
   }
 }

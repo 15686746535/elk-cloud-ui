@@ -581,7 +581,6 @@
         getFinancePage({ page: 1, limit: 0, status: 0 }).then(response => {
           var data = response.data.data
           this.financeAll = data.list
-          console.log(data)
           this.pageShow = 'config' // bill config
           this.getConfig()
         })
@@ -722,19 +721,19 @@
               receivables.push('定转全')
               this.flag = true
               this.btnDisabled = false
-              this.finance.receivablesType = '定转全'
+              // this.finance.receivablesType = '定转全'
             }
             // 费用已经缴清
             if (realPrice < 0) realPrice = 0
             if (realPrice === 0 || receivable === '购买服务包') {
-              this.finance.receivablesType = '购买服务包'
+              // this.finance.receivablesType = '购买服务包'
               this.clean()
               this.flag = false
               // 已经购买的服务包
               this.finance.financeList = []
               this.finance.financeIdList = []
             }
-            this.setReceivablesList(receivables)
+            // this.setReceivablesList(receivables)
             this.loading = false
           } else {
             console.log(121212)
@@ -746,6 +745,7 @@
           }
           this.loading = false
         })
+        this.setReceivablesList(['全款', '定金', '定转全', '购买服务包'])
       },
       // 获取可选的收费方式
       setReceivablesList(optional) {

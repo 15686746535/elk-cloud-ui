@@ -90,3 +90,17 @@ export function editInfo(query) {
     data: query
   })
 }
+
+export function getPlan(params) {
+  return request({
+    url: '/upms/user/getPlan',
+    method: 'get',
+    params: params
+  })
+}
+export function savePlan(plan) {
+  return request({
+    url: '/upms/user/savePlan/' + plan,
+    method: 'put'
+  })
+}

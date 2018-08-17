@@ -17,7 +17,7 @@
 
     <el-unit></el-unit>
   </div>
-</template>i
+</template>
 
 <script>
 import { mapGetters } from 'vuex'

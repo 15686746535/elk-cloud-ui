@@ -761,6 +761,9 @@
             <el-table-column prop="description" label="维修事项" width="180">
             </el-table-column>
             <el-table-column prop="repairTime" label="维修时间" width="180">
+              <template slot-scope="scope">
+                {{scope.row.repairTime | subTime}}
+              </template>
             </el-table-column>
             <el-table-column prop="cost" label="维修费用（￥）">
             </el-table-column>
@@ -861,7 +864,7 @@
             </el-table-column>
             <el-table-column prop="endTime" label="结束时间" width="180">
               <template slot-scope="scope">
-                {{scope.row.startTime | subTime}}
+                {{scope.row.endTime | subTime}}
               </template>
             </el-table-column>
             <el-table-column prop="" label="操作">

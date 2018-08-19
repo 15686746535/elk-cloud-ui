@@ -3,14 +3,11 @@
     <el-card style="height: 100%">
       <div class="filter-container" >
         <div style="height: 40px; width:100%;">
-          <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" range-separator="-"
+          <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" range-separator="-" style="float: left;margin-right: 5px;"
                           start-placeholder="开始日期" end-placeholder="结束日期" >
           </el-date-picker>
-
+          <tree-select url="/upms/org/tree" id="serch-kpi" v-model="query.orgId" style="width: 200px;float: left;margin-right: 5px;" placeholder="所属部门"></tree-select>
           <el-input @keyup.enter.native="searchClick" style="width: 200px;" placeholder="员工名称" v-model="query.name"></el-input>
-          <!--<el-col span="6">-->
-            <!--<tree-select  style="font-size: 12px;display: inline-block;" v-show="true" url="/upms/org/tree" v-model="query.org" placeholder="所属部门1"></tree-select>-->
-          <!--</el-col>-->
             <el-button type="primary"  @click="searchClick">搜索</el-button>
         </div>
       </div>
@@ -80,6 +77,7 @@
           page: 1,
           limit: 20,
           name: null,
+          orgId: null,
           beginTime: null,
           endTime: null
         }

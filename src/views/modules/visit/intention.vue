@@ -5,11 +5,14 @@
         <el-card style="height: 100%; padding: 12px;">
           <!--检索-->
           <el-row :gutter="5" style="margin-bottom: 15px;">
-            <el-col :xs="7" :sm="7" :md="7" :lg="7">
-              <el-date-picker value-format="timestamp" size="mini" style="width: 100%;" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="来访时间" end-placeholder="来访时间" :picker-options="pickerOptions">
+            <el-col :xs="6" :sm="6" :md="6" :lg="6">
+              <el-date-picker value-format="timestamp" size="mini" style="width: 100%;" v-model="interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始时间" end-placeholder="截至时间" :picker-options="pickerOptions">
               </el-date-picker>
             </el-col>
-            <el-col :xs="4" :sm="4" :md="4" :lg="4">
+            <el-col :xs="3" :sm="3" :md="3" :lg="3">
+              <tree-select url="/upms/org/tree" id="serch-intention" height="28px" v-model="listQuery.orgId" style="width: 100%" placeholder="所属部门"></tree-select>
+            </el-col>
+            <el-col :xs="3" :sm="3" :md="3" :lg="3">
               <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer"  clearable filterable placeholder="负责人">
                 <el-option
                   v-for="item in userList"
@@ -22,7 +25,7 @@
             <el-col :xs="3" :sm="3" :md="3" :lg="3">
               <dict dictType="dict_customer_type" size="mini" v-model="listQuery.customerType" placeholder="类型"></dict>
             </el-col>
-            <el-col :xs="4" :sm="4" :md="4" :lg="4">
+            <el-col :xs="3" :sm="3" :md="3" :lg="3">
               <dict dictType="dict_source" size="mini" v-model="listQuery.source" placeholder="来源渠道"></dict>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4">

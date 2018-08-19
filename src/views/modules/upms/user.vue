@@ -381,7 +381,7 @@
 
                         <el-form-item prop="major">
                           <span slot="label" class="text_css">介绍人:</span>
-                          <el-input v-if="edit"  v-model="userEntity.introducer" placeholder="专业" ></el-input>
+                          <el-input v-if="edit"  v-model="userEntity.introducer" placeholder="介绍人" ></el-input>
                           <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.introducer}}</span>
                         </el-form-item>
 

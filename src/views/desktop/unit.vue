@@ -132,7 +132,7 @@ export default {
       position: absolute;
       width: 100px;
       height: 20px;
-      background-color: #1616173b;
+      background-color: #5C5C5C;
       border-radius: 5px 5px 0 0;
       padding: 0 5px;
       top: -20px;
@@ -159,7 +159,7 @@ export default {
       padding-left: 5px;
       padding-right: 5px;
       position: relative;
-      background-color: #c1c1c580;
+      background-color: #ccc;
 
       .progress{
         border-radius: 50%;
@@ -169,7 +169,7 @@ export default {
       }
     }
     .unit_footer{
-      background-color: #c1c1c580;
+      background-color: #ccc;
       font-size: 12px;
       color: #fff;
       padding-top: 2px;

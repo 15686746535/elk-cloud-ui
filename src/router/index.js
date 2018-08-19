@@ -101,7 +101,7 @@ export const appMap = [
  * 应用 白名单
  * @type {Array}
  */
-export const anonList = [-1086, 10008, 10001, 30100]
+export const anonList = [-1086, 10008, 10001, 30100, 21000]
 /**
  * 添加
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}

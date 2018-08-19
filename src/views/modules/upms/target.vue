@@ -12,7 +12,7 @@
         </el-table-column>
         <el-table-column align="center" label="本月目标">
           <template slot-scope="scope">
-            <span  v-if="scope.row.plan && scope.row.plan >= 0">{{scope.row.plan}}</span>
+            <span  v-if="scope.row.plan != null">{{scope.row.plan}}</span>
             <span  v-else>未设置</span>
           </template>
         </el-table-column>

@@ -13,13 +13,13 @@
         </div>
       </div>
       <div class="unit_footer">
-        <div v-if="progress.plan && progress.plan >= 0" class="one">目标：
+        <div v-if="progress.plan != null" class="one">目标：
           <span v-if="!edit" @dblclick="updatePlan">{{progress.plan}}人</span>
           <input v-if="edit" v-model="plan"  style="width: 40px;height: 11px;border: none;" />
           <i v-if="edit" style="cursor: pointer" class="el-icon-success" @click="savePlan"></i>
         </div>
         <div class="one" v-else >目标：
-          <a href="#" v-if="!edit" style="text-decoration: underline;" @dblclick="updatePlan">未设置</a>
+          <a href="#" v-if="!edit" style="text-decoration: underline;" @dblclick="updatePlan">未设置{{progress.plan}}</a>
           <input v-if="edit" v-model="plan"  style="width: 40px;height: 11px;border: none;" />
           <i v-if="edit" style="cursor: pointer" class="el-icon-success" @click="savePlan"></i>
         </div>

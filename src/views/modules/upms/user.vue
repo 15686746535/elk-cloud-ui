@@ -334,45 +334,55 @@
                     </el-row>
 
 
-                    <el-row :gutter="20" style="height: 50px">
-                      <el-col :span="12">
+                    <el-row :gutter="10" style="height: 50px">
+                      <el-col :span="8">
 
-                        <el-form-item label-width="120px" prop="emergencyContact">
-                          <span slot="label" class="text_css">紧急联系人姓名:</span>
+                        <el-form-item  prop="emergencyContact">
+                          <span slot="label" class="text_css">紧急联系人:</span>
                           <el-input v-if="edit"  v-model="userEntity.emergencyContact" placeholder="紧急联系人" ></el-input>
                           <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyContact}}</span>
                         </el-form-item>
 
                       </el-col>
 
-                      <el-col :span="12">
+                      <el-col :span="8">
 
-                        <el-form-item label-width="120px" prop="emergencyMobile">
-                          <span slot="label" class="text_css">紧急联系人电话:</span>
+                        <el-form-item  prop="emergencyMobile">
+                          <span slot="label" class="text_css">紧急电话:</span>
                           <el-input v-if="edit"  v-model="userEntity.emergencyMobile" placeholder="紧急联系人电话" ></el-input>
                           <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.emergencyMobile}}</span>
                         </el-form-item>
 
                       </el-col>
-                    </el-row>
 
-                    <el-row :gutter="20" style="height: 50px">
-                      <el-col :span="12">
+                      <el-col :span="8">
 
-                        <el-form-item label-width="120px" prop="fiveInsuranceTime">
-                          <span slot="label" class="text_css">五险购买时间:</span>
+                        <el-form-item prop="fiveInsuranceTime">
+                          <span slot="label" class="text_css">五险购买:</span>
                           <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="五险购买时间"  style="width: 100%" v-model="userEntity.fiveInsuranceTime"></el-date-picker>
                           <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.fiveInsuranceTime | subTime}}</span>
                         </el-form-item>
 
                       </el-col>
+                    </el-row>
 
-                      <el-col :span="12">
+                    <el-row :gutter="10" style="height: 50px">
 
-                        <el-form-item label-width="120px" prop="providentFundTime">
-                          <span slot="label" class="text_css">公积金购买时间:</span>
+                      <el-col :span="8">
+
+                        <el-form-item prop="providentFundTime">
+                          <span slot="label" class="text_css">公积金购买:</span>
                           <el-date-picker value-format="timestamp"  v-if="edit" type="date" placeholder="公积金购买时间"  style="width: 100%" v-model="userEntity.providentFundTime"></el-date-picker>
                           <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.providentFundTime | subTime}}</span>
+                        </el-form-item>
+
+                      </el-col>
+                      <el-col :span="8">
+
+                        <el-form-item prop="major">
+                          <span slot="label" class="text_css">介绍人:</span>
+                          <el-input v-if="edit"  v-model="userEntity.introducer" placeholder="专业" ></el-input>
+                          <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.introducer}}</span>
                         </el-form-item>
 
                       </el-col>
@@ -381,7 +391,7 @@
                     <el-row :gutter="20" style="height: 50px">
                       <el-col :span="24">
 
-                        <el-form-item label-width="120px" prop="fiveInsuranceTime">
+                        <el-form-item prop="fiveInsuranceTime">
                           <span slot="label" class="text_css">是否教练:</span>
                           <el-radio-group  v-if="edit"  v-model="userEntity.iscoach">
                             <el-radio label="0">不是</el-radio>
@@ -461,12 +471,12 @@
                         <span>{{ scope.row.enrolTime | subTime}}</span>
                       </template>
                     </el-table-column>
-                    <el-table-column align="center" label="车型">
+                    <el-table-column align="center" label="车型" width="50">
                       <template slot-scope="scope">
                         <span>{{ scope.row.motorcycleType}}</span>
                       </template>
                     </el-table-column>
-                    <el-table-column align="center" label="状态">
+                    <el-table-column align="center" label="状态" width="70">
                       <template slot-scope="scope">
                         <span>{{ scope.row.state | subjectFilter}}</span>
                       </template>
@@ -654,6 +664,7 @@
           joinedTime: null,
           positiveTime: null,
           email: null,
+          introducer: null,
           emergencyContact: null,
           emergencyMobile: null,
           fiveInsuranceTime: null,
@@ -757,6 +768,7 @@
           homeAddress: null,
           education: null,
           major: null,
+          introducer: null,
           qq: null,
           joinedTime: null,
           positiveTime: null,
@@ -767,6 +779,7 @@
           providentFundTime: null,
           workMobile: null
         }
+        this.studentList = []
         this.addInfo = true
         this.edit = true
         this.getRoleList()
@@ -821,11 +834,8 @@
       },
       // 查询招生信息集合
       getEnrollStudentList() {
-        console.log(1000)
         this.studentListLoading = true
         queryEnrollStudents(this.studentListQuery).then(response => {
-          console.log(111111)
-          console.log(response)
           this.studentList = response.data.data.list
           // this.total = response.data.data.totalCount
           this.studentListLoading = false
@@ -984,6 +994,7 @@
   }
   .text_css{
     color:#495060;
+    font-weight: 700;
     font-size: 12px;
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */

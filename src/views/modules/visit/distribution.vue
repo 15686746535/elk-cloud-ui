@@ -15,71 +15,90 @@
           <el-button size="mini" type="primary"  icon="search" @click="searchClick"><i class="el-icon-search"></i> 搜 索</el-button>
         </el-col>
       </el-row>
-      <el-table :data="list" :height="(tableHeight-175)" @selection-change="handleSelectionChange" @row-click="follow"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-        <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-        <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-        <el-table-column  align="center" label="姓名">
-          <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
-          </template>
-        </el-table-column>
+      <el-row :gutter="5" >
+        <el-col :span="16">
+          <el-card :style="{height: tableHeight-100 + 'px' }">
+            <el-table :data="list" :height="(tableHeight-175)" @selection-change="handleSelectionChange" @row-click="follow"  v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+              <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
+              <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+              <el-table-column  align="center" label="姓名" width="150">
+                <template slot-scope="scope">
+                  <span>{{scope.row.name}}</span>
+                </template>
+              </el-table-column>
 
-        <el-table-column align="center" label="性别">
-          <template slot-scope="scope">
-            <span>{{scope.row.sex | sexFilter}}</span>
-          </template>
-        </el-table-column>
-
-
-        <el-table-column align="center" label="类别">
-          <template slot-scope="scope">
-            <span>{{scope.row.customerType}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="渠道">
-          <template slot-scope="scope">
-            <span>{{scope.row.source}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="电话">
-          <template slot-scope="scope">
-            <span>{{scope.row.mobile}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="微信">
-          <template slot-scope="scope">
-            <span>{{scope.row.wechat}}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px;clear: both">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page.sync="listQuery.page"
-                       background style="float: left"
-                       :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                       layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-        <div style="float: right;">
-          <el-button size="small" style="float:right;margin: 0 5px" @click="distribution" type="primary" v-if="permissions.visit_intention_distribution"><i class="el-icon-refresh"></i>分配</el-button>
-          <el-upload class="upload-demo" action="/visit/intention/import"
-                     :headers="headers"
-                     style="float:right;"
-                     :on-success="handleTextSuccess"
-                     accept=".xls,.xlsx"
-                     :on-error="handleTextError"
-                     :show-file-list="false"
-                     :before-upload="beforeTextUpload">
-            <el-button size="small"  v-if="permissions.visit_intention_import"><i class="el-icon-upload2"></i>导入</el-button>
-          </el-upload>
-
-        </div>
-      </div>
+              <el-table-column align="center" label="性别" width="50">
+                <template slot-scope="scope">
+                  <span>{{scope.row.sex | sexFilter}}</span>
+                </template>
+              </el-table-column>
 
 
+              <el-table-column align="center" label="类别" width="50">
+                <template slot-scope="scope">
+                  <span>{{scope.row.customerType}}</span>
+                </template>
+              </el-table-column>
 
+              <el-table-column align="center" label="渠道">
+                <template slot-scope="scope">
+                  <span>{{scope.row.source}}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column align="center" label="电话/微信">
+                <template slot-scope="scope">
+                  <a href="#" style="color: #409eff;text-decoration: underline;" @click="addFollowUp(scope.row)">查看</a>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div v-show="!listLoading" class="pagination-container" style="margin-top: 10px;clear: both">
+              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                             :current-page.sync="listQuery.page"
+                             background style="float: left"
+                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                             layout="total, sizes, prev, pager, next" :total="total">
+              </el-pagination>
+              <div style="float: right;">
+                <el-button size="small" style="float:right;margin: 0 5px" @click="distribution" type="primary" v-if="permissions.visit_intention_distribution"><i class="el-icon-refresh"></i>分配</el-button>
+                <el-upload class="upload-demo" action="/visit/intention/import"
+                           :headers="headers"
+                           style="float:right;"
+                           :on-success="handleTextSuccess"
+                           accept=".xls,.xlsx"
+                           :on-error="handleTextError"
+                           :show-file-list="false"
+                           :before-upload="beforeTextUpload">
+                  <el-button size="small"  v-if="permissions.visit_intention_import"><i class="el-icon-upload2"></i>导入</el-button>
+                </el-upload>
+
+              </div>
+            </div>
+          </el-card>
+
+        </el-col>
+        <el-col :span="8">
+          <el-card :style="{height: tableHeight-100 + 'px' }">
+            <div slot="header" class="clearfix">
+              <div >
+                |&nbsp;<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">跟进信息</span>
+              </div>
+              <div id="follow-content" :style="{height: tableHeight-150+'px' }">
+                <div class="content-itrm" style="" v-for="up in followUpList">
+                  <el-tag>
+                    <img :src="up.avatar?up.avatar:'../../../static/img/usreicon_40.png'">
+                  </el-tag>
+                  <div class="username">{{up.name}}</div>
+                  <div class="time">{{up.createTime | formatTime('{y}-{m}-{d} {h}:{i}')}}</div>
+                  <div class="content" style="">
+                    <p>{{up.content}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
     </el-card>
     <el-dialog :modal="false" @close="getList" title="选择负责人" width="350px" :visible.sync="dialogIntentionList">
       <tree-select url="/upms/org/tree" v-model="intentionList.orgId" @org-click="orgClick"></tree-select>
@@ -106,6 +125,7 @@
   import { removeAllSpace } from '@/utils/validate'
   import { getCommonPage, putIntention } from '@/api/visit/intention'
   import { getToken } from '@/utils/auth'
+  import { followUpList, addFollowUp } from '@/api/visit/followup'
 
   export default {
     name: 'table_intention',
@@ -122,6 +142,7 @@
         tableHeight: this.area[1],
         list: [],
         total: null,
+        followUpList: [],
         listLoading: true,
         listQuery: {
           page: 1,
@@ -194,12 +215,25 @@
       },
       follow(row, event, column) {
         console.log(row)
-        var intention = {
+        followUpList({ intentionId: row.intentionId }).then(response => {
+          this.followUpList = response.data.data
+        })
+        // var intention = {
+        //   intentionId: row.intentionId,
+        //   name: row.name
+        // }
+        // this.$store.dispatch('setIntention', intention)
+        // document.getElementById('vl-tool-right').classList.add('show')
+      },
+      addFollowUp(row) {
+        var followUp = {
           intentionId: row.intentionId,
-          name: row.name
+          content: '查看联系方式'
         }
-        this.$store.dispatch('setIntention', intention)
-        document.getElementById('vl-tool-right').classList.add('show')
+        addFollowUp(followUp).then(() => {
+          this.getList()
+          this.$message.success('已转入我的意向，请到我的意向信息查看')
+        })
       },
       handleSelectionChange(val) {
         this.intentionList.intentionIds = []
@@ -276,7 +310,60 @@
   }
 </script>
 
-<style>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  #follow-content{
+    padding: 35px 10px 20px 35px;
+    overflow: auto;
 
+    .content-itrm{
+      border-left: 2px solid #1E9FFF;
+      min-height: 100px;
+      padding-bottom: 25px;
+
+      .el-tag{
+        float: left;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        margin-left: -19px;
+        margin-top: -12px;
+        padding: 0px;
+        overflow: hidden;
+        background: #1E9FFF;
+
+        img{
+          width: 33px;
+          height: 33px;
+          border-radius: 50%;
+        }
+      }
+      .username{
+        float: left;
+        color: rgb(73, 80, 96);
+        font-size: 12px;
+        margin-left: 10px;
+        font-weight: 600;
+        width: 80px;
+      }
+      .time{
+        float: left;
+        color: #FF6C60;
+        font-size: 12px;
+      }
+      .content{
+        clear: both;
+        white-space:normal;
+        width: 100%;
+        padding: 0 10px 0 40px;
+        p{
+          font-size: 12px;
+          border-radius: 10px;
+          white-space:normal;
+          color: #606266;
+          line-height: 20px;
+        }
+      }
+    }
+  }
 </style>
 

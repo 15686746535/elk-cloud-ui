@@ -7,13 +7,13 @@
           <i class="el-icon-close close"></i>
         </el-tooltip>
       </div>
-      <div class="unit_body">
+      <div class="unit_body" @dblclick="layerOpen">
         <div class="progress">
           <el-progress type="circle" :percentage="percentage" :width="90" :stroke-width="12" title="本周计划招生完成率" color="#67C23A" @focus="saveDesktop" ></el-progress>
         </div>
       </div>
       <div class="unit_footer">
-        <div v-if="progress.plan >= 0" class="one">目标：
+        <div v-if="progress.plan && progress.plan >= 0" class="one">目标：
           <span v-if="!edit" @dblclick="updatePlan">{{progress.plan}}人</span>
           <input v-if="edit" v-model="plan"  style="width: 40px;height: 11px;border: none;" />
           <i v-if="edit" style="cursor: pointer" class="el-icon-success" @click="savePlan"></i>
@@ -23,8 +23,7 @@
           <input v-if="edit" v-model="plan"  style="width: 40px;height: 11px;border: none;" />
           <i v-if="edit" style="cursor: pointer" class="el-icon-success" @click="savePlan"></i>
         </div>
-        <div class="two">完成：
-          {{progress.complete}}人</div>
+        <div class="two">完成：{{progress.complete}}人</div>
       </div>
     </div>
   </div>
@@ -33,6 +32,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getPlan, savePlan } from '@/api/upms/user'
+import target from '@/views/modules/upms/target.vue'
 
 export default {
   name: 'unit',
@@ -42,6 +42,7 @@ export default {
     return {
       edit: false,
       plan: null,
+      info: { id: 'menu31', name: '计划任务', content: target, icon: '../../../static/icon/task.png' },
       progress: {
         complete: 0,
         plan: null,
@@ -93,6 +94,10 @@ export default {
     },
     updatePlan() {
       this.edit = true
+    },
+    // 打开应用
+    layerOpen() {
+      this.$emit('open', this.info)
     },
     savePlan() {
       if (this.plan) {

@@ -16,7 +16,7 @@ export const defaultMap = [
   { id: 'menu17', name: '短消息', content: _import('modules/activiti/notice'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
   { id: 'menu20', name: '我的日程', content: _import('modules/activiti/schedule'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
   { id: 'menu21', name: '今日完成', content: _import('modules/activiti/agency'), icon: getIcon('schedule'), msgCount: 0, childItem: [] },
-  { id: 'menu31', name: '任务管理', content: _import('404'), icon: getIcon('task'), msgCount: 0, childItem: [] }
+  { id: 'menu31', name: '计划任务', content: _import('modules/upms/target'), icon: getIcon('task'), msgCount: 0, childItem: [] }
 ]
 /**
  * 开始菜单

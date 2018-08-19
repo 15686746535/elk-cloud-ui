@@ -104,3 +104,12 @@ export function savePlan(plan) {
     method: 'put'
   })
 }
+
+export function getPlanList(query) {
+  return request({
+    url: '/upms/user/getPlanList',
+    method: 'get',
+    params: query
+  })
+}
+

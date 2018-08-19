@@ -15,7 +15,7 @@
     <!--悬浮工作台 -->
     <el-tool-intention @open="layerOpen"></el-tool-intention>
 
-    <el-unit></el-unit>
+    <el-unit @open="layerOpen"></el-unit>
   </div>
 </template>
 

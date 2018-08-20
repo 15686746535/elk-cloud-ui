@@ -88,22 +88,22 @@
                 <span>{{scope.row.name}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="电话"  width="130">
+            <el-table-column  align="center" label="电话"  width="110">
               <template slot-scope="scope">
                 <span>{{scope.row.mobile}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="身份证"  width="180">
+            <el-table-column  align="center" label="身份证"  width="170">
               <template slot-scope="scope">
                 <span>{{scope.row.idNumber}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="车型" width="80">
+            <el-table-column  align="center" label="车型" width="60">
               <template slot-scope="scope">
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" width="130">
+            <el-table-column  align="center" label="考场" width="120">
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -158,22 +158,22 @@
                 <span>{{scope.row.name}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="电话"  width="130">
+            <el-table-column  align="center" label="电话"  width="110">
               <template slot-scope="scope">
                 <span>{{scope.row.mobile}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="身份证"  width="180">
+            <el-table-column  align="center" label="身份证"  width="170">
               <template slot-scope="scope">
                 <span>{{scope.row.idNumber}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="车型" width="80">
+            <el-table-column  align="center" label="车型" width="50">
               <template slot-scope="scope">
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" width="130">
+            <el-table-column  align="center" label="考场" width="120">
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -191,7 +191,7 @@
 
             <el-table-column align="center" label="操作">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -205,17 +205,17 @@
                 <span>{{scope.row.name}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="电话"  width="130">
+            <el-table-column  align="center" label="电话"  width="110">
               <template slot-scope="scope">
                 <span>{{scope.row.mobile}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="身份证"  width="180">
+            <el-table-column  align="center" label="身份证"  width="170">
               <template slot-scope="scope">
                 <span>{{scope.row.idNumber}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="车型" width="80">
+            <el-table-column  align="center" label="车型" width="60">
               <template slot-scope="scope">
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
@@ -237,7 +237,7 @@
             </el-table-column>
             <el-table-column align="center" label="操作">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -251,17 +251,17 @@
                 <span>{{scope.row.name}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="电话"  width="130">
+            <el-table-column  align="center" label="电话"  width="110">
               <template slot-scope="scope">
                 <span>{{scope.row.mobile}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="身份证"  width="180">
+            <el-table-column  align="center" label="身份证"  width="170">
               <template slot-scope="scope">
                 <span>{{scope.row.idNumber}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="车型" width="80">
+            <el-table-column  align="center" label="车型" width="60">
               <template slot-scope="scope">
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
@@ -283,7 +283,7 @@
             </el-table-column>
             <el-table-column align="center" label="操作">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>
+                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -297,22 +297,22 @@
                 <span>{{scope.row.name}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="电话"  width="130">
+            <el-table-column  align="center" label="电话"  width="110">
               <template slot-scope="scope">
                 <span>{{scope.row.mobile}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="身份证"  width="180">
+            <el-table-column  align="center" label="身份证"  width="170">
               <template slot-scope="scope">
                 <span>{{scope.row.idNumber}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="车型" width="80">
+            <el-table-column  align="center" label="车型" width="60">
               <template slot-scope="scope">
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" width="130">
+            <el-table-column  align="center" label="考场" >
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -329,27 +329,19 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <div style="float: right;margin-top: 10px;margin-right: 20px;">
+        <div style="margin-top: 10px;">
           <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
-          <el-button-group v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'">
-            <el-button @click="operation('5','examCancel')" size="small" type="danger" round>失败</el-button>
-            <el-button @click="operation('1','examExamine')" size="small" type="success" round>通过</el-button>
-          </el-button-group>
-          <el-button-group v-if="studentListQuery.examineState === '1'">
-            <el-button @click="operation('0','examCancel')" size="small" type="info" round>撤销</el-button>
-            <el-button @click="operation('2','examExamine')" size="small" type="success" round>已约</el-button>
-          </el-button-group>
-          <el-button-group v-if="studentListQuery.examineState === '2'">
-            <el-button @click="operation('4','examExamine')" size="small" type="danger" round>失败</el-button>
-            <el-button @click="operation('1','examCancel')" size="small" type="info" round>撤销</el-button>
-            <el-button @click="operation('3','examExamine')" size="small" type="success" round>成功</el-button>
-          </el-button-group>
-          <el-button-group v-if="studentListQuery.examineState === '3'" style="float: left">
-            <el-button type="primary" size="small" :loading="expLoading" @click="exportExamList" round>导出名单</el-button>
-          </el-button-group>
-          <el-button-group v-if="studentListQuery.examineState === '3'">
-            <el-button @click="operation('6','examCancel')" size="small" type="danger" round>取消约考</el-button>
-          </el-button-group>
+          <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'" style="float: left"  @click="operation('5','examCancel','warning','审核失败?')" size="small" type="danger">失败</el-button>
+          <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'"  style="float: right"  @click="operation('1','examExamine',null,null)" size="small" type="success">通过</el-button>
+          <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="operation('0','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
+          <el-button v-if="studentListQuery.examineState === '1'" style="float: right" @click="operation('2','examExamine',null,null)" size="small" type="success" >已约</el-button>
+
+          <el-button v-if="studentListQuery.examineState === '2'" style="float: left" @click="operation('4','examExamine','warning','确定约考失败?')" size="small" type="danger" >失败</el-button>
+          <el-button v-if="studentListQuery.examineState === '2'" style="float: left;margin-left: 20px;" @click="operation('1','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
+          <el-button v-if="studentListQuery.examineState === '2'" style="float: right" @click="operation('3','examExamine',null,null)" size="small" type="success" >成功</el-button>
+
+          <el-button v-if="studentListQuery.examineState === '3'" style="float: left" @click="operation('6','examCancel','warning','是否取消约考?')" size="small" type="danger">取消约考</el-button>
+          <el-button v-if="studentListQuery.examineState === '3'"  style="float: right" type="primary" size="small" :loading="expLoading" @click="exportExamList">导出名单</el-button>
         </div>
       </el-tabs>
     </el-card>
@@ -633,15 +625,28 @@
         if (state.name === 'all') this.studentListQuery.examineState = null
         this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
       },
-      operation(state, url) {
+      operation(state, url, type, msg) {
         if (this.examBespeakList.examNoteList.length === 0) {
           this.$message.warning('请先选择学员')
         } else {
           this.examBespeakList.examineState = state
           this.examBespeakList.subject = this.listQuery.subject
-          putExamBespeak(this.examBespeakList, url).then(() => {
-            this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
-          })
+          if (msg) {
+            // 'warning'
+            this.$confirm(msg, '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: type | 'warning'
+            }).then(() => {
+              putExamBespeak(this.examBespeakList, url).then(() => {
+                this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+              })
+            })
+          } else {
+            putExamBespeak(this.examBespeakList, url).then(() => {
+              this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+            })
+          }
         }
       },
       // 根据科目查询场地

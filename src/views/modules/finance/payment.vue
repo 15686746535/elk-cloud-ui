@@ -8,33 +8,8 @@
         </el-date-picker>
         <el-input size="mini" @keyup.enter.native="searchClick" placeholder="姓名/身份证/流水号" clearable v-model="listQuery.condition" style="width: 150px;"></el-input>
         <el-button size="mini" type="primary"  @click="searchClick" icon="el-icon-search">搜索</el-button>
-        <el-button-group>
-          <el-button size="mini" type="warning" v-if="finance&&finance.state==0&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)" icon="el-icon-share">审核</el-button>
-          <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)"  icon="el-icon-refresh">反审核</el-button>
-          <el-button size="mini" type="info" v-if="finance&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')" icon="el-icon-edit">修改</el-button>
-          <el-button size="mini" type="danger" v-if="finance&&finance.state==0&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)" icon="el-icon-delete">作废</el-button>
-          <el-button size="mini" type="primary" @click="download" :loading="downloadLading"  icon="el-icon-download">导出</el-button>
-        </el-button-group>
-        <!--<el-table-column align="center"  label="操作" width="230">-->
-        <!--<template slot-scope="scope">-->
-        <!--<el-button size="mini" type="primary" v-if="scope.row.state==0" @click="updateFinaceStateHandle(scope.row.chargeId,1)">审核</el-button>-->
-
-        <!--</template>-->
-        <!--</el-table-column>-->
       </div>
-
-      <el-table :data="financeList" :height="(tableHeight-180)" :summary-method="getSummaries" show-summary border @select="selectRow"  highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <div class="service-mode">
-              <div class="buy-service header" v-if="props.row.financeList.length > 0">购买服务</div>
-              <div v-for="(service, i) in props.row.financeList" style="float: left">
-                <div class="title" :class="'border_'+i">{{service.name}}</div>
-                <div class="money" :class="'border_'+i">{{service.price}}×{{service.number}}</div>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
+      <el-table :data="list" :height="(tableHeight-180)" :summary-method="getSummaries" show-summary border @select="selectRow"  highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
         <el-table-column type="selection" width="35"></el-table-column>
         <el-table-column align="center"  label="流水号" min-width="130">
           <template slot-scope="scope">
@@ -42,23 +17,13 @@
           </template>
         </el-table-column>
         <el-table-column align="center" prop="name" label="学员" min-width="100"></el-table-column>
-        <!--<el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>-->
+        <el-table-column align="center" prop="idNumber" label="身份证号" min-width="200"></el-table-column>
         <el-table-column align="center"  prop="stuState"  label="学员状态" min-width="100" :filters="subjectFilters" :filter-method="subjectFinance" filter-placement="bottom-end">
           <template slot-scope="scope">
             <div style="width: 100%;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">{{scope.row.stuState | subjectFilter}}</div>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="campus" label="校区" min-width="120" :filters="campusFilters" :filter-method="filterCampus" filter-placement="bottom-end"></el-table-column>
-        <el-table-column align="center"  prop="finances"  label="购买服务" min-width="100" :filters="financeFilters" :filter-method="filterFinance" filter-placement="bottom-end">
-          <template slot-scope="scope">
-            <div style="width: 100%;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">{{scope.row.finances}}</div>
-          </template>
-        </el-table-column>
-        <!--<el-table-column align="center"  prop="payTypes"  label="收费方式" min-width="100" :filters="payTypeFilters" :filter-method="filterPayType" filter-placement="bottom-end">-->
-          <!--<template slot-scope="scope">-->
-            <!--<div style="width: 100%;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">{{scope.row.payTypes}}</div>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
         <el-table-column align="center"  prop="state"  label="状态" min-width="90" :filters="stateFilters" :filter-method="filterState" filter-placement="bottom-end">
           <template slot-scope="scope">
             <span v-if="scope.row.state==='0'">未审核</span>
@@ -66,18 +31,7 @@
             <span v-if="scope.row.state==='-1'">已作废</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="introducerName"  label="介绍人" min-width="100" :filters="introducerFilters" :filter-method="filterIntroducer" filter-placement="bottom-end">
-        </el-table-column>
-        <el-table-column align="center" prop="cash" label="现金" min-width="70"></el-table-column>
-        <el-table-column align="center" prop="alipay" label="支付宝" min-width="90"></el-table-column>
-        <el-table-column align="center" prop="wechat" label="微信" min-width="70"></el-table-column>
-        <el-table-column align="center" prop="collectmoney" label="收钱吧" min-width="90"></el-table-column>
-        <el-table-column align="center" prop="brushcard" label="刷卡" min-width="70"></el-table-column>
-        <el-table-column align="center" prop="other" label="其他" min-width="70"></el-table-column>
-        <el-table-column align="center" prop="money" label="合计" min-width="70"></el-table-column>
-        <el-table-column align="center" prop="motorcycleType" label="车型" min-width="70"></el-table-column>
-        <el-table-column align="center" prop="receivablesType" label="收费类型" min-width="130"></el-table-column>
-        <el-table-column align="center" prop="idNumber" label="身份证号" min-width="200"></el-table-column>
+        <el-table-column align="center" prop="money" label="金额" min-width="70"></el-table-column>
         <el-table-column align="center" prop="paytime" label="时间" min-width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.paytime | subTime}}</span>
@@ -131,29 +85,7 @@
     data() {
       return {
         tableHeight: this.area[1],
-        financeList: [],
-        showColumns: {
-          serialNumber: true,
-          name: true,
-          campus: true,
-          finances: true,
-          state: true,
-          introducerName: true,
-          cash: true, // 现金
-          alipay: true, // 支付宝
-          wechat: true, // 微信
-          collectmoney: true, // 收钱吧
-          brushcard: true, // 刷卡
-          other: true, //
-          money: true, //
-          motorcycleType: true, //
-          receivablesType: true, //
-          idNumber: true, //
-          paytime: true, //
-          payee: true, //
-          reviser: true, //
-          auditor: true //
-        },
+        list: [],
         financeFilters: [],
         campusFilters: [],
         introducerFilters: [],
@@ -219,7 +151,7 @@
       getSummaries(param) {
         const { columns, data } = param
         const sums = []
-        var columnList = ['cash', 'alipay', 'wechat', 'collectmoney', 'brushcard', 'other', 'money']
+        var columnList = ['money']
         columns.forEach((column, index) => {
           if (index === 0) {
             sums[index] = '合'

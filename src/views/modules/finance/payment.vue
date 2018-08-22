@@ -108,7 +108,7 @@
   import finance from '@/views/modules/stu/serviceNote.vue'
 
   export default {
-    name: 'costNote',
+    name: 'payment',
     props: {
       layerid: String,
       area: Array

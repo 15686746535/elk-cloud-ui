@@ -513,9 +513,10 @@
       getService(chargeId) {
         this.loading = true
         var that = this
+        console.log('+++++++++++++++++++', chargeId)
         getServiceByChargeId(chargeId).then(response => {
+          console.log('==================', response)
           var finance = response.data.data
-          console.log(response)
           var payTypeList = [
             { mode: '现金', money: 0 },
             { mode: '支付宝', money: 0 },

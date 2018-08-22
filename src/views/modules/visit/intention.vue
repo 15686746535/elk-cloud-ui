@@ -418,7 +418,7 @@
                 <el-row :gutter="5">
                   <el-col :span="19" >
                     <el-row >
-                      <el-date-picker v-model="followUp.nextTime" type="date" placeholder="下次跟进时间" format="yyyy-MM-dd" value-format="timestamp" style="width: 100%">
+                      <el-date-picker v-model="followUp.nextTime" type="date" placeholder="下次跟进时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width: 100%">
                       </el-date-picker>
                     </el-row>
                     <el-row >
@@ -816,10 +816,25 @@
         if (this.followUp.content) {
           this.btnLoading = true
           addFollowUp(this.followUp).then(() => {
-            this.getFollowUp(this.followQuery)
-            this.btnLoading = false
-            this.followUp.content = null
-            this.followUp.nextTime = null
+            if (this.followUp.nextTime) {
+              this.btnLoading = true
+              var follow = {
+                nextTime: null,
+                content: '下次跟进时间' + this.followUp.nextTime,
+                intentionId: this.followUp.intentionId
+              }
+              addFollowUp(follow).then(() => {
+                this.getFollowUp(this.followQuery)
+                this.btnLoading = false
+                this.followUp.content = null
+                this.followUp.nextTime = null
+              })
+            } else {
+              this.getFollowUp(this.followQuery)
+              this.btnLoading = false
+              this.followUp.content = null
+              this.followUp.nextTime = null
+            }
           })
         }
       }

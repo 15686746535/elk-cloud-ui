@@ -183,7 +183,7 @@
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
           <el-button @click="create" size="small" style="float:right;margin: 0 30px" type="primary" v-if="permissions.stu_student_add"><i class="el-icon-plus"></i>添加</el-button>
-          <!--<el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent"  v-if="permissions.stu_student_export" type="info"><i class="el-icon-download"></i>导出</el-button>-->
+          <el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent" type="info"><i class="el-icon-download"></i>导出</el-button>
           <el-upload class="upload-demo" action="/stu/student/import"
                      :headers="headers"
                      :on-success="handleTextSuccess"

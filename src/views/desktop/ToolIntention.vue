@@ -69,28 +69,29 @@ export default {
     addFollowUp() {
       this.followUp.content = removeAllSpace(this.followUp.content)
       this.followUp.intentionId = this.intention.intentionId
-      if (this.followUp.content) {
-        this.btnLoading = true
-        addFollowUp(this.followUp).then(() => {
-          if (this.followUp.nextTime) {
+      var that = this
+      if (that.followUp.content) {
+        that.btnLoading = true
+        addFollowUp(that.followUp).then(() => {
+          if (that.followUp.nextTime) {
             var follow = {
               nextTime: null,
-              content: '下次跟进时间' + this.followUp.nextTime,
+              content: '下次跟进时间' + that.followUp.nextTime,
               intentionId: this.followUp.intentionId
             }
             addFollowUp(follow).then(() => {
-              this.getFollowUp(this.followQuery)
-              this.btnLoading = false
-              this.followUp.content = null
-              this.followUp.nextTime = null
+              that.getFollowUp(that.intention.intentionId)
+              that.btnLoading = false
+              that.followUp.content = null
+              that.followUp.nextTime = null
             })
           } else {
-            this.getFollowUp(this.intention.intentionId)
-            this.btnLoading = false
-            this.followUp.content = null
-            this.followUp.nextTime = null
+            that.getFollowUp(that.intention.intentionId)
+            that.btnLoading = false
+            that.followUp.content = null
+            that.followUp.nextTime = null
           }
-          this.$emit('open', this.app)
+          // this.$emit('open', this.app)
         })
       }
     }

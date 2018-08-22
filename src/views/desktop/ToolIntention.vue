@@ -72,10 +72,24 @@ export default {
       if (this.followUp.content) {
         this.btnLoading = true
         addFollowUp(this.followUp).then(() => {
-          this.getFollowUp(this.intention.intentionId)
-          this.btnLoading = false
-          this.followUp.content = null
-          this.followUp.nextTime = null
+          if (this.followUp.nextTime) {
+            var follow = {
+              nextTime: null,
+              content: '下次跟进时间' + this.followUp.nextTime,
+              intentionId: this.followUp.intentionId
+            }
+            addFollowUp(follow).then(() => {
+              this.getFollowUp(this.followQuery)
+              this.btnLoading = false
+              this.followUp.content = null
+              this.followUp.nextTime = null
+            })
+          } else {
+            this.getFollowUp(this.intention.intentionId)
+            this.btnLoading = false
+            this.followUp.content = null
+            this.followUp.nextTime = null
+          }
           this.$emit('open', this.app)
         })
       }

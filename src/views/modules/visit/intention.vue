@@ -817,7 +817,6 @@
           this.btnLoading = true
           addFollowUp(this.followUp).then(() => {
             if (this.followUp.nextTime) {
-              this.btnLoading = true
               var follow = {
                 nextTime: null,
                 content: '下次跟进时间' + this.followUp.nextTime,

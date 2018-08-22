@@ -49,8 +49,11 @@
 
     <el-dialog :modal="false" @close="cancel('paymentCode')" :title="textMap[dialogStatus]" width="550px" :visible.sync="dialogFormVisible">
       <el-form label-position="left" :model="paymentCode" :rules="rules" ref="paymentCode" label-width="110px">
-        <el-form-item label="代码"  prop="code">
+        <el-form-item v-if="dialogStatus=='create'"  label="代码"  prop="code">
           <el-input v-model="paymentCode.code" placeholder="代码" ></el-input>
+        </el-form-item>
+        <el-form-item v-if="dialogStatus=='update'" label="代码"  prop="nowCode">
+          <el-input v-model="paymentCode.nowCode" placeholder="代码" ></el-input>
         </el-form-item>
         <el-form-item label="付款项目"  prop="content">
           <el-input v-model="paymentCode.content" placeholder="付款项目" ></el-input>
@@ -114,6 +117,9 @@
           code: [
             { required: true, message: '请输入代码', trigger: ['blur', 'change'] },
             { validator: existence, trigger: ['blur', 'change'] }
+          ],
+          nowCode: [
+            { required: true, message: '请输入代码', trigger: ['blur', 'change'] }
           ],
           content: [
             { required: true, message: '请输入付款项目', trigger: ['blur', 'change'] }
@@ -179,6 +185,7 @@
       },
       handleUpdate(val) {
         this.paymentCode = val
+        this.paymentCode.nowCode = val.code
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
       },
@@ -209,7 +216,7 @@
         set[formName].validate(valid => {
           if (valid) {
             this.btnLoading = true
-            putObj(this.paymentCode).then(() => {
+            putObj(this.paymentCode).then(r => {
               this.getList()
               set[formName].resetFields()
               this.btnLoading = false

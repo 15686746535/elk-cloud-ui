@@ -17,7 +17,7 @@
     </div>
     <div id="vl-tool-footer" ><!--@keyup.enter.native="addFollowUp"   v-model="followUp.content"   @click="addFollowUp"  :loading="btnLoading"-->
       <div class="in-content">
-        <el-date-picker v-model="followUp.nextTime" type="date" placeholder="下次跟进时间" format="yyyy-MM-dd" value-format="timestamp" style="width: 100%">
+        <el-date-picker v-model="followUp.nextTime" type="date" placeholder="下次跟进时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width: 100%">
         </el-date-picker>
         <el-input type="textarea" @keyup.enter.native="addFollowUp" v-model="followUp.content" :autosize="{ minRows: 2, maxRows: 2}" placeholder="跟进内容"></el-input>
       </div>

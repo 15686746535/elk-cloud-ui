@@ -65,7 +65,7 @@ export const appMap = [
   { id: 150110, desktop: '1', type: '4', pid: 60000, params: [], name: '接送信息', content: _import('modules/bespeak/shuttle'), icon: getIcon('app_shuttle'), msgCount: 0, childItem: [] },
   // 财务
   { id: 70100, desktop: '1', type: '5', pid: 70000, params: [], name: '收费记录', content: _import('modules/finance/costNote'), icon: getIcon('app_cost_info'), msgCount: 0, childItem: [] },
-  { id: 70200, desktop: '1', type: '5', pid: 70000, params: [], name: '付款记录', content: _import('modules/finance/payment'), icon: getIcon('app_cost_info'), msgCount: 0, childItem: [] },
+  { id: 70200, desktop: '1', type: '5', pid: 70000, params: [], name: '付款记录', content: _import('modules/finance/payment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   // 统计
   { id: 120600, desktop: '1', type: '6', pid: 80000, params: [], name: '招生人数统计', content: _import('modules/visualization/recruit'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
   { id: 120100, desktop: '1', type: '6', pid: 80000, params: [], name: '顾虑统计', content: _import('modules/visualization/worry'), icon: getIcon('app_worrycount'), msgCount: 0, childItem: [] },

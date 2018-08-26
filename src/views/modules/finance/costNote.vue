@@ -35,13 +35,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column type="selection" width="35"></el-table-column>
-        <el-table-column align="center"  label="流水号" min-width="130">
+        <el-table-column type="selection" width="35" fixed></el-table-column>
+        <el-table-column align="center"  label="流水号" min-width="130" fixed>
           <template slot-scope="scope">
             <a href="javascript:void(0) " style="color: -webkit-link;cursor: pointer;text-decoration: underline;" @click="openFinace(scope.row,'info')">{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</a>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="name" label="学员" min-width="100"></el-table-column>
+        <el-table-column align="center" prop="name" label="学员" min-width="100" fixed></el-table-column>
         <!--<el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>-->
         <el-table-column align="center"  prop="stuState"  label="学员状态" min-width="100" :filters="subjectFilters" :filter-method="subjectFinance" filter-placement="bottom-end">
           <template slot-scope="scope">

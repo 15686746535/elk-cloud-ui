@@ -400,9 +400,11 @@
     },
     methods: {
       cellcb(row) {
-        if (row.row.serialNumber === null && row.columnIndex === 0) {
-          return 'myCell'
+        var clazz = ''
+        if (row.row.serialNumber === null) {
+          clazz += 'myCell'
         }
+        return clazz
       },
       addcellcb(row) {
         var clazz = ''
@@ -620,6 +622,10 @@
         this.showPage = 'list'
         this.btnLoading = false
         this.payment = {}
+        this.codeList = []
+        this.addList = []
+        this.examBespeak = []
+        this.quoteSource = null
         this.getList()
       },
       save() {

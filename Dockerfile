@@ -1,4 +1,7 @@
 FROM nginx
+RUN npm install
+RUN npm run build
+RUN docker build -t elk-cloud-ui:latest .
 VOLUME /tmp
 ENV LANG en_US.UTF-8
 # 移除nginx本来的配置

@@ -539,7 +539,7 @@
   .pay-type{
   }
   .el-table td, .el-table th {
-    padding: 5px!important;
+    padding: 0px!important;
     &.el-table__expanded-cell{
       padding: 0!important;
     }
@@ -585,6 +585,10 @@
     border-right: 1px solid #a6a7a9!important;
   }
 
+  .el-table--border th, .el-table__fixed-right-patch {
+    border-bottom: 1px solid #a6a7a9!important;
+  }
+
   .el-table td, .el-table th.is-leaf {
     border-bottom: 1px solid #a6a7a9!important;
   }
@@ -596,7 +600,91 @@
       border-right: none!important;
     }
   }
+
+  .myCell {
+    .el-checkbox {
+      display: none!important;
+    }
+  }
+
+  .el-table__header {
+    th, tr {
+      background-color: #f5f7fa;
+      padding: 3px 0!important;
+    }
+  }
 }
+#payment {
+  .add-payment{
+    .el-table__header {
+      th, tr {
+        background-color: #9fcaf5;
+        padding: 3px 0 !important;
+        color: #000;
+        font-weight: 500;
+      }
+    }
+  }
+  .no-pd-cell{
+    input{
+      border: none;
+    }
+    &.e8e8e5{
+      input{
+        background: #e8e8e5!important;
+      }
+    }
+    .cell{
+      padding: 0;
+    }
+  }
+
+  .el-table--enable-row-hover .el-table__body tr:hover>td {
+    input{
+      background-color: #ececae!important;
+    }
+  }
+
+  .el-table--striped .el-table__body tr.el-table__row--striped.current-row td, .el-table__body tr.current-row>td, .el-table__body tr.hover-row.current-row>td, .el-table__body tr.hover-row.el-table__row--striped.current-row>td, .el-table__body tr.hover-row.el-table__row--striped>td, .el-table__body tr.hover-row>td {
+    input{
+      background-color: #ececae!important;
+    }
+  }
+
+  .select-lines{
+    border: none;
+    outline:none;
+    font-size: 12px;
+    color: #606266;
+    width: 100%;
+    background-color: #f5f7fa;
+    input{
+      height: 16px;
+      border: none;
+      background-color: #f5f7fa!important;
+      border-bottom: #dcdfe6 1px solid;
+    }
+  }
+  .date-lines{
+    border: none;
+    outline:none;
+    font-size: 12px;
+    color: #606266;
+    width: 100%;
+    background-color: #f5f7fa;
+    input{
+      border: none;
+      background-color: #f5f7fa!important;
+      border-bottom: #dcdfe6 1px solid;
+    }
+    .el-input__prefix {
+      left: 90%;
+    }
+  }
+
+}
+
+
 
 
 .receivables-type{

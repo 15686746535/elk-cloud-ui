@@ -24,7 +24,7 @@
       </div>
 
       <el-table :data="financeList" :height="(tableHeight-180)" :summary-method="getSummaries" show-summary border @select="selectRow"  highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
-        <el-table-column type="expand">
+        <el-table-column type="expand" fixed>
           <template slot-scope="props">
             <div class="service-mode">
               <div class="buy-service header" v-if="props.row.financeList.length > 0">购买服务</div>

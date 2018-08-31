@@ -7,6 +7,15 @@ export function getPage(query) {
     params: query
   })
 }
+
+export function getNum(query) {
+  return request({
+    url: '/finance/payment/queryNum',
+    method: 'get',
+    params: query
+  })
+}
+
 export function getObj(code) {
   return request({
     url: '/finance/payment/' + code,

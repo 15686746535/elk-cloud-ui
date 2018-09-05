@@ -1042,7 +1042,6 @@
   import { removeAllSpace } from '@/utils/validate'
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
-
   import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122, getFinanceByStudentId } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'

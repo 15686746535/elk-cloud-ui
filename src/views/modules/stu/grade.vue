@@ -1,36 +1,26 @@
 <template>
   <div class="" style="height: 100%;padding: 5px" >
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;" >
-      <el-row :gutter="5">
-        <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
-          <el-radio-group @change="handleSubject" size="mini" v-model="batchListQuery.subject">
-            <el-radio-button label="1">科目一</el-radio-button>
-            <el-radio-button label="2">科目二</el-radio-button>
-            <el-radio-button label="3">科目三</el-radio-button>
-            <el-radio-button label="4">科目四</el-radio-button>
-          </el-radio-group>
-        </el-col>
-        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6">
-          <el-date-picker value-format="timestamp" v-model="interval" type="daterange" align="left" size="mini" style="width: 100%" unlink-panels range-separator="-" start-placeholder="开始日期"
-                          end-placeholder="结束日期" :picker-options="pickerOptions">
-          </el-date-picker>
-        </el-col>
-        <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="4">
-          <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition"></el-input>
-        </el-col>
-        <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
-          <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
-        </el-col>
-      </el-row>
+      <el-radio-group @change="handleSubject" size="mini" v-model="batchListQuery.subject">
+        <el-radio-button label="1">科目一</el-radio-button>
+        <el-radio-button label="2">科目二</el-radio-button>
+        <el-radio-button label="3">科目三</el-radio-button>
+        <el-radio-button label="4">科目四</el-radio-button>
+      </el-radio-group>
+      <el-select v-model="studentListQuery.examState" class="select-lines" @change="searchClick"  size="mini"  placeholder="" style="width: 150px;">
+        <el-option v-for="state in stateList" :key="state.value" :label="state.label" :value="state.value"> </el-option>
+      </el-select>
+      <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition" style="width: 150px;"></el-input>
+      <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
     </el-card>
-    <el-row :gutter="5"  style="100%">
-      <el-col style="width: 20%">
+    <el-row :gutter="5"  >
+      <el-col style="width:230px;">
         <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (pageHeight - 190) + 'px'}">
             <div v-for="batch in batchList">
-              <div class="batchCss" @click="batchClick($event,batch)">
-                {{batch.examTime | subTime}}{{batch.examField}}
+              <div class="batchCss" @click="batchClick($event,batch)" :title="batch.examField" style="overflow: hidden;text-overflow:ellipsis;">
+                {{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField}}
               </div>
             </div>
           </div>
@@ -40,10 +30,11 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :style1="{width: (client.width-230) + 'px'}" style="width: 78%">
-        <el-card>
-          <el-table :data="gradeStudentList" empty-text="暂无数据，请在右下角点击添加" v-loading="studentListLoading"  :height="pageHeight - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
-            <!--<el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>-->
+      <el-col :style="{width: (pageWidth-238) + 'px'}">
+        <el-card body-style="padding-bottom: 10px;">
+          <el-table :data="gradeStudentList" empty-text="暂无数据" v-loading="studentListLoading" @select="selectRow" @select-all="selectRow"  :height="pageHeight - 190"
+                    :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
+            <el-table-column type="selection" width="35" fixed></el-table-column>
             <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
 
             <el-table-column align="center"  fixed="left"  label="姓名">
@@ -79,9 +70,10 @@
 
             <el-table-column align="center" label="状态">
               <template slot-scope="scope">
-                <el-tag type="success" color v-if="scope.row.examState == 1">通过</el-tag>
-                <el-tag type="danger" v-else-if="scope.row.examState == 2">失败</el-tag>
-                <el-tag type="warning" color v-else>缺考</el-tag>
+                <el-tag type="info" size="mini"  color v-if="scope.row.examState == 0">未登记</el-tag>
+                <el-tag type="success" size="mini" color v-if="scope.row.examState == 1">通过</el-tag>
+                <el-tag type="danger" size="mini" v-else-if="scope.row.examState == 2">失败</el-tag>
+                <el-tag type="warning" size="mini" color v-if="scope.row.examState == 3">缺考</el-tag>
               </template>
             </el-table-column>
 
@@ -102,110 +94,67 @@
                 <span>{{scope.row.missTime | subTime}}</span>
               </template>
             </el-table-column>
+            <el-table-column align="center" v-if="studentListQuery.examState === 'exam_note_pass'" label="场训教练" width="90">
+              <template slot-scope="scope">
+                <span>{{scope.row.fieldCoach}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" v-if="studentListQuery.examState === 'exam_note_pass'" label="路训教练" width="90">
+              <template slot-scope="scope">
+                <span>{{scope.row.roadCoach}}</span>
+              </template>
+            </el-table-column>
 
-
-            <el-table-column align="center" fixed="right" label="操作" width="160">
+            <el-table-column align="center" label="操作" >
               <template slot-scope="scope">
                 <el-tooltip placement="bottom" effect="dark">
                   <div slot="content">
                     <div style="margin: 3px 0"><el-button v-show="!(scope.row.examState == 1)" type="success" size="mini" @click="examEdit(scope.row, '1')">通过</el-button></div>
                     <div style="margin: 3px 0"><el-button v-show="!(scope.row.examState == 2)" type="danger" size="mini" @click="examEdit(scope.row, '2')">失败</el-button></div>
                     <div style="margin: 3px 0"><el-button v-show="!(scope.row.examState == 3)" type="warning" size="mini" @click="examEdit(scope.row, '3')">缺考</el-button></div>
+                    <div style="margin: 3px 0"><el-button type="info" size="mini" @click="examEdit(scope.row, '0')">撤 销</el-button></div>
                   </div>
                   <el-button size="mini" type="primary" plain>编 辑</el-button>
                 </el-tooltip>
-                <el-button size="mini" type="danger"  @click="examEdit(scope.row, '0')" >撤 销</el-button>
               </template>
             </el-table-column>
 
           </el-table>
-          <div class="pagination-container" style="margin-top: 20px">
+          <div class="pagination-container" style="margin-top: 20px;">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page.sync="studentListQuery.page" background
                            :page-sizes="[10,20,30, 50]" :page-size="studentListQuery.limit"
-                           style="float:left;"
+                           style="float:left;padding-bottom: 10px;"
                            layout="total, sizes, prev, pager, next, jumper" :total="studentTotal">
             </el-pagination>
 
-            <div style="float: right" >
+            <div style="float: right;" >
+              <el-button size="small" v-if="studentListQuery.examState === 'exam_note_pass'" :loading="expLoading"
+                         @click="openCoach" type="success"><i class="el-icon-fa-user"></i> 分配教练</el-button>
               <el-button size="small" :loading="expLoading"  @click="exportAchievement" type="info"><i class="el-icon-download"></i> 导 出</el-button>
-              <el-button size="small" @click="createClick" v-if="permissions.stu_grade_update" type="primary"><i class="el-icon-plus"></i> 添 加</el-button>
             </div>
           </div>
         </el-card>
 
-        <el-dialog :modal="false" @close="getGradeList" width="550px" title="成绩修改" :visible.sync="gradeEdit">
-          <el-button-group>
-            <el-button type="success" size="small" @click="passExam">通 过</el-button>
-            <el-button type="danger" size="small" @click="examOperation('2')">失 败</el-button>
-            <el-button type="warning"  size="small" @click="examOperation('3')">缺 考</el-button>
-          </el-button-group>
-          <div slot="footer">
-            <el-button-group>
-              <el-button type="info">取消</el-button>
-              <el-button type="primary">确定</el-button>
-            </el-button-group>
-          </div>
-        </el-dialog>
-        <el-dialog :modal="false" @close="getGradeList" title="成绩登记" :visible.sync="gradeOption">
-          <el-table :data="notGradeStudentList" :height="($store.state.app.client.height/2)" v-loading="gradeOptionLoading"  @selection-change="handleSelectionChange" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
-            <el-table-column type="selection" fixed="left" class="selection" align="center" prop='uuid'></el-table-column>
-            <el-table-column type="index" fixed="left" label="序号"  align="center" width="50"></el-table-column>
-
-            <el-table-column align="center" label="姓名">
-              <template slot-scope="scope">
-                <span>{{scope.row.name}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="电话">
-              <template slot-scope="scope">
-                <span>{{scope.row.mobile}}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column  align="center" label="身份证" width="200">
-              <template slot-scope="scope">
-                <span>{{scope.row.idNumber}}</span>
-              </template>
-            </el-table-column>
-
-          </el-table>
-          <el-dialog :modal="false" width="550px" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
-
-            <Coach v-show="batchListQuery.subject == 1" v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
-            <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
-
-            <div slot="footer">
-              <el-button size="small" @click="innerGradeOption = false">取 消</el-button>
-              <el-button type="primary" size="small" :loading="btnLoading" @click="examOperation('1')">确 定</el-button>
-            </div>
-          </el-dialog>
-          <div slot="footer">
-            <el-button type="success" size="small" :loading="btnLoading" @click="passExam">通 过</el-button>
-            <el-button type="danger" size="small" :loading="btnLoading" @click="examOperation('2')">失 败</el-button>
-            <el-button type="warning" size="small" :loading="btnLoading" @click="examOperation('3')">缺 考</el-button>
-          </div>
-        </el-dialog>
-
-        <el-dialog :modal="false" width="550px" title="选择教练" :visible.sync="innerGradeOption1" append-to-body>
-
-          <Coach v-show="batchListQuery.subject == 1"  v-model="examParameter.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
-          <Coach v-show="batchListQuery.subject == 2" v-model="examParameter.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
-
-          <div slot="footer">
-            <el-button size="small"  @click="innerGradeOption1 = false">取 消</el-button>
-            <el-button type="primary" size="small" :loading="btnLoading" @click="examRowOperation('1')">确 定</el-button>
-          </div>
-        </el-dialog>
-
       </el-col>
     </el-row>
+
+    <el-dialog :modal="false" width="550px" title="选择教练" :visible.sync="innerGradeOption" append-to-body>
+      <Coach v-show="batchListQuery.subject == 1" v-model="stuCoach.fieldCoach" coachType="field" placeholder="场训教练"></Coach>
+      <Coach v-show="batchListQuery.subject == 2" v-model="stuCoach.roadCoach" coachType="road"  placeholder="路训教练"></Coach>
+      <div slot="footer">
+        <el-button size="small" @click="innerGradeOption = false">取 消</el-button>
+        <el-button type="primary" size="small" :loading="btnLoading" @click="updateCoach">确 定</el-button>
+      </div>
+    </el-dialog>
+
+
+
   </div>
 </template>
 
 <script>
-  import { examFetchList, putExamNote, putRowExamNote, exportAchievement } from '@/api/student/examnote'
+  import { examFetchList, updateCoach, putRowExamNote, exportAchievement } from '@/api/student/examnote'
   import { getBatchs } from '@/api/student/batch'
   import { mapGetters } from 'vuex'
   import Coach from '@/components/Coach'
@@ -218,16 +167,20 @@ export default {
     data() {
       return {
         gradeStudentList: [],
-        notGradeStudentList: [],
         batchList: [],
         studentTotal: 0,
         batchTotalPage: 1,
+        stuCoach: {
+          roadCoach: null,
+          fieldCoach: null,
+          stuList: []
+        },
         studentListQuery: {
           page: 1,
           limit: 20,
           subject: 1,
           examId: null,
-          examState: null
+          examState: 'exam_note_false'
         },
         batchListQuery: {
           page: 1,
@@ -236,14 +189,19 @@ export default {
           scope: 'before',
           subject: '1'
         },
+        stateList: [
+          { label: '未登记', value: 'exam_note_false' },
+          { label: '已登记', value: 'exam_note_true' },
+          { label: '通过', value: 'exam_note_pass' },
+          { label: '失败', value: 'exam_note_fail' }
+        ],
         studentListLoading: false,
-        batchListLoading: true,
-        gradeOption: false,
-        expLoading: false,
         innerGradeOption: false,
-        innerGradeOption1: false,
+        batchListLoading: false,
+        expLoading: false,
         gradeEdit: false,
         pageHeight: this.area[1],
+        pageWidth: this.area[0],
         gradeOptionLoading: false,
         btnLoading: false,
         pickerOptions: {
@@ -284,7 +242,6 @@ export default {
             }
           }]
         },
-        interval: [],
         /* 修改状态的参数 */
         examParameter: {
           examNoteList: [],
@@ -300,6 +257,7 @@ export default {
     watch: {
       area: function(val) {
         this.pageHeight = val[1]
+        this.pageWidth = val[0]
       }
     },
     created() {
@@ -314,14 +272,21 @@ export default {
     methods: {
       getGradeList() {
         this.studentListLoading = true
-        this.studentListQuery.examState = 'exam_note_true'
-        examFetchList(this.studentListQuery).then(response => {
-          if (response.data.code === 0) {
-            this.gradeStudentList = response.data.data.list
-            this.studentTotal = response.data.data.totalCount
-            this.studentListLoading = false
-          }
-        })
+        if (this.studentListQuery.examId) {
+          examFetchList(this.studentListQuery).then(response => {
+            if (response.data.code === 0) {
+              console.log(response.data.data.list)
+              this.gradeStudentList = response.data.data.list
+              this.studentTotal = response.data.data.totalCount
+              this.studentListLoading = false
+            }
+          })
+        } else {
+          var that = this
+          setTimeout(function() {
+            that.studentListLoading = false
+          }, 600)
+        }
       },
       getBatchList() {
         this.batchListLoading = true
@@ -329,6 +294,34 @@ export default {
           this.batchList = this.batchList.concat(response.data.data.list)
           this.batchTotalPage = response.data.data.totalPage
           this.batchListLoading = false
+        })
+      },
+      selectRow(selection) {
+        var stuList = []
+        if (selection && selection.length > 0) {
+          selection.forEach(function(item) {
+            stuList.push(item.studentId)
+          })
+        }
+        this.stuCoach.stuList = stuList
+      },
+      openCoach() {
+        if (this.stuCoach.stuList && this.stuCoach.stuList.length > 0) {
+          this.innerGradeOption = true
+        } else {
+          this.$message.error('请选择学员!')
+        }
+      },
+      updateCoach() {
+        if (this.batchListQuery.subject === '1') {
+          this.stuCoach.roadCoach = null
+        } else {
+          this.stuCoach.fieldCoach = null
+        }
+        updateCoach(this.stuCoach).then(() => {
+          this.getGradeList()
+          this.innerGradeOption = false
+          this.btnLoading = false
         })
       },
       /* 分页插件方法 */
@@ -343,7 +336,6 @@ export default {
       batchHandleCurrentChange() {
         this.batchListQuery.page = this.batchListQuery.page + 1
         this.getBatchList()
-        // this.cleanBatchSelected()
       },
       /* 根据科目查询 */
       handleSubject() {
@@ -353,55 +345,22 @@ export default {
         this.studentListQuery.examId = null
         this.studentListQuery.subject = this.batchListQuery.subject
         this.gradeStudentList = []
-        this.notGradeStudentList = []
         this.batchList = []
         this.getBatchList()
       },
       /* 搜索方法 */
       searchClick() {
         this.studentListQuery.page = 1
-        this.intervalTime()
         this.getGradeList()
-      },
-      /* 添加学员方法 */
-      createClick() {
-        if (this.studentListQuery.examId) {
-          this.gradeOption = true
-          this.gradeOptionLoading = true
-          this.studentListQuery.examState = 'exam_note_false'
-          examFetchList(this.studentListQuery).then(response => {
-            if (response.data.code === 0) {
-              this.notGradeStudentList = response.data.data.list
-              this.studentTotal = response.data.data.totalCount
-              this.examParameter.examStateOld = '0'
-              this.gradeOptionLoading = false
-            }
-          })
-        } else {
-          this.$alert('请先选择批次', '提示', {
-            confirmButtonText: '确定',
-            type: 'warning'
-          })
-        }
-      },
-      handleSelectionChange(val) {
-        this.examParameter.examNoteList = []
-        for (var i = 0; i < val.length; i++) {
-          this.examParameter.examNoteList.push({ 'examId': val[i].examId, 'studentId': val[i].studentId })
-        }
       },
       /* 控制批次点击样式 */
       batchClick(e, batch) {
         this.studentListQuery.examId = batch.examId
-        this.interval = []
-        this.studentListQuery.beginTime = null
-        this.studentListQuery.endTime = null
         var a = document.getElementsByClassName('batchCss')
         for (var i = 0; i < a.length; i++) {
           a[i].classList.remove('batchCss_selected')
         }
         e.currentTarget.classList.add('batchCss_selected')
-        this.studentListQuery.examState = 'exam_note_true'
         this.getGradeList()
       },
       /* 清除批次样式 */
@@ -411,42 +370,11 @@ export default {
           a[i].classList.remove('batchCss_selected')
         }
       },
-      passExam() {
-        if (this.examParameter.examNoteList.length === 0) {
-          this.$message.warning('请选择学员')
-        } else {
-          if (this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4') {
-            this.examOperation('1')
-          } else {
-            this.innerGradeOption = true
-          }
-        }
-      },
-      examOperation(state) {
-        if (this.examParameter.examNoteList.length === 0) {
-          this.$message.warning('请选择学员')
-        } else {
-          this.examParameter.examState = state
-          this.examParameter.subject = this.batchListQuery.subject
-          this.btnLoading = true
-          putExamNote(this.examParameter).then(() => {
-            this.getGradeList()
-            this.gradeOption = false
-            this.innerGradeOption = false
-            this.btnLoading = false
-            this.gradeEdit = false
-          })
-        }
-      },
       examRowOperation(state) {
         this.examParameter.examState = state
         this.examParameter.subject = this.batchListQuery.subject
-        this.btnLoading = true
         putRowExamNote(this.examParameter).then(() => {
           this.getGradeList()
-          this.gradeOption = false
-          this.btnLoading = false
-          this.innerGradeOption1 = false
           this.gradeEdit = false
         })
       },
@@ -463,22 +391,8 @@ export default {
           }).then(() => {
             this.examRowOperation(state)
           })
-        } else if (state === '1' && !(this.batchListQuery.subject === '3' || this.batchListQuery.subject === '4')) {
-          this.innerGradeOption1 = true
         } else {
           this.examRowOperation(state)
-        }
-      },
-      /* 时间转换方法 */
-      intervalTime() {
-        if (this.interval.length !== 0) {
-          this.studentListQuery.examId = null
-          this.cleanBatchSelected()
-          this.studentListQuery.beginTime = this.interval[0]
-          this.studentListQuery.endTime = this.interval[1]
-        } else {
-          this.studentListQuery.beginTime = null
-          this.studentListQuery.endTime = null
         }
       },
       exportAchievement() {

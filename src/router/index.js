@@ -43,6 +43,7 @@ export const appMap = [
   { id: 20900, desktop: '1', type: '1', pid: 20000, params: [], name: '学费收取', content: _import('modules/stu/serviceNote'), icon: getIcon('app_stu_service'), msgCount: 0, childItem: [] },
   { id: 20300, desktop: '1', type: '1', pid: 20000, params: [], name: '考试安排', content: _import('modules/stu/batch'), icon: getIcon('app_stu_batch'), msgCount: 0, childItem: [] },
   { id: 20400, desktop: '1', type: '1', pid: 20000, params: [], name: '成绩登记', content: _import('modules/stu/grade'), icon: getIcon('app_stu_grade'), msgCount: 0, childItem: [] },
+  { id: 21100, desktop: '1', type: '1', pid: 20000, params: [], name: '分配教练', content: _import('modules/stu/coach'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 20600, desktop: '1', type: '1', pid: 20000, params: [], name: '毕业学员', content: _import('modules/stu/graduation'), icon: getIcon('app_stu_graduation'), msgCount: 0, childItem: [] },
   { id: 20700, desktop: '1', type: '1', pid: 20000, params: [], name: '学员回访', content: _import('modules/stu/revisit'), icon: getIcon('app_stu_revisit'), msgCount: 0, childItem: [] },
   { id: 20800, desktop: '1', type: '1', pid: 20000, params: [], name: '回访信息', content: _import('modules/stu/revisited'), icon: getIcon('app_stu_revisited'), msgCount: 0, childItem: [] },

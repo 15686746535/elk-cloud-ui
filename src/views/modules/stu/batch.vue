@@ -37,7 +37,7 @@
             <span>{{scope.row.examTime | subTime}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center"  label="考试场地">
+        <el-table-column align="left"  label="考试场地"  show-overflow-tooltip>
           <template slot-scope="scope">
             <span>{{scope.row.examField}}</span>
           </template>
@@ -78,6 +78,11 @@
       </div>
     </el-card>
     <el-card v-show="examOption" style="height: 100%; ">
+      <el-select v-model="studentListQuery.categoryId" collapse-tags style="width: 200px;position: absolute;z-index: 66;right: 100px;top: 54px;" size="mini" filterable placeholder="选择显示服务包购买情况">
+        <el-option v-for="service in financeList" :key="service.categoryId" :label="service.name" :value="service.categoryId">
+        </el-option>
+      </el-select>
+
       <el-button @click="close" size="small" type="danger" style="position: absolute;z-index: 66;right: 40px;top: 54px;">返回</el-button>
       <el-tabs body-style="padding:0;" v-model="bespeakTabs" type="border-card" @tab-click="handleField" style="height: 100%; ">
         <el-tab-pane name="all" label="申请名单">
@@ -103,7 +108,22 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" width="120">
+            <el-table-column  align="center" label="考试次数" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.examCount}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="欠费" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.arrearage}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.hasService}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考场" width="120"  show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -173,7 +193,22 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" width="120">
+            <el-table-column  align="center" label="考试次数" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.examCount}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="欠费" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.arrearage}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.hasService}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考场" width="120"  show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -220,7 +255,22 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" width="130">
+            <el-table-column  align="center" label="考试次数" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.examCount}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="欠费" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.arrearage}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.hasService}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考场" width="130"  show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -266,7 +316,22 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" width="130">
+            <el-table-column  align="center" label="考试次数" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.examCount}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="欠费" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.arrearage}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.hasService}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考场" width="130"  show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -291,7 +356,7 @@
         <el-tab-pane name="3" label="考试名单" :disabled="!permissions.stu_exam_roster">
           <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
-            <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+            <el-table-column type="index" label="序号" align="center" width="40"></el-table-column>
             <el-table-column align="center"  label="学员" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.name}}</span>
@@ -312,7 +377,22 @@
                 <span>{{scope.row.motorcycleType}}</span>
               </template>
             </el-table-column>
-            <el-table-column  align="center" label="考场" >
+            <el-table-column  align="center" label="考试次数" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.examCount}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="欠费" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.arrearage}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.hasService}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考场" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.examField}}</span>
               </template>
@@ -387,6 +467,7 @@
 <script>
   import { getBatchList, delObj, addObj, putObj, exportExamList } from '@/api/student/batch'
   import { examFetchList, putExamBespeak } from '@/api/student/examnote'
+  import { getFinanceList } from '@/api/finance/service-category'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -398,6 +479,18 @@
     watch: {
       area: function(val) {
         this.tableHeight = val[1]
+      },
+      'studentListQuery.categoryId': function(val) {
+        var category = this.getCategory(val)
+        if (category) {
+          this.service.name = category.name + '购买次数'
+          this.service.show = true
+          this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+        } else {
+          this.service.name = ''
+          this.service.show = false
+        }
+        console.log(val)
       }
     },
     data() {
@@ -407,6 +500,7 @@
           subject: '1'
         },
         list: [],
+        financeList: [],
         total: null,
         listLoading: true,
         examBespeakLoading: true,
@@ -421,19 +515,12 @@
         },
         tableKey: 0,
         dialogStatus: '',
-        subject: [{
-          value: '1',
-          label: '科目一'
-        }, {
-          value: '2',
-          label: '科目二'
-        }, {
-          value: '3',
-          label: '科目三'
-        }, {
-          value: '4',
-          label: '科目四'
-        }],
+        subject: [
+          { value: '1', label: '科目一' },
+          { value: '2', label: '科目二' },
+          { value: '3', label: '科目三' },
+          { value: '4', label: '科目四' }
+        ],
         batchOption: false,
         testUrl: null,
         examOption: false,
@@ -446,11 +533,16 @@
           subject: null,
           examineState: null
         },
+        service: {
+          show: false,
+          name: ''
+        },
         studentListQuery: {
           page: 1,
           limit: 0,
           examId: null,
           examineState: '0',
+          categoryId: null,
           examState: 'exam_note_examine'
         },
         batchRules: {
@@ -471,6 +563,7 @@
     },
     created() {
       this.getList()
+      this.getFinanceList()
     },
     computed: {
       ...mapGetters([
@@ -479,12 +572,33 @@
       ])
     },
     methods: {
+      getCategory(id) {
+        var category = null
+        if (this.financeList) {
+          this.financeList.forEach(function(item) {
+            if (item.categoryId === id) {
+              category = item
+            }
+          })
+        }
+        return category
+      },
       getList() {
         this.listLoading = true
         getBatchList(this.listQuery).then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
+        })
+      },
+      // 获取所有服务包 ok
+      getFinanceList() {
+        this.listLoading = true
+        getFinanceList().then(response => {
+          var data = response.data
+          this.financeList = data.list || []
+          this.listLoading = false
+          console.log(data)
         })
       },
       handleSizeChange(val) {
@@ -520,6 +634,7 @@
         this.examBespeakList.subject = this.listQuery.subject
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list
+          console.log(this.examBespeak)
           this.examBespeakLoading = false
           console.log(response.data.data.list)
         })

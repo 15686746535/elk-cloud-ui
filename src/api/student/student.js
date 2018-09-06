@@ -53,6 +53,13 @@ export function putStudent(obj) {
   })
 }
 
+export function test() {
+  return request({
+    url: 'http://120.78.246.132/stuInfo/imageCode?key=BUSINESS_LOGIN&t=1536139153000',
+    method: 'get'
+  })
+}
+
 /* 学员信息导出 */
 export function exportStudent(query) {
   return request({
@@ -86,3 +93,10 @@ export function getFinanceByStudentId(id) {
   })
 }
 
+/* 学员信息导出 */
+export function quaryCourseList(id) {
+  return request({
+    url: '/stu/student/quaryCourseList/' + id,
+    method: 'get'
+  })
+}

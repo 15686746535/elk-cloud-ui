@@ -617,6 +617,60 @@
 
               </el-table>
             </el-tab-pane>
+            <el-tab-pane label="课时信息" name="6">
+              <el-table :data="courseList" stripe style="width: 100%">
+                <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
+                <el-table-column align="center"  label="ID">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.cid}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="学员状态">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.studentIsold === 0?'新学员':'老学员' }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="培训部分">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.subject | subjectFilter}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="初审结果">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.valid  === 1?'通过':'预警'}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="复审结果">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.ischeck | ischeckFilter}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center"  label="不合格原因">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.reason}}</span>
+                  </template>
+                </el-table-column>
+
+                <el-table-column align="center"  label="上报培训学时">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.duration | periodFilter}}</span>
+                  </template>
+                </el-table-column>
+
+                <el-table-column align="center"  label="审核有效学时">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.qualifiedhours | periodFilter}}</span>
+                  </template>
+                </el-table-column>
+
+                <el-table-column align="center"  label="传输运营商名称">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.platnum | platnumFilter}}</span>
+                  </template>
+                </el-table-column>
+
+              </el-table>
+            </el-tab-pane>
           </el-tabs>
           <!--<el-tabs v-model="activeName" type="border-card"  @tab-click="handleClick" style="height: 799px;border-radius: 4px 0 0 4px;">-->
             <!--&lt;!&ndash;<el-tab-pane label="最近信息" name="1">&ndash;&gt;-->
@@ -1042,7 +1096,7 @@
   import { removeAllSpace } from '@/utils/validate'
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
-  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122, getFinanceByStudentId } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122, getFinanceByStudentId, quaryCourseList, test } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
@@ -1392,6 +1446,7 @@
         dialogFormBespeak: false,
         besCarDialog: false,
         batchList: [],
+        courseList: [],
         examBespeak: {
           studentId: null,
           state: 0,
@@ -1458,6 +1513,23 @@
           SFZC2: '2' // 2
         },
         financeList: []
+      }
+    },
+    filters: {
+      ischeckFilter(status) {
+        const statusMap = ['待复核', '通过', '不通过']
+        return statusMap[status]
+      },
+      platnumFilter(platnum) {
+        const statusMap = {
+          A0008: '成为',
+          A0010: '安运',
+          B0006: '西培'
+        }
+        return statusMap[platnum]
+      },
+      periodFilter(min) {
+        return parseInt(min / 45) + '学时' + min % 45 + '分钟'
       }
     },
     created() {
@@ -1632,7 +1704,14 @@
           this.getVehiclePeriod()
         } else if (tab.label === '接送日志') {
           this.getShuttleLog()
+        } else if (tab.label === '课时信息') {
+          this.getCourseList()
         }
+      },
+      getCourseList() {
+        quaryCourseList(this.student.idNumber).then(response => {
+          this.courseList = response.data.data
+        })
       },
       /* 费用情况 */
       getFinance() {

@@ -43,10 +43,11 @@ export function getObj(id) {
   })
 }
 
-export function quit(id) {
+export function quit(value) {
   return request({
-    url: '/upms/user/quit/' + id,
-    method: 'put'
+    url: '/upms/user/quit',
+    method: 'put',
+    params: value
   })
 }
 

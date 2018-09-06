@@ -935,15 +935,35 @@
         })
       },
       quit(userId) {
-        this.$confirm('是否办理员工离职?', '提示', {
+        this.$prompt('请输入离职原因', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          quit(userId).then(() => {
+          inputValidator: function(value) {
+            if (value && value.trim() !== '') {
+              return true
+            } else {
+              return false
+            }
+          },
+          inputErrorMessage: '请输入离职原因'
+        }).then(({ value }) => {
+          quit({ remark: value, userId: userId, quit: '1' }).then(() => {
             this.back()
           })
         })
+        // this.$confirm('是否办理员工离职?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        //   quit(userId).then(() => {
+        //     this.back()
+        //   })
+        // })
+      },
+      noNull(value) {
+        console.log('noNull')
+        console.log(value)
       },
       exportUser() {
         this.expLoading = true

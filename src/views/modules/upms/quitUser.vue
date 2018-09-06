@@ -9,63 +9,20 @@
         <!-- 身份卡循环 -->
         <el-table :data="userList" :height="(tableHeight-200)" highlight-current-row @row-dblclick="doubleClickRow"  v-loading="listLoading" element-loading-text="给我一点时间">
           <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
-          <el-table-column align="center" label="头像" width="200">
+          <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
+          <el-table-column align="center" prop="jobNumber" label="工号"></el-table-column>
+          <el-table-column align="center" prop="name" label="姓名"></el-table-column>
+          <el-table-column align="center" prop="birthday" label="生日"></el-table-column>
+          <el-table-column align="center" prop="mobile" label="电话"></el-table-column>
+          <!--<el-table-column align="center" prop="wechat" label="微信"></el-table-column>-->
+          <!--<el-table-column align="center" prop="qq" label="QQ"></el-table-column>-->
+          <el-table-column align="center" prop="updateTime" label="离职日期">
             <template slot-scope="scope">
-              <!-- 头像 -->
-              <el-row>
-                <el-tag class="img">
-                  <img :src="scope.row.avatar" class="img">
-                </el-tag>
-              </el-row>
-              <el-row>
-                <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.name}}</el-col>
-              </el-row>
-              <el-row>
-                <el-col style="color: #7c7c7c;text-align: center;font-size: 12px;">{{scope.row.mobile}}</el-col>
-              </el-row>
+              <span>{{scope.row.updateTime | subTime}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="个人信息" width="300">
-            <template slot-scope="scope" >
-              <!-- 个人信息 -->
-              <el-col style="line-height: 25px">
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">工号:</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.jobNumber}}</el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">职位:</el-col>
-                  <el-col :span="17" class="table_text">
-                    {{scope.row.roles}}
-                  </el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">生日:</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.birthday | subTime}}</el-col>
-                </el-row>
-
-                <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">工作电话:</el-col>
-                  <el-col :span="17" class="table_text">
-                    {{scope.row.workMobile}}
-                  </el-col>
-                </el-row>
-              </el-col>
-            </template>
-          </el-table-column>
-          <el-table-column label="招生记录">
-            <template slot-scope="scope">
-              <bar :data="scope.row.recruits"></bar>
-            </template>
-          </el-table-column>
-
-          <el-table-column label="来访信息">
-            <template slot-scope="scope">
-              <LineChart :chart-data="scope.row.visits"></LineChart>
-            </template>
-          </el-table-column>
+          <el-table-column align="center" prop="remark" label="离职原因"></el-table-column>
         </el-table>
-
         <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                          :current-page.sync="listQuery.page"
@@ -566,6 +523,7 @@
           this.userList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
+          console.log(this.userList)
         })
       },
       // 查询招生信息集合
@@ -591,7 +549,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          quit(userId).then(() => {
+          quit({ userId: userId, quit: '0' }).then(() => {
             this.back()
           })
         })

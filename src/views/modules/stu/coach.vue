@@ -51,11 +51,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="通过日期" >
-          <template slot-scope="scope">
-            <span>{{scope.row.passTime | subTime}}</span>
-          </template>
-        </el-table-column>
+        <!--<el-table-column align="center" label="通过日期" >-->
+          <!--<template slot-scope="scope">-->
+            <!--<span>{{scope.row.passTime | subTime}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
       <div class="pagination-container" style="margin-top: 15px;">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"

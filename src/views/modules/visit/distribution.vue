@@ -214,7 +214,6 @@
         }
       },
       follow(row, event, column) {
-        console.log(row)
         followUpList({ intentionId: row.intentionId }).then(response => {
           this.followUpList = response.data.data
         })

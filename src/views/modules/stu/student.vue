@@ -1550,7 +1550,6 @@
         this.tableHeight = val[1]
       },
       'student.introducerId': function(val) {
-        console.log(val)
         if (val) {
           this.student.introducerIdList = [val]
         }
@@ -1613,10 +1612,7 @@
         this.$refs[fname].validate((valid) => {
           if (valid) {
             this.btnLoading = true
-            console.log('push122 ************************** begin', this.student122)
             push122(this.student122).then(response => {
-              console.log('push122 ************************** end')
-              console.log(response)
               if (response.data.code === 0) {
                 Message.success('录入成功')
               } else if (response.data.data === 500) {
@@ -1817,7 +1813,6 @@
         })
       },
       update(formName) {
-        console.log(this.student)
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.btnLoading = true
@@ -1980,7 +1975,6 @@
       },
       /* 约车 */
       carClassClick(e, carClass) {
-        console.log(carClass)
         this.examBespeak.pid = carClass.pid
         var a = document.getElementsByClassName('carClassCss')
         for (var i = 0; i < a.length; i++) {
@@ -2077,8 +2071,6 @@
         if (coachId) {
           if (this.student.bespCarFlag === '0') {
             getClassByCoachId({ coachId: coachId }).then(response => {
-              console.log(21212)
-              console.log(response)
               this.carClassList = response.data.data
               this.besCarDialog = true
             })

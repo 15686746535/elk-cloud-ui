@@ -9,7 +9,6 @@
 let Notification = (function(vue, globalOption = {
   msgtime: 1.5 // msg消失时间
 }) {
-  // console.log('lay',NotificationConstructor)
   let NotificationConstructor = vue.extend(require('./layer.vue').default)
   let MaskLayer = vue.extend(require('./mask.vue').default)
   let TaskLayer = vue.extend(require('./task.vue').default)

@@ -490,7 +490,6 @@
           this.service.name = ''
           this.service.show = false
         }
-        console.log(val)
       }
     },
     data() {
@@ -634,9 +633,7 @@
         this.examBespeakList.subject = this.listQuery.subject
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list
-          console.log(this.examBespeak)
           this.examBespeakLoading = false
-          console.log(response.data.data.list)
         })
         // this.examBespeakList.examId = examId
         this.examOption = true

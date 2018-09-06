@@ -344,7 +344,6 @@
           this.list = response.data.data.list
           this.total = response.data.data.totalCount
           this.loading = false
-          console.log(this.list)
         })
       },
       trainingField() {
@@ -354,7 +353,6 @@
         })
         getTrainingField('dict_training_field3').then(response => {
           this.fieldAddressList[1].children = response.data.data
-          console.log(response.data.data)
         })
       },
       typeChange(value) {
@@ -381,7 +379,6 @@
       getVehicleList() {
         queryCarList().then(response => {
           this.vehicleList = response.data.data
-          console.log(this.vehicleList)
         })
       },
       save(formName) {

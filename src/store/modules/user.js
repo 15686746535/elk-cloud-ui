@@ -125,7 +125,6 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
-          console.log(data)
           if (data.code === 0 && data.roles != null && data.roles.length > 0) {
             // 获取拥有的应用集合
             var hasAppList = hasAppFilter(data.menuIds, data.roles)

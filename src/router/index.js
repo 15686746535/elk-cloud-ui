@@ -118,7 +118,6 @@ export const addApp = [
  * @param list
  */
 export function getApp(appid) {
-  console.log('appid', appid)
   var APP = null
   appMap.forEach(function(app, index) {
     if (app.id === appid) {

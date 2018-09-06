@@ -438,7 +438,6 @@
       getConfigListByCondition(condition) {
         this.listLoading = true
         getConfigList({ 'condition': condition }).then(response => {
-          console.log(response.data)
           this.configList = response.data.data.list
           this.listLoading = false
         })
@@ -575,7 +574,6 @@
                 }
               }
             }
-            console.log('config:', this.config)
             addConfig(this.config).then(() => {
               this.btnLoading = false
               this.dialogMessageConfig = false

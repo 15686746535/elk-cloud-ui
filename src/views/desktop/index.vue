@@ -51,9 +51,7 @@ export default {
       // } else {
       //   Message.error('no-' + val.length)
       // }
-      console.log('桌面设置开始保存', val.length)
       saveApps({ appList: val }).then(() => {
-        console.log('桌面设置保存成功')
       })
     }
   },

@@ -65,7 +65,6 @@
         this.tableHeight = val[1]
       },
       'query.exam': function(val) {
-        console.log(val)
         if (!val || val === '') {
           this.query.exam = null
         }
@@ -156,7 +155,6 @@
             this.loading = false
             break
           case '失败人数':
-            console.log('查询失败人数')
             this.tableList = this.filterList('2')
             this.loading = false
             break

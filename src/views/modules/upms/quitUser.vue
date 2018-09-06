@@ -573,7 +573,6 @@
         this.studentListLoading = true
         queryEnrollStudents(this.studentListQuery).then(response => {
           this.studentList = response.data.data.list
-          console.log(response.data)
           this.studentListLoading = false
         })
       },

@@ -67,7 +67,6 @@ export default {
       that.desktopSwitch(d)
     })
     this.$dragging.$on('dragged', ({ value }) => {
-      console.log(value.list)
     })
     this.$dragging.$on('dragend', () => {
       // 保存应用菜单

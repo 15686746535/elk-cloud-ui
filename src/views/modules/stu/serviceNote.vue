@@ -513,9 +513,7 @@
       getService(chargeId) {
         this.loading = true
         var that = this
-        console.log('+++++++++++++++++++', chargeId)
         getServiceByChargeId(chargeId).then(response => {
-          console.log('==================', response)
           var finance = response.data.data
           var payTypeList = [
             { mode: '现金', money: 0 },
@@ -587,7 +585,6 @@
         })
       },
       groupSelect(group) {
-        console.log(group)
         this.finance.financeIdList = group.group
         this.changeFinanceList()
       },
@@ -737,7 +734,6 @@
             // this.setReceivablesList(receivables)
             this.loading = false
           } else {
-            console.log(121212)
             this.flag = false
             this.setReceivablesList(['全款', '定金', '购买服务包'])
             // 已经购买的服务包
@@ -828,7 +824,6 @@
       /* 计算价格 */
       calculation() {
         this.clean()
-        console.log(this.finance.financeList)
         // 原始价格 就是所选服务不包括优惠的价格
         var originalPrice = 0
         // 活动价格 优惠
@@ -903,7 +898,6 @@
           this.$message.error('未选择学员，无法保存！')
           return false
         }
-        console.log('保存', this.finance)
         this.finance.periodcard = this.periodcard ? '1' : '0'
         this.finance.healthform = this.healthform ? '1' : '0'
         saveServiceCharge(this.finance).then(() => {
@@ -923,7 +917,6 @@
       },
       // 获取订单号
       getSerialNumber() {
-        console.log(this.finance)
         var time = this.finance.paytime
         this.finance.title = ''
         this.finance.serialPrefix = ''
@@ -933,7 +926,6 @@
           time = time.substring(0, 6)
           this.finance.month = time
           querySerialNumber(time).then(res => {
-            console.log(res)
             if (res.data.code === 0) {
               this.finance.serialNumber = res.data.data.serialNumber
               this.finance.serialPrefix = res.data.data.serialPrefix

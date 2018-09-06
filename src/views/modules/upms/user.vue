@@ -829,7 +829,6 @@
           this.userList = response.data.data.list
           this.total = response.data.data.totalCount
           this.listLoading = false
-          console.log(this.userList)
         })
       },
       // 查询招生信息集合

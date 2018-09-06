@@ -762,7 +762,6 @@
         this.$refs[formName].resetFields()
         getObj(this.intention.intentionId).then(response => {
           this.intention = response.data.data
-          console.log(response.data.data)
         })
         this.edit = false
       },

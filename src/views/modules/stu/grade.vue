@@ -60,6 +60,11 @@
                 <span>{{scope.row.periods}}</span>
               </template>
             </el-table-column>
+            <el-table-column align="center" label="车型" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.motorcycleType}}</span>
+              </template>
+            </el-table-column>
 
 
             <el-table-column align="center" label="考试日期" width="100">
@@ -275,7 +280,6 @@ export default {
         if (this.studentListQuery.examId) {
           examFetchList(this.studentListQuery).then(response => {
             if (response.data.code === 0) {
-              console.log(response.data.data.list)
               this.gradeStudentList = response.data.data.list
               this.studentTotal = response.data.data.totalCount
               this.studentListLoading = false

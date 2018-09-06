@@ -253,7 +253,6 @@
       },
       handleDisable(row) {
         var dat = { categoryId: row.categoryId, status: row.status, number: 1 }
-        console.log(dat)
         putFinance(dat)
       },
       handleEnable(row) {

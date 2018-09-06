@@ -45,9 +45,6 @@ export default {
   },
   watch: {
     'options.area': function(val) {
-      // console.log('val===')
-      // console.log(val)
-      // console.log(this.instance)
       // // this.propsData.area = [parseInt(val[0]), parseInt(val[1])]
     }
   },
@@ -61,7 +58,6 @@ export default {
     },
     isClose() {
       var prohibit = this.$parent.prohibit
-      console.log(prohibit)
       return prohibit.indexOf(this.options.id.toString()) > -1
     }
   },

@@ -204,7 +204,6 @@
         this.listQuery.roleName = removeAllSpace(this.listQuery.roleName)
         fetchList(this.listQuery).then(response => {
           this.list = response.data.data.list
-          console.log(response.data.data.list)
           this.total = response.data.data.totalCount
           this.listLoading = false
         })

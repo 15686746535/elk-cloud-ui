@@ -34,6 +34,11 @@
             <span>{{ scope.row.state | subjectFilter}}</span>
           </template>
         </el-table-column>
+        <el-table-column align="center" label="车型" width="60">
+          <template slot-scope="scope">
+            <span>{{scope.row.motorcycleType}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column align="center" label="场训教练" width="100">
           <template slot-scope="scope">

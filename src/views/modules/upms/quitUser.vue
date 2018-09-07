@@ -12,8 +12,13 @@
           <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
           <el-table-column align="center" prop="jobNumber" label="工号"></el-table-column>
           <el-table-column align="center" prop="name" label="姓名"></el-table-column>
-          <el-table-column align="center" prop="birthday" label="生日"></el-table-column>
+          <el-table-column align="center" prop="birthday" label="生日">
+            <template slot-scope="scope">
+              <span>{{scope.row.birthday | subTime}}</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" prop="mobile" label="电话"></el-table-column>
+
           <!--<el-table-column align="center" prop="wechat" label="微信"></el-table-column>-->
           <!--<el-table-column align="center" prop="qq" label="QQ"></el-table-column>-->
           <el-table-column align="center" prop="updateTime" label="离职日期">

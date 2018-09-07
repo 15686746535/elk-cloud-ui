@@ -682,6 +682,10 @@
             { pattern: /^1[23456789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] },
             { validator: mobileIsExistence, trigger: ['blur'] }
           ],
+          workMobile: [
+            { required: true, message: '请输入工作号码', trigger: ['blur', 'change'] },
+            { pattern: /^1[23456789]\d{9}$/, message: '请输入正确的手机号码', trigger: ['blur', 'change'] }
+          ],
           iscoach: [
             { required: true, message: '请选择是否教练', trigger: ['blur', 'change'] }
           ],

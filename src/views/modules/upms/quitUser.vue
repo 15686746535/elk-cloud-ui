@@ -21,7 +21,7 @@
 
           <!--<el-table-column align="center" prop="wechat" label="微信"></el-table-column>-->
           <!--<el-table-column align="center" prop="qq" label="QQ"></el-table-column>-->
-          <el-table-column align="center" prop="updateTime" label="离职日期">
+          <el-table-column align="center" prop="updateTime" label="操作日期">
             <template slot-scope="scope">
               <span>{{scope.row.updateTime | subTime}}</span>
             </template>

@@ -96,11 +96,25 @@ module.exports = {
           '^/quartz' : '/quartz'
         }
       },
-      '/oss': {
+      '/quartz': {
         target: url,
         changeOrigin: true,
         pathRewrite: {
-          '^/oss' : '/oss'
+          '^/quartz' : '/quartz'
+        }
+      },
+      '/export': {
+        target: 'http://www.eluchn.com/:8103',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/export' : '/export'
+        }
+      },
+      '/import': {
+        target: 'http://www.eluchn.com/:8103',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/import' : '/import'
         }
       },
       '/visualization': {

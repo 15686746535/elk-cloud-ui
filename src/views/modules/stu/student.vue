@@ -183,7 +183,8 @@
                          layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
           <el-button @click="create" size="small" style="float:right;margin: 0 30px" type="primary" v-if="permissions.stu_student_add"><i class="el-icon-plus"></i>添加</el-button>
-          <el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent" type="info"><i class="el-icon-download"></i>导出</el-button>
+          <i @click="exportStudent">  </i>
+          <!--<el-button size="small" style="float:right;margin: 0 5px" :loading="expLoading" @click="exportStudent" type="info"><i class="el-icon-download"></i>导出</el-button>-->
           <el-upload class="upload-demo" action="/stu/student/import"
                      :headers="headers"
                      :on-success="handleTextSuccess"
@@ -489,7 +490,7 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
-                <el-button type="primary" size="mini" @click="supervisePush"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
+                <el-button type="primary" size="mini" @click="supervisePushData"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
@@ -1579,6 +1580,7 @@
       }
     },
     props: {
+      layerid: String,
       linkId: Number,
       display: String,
       area: Array
@@ -1610,7 +1612,7 @@
       }
     },
     methods: {
-      supervisePush() {
+      supervisePushData() {
         this.supervise = {}
         // 7月10号前学时查询接口 1531152000000 = '2018-07-10'
         if (this.student.enrolTime < 1531152000000) {

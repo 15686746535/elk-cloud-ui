@@ -33,6 +33,7 @@ export function isCoachFilter(coach) {
   return typeMap[coach]
 }
 export function subjectFilter(subject) {
+  subject = subject.toString()
   const typeMap = {
     '0': '未录入122',
     '1': '科目一',

@@ -55,7 +55,7 @@ export function putStudent(obj) {
 
 export function supervisePush(obj) {
   return request({
-    url: '/stu/student/supervisePush',
+    url: '/common/supervisePush',
     method: 'get',
     params: obj
   })

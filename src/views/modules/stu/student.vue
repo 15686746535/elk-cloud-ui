@@ -1641,25 +1641,24 @@
           this.supervise.idcardDto = this.student.idNumber
           this.supervise.trainType = this.student.motorcycleType
           this.supervise.phoneDto = this.student.mobile
-          this.superviseSubmit()
-        }
-      },
-      superviseSubmit() {
-        supervisePush(this.supervise).then(response => {
-          var data = response.data
-          this.btnLoading1 = false
-          this.btnLoading2 = false
-          if (data.code === 0) {
-            var res = data.data
-            if (res.errorcode === 0) {
-              this.superviseOpen2 = true
-              this.btnLoading1 = false
-              this.superviseRes = res.data
-            } else {
-              this.$message.error(res.data)
+          supervisePush(this.supervise).then(response => {
+            var data = response.data
+            this.btnLoading1 = false
+            this.btnLoading2 = false
+            if (data.code === 0) {
+              var res = data.data
+              if (res.errorcode === 0) {
+                console.log(data)
+                console.log(res.data)
+                this.superviseOpen2 = true
+                this.btnLoading1 = false
+                this.superviseRes = res.data
+              } else {
+                this.$message.error(res.data)
+              }
             }
-          }
-        })
+          })
+        }
       },
       dialog122() {
         getIntention(this.student.intentionId).then(response => {

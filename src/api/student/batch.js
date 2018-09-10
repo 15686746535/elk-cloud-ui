@@ -53,7 +53,7 @@ export function putObj(obj) {
 /* 考试名单导出接口 */
 export function exportExamList(query) {
   return request({
-    url: '/stu/exam/exportExamList',
+    url: '/export/exam',
     method: 'get',
     params: query,
     responseType: 'arraybuffer'

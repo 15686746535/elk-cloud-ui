@@ -77,7 +77,7 @@ export function putObj(obj) {
 /* 导出同事信息 */
 export function exportUser(query) {
   return request({
-    url: '/upms/user/exportUser',
+    url: '/export/user',
     method: 'get',
     params: query,
     responseType: 'arraybuffer'

@@ -966,16 +966,26 @@
         console.log(value)
       },
       exportUser() {
-        this.expLoading = true
-        exportUser(this.listQuery).then(response => {
-          let time = new Date()
-          let blob = new Blob([response.data], { type: 'application/x-xls' })
-          let link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = '同事名单(' + time.toLocaleString() + ').xls'
-          link.click()
-          this.expLoading = false
-        })
+        if (this.userList.length === 0) {
+          this.$message.info('暂无数据')
+        } else {
+          this.$store.dispatch('pushProhibit', this.layerid)
+          this.expLoading = true
+          exportUser(this.listQuery).then(response => {
+            var time = new Date()
+            var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
+            var downloadElement = document.createElement('a')
+            var href = window.URL.createObjectURL(blob) // 创建下载的链接
+            downloadElement.href = href
+            downloadElement.download = '同事名单(' + time.toLocaleString() + ').xls' // 下载后文件名
+            document.body.appendChild(downloadElement)
+            downloadElement.click() // 点击下载
+            document.body.removeChild(downloadElement) // 下载完成移除元素
+            window.URL.revokeObjectURL(href) // 释放掉blob对象
+            this.expLoading = false
+            this.$store.dispatch('removeProhibit', this.layerid)
+          })
+        }
       }
     }
   }

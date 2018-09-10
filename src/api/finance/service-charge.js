@@ -83,8 +83,7 @@ export function getChargeId(params) {
 }
 export function downloadExcel(params) {
   return request({
-    url: '/finance/service/charge/downloadExcel',
-    // url: '/stu/student/exportStudent',
+    url: '/export/charge',
     method: 'get',
     params: params,
     responseType: 'arraybuffer'

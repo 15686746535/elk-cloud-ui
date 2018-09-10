@@ -1636,6 +1636,7 @@
           var data = response.data
           console.log(data)
           data = data.replace(/\r\n/g, '')
+          console.log(data)
           this.supervise.response = JSON.parse(data)
           console.log(this.supervise.response)
         })

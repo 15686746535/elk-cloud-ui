@@ -1582,6 +1582,9 @@
       },
       periodFilter(min) {
         return parseInt(min / 45) + '学时' + min % 45 + '分钟'
+      },
+      typeFilter(type) {
+        return type
       }
     },
     created() {

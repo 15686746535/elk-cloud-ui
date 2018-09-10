@@ -1618,13 +1618,13 @@
         this.supervise = {}
         this.supervise.state = state
         // 7月10号前学时查询接口 1531152000000 = '2018-07-10'
-        if (state === '2') {
-          this.superviseTitle = '查询'
+        if (state === '1') {
+          this.superviseTitle = '推送'
           this.supervise.idcard = this.student.idNumber
           this.supervise.subject = parseInt(this.student.state)
-        } else if (state === '1') {
+        } else if (state === '2') {
           // 7月10号后学时查询接口
-          this.superviseTitle = '推送'
+          this.superviseTitle = '查询'
           this.supervise.idcardDto = this.student.idNumber
           this.supervise.trainType = this.student.motorcycleType
           this.supervise.phoneDto = this.student.mobile

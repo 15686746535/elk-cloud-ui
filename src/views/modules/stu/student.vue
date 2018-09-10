@@ -490,8 +490,8 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
-                <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
-                <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管推送</el-button>
+                <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" :loading="btnLoading2" icon="el-icon-search">监管查询</el-button>
+                <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" :loading="btnLoading1" icon="el-icon-search">监管推送</el-button>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
@@ -1090,37 +1090,45 @@
     </el-dialog>
 
 
-    <el-dialog :modal="false"  :title="'监管'+superviseTitle" width="50%" :visible.sync="superviseOpen">
-      <el-form :model="supervise"  ref="supervise" label-width="80px" size="mini" >
-        <el-form-item prop="idcard" v-if="supervise.state === '1'" >
+    <el-dialog :modal="false"  title="监管推送" width="50%" :visible.sync="superviseOpen1">
+      <el-form :model="supervise"  ref="supervise" label-width="80px" size="mini" v-if="!superviseRes.show">
+        <el-form-item prop="idcard" >
           <span slot="label" class="text_css">身份证</span>
           <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.idcard" disabled></el-input>
         </el-form-item>
-        <el-form-item prop="subject" v-if="supervise.state === '1'">
+        <el-form-item prop="subject">
           <span slot="label" class="text_css">科目</span>
           <el-select size="mini" style="width: 100%" v-model="supervise.subject" filterable placeholder="" disabled>
             <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item prop="idcardDto" v-if="supervise.state === '2'">
-          <span slot="label" class="text_css">身份证</span>
-          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.idcardDto" disabled></el-input>
-        </el-form-item>
-        <el-form-item prop="phoneDto" v-if="supervise.state === '2'">
-          <span slot="label" class="text_css">电话</span>
-          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.phoneDto" disabled></el-input>
-        </el-form-item>
-        <el-form-item prop="trainType" v-if="supervise.state === '2'">
-          <span slot="label" class="text_css">车型</span>
-          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.trainType" disabled></el-input>
-        </el-form-item>
-
       </el-form>
-      {{supervise.response}}
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" :loading="btnLoading" @click="superviseSubmit">{{superviseTitle}}</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="superviseSubmit">推送</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :modal="false"  title="监管查询" width="50%" :visible.sync="superviseOpen2" :loading="dgLoading" >
+      <el-table :data="superviseRes.recList" :show-header="false" border style="width: 100%">
+        <el-table-column prop="date" label="科目">
+          <template slot-scope="subject">
+            <span>{{scope.row.subject | subjectFilter}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  prop="type" label="状态">
+          <template slot-scope="scope">
+            <span>{{scope.row.type | typeFilter}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  prop="pushtime" label="学时" >
+          <template slot-scope="scope">
+            <span>{{scope.row.pushtime}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div v-if="!superviseRes.show">
+        {{superviseRes.error}}
       </div>
     </el-dialog>
   </div>
@@ -1406,11 +1414,13 @@
         followUpList: [],
         total: 1,
         listLoading: true,
-        superviseOpen: false,
-        superviseUrl: '',
-        superviseTitle: '',
+        superviseOpen1: false,
+        superviseOpen2: false,
         supervise: {},
+        superviseRes: {},
         btnLoading: false,
+        btnLoading1: false,
+        btnLoading2: false,
         expLoading: false,
         isCreate: false,
         isPush122: false,
@@ -1509,6 +1519,7 @@
         },
         /* 添加加载动画 */
         createLoading: false,
+        dgLoading: false,
         infoLoading: false,
         tableHeight: this.area[1],
         userList: [],
@@ -1616,29 +1627,35 @@
     methods: {
       supervisePushData(state) {
         this.supervise = {}
+        this.superviseRes = {}
         this.supervise.state = state
         // 7月10号前学时查询接口 1531152000000 = '2018-07-10'
         if (state === '1') {
-          this.superviseTitle = '推送'
+          this.btnLoading1 = true
+          this.superviseOpen1 = true
           this.supervise.idcard = this.student.idNumber
           this.supervise.subject = parseInt(this.student.state)
         } else if (state === '2') {
+          this.btnLoading2 = true
           // 7月10号后学时查询接口
-          this.superviseTitle = '查询'
           this.supervise.idcardDto = this.student.idNumber
           this.supervise.trainType = this.student.motorcycleType
           this.supervise.phoneDto = this.student.mobile
+          this.superviseSubmit()
         }
-        this.superviseOpen = true
       },
       superviseSubmit() {
         supervisePush(this.supervise).then(response => {
           var data = response.data
-          console.log(data)
-          data = data.replace(/\r\n/g, '')
-          console.log(data)
-          this.supervise.response = JSON.parse(data)
-          console.log(this.supervise.response)
+          if (data.code === 0) {
+            var res = data.data
+            if (res.errorcode === 0) {
+              this.superviseOpen2 = true
+              this.superviseRes = res.data
+            } else {
+              this.$message.error(res.data)
+            }
+          }
         })
       },
       dialog122() {

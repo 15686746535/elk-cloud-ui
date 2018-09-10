@@ -1111,8 +1111,8 @@
 
     <el-dialog :modal="false"  title="监管查询" width="50%" :visible.sync="superviseOpen2" :loading="dgLoading" >
       <el-table :data="superviseRes.recList" :show-header="false" border style="width: 100%">
-        <el-table-column prop="date" label="科目">
-          <template slot-scope="subject">
+        <el-table-column prop="subject" label="科目">
+          <template slot-scope="scope">
             <span>{{scope.row.subject | subjectFilter}}</span>
           </template>
         </el-table-column>

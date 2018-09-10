@@ -53,10 +53,11 @@ export function putStudent(obj) {
   })
 }
 
-export function test() {
+export function supervisePush(obj) {
   return request({
-    url: 'http://120.78.246.132/stuInfo/imageCode?key=BUSINESS_LOGIN&t=1536139153000',
-    method: 'get'
+    url: '/stu/student/supervisePush',
+    method: 'post',
+    data: obj
   })
 }
 

@@ -81,6 +81,11 @@
                 <el-tag type="warning" size="mini" color v-if="scope.row.examState == 3">缺考</el-tag>
               </template>
             </el-table-column>
+            <el-table-column align="center" label="欠费" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.arrearage}}</span>
+              </template>
+            </el-table-column>
 
             <el-table-column align="center" label="通过日期" width="100">
               <template slot-scope="scope">

@@ -489,6 +489,7 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
+                <el-button type="primary" size="mini" @click="supervisePush"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
@@ -496,7 +497,6 @@
                 <el-button type="danger" size="mini" @click="outSchool" v-if="permissions.stu_student_update" icon="el-icon-edit">退 学</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update" icon="el-icon-edit">编 辑</el-button>
               </div>
-
             </el-card>
           </el-form>
         </el-col>
@@ -1087,6 +1087,39 @@
       </div>
     </el-dialog>
 
+
+    <el-dialog :modal="false"  :title="superviseTitle" width="50%" :visible.sync="superviseOpen">
+      <el-form :model="supervise"  ref="supervise" label-width="80px" size="mini" >
+        <el-form-item prop="idcard" v-if="student.enrolTime < 1531152000000" >
+          <span slot="label" class="text_css">身份证</span>
+          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.idcard" disabled></el-input>
+        </el-form-item>
+        <el-form-item prop="subject" v-if="student.enrolTime < 1531152000000">
+          <span slot="label" class="text_css">科目</span>
+          <el-select size="mini" style="width: 100%" v-model="supervise.subject" filterable placeholder="" disabled>
+            <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item prop="idcardDto" v-if="student.enrolTime > 1531152000000">
+          <span slot="label" class="text_css">身份证</span>
+          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.idcardDto" disabled></el-input>
+        </el-form-item>
+        <el-form-item prop="phoneDto" v-if="student.enrolTime > 1531152000000">
+          <span slot="label" class="text_css">电话</span>
+          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.phoneDto" disabled></el-input>
+        </el-form-item>
+        <el-form-item prop="trainType" v-if="student.enrolTime > 1531152000000">
+          <span slot="label" class="text_css">车型</span>
+          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.trainType" disabled></el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" :loading="btnLoading" @click="superviseSubmit">查询</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -1096,7 +1129,8 @@
   import { removeAllSpace } from '@/utils/validate'
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
-  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122, getFinanceByStudentId, quaryCourseList, test } from '@/api/student/student'
+  import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122,
+    getFinanceByStudentId, quaryCourseList, supervisePush } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
 
@@ -1369,6 +1403,10 @@
         followUpList: [],
         total: 1,
         listLoading: true,
+        superviseOpen: false,
+        superviseUrl: '',
+        superviseTitle: '',
+        supervise: {},
         btnLoading: false,
         expLoading: false,
         isCreate: false,
@@ -1572,6 +1610,29 @@
       }
     },
     methods: {
+      supervisePush() {
+        this.supervise = {}
+        // 7月10号前学时查询接口 1531152000000 = '2018-07-10'
+        if (this.student.enrolTime < 1531152000000) {
+          this.superviseTitle = '老学员查询'
+          this.supervise.state = '1'
+          this.supervise.idcard = this.student.idNumber
+          this.supervise.subject = parseInt(this.student.state)
+        } else if (this.student.enrolTime > 1531152000000) {
+          // 7月10号后学时查询接口
+          this.superviseTitle = '新学员查询'
+          this.supervise.state = '2'
+          this.supervise.idcardDto = this.student.idNumber
+          this.supervise.trainType = this.student.motorcycleType
+          this.supervise.phoneDto = this.student.mobile
+        }
+        this.superviseOpen = true
+      },
+      superviseSubmit() {
+        supervisePush(this.supervise).then(response => {
+          console.log(response)
+        })
+      },
       dialog122() {
         getIntention(this.student.intentionId).then(response => {
           console.log(this.student)

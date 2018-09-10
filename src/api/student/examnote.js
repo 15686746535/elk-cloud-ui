@@ -74,7 +74,7 @@ export function batchSave(obj) {
 /* 学员成绩导出 */
 export function exportAchievement(query) {
   return request({
-    url: '/stu/exam/note/exportAchievement',
+    url: '/export/score',
     method: 'get',
     params: query,
     responseType: 'arraybuffer'

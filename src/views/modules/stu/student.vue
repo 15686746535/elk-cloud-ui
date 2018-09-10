@@ -1633,7 +1633,10 @@
       },
       superviseSubmit() {
         supervisePush(this.supervise).then(response => {
-          this.supervise.response = JSON.parse(response.data)
+          var data = response.data
+          console.log(data)
+          data = data.replace(/\r\n/g, '')
+          this.supervise.response = JSON.parse(data)
           console.log(this.supervise.response)
         })
       },

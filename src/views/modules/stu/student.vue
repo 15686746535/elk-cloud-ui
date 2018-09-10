@@ -490,8 +490,8 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
-                <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
-                <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管推送</el-button>
+                <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
+                <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管推送</el-button>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
@@ -1092,11 +1092,11 @@
 
     <el-dialog :modal="false"  :title="'监管'+superviseTitle" width="50%" :visible.sync="superviseOpen">
       <el-form :model="supervise"  ref="supervise" label-width="80px" size="mini" >
-        <el-form-item prop="idcard" v-if="student.enrolTime < 1531152000000" >
+        <el-form-item prop="idcard" v-if="supervise.state === '1'" >
           <span slot="label" class="text_css">身份证</span>
           <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.idcard" disabled></el-input>
         </el-form-item>
-        <el-form-item prop="subject" v-if="student.enrolTime < 1531152000000">
+        <el-form-item prop="subject" v-if="supervise.state === '1'">
           <span slot="label" class="text_css">科目</span>
           <el-select size="mini" style="width: 100%" v-model="supervise.subject" filterable placeholder="" disabled>
             <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value">
@@ -1104,15 +1104,15 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item prop="idcardDto" v-if="student.enrolTime > 1531152000000">
+        <el-form-item prop="idcardDto" v-if="supervise.state === '2'">
           <span slot="label" class="text_css">身份证</span>
           <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.idcardDto" disabled></el-input>
         </el-form-item>
-        <el-form-item prop="phoneDto" v-if="student.enrolTime > 1531152000000">
+        <el-form-item prop="phoneDto" v-if="supervise.state === '2'">
           <span slot="label" class="text_css">电话</span>
           <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.phoneDto" disabled></el-input>
         </el-form-item>
-        <el-form-item prop="trainType" v-if="student.enrolTime > 1531152000000">
+        <el-form-item prop="trainType" v-if="supervise.state === '2'">
           <span slot="label" class="text_css">车型</span>
           <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.trainType" disabled></el-input>
         </el-form-item>
@@ -1616,16 +1616,15 @@
     methods: {
       supervisePushData(state) {
         this.supervise = {}
+        this.supervise.state = state
         // 7月10号前学时查询接口 1531152000000 = '2018-07-10'
-        if (state === '1') {
+        if (state === '2') {
           this.superviseTitle = '查询'
-          this.supervise.state = '1'
           this.supervise.idcard = this.student.idNumber
           this.supervise.subject = parseInt(this.student.state)
-        } else if (state === '2') {
+        } else if (state === '1') {
           // 7月10号后学时查询接口
           this.superviseTitle = '推送'
-          this.supervise.state = '2'
           this.supervise.idcardDto = this.student.idNumber
           this.supervise.trainType = this.student.motorcycleType
           this.supervise.phoneDto = this.student.mobile
@@ -1634,7 +1633,8 @@
       },
       superviseSubmit() {
         supervisePush(this.supervise).then(response => {
-          this.supervise.response = response.data
+          this.supervise.response = JSON.parse(response.data)
+          console.log(this.supervise.response)
         })
       },
       dialog122() {

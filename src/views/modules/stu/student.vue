@@ -490,7 +490,8 @@
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
               <div v-else style="float: right;">
-                <el-button type="primary" size="mini" @click="supervisePushData"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
+                <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管查询</el-button>
+                <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" icon="el-icon-search">监管推送</el-button>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
@@ -1089,7 +1090,7 @@
     </el-dialog>
 
 
-    <el-dialog :modal="false"  :title="superviseTitle" width="50%" :visible.sync="superviseOpen">
+    <el-dialog :modal="false"  :title="'监管'+superviseTitle" width="50%" :visible.sync="superviseOpen">
       <el-form :model="supervise"  ref="supervise" label-width="80px" size="mini" >
         <el-form-item prop="idcard" v-if="student.enrolTime < 1531152000000" >
           <span slot="label" class="text_css">身份证</span>
@@ -1117,8 +1118,9 @@
         </el-form-item>
 
       </el-form>
+      {{supervise.response}}
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" :loading="btnLoading" @click="superviseSubmit">查询</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="superviseSubmit">{{superviseTitle}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -1612,17 +1614,17 @@
       }
     },
     methods: {
-      supervisePushData() {
+      supervisePushData(state) {
         this.supervise = {}
         // 7月10号前学时查询接口 1531152000000 = '2018-07-10'
-        if (this.student.enrolTime < 1531152000000) {
-          this.superviseTitle = '老学员查询'
+        if (state === '1') {
+          this.superviseTitle = '查询'
           this.supervise.state = '1'
           this.supervise.idcard = this.student.idNumber
           this.supervise.subject = parseInt(this.student.state)
-        } else if (this.student.enrolTime > 1531152000000) {
+        } else if (state === '2') {
           // 7月10号后学时查询接口
-          this.superviseTitle = '新学员查询'
+          this.superviseTitle = '推送'
           this.supervise.state = '2'
           this.supervise.idcardDto = this.student.idNumber
           this.supervise.trainType = this.student.motorcycleType
@@ -1632,7 +1634,7 @@
       },
       superviseSubmit() {
         supervisePush(this.supervise).then(response => {
-          console.log(response)
+          this.supervise.response = response.data
         })
       },
       dialog122() {

@@ -489,14 +489,16 @@
                 <el-button type="info" size="mini" @click="cancel('student')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
               </div>
-              <div v-else style="float: right;">
+              <div v-if="!edit" style="float: left;">
+                <el-button type="danger" size="mini" @click="outSchool" v-if="permissions.stu_student_update" icon="el-icon-edit">退 学</el-button>
+              </div>
+              <div v-if="!edit" style="float: right;">
                 <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" :loading="btnLoading2" icon="el-icon-search">监管查询</el-button>
                 <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" :loading="btnLoading1" icon="el-icon-search">监管推送</el-button>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add" icon="el-icon-fa-book">约 考</el-button>
-                <el-button type="danger" size="mini" @click="outSchool" v-if="permissions.stu_student_update" icon="el-icon-edit">退 学</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update" icon="el-icon-edit">编 辑</el-button>
               </div>
             </el-card>
@@ -1089,26 +1091,6 @@
       </div>
     </el-dialog>
 
-
-    <el-dialog :modal="false"  title="监管推送" width="50%" :visible.sync="superviseOpen1">
-      <el-form :model="supervise"  ref="supervise" label-width="80px" size="mini" v-if="!superviseRes.show">
-        <el-form-item prop="idcard" >
-          <span slot="label" class="text_css">身份证</span>
-          <el-input size="mini" class="filter-item" placeholder=""  v-model.number="supervise.idcard" disabled></el-input>
-        </el-form-item>
-        <el-form-item prop="subject">
-          <span slot="label" class="text_css">科目</span>
-          <el-select size="mini" style="width: 100%" v-model="supervise.subject" filterable placeholder="" disabled>
-            <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" :loading="btnLoading" @click="superviseSubmit">推送</el-button>
-      </div>
-    </el-dialog>
-
     <el-dialog :modal="false"  title="监管查询" :close-on-click-modal="false" width="50%" :visible.sync="superviseOpen2" :loading="dgLoading" >
       <el-table :data="superviseRes.recList" :show-header="false" border style="width: 100%">
         <el-table-column prop="subject" label="科目">
@@ -1646,6 +1628,11 @@
           this.superviseOpen1 = true
           this.supervise.idcard = this.student.idNumber
           this.supervise.subject = parseInt(this.student.state)
+          supervisePush(this.supervise).then(response => {
+            var data = response.data
+            this.btnLoading1 = false
+            console.log(data)
+          })
         } else if (state === '2') {
           this.btnLoading2 = true
           // 7月10号后学时查询接口
@@ -1654,7 +1641,6 @@
           this.supervise.phoneDto = this.student.mobile
           supervisePush(this.supervise).then(response => {
             var data = response.data
-            this.btnLoading1 = false
             this.btnLoading2 = false
             if (data.code === 0) {
               var res = data.data

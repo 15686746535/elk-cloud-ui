@@ -1631,6 +1631,14 @@
           supervisePush(this.supervise).then(response => {
             var data = response.data
             this.btnLoading1 = false
+            if (data.code === 0) {
+              var res = data.data
+              if (res.errorcode === 0) {
+                this.$message.success('推送成功')
+              } else {
+                this.$message.error(res.data)
+              }
+            }
             console.log(data)
           })
         } else if (state === '2') {
@@ -1645,10 +1653,7 @@
             if (data.code === 0) {
               var res = data.data
               if (res.errorcode === 0) {
-                console.log(data)
-                console.log(res.data)
                 this.superviseOpen2 = true
-                this.btnLoading1 = false
                 this.superviseRes = res.data
               } else {
                 this.$message.error(res.data)

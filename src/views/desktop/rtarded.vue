@@ -3,7 +3,10 @@
     <div class="msg-spirit">
       {{massages[index]}}
     </div>
-    <img class="faqrobot" src="../../../static/img/robot.png" @click="show = 'show'"/>
+    <a href="http://faqrobot.hz.taeapp.com/robot/ding_pc.html?corpid=ding6edc173cf7bee74835c2f4657eb6378f" target="_blank">
+      <img class="faqrobot" src="../../../static/img/robot.png"/>
+    </a>
+    <img class="faqrobot" src="../../../static/img/robot.png" style="display: none" @click="show = 'show'"/>
     <div class="msg-box" :class="show" :style="{height: client.height-45+'px' }">
       <div class="title">智能机器人
         <i class="icon-tool-remove" @click="show = ''"></i>

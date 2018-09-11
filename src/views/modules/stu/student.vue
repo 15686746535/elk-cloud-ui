@@ -1639,7 +1639,6 @@
                 this.$message.error(res.data)
               }
             }
-            console.log(data)
           })
         } else if (state === '2') {
           this.btnLoading2 = true

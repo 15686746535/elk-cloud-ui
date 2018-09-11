@@ -1109,7 +1109,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :modal="false"  title="监管查询" width="50%" :visible.sync="superviseOpen2" :loading="dgLoading" >
+    <el-dialog :modal="false"  title="监管查询" :close-on-click-modal="false" width="50%" :visible.sync="superviseOpen2" :loading="dgLoading" >
       <el-table :data="superviseRes.recList" :show-header="false" border style="width: 100%">
         <el-table-column prop="subject" label="科目">
           <template slot-scope="scope">
@@ -1584,7 +1584,15 @@
         return parseInt(min / 45) + '学时' + min % 45 + '分钟'
       },
       typeFilter(type) {
-        return type
+        type = 'type_' + type
+        const statusMap = {
+          type_1: '待驾校上报阶段',
+          type_2: '待运管审核',
+          type_3: '--',
+          type_4: '可约考',
+          type_5: '明日约考（科目三理论部分需和科目三道路驾驶一起上报公安方可考试）'
+        }
+        return statusMap[type] || ''
       }
     },
     created() {

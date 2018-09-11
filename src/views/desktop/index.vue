@@ -16,6 +16,7 @@
     <el-tool-intention @open="layerOpen"></el-tool-intention>
 
     <el-unit @open="layerOpen"></el-unit>
+    <el-rtarded></el-rtarded>
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import ElSmartMenu from './smartMenu.vue'
 import ElStartBar from './startBar.vue'
 import ElToolIntention from './ToolIntention.vue'
 import ElUnit from './unit.vue'
+import ElRtarded from './rtarded.vue'
 import { saveApps } from '@/api/desktop'
 
 export default {
@@ -37,6 +39,7 @@ export default {
     ElStartBar,
     ElToolIntention,
     ElUnit,
+    ElRtarded,
     ElNavBar
   },
   data() {

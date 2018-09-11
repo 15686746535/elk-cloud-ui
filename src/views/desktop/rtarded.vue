@@ -9,7 +9,7 @@
         <i class="icon-tool-remove" @click="show = ''"></i>
       </div>
       <div :style="{height: client.height-85+'px' }">
-        <iframe ref="iframe" width="100%" height="100%" src="http://faqrobot.hz.taeapp.com/robot/ding_pc.html?corpid=ding6edc173cf7bee74835c2f4657eb6378f" frameborder="0"
+        <iframe ref="iframe" width="100%" height="100%" runat="server" src="http://faqrobot.hz.taeapp.com/robot/ding_pc.html?corpid=ding6edc173cf7bee74835c2f4657eb6378f" frameborder="0"
                 style="border:0;"></iframe>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <el-card v-show="!examOption" style="height: 100%; ">
       <el-row :gutter="5" style="height: 50px">
-        <el-col :span="9">
+        <el-col :span="8">
           <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
             <el-radio-button label="1">科目一</el-radio-button>
             <el-radio-button label="2">科目二</el-radio-button>

@@ -484,7 +484,7 @@
                 </el-col>
               </el-row>
             </el-card>
-            <el-card body-style="padding: 10px 20px;"  shadow="never" style="height:50px; border-radius:0 0 4px 0;">
+            <el-card body-style="padding: 10px 20px;"  shadow="never" style="min-height:50px; border-radius:0 0 4px 0;">
               <div v-if="edit" style="float: right;">
                 <el-button type="info" size="mini" @click="cancel('student')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
                 <el-button type="success" size="mini" :loading="btnLoading" @click="update('student')"><i class="el-icon-fa-save"></i> 保 存</el-button>
@@ -492,11 +492,13 @@
               <div v-if="!edit" style="float: left;">
                 <el-button type="danger" size="mini" @click="outSchool" v-if="permissions.stu_student_update" icon="el-icon-edit">退 学</el-button>
               </div>
-              <div v-if="!edit" style="float: right;">
+              <div v-if="!edit" style="float: right;margin-bottom: 10px;margin-left: 15px;">
                 <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" :loading="btnLoading2" icon="el-icon-search">监管查询</el-button>
                 <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" :loading="btnLoading1" icon="el-icon-search">监管推送</el-button>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
+              </div>
+              <div v-if="!edit" style="float: right;margin-bottom: 10px;">
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add" icon="el-icon-fa-book">约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update" icon="el-icon-edit">编 辑</el-button>
@@ -509,12 +511,12 @@
             <el-tab-pane label="考试情况" name="1">
               <el-table :data="examNoteList" stripe style="width: 100%;">
                 <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-                <el-table-column align="center"  label="考试日期">
+                <el-table-column align="center"  label="考试日期" width="100">
                   <template slot-scope="scope">
                     <span>{{ scope.row.examTime | subTime}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center"  label="考试科目">
+                <el-table-column align="center"  label="科目" width="100">
                   <template slot-scope="scope">
                     <span>{{ scope.row.subject | subjectFilter}}</span>
                   </template>
@@ -524,12 +526,19 @@
                     <span><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center"  label="考试结果">
+                <el-table-column align="center"  label="考试结果" width="100">
                   <template slot-scope="scope">
-                    <el-tag v-show="scope.row.examState === '0'" type="info" style="color: #fff;" color="#67C23A">未登记</el-tag>
-                    <el-tag v-show="scope.row.examState === '1'" type="info" style="color: #fff;" color="#67C23A">通 过</el-tag>
-                    <el-tag v-show="scope.row.examState === '2'" type="info" style="color: #fff;" color="#F56C6C">失 败</el-tag>
-                    <el-tag v-show="scope.row.examState === '3'" type="info" style="color: #fff;" color="#E6A23C">缺 考</el-tag>
+
+                    <el-tag v-show="scope.row.examineState === '0'" type="info" style="color: #fff;" color="#67C23A">待审核</el-tag>
+                    <el-tag v-show="scope.row.examineState === '1'" type="info" style="color: #fff;" color="#67C23A">待约考</el-tag>
+                    <el-tag v-show="scope.row.examineState === '2'" type="info" style="color: #fff;" color="#67C23A">约考成功</el-tag>
+                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '0'" type="info" style="color: #fff;" color="#67C23A">未登记</el-tag>
+                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '1'" type="info" style="color: #fff;" color="#67C23A">通 过</el-tag>
+                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '2'" type="info" style="color: #fff;" color="#F56C6C">失 败</el-tag>
+                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '3'" type="info" style="color: #fff;" color="#E6A23C">缺 考</el-tag>
+                    <el-tag v-show="scope.row.examineState === '4'" type="info" style="color: #fff;" color="#67C23A">报考失败</el-tag>
+                    <el-tag v-show="scope.row.examineState === '5'" type="info" style="color: #fff;" color="#67C23A">审核失败</el-tag>
+                    <el-tag v-show="scope.row.examineState === '6'" type="info" style="color: #fff;" color="#67C23A">取消约考</el-tag>
                   </template>
                 </el-table-column>
 

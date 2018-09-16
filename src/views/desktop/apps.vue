@@ -2,13 +2,13 @@
   <div>
     <transition :name="'move_'+desktop"  >
       <div style="width: 100%;position: absolute;left:0;" class="apps" :class="desktop==='1'?'desktop-'+ desktop :'hide desktop-'+ desktop" :id="'desktop-'+desktop">
-        <div :id="'desktop-startDrag-'+desktop"  style="position: absolute;z-index: 20;width: 100%;left:0;"
+        <div :id="'desktop-startDrag-'+desktop"  style="position: absolute;z-index: 20;width: 100%;left:0;"  @contextmenu="openMenu($event,1,null)"
              :style="{height: ($store.state.app.client.height - 100) + 'px'}">
         </div>
         <div class="innerDesktop ui-droppable" :style="{height: ($store.state.app.client.height - 100) + 'px',width: ($store.state.app.client.width - 300) + 'px'}"
              style="position: relative;top: 30px;left: 88px;">
           <div class="desktopIcon ui-draggable ui-droppable" v-for="(app,index) in list" v-dragging="{ item: app, list: list, group: 'desktop_' + desktop }"  @click="layerOpen(app)"
-               :app="index" :title="app.name"  :style="appStyle(index)" style="position: absolute;margin: 0px;z-index: 21;">
+               :app="index" :title="app.name"  :style="appStyle(index)"  @contextmenu="openMenu($event,2,index)" style="position: absolute;margin: 0px;z-index: 21;">
             <span class="icon" :app="index" >
               <div class="txInfo" :app="index"  v-if="app.msgCount > 0">{{app.msgCount}}</div>
               <img :src="app.icon"  :app="index"/>
@@ -16,7 +16,7 @@
             <div class="text" :app="index"><span :app="index">{{app.name}}</span><s></s></div>
           </div>
           <!-- 添加按钮 -->
-          <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)"  :app="-1" title="添加" :style="setAddOffset" style="position: absolute;margin: 0px;z-index: 21;">
+          <div class="desktopIcon ui-draggable ui-droppable" @click="layerOpen(add)" :app="-1" title="添加"  @contextmenu="openMenu($event,3, -1)"  :style="setAddOffset" style="position: absolute;margin: 0px;z-index: 21;">
             <span class="icon" :app="-1" ><img src="../../../static/icon/add_icon.png"  :app="-1"/></span>
             <div class="text" :app="-1"><span :app="-1">添加</span><s></s></div>
           </div>
@@ -87,6 +87,11 @@ export default {
         top: row * 123 + 'px',
         left: column * 131 + 'px'
       }
+    },
+    openMenu(ev, index, appid) {
+      this.$store.dispatch('setSmartMenu', index)
+      this.$store.dispatch('setAppIndex', appid)
+      this.$emit('openMenu', ev)
     },
     // 移动桌面
     desktopSwitch(desktop) {

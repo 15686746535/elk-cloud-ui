@@ -111,7 +111,7 @@ export const anonList = [-1086, 10008, 10001, 30100, 21000]
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}
  */
 export const addApp = [
-  { id: -1086, desktop: '1', pid: -9999, params: [], name: '添加', content: _import('modules/stu/revisit'), icon: getIcon('icon_add'), msgCount: 0, childItem: [] },
+  { id: -1086, desktop: '1', pid: -9999, params: [], name: '添加1111', content: _import('modules/stu/revisit'), icon: getIcon('icon_add'), msgCount: 0, childItem: [] },
 ]
 /**
  * 权限过滤器

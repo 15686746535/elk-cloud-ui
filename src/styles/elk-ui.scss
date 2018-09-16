@@ -115,6 +115,11 @@
   position: absolute;
   z-index: 201105;
 }
+#smartMenu_body{
+  //-webkit-transition: all .5s ease;
+  //-moz-transition: all .5s ease;
+  //transition: all .5s ease;
+}
 /* 右键菜单样式*/
 .smart_menu_body {
   padding: 1px;

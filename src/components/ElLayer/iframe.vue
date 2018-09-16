@@ -8,7 +8,7 @@
 -->
 <template lang="html">
     <div :id="options.id" :class="isMax?'vl-notify-max':'vl-notify-default'" class="vl-notify vl-notify-main vl-notify-alert vl-notify-iframe"  @mousemove="move" @mouseup="moveEnd"
-         @focus="resetZIndex" tabindex="1" :style="{left:left,top:top, margin:options.offset[2],zIndex:zindex, width: width, height: height}" style="z-index: 66;">
+         @focus="resetZIndex" tabindex="1" :style="{left:left,top:top, margin:options.offset[2],zIndex:zindex, width: width, height: height}" style="z-index: 66;" @click="closeMenu" @contextmenu="openMenu" >
         <h2 class="vl-notice-title" @mousedown="moveStart" @dblclick="windowFull">{{options.title}}
             <i @click="close" :class="isClose?'el-icon-loading':'icon-remove'"></i>
             <i class="icon-full" @click="windowFull"></i>
@@ -120,6 +120,23 @@ export default {
       this.instance.vm = this.instance.$mount()
       document.getElementById(this.id).appendChild(this.instance.vm.$el)
       this.options.layer.instancesVue[this.options.id].iframe = this.instance.vm
+    },
+    // 桌面点击事件
+    closeMenu(e) {
+      // 监听点击开始按钮 打开、关闭开始菜单
+      document.getElementById('start_item').style.display = e.target.id === 'start_btn' ? 'block' : 'none'
+      // 关闭鼠标右键菜单
+      document.getElementById('smartMenu_body').style.display = 'none'
+    },
+    openMenu(ev) {
+      this.$parent.content.parent.$store.dispatch('setSmartMenu', 4)
+      this.$parent.content.parent.$store.dispatch('setAppIndex', null)
+      var oEvent = ev || even
+      var oUl = document.getElementById('smartMenu_body')
+      // 一定要加px，要不然chrom不认
+      oUl.style.top = oEvent.clientY + 'px'
+      oUl.style.left = oEvent.clientX + 'px'
+      oUl.style.display = 'block'
     },
     windowFull() {
       if (this.isMax) {

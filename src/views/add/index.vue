@@ -4,18 +4,22 @@
       <table class="TableBlock title" width="100%" align="center">
         <tbody><tr><td class="TableHeader" @click="openType(index)">{{type.name}}</td></tr></tbody>
       </table>
-      <table class="TableBlock" v-show="type.show"  width="100%" align="center" :id="'table_' + type.type">
-        <tbody>
-        <tr v-for="i in typeFilter(type.type)">
-          <td v-for="app in listFilter(i, type.type)" align="left">
-            <div class="app-div" :class="app.isChoice?'selected':''" @click="selected(app, $event)">
-              <img :src="app.icon" />
-              <p>{{app.name}}</p>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <el-collapse-transition>
+        <div v-show="type.show">
+          <table class="TableBlock"   width="100%" align="center" :id="'table_' + type.type">
+            <tbody>
+            <tr v-for="i in typeFilter(type.type)">
+              <td v-for="app in listFilter(i, type.type)" align="left">
+                <div class="app-div" :class="app.isChoice?'selected':''" @click="selected(app, $event)">
+                  <img :src="app.icon" />
+                  <p>{{app.name}}</p>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </el-collapse-transition>
     </div>
   </div>
 </template>

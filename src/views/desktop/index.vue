@@ -1,9 +1,10 @@
 <template>
-  <div class="app-desktop calendar-list-desktop ba-colour"  :style="{height: $store.state.app.client.height + 'px',background: 'url('+desktopBg+') center center / cover no-repeat'}" @click="desktopClick" >
+  <div class="app-desktop calendar-list-desktop ba-colour"  :style="{height: $store.state.app.client.height + 'px',background: 'url('+desktopBg+') center center / cover no-repeat'}"
+       @click="desktopClick">
     <!--桌面1-->
-    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen" @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch"></el-apps>
+    <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen" @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch" @openMenu="openMenu"></el-apps>
     <!--桌面2-->
-    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"  @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch"></el-apps>
+    <el-apps  :list="desktopTwoList" desktop="2" @open="layerOpen"  @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch" @openMenu="openMenu"></el-apps>
     <!--任务栏-->
     <div class="vl-notify-task" ></div>
     <!--鼠标右键菜单-->
@@ -16,6 +17,7 @@
     <el-tool-intention @open="layerOpen"></el-tool-intention>
 
     <el-unit @open="layerOpen"></el-unit>
+    <el-dashboard @open="layerOpen"></el-dashboard>
     <el-rtarded></el-rtarded>
   </div>
 </template>
@@ -28,6 +30,7 @@ import ElSmartMenu from './smartMenu.vue'
 import ElStartBar from './startBar.vue'
 import ElToolIntention from './ToolIntention.vue'
 import ElUnit from './unit.vue'
+import ElDashboard from './dashboard.vue'
 import ElRtarded from './rtarded.vue'
 import { saveApps } from '@/api/desktop'
 
@@ -40,6 +43,7 @@ export default {
     ElToolIntention,
     ElUnit,
     ElRtarded,
+    ElDashboard,
     ElNavBar
   },
   data() {
@@ -85,6 +89,14 @@ export default {
       document.getElementById('start_item').style.display = e.target.id === 'start_btn' ? 'block' : 'none'
       // 关闭鼠标右键菜单
       document.getElementById('smartMenu_body').style.display = 'none'
+    },
+    openMenu(ev) {
+      var oEvent = ev || even
+      var oUl = document.getElementById('smartMenu_body')
+      // 一定要加px，要不然chrom不认
+      oUl.style.top = oEvent.clientY + 'px'
+      oUl.style.left = oEvent.clientX + 'px'
+      oUl.style.display = 'block'
     },
     // 移动桌面
     desktopSwitch(desktop) {

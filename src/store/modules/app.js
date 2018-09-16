@@ -12,6 +12,8 @@ const app = {
     prohibit: [], // 禁止关闭的窗口
     loading: false,
     spread: null,
+    smartMenu: 1, // 智能右键菜单，1桌面，2应用，3.添加应用，4。还没写
+    appIndex: null, // 右键点击应用的索引
     client: {
       height: 0, /* 页面高度*/
       width: 0 /* 页面宽度*/
@@ -28,6 +30,12 @@ const app = {
     },
     PUSH_PROHIBIT: (state, id) => {
       state.prohibit.push(id)
+    },
+    SET_SMARTMENU: (state, smartMenu) => {
+      state.smartMenu = smartMenu
+    },
+    SET_APPINDEX: (state, appIndex) => {
+      state.appIndex = appIndex
     },
     REMOVE_PROHIBIT: (state, id) => {
       var index = state.prohibit.indexOf(id)
@@ -71,6 +79,12 @@ const app = {
     },
     setLoading: ({ commit }, loading) => {
       commit('SET_LOADING', loading)
+    },
+    setSmartMenu: ({ commit }, smartMenu) => {
+      commit('SET_SMARTMENU', smartMenu)
+    },
+    setAppIndex: ({ commit }, appIndex) => {
+      commit('SET_APPINDEX', appIndex)
     },
     setSpread: ({ commit }, spread) => {
       commit('SET_SPREAD', spread)

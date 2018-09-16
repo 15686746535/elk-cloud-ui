@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <el-card v-show="!examOption" style="height: 100%; ">
       <el-row :gutter="5" style="height: 50px">
-        <el-col :xs="7" :sm="7" :md="8" :lg="12" :xl="13">
+        <el-col :span="9">
           <el-radio-group size="mini" @change="handleSubject" v-model="listQuery.subject">
             <el-radio-button label="1">科目一</el-radio-button>
             <el-radio-button label="2">科目二</el-radio-button>
@@ -10,17 +10,20 @@
             <el-radio-button label="4">科目四</el-radio-button>
           </el-radio-group>
         </el-col>
-        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6">
+        <el-col :span="6">
           <el-date-picker value-format="timestamp" size="mini" style="width: 100%;" v-model="listQuery.interval" type="daterange" align="left" unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </el-col>
-        <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="4">
+        <el-col :span="4">
           <span v-show="'1' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field1" placeholder="科目一考试场地"></dict></span>
           <span v-show="'2' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field2" placeholder="科目二考试场地"></dict></span>
           <span v-show="'3' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field3" placeholder="科目三考试场地"></dict></span>
           <span v-show="'4' === listQuery.subject"><dict size="mini" v-model="listQuery.examField" dictType="dict_exam_field4" placeholder="科目四考试场地"></dict></span>
         </el-col>
-        <el-col :xs="3" :sm="3" :md="3" :lg="2" :xl="1">
+        <el-col :span="4">
+          <el-input @keyup.enter.native="searchClick" size="mini" placeholder="学员姓名/电话/身份证" v-model="listQuery.stuCondition"></el-input>
+        </el-col>
+        <el-col :span="1">
           <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
         </el-col>
       </el-row>
@@ -29,7 +32,7 @@
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column align="center"  label="科目">
           <template slot-scope="scope">
-            <span>{{scope.row.subject == 1?'科目一':scope.row.subject == 2?'科目二':scope.row.subject == 3?'科目三':scope.row.subject == 4?'科目四':''}}</span>
+            <span>{{scope.row.subject | subjectFilter}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center"  label="考试时间">
@@ -510,6 +513,7 @@
           interval: [],
           beginTime: null,
           endTime: null,
+          stuCondition: null,
           examField: null
         },
         tableKey: 0,

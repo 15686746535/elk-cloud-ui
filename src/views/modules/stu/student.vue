@@ -526,6 +526,7 @@
                 </el-table-column>
                 <el-table-column align="center"  label="考试结果">
                   <template slot-scope="scope">
+                    <el-tag v-show="scope.row.examState === '0'" type="info" style="color: #fff;" color="#67C23A">未登记</el-tag>
                     <el-tag v-show="scope.row.examState === '1'" type="info" style="color: #fff;" color="#67C23A">通 过</el-tag>
                     <el-tag v-show="scope.row.examState === '2'" type="info" style="color: #fff;" color="#F56C6C">失 败</el-tag>
                     <el-tag v-show="scope.row.examState === '3'" type="info" style="color: #fff;" color="#E6A23C">缺 考</el-tag>
@@ -1814,7 +1815,7 @@
       /* 考试日志 */
       getExam() {
         if (this.student.studentId) {
-          examFetchList({ studentId: this.student.studentId, examState: 'exam_note_true' }).then(response => {
+          examFetchList({ studentId: this.student.studentId, examState: 'exam_note_all' }).then(response => {
             this.examNoteList = response.data.data.list
           })
         }

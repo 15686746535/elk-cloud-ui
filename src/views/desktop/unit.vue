@@ -9,7 +9,7 @@
       </div>
       <div class="unit_body" @dblclick="layerOpen">
         <div class="progress">
-          <el-progress type="circle" :percentage="percentage" :width="90" :stroke-width="12" title="本周计划招生完成率" color="#67C23A" @focus="saveDesktop" ></el-progress>
+          <el-progress type="circle" :percentage="percentage" :width="90" :stroke-width="12" title="本周计划招生完成率" color="#67C23A" ></el-progress>
         </div>
       </div>
       <div class="unit_footer">
@@ -62,8 +62,6 @@ export default {
       this.plan = this.progress.plan
       var plan = this.progress.plan
       var complete = this.progress.complete
-      console.log(plan)
-      console.log(complete)
       if (!plan || isNaN(plan)) return 0
       if (!complete || isNaN(complete)) complete = 0
       return Math.round(complete / plan * 100)
@@ -107,9 +105,6 @@ export default {
         })
       }
       this.edit = false
-    },
-    saveDesktop() {
-      this.$message.error('5454545')
     }
   }
 }

@@ -1574,7 +1574,7 @@
           type_4: '可约考',
           type_5: '明日约考（科目三理论部分需和科目三道路驾驶一起上报公安方可考试）'
         }
-        return statusMap[type] || ''
+        return statusMap[type] || type
       }
     },
     created() {

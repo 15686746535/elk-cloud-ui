@@ -30,7 +30,7 @@
         <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="resetHome">刷新桌面</a></li>
         <!--<li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" >桌面设置</a></li>-->
         <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="layerOpen(theme)">主题设置</a></li>
-        <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="resetHome">重新加载</a></li>
+        <!--<li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="handleClipboard">复制</a></li>-->
         <li class="smart_menu_li_separate" v-show="!appIndex"></li>
         <li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" @click="logout">退出系统</a></li>
       </ul>
@@ -41,6 +41,7 @@
 <script>
 import defect from '@/views/404.vue'
 import theme from '@/views/theme'
+import { handleClipboard } from '@/utils/clipboard'
 
 export default {
   name: 'el-nav-bar',
@@ -111,6 +112,8 @@ export default {
         iframe[n].style.display = 'none'
       }
     },
+    handleClipboard() {
+    },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
@@ -118,6 +121,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

@@ -30,7 +30,7 @@
           <li class="smart_menu_li"  v-show="$store.state.app.smartMenu === 1 || $store.state.app.smartMenu === 4"><a class="smart_menu_a" @click="resetHome">刷新</a></li>
           <!--<li class="smart_menu_li" v-show="!appIndex"><a class="smart_menu_a" >桌面设置</a></li>-->
           <li class="smart_menu_li" v-show="$store.state.app.smartMenu === 1"><a class="smart_menu_a" @click="layerOpen(theme)">主题设置</a></li>
-          <!--<li class="smart_menu_li" v-show="$store.state.app.smartMenu === 4"><a class="smart_menu_a" @click="handleClipboard">复制</a></li>-->
+          <li class="smart_menu_li" v-show="$store.state.app.smartMenu === 4"><a class="smart_menu_a" @click="handleClipboard">复制</a></li>
           <li class="smart_menu_li_separate" v-show="$store.state.app.smartMenu === 1 || $store.state.app.smartMenu === 4"></li>
           <li class="smart_menu_li" v-show="$store.state.app.smartMenu === 1 || $store.state.app.smartMenu === 4"><a class="smart_menu_a" @click="logout">退出系统</a></li>
         </ul>
@@ -41,7 +41,6 @@
 <script>
 import add from '@/views/add/index.vue'
 import theme from '@/views/theme'
-import { handleClipboard } from '@/utils/clipboard'
 
 export default {
   name: 'el-nav-bar',
@@ -103,6 +102,9 @@ export default {
     resetHome() {
       location.reload()
     },
+    handleClipboard() {
+      this.$message.error('请按Ctrl+C复制！')
+    },
     showHome() {
       var a = document.getElementsByClassName('selected')
       for (var i = 0; i < a.length; i++) {
@@ -112,8 +114,6 @@ export default {
       for (var n = 0; n < iframe.length; n++) {
         iframe[n].style.display = 'none'
       }
-    },
-    handleClipboard() {
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {

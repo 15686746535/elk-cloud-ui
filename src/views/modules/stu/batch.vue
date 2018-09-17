@@ -69,7 +69,7 @@
         </el-table-column>
 
       </el-table>
-      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
+      <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page" background
                        style="float:left;"
@@ -89,7 +89,7 @@
       <el-button @click="close" size="small" type="danger" style="position: absolute;z-index: 66;right: 40px;top: 54px;">返回</el-button>
       <el-tabs body-style="padding:0;" v-model="bespeakTabs" type="border-card" @tab-click="handleField" style="height: 100%; ">
         <el-tab-pane name="all" label="申请名单">
-          <el-table :data="examBespeak" :height="tableHeight - 160" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 180" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员" width="100">
               <template slot-scope="scope">
@@ -173,7 +173,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="0" label="待审核" :disabled="!permissions.stu_exam_examine">
-          <el-table :data="examBespeak" :height="tableHeight - 160" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 180" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员" width="100">
@@ -235,7 +235,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="1" label="待约考" :disabled="!permissions.stu_exam_bespeak">
-          <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 180"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员" width="100">
@@ -296,7 +296,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="2" label="已约考" :disabled="!permissions.stu_exam_bespeak_ok">
-          <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 180"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
             <el-table-column align="center"  label="学员" width="100">
@@ -357,7 +357,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane name="3" label="考试名单" :disabled="!permissions.stu_exam_roster">
-          <el-table :data="examBespeak" :height="tableHeight - 160"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+          <el-table :data="examBespeak" :height="tableHeight - 180"  @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
             <el-table-column type="selection" class="selection" align="center" prop='uuid'></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="40"></el-table-column>
             <el-table-column align="center"  label="学员" width="100">
@@ -412,19 +412,29 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <div style="margin-top: 10px;">
-          <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
-          <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'" style="float: left"  @click="operation('5','examCancel','warning','审核失败?')" size="small" type="danger">失败</el-button>
-          <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'"  style="float: right"  @click="operation('1','examExamine',null,null)" size="small" type="success">通过</el-button>
-          <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="operation('0','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
-          <el-button v-if="studentListQuery.examineState === '1'" style="float: right" @click="operation('2','examExamine',null,null)" size="small" type="success" >已约</el-button>
+        <div style="margin-top: 10px;height: 40px;"  >
+          <div v-show="!examBespeakLoading" class="pagination-container" style="margin-top: 5px;margin-right: 20px;">
+            <el-pagination @size-change="handleSizeExamBespeak" @current-change="handleCurrentExamBespeak"
+                           :current-page.sync="studentListQuery.page" background
+                           style="float:left;"
+                           :page-sizes="[10,20,30]" :page-size="studentListQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="examBespeakTotal">
+            </el-pagination>
+          </div>
+          <div v-show="!examBespeakLoading">
+            <!-- 0默认审核 1是待约考 2是成功约考 3报考成功 4报考失败 5审核失败  -->
+            <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'" style="float: left"  @click="operation('5','examCancel','warning','审核失败?')" size="small" type="danger">失败</el-button>
+            <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'"  style="float: right"  @click="operation('1','examExamine',null,null)" size="small" type="success">通过</el-button>
+            <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="operation('0','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
+            <el-button v-if="studentListQuery.examineState === '1'" style="float: right" @click="operation('2','examExamine',null,null)" size="small" type="success" >已约</el-button>
 
-          <el-button v-if="studentListQuery.examineState === '2'" style="float: left" @click="operation('4','examExamine','warning','确定约考失败?')" size="small" type="danger" >失败</el-button>
-          <el-button v-if="studentListQuery.examineState === '2'" style="float: left;margin-left: 20px;" @click="operation('1','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
-          <el-button v-if="studentListQuery.examineState === '2'" style="float: right" @click="operation('3','examExamine',null,null)" size="small" type="success" >成功</el-button>
+            <el-button v-if="studentListQuery.examineState === '2'" style="float: left" @click="operation('4','examExamine','warning','确定约考失败?')" size="small" type="danger" >失败</el-button>
+            <el-button v-if="studentListQuery.examineState === '2'" style="float: left;margin-left: 20px;" @click="operation('1','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
+            <el-button v-if="studentListQuery.examineState === '2'" style="float: right" @click="operation('3','examExamine',null,null)" size="small" type="success" >成功</el-button>
 
-          <el-button v-if="studentListQuery.examineState === '3'" style="float: left" @click="operation('6','examCancel','warning','是否取消约考?')" size="small" type="danger">取消约考</el-button>
-          <el-button v-if="studentListQuery.examineState === '3'"  style="float: right" type="primary" size="small" :loading="expLoading" @click="exportExamList">导出名单</el-button>
+            <el-button v-if="studentListQuery.examineState === '3'" style="float: left" @click="operation('6','examCancel','warning','是否取消约考?')" size="small" type="danger">取消约考</el-button>
+            <el-button v-if="studentListQuery.examineState === '3'"  style="float: right" type="primary" size="small" :loading="expLoading" @click="exportExamList">导出名单</el-button>
+          </div>
         </div>
       </el-tabs>
     </el-card>
@@ -530,6 +540,7 @@
         btnLoading: false,
         expLoading: false,
         examBespeak: [],
+        examBespeakTotal: null,
         bespeakTabs: 'all',
         examBespeakList: {
           examNoteList: [],
@@ -542,7 +553,7 @@
         },
         studentListQuery: {
           page: 1,
-          limit: 0,
+          limit: 20,
           examId: null,
           examineState: '0',
           categoryId: null,
@@ -604,6 +615,14 @@
           console.log(data)
         })
       },
+      handleSizeExamBespeak(val) {
+        this.listQuery.limit = val
+        this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+      },
+      handleCurrentExamBespeak(val) {
+        this.listQuery.page = val
+        this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+      },
       handleSizeChange(val) {
         this.listQuery.limit = val
         this.getList()
@@ -637,6 +656,8 @@
         this.examBespeakList.subject = this.listQuery.subject
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list
+          this.examBespeakTotal = response.data.data.totalCount
+          console.log(response.data.data)
           this.examBespeakLoading = false
         })
         // this.examBespeakList.examId = examId
@@ -737,6 +758,7 @@
       },
       // 根据状态查询约考学员
       handleField(state) {
+        this.studentListQuery.page = 1
         this.studentListQuery.examineState = state.name
         if (state.name === 'all') this.studentListQuery.examineState = null
         this.see(this.studentListQuery.examId, this.studentListQuery.examineState)

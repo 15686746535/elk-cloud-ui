@@ -15,12 +15,13 @@ export default {
     return {
       edit: false,
       plan: {
-        mine: { value: 0, name: '目标：0\n完成：0' },
-        team: { value: 0, name: '目标：0\n完成：0' }
+        mine: { value: 0, name: '目标：未设置\n完成：0' },
+        team: { value: 0, name: '目标：未设置\n完成：0' }
       }
     }
   },
   created() {
+    this.getPlan()
   },
   mounted() {
   },
@@ -28,7 +29,9 @@ export default {
     getPlan() {
       getPlan().then(response => {
         if (response.data.code === 0) {
-          this.progress = response.data.data
+          this.plan = response.data.data
+          console.log('*************')
+          console.log(this.plan)
         }
       })
     }

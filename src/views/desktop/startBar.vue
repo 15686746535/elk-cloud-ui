@@ -50,6 +50,7 @@
 <script>
 import defect from '@/views/404.vue'
 import { mapGetters } from 'vuex'
+import target from '@/views/modules/upms/target.vue'
 
 export default {
   name: 'el-start-bar',
@@ -58,6 +59,7 @@ export default {
   data() {
     return {
       defect: { id: -9999999, name: '没找到', content: defect, icon: '../../../static/icon/defect.png' },
+      target: { id: 'target', name: '计划任务', content: target, icon: '../../../static/icon/task.png' },
       index: 0,
       msg: {
         1: '开发中...',
@@ -88,7 +90,7 @@ export default {
     unit(i) {
       switch (i) {
         case 1:
-
+          this.layerOpen(this.target)
           break
         case 2:
           this.amuse()

@@ -33,13 +33,15 @@
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
+
+        <el-button class="filter-item" type="primary" style="float: right;margin-right: 15px;margin-bottom: 15px"  @click="savePlan">设置我的本月计划</el-button>
       </div>
     </el-card>
   </div>
 </template>
 
 <script>
-  import { getPlanList } from '@/api/upms/user'
+  import { getPlanList, savePlan } from '@/api/upms/user'
   import { mapGetters } from 'vuex'
   import { removeAllSpace } from '@/utils/validate'
 
@@ -83,6 +85,18 @@
         if (!plan || isNaN(plan)) return '0%'
         if (!complete || isNaN(complete)) complete = 0
         return Math.round(complete / plan * 100) + '%'
+      },
+      savePlan() {
+        this.$prompt('请输入本月计划', '设置我的本月计划', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^\d{1,}$/,
+          inputErrorMessage: '格式不正确'
+        }).then(({ value }) => {
+          savePlan(value).then(response => {
+            this.getList()
+          })
+        })
       },
       getList() {
         this.listLoading = true

@@ -719,19 +719,19 @@
               receivables.push('定转全')
               this.flag = true
               this.btnDisabled = false
-              // this.finance.receivablesType = '定转全'
+              this.finance.receivablesType = '定转全'
             }
             // 费用已经缴清
             if (realPrice < 0) realPrice = 0
             if (realPrice === 0 || receivable === '购买服务包') {
-              // this.finance.receivablesType = '购买服务包'
+              this.finance.receivablesType = '购买服务包'
               this.clean()
               this.flag = false
               // 已经购买的服务包
               this.finance.financeList = []
               this.finance.financeIdList = []
             }
-            // this.setReceivablesList(receivables)
+            this.setReceivablesList(receivables)
             this.loading = false
           } else {
             this.flag = false
@@ -742,7 +742,7 @@
           }
           this.loading = false
         })
-        this.setReceivablesList(['全款', '定金', '定转全', '购买服务包'])
+        // this.setReceivablesList(['全款', '定金', '定转全', '购买服务包'])
       },
       // 获取可选的收费方式
       setReceivablesList(optional) {
@@ -897,6 +897,12 @@
         if (!this.finance.studentId) {
           this.$message.error('未选择学员，无法保存！')
           return false
+        }
+        if (this.finance.receivablesType === '全款' || this.finance.receivablesType === '购买服务包' || this.finance.receivablesType === '定金') {
+          if (!this.finance.financeIdList || this.finance.financeIdList.length === 0) {
+            this.$message.error('未选择服务包，无法保存！')
+            return false
+          }
         }
         this.finance.periodcard = this.periodcard ? '1' : '0'
         this.finance.healthform = this.healthform ? '1' : '0'

@@ -5,7 +5,7 @@
       <el-button-group v-if="pageShow==='bill'">
         <el-button type="warning" size="mini"  v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
         <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>
-        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
+        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&finance.money>0&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
         <el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>
       </el-button-group>
 
@@ -247,7 +247,7 @@
                     {{payType.mode}}：
                   </span>
                   <!-- -->
-                  <el-input-number v-model="payType.money" controls-position="right" :min="0" size="small" class="money-input-number"
+                  <el-input-number v-model="payType.money" controls-position="right" size="small" class="money-input-number"
                                    :disabled="(index === 0 && finance.receivablesType!='定金' ) || pageLevel==='info'"
                                    :class="payType.money!==0?'hasMoney':''"
                                    @change="actualMoneyCalculation" style="border: none; outline:none;width: 50px;border-bottom: #dcdfe6 1px solid;font-size: 12px;color: #606266;height: 23px">
@@ -512,7 +512,6 @@
       },
       getService(chargeId) {
         this.loading = true
-        var that = this
         getServiceByChargeId(chargeId).then(response => {
           var finance = response.data.data
           var payTypeList = [
@@ -630,7 +629,6 @@
           }
         })
       },
-      // 审核
       updateFinaceState(chargeid, state) {
         // console.log(dat,row)
         var dat = {

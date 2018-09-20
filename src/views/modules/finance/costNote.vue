@@ -11,8 +11,9 @@
         <el-button-group>
           <el-button size="mini" type="warning" v-if="finance&&finance.state==0&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)" icon="el-icon-share">审核</el-button>
           <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)"  icon="el-icon-refresh">反审核</el-button>
-          <el-button size="mini" type="info" v-if="finance&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')" icon="el-icon-edit">修改</el-button>
+          <el-button size="mini" type="info" v-if="finance&&finance.money>0&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')" icon="el-icon-edit">修改</el-button>
           <el-button size="mini" type="danger" v-if="finance&&finance.state==0&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)" icon="el-icon-delete">作废</el-button>
+          <el-button type="danger" size="mini" v-if="finance&&finance.money>0&&permissions.cost_info_examine_write_off&&finance.state!=-1" @click="writeoffHandle(finance.chargeId)" icon="el-icon-delete">冲销</el-button>
           <el-button size="mini" type="primary" @click="download" :loading="downloadLading"  icon="el-icon-download">导出</el-button>
         </el-button-group>
         <!--<el-table-column align="center"  label="操作" width="230">-->
@@ -86,6 +87,7 @@
         <el-table-column align="center" prop="payee" label="制单人" min-width="100"></el-table-column>
         <el-table-column align="center" prop="reviser" label="修订人" min-width="100"></el-table-column>
         <el-table-column align="center" prop="auditor" label="审核人" min-width="100"></el-table-column>
+        <el-table-column align="center" prop="remark" label="备注" min-width="100" show-overflow-tooltip></el-table-column>
       </el-table>
       <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -104,7 +106,7 @@
 <script>
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-  import { getServiceChargeList, updateFinaceState, downloadExcel } from '@/api/finance/service-charge'
+  import { getServiceChargeList, updateFinaceState, writeoff, downloadExcel } from '@/api/finance/service-charge'
   import finance from '@/views/modules/stu/serviceNote.vue'
 
   export default {
@@ -388,6 +390,11 @@
           window.URL.revokeObjectURL(href) // 释放掉blob对象
           this.downloadLading = false
           this.$store.dispatch('removeProhibit', this.layerid)
+        })
+      },
+      writeoffHandle(chargeid) {
+        writeoff(chargeid).then(res => {
+          this.getServiceChargeList()
         })
       },
       updateFinaceStateHandle(chargeid, state) {

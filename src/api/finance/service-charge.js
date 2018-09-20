@@ -67,6 +67,13 @@ export function updateFinaceState(dat) {
   })
 }
 
+export function writeoff(id) {
+  return request({
+    url: '/finance/service/charge/writeoff/' + id,
+    method: 'post'
+  })
+}
+
 export function getServiceByChargeId(chargeId) {
   return request({
     url: '/finance/service/charge/update/' + chargeId,

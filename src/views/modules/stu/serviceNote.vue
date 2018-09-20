@@ -684,6 +684,7 @@
             var receivables = ['购买服务包']
             var periodcard = false
             var healthform = false
+            var isOnly = true
             for (var i = 0; i < list.length; i++) {
               var financeNote = list[i]
               earnestMoney += financeNote.money
@@ -699,6 +700,9 @@
                 } else {
                   originalPrice += finance.price * finance.number
                 }
+              }
+              if (financeNote.receivablesType !== '购买服务包') {
+                isOnly = false
               }
             // aa
             }
@@ -724,12 +728,16 @@
             // 费用已经缴清
             if (realPrice < 0) realPrice = 0
             if (realPrice === 0 || receivable === '购买服务包') {
-              this.finance.receivablesType = '购买服务包'
+              // this.finance.receivablesType = '购买服务包'
               this.clean()
               this.flag = false
               // 已经购买的服务包
               this.finance.financeList = []
               this.finance.financeIdList = []
+            }
+            if (isOnly) {
+              receivables.push('全款')
+              receivables.push('定金')
             }
             this.setReceivablesList(receivables)
             this.loading = false

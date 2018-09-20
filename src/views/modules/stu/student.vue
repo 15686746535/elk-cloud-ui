@@ -581,6 +581,12 @@
                     <p v-for="type in scope.row.payTypeList">{{type.mode + '('+type.money+')'}}</p>
                   </template>
                 </el-table-column>
+                <el-table-column align="left"  label="操作">
+                  <template slot-scope="scope">
+                    <a href="#" @click="writeoffHandle(scope.row.chargeId)" v-if="scope.row.money>0&&scope.row.state!=-1&&scope.row.writeOffFlag==0&&permissions.cost_info_examine_write_off"
+                    style="cursor: pointer;color: -webkit-link;text-decoration: underline;">冲销</a>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="来访跟进信息" name="4">
@@ -1136,6 +1142,7 @@
     getFinanceByStudentId, quaryCourseList, supervisePush } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
+  import { writeoff } from '@/api/finance/service-charge'
 
   import { getUserList } from '@/api/upms/user'
   import { getVehiclePeriodByStudentId, getClassByCoachId, bespeakVehiclePeriod } from '@/api/bespeak/vehicleperiod'
@@ -2062,6 +2069,11 @@
         this.dialogFormBespeak = false
         this.btnLoading = false
         this.besCarDialog = false
+      },
+      writeoffHandle(chargeid) {
+        writeoff(chargeid).then(res => {
+          this.getFinance()
+        })
       },
       /* 约考 */
       batchClick(e, batch) {

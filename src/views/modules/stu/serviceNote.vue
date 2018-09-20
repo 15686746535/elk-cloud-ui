@@ -687,22 +687,24 @@
             var isOnly = true
             for (var i = 0; i < list.length; i++) {
               var financeNote = list[i]
-              earnestMoney += financeNote.money
-              if (!periodcard && earnestMoney.periodcard === '1') periodcard = true
-              if (!healthform && earnestMoney.healthform === '1') healthform = true
-              //
-              for (var a = 0; a < financeNote.financeList.length; a++) {
-                var finance = financeNote.financeList[a]
-                financeIdList.push(finance.categoryId)
-                financeList.push(finance)
-                if (finance.code === '004') {
-                  activityPrice += finance.price * finance.number
-                } else {
-                  originalPrice += finance.price * finance.number
-                }
-              }
               if (financeNote.receivablesType !== '购买服务包') {
                 isOnly = false
+              }
+              if (!periodcard && earnestMoney.periodcard === '1') periodcard = true
+              if (!healthform && earnestMoney.healthform === '1') healthform = true
+              if (financeNote.receivablesType === '定金') {
+                earnestMoney += financeNote.money
+                //
+                for (var a = 0; a < financeNote.financeList.length; a++) {
+                  var finance = financeNote.financeList[a]
+                  financeIdList.push(finance.categoryId)
+                  financeList.push(finance)
+                  if (finance.code === '004') {
+                    activityPrice += finance.price * finance.number
+                  } else {
+                    originalPrice += finance.price * finance.number
+                  }
+                }
               }
             // aa
             }
@@ -723,7 +725,7 @@
               receivables.push('定转全')
               this.flag = true
               this.btnDisabled = false
-              this.finance.receivablesType = '定转全'
+              if (receivable !== '购买服务包') this.finance.receivablesType = '定转全'
             }
             // 费用已经缴清
             if (realPrice < 0) realPrice = 0

@@ -583,8 +583,8 @@
                 </el-table-column>
                 <el-table-column align="left"  label="操作">
                   <template slot-scope="scope">
-                    <a href="#" @click="writeoffHandle(scope.row.chargeId)" v-if="scope.row.money>0&&scope.row.state!=-1&&scope.row.writeOffFlag==0&&permissions.cost_info_examine_write_off"
-                    style="cursor: pointer;color: -webkit-link;text-decoration: underline;">冲销</a>
+                    <span  @click="writeoffHandle(scope.row.chargeId)" v-if="scope.row.money>0&&scope.row.state!=-1&&scope.row.writeOffFlag==0&&permissions.cost_info_examine_write_off"
+                    style="cursor: pointer;color: -webkit-link;text-decoration: underline;">冲销</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -1497,6 +1497,7 @@
         besCarDialog: false,
         batchList: [],
         courseList: [],
+        chargeid: null,
         examBespeak: {
           studentId: null,
           state: 0,
@@ -2071,8 +2072,14 @@
         this.besCarDialog = false
       },
       writeoffHandle(chargeid) {
-        writeoff(chargeid).then(res => {
-          this.getFinance()
+        this.$confirm('冲销操作将会作废此次收费,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          writeoff(chargeid).then(res => {
+            this.getFinance()
+          })
         })
       },
       /* 约考 */

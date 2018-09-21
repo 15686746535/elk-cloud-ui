@@ -93,7 +93,7 @@ export default {
       var dom = null
       for (let i = 0; i < doms.length; i++) {
         var value = parseInt(this.getStyle(doms[i].id, 'z-index'))
-        if (this.id === doms[i].id) {
+        if (this.id + '' === doms[i].id + '') {
           dom = doms[i]
         }
         if (value > max) {

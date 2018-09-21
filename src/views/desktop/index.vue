@@ -33,6 +33,7 @@ import ElUnit from './unit.vue'
 import ElDashboard from './dashboard.vue'
 import ElRtarded from './rtarded.vue'
 import { saveApps } from '@/api/desktop'
+const _import = require('@/router/_import_development')
 
 export default {
   name: 'layout',
@@ -48,6 +49,8 @@ export default {
   },
   data() {
     return {
+      password: { id: 10001, name: '密码修改', content: _import('modules/upms/changepassword') },
+      wechat: { id: 10002, name: '微信绑定', content: _import('modules/upms/wechat') },
       showDesktop: '1'
     }
   },
@@ -77,6 +80,13 @@ export default {
   created() {
   },
   mounted() {
+    var initial = this.$store.state.user.initial
+    if (initial && !initial.wechat) {
+      this.layerOpenMax(this.wechat)
+    }
+    if (initial && initial.password) {
+      this.layerOpenMax(this.password)
+    }
   },
   methods: {
     saveDesktop() {
@@ -115,6 +125,28 @@ export default {
         document.getElementById('switch-2').classList.add('currTab')
       }
     },
+    layerOpenMax(app) {
+      console.log(app)
+      if (app.content) {
+        this.$layer.open({
+          type: 2,
+          id: app.id, // title
+          title: app.name, // title
+          shadeClose: false, // 点击遮罩关闭
+          isMax: true, // 最大显示
+          maxmin: false, // 允许最大最小
+          closeBtn: false, // 显示关闭按钮
+          prohibit: this.$store.state.app.prohibit,
+          tabIcon: app.icon, // 应用图标 任务栏显示
+          shade: false, // 遮罩 默认不显示
+          content: {
+            content: app.content,
+            parent: this, // 当前的vue对象
+            data: app.params || []// props
+          }
+        })
+      }
+    },
     // 打开应用
     layerOpen(app) {
       if (app.content) {
@@ -123,6 +155,8 @@ export default {
           id: app.id, // title
           title: app.name, // title
           shadeClose: false, // 点击遮罩关闭
+          maxmin: true, // 允许最大最小
+          closeBtn: true, // 显示关闭按钮
           prohibit: this.$store.state.app.prohibit,
           tabIcon: app.icon, // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示

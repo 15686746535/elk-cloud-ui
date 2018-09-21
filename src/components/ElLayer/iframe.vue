@@ -8,11 +8,12 @@
 -->
 <template lang="html">
     <div :id="options.id" :class="isMax?'vl-notify-max':'vl-notify-default'" class="vl-notify vl-notify-main vl-notify-alert vl-notify-iframe"  @mousemove="move" @mouseup="moveEnd"
-         @focus="resetZIndex" tabindex="1" :style="{left:left,top:top, margin:options.offset[2],zIndex:zindex, width: width, height: height}" style="z-index: 66;" @click="closeMenu" @contextmenu="openMenu" >
-        <h2 class="vl-notice-title" @mousedown="moveStart" @dblclick="windowFull">{{options.title}}
-            <i @click="close" :class="isClose?'el-icon-loading':'icon-remove'"></i>
-            <i class="icon-full" @click="windowFull"></i>
-            <i class="icon-min" @click="windowMin"></i>
+         @focus="resetZIndex" tabindex="1" :style="{left:left,top:top, margin:options.offset[2],zIndex:zindex, width: width, height: height}" style="z-index: 66;" @click="closeMenu"
+         @contextmenu="openMenu" >
+        <h2 class="vl-notice-title" @mousedown="moveStart" @dblclick="titleWindowFull">{{options.title}}
+            <i @click="close" :class="isClose?'el-icon-loading':'icon-remove'" v-if="closeBtn"></i>
+            <i class="icon-full" @click="windowFull" v-if="maxmin"></i>
+            <i class="icon-min" @click="windowMin" v-if="maxmin"></i>
         </h2>
         <div class="vl-notify-content" :style="contentStyle" :id="id"></div>
     </div>
@@ -24,8 +25,10 @@ import helper from './helper/helper.js'
 export default {
   data() {
     return {
-      isMin: false, // 左移的距离
-      isMax: false, // 左移的距离
+      isMin: false, // 最小
+      isMax: false, // 最大
+      maxmin: this.options.maxmin, // 允许最大最小
+      closeBtn: this.options.closeBtn, // 显示关闭按钮
       width: this.options.area[0],
       height: this.options.area[1],
       left: this.options.offset[0] + 'px',
@@ -80,6 +83,11 @@ export default {
       })
     }
     this.resetZIndex()
+    if (this.options.isMax) {
+      this.height = (document.documentElement.clientHeight - 45) + 'px'
+      this.width = document.documentElement.clientWidth + 'px'
+      this.isMax = true
+    }
   },
   methods: {
     getStyle(el, styleProp) {
@@ -129,14 +137,21 @@ export default {
       document.getElementById('smartMenu_body').style.display = 'none'
     },
     openMenu(ev) {
-      this.$parent.content.parent.$store.dispatch('setSmartMenu', 4)
-      this.$parent.content.parent.$store.dispatch('setAppIndex', null)
-      var oEvent = ev || even
-      var oUl = document.getElementById('smartMenu_body')
-      // 一定要加px，要不然chrom不认
-      oUl.style.top = oEvent.clientY + 'px'
-      oUl.style.left = oEvent.clientX + 'px'
-      oUl.style.display = 'block'
+      if (this.closeBtn) {
+        this.$parent.content.parent.$store.dispatch('setSmartMenu', 4)
+        this.$parent.content.parent.$store.dispatch('setAppIndex', null)
+        var oEvent = ev || even
+        var oUl = document.getElementById('smartMenu_body')
+        // 一定要加px，要不然chrom不认
+        oUl.style.top = oEvent.clientY + 'px'
+        oUl.style.left = oEvent.clientX + 'px'
+        oUl.style.display = 'block'
+      }
+    },
+    titleWindowFull() {
+      if (this.maxmin) {
+        this.windowFull()
+      }
     },
     windowFull() {
       if (this.isMax) {

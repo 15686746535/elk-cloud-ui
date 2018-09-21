@@ -27,6 +27,11 @@ const user = {
     permissions: [],
     defaultList: [],
     intention: {},
+    initial: {
+      password: true,
+      wechat: false
+    },
+    buildWX: {},
     startList: [],
     menuIds: [], // 拥有的菜单id
     desktopOneList: [], // 桌面1显示的菜单
@@ -80,6 +85,9 @@ const user = {
     },
     SET_DESKTOPLIST: (state, desktopList) => {
       state.desktopList = desktopList
+    },
+    SET_INITIAL: (state, initial) => {
+      state.initial = initial
     },
     SET_INTENTION: (state, intention) => {
       state.intention = intention
@@ -157,12 +165,16 @@ const user = {
             commit('SET_AVATAR', data.avatar || '../../../static/img/usreicon_40.png') // 头像
             commit('SET_MENUIDS', data.menuIds || []) // 拥有的菜单
             commit('SET_PERMISSIONS', data.permissions || {}) // 按钮权限集合
-            console.log(showApps)
             commit('SET_DESKTOPONELIST', desktopFilter(showApps, '1') || hasAppList) // 桌面1应用集合
             commit('SET_DESKTOPTWOLIST', desktopFilter(showApps, '2') || []) // 桌面2应用集合
             commit('SET_HASAPPLIST', hasAppList || []) // 拥有的应用集合
             commit('SET_STARTLIST', startFilter(hasAppList)) // 开始菜单
             commit('SET_DEFAULTLIST', defaultMap)// 快速启动
+            var initial = {
+              password: data.initial,
+              wechat: data.buildWX
+            }
+            commit('SET_INITIAL', initial)// 是否为初始密码
             resolve(response)
           } else {
             Message.error('您没有权限！')

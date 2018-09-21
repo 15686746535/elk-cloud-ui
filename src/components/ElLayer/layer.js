@@ -30,6 +30,9 @@ let Notification = (function(vue, globalOption = {
     cancel: '',
     tips: [0, {}], // 支持上右下左四个方向，通过1-4进行方向设定,可以设定tips: [1, '#c00']
     tipsMore: false, // 是否允许多个tips
+    isMax: false, // 最大显示
+    maxmin: true, // 允许最大最小
+    closeBtn: true, // 显示关闭按钮
     shadeClose: true
   }
   self.instances = {}

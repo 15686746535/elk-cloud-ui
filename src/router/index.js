@@ -13,10 +13,10 @@ Vue.use(Router)
  * @type {*[]}
  */
 export const defaultMap = [
-  { id: 'menu17', name: '短消息', content: _import('modules/activiti/notice'), icon: getIcon('msg'), msgCount: 0, childItem: [] },
-  { id: 'menu20', name: '我的日程', content: _import('modules/activiti/schedule'), icon: getIcon('journal'), msgCount: 0, childItem: [] },
-  { id: 'menu21', name: '今日完成', content: _import('modules/activiti/agency'), icon: getIcon('schedule'), msgCount: 0, childItem: [] },
-  { id: 'menu31', name: '计划任务', content: _import('modules/upms/target'), icon: getIcon('task'), msgCount: 0, childItem: [] }
+  { id: 'menu17', name: '短消息', content: _import('404'), icon: getIcon('msg'), msgCount: 0, childItem: [] }, // 'modules/activiti/notice'
+  { id: 'menu20', name: '我的日程', content: _import('404'), icon: getIcon('journal'), msgCount: 0, childItem: [] }, // modules/activiti/schedule
+  { id: 'menu21', name: '今日完成', content: _import('404'), icon: getIcon('schedule'), msgCount: 0, childItem: [] }, // modules/activiti/agency
+  { id: 'menu31', name: '计划任务', content: _import('404'), icon: getIcon('task'), msgCount: 0, childItem: [] } // modules/upms/target
 ]
 /**
  * 开始菜单
@@ -45,14 +45,14 @@ export const appMap = [
   { id: 20400, desktop: '1', type: '1', pid: 20000, params: [], name: '成绩登记', content: _import('modules/stu/grade'), icon: getIcon('app_stu_grade'), msgCount: 0, childItem: [] },
   { id: 21100, desktop: '1', type: '1', pid: 20000, params: [], name: '分配教练', content: _import('modules/stu/coach'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 20600, desktop: '1', type: '1', pid: 20000, params: [], name: '毕业学员', content: _import('modules/stu/graduation'), icon: getIcon('app_stu_graduation'), msgCount: 0, childItem: [] },
-  { id: 20700, desktop: '1', type: '1', pid: 20000, params: [], name: '学员回访', content: _import('modules/stu/revisit'), icon: getIcon('app_stu_revisit'), msgCount: 0, childItem: [] },
-  { id: 20800, desktop: '1', type: '1', pid: 20000, params: [], name: '回访信息', content: _import('modules/stu/revisited'), icon: getIcon('app_stu_revisited'), msgCount: 0, childItem: [] },
-  { id: 80100, desktop: '1', type: '1', pid: 20000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehicle_period'), msgCount: 0, childItem: [] },
+  // { id: 20700, desktop: '1', type: '1', pid: 20000, params: [], name: '学员回访', content: _import('modules/stu/revisit'), icon: getIcon('app_stu_revisit'), msgCount: 0, childItem: [] },
+  // { id: 20800, desktop: '1', type: '1', pid: 20000, params: [], name: '回访信息', content: _import('modules/stu/revisited'), icon: getIcon('app_stu_revisited'), msgCount: 0, childItem: [] },
+  // { id: 80100, desktop: '1', type: '1', pid: 20000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehicle_period'), msgCount: 0, childItem: [] },
   { id: 21000, desktop: '1', type: '1', pid: 20000, params: [], name: '投诉建议', content: _import('modules/stu/complaint'), icon: getIcon('app_stu_complaint'), msgCount: 0, childItem: [] },
   // 客户公客
   { id: 30200, desktop: '1', type: '2', pid: 30000, params: { display: 'list' }, name: '意向信息', content: _import('modules/visit/intention'), icon: getIcon('app_visit_intention'), msgCount: 0, childItem: [] },
   { id: 30201, desktop: '1', type: '2', pid: 30200, params: { display: 'add' }, name: '意向添加', content: _import('modules/visit/intention'), icon: getIcon('app_visit_add'), msgCount: 0, childItem: [] },
-  { id: 30100, desktop: '1', type: '2', pid: 30000, params: [], name: '意向公海', content: _import('modules/visit/distribution'), icon: getIcon('app_visit_distribution'), msgCount: 0, childItem: [] },
+  // { id: 30100, desktop: '1', type: '2', pid: 30000, params: [], name: '意向公海', content: _import('modules/visit/distribution'), icon: getIcon('app_visit_distribution'), msgCount: 0, childItem: [] },
   { id: 30300, desktop: '1', type: '2', pid: 30000, params: [], name: '入学意向', content: _import('modules/visit/enrolled'), icon: getIcon('app_visit_enrolled'), msgCount: 0, childItem: [] },
   { id: 30400, desktop: '1', type: '2', pid: 30000, params: [], name: '关闭意向', content: _import('modules/visit/close'), icon: getIcon('app_visit_close'), msgCount: 0, childItem: [] },
   // 车辆管理
@@ -63,19 +63,19 @@ export const appMap = [
   { id: 60400, desktop: '1', type: '4', pid: 60000, params: [], name: '离职同事', content: _import('modules/upms/quitUser'), icon: getIcon('app_quit_user'), msgCount: 0, childItem: [] },
   { id: 60200, desktop: '1', type: '4', pid: 60000, params: [], name: '部门设置', content: _import('modules/upms/org'), icon: getIcon('app_org'), msgCount: 0, childItem: [] },
   { id: 60300, desktop: '1', type: '4', pid: 60000, params: [], name: '职位设置', content: _import('modules/upms/role'), icon: getIcon('app_role'), msgCount: 0, childItem: [] },
-  { id: 150110, desktop: '1', type: '4', pid: 60000, params: [], name: '接送信息', content: _import('modules/bespeak/shuttle'), icon: getIcon('app_shuttle'), msgCount: 0, childItem: [] },
+  // { id: 150110, desktop: '1', type: '4', pid: 60000, params: [], name: '接送信息', content: _import('modules/bespeak/shuttle'), icon: getIcon('app_shuttle'), msgCount: 0, childItem: [] },
   // 财务
   { id: 70100, desktop: '1', type: '5', pid: 70000, params: [], name: '收费记录', content: _import('modules/finance/costNote'), icon: getIcon('app_cost_info'), msgCount: 0, childItem: [] },
   { id: 70200, desktop: '1', type: '5', pid: 70000, params: [], name: '付款记录', content: _import('modules/finance/payment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   // 统计
-  { id: 120600, desktop: '1', type: '6', pid: 80000, params: [], name: '招生人数统计', content: _import('modules/visualization/recruit'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
-  { id: 120100, desktop: '1', type: '6', pid: 80000, params: [], name: '顾虑统计', content: _import('modules/visualization/worry'), icon: getIcon('app_worrycount'), msgCount: 0, childItem: [] },
-  { id: 120400, desktop: '1', type: '6', pid: 80000, params: [], name: '来访统计', content: _import('modules/visualization/intention'), icon: getIcon('app_intentioncount'), msgCount: 0, childItem: [] },
-  { id: 120200, desktop: '1', type: '6', pid: 80000, params: [], name: '网点统计', content: _import('modules/visualization/enrolSite'), icon: getIcon('app_enrol_site'), msgCount: 0, childItem: [] },
-  { id: 120500, desktop: '1', type: '6', pid: 80000, params: [], name: '来源统计', content: _import('modules/visualization/source'), icon: getIcon('app_source'), msgCount: 0, childItem: [] },
-  { id: 120300, desktop: '1', type: '6', pid: 80000, params: [], name: '在培统计', content: _import('modules/visualization/subject'), icon: getIcon('app_subject'), msgCount: 0, childItem: [] },
-  { id: 120700, desktop: '1', type: '6', pid: 80000, params: [], name: '招生详情统计', content: _import('modules/visualization/kpi'), icon: getIcon('app_info'), msgCount: 0, childItem: [] },
-  { id: 120800, desktop: '1', type: '6', pid: 80000, params: [], name: '通过率统计', content: _import('modules/visualization/rate'), icon: getIcon('app_rate'), msgCount: 0, childItem: [] },
+  // { id: 120600, desktop: '1', type: '6', pid: 80000, params: [], name: '招生人数统计', content: _import('modules/visualization/recruit'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
+  // { id: 120100, desktop: '1', type: '6', pid: 80000, params: [], name: '顾虑统计', content: _import('modules/visualization/worry'), icon: getIcon('app_worrycount'), msgCount: 0, childItem: [] },
+  // { id: 120400, desktop: '1', type: '6', pid: 80000, params: [], name: '来访统计', content: _import('modules/visualization/intention'), icon: getIcon('app_intentioncount'), msgCount: 0, childItem: [] },
+  // { id: 120200, desktop: '1', type: '6', pid: 80000, params: [], name: '网点统计', content: _import('modules/visualization/enrolSite'), icon: getIcon('app_enrol_site'), msgCount: 0, childItem: [] },
+  // { id: 120500, desktop: '1', type: '6', pid: 80000, params: [], name: '来源统计', content: _import('modules/visualization/source'), icon: getIcon('app_source'), msgCount: 0, childItem: [] },
+  // { id: 120300, desktop: '1', type: '6', pid: 80000, params: [], name: '在培统计', content: _import('modules/visualization/subject'), icon: getIcon('app_subject'), msgCount: 0, childItem: [] },
+  // { id: 120700, desktop: '1', type: '6', pid: 80000, params: [], name: '招生详情统计', content: _import('modules/visualization/kpi'), icon: getIcon('app_info'), msgCount: 0, childItem: [] },
+  // { id: 120800, desktop: '1', type: '6', pid: 80000, params: [], name: '通过率统计', content: _import('modules/visualization/rate'), icon: getIcon('app_rate'), msgCount: 0, childItem: [] },
   // 基础配置
   { id: 40100, desktop: '1', type: '7', pid: 90000, params: [], name: '校区设置', content: _import('modules/basis/campus'), icon: getIcon('app_campus'), msgCount: 0, childItem: [] },
   { id: 40300, desktop: '1', type: '7', pid: 90000, params: [], name: '网点设置', content: _import('modules/basis/enrollDot'), icon: getIcon('app_enroll'), msgCount: 0, childItem: [] },

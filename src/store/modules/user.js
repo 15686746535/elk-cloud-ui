@@ -139,16 +139,16 @@ const user = {
             defaultMap[2].msgCount = 0
             // 任务管理
             defaultMap[3].msgCount = 0
-            data.agencyList.forEach(function(agency) {
-              if (agency.type === '1') {
-                // 日程
-                defaultMap[1].msgCount = agency.count
-              }
-              if (agency.type === '2') {
-                // 短消息
-                defaultMap[0].msgCount = agency.count
-              }
-            })
+            // data.agencyList.forEach(function(agency) {
+            //   if (agency.type === '1') {
+            //     // 日程
+            //     defaultMap[1].msgCount = agency.count
+            //   }
+            //   if (agency.type === '2') {
+            //     // 短消息
+            //     defaultMap[0].msgCount = agency.count
+            //   }
+            // })
             // 修改全局数据
             commit('SET_ROLES', data.roles || []) // 用户角色集合
             commit('SET_DESKTOPBG', data.desktopBg || '/static/bg/01/1.jpg') // 桌面背景

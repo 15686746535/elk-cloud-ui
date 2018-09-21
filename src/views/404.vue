@@ -11,7 +11,7 @@
     },
     data() {
       return {
-        msg: '预留功能位置···'
+        msg: '功能下线···'
       }
     },
     created() {

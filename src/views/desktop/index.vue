@@ -81,7 +81,7 @@ export default {
   },
   mounted() {
     var initial = this.$store.state.user.initial
-    if (initial && !initial.wechat) {
+    if (initial && initial.wechat) {
       this.layerOpenMax(this.wechat)
     }
     if (initial && initial.password) {

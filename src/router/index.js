@@ -95,9 +95,9 @@ export const appMap = [
   // 系统设置
   { id: 10001, desktop: '1', type: '9', pid: 99999, params: [], name: '密码修改', content: _import('modules/upms/changepassword'), icon: getIcon('app_password'), msgCount: 0, childItem: [] },
   { id: 10004, desktop: '1', type: '9', pid: 99999, params: [], name: '系统配置', content: _import('modules/sys/configure'), icon: getIcon('app_configure'), msgCount: 0, childItem: [] },
-  { id: 10005, desktop: '1', type: '9', pid: 99999, params: [], name: '定时任务', content: _import('modules/quartz/job'), icon: getIcon('app_job'), msgCount: 0, childItem: [] },
-  { id: 10006, desktop: '1', type: '9', pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('app_model'), msgCount: 0, childItem: [] },
-  { id: 10007, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
+  { id: 110100, desktop: '1', type: '9', pid: 99999, params: [], name: '定时任务', content: _import('modules/quartz/job'), icon: getIcon('app_job'), msgCount: 0, childItem: [] },
+  { id: 90100, desktop: '1', type: '9', pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('app_model'), msgCount: 0, childItem: [] },
+  { id: 90400, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', type: '9', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
 

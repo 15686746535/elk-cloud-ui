@@ -4,6 +4,14 @@
       <div style="margin-bottom: 15px;">
         <Coach v-model="studentListQuery.fieldCoach" size="mini" coachType="field" placeholder="场训教练" style="width: 150px" ></Coach>
         <Coach v-model="studentListQuery.roadCoach" size="mini" coachType="road" placeholder="路训教练"  style="width: 150px" ></Coach>
+        <el-select size="mini" style="width: 150px" v-model="studentListQuery.subject" clearable filterable placeholder="科目">
+          <el-option
+            v-for="item in subject"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
         <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition" style="width: 150px;"></el-input>
         <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
       </div>
@@ -101,8 +109,17 @@
         studentListQuery: {
           page: 1,
           limit: 20,
+          fieldCoach: null,
+          roadCoach: null,
+          subject: null,
           condition: null
         },
+        subject: [
+          { value: 1, label: '科目一' },
+          { value: 2, label: '科目二' },
+          { value: 3, label: '科目三' },
+          { value: 4, label: '科目四' }
+        ],
         open: false,
         pageHeight: this.area[1],
         pageWidth: this.area[0],
@@ -136,7 +153,14 @@
     methods: {
       getList() {
         this.studentListLoading = true
-        fetchStudentList(this.studentListQuery).then(response => {
+        var query = this.studentListQuery
+        if (query.subject === '') {
+          query.subject = null
+        }
+        if (query.condition === '') {
+          query.condition = null
+        }
+        fetchStudentList(query).then(response => {
           if (response.data.code === 0) {
             this.stuList = response.data.data.list
             this.studentTotal = response.data.data.totalCount

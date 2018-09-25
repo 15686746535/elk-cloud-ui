@@ -22,12 +22,12 @@
           <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
             <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" placeholder="报名点"  ></dict>
           </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
-            <Coach v-model="listQuery.fieldCoach" size="mini" coachType="field" placeholder="场训教练"  ></Coach>
-          </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
-            <Coach v-model="listQuery.roadCoach" size="mini" coachType="road" placeholder="路训教练"  ></Coach>
-          </el-col>
+          <!--<el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">-->
+            <!--<Coach v-model="listQuery.fieldCoach" size="mini" coachType="field" placeholder="场训教练"  ></Coach>-->
+          <!--</el-col>-->
+          <!--<el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">-->
+            <!--<Coach v-model="listQuery.roadCoach" size="mini" coachType="road" placeholder="路训教练"  ></Coach>-->
+          <!--</el-col>-->
           <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
             <el-select style="width: 100%;" size="mini" v-model="listQuery.introducer"  clearable filterable placeholder="介绍人">
               <el-option
@@ -1484,19 +1484,10 @@
           }]
         },
         subject: [
-          {
-            value: 1,
-            label: '科目一'
-          }, {
-            value: 2,
-            label: '科目二'
-          }, {
-            value: 3,
-            label: '科目三'
-          }, {
-            value: 4,
-            label: '科目四'
-          }
+          { value: 1, label: '科目一' },
+          { value: 2, label: '科目二' },
+          { value: 3, label: '科目三' },
+          { value: 4, label: '科目四' }
         ],
         dialogFormBespeak: false,
         besCarDialog: false,

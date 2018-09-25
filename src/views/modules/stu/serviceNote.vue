@@ -483,6 +483,7 @@
         return ''
       },
       getExamineIcon() {
+        if (this.finance.state === '-2') return '/static/icon/icon-writeoff.png'
         if (this.finance.state === '-1') return '/static/icon/icon-fail.png'
         if (this.finance.state === '1') return '/static/icon/icon-adopt.png'
         return ''

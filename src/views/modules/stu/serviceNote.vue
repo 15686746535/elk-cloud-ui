@@ -5,7 +5,7 @@
       <el-button-group v-if="pageShow==='bill'">
         <el-button type="warning" size="mini"  v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
         <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>
-        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&finance.originalPrice>=0&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
+        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&finance.type==='1'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
         <el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>
       </el-button-group>
 

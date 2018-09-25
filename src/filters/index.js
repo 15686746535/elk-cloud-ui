@@ -45,6 +45,18 @@ export function subjectFilter(subject) {
   }
   return typeMap[subject]
 }
+
+export function chargeStateFilter(state) {
+  state = 'state_' + state
+  const typeMap = {
+    'state_0': '未审核',
+    'state_1': '已审核',
+    'state_-1': '已作废',
+    'state_-2': '已冲销'
+  }
+  return typeMap[state]
+}
+
 export function serviceTypeFilter(subject) {
   const typeMap = {
     '1': '一人一车',

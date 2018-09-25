@@ -9,11 +9,12 @@
         <el-input size="mini" @keyup.enter.native="searchClick" placeholder="姓名/身份证/流水号" clearable v-model="listQuery.condition" style="width: 150px;"></el-input>
         <el-button size="mini" type="primary"  @click="searchClick" icon="el-icon-search">搜索</el-button>
         <el-button-group>
-          <el-button size="mini" type="warning" v-if="finance&&finance.state==0&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)" icon="el-icon-share">审核</el-button>
-          <el-button size="mini" type="info" v-if="finance&&finance.state==1&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)"  icon="el-icon-refresh">反审核</el-button>
-          <el-button size="mini" type="info" v-if="finance&&finance.money>0&&finance.state==0&&permissions.cost_info_edit" @click="openFinace(finance,'edit')" icon="el-icon-edit">修改</el-button>
-          <el-button size="mini" type="danger" v-if="finance&&finance.state==0&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)" icon="el-icon-delete">作废</el-button>
-          <el-button type="danger" size="mini" v-if="finance&&finance.money>0&&finance.writeOffFlag==0&&permissions.cost_info_examine_write_off&&finance.state!=-1" @click="writeoffHandle(finance.chargeId)" icon="el-icon-delete">冲销</el-button>
+          <el-button size="mini" type="warning" v-if="finance&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceStateHandle(finance.chargeId,1)" icon="el-icon-share">审核</el-button>
+          <el-button size="mini" type="info" v-if="finance&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceStateHandle(finance.chargeId,0)"  icon="el-icon-refresh">反审核</el-button>
+          <el-button size="mini" type="info" v-if="finance&&finance.type=='1'&&finance.state==='0'&&permissions.cost_info_edit" @click="openFinace(finance,'edit')" icon="el-icon-edit">修改</el-button>
+          <el-button size="mini" type="danger" v-if="finance&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceStateHandle(finance.chargeId,-1)" icon="el-icon-delete">作废</el-button>
+          <el-button type="danger" size="mini" v-if="finance&&finance.type=='1'&&permissions.cost_info_examine_write_off&&finance.state==='1'"
+                     @click="writeoffHandle(finance.chargeId)" icon="el-icon-delete">冲销</el-button>
           <el-button size="mini" type="primary" @click="download" :loading="downloadLading"  icon="el-icon-download">导出</el-button>
         </el-button-group>
         <!--<el-table-column align="center"  label="操作" width="230">-->
@@ -62,9 +63,7 @@
         <!--</el-table-column>-->
         <el-table-column align="center"  prop="state"  label="状态" min-width="90" :filters="stateFilters" :filter-method="filterState" filter-placement="bottom-end">
           <template slot-scope="scope">
-            <span v-if="scope.row.state==='0'">未审核</span>
-            <span v-if="scope.row.state==='1'" >已审核</span>
-            <span v-if="scope.row.state==='-1'">已作废</span>
+            <span>{{scope.row.state | chargeStateFilter}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="introducerName"  label="介绍人" min-width="100" :filters="introducerFilters" :filter-method="filterIntroducer" filter-placement="bottom-end">
@@ -171,7 +170,8 @@
         stateFilters: [
           { text: '未审核', value: '0' },
           { text: '已审核', value: '1' },
-          { text: '已作废', value: '-1' }
+          { text: '已作废', value: '-1' },
+          { text: '已冲销', value: '-2' }
         ],
         // 分页数据
         listQuery: {
@@ -181,7 +181,7 @@
           endTime: null,
           condition: ''
         },
-        finance: null,
+        finance: {},
         total: null,
         downloadLading: false,
         listLoading: false
@@ -201,7 +201,7 @@
     },
     methods: {
       selectRow(selection, row) {
-        this.finance = null
+        this.finance = {}
         if (selection.length === 1) {
           this.finance = selection[0]
         }

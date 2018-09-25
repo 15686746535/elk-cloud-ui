@@ -581,9 +581,14 @@
                     <p v-for="type in scope.row.payTypeList">{{type.mode + '('+type.money+')'}}</p>
                   </template>
                 </el-table-column>
+                <el-table-column align="left"  label="状态">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.state | chargeStateFilter}}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column align="left"  label="操作">
                   <template slot-scope="scope">
-                    <span  @click="writeoffHandle(scope.row.chargeId)" v-if="scope.row.money>0&&scope.row.state!=-1&&scope.row.writeOffFlag==0&&permissions.cost_info_examine_write_off"
+                    <span  @click="writeoffHandle(scope.row.chargeId)" v-if="scope.row.state==='1'&&scope.row.type=='1'&&permissions.cost_info_examine_write_off"
                     style="cursor: pointer;color: -webkit-link;text-decoration: underline;">冲销</span>
                   </template>
                 </el-table-column>
@@ -1822,6 +1827,7 @@
           getFinanceByStudentId(this.student.studentId).then(response => {
             if (response.data.code === 0) {
               var list = response.data.data
+              console.log(list)
               this.financeList = list.filter(function(item) {
                 return item.state !== '-1'
               })

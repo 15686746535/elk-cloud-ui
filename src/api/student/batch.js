@@ -59,3 +59,10 @@ export function exportExamList(query) {
     responseType: 'arraybuffer'
   })
 }
+export function getSuperviseInfo(query) {
+  return request({
+    url: '/supervise/stuInfo',
+    method: 'get',
+    params: query
+  })
+}

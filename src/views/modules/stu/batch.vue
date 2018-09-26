@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div style="height: 100%" class="batch-page">
     <el-card v-show="!examOption" style="height: 100%; ">
       <el-row :gutter="5" style="height: 50px">
         <el-col :span="8">
@@ -61,7 +61,7 @@
         <el-table-column align="center" label="操作" width="240">
           <template slot-scope="scope">
             <!--<el-button-group>-->
-              <el-button size="mini" type="success" @click="look(scope.row.examId)" plain>查 看</el-button>
+              <el-button size="mini" type="success" @click="look(scope.row)" plain>查 看</el-button>
               <el-button size="mini" type="primary" v-if="permissions.stu_exam_update" @click="handleUpdate(scope.row)" plain>编 辑</el-button>
               <el-button size="mini" type="danger" v-if="permissions.stu_exam_del" @click="handleDelete(scope.row)">删 除</el-button>
             <!--</el-button-group>-->
@@ -141,15 +141,7 @@
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
             </el-table-column>
-            <!--:filters="[-->
-            <!--{ text: '报考失败', value: '4' },-->
-            <!--{ text: '审核失败', value: '5' },-->
-            <!--{ text: '待审核', value: '0' },-->
-            <!--{ text: '待约考', value: '1' },-->
-            <!--{ text: '已约考', value: '2' },-->
-            <!--{ text: '报考成功', value: '3' }-->
-            <!--]"-->
-            <!--:filter-method="filterTag" filter-placement="bottom-end"-->
+
             <el-table-column  align="center"
                               label="状态">
               <template slot-scope="scope">
@@ -227,9 +219,10 @@
               </template>
             </el-table-column>
 
-            <el-table-column align="center" label="操作">
+            <el-table-column align="center" label="操作" min-width="220">
               <template slot-scope="scope">
                 <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消</el-button>
+                <el-button size="mini" type="primary" @click="superviseInfo(scope.row)" :loading="superviseLoading" >监管查询</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -450,11 +443,13 @@
         <!--<el-form-item label="人数"  prop="stuCount">-->
           <!--<el-input v-model.number="batch.stuCount" placeholder="人数" ></el-input>-->
         <!--</el-form-item>-->
+
         <el-form-item label="考试时间" prop="examTime">
-          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="考试时间" v-model="batch.examTime"></el-date-picker>
+          <el-date-picker value-format="timestamp" style="width: 100%;" type="date" placeholder="考试时间" v-model="batch.examTime" :picker-options="pickerOptions0"></el-date-picker>
         </el-form-item>
-        <el-form-item label="预约截止日期" prop="expiryTime">
-          <el-date-picker value-format="timestamp" style="width: 100%" type="date" placeholder="预约截止日期" v-model="batch.expiryTime"></el-date-picker>
+
+        <el-form-item label="预约截止日期"  prop="expiryTime">
+          <el-date-picker value-format="timestamp" style="width: 100%;" type="date" placeholder="预约截止日期" :picker-options="pickerOptions1" v-model="batch.expiryTime"></el-date-picker>
         </el-form-item>
 
       </el-form>
@@ -466,23 +461,32 @@
       </div>
     </el-dialog>
 
-
-    <!--<el-dialog :modal="false" :close-on-click-modal="false" @close="closeExamOption" title="考试计划操作" :visible.sync="">-->
-
-      <!---->
-
-    <!--</el-dialog>-->
-
+    <el-dialog :modal="false"  title="监管查询" :close-on-click-modal="false" width="50%" :visible.sync="superviseOpen2" :loading="dgLoading" >
+      <el-table :data="superviseRes.recList" :show-header="false" border style="width: 100%">
+        <el-table-column prop="subject" label="科目">
+          <template slot-scope="scope">
+            <span>{{scope.row.subject | subjectFilter}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  prop="type" label="状态">
+          <template slot-scope="scope">
+            <span :class="'supervise_type_'+scope.row.type">{{scope.row.type | typeFilter}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div v-if="!superviseRes.show">
+        {{superviseRes.error}}
+      </div>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
-  import { getBatchList, delObj, addObj, putObj, exportExamList } from '@/api/student/batch'
+  import { getBatchList, delObj, addObj, putObj, getSuperviseInfo, exportExamList } from '@/api/student/batch'
   import { examFetchList, putExamBespeak } from '@/api/student/examnote'
   import { getFinanceList } from '@/api/finance/service-category'
   import { mapGetters } from 'vuex'
-
   export default {
     name: 'table_batch',
     props: {
@@ -503,18 +507,82 @@
           this.service.name = ''
           this.service.show = false
         }
+      },
+      'batch.examTime': function(val) {
+        if (val) {
+          var now = Date.now()
+          this.pickerOptions1 = {
+            disabledDate(time) {
+              if (time.getTime() < val && time.getTime() > now) {
+                return false
+              } else {
+                return true
+              }
+            }
+          }
+        } else {
+          this.pickerOptions1 = {
+            disabledDate(time) {
+              return time.getTime() < Date.now()
+            }
+          }
+        }
+      },
+      'batch.expiryTime': function(val) {
+        var Time = Date.now() + 1000 * 60 * 60 * 24
+        if (val) {
+          Time = val
+        }
+        this.pickerOptions0 = {
+          disabledDate(time) {
+            if (time.getTime() > Time) {
+              return false
+            } else {
+              return true
+            }
+          }
+        }
       }
     },
     data() {
+      var that = this
+      var expiryValidator = (rule, value, callback) => {
+        if (that.batch.examTime && value >= that.batch.examTime) {
+          callback(new Error('截止日期必须小于开始日期'))
+        } else {
+          callback()
+        }
+      }
       return {
         tableHeight: this.area[1],
         batch: {
-          subject: '1'
+          subject: '1',
+          examTime: null,
+          expiryTime: null
+        },
+        batchInfo: {},
+        dgLoading: false,
+        superviseOpen2: false,
+        superviseRes: {
+          show: true,
+          error: '',
+          recList: []
         },
         list: [],
         financeList: [],
         total: null,
         listLoading: true,
+        pickerOptions0: {
+          disabledDate(time) {
+            return time.getTime() < Date.now() + 1000 * 60 * 60 * 24
+          }
+        },
+        pickerOptions1: {
+          disabledDate(time) {
+            return time.getTime() < Date.now()
+          }
+        },
+        superviseLoading: false,
         examBespeakLoading: true,
         listQuery: {
           page: 1,
@@ -570,9 +638,23 @@
             { required: true, message: '请选择考试时间', trigger: ['blur', 'change'] }
           ],
           expiryTime: [
-            { required: true, message: '请选择预约截止日期', trigger: ['blur', 'change'] }
+            { required: true, message: '请选择预约截止日期', trigger: ['blur', 'change'] },
+            { validator: expiryValidator, trigger: ['blur', 'change'] }
           ]
         }
+      }
+    },
+    filters: {
+      typeFilter(type) {
+        type = 'type_' + type
+        const statusMap = {
+          type_1: '待驾校上报阶段',
+          type_2: '待运管审核',
+          type_3: '--',
+          type_4: '可约考',
+          type_5: '明日约考（科目三理论部分需和科目三道路驾驶一起上报公安方可考试）'
+        }
+        return statusMap[type] || type
       }
     },
     created() {
@@ -645,9 +727,10 @@
       close() {
         this.examOption = false
       },
-      look(examId) {
+      look(exam) {
         this.bespeakTabs = 'all'
-        this.see(examId, null)
+        this.batchInfo = exam
+        this.see(exam.examId, null)
       },
       see(examId, state) {
         this.examBespeakLoading = true
@@ -733,6 +816,30 @@
           })
         }
       },
+      superviseInfo(val) {
+        this.superviseRes.recList = []
+        var stu = {
+          idcardDto: val.idNumber,
+          trainType: val.motorcycleType,
+          phoneDto: val.mobile
+        }
+        this.superviseLoading = true
+        this.dgLoading = true
+        getSuperviseInfo(stu).then(resp => {
+          var res = resp.data
+          if (res.code === 0) {
+            var supervise = JSON.parse(res.data)
+            if (supervise.errorcode === 0) {
+              this.superviseOpen2 = true
+              this.dgLoading = false
+              this.superviseRes.recList = supervise.data.recList
+            } else {
+              this.$message.error(supervise.data)
+            }
+          }
+          this.superviseLoading = false
+        })
+      },
       // 取消约考
       revokeExam(val) {
         this.$confirm('此操作将取消该学员约考, 是否继续?', '提示', {
@@ -764,27 +871,32 @@
         this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
       },
       operation(state, url, type, msg) {
-        if (this.examBespeakList.examNoteList.length === 0) {
-          this.$message.warning('请先选择学员')
-        } else {
-          this.examBespeakList.examineState = state
-          this.examBespeakList.subject = this.listQuery.subject
-          if (msg) {
-            // 'warning'
-            this.$confirm(msg, '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: type | 'warning'
-            }).then(() => {
+        console.log(this.batchInfo)
+        if (this.batchInfo && this.batchInfo.expiryTime <= Date.now()) {
+          if (this.examBespeakList.examNoteList.length === 0) {
+            this.$message.warning('请先选择学员')
+          } else {
+            this.examBespeakList.examineState = state
+            this.examBespeakList.subject = this.listQuery.subject
+            if (msg) {
+              // 'warning'
+              this.$confirm(msg, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: type | 'warning'
+              }).then(() => {
+                putExamBespeak(this.examBespeakList, url).then(() => {
+                  this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+                })
+              })
+            } else {
               putExamBespeak(this.examBespeakList, url).then(() => {
                 this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
               })
-            })
-          } else {
-            putExamBespeak(this.examBespeakList, url).then(() => {
-              this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
-            })
+            }
           }
+        } else {
+          this.$message.warning('该场考试尚未到截止日期，不能操作！')
         }
       },
       // 根据科目查询场地
@@ -849,3 +961,11 @@
     }
   }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+.batch-page{
+  .supervise_type_4{
+    color: #67C23A;
+  }
+}
+</style>
+

@@ -1116,17 +1116,12 @@
       <el-table :data="superviseRes.recList" :show-header="false" border style="width: 100%">
         <el-table-column prop="subject" label="科目">
           <template slot-scope="scope">
-            <span>{{scope.row.subject | subjectFilter}}</span>
+            <span >{{scope.row.subject | subjectFilter}}</span>
           </template>
         </el-table-column>
         <el-table-column  prop="type" label="状态">
           <template slot-scope="scope">
-            <span>{{scope.row.type | typeFilter}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column  prop="pushtime" label="学时" >
-          <template slot-scope="scope">
-            <span>{{scope.row.pushtime}}</span>
+            <span :class="'supervise_type_'+scope.row.type">{{scope.row.type | typeFilter}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -1144,7 +1139,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
   import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122,
-    getFinanceByStudentId, quaryCourseList, supervisePush } from '@/api/student/student'
+    getFinanceByStudentId, quaryCourseList, supervisePush , superviseInfo } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
   import { writeoff } from '@/api/finance/service-charge'
@@ -1640,13 +1635,17 @@
         if (state === '1') {
           this.btnLoading1 = true
           this.superviseOpen1 = true
-          this.supervise.idcard = this.student.idNumber
+          this.supervise.idCard = this.student.idNumber
           this.supervise.subject = parseInt(this.student.state)
+          var that = this
+          setTimeout(function() {
+            that.btnLoading1 = false
+          }, 30000)
           supervisePush(this.supervise).then(response => {
             var data = response.data
             this.btnLoading1 = false
             if (data.code === 0) {
-              var res = data.data
+              var res = JSON.parse(data.data)
               if (res.errorcode === 0) {
                 this.$message.success('推送成功')
               } else {
@@ -1660,16 +1659,16 @@
           this.supervise.idcardDto = this.student.idNumber
           this.supervise.trainType = this.student.motorcycleType
           this.supervise.phoneDto = this.student.mobile
-          supervisePush(this.supervise).then(response => {
+          superviseInfo(this.supervise).then(response => {
             var data = response.data
             this.btnLoading2 = false
             if (data.code === 0) {
-              var res = data.data
-              if (res.errorcode === 0) {
+              var supervise = JSON.parse(data.data)
+              if (supervise.errorcode === 0) {
                 this.superviseOpen2 = true
-                this.superviseRes = res.data
+                this.superviseRes.recList = supervise.data.recList
               } else {
-                this.$message.error(res.data)
+                this.$message.error(supervise.data)
               }
             }
           })
@@ -2378,6 +2377,9 @@
     background-color: rgba(103,194,58,.1);
     border-color: rgba(103,194,58,.2);
     color: #67c23a;
+  }
+  .supervise_type_4{
+    color: #67C23A;
   }
 }
 

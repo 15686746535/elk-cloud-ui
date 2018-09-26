@@ -25,6 +25,7 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
+    console.log('****', response)
     const res = response.data
     if (res.code === 500) {
       Message.error(res.msg)
@@ -37,7 +38,7 @@ service.interceptors.response.use(
       setToken(null)
       Message.error(res.message)
     }
-    if (res.code === 0 && res.msg !== 'success') {
+    if (res.code === 0 && res.msg && res.msg !== 'success') {
       Message.success(res.msg)
     }
     store.dispatch('setLoading', false)

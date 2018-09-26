@@ -1,8 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-// const url = 'https://www.eluchn.com/'
+const url = 'https://www.eluchn.com/'
 // const url = 'http://test.eluchn.com/'
-const url = 'http://127.0.0.1:8003'
+// const url = 'http://127.0.0.1:8003'
 // const url = 'http://192.168.1.153:8003'
 
 
@@ -137,8 +137,15 @@ module.exports = {
         pathRewrite: {
           '^/app/coach' : '/app/coach'
         }
+      },
+      '/supervise': {
+        target: 'http://xueshi.6655.la',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/supervise' : '/supervise'
+        }
       }
-    },
+    }, // http://xueshi.6655.la/supervise/stuInfo
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

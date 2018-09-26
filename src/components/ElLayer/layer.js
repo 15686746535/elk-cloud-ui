@@ -78,27 +78,29 @@ let Notification = (function(vue, globalOption = {
       'main': instance.vm,
       'iframe': ''
     }
-    // 构建回到桌面
-    var task = document.getElementsByClassName('vl-notify-task')
-    var home = document.getElementById('home_task')
-    if (!home) {
-      var hoptions = {
-        id: 'home',
-        genre: 'home'
-      }
-      var homeInstance = new TaskLayer({
-        data: hoptions
-      })
-      homeInstance.vm = homeInstance.$mount()
+    if (options.closeBtn) {
+      // 构建回到桌面
+      var task = document.getElementsByClassName('vl-notify-task')
+      var home = document.getElementById('home_task')
+      if (!home) {
+        var hoptions = {
+          id: 'home',
+          genre: 'home'
+        }
+        var homeInstance = new TaskLayer({
+          data: hoptions
+        })
+        homeInstance.vm = homeInstance.$mount()
 
-      task[0].appendChild(homeInstance.vm.$el)
-    }
-    if (options.type === 2 && task && task.length > 0) {
-      var taskInstance = new TaskLayer({
-        data: options
-      })
-      taskInstance.vm = taskInstance.$mount()
-      task[0].appendChild(taskInstance.vm.$el)
+        task[0].appendChild(homeInstance.vm.$el)
+      }
+      if (options.type === 2 && task && task.length > 0) {
+        var taskInstance = new TaskLayer({
+          data: options
+        })
+        taskInstance.vm = taskInstance.$mount()
+        task[0].appendChild(taskInstance.vm.$el)
+      }
     }
     if (options.shade) { // 是否显示遮罩
       // let layerMask = document.querySelector('.vl-notify-mask')

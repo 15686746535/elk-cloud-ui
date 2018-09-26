@@ -174,6 +174,7 @@ const user = {
               password: data.initial,
               wechat: data.buildWX
             }
+            console.log(data)
             commit('SET_INITIAL', initial)// 是否为初始密码
             resolve(response)
           } else {

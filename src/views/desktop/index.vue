@@ -85,7 +85,7 @@ export default {
       // this.layerOpenMax(this.wechat)
     }
     if (initial && initial.password) {
-      // this.layerOpenMax(this.password)
+      this.layerOpenMax(this.password)
     }
   },
   methods: {

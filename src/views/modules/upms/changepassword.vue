@@ -11,7 +11,7 @@
         <el-form label-width="80px" style="width: 380px">
           <el-form-item>
             <span slot="label" class="text_css">原密码</span>
-            <el-input class="filter-item" type="password" v-model="user.oldpassword" placeholder="原密码" ></el-input>
+            <el-input class="filter-item" type="password" v-model="user.password" placeholder="原密码" ></el-input>
           </el-form-item>
           <el-form-item>
             <span slot="label" class="text_css">新密码</span>
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       user: {
-        oldpassword: '',
+        password: '',
         newpassword1: ''
       },
       newpassword1: '',
@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     changepassword() {
-      if (this.user.oldpassword === '') {
+      if (this.user.password === '') {
         this.error.show = true
         this.error.msg = '请输入原密码'
       } else if (this.newpassword1 === '') {
@@ -89,6 +89,7 @@ export default {
       } else {
         this.error.show = false
         this.error.msg = ''
+        this.user.newpassword1 = this.newpassword1
         this.user.newpassword1 = this.newpassword1
         editInfo(this.user).then(res => {
           console.log(res)

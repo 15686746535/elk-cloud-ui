@@ -1,12 +1,12 @@
 <template>
   <div class="complaint" style="height: 100%;">
     <el-card style="height: 100%" v-show="showModule=='list'">
-      <dict v-model="listQuery.condition" dictType="dict_campus" style="width: 200px;"  placeholder="校区"></dict>
-      <el-select style="width: 200px;"  v-model="listQuery.state" clearable placeholder="状态">
+      <dict v-model="listQuery.condition" dictType="dict_campus" style="width: 200px;height: 40px;"  placeholder="校区"></dict>
+      <el-select style="width: 200px;height: 40px;"  v-model="listQuery.state" clearable placeholder="状态">
         <el-option key="1" label="已完结" value="1"> </el-option>
         <el-option key="0" label="处理中" value="0"> </el-option>
       </el-select>
-      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键字" v-model="listQuery.condition" clearable></el-input>
+      <el-input @keyup.enter.native="search" style="width: 200px;height: 40px;" class="filter-item" placeholder="关键字" v-model="listQuery.condition" clearable></el-input>
       <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="search">搜索</el-button>
       <!--数据表格 @select="selectRow" @select-all="selectRow"  -->
       <el-table :key='0'  :height="tableHeight-190" :data="list" @row-dblclick="info" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >

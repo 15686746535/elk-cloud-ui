@@ -1,11 +1,23 @@
 <template>
   <div class="complaint" style="height: 100%;">
     <el-card style="height: 100%" v-show="showModule=='list'">
-      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="职位名字" v-model="listQuery.condition" clearable></el-input>
+      <dict v-model="listQuery.condition" dictType="dict_campus" style="width: 200px;"  placeholder="校区"></dict>
+      <el-select style="width: 200px;"  v-model="listQuery.state" clearable placeholder="状态">
+        <el-option key="1" label="已完结" value="1"> </el-option>
+        <el-option key="0" label="处理中" value="0"> </el-option>
+      </el-select>
+      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" placeholder="关键字" v-model="listQuery.condition" clearable></el-input>
       <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="search">搜索</el-button>
-      <!--数据表格-->
+      <!--数据表格 @select="selectRow" @select-all="selectRow"  -->
       <el-table :key='0'  :height="tableHeight-190" :data="list" @row-dblclick="info" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
         <el-table-column type="index" label="序号" fixed align="center" width="50"></el-table-column>
+        <!--<el-table-column type="selection" width="35" fixed></el-table-column>-->
+        <el-table-column label="状态" fixed width="80">
+          <template slot-scope="scope">
+            <el-tag  v-if="scope.row.state==1" type="success">已完结</el-tag>
+            <el-tag v-if="scope.row.state==0" type="warning">处理中</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="学员" fixed width="80">
           <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
@@ -18,7 +30,7 @@
         </el-table-column>
         <el-table-column label="类型" width="50">
           <template slot-scope="scope">
-            <span>{{scope.row.type | typeFilter}}</span>
+            <span>{{scope.row.type}}</span>
           </template>
         </el-table-column>
         <el-table-column label="投诉板块" width="110">
@@ -47,6 +59,11 @@
                 <span>{{scope.row.appeal}}</span>
               </div>
             </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="校区" width="100" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.campus}}</span>
           </template>
         </el-table-column>
         <el-table-column label="责任部门" width="100">
@@ -96,6 +113,11 @@
             <span>{{scope.row.createTime | subTime}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="操作" width="50" align="center">
+          <template slot-scope="scope">
+            <a href="#" style="color: -webkit-link;text-decoration: underline;" v-if="scope.row.state == 0" @click="achieve(scope.row.id)" type="success">完结</a>
+          </template>
+        </el-table-column>
       </el-table>
       <!--分页插件-->
       <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
@@ -130,10 +152,10 @@
         <el-form-item prop="type">
           <span slot="label" class="text_css">类型：</span>
           <el-radio-group v-if="edit" v-model="complaint.type">
-            <el-radio label="1" selected>投诉</el-radio>
-            <el-radio label="2">建议</el-radio>
+            <el-radio label="投诉" value="" selected>投诉</el-radio>
+            <el-radio label="建议">建议</el-radio>
           </el-radio-group>
-          <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.type | typeFilter}}</div>
+          <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.type}}</div>
         </el-form-item>
         <el-form-item prop="category">
           <span slot="label" class="text_css">投诉板块：</span>
@@ -151,13 +173,18 @@
           <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.appeal}}</div>
         </el-form-item>
         <el-form-item prop="dutyOrg">
+          <span slot="label" class="text_css">校区：</span>
+          <dict size="medium" v-if="edit" v-model="complaint.campus" dictType="dict_campus" style="height: 40px;width: 100%;"  placeholder="校区"></dict>
+          <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.campus}}</div>
+        </el-form-item>
+        <el-form-item prop="dutyOrg">
           <span slot="label" class="text_css">责任部门：</span>
           <tree-select v-if="edit"   url="/upms/org/tree" id="dutyOrg" v-model="complaint.dutyOrg" style="height: 40px;width: 100%;"  placeholder="责任部门"></tree-select>
           <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.orgName}}</div>
         </el-form-item>
         <el-form-item prop="answerTime">
           <span slot="label" class="text_css">核实处理时间：</span>
-          <el-date-picker v-if="edit" v-model="complaint.answerTime" type="date" placeholder="回复时间" format="yyyy-MM-dd" value-format="timestamp"> </el-date-picker>
+          <el-date-picker v-if="edit" v-model="complaint.answerTime" type="date" placeholder="回复时间" size="medium" style="height: 40px;width: 100%;" format="yyyy-MM-dd" value-format="timestamp"> </el-date-picker>
           <div style="padding-left: 16px;font-size: 12px;" v-else>{{complaint.answerTime | subTime}}</div>
         </el-form-item>
         <el-form-item prop="answer">
@@ -222,13 +249,6 @@ export default {
     }
   },
   filters: {
-    typeFilter(type) {
-      const typeMap = {
-        '1': '投诉',
-        '2': '建议'
-      }
-      return typeMap[type]
-    }
   },
   computed: {
     ...mapGetters([
@@ -291,6 +311,7 @@ export default {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
         this.list = response.data.data.list
+        console.log(this.list)
         this.total = response.data.data.totalCount
         this.listLoading = false
       })
@@ -317,6 +338,21 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
+    selectRow(selection, row) {
+      console.log(selection)
+    },
+    achieve(id) {
+      console.log(id)
+      var complaint = {
+        id: id,
+        state: 1
+      }
+      putObj(complaint).then(response => {
+        if (response.data.code === 0) {
+          this.getList()
+        }
+      })
+    },
     info(row, event) {
       this.complaint = row
       this.showModule = 'info'
@@ -327,7 +363,7 @@ export default {
       this.edit = true
     },
     create() {
-      this.complaint = { type: '1' }
+      this.complaint = { type: '投诉' }
       this.showModule = 'info'
       this.edit = true
       this.isAdd = true
@@ -361,7 +397,6 @@ export default {
       this.getList()
     },
     cancel(formName) {
-      console.log(formName)
       if (formName) {
         this.$refs[formName].resetFields()
       }

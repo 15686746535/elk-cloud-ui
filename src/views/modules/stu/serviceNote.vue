@@ -675,6 +675,9 @@
         queryMoneyListById(studentId).then(response => {
           var list = response.data.data
           if (list && list.length > 0) {
+            list = list.filter(function(item) {
+              return item.state !== '-1'
+            })
             var financeList = []
             var financeIdList = []
             var earnestMoney = 0 // 已收定金

@@ -1427,7 +1427,7 @@
         data122: 'list',
         listQuery: {
           page: 1,
-          limit: 20,
+          limit: 10,
           condition: null,
           interval: [],
           subject: null,

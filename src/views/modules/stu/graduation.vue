@@ -86,7 +86,7 @@
 
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">介绍人:</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.introducers.replace(new RegExp('/','gm'), '、')}}</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.introducers}}</el-col>
                 </el-row>
               </el-col>
             </template>
@@ -146,7 +146,7 @@
               <el-col style=" line-height: 25px">
                 <el-row :gutter="10">
                   <el-col :span="7" class="table_text">服务项:</el-col>
-                  <el-col :span="17" class="table_text">{{scope.row.serviceNotes.replace(new RegExp('/','gm'), '、')}}</el-col>
+                  <el-col :span="17" class="table_text">{{scope.row.receivable>0?'双击查看详情':'无'}}</el-col>
                 </el-row>
 
                 <el-row :gutter="10">

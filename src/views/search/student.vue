@@ -1,12 +1,12 @@
 <template>
   <div class="student-serch" style="height: 100%;">
     <el-card style="height: 100%">
-      <div style="height: 80px;">
+      <div style="height: 50px;">
           <el-input @keyup.enter.native="getList" style="width: 300px;" class="filter-item" placeholder="完整的 姓名/电话/身份证" v-model="listQuery.accurate"></el-input>
           <el-button class="filter-item" type="primary"  @click="getList"><i class="el-icon-search"></i> 搜 索</el-button>
       </div>
-      <el-table :data="stuList" :height="tableHeight - 220" highlight-current-row stripe v-loading="listLoading" element-loading-text="给我一点时间">
-        <el-table-column align="center" label="头像" min-width="150px">
+      <el-table :data="stuList" :height="tableHeight - 110" highlight-current-row stripe v-loading="listLoading" element-loading-text="给我一点时间">
+        <el-table-column align="center" label="头像" min-width="100px">
           <template slot-scope="scope">
             <!-- 头像 -->
             <el-row>
@@ -22,7 +22,7 @@
             </el-row>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="个人信息" min-width="230px">
+        <el-table-column align="center" label="个人信息" min-width="220px">
           <template slot-scope="scope" >
             <!-- 个人信息 -->
             <el-col style=" line-height: 25px">
@@ -46,59 +46,59 @@
             </el-col>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="入学信息" min-width="230px">
+        <el-table-column align="center" label="入学信息" min-width="180px">
           <template slot-scope="scope">
             <el-col style=" line-height: 25px">
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">档案号:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.archivesNumber}}</el-col>
+                <el-col :span="8" class="table_text">档案号:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.archivesNumber}}</el-col>
               </el-row>
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">入学日期:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.enrolTime | subTime}}</el-col>
+                <el-col :span="8" class="table_text">入学日期:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.enrolTime | subTime}}</el-col>
               </el-row>
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">期数:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.periods}}</el-col>
+                <el-col :span="8" class="table_text">期数:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.periods}}</el-col>
               </el-row>
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">车型:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.motorcycleType}}</el-col>
+                <el-col :span="8" class="table_text">车型:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.motorcycleType}}</el-col>
               </el-row>
             </el-col>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="培训信息" min-width="230px">
+        <el-table-column align="center" label="培训信息" min-width="200px">
           <template slot-scope="scope">
 
             <el-col style=" line-height: 25px">
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">校区:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.campus}}</el-col>
+                <el-col :span="8" class="table_text">校区:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.campus}}</el-col>
               </el-row>
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">来源渠道:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.source}}</el-col>
-              </el-row>
-
-              <el-row :gutter="10">
-                <el-col :span="7" class="table_text">场训教练:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.fieldName}}</el-col>
+                <el-col :span="8" class="table_text">来源渠道:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.source}}</el-col>
               </el-row>
 
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">路训教练:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.roadName}}</el-col>
+                <el-col :span="8" class="table_text">场训教练:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.fieldName}}</el-col>
+              </el-row>
+
+              <el-row :gutter="10">
+                <el-col :span="8" class="table_text">路训教练:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.roadName}}</el-col>
               </el-row>
             </el-col>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="费用信息" min-width="230px">
+        <el-table-column align="center" label="费用信息" min-width="200px">
           <template slot-scope="scope">
             <el-col style=" line-height: 25px">
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">应收金额:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.receivable}}</el-col>
+                <el-col :span="8" class="table_text">应收金额:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.receivable}}</el-col>
               </el-row>
               <!--<el-row :gutter="10">-->
               <!--<el-col :span="7" class="table_text">已收金额:</el-col>-->
@@ -106,22 +106,22 @@
               <!--</el-row>-->
 
               <el-row :gutter="10">
-                <el-col :span="7" class="table_text">欠费金额:</el-col>
-                <el-col :span="17" class="table_text">{{scope.row.arrearage}}</el-col>
+                <el-col :span="8" class="table_text">欠费金额:</el-col>
+                <el-col :span="16" class="table_text">{{scope.row.arrearage}}</el-col>
               </el-row>
             </el-col>
           </template>
         </el-table-column>
       </el-table>
-      <div v-show="!listLoading" class="page-util">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page.sync="listQuery.page"
-                       background
-                       style="float:left;"
-                       :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
-                       layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-      </div>
+      <!--<div v-show="!listLoading" class="page-util">-->
+        <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
+                       <!--:current-page.sync="listQuery.page"-->
+                       <!--background-->
+                       <!--style="float:left;"-->
+                       <!--:page-sizes="[10,20,30,50]" :page-size="listQuery.limit"-->
+                       <!--layout="total, sizes, prev, pager, next, jumper" :total="total">-->
+        <!--</el-pagination>-->
+      <!--</div>-->
     </el-card>
   </div>
 </template>
@@ -139,7 +139,7 @@
         btnLoading: false,
         listQuery: {
           page: 1,
-          limit: 20,
+          limit: 0,
           orgId: 2,
           accurate: this.accurate
         }
@@ -160,8 +160,6 @@
         this.accurate = val
       }
     },
-    computed: {
-    },
     methods: {
       getList() {
         this.listLoading = true
@@ -176,14 +174,6 @@
           this.total = 0
           this.listLoading = false
         }
-      },
-      handleSizeChange(val) {
-        this.listQuery.limit = val
-        this.getList()
-      },
-      handleCurrentChange(val) {
-        this.listQuery.page = val
-        this.getList()
       }
     }
   }

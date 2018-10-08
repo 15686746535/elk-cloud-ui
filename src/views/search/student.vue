@@ -165,11 +165,17 @@
     methods: {
       getList() {
         this.listLoading = true
-        fetchStudentList(this.listQuery).then(response => {
-          this.stuList = response.data.data.list
-          this.total = response.data.data.totalCount
+        if (this.listQuery.accurate) {
+          fetchStudentList(this.listQuery).then(response => {
+            this.stuList = response.data.data.list
+            this.total = response.data.data.totalCount
+            this.listLoading = false
+          })
+        } else {
+          this.stuList = []
+          this.total = 0
           this.listLoading = false
-        })
+        }
       },
       handleSizeChange(val) {
         this.listQuery.limit = val

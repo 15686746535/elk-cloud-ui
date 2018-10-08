@@ -62,7 +62,7 @@
       <el-col :span="8" style="height: 100%">
         <!-- 问卷所属题目 -->
         <el-card   style="border-radius:0 4px 4px 0;height: 100%" v-loading="questionLoading" element-loading-text="给我一点时间">
-          <div :style="{height: tableHeight + 'px'}" style="overflow-y: auto;overflow-x: hidden;border-bottom: 1px solid rgb(235, 239, 245)">
+          <div :style="{height: tableHeight - 80 + 'px'}" style="overflow-y: auto;overflow-x: hidden;border-bottom: 1px solid rgb(235, 239, 245)">
             <div v-if="haveQuestion">
               <div style="clear: both;width: 100%;margin: 10px auto;" v-for="(question, index) in questionList">
                 <el-row>
@@ -101,12 +101,14 @@
                       </el-col>
                       <el-col :span="2">
                         <div style="margin: 0 auto;width: 32px; height: 32px">
-                          <el-button style="padding: 9px;" size="mini" type="danger" @click="removeQuestion(index)" icon="el-icon-delete" plain circle></el-button>
+                          <i class="el-icon-delete hover" v-if="index + 1 === questionList.length" style="padding: 8px;" @click="removeQuestion(index)"></i>
+                          <!--<el-button style="padding: 9px;" size="mini" type="danger" @click="removeQuestion(index)" icon="el-icon-delete" plain circle></el-button>-->
                         </div>
                       </el-col>
                       <el-col :span="2">
                         <div style="margin: 0 auto;width: 32px; height: 32px">
-                          <el-button v-if="index + 1 === questionList.length" style="padding: 9px;" size="mini" type="success" @click="appendQuestion(index)" icon="el-icon-plus" plain circle></el-button>
+                          <i class="el-icon-plus hover" v-if="index + 1 === questionList.length" @click="appendQuestion(index)" style="padding: 8px;"></i>
+                          <!--<el-button v-if="index + 1 === questionList.length" style="padding: 9px;" size="mini" type="success" @click="appendQuestion(index)" icon="el-icon-plus" plain circle></el-button>-->
                         </div>
                       </el-col>
                     </el-row>

@@ -372,6 +372,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.btnLoading = true
+          this.complaint.state = 0
           addObj(this.complaint).then(response => {
             if (response.data.code === 0) {
               this.cancel(formName)

@@ -21,7 +21,13 @@ Vue.use(vueEventCalendar, {
 Vue.use(ElementUI, { locale })
 import VueDND from 'awe-dnd'
 // 引入自定义组件。index.js是组件的默认入口
-
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function(el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
 window.Vue1 = Vue
 var lai = layer(Vue, {
   msgtime: 1

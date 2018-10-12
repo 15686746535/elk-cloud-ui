@@ -25,7 +25,6 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    console.log('****', response)
     const res = response.data
     if (res.code === 500) {
       Message.error(res.msg)

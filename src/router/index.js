@@ -67,6 +67,7 @@ export const appMap = [
   // 财务
   { id: 70100, desktop: '1', type: '5', pid: 70000, params: [], name: '收费记录', content: _import('modules/finance/costNote'), icon: getIcon('app_cost_info'), msgCount: 0, childItem: [] },
   { id: 70200, desktop: '1', type: '5', pid: 70000, params: [], name: '付款记录', content: _import('modules/finance/payment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 70202, desktop: '1', type: '5', pid: 70000, params: [], name: '新增付款', content: _import('modules/finance/payment-add'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   // 统计
   // { id: 120600, desktop: '1', type: '6', pid: 80000, params: [], name: '招生人数统计', content: _import('modules/visualization/recruit'), icon: getIcon('app_recruit'), msgCount: 0, childItem: [] },
   // { id: 120100, desktop: '1', type: '6', pid: 80000, params: [], name: '顾虑统计', content: _import('modules/visualization/worry'), icon: getIcon('app_worrycount'), msgCount: 0, childItem: [] },
@@ -106,7 +107,7 @@ export const appMap = [
  * 应用 白名单
  * @type {Array}
  */
-export const anonList = [-1086, 10008, 10001, 30100, 21000]
+export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202]
 /**
  * 添加
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}

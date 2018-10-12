@@ -30,31 +30,30 @@
       <!--{{permissions}}-->
       <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="tableHeight - 190" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
-        <el-table-column align="center"  label="科目">
+        <el-table-column align="center"  label="科目" width="80">
           <template slot-scope="scope">
             <span>{{scope.row.subject | subjectFilter}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center"  label="考试时间">
+        <el-table-column align="center"  label="考试时间"  width="100">
           <template slot-scope="scope">
             <span>{{scope.row.examTime | subTime}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="left"  label="考试场地"  show-overflow-tooltip>
+        <el-table-column align="center" label="预约截至日期" width="110">
           <template slot-scope="scope">
-            <span>{{scope.row.examField}}</span>
+            {{scope.row.expiryTime | subTime}}
           </template>
         </el-table-column>
-        <el-table-column align="center"  label="已约人数">
+        <el-table-column align="center"  label="已约" width="50">
           <template slot-scope="scope">
             <!--<span>{{scope.row.hasReserved}}/{{scope.row.stuCount}}</span>-->
             <span>{{scope.row.stuCount<0?0:scope.row.stuCount}}</span>
           </template>
         </el-table-column>
-
-        <el-table-column align="center" label="预约截至日期">
+        <el-table-column align="left"  label="考试场地"  show-overflow-tooltip>
           <template slot-scope="scope">
-            {{scope.row.expiryTime | subTime}}
+            <span>{{scope.row.examField}}</span>
           </template>
         </el-table-column>
 
@@ -419,6 +418,7 @@
             <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'" style="float: left"  @click="operation('5','examCancel','warning','审核失败?')" size="small" type="danger">失败</el-button>
             <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'"  style="float: right"  @click="operation('1','examExamine',null,null)" size="small" type="success">通过</el-button>
             <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="operation('0','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
+            <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="updateExam()" size="small" type="info" >改约</el-button>
             <el-button v-if="studentListQuery.examineState === '1'" style="float: right" @click="operation('2','examExamine',null,null)" size="small" type="success" >已约</el-button>
 
             <el-button v-if="studentListQuery.examineState === '2'" style="float: left" @click="operation('4','examExamine','warning','确定约考失败?')" size="small" type="danger" >失败</el-button>
@@ -870,34 +870,41 @@
         if (state.name === 'all') this.studentListQuery.examineState = null
         this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
       },
+      updateExam() {
+        if (this.examBespeakList.examNoteList.length === 0) {
+          this.$message.warning('请先选择学员')
+        } else {
+          this.$message.warning('开发中')
+        }
+      },
       operation(state, url, type, msg) {
-        console.log(this.batchInfo)
-        if (this.batchInfo && this.batchInfo.expiryTime <= Date.now()) {
-          if (this.examBespeakList.examNoteList.length === 0) {
-            this.$message.warning('请先选择学员')
-          } else {
-            this.examBespeakList.examineState = state
-            this.examBespeakList.subject = this.listQuery.subject
-            if (msg) {
-              // 'warning'
-              this.$confirm(msg, '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: type | 'warning'
-              }).then(() => {
-                putExamBespeak(this.examBespeakList, url).then(() => {
-                  this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
-                })
-              })
-            } else {
+        if (this.examBespeakList.examNoteList.length === 0) {
+          this.$message.warning('请先选择学员')
+        } else {
+          this.examBespeakList.examineState = state
+          this.examBespeakList.subject = this.listQuery.subject
+          if (msg) {
+            // 'warning'
+            this.$confirm(msg, '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: type | 'warning'
+            }).then(() => {
               putExamBespeak(this.examBespeakList, url).then(() => {
                 this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
               })
-            }
+            })
+          } else {
+            putExamBespeak(this.examBespeakList, url).then(() => {
+              this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+            })
           }
-        } else {
-          this.$message.warning('该场考试尚未到截止日期，不能操作！')
         }
+        // if (this.batchInfo && this.batchInfo.expiryTime <= Date.now()) {
+        //
+        // } else {
+        //   this.$message.warning('该场考试尚未到截止日期，不能操作！')
+        // }
       },
       // 根据科目查询场地
       handleSubject() {

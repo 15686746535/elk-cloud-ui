@@ -1162,8 +1162,10 @@
         if (this.listQuery.subject === '1') {
           subject = '一'
         } else if (this.listQuery.subject === '2') {
+          this.studentListQuery.sidx = 's.field_coach'
           subject = '二'
         } else if (this.listQuery.subject === '3') {
+          this.studentListQuery.sidx = 's.road_coach'
           subject = '三'
         } else if (this.listQuery.subject === '4') {
           subject = '四'

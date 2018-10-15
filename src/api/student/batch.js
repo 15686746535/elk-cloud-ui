@@ -21,6 +21,14 @@ export function getBatch(id) {
   })
 }
 // 添加
+export function createBatchs(obj) {
+  return request({
+    url: '/stu/exam/createBatchs',
+    method: 'post',
+    data: obj
+  })
+}
+// 添加
 export function addObj(obj) {
   return request({
     url: '/stu/exam/save',
@@ -64,5 +72,11 @@ export function getSuperviseInfo(query) {
     url: '/supervise/stuInfo',
     method: 'get',
     params: query
+  })
+}
+export function getFieldList(type) {
+  return request({
+    url: '/basis/dict/getByType/' + type,
+    method: 'get'
   })
 }

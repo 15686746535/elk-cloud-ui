@@ -76,7 +76,8 @@
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
 
-        <el-button style="float:right;" @click="createClick" size="small" v-if="permissions.stu_exam_add" type="primary"><i class="el-icon-plus"></i>添加</el-button>
+        <el-button style="float:right;margin-right: 10px" @click="createsClick" size="small" v-if="permissions.stu_exam_add" type="primary"><i class="el-icon-plus"></i>批量添加</el-button>
+        <el-button style="float:right;margin-right: 10px" @click="createClick" size="small" v-if="permissions.stu_exam_add" type="primary"><i class="el-icon-plus"></i>添加</el-button>
       </div>
     </el-card>
     <el-card v-show="examOption" style="height: 100%; ">
@@ -418,7 +419,7 @@
             <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'" style="float: left"  @click="operation('5','examCancel','warning','审核失败?')" size="small" type="danger">失败</el-button>
             <el-button v-if="studentListQuery.examineState === '0' && bespeakTabs != 'all'"  style="float: right"  @click="operation('1','examExamine',null,null)" size="small" type="success">通过</el-button>
             <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="operation('0','examCancel','warning','是否撤销?')" size="small" type="info" >撤销</el-button>
-            <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="updateExam()" size="small" type="info" >改约</el-button>
+            <el-button v-if="studentListQuery.examineState === '1'" style="float: left" @click="openExam" size="small" type="info" >改约</el-button>
             <el-button v-if="studentListQuery.examineState === '1'" style="float: right" @click="operation('2','examExamine',null,null)" size="small" type="success" >已约</el-button>
 
             <el-button v-if="studentListQuery.examineState === '2'" style="float: left" @click="operation('4','examExamine','warning','确定约考失败?')" size="small" type="danger" >失败</el-button>
@@ -432,6 +433,26 @@
       </el-tabs>
     </el-card>
     <!-- 考试设置 -->
+    <el-dialog :modal="false" @close="cancel('batchs')" title="批量考试设置"  width="550px" :visible.sync="batchOption2">
+      <el-form :model="batchs" :rules="batchsRules" ref="batchs" label-width="120px">
+        <el-form-item label="截至间隔" prop="day">
+          <el-input-number v-model="batchs.interval" style="width: 100%" :min="3" :max="15" label="截止日期与考试日期的间隔天数"></el-input-number>
+        </el-form-item>
+        <el-form-item label="考试时间" prop="examTime">
+          <el-date-picker value-format="yyyy-MM-dd" style="width: 100%;" type="dates" placeholder="选择一个或多个日期" v-model="batchs.examTime" :picker-options="pickerOptions2"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="考试场地" prop="examField">
+          <el-select v-model="batchs.examField" multiple collapse-tags style="width: 100%" placeholder="考试场地">
+            <el-option v-for="field in fieldList" :key="field.value" :label="field.label" :value="field.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <div class="dialog-footer" align="right">
+          <el-button :loading="btnLoading" type="primary" @click="saveExams('batchs')">确 定</el-button>
+        </div>
+      </el-form>
+    </el-dialog>
+
     <el-dialog :modal="false" @close="cancel('batch')" title="考试设置" :show-close="false" width="550px" :visible.sync="batchOption">
       <el-form :model="batch" :rules="batchRules" ref="batch" label-width="120px">
         <el-form-item label="考试场地" prop="examField">
@@ -479,11 +500,30 @@
       </div>
     </el-dialog>
 
+    <el-dialog :modal="false"  title="选择考试场次" :close-on-click-modal="false" width="450px" :visible.sync="batch_dialog" :loading="dgLoading" >
+      <div style="height: 250px;overflow: auto">
+        <div v-if="batchList.length === 0" style="width: 100%;text-align: center;font-size: 18px;color: #99a9bf;font-weight: 100;">
+          无可预约场次
+        </div>
+        <div v-else v-for="batch in batchList"  style="float: left;margin: 5px">
+          <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
+            <{{batch.examTime | subTime}}> {{batch.examField}}
+            <span>（已约{{batch.stuCount}}人）</span>
+          </div>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button :loading="btnLoading" type="primary" @click="updateExam">确 定</el-button>
+      </div>
+    </el-dialog>
+
+
+
   </div>
 </template>
 
 <script>
-  import { getBatchList, delObj, addObj, putObj, getSuperviseInfo, exportExamList } from '@/api/student/batch'
+  import { getBatchList, delObj, addObj, createBatchs, putObj, getSuperviseInfo, exportExamList, getFieldList } from '@/api/student/batch'
   import { examFetchList, putExamBespeak } from '@/api/student/examnote'
   import { getFinanceList } from '@/api/finance/service-category'
   import { mapGetters } from 'vuex'
@@ -542,6 +582,17 @@
             }
           }
         }
+      },
+      'batchs.interval': function(val) {
+        var Time = Date.now() + 1000 * 60 * 60 * 24 * 7
+        if (val) {
+          Time = Date.now() + 1000 * 60 * 60 * 24 * parseInt(val)
+        }
+        this.pickerOptions2 = {
+          disabledDate(time) {
+            return time.getTime() < Time
+          }
+        }
       }
     },
     data() {
@@ -557,18 +608,28 @@
         tableHeight: this.area[1],
         batch: {
           subject: '1',
+          examField: null,
           examTime: null,
           expiryTime: null
         },
+        batchs: {
+          subject: '1',
+          interval: '7',
+          examTime: [],
+          examField: []
+        },
+        fieldList: [],
         batchInfo: {},
         dgLoading: false,
         superviseOpen2: false,
+        batch_dialog: false,
         superviseRes: {
           show: true,
           error: '',
           recList: []
         },
         list: [],
+        batchList: [],
         financeList: [],
         total: null,
         listLoading: true,
@@ -580,6 +641,11 @@
         pickerOptions1: {
           disabledDate(time) {
             return time.getTime() < Date.now()
+          }
+        },
+        pickerOptions2: {
+          disabledDate(time) {
+            return time.getTime() < Date.now() + 1000 * 60 * 60 * 24 * 7
           }
         },
         superviseLoading: false,
@@ -602,7 +668,15 @@
           { value: '3', label: '科目三' },
           { value: '4', label: '科目四' }
         ],
+        batchListQuery: {
+          page: 1,
+          limit: 0,
+          /* 今天以前传 before   今天之后传 after */
+          scope: 'after',
+          subject: null
+        },
         batchOption: false,
+        batchOption2: false,
         testUrl: null,
         examOption: false,
         btnLoading: false,
@@ -626,6 +700,14 @@
           examineState: '0',
           categoryId: null,
           examState: 'exam_note_examine'
+        },
+        batchsRules: {
+          examField: [
+            { required: true, message: '请选择考试场地', trigger: ['blur', 'change'] }
+          ],
+          examTime: [
+            { required: true, message: '请选择考试时间', trigger: ['blur', 'change'] }
+          ]
         },
         batchRules: {
           examField: [
@@ -713,8 +795,30 @@
         this.listQuery.page = val
         this.getList()
       },
+      createsClick() {
+        this.batchs = {
+          subject: '1',
+          interval: '7',
+          examTime: [],
+          examField: []
+        }
+        this.batch.subject = this.listQuery.subject
+        this.dialogStatus = 'create'
+        this.batchOption2 = true
+        console.log(this.batchs.subject)
+        getFieldList('dict_exam_field' + this.batchs.subject).then(response => {
+          console.log('-->', response)
+          console.log('-->', response.data.data)
+          this.fieldList = response.data.data
+        })
+      },
       createClick() {
-        this.batch = {}
+        this.batch = {
+          subject: '1',
+          examTime: null,
+          expiryTime: null,
+          examField: null
+        }
         this.batch.subject = this.listQuery.subject
         this.dialogStatus = 'create'
         this.batchOption = true
@@ -749,6 +853,22 @@
       closeExamOption() {
         this.getList()
       },
+      saveExams(formName) {
+        const set = this.$refs
+        set[formName].validate(valid => {
+          if (valid) {
+            console.log(this.batchs)
+            this.btnLoading = true
+            createBatchs(this.batchs).then(() => {
+              this.getList()
+              this.batchOption2 = false
+              this.btnLoading = false
+            })
+          } else {
+            return false
+          }
+        })
+      },
       create(formName) {
         const set = this.$refs
         set[formName].validate(valid => {
@@ -767,8 +887,20 @@
       },
       cancel(formName) {
         this.batchOption = false
+        this.batchOption2 = false
         this.btnLoading = false
-        this.batch = {}
+        this.batch = {
+          subject: '1',
+          examTime: null,
+          expiryTime: null,
+          examField: null
+        }
+        this.batchs = {
+          subject: '1',
+          interval: '7',
+          examTime: [],
+          examField: []
+        }
         const set = this.$refs
         set[formName].resetFields()
         this.getList()
@@ -870,12 +1002,41 @@
         if (state.name === 'all') this.studentListQuery.examineState = null
         this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
       },
+      openExam() {
+        if (this.examBespeakList.examNoteList.length === 0) {
+          this.$message.warning('请先选择学员')
+        } else {
+          this.batch_dialog = true
+          this.dgLoading = true
+          this.batchListQuery.subject = this.examBespeakList.subject
+          getBatchList(this.batchListQuery).then(response => {
+            this.batchList = response.data.data.list
+          })
+        }
+      },
       updateExam() {
         if (this.examBespeakList.examNoteList.length === 0) {
           this.$message.warning('请先选择学员')
         } else {
-          this.$message.warning('开发中')
+          console.log(this.examBespeakList)
+          this.examBespeakList.examineState = 6
+          this.btnLoading = true
+          putExamBespeak(this.examBespeakList, 'updateExam').then(() => {
+            this.see(this.studentListQuery.examId, this.studentListQuery.examineState)
+            this.batch_dialog = false
+            this.dgLoading = false
+            this.btnLoading = false
+          })
         }
+      },
+      /* 约考 */
+      batchClick(e, batch) {
+        this.examBespeakList.examId = batch.examId
+        var a = document.getElementsByClassName('batchCss')
+        for (var i = 0; i < a.length; i++) {
+          a[i].classList.remove('batchCss_selected')
+        }
+        e.currentTarget.classList.add('batchCss_selected')
       },
       operation(state, url, type, msg) {
         if (this.examBespeakList.examNoteList.length === 0) {
@@ -908,9 +1069,15 @@
       },
       // 根据科目查询场地
       handleSubject() {
-        this.batch = {}
+        this.batch = {
+          subject: '1',
+          examTime: null,
+          expiryTime: null,
+          examField: null
+        }
         this.listQuery.page = 1
         this.batch.subject = this.listQuery.subject
+        this.batchs.subject = this.listQuery.subject
         this.listQuery.examField = null
         this.listQuery.interval = []
         this.listQuery.beginTime = null
@@ -972,6 +1139,30 @@
 .batch-page{
   .supervise_type_4{
     color: #67C23A;
+  }
+  .batchCss{
+    background-color: rgba(64,158,255,.1);
+    display: inline-block;
+    padding: 0 10px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #409eff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(64,158,255,.2);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .batchCss_selected{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
+  }
+  .batchCss:hover{
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
   }
 }
 </style>

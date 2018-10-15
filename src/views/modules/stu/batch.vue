@@ -141,6 +141,16 @@
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
             </el-table-column>
+            <el-table-column v-if="listQuery.subject === '2'" align="center" label="场训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.fieldCoach}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '3'" align="center" label="路训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.roadCoach}}</span>
+              </template>
+            </el-table-column>
 
             <el-table-column  align="center"
                               label="状态">
@@ -154,7 +164,6 @@
                 <span v-else-if="scope.row.examineState === '2'" style="border-radius: 20px;color: #409eff">已约考</span>
                 <span v-else-if="scope.row.examineState === '3'" style="border-radius: 20px;color: #67c23a">报考成功</span>
                 <span v-else-if="scope.row.examineState === '6'" style="border-radius: 20px;color: #f56c6c">取消约考</span>
-
               </template>
             </el-table-column>
             <!--<el-table-column align="center" label="操作">-->
@@ -216,6 +225,16 @@
             <el-table-column  align="center" label="考试时间" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.examTime | subTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '2'" align="center" label="场训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.fieldCoach}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '3'" align="center" label="路训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.roadCoach}}</span>
               </template>
             </el-table-column>
 
@@ -281,6 +300,16 @@
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
             </el-table-column>
+            <el-table-column v-if="listQuery.subject === '2'" align="center" label="场训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.fieldCoach}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '3'" align="center" label="路训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.roadCoach}}</span>
+              </template>
+            </el-table-column>
             <el-table-column align="center" label="操作">
               <template slot-scope="scope">
                 <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消</el-button>
@@ -342,6 +371,16 @@
                 <span>{{scope.row.examTime | subTime}}</span>
               </template>
             </el-table-column>
+            <el-table-column v-if="listQuery.subject === '2'" align="center" label="场训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.fieldCoach}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '3'" align="center" label="路训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.roadCoach}}</span>
+              </template>
+            </el-table-column>
             <el-table-column align="center" label="操作">
               <template slot-scope="scope">
                 <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消</el-button>
@@ -401,6 +440,16 @@
             <el-table-column  align="center" label="考试时间" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.examTime | subTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '2'" align="center" label="场训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.fieldCoach}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '3'" align="center" label="路训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.roadCoach}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -840,6 +889,12 @@
         this.examBespeakLoading = true
         this.studentListQuery.examId = examId
         this.studentListQuery.examineState = state
+        if (this.listQuery.subject === '2') {
+          this.studentListQuery.sidx = 's.field_coach'
+        }
+        if (this.listQuery.subject === '3') {
+          this.studentListQuery.sidx = 's.road_coach'
+        }
         this.examBespeakList.subject = this.listQuery.subject
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list
@@ -857,7 +912,6 @@
         const set = this.$refs
         set[formName].validate(valid => {
           if (valid) {
-            console.log(this.batchs)
             this.btnLoading = true
             createBatchs(this.batchs).then(() => {
               this.getList()

@@ -16,7 +16,7 @@
     <!--悬浮工作台 -->
     <el-tool-intention @open="layerOpen"></el-tool-intention>
     <!--仪表盘-->
-    <!--<el-dashboard @open="layerOpen"></el-dashboard>-->
+    <el-dashboard @open="layerOpen"></el-dashboard>
     <!--机器人-->
     <el-rtarded></el-rtarded>
   </div>

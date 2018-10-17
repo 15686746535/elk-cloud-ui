@@ -90,7 +90,7 @@ export default {
     unit(i) {
       switch (i) {
         case 1:
-          this.amuse()
+          this.layerOpen(this.target)
           break
         case 2:
           this.amuse()

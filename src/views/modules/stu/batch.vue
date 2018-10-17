@@ -900,7 +900,6 @@
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list
           this.examBespeakTotal = response.data.data.totalCount
-          console.log(response.data.data)
           this.examBespeakLoading = false
         })
         // this.examBespeakList.examId = examId

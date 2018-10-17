@@ -895,6 +895,7 @@
         if (this.listQuery.subject === '3') {
           this.studentListQuery.sidx = 's.road_coach'
         }
+        this.studentListQuery.subject = this.listQuery.subject
         this.examBespeakList.subject = this.listQuery.subject
         examFetchList(this.studentListQuery).then(response => {
           this.examBespeak = response.data.data.list

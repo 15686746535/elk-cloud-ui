@@ -9,8 +9,8 @@
         <!--<el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>-->
       <!--</el-button-group>-->
       <el-button-group ><!--v-if="pageLevel === 'info'&&pageShow==='bill'"-->
-        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
-        <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+        <!--<el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>-->
+        <!--<el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon&#45;&#45;right"></i></el-button>-->
       </el-button-group>
       <div class="add-header">
         <!--支付类型  日期  流水-->
@@ -108,7 +108,6 @@
             </el-row>
           </el-col>
         </el-row>
-
       </div>
       <el-table :data="addList" :height="(tableHeight-190)" id="student-table" :cell-class-name="addcellcb"  border highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
         <el-table-column type="index" align="center" label="行号" width="50"></el-table-column>
@@ -150,12 +149,14 @@
         </el-table-column>
         <el-table-column align="center" prop="money" label="金额" width="50">
           <template slot-scope="scope">
-            <span><input v-model="scope.row.money" v-if="scope.row.showMoney" @keyup.ctrl.enter="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
+            <span><input v-model="scope.row.money" v-if="scope.row.showMoney" @keyup.right="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
+            <span v-if="!scope.row.showMoney">{{scope.row.money}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="remark" label="备注" width="120">
-          <template slot-scope="scope">
-            <span><input v-model="scope.row.remark" @keyup.ctrl.enter="remarkEnter(scope.row)" class="remark-input" style="padding-left: 10px;width: 100%;height: 25px;"/></span>
+          <template slot-scope="scope" >
+            <span><input v-model="scope.row.remark"  v-if="scope.row.showRemark" @keyup.enter="remarkEnter(scope.row)" @keyup.left="remarkLeft(scope.row)" v-focus class="remark-input" style="padding-left: 10px;width: 100%;height: 25px;"/></span>
+            <span v-if="!scope.row.showRemark">{{scope.row.remark}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="remark"  label="操作"  width="50">
@@ -330,15 +331,18 @@
         if (code) {
           this.payment.money = code.money
           this.payment.content = code.content
-          this.addList.splice(this.addList.length - 1, 1)
-          console.log(this.addList)
           getNum({ studentIds: 1 + ',', code: this.payment.code }).then(response => {
             this.addList.forEach(function(ietm) {
               ietm.money = code.money
             })
-            this.addList.push({})
+            this.refreshTable()
           })
         }
+      },
+      // 刷新表格
+      refreshTable() {
+        this.addList.splice(this.addList.length - 1, 1)
+        this.addList.push({})
       },
       // 支付类型
       getPayCodeList(query) {
@@ -429,10 +433,21 @@
       },
       moneyRight(row) {
         row.showRemark = true
-        var inputs = document.getElementsByClassName('remark-input')
-        console.log(inputs)
-        console.log(this.addList.length - 2)
-        inputs[this.addList.length - 2].focus()
+        row.showMoney = false
+        this.refreshTable()
+        // var inputs = document.getElementsByClassName('remark-input')
+        // console.log(inputs)
+        // console.log(this.addList.length - 2)
+        // inputs[this.addList.length - 2].focus()
+      },
+      remarkLeft(row) {
+        row.showRemark = false
+        row.showMoney = true
+        this.refreshTable()
+        // var inputs = document.getElementsByClassName('money-input')
+        // console.log(inputs)
+        // console.log(this.addList.length - 2)
+        // inputs[this.addList.length - 2].focus()
       },
       remarkEnter(row) {
         var select = document.getElementsByClassName('student-search')
@@ -543,6 +558,7 @@
           this.$message.error('请选择学员!')
         } else {
           this.payment.studentList = list
+          console.log(this.payment)
           if (this.payment.payId) {
             // this.update()
           } else {

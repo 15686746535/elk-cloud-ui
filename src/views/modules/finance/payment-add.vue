@@ -155,8 +155,8 @@
         </el-table-column>
         <el-table-column align="center" prop="remark" label="备注" width="120">
           <template slot-scope="scope" >
-            <span><input v-model="scope.row.remark"  v-if="scope.row.showRemark" @keyup.enter="remarkEnter(scope.row)" @keyup.left="remarkLeft(scope.row)" v-focus class="remark-input" style="padding-left: 10px;width: 100%;height: 25px;"/></span>
-            <span v-if="!scope.row.showRemark">{{scope.row.remark}}</span>
+            <span><input v-model="scope.row.remark"  @keyup.enter="remarkEnter(scope.row)" @keyup.left="remarkLeft(scope.row)" class="remark-input" style="padding-left: 10px;width: 100%;height: 25px;"/></span>
+            <!--<span v-if="!scope.row.showRemark">{{scope.row.remark}}</span>-->
           </template>
         </el-table-column>
         <el-table-column align="center" prop="remark"  label="操作"  width="50">
@@ -432,22 +432,22 @@
         this.getBatchList()
       },
       moneyRight(row) {
-        row.showRemark = true
-        row.showMoney = false
-        this.refreshTable()
-        // var inputs = document.getElementsByClassName('remark-input')
-        // console.log(inputs)
-        // console.log(this.addList.length - 2)
-        // inputs[this.addList.length - 2].focus()
+        // row.showRemark = true
+        // row.showMoney = false
+        // this.refreshTable()
+        var inputs = document.getElementsByClassName('remark-input')
+        console.log(inputs)
+        console.log(this.addList.length - 2)
+        inputs[this.addList.length - 2].focus()
       },
       remarkLeft(row) {
-        row.showRemark = false
-        row.showMoney = true
-        this.refreshTable()
-        // var inputs = document.getElementsByClassName('money-input')
-        // console.log(inputs)
-        // console.log(this.addList.length - 2)
-        // inputs[this.addList.length - 2].focus()
+        // row.showRemark = false
+        // row.showMoney = true
+        // this.refreshTable()
+        var inputs = document.getElementsByClassName('money-input')
+        console.log(inputs)
+        console.log(this.addList.length - 2)
+        inputs[this.addList.length - 2].focus()
       },
       remarkEnter(row) {
         var select = document.getElementsByClassName('student-search')

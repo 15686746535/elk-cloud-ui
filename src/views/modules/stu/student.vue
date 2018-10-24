@@ -673,21 +673,21 @@
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center"  label="上报培训学时（分）">
+                <el-table-column align="center"  label="上报培训学时">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.duration}}</span>
+                    <span>{{ scope.row.duration | periodFilter}}</span>
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center"  label="审核有效学时（分）">
+                <el-table-column align="center"  label="审核有效学时">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.qualifiedhours}}</span>
+                    <span>{{ scope.row.qualifiedhours | periodFilter}}</span>
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center"  label="需补学时（分）">
+                <el-table-column align="center"  label="需补学时">
                   <template slot-scope="scope">
-                    <span :class="scope.row.needfultime > 0?'red':'green'">{{ scope.row.needfultime}}</span>
+                    <span :class="scope.row.needfultime > 0?'red':'green'">{{ scope.row.needfultime | periodFilter}}</span>
                   </template>
                 </el-table-column>
 

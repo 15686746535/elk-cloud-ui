@@ -1,13 +1,13 @@
 <template>
   <div class="" style="height: 100%;padding: 5px" >
     <el-card body-style="padding:10px 20px;" style="margin-bottom: 5px;height: 50px;" >
-      <el-radio-group @change="handleSubject" size="mini" v-model="batchListQuery.subject">
+      <el-radio-group @change="handleSubject" size="mini" v-if="!gradeInfo" v-model="batchListQuery.subject">
         <el-radio-button label="1">科目一</el-radio-button>
         <el-radio-button label="2">科目二</el-radio-button>
         <el-radio-button label="3">科目三</el-radio-button>
         <el-radio-button label="4">科目四</el-radio-button>
       </el-radio-group>
-      <el-select v-model="studentListQuery.examState" class="select-lines" @change="searchClick"  size="mini"  placeholder="" style="width: 150px;">
+      <el-select v-model="studentListQuery.examState" v-if="!gradeInfo"  class="select-lines" @change="searchClick"  size="mini"  placeholder="" style="width: 150px;">
         <el-option v-for="state in stateList" :key="state.value" :label="state.label" :value="state.value"> </el-option>
       </el-select>
       <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition" style="width: 150px;"></el-input>
@@ -19,12 +19,12 @@
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (pageHeight - 190) + 'px'}">
             <div v-for="batch in batchList">
-              <div class="batchCss" @click="batchClick($event,batch)" :title="batch.examField" style="overflow: hidden;text-overflow:ellipsis;">
+              <div class="batchCss" @click="batchClick($event,batch)" :class="gradeInfo?'batchCss_selected':''" :title="batch.examField" style="overflow: hidden;text-overflow:ellipsis;">
                 {{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField}}
               </div>
             </div>
           </div>
-          <div class="loading-more">
+          <div class="loading-more" v-if="!gradeInfo">
             <span v-if="batchTotalPage > batchListQuery.page" @click="batchHandleCurrentChange"><i class="el-icon-fa-angle-double-down"></i></span>
             <span v-else>到底了</span>
           </div>
@@ -157,9 +157,6 @@
         <el-button type="primary" size="small" :loading="btnLoading" @click="updateCoach">确 定</el-button>
       </div>
     </el-dialog>
-
-
-
   </div>
 </template>
 
@@ -262,6 +259,7 @@ export default {
     },
     props: {
       layerid: String,
+      gradeInfo: Object,
       area: Array
     },
     watch: {
@@ -271,7 +269,22 @@ export default {
       }
     },
     created() {
-      this.getBatchList()
+      if (this.gradeInfo) {
+        this.batchListQuery.subject = this.gradeInfo.subject
+        this.studentListQuery.examId = this.gradeInfo.examId
+        if (this.gradeInfo.examState === '0') {
+          this.studentListQuery.examState = 'exam_note_false'
+        } else {
+          this.studentListQuery.examState = 'exam_note_true'
+        }
+        this.studentListQuery.condition = this.gradeInfo.condition
+        var list = []
+        list.push(this.gradeInfo)
+        this.batchList = list
+        this.getGradeList()
+      } else {
+        this.getBatchList()
+      }
     },
     computed: {
       ...mapGetters([

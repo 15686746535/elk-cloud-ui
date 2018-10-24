@@ -2,9 +2,9 @@
   <div id="app" @click="appClack($event)">
     <router-view></router-view>
     <!--加载框-->
-    <!--<div v-loading.fullscreen.lock="$store.state.app.loading"-->
-         <!--element-loading-text="玩儿命加载中···"-->
-         <!--element-loading-background="rgba(246, 246, 246, 0.2)"></div>-->
+    <div v-loading.fullscreen.lock="$store.state.app.loading"
+         element-loading-text="玩儿命加载中···"
+         element-loading-background="rgba(246, 246, 246, 0.2)"></div>
   </div>
 </template>
 

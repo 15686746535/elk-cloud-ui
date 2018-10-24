@@ -74,6 +74,13 @@ export function getSuperviseInfo(query) {
     params: query
   })
 }
+export function getSupervisePush(obj) {
+  return request({
+    url: '/supervise/push',
+    method: 'get',
+    params: obj
+  })
+}
 export function getFieldList(type) {
   return request({
     url: '/basis/dict/getByType/' + type,

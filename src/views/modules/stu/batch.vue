@@ -240,8 +240,9 @@
 
             <el-table-column align="center" label="操作" min-width="220">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消</el-button>
-                <el-button size="mini" type="primary" @click="superviseInfo(scope.row)" :loading="superviseLoading" >监管查询</el-button>
+                <span class="a" style="margin: 5px" @click="revokeExam(scope.row)">取消</span>
+                <span class="a" style="margin: 5px" @click="superviseInfo(scope.row)" title="监管查询新学员是否可以约考">新学员</span>
+                <span class="a" style="margin: 5px" @click="supervisePush(scope.row)" title="监管查询老学员是否可以约考">老学员</span>
               </template>
             </el-table-column>
           </el-table>
@@ -454,6 +455,76 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+        <el-tab-pane name="6" label="已取消">
+          <el-table :data="examBespeak" :height="tableHeight - 180" @selection-change="handleSelectionChange"  v-loading="examBespeakLoading" element-loading-text="给我一点时间"  fit highlight-current-row style="width: 100%;">
+            <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+            <el-table-column align="center"  label="学员" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="电话"  width="110">
+              <template slot-scope="scope">
+                <span>{{scope.row.mobile}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="身份证"  width="170">
+              <template slot-scope="scope">
+                <span>{{scope.row.idNumber}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="车型" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.motorcycleType}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考试次数" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.examCount}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="欠费" width="60">
+              <template slot-scope="scope">
+                <span>{{scope.row.arrearage}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.hasService}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考场" width="120"  show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.examField}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="入学时间" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.enrolTime | subTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column  align="center" label="考试时间" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.examTime | subTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '2'" align="center" label="场训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.fieldCoach}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="listQuery.subject === '3'" align="center" label="路训教练" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.roadCoach}}</span>
+              </template>
+            </el-table-column>
+            <!--<el-table-column align="center" label="操作">-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-button size="mini" type="danger" @click="revokeExam(scope.row)">取消约考</el-button>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+          </el-table>
+        </el-tab-pane>
         <div style="margin-top: 10px;height: 40px;"  >
           <div v-show="!examBespeakLoading" class="pagination-container" style="margin-top: 5px;margin-right: 20px;">
             <el-pagination @size-change="handleSizeExamBespeak" @current-change="handleCurrentExamBespeak"
@@ -565,14 +636,11 @@
         <el-button :loading="btnLoading" type="primary" @click="updateExam">确 定</el-button>
       </div>
     </el-dialog>
-
-
-
   </div>
 </template>
 
 <script>
-  import { getBatchList, delObj, addObj, createBatchs, putObj, getSuperviseInfo, exportExamList, getFieldList } from '@/api/student/batch'
+  import { getBatchList, delObj, addObj, createBatchs, putObj, getSuperviseInfo, getSupervisePush, exportExamList, getFieldList } from '@/api/student/batch'
   import { examFetchList, putExamBespeak } from '@/api/student/examnote'
   import { getFinanceList } from '@/api/finance/service-category'
   import { mapGetters } from 'vuex'
@@ -580,6 +648,7 @@
     name: 'table_batch',
     props: {
       layerid: String,
+      batchInfo: Object,
       area: Array
     },
     watch: {
@@ -668,7 +737,6 @@
           examField: []
         },
         fieldList: [],
-        batchInfo: {},
         dgLoading: false,
         superviseOpen2: false,
         batch_dialog: false,
@@ -791,6 +859,9 @@
     created() {
       this.getList()
       this.getFinanceList()
+      if (this.batchInfo) {
+        this.look(this.batchInfo)
+      }
     },
     computed: {
       ...mapGetters([
@@ -882,7 +953,7 @@
       },
       look(exam) {
         this.bespeakTabs = 'all'
-        this.batchInfo = exam
+        // this.batchInfo = exam
         this.see(exam.examId, null)
       },
       see(examId, state) {
@@ -1009,7 +1080,7 @@
           trainType: val.motorcycleType,
           phoneDto: val.mobile
         }
-        this.superviseLoading = true
+        this.$store.state.app.loading = true
         this.dgLoading = true
         getSuperviseInfo(stu).then(resp => {
           var res = resp.data
@@ -1023,7 +1094,27 @@
               this.$message.error(supervise.data)
             }
           }
-          this.superviseLoading = false
+          this.$store.state.app.loading = false
+        })
+      },
+      supervisePush(val) {
+        var stu = {
+          idCard: val.idNumber,
+          subject: parseInt(val.subject)
+        }
+        this.$store.state.app.loading = true
+        this.dgLoading = true
+        getSupervisePush(stu).then(response => {
+          var data = response.data
+          if (data.code === 0) {
+            var res = JSON.parse(data.data)
+            if (res.errorcode === 0) {
+              this.$message.success('推送成功')
+            } else {
+              this.$message.error(res.data)
+            }
+          }
+          this.$store.state.app.loading = false
         })
       },
       // 取消约考

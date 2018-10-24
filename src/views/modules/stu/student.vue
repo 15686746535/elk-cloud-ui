@@ -20,7 +20,7 @@
             </el-select>
           </el-col>
           <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
-            <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" placeholder="报名点"  ></dict>
+            <dict v-model="listQuery.enrolSite" size="mini" dictType="dict_enrolSite" placeholder="入学校区"  ></dict>
           </el-col>
           <!--<el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">-->
             <!--<Coach v-model="listQuery.fieldCoach" size="mini" coachType="field" placeholder="场训教练"  ></Coach>-->
@@ -61,7 +61,7 @@
         </el-row>
       </el-card>
       <el-card :style="{height: tableHeight - 130 + 'px'}" id="student-table-card">
-        <el-table :data="stuList" :height="tableHeight - 220" highlight-current-row stripe @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
+        <el-table :data="stuList" :height="tableHeight - 220" highlight-current-row stripe id="student-table" @row-dblclick="editList" v-loading="listLoading" element-loading-text="给我一点时间">
           <el-table-column align="center" label="头像" min-width="150px">
             <template slot-scope="scope">
               <!-- 头像 -->
@@ -129,7 +129,7 @@
 
               <el-col style=" line-height: 25px">
                 <el-row :gutter="10">
-                  <el-col :span="7" class="table_text">校区:</el-col>
+                  <el-col :span="7" class="table_text">培训校区:</el-col>
                   <el-col :span="17" class="table_text">{{scope.row.campus}}</el-col>
                 </el-row>
                 <el-row :gutter="10">
@@ -202,7 +202,7 @@
     </div>
     <!--详情-->
     <el-card v-show="showModule=='info'" style="height: 100%;overflow: auto;position: relative;">
-      <el-button type="primary" :disabled="edit" size="mini"  @click="backClick" style="position: absolute;top: 25px;right: 35px;z-index: 6666;"><i class="el-icon-back"></i> 返 回</el-button>
+      <el-button type="primary" :disabled="edit" size="mini"  @click="returnClick" style="position: absolute;top: 25px;right: 35px;z-index: 6666;"><i class="el-icon-back"></i> 返 回</el-button>
       <div style="position: absolute;top: 15px;left: 16px;z-index: 6666;">
         <el-upload :disabled="!edit"  style="height: 50px;" class="avatar-uploader" action="/oss/upload" name="file" :show-file-list="false" :headers="headers" accept=".png,.jpg"
                    :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :on-error="handleAvatarError">
@@ -331,8 +331,8 @@
                   <!-- 校区 -->
                   <el-row>
                     <el-form-item prop="campus">
-                      <span slot="label" class="text_css">校区:</span>
-                      <dict v-if="edit" dictType="dict_campus" v-model="student.campus" style="width: 100%;"  placeholder="校区"></dict>
+                      <span slot="label" class="text_css">培训校区:</span>
+                      <dict v-if="edit" dictType="dict_campus" v-model="student.campus" style="width: 100%;"  placeholder="培训校区"></dict>
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.campus}}</div>
                     </el-form-item>
                   </el-row>
@@ -422,8 +422,8 @@
                    <!--报名点-->
                   <el-row>
                     <el-form-item prop="enrolSite">
-                      <span slot="label" class="text_css">报名点:</span>
-                      <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
+                      <span slot="label" class="text_css">入学校区:</span>
+                      <dict v-if="edit" v-model="student.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="入学校区"></dict>
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.enrolSite}}</div>
                     </el-form-item>
                   </el-row>
@@ -493,8 +493,12 @@
                 <el-button type="danger" size="mini" @click="outSchool" v-if="permissions.stu_student_update" icon="el-icon-edit">退 学</el-button>
               </div>
               <div v-if="!edit" style="float: right;margin-bottom: 10px;margin-left: 15px;">
-                <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" :loading="btnLoading2" icon="el-icon-search">监管查询</el-button>
-                <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" :loading="btnLoading1" icon="el-icon-search">监管推送</el-button>
+                <el-tooltip class="item" effect="dark" content="监管查询新学员是否可以约考" placement="top">
+                  <el-button type="primary" size="mini" @click="supervisePushData('2')"  v-if="permissions.stu_push_122" :loading="btnLoading2" icon="el-icon-search">新学员</el-button>
+                </el-tooltip>
+                <el-tooltip class="item" effect="dark" content="监管查询老学员是否可以约考" placement="top">
+                  <el-button type="primary" size="mini" @click="supervisePushData('1')"  v-if="permissions.stu_push_122" :loading="btnLoading1" icon="el-icon-search">老学员</el-button>
+                </el-tooltip>
                 <el-button type="primary" v-show="student.physicalExamination==='1'" v-if="permissions.stu_push_122"  size="mini" @click="dialog122" icon="el-icon-fa-bars">录入122</el-button>
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
               </div>
@@ -523,22 +527,13 @@
                 </el-table-column>
                 <el-table-column align="center"  label="考试批次">
                   <template slot-scope="scope">
-                    <span><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>
+                    <span class="a" @click="batchInfo(scope.row)"><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center"  label="考试结果" width="100">
                   <template slot-scope="scope">
-
-                    <el-tag v-show="scope.row.examineState === '0'" type="info" style="color: #fff;" color="#67C23A">待审核</el-tag>
-                    <el-tag v-show="scope.row.examineState === '1'" type="info" style="color: #fff;" color="#67C23A">待约考</el-tag>
-                    <el-tag v-show="scope.row.examineState === '2'" type="info" style="color: #fff;" color="#67C23A">约考成功</el-tag>
-                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '0'" type="info" style="color: #fff;" color="#67C23A">未登记</el-tag>
-                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '1'" type="info" style="color: #fff;" color="#67C23A">通 过</el-tag>
-                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '2'" type="info" style="color: #fff;" color="#F56C6C">失 败</el-tag>
-                    <el-tag v-show="scope.row.examineState === '3'&&scope.row.examState === '3'" type="info" style="color: #fff;" color="#E6A23C">缺 考</el-tag>
-                    <el-tag v-show="scope.row.examineState === '4'" type="info" style="color: #fff;" color="#67C23A">报考失败</el-tag>
-                    <el-tag v-show="scope.row.examineState === '5'" type="info" style="color: #fff;" color="#67C23A">审核失败</el-tag>
-                    <el-tag v-show="scope.row.examineState === '6'" type="info" style="color: #fff;" color="#67C23A">取消约考</el-tag>
+                    <!--<span @click="examRegister(scope.row)">待审核</span>-->
+                    <span class="a" @click="examRegister(scope.row)">{{scope.row.examineState | examineFilter(scope.row.examState)}}</span>
                   </template>
                 </el-table-column>
 
@@ -588,8 +583,8 @@
                 </el-table-column>
                 <el-table-column align="left"  label="操作">
                   <template slot-scope="scope">
-                    <span  @click="writeoffHandle(scope.row.chargeId)" v-if="scope.row.state==='1'&&scope.row.type=='1'&&permissions.cost_info_examine_write_off"
-                    style="cursor: pointer;color: -webkit-link;text-decoration: underline;">冲销</span>
+                    <span class="a" @click="writeoffHandle(scope.row.chargeId)"
+                           v-if="scope.row.state==='1'&&scope.row.type=='1'&&permissions.cost_info_examine_write_off">冲销</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -645,46 +640,54 @@
             <el-tab-pane label="课时信息" name="6">
               <el-table :data="courseList" stripe style="width: 100%">
                 <!--<el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>-->
-                <el-table-column align="center"  label="ID">
+                <el-table-column align="center"  label="ID" width="60">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.cid}}</span>
+                    <span>{{ scope.row.stageId}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center"  label="学员状态">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.studentIsold === 0?'新学员':'老学员' }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="培训部分">
+                <!--<el-table-column align="center"  label="学员状态">-->
+                  <!--<template slot-scope="scope">-->
+                    <!--<span>{{ scope.row.studentIsold === 0?'新学员':'老学员' }}</span>-->
+                  <!--</template>-->
+                <!--</el-table-column>-->
+                <el-table-column align="center"  label="培训部分" width="80">
                   <template slot-scope="scope">
                     <span>{{ scope.row.subject | subjectFilter}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center"  label="初审结果">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.valid  === 1?'通过':'预警'}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column align="center"  label="复审结果">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.ischeck | ischeckFilter}}</span>
-                  </template>
-                </el-table-column>
+                <!--<el-table-column align="center"  label="初审结果">-->
+                  <!--<template slot-scope="scope">-->
+                    <!--<span>{{ scope.row.valid  === 1?'通过':'预警'}}</span>-->
+                  <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column align="center"  label="复审结果">-->
+                  <!--<template slot-scope="scope">-->
+                    <!--<span>{{ scope.row.ischeck | ischeckFilter}}</span>-->
+                  <!--</template>-->
+                <!--</el-table-column>-->
                 <el-table-column align="center"  label="不合格原因">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.reason}}</span>
+                    <el-tooltip class="item" effect="dark" :content="getContent(scope.row.reason)" placement="top">
+                      <el-tag type="success">{{scope.row.reason}}</el-tag>
+                    </el-tooltip>
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center"  label="上报培训学时">
+                <el-table-column align="center"  label="上报培训学时（分）">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.duration | periodFilter}}</span>
+                    <span>{{ scope.row.duration}}</span>
                   </template>
                 </el-table-column>
 
-                <el-table-column align="center"  label="审核有效学时">
+                <el-table-column align="center"  label="审核有效学时（分）">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.qualifiedhours | periodFilter}}</span>
+                    <span>{{ scope.row.qualifiedhours}}</span>
+                  </template>
+                </el-table-column>
+
+                <el-table-column align="center"  label="需补学时（分）">
+                  <template slot-scope="scope">
+                    <span :class="scope.row.needfultime > 0?'red':'green'">{{ scope.row.needfultime}}</span>
                   </template>
                 </el-table-column>
 
@@ -768,8 +771,8 @@
               <!-- 校区 -->
               <el-row >
                 <el-form-item prop="campus">
-                  <span slot="label"  class="text_css">校区</span>
-                  <dict size="mini" v-model="studentEntity.campus" dictType="dict_campus" style="width: 100%;"  placeholder="校区"></dict>
+                  <span slot="label"  class="text_css">培训校区</span>
+                  <dict size="mini" v-model="studentEntity.campus" dictType="dict_campus" style="width: 100%;"  placeholder="培训校区"></dict>
                 </el-form-item>
               </el-row>
 
@@ -939,8 +942,8 @@
               <!-- 报名点 -->
               <el-row >
                 <el-form-item prop="enrolSite">
-                  <span slot="label"  class="text_css">报名点</span>
-                  <dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="报名点"></dict>
+                  <span slot="label"  class="text_css">入学校区</span>
+                  <dict v-model="studentEntity.enrolSite" dictType="dict_enrolSite" style="width: 100%;"  placeholder="入学校区"></dict>
                 </el-form-item>
               </el-row>
 
@@ -1139,7 +1142,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
   import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122,
-    getFinanceByStudentId, quaryCourseList, supervisePush , superviseInfo } from '@/api/student/student'
+    getFinanceByStudentId, quaryCourseList, supervisePush, superviseInfo } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
   import { writeoff } from '@/api/finance/service-charge'
@@ -1151,6 +1154,8 @@
   import { getIntentionByMobile } from '@/api/visit/intention'
   import { Message } from 'element-ui'
   import finance from '@/views/modules/stu/serviceNote.vue'
+  import batch from '@/views/modules/stu/batch.vue'
+  import grade from '@/views/modules/stu/grade.vue'
 
   export default {
     components: {
@@ -1563,6 +1568,26 @@
         const statusMap = ['待复核', '通过', '不通过']
         return statusMap[status]
       },
+      examineFilter(state, state2) {
+        const examinesMap = {
+          examine_0: '待审核',
+          examine_1: '待约考',
+          examine_2: '约考成功',
+          examine_3_0: '未登记',
+          examine_3_1: '通 过',
+          examine_3_2: '失 败',
+          examine_3_3: '缺 考',
+          examine_4: '报考失败',
+          examine_5: '审核失败',
+          examine_6: '取消约考'
+        }
+        if (state === '3') {
+          return examinesMap['examine_' + state + '_' + state2]
+        } else {
+          console.log('examine_' + state, examinesMap['examine_' + state])
+          return examinesMap['examine_' + state]
+        }
+      },
       platnumFilter(platnum) {
         const statusMap = {
           A0008: '成为',
@@ -1627,6 +1652,27 @@
       }
     },
     methods: {
+      getContent(reason) {
+        var reasons = reason.split(',')
+        console.log(reasons)
+        var map = {
+          5: '5:超过一天最多的打卡时间了。',
+          8: '8:抓拍过程中的人脸是被失败了。',
+          9: '9:没有在规定的时间段内打开。',
+          11: '11:签到或者签退的时候照片没拍起。',
+          14: '14:签到或者签退的时候人脸识别不一样。',
+          15: '15:单次培训时间太短。',
+          17: '17:长时间的停在原地。',
+          51: '51:总学时没有打满。'
+        }
+        var req = ''
+        reasons.forEach(function(item) {
+          if (item !== '') {
+            req += map[parseInt(item)] || ''
+          }
+        })
+        return req
+      },
       supervisePushData(state) {
         this.supervise = {}
         this.superviseRes = {}
@@ -1771,11 +1817,22 @@
         this.listQuery.page = 1
         this.getList()
       },
+      // 记录scrollTop
+      getScrollTop() {
+        var tables = document.getElementById('student-table')
+        console.log(tables.children[2].scrollTop)
+      },
       // 双击行  编辑
       editList(val) {
-        console.log(val)
+        // var table = document.getElementById('student-table')
+        //
+        // console.log(table)
+        // console.log(table.children[2])
+        // console.log(table.children[2].scrollTop)
+        // console.log(table.scrollTop)
+        // console.log(document.body.scrollTop)
         this.activeName = '1'
-        this.financeList = []
+        this.financeList = [] // el-table__body-wrapper
         this.infoLoading = true
         getStudent(val.studentId).then(response => {
           var student = response.data.data
@@ -1884,8 +1941,11 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.btnLoading = true
-            saveStudent(this.studentEntity).then(() => {
+            saveStudent(this.studentEntity).then(response => {
+              this.student = response.data.student
+              this.openService()
               this.backClick()
+              console.log(response)
               this.btnLoading = false
             })
           }
@@ -1936,6 +1996,14 @@
         this.edit = false
       },
       // 返回列表
+      returnClick() {
+        this.showModule = 'list'
+        this.edit = false
+        this.isCreate = false
+        if (this.$refs['studentEntity']) {
+          this.$refs['studentEntity'].resetFields()
+        }
+      },
       backClick() {
         this.showModule = 'list'
         this.edit = false
@@ -2153,6 +2221,36 @@
           })
         }
       },
+      // 通过或者未登记。自动打开成绩登记中这个学员的这场考试
+      examRegister(row) {
+        console.log(row)
+        this.layerOpen({
+          id: row.examId + '_grade', // id
+          title: '成绩登记', // title
+          icon: '../../../static/icon/app/app_stu_grade.png', // 应用图标 任务栏显示
+          content: grade,
+          data: {
+            gradeInfo: {
+              examId: row.examId,
+              subject: row.subject,
+              examField: row.examField,
+              examState: row.examState,
+              condition: this.student.name,
+              examTime: row.examTime
+            }
+          } // props
+        })
+      },
+      // 点击考试批次，自动打开考试安排中这的这场考试
+      batchInfo(row) {
+        this.layerOpen({
+          id: row.examId + '_batch', // id
+          title: '考试安排', // title
+          icon: '../../../static/icon/app/app_stu_batch.png', // 应用图标 任务栏显示
+          content: batch,
+          data: { batchInfo: { examId: row.examId }} // props
+        })
+      },
       openService(row) { // openFinace
         var id = this.student.studentId + '_stu'
         var title = '￥' + this.student.name + ' 学费收取'
@@ -2162,18 +2260,27 @@
           title = '收费详情'
           data = { charge: { chargeId: row.chargeId, pageLevel: 'info' }}
         }
+        this.layerOpen({
+          id: id, // id
+          title: title, // title
+          icon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
+          content: finance,
+          data: data // props
+        })
+      },
+      layerOpen(app) {
         this.$layer.open({
           type: 2,
-          id: id, // title
-          title: title, // title
+          id: app.id, // title
+          title: app.title, // title
           shadeClose: false, // 点击遮罩关闭
           prohibit: this.$store.state.app.prohibit,
-          tabIcon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
+          tabIcon: app.icon, // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示
           content: {
-            content: finance,
+            content: app.content,
             parent: this, // 当前的vue对象
-            data: data // props
+            data: app.data // props
           }
         })
       },

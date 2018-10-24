@@ -45,6 +45,7 @@ service.interceptors.response.use(
   },
   error => {
     const res = error.response
+    store.dispatch('setLoading', false)
     if (res) {
       if (res.status === 478 || res.status === 403) {
         Message.error('您没有权限！')
@@ -64,7 +65,6 @@ service.interceptors.response.use(
         Message.error(res.msg)
       }
     }
-    store.dispatch('setLoading', false)
   }
 )
 

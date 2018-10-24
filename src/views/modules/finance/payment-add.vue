@@ -139,7 +139,7 @@
         </el-table-column>
         <el-table-column align="center" prop="num" label="收费次数" width="80">
           <template slot-scope="scope">
-            <span>{{ scope.row.num}}</span>
+            <span>{{ scope.row.num}}</span><!---->
           </template>
         </el-table-column>
         <el-table-column align="center" prop="num" label="参考次数" width="80">
@@ -149,7 +149,7 @@
         </el-table-column>
         <el-table-column align="center" prop="money" label="金额" width="50">
           <template slot-scope="scope">
-            <span><input v-model="scope.row.money" v-if="scope.row.showMoney" @keyup.right="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
+            <span><input v-model="scope.row.money" v-if="scope.row.money" @keyup.right="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
             <span v-if="!scope.row.showMoney">{{scope.row.money}}</span>
           </template>
         </el-table-column>

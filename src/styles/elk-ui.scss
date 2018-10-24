@@ -702,9 +702,15 @@
   }
 
 }
-
-
-
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+.a:hover{
+  cursor: pointer;color: -webkit-link;text-decoration: underline;
+}
 
 .receivables-type{
   .el-radio+.el-radio {

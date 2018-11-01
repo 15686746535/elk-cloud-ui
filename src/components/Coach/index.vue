@@ -54,18 +54,18 @@
         coach: this.value,
         coachList: [],
         query: {
-          iscoach: 48
+          iscoach: 2
         }
       }
     },
     // 数据请求
     created() {
       if (this.coachType === 'field') {
-        this.query.iscoach = 16
+        this.query.iscoach = 2
         this.getCoachList()
       }
       if (this.coachType === 'road') {
-        this.query.iscoach = 32
+        this.query.iscoach = 3
         this.getCoachList()
       }
     },

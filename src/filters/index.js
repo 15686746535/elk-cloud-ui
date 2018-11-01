@@ -25,9 +25,8 @@ export function sexFilter(sex) {
 }
 export function isCoachFilter(coach) {
   const typeMap = {
-    '16': '场训教练',
-    '32': '路训教练',
-    '48': '场训教练，路训教练',
+    '2': '场训教练',
+    '3': '路训教练',
     '0': '不是教练'
   }
   return typeMap[coach]

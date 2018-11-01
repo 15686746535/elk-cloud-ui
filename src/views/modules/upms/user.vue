@@ -395,9 +395,8 @@
                           <span slot="label" class="text_css">是否教练:</span>
                           <el-radio-group  v-if="edit"  v-model="userEntity.iscoach">
                             <el-radio label="0">不是</el-radio>
-                            <el-radio label="16">场训</el-radio>
-                            <el-radio label="32">路训</el-radio>
-                            <el-radio label="48">场训&路训</el-radio>
+                            <el-radio label="2">场训</el-radio>
+                            <el-radio label="3">路训</el-radio>
                           </el-radio-group>
                           <span style="padding-left: 16px;font-size: 12px;" v-else>{{userEntity.iscoach | isCoachFilter}}</span>
                         </el-form-item>

@@ -3,7 +3,7 @@
  */
 
 export function parseStr(time) {
-  return time.substring(0, 4) + '年' + time.substring(5, 7) + '月' + time.substring(9, 11) + '年'
+  return time.substring(0, 4) + '年' + time.substring(5, 7) + '月' + time.substring(9, 11) + '日'
 }
 
 export function remRepeat(list, key) {

@@ -4,7 +4,7 @@ import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import { getToken } from '@/utils/auth'
 
-const whiteList = ['/login'] // 不重定向白名单
+const whiteList = ['/login', '/contacts'] // 不重定向白名单
 
 router.beforeEach((to, from, next) => { // 开启Progress
   NProgress.start()

@@ -49,6 +49,7 @@
 
 <script>
 import defect from '@/views/404.vue'
+import request from '@/utils/request'
 import { mapGetters } from 'vuex'
 import target from '@/views/modules/upms/target.vue'
 
@@ -93,7 +94,21 @@ export default {
           this.layerOpen(this.target)
           break
         case 2:
-          this.amuse()
+          request({
+            url: '/app/coach/contacts/download',
+            method: 'get'
+          }).then(response => {
+            console.log(response)
+            var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
+            var downloadElement = document.createElement('a')
+            var href = window.URL.createObjectURL(blob) // 创建下载的链接
+            downloadElement.href = href
+            downloadElement.download = 'tel.vcf' // 下载后文件名
+            document.body.appendChild(downloadElement)
+            downloadElement.click() // 点击下载
+            document.body.removeChild(downloadElement) // 下载完成移除元素
+            window.URL.revokeObjectURL(href) // 释放掉blob对象
+          })
           break
         case 3:
           this.amuse()

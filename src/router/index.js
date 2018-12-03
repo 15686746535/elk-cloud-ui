@@ -198,7 +198,8 @@ export function startFilter(appList) {
 export const constantRouterMap = [
   { path: '/login', name: '登陆', component: _import('login/index') },
   { path: '/404', name: '404' },
-  { path: '/', name: '首页', redirect: '/home', component: _import('desktop/index'), children: [{ path: 'home', component: _import('desktop/index'), name: '首页' }] }
+  { path: '/', name: '首页', redirect: '/home', component: _import('desktop/index'), children: [{ path: 'home', component: _import('desktop/index'), name: '首页' }] },
+  { path: '/contacts', name: '通讯录', component: _import('modules/sys/contacts'), children: [{ path: 'contacts', component: _import('modules/sys/contacts'), name: '通讯录' }] }
 ]
 /**
  * 注册路由

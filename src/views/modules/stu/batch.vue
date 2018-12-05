@@ -27,6 +27,9 @@
           <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
         </el-col>
       </el-row>
+
+
+
       <!--{{permissions}}-->
       <el-table :key='tableKey' :data="list"  v-loading="listLoading" :height="tableHeight - 190" :stripe="true" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%;text-align: center;">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -1119,13 +1122,14 @@
       },
       // 取消约考
       revokeExam(val) {
-        this.$confirm('此操作将取消该学员约考, 是否继续?', '提示', {
+        this.$prompt('请输入取消原因?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+          inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
+          inputErrorMessage: '取消原因不能为空'
+        }).then(({ value }) => {
           this.examBespeakList.examNoteList = []
-          this.examBespeakList.examNoteList.push({ 'studentId': val.studentId, 'examId': val.examId })
+          this.examBespeakList.examNoteList.push({ 'studentId': val.studentId, 'examId': val.examId, 'remark': value })
           this.operation('6', 'examCancel')
         }).catch(() => {
           this.$message({

@@ -420,7 +420,56 @@
               </el-table>
 
             </el-tab-pane>
-            <!--<el-tab-pane label="费用情况" name="3">-->
+            <el-tab-pane label="费用情况" name="3">
+              <el-table :data="financeList" stripe style="width: 100%;">
+                <el-table-column type="expand">
+                  <template slot-scope="props">
+                    <div style="line-height: 22px;">
+                      <span v-for="(service,index) in props.row.financeList">
+                      <span style="text-decoration: underline">{{service.code+'_'+service.name + '('+service.price+'*'+service.number+')'}}</span>
+                      <span v-if="index+1 < props.row.financeList.length">、</span>
+                      </span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="单号" width="150">
+                  <template slot-scope="scope">
+                    <a href="javascript:void(0) " style="color: -webkit-link;cursor: pointer;text-decoration: underline;" @click="openService(scope.row)">{{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}</a>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费金额">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.money}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费时间">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.paytime.substring(0,10)}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费类型">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.receivablesType}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="缴费方式">
+                  <template slot-scope="scope">
+                    <p v-for="type in scope.row.payTypeList">{{type.mode + '('+type.money+')'}}</p>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="状态">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.state | chargeStateFilter}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="left"  label="操作">
+                  <template slot-scope="scope">
+                    <span class="a" @click="writeoffHandle(scope.row.chargeId)"
+                          v-if="scope.row.state==='1'&&scope.row.type=='1'&&permissions.cost_info_examine_write_off">冲销</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
             <el-tab-pane label="来访跟进信息" name="4">
               <div style="line-height: 160px;height: 160px;color: #909399;text-align: center;font-size: 14px" v-if="followUpList.length === 0">
                 无跟进信息
@@ -518,9 +567,9 @@
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent } from '@/api/student/student'
+  import { fetchStudentList, getStudent, getFinanceByStudentId } from '@/api/student/student'
   import { examFetchList } from '@/api/student/examnote'
-
+  import finance from '@/views/modules/stu/serviceNote.vue'
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
   import { getShuttleLogByStudentId } from '@/api/bespeak/shuttlestudent'
   import { followUpList } from '@/api/visit/followup'
@@ -675,7 +724,8 @@
         /* 添加加载动画 */
         createLoading: true,
         infoLoading: true,
-        userList: []
+        userList: [],
+        financeList: []
       }
     },
     created() {
@@ -710,13 +760,27 @@
         if (tab.label === '考试情况') {
           this.getExam()
         } else if (tab.label === '费用情况') {
-          // this.getExam()
+          this.getFinance()
         } else if (tab.label === '来访跟进信息') {
           this.getFollowUpList()
         } else if (tab.label === '约车日志') {
           this.getVehiclePeriod()
         } else if (tab.label === '接送日志') {
           this.getShuttleLog()
+        }
+      },
+      /* 费用情况 */
+      getFinance() {
+        if (this.student.studentId) {
+          getFinanceByStudentId(this.student.studentId).then(response => {
+            if (response.data.code === 0) {
+              var list = response.data.data
+              console.log(list)
+              this.financeList = list.filter(function(item) {
+                return item.state !== '-1'
+              })
+            }
+          })
         }
       },
       /* 考试日志 */
@@ -783,6 +847,39 @@
           this.listQuery.beginTime = this.listQuery.interval[0]
           this.listQuery.endTime = this.listQuery.interval[1]
         }
+      },
+      openService(row) { // openFinace
+        var id = this.student.studentId + '_stu'
+        var title = '￥' + this.student.name + ' 学费收取'
+        var data = { student: this.student }
+        if (row && row.chargeId) {
+          id = row.chargeId + '_info'
+          title = '收费详情'
+          data = { charge: { chargeId: row.chargeId, pageLevel: 'info' }}
+        }
+        this.layerOpen({
+          id: id, // id
+          title: title, // title
+          icon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
+          content: finance,
+          data: data // props
+        })
+      },
+      layerOpen(app) {
+        this.$layer.open({
+          type: 2,
+          id: app.id, // title
+          title: app.title, // title
+          shadeClose: false, // 点击遮罩关闭
+          prohibit: this.$store.state.app.prohibit,
+          tabIcon: app.icon, // 应用图标 任务栏显示
+          shade: false, // 遮罩 默认不显示
+          content: {
+            content: app.content,
+            parent: this, // 当前的vue对象
+            data: app.data // props
+          }
+        })
       }
     }
   }

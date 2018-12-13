@@ -503,6 +503,7 @@
                 <el-button type="primary" size="mini" @click="openService"  v-if="permissions.stu_service_charge_add" icon="el-icon-fa-money">收 费</el-button>
               </div>
               <div v-if="!edit" style="float: right;margin-bottom: 10px;">
+                <el-button type="primary" size="mini" @click="dialogFormVisible  = true"  v-if="permissions.stu_student_update" icon="el-icon-edit">状态修改</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakCar"  v-if="permissions.stu_bespeak_car_add" icon="el-icon-fa-car">约 车</el-button>
                 <el-button type="primary" size="mini" @click="handleBespeakExam" v-if="permissions.stu_bespeak_exam_add" icon="el-icon-fa-book">约 考</el-button>
                 <el-button type="primary" size="mini" @click="editInfo" v-if="permissions.stu_student_update" icon="el-icon-edit">编 辑</el-button>
@@ -1132,6 +1133,20 @@
         {{superviseRes.error}}
       </div>
     </el-dialog>
+
+    <el-dialog title="修改科目状态" :modal="false"  :close-on-click-modal="false"  :visible.sync="dialogFormVisible">
+      <el-radio-group v-model="student.state">
+        <el-radio label="1">科目一</el-radio>
+        <el-radio label="2">科目二</el-radio>
+        <el-radio label="3">科目三</el-radio>
+        <el-radio label="4">科目四</el-radio>
+        <el-radio label="5">毕业</el-radio>
+      </el-radio-group>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editState">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -1142,7 +1157,7 @@
   import { getToken } from '@/utils/auth'
   import { mapGetters } from 'vuex'
   import { fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122,
-    getFinanceByStudentId, quaryCourseList, supervisePush, superviseInfo } from '@/api/student/student'
+    getFinanceByStudentId, quaryCourseList, supervisePush, superviseInfo, editSubState } from '@/api/student/student'
   import { examFetchList, batchSave } from '@/api/student/examnote'
   import { getBatchList } from '@/api/student/batch'
   import { writeoff } from '@/api/finance/service-charge'
@@ -1522,6 +1537,7 @@
         GJList: [
           { label: '中国', value: '156' }
         ],
+        dialogFormVisible: false,
         studentRules122: {
           orgId: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
           SFZMHM: [{ required: true, message: '身份证号码不能为空', trigger: 'blur' }],
@@ -2003,6 +2019,7 @@
         if (this.$refs['studentEntity']) {
           this.$refs['studentEntity'].resetFields()
         }
+        this.getList()
       },
       backClick() {
         this.showModule = 'list'
@@ -2250,8 +2267,7 @@
           content: batch,
           data: { batchInfo: { examId: row.examId }} // props
         })
-      },
-      openService(row) { // openFinace
+      }, openService(row) { // openFinace
         var id = this.student.studentId + '_stu'
         var title = '￥' + this.student.name + ' 学费收取'
         var data = { student: this.student }
@@ -2266,6 +2282,13 @@
           icon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
           content: finance,
           data: data // props
+        })
+      },
+      editState() { // 科目状态修改
+        if (this.student.state > 5 || this.student.state < 0) this.dialogFormVisible = false
+        editSubState(this.student).then(response => {
+          console.log(response)
+          this.dialogFormVisible = false
         })
       },
       layerOpen(app) {

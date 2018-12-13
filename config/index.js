@@ -1,8 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-const url = 'https://www.eluchn.com/'//生产环境
+// const url = 'https://www.eluchn.com/'//生产环境
 // const url = 'http://test.eluchn.com/' //测试环境
-//  const url = 'http://127.0.0.1:8003' //本地环境
+ const url = 'http://127.0.0.1:8003' //本地环境
 // const url = 'http://192.168.1.153:8003'
 
 

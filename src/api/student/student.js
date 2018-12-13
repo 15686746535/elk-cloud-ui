@@ -102,6 +102,15 @@ export function getFinanceByStudentId(id) {
   })
 }
 
+/* 修改科目状态 */
+export function editSubState(obj) {
+  return request({
+    url: '/stu/student/editSubState',
+    method: 'post',
+    data: obj
+  })
+}
+
 /* 学员信息导出 */
 export function quaryCourseList(id) {
   return request({
@@ -109,3 +118,4 @@ export function quaryCourseList(id) {
     method: 'get'
   })
 }
+

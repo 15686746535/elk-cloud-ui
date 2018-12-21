@@ -50,11 +50,11 @@ export const appMap = [
   // { id: 80100, desktop: '1', type: '1', pid: 20000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehicle_period'), msgCount: 0, childItem: [] },
   { id: 21000, desktop: '1', type: '1', pid: 20000, params: [], name: '投诉建议', content: _import('modules/stu/complaint'), icon: getIcon('app_stu_complaint'), msgCount: 0, childItem: [] },
   // 客户公客
-  { id: 30200, desktop: '1', type: '2', pid: 30000, params: { display: 'list' }, name: '意向信息', content: _import('modules/visit/intention'), icon: getIcon('app_visit_intention'), msgCount: 0, childItem: [] },
-  { id: 30201, desktop: '1', type: '2', pid: 30200, params: { display: 'add' }, name: '意向添加', content: _import('modules/visit/intention'), icon: getIcon('app_visit_add'), msgCount: 0, childItem: [] },
-  { id: 30100, desktop: '1', type: '2', pid: 30000, params: [], name: '意向公海', content: _import('modules/visit/distribution'), icon: getIcon('app_visit_distribution'), msgCount: 0, childItem: [] },
-  { id: 30300, desktop: '1', type: '2', pid: 30000, params: [], name: '入学意向', content: _import('modules/visit/enrolled'), icon: getIcon('app_visit_enrolled'), msgCount: 0, childItem: [] },
-  { id: 30400, desktop: '1', type: '2', pid: 30000, params: [], name: '关闭意向', content: _import('modules/visit/close'), icon: getIcon('app_visit_close'), msgCount: 0, childItem: [] },
+  // { id: 30200, desktop: '1', type: '2', pid: 30000, params: { display: 'list' }, name: '意向信息', content: _import('modules/visit/intention'), icon: getIcon('app_visit_intention'), msgCount: 0, childItem: [] },
+  // { id: 30201, desktop: '1', type: '2', pid: 30200, params: { display: 'add' }, name: '意向添加', content: _import('modules/visit/intention'), icon: getIcon('app_visit_add'), msgCount: 0, childItem: [] },
+  // { id: 30100, desktop: '1', type: '2', pid: 30000, params: [], name: '意向公海', content: _import('modules/visit/distribution'), icon: getIcon('app_visit_distribution'), msgCount: 0, childItem: [] },
+  // { id: 30300, desktop: '1', type: '2', pid: 30000, params: [], name: '入学意向', content: _import('modules/visit/enrolled'), icon: getIcon('app_visit_enrolled'), msgCount: 0, childItem: [] },
+  // { id: 30400, desktop: '1', type: '2', pid: 30000, params: [], name: '关闭意向', content: _import('modules/visit/close'), icon: getIcon('app_visit_close'), msgCount: 0, childItem: [] },
   // 车辆管理
 
   { id: 50100, desktop: '1', type: '3', pid: 50000, params: [], name: '车辆信息', content: _import('modules/vehicle/car'), icon: getIcon('app_car'), msgCount: 0, childItem: [] },

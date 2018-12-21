@@ -10,7 +10,8 @@
         <el-button type="primary"  @click="getList" :loading="loading" icon="el-icon-d-arrow-left">返回</el-button>
       </el-col>
       <el-col :style="{width: $store.state.app.client.width - 40 + 'px'}">
-        <bar-pile-chart :data="data" :style="{height: ($store.state.app.client.height-170) + 'px',width: $store.state.app.client.width - 40 + 'px'}" :hasDown="hasDown" @callback="down"></bar-pile-chart>
+        <bar-pile-chart :data="data" :style="{height: ($store.state.app.client.height-170) + 'px',width: $store.state.app.client.width - 40 + 'px'}" :hasDown="hasDown"
+                        @callback="down"></bar-pile-chart>
       </el-col>
     </el-row>
 

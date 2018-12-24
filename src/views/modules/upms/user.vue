@@ -35,7 +35,7 @@
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
                 <el-row>
-                  <el-col class="table_text">姓名：<saan style="font-weight: 600;">{{scope.row.name}}</saan></el-col>
+                  <el-col class="table_text">姓名：<saan style="font-weight: 600;">{{scope.row.name}}&nbsp;&nbsp; <{{getcompany(scope.row.companyId)}}></saan></el-col>
                 </el-row>
                 <el-row :gutter="10">
                   <el-col class="table_text">性别：{{scope.row.sex | sexFilter}}</el-col>
@@ -984,6 +984,16 @@
             this.expLoading = false
             this.$store.dispatch('removeProhibit', this.layerid)
           })
+        }
+      },
+      getcompany(id){
+        switch (id) {
+          case 0:return '壹鹿集团';
+          case 3:return '华通校区';
+          case 4:return '壹路校区';
+          case 66:return '北碚校区';
+          case 173:return '艺通校区';
+          case 179:return '全悦校区';
         }
       }
     }

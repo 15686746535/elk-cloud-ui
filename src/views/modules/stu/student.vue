@@ -1320,8 +1320,6 @@
           callback(new Error("请输入正确的身份证号码"));
         }
       };
-
-
       var idNumberIsExistence = (rule, value, callback) => {
         isExistence(value).then(response => {
           if (response.data.data) {

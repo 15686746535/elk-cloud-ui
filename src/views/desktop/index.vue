@@ -1,5 +1,6 @@
 <template>
-  <div class="app-desktop calendar-list-desktop ba-colour"  :style="{height: $store.state.app.client.height + 'px',background: 'url('+desktopBg+') center center / cover no-repeat'}"
+  <div class="app-desktop calendar-list-desktop ba-colour"
+       :style="{height: $store.state.app.client.height + 'px',background: 'url('+desktopBg+') center center / cover no-repeat'}"
        @click="desktopClick">
     <!--桌面1-->
     <el-apps  :list="desktopOneList"  desktop="1" @open="layerOpen" @saveDesktop="saveDesktop" @desktopSwitch="desktopSwitch" @openMenu="openMenu"></el-apps>

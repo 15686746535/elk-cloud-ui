@@ -77,6 +77,7 @@ export const appMap = [
   { id: 120300, desktop: '1', type: '6', pid: 80000, params: [], name: '在培统计', content: _import('modules/visualization/subject'), icon: getIcon('app_subject'), msgCount: 0, childItem: [] },
   { id: 120700, desktop: '1', type: '6', pid: 80000, params: [], name: '招生详情统计', content: _import('modules/visualization/kpi'), icon: getIcon('app_info'), msgCount: 0, childItem: [] },
   { id: 120800, desktop: '1', type: '6', pid: 80000, params: [], name: '通过率统计', content: _import('modules/visualization/rate'), icon: getIcon('app_rate'), msgCount: 0, childItem: [] },
+  { id: 120801, desktop: '1', type: '6', pid: 80000, params: [], name: '统计', content: _import('modules/visualization/view'), icon: getIcon('app_rate'), msgCount: 0, childItem: [] },
   // 基础配置
   { id: 40100, desktop: '1', type: '7', pid: 90000, params: [], name: '校区设置', content: _import('modules/basis/campus'), icon: getIcon('app_campus'), msgCount: 0, childItem: [] },
   { id: 40300, desktop: '1', type: '7', pid: 90000, params: [], name: '网点设置', content: _import('modules/basis/enrollDot'), icon: getIcon('app_enroll'), msgCount: 0, childItem: [] },
@@ -100,7 +101,7 @@ export const appMap = [
   { id: 90100, desktop: '1', type: '9', pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('app_model'), msgCount: 0, childItem: [] },
   { id: 90400, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
   { id: 90401, desktop: '1', type: '9', pid: 99999, params: [], name: '接口文档', content: _import('modules/sys/swagger'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
-  { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/chenxianliang/tongji'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-aaa'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', type: '9', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
 
@@ -108,7 +109,7 @@ export const appMap = [
  * 应用 白名单
  * @type {Array}
  */
-export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203,90402]   //
+export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801]
 /**
  * 添加
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}

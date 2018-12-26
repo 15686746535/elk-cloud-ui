@@ -74,11 +74,11 @@
           { icon: 'finance', name: '财务总览', ename:'Financial overview' }
         ],
         list:[
-          { name:'招生人数', to: 'view-enrolment', height: '420px' },
-          { name:'人均产值', to: 'view-aaa0', height: '420px' },
-          { name:'招生完成率', to: 'view-aaa1', height: '420px' },
-          { name:'招生增长率', to: 'view-aaa2', height: '420px' },
-          { name:'招生人数占有率', to: 'view-aaa3', height: '420px' },
+          { name:'招生人数', to: 'view-enrolment', height: '460px' },
+          { name:'人均产值', to: 'view-aaa0', height: '460px' },
+          { name:'招生完成率', to: 'view-aaa1', height: '460px' },
+          { name:'招生增长率', to: 'view-aaa2', height: '460px' },
+          { name:'招生人数占有率', to: 'view-aaa3', height: '460px' },
         ],
         selected:0,
         to:0,

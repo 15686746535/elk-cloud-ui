@@ -1,7 +1,7 @@
 <template>
   <div class="view-enrolment">
-    <el-radio ></el-radio>
-      招生人数
+    <el-radio class="my-view"></el-radio>
+      招生人数1
   </div>
 </template>
 
@@ -33,5 +33,4 @@
     background: $White;
 
   }
-
 </style>

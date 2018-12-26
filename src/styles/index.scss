@@ -64,4 +64,7 @@ a:hover {
     margin-bottom: 10px;
   }
 }
-
+.my-view .el-radio__inner {
+  border-color: red!important;
+  background: red!important;
+}

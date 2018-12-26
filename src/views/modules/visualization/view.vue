@@ -36,7 +36,7 @@
         </el-aside>
         <el-main :style="{height: pageHeight-295+'px'}">
           <div class="view-list">
-            <div :id="item.to" class="view-item" v-for="(item,i) in list" >
+            <div :id="item.to" class="view-item" v-for="(item,i) in list" :style="{height:item.height}">
               <view-enrolment v-if="item.to=='view-enrolment'" :params="listQuery"></view-enrolment>
               <view-aaa v-else :params="listQuery"></view-aaa>
             </div>
@@ -74,11 +74,11 @@
           { icon: 'finance', name: '财务总览', ename:'Financial overview' }
         ],
         list:[
-          { name:'招生人数', to: 'view-enrolment' },
-          { name:'人均产值', to: 'view-aaa0' },
-          { name:'招生完成率', to: 'view-aaa1' },
-          { name:'招生增长率', to: 'view-aaa2' },
-          { name:'招生人数占有率', to: 'view-aaa3' },
+          { name:'招生人数', to: 'view-enrolment', height: '420px' },
+          { name:'人均产值', to: 'view-aaa0', height: '420px' },
+          { name:'招生完成率', to: 'view-aaa1', height: '420px' },
+          { name:'招生增长率', to: 'view-aaa2', height: '420px' },
+          { name:'招生人数占有率', to: 'view-aaa3', height: '420px' },
         ],
         selected:0,
         to:0,
@@ -108,7 +108,7 @@
   /*主体白色*/
   $White:#fff;
   /*主体红色*/
-  $Danger:red;
+  $Danger:#c50202;
   $DDD:#ddd;
   #view {
     background: #eee;
@@ -255,7 +255,6 @@
         .view-item {
           background-color: $White;
           margin-bottom: 10px;
-          height: 400px;
           width: 100%;
           padding: 20px;
         }

@@ -40,7 +40,7 @@
           <el-main :style="{height: pageHeight-295+'px'}" style="scroll-behavior: smooth;" ref="view">
             <div class="view-list">
               <div :id="item.to" class="view-item" v-for="(item,i) in list" :style="{height:item.height}">
-                <view-enrolment :width="area[0] - 290"  :params="listQuery" ></view-enrolment>
+                <view-enrolment :width="area[0] - 300"  :params="listQuery" ></view-enrolment>
               </div>
             </div>
           </el-main>
@@ -75,18 +75,55 @@
       return{
         pageHeight: this.area[1],
         typeList:[
-          { icon: 'visit', name: '意向总览', ename:'General survey of intentions' },
-          { icon: 'achievement', name: '招生总览', ename:'Enrollment overview' },
-          { icon: 'train', name: '培训总览', ename:'Training overview' },
-          { icon: 'finance', name: '财务总览', ename:'Financial overview' }
+          {
+            icon: 'visit',
+            name: '校区招生',
+            ename: 'Campus enrollment',
+            list: [
+              { name:'招生人数统计', to: 'view-enrolment', height: '460px' },
+              { name:'招生量完成率统计', to: 'view-amount-completion-rate', height: '460px' },
+              { name:'招生量增长率统计', to: 'view-amount-growth-rate', height: '460px' },
+              { name:'个人招生分析', to: 'view-individual-enrollment-analysis', height: '460px' },
+              { name:'个人招生详情', to: 'view-individual-enrollment-details', height: '460px' },
+              { name:'招生量车型统计', to: 'view-amount-motorcycle-type', height: '460px' }
+            ]
+          },
+          {
+            icon: 'achievement',
+            name: '校区收入',
+            ename:'Campus income',
+            list:[
+              { name:'招生金额统计', to: 'view-money', height: '460px' },
+              { name:'人均产值统计', to: 'view-average-output', height: '460px' },
+              { name:'招生额完成率统计', to: 'view-forehead-completion-rate', height: '460px' },
+              { name:'招生额增长率统计', to: 'view-forehead-growth-rate', height: '460px' },
+              { name:'招生额车型统计', to: 'view-forehead-motorcycle-type', height: '460px' }
+
+            ]
+          },
+          {
+            icon: 'train',
+            name: '部门业绩',
+            ename:'Departmental performance',
+            list:[
+              { name:'部门招生量统计', to: 'view-org-amount-enrolment', height: '460px' },
+              { name:'部门人均招生额统计', to: 'view-org-average-forehead', height: '460px' },
+            ]
+          },
+          {
+            icon: 'finance',
+            name: '市场分析',
+            ename:'Market analysis',
+            list:[
+              { name:'招生市场占有率', to: 'view-market-share', height: '460px' },
+              { name:'招生累计市场占有率', to: 'view-cumulative-market-share', height: '460px' },
+              { name:'招生车管所占有率', to: 'view-vehicle-share', height: '460px' },
+              { name:'招生累计车管所占有率', to: 'view-cumulative-vehicle-share', height: '460px' },
+              { name:'意向转化率统计', to: 'view-visit-conversion', height: '460px' },
+            ]
+          }
         ],
-        list:[
-          { name:'招生人数', to: 'view-enrolment', height: '460px' },
-          { name:'人均产值', to: 'view-aaa0', height: '460px' },
-          { name:'招生完成率', to: 'view-aaa1', height: '460px' },
-          { name:'招生增长率', to: 'view-aaa2', height: '460px' },
-          { name:'招生人数占有率', to: 'view-aaa3', height: '460px' },
-        ],
+        list:[],
         selected:0,
         to:0,
         campusList:[
@@ -100,6 +137,7 @@
       }
     },
     created() {
+      this.list = this.typeList[0].list;
     },
     mounted() { // 监听
       var view = this.$refs.view.$el;
@@ -112,6 +150,7 @@
     methods: {
       categoryChange(i) {
         this.selected = i;
+        this.list = this.typeList[i].list;
       },
       GoTo(i) {
         this.to = i;

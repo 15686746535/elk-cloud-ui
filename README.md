@@ -33,7 +33,7 @@ docker build -t elk-cloud-ui:1.0 .
 
 ### 启动的docker镜像
 ```
-docker run -itd -p 80:80 -p 443:443 -v /mnt/:/mnt/ --name elk-cloud-ui --restart unless-stopped  elk-cloud-ui:1.0
+docker stop elkui&&docker rm elkui&&docker run -itd -p 80:80 -p 443:443 --restart always --name=elkui elk-cloud-ui&&docker rmi $(docker images | awk '/^<none>/ { print $3 }')
 ```
 # 注意：
 ```

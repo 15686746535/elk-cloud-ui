@@ -67,6 +67,7 @@
 <script>
   import Echarts from '@/components/Echarts';
   import {queryEnrolment} from '@/api/visualization/api'
+  import options from '@/utils/options'
   export default {
     name: "view-enrolment",
     components: {
@@ -118,95 +119,20 @@
         //   }
         // })
       },
-      init(){
+      init() {
+        var  Yname = '人数111';
+        var  Xname = '招生人数555';
         var  Ydata  = [15,25,40,67,80,88,91,80,99,100,102,130];
         var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
         var  colors  =  ['#7773ff'];
         var  mark  =  100;
-        this.option = {
-            color: colors,
-            legend:  {
-              data:['招生人数']
-            },
-            tooltip : {
-              trigger: 'axis',
-              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                type : 'cross'        // 默认为直线，可选为：'line' | 'shadow'
-              }
-            },
-            toolbox:  {
-              feature:  {
-                magicType:{
-                  show: true,
-                  type: ['line',  'bar']
-                },
-                restore: {show: true},
-                saveAsImage: {show: true}
-              }
-            },
-            grid: {
-              right:  '160px',
-              top:'40px',
-              left: '0',
-              bottom:'10px',
-              containLabel: true
-            },
-            xAxis : {
-              type : 'category',
-              data : Xdata,
-              axisTick: {alignWithLabel: true},
-              splitLine: {show: true},
-              axisLine: {
-                lineStyle: {
-                  color: '#666'
-                }
-              }
-            },
-            yAxis : {
-              type : 'value',
-              name:  '人数（人）',
-              axisLine: {
-                lineStyle: {
-                  color: '#666'
-                }
-              }
-            },
-            series : [
-              {
-                name:'招生人数',
-                type:'bar',
-                barWidth: '40%',
-                data:Ydata,
-                label:  {
-                  normal:  {
-                    show:  true,
-                    position:  'insideTop',
-                    distance:  -10,
-                    align:  'center',
-                    verticalAlign:  'middle',
-                    formatter:  '{name|{c}人}',
-                    fontSize:  12,
-                    rich:  {
-                      name:  {
-                        color:'#000',
-                        textBorderColor:'#fff'
-                      }
-                    }
-                  }
-                },
-                markLine:  {  //  平均线
-                  silent:  true,  //  显示
-                  data:  [{
-                    yAxis:  mark    //  平均值
-                  }]
-                },
-              }
-            ]
-          };
+        var  unit  =  '人22';
+
+        this.option = options.bar(Yname,Xname,Ydata,Xdata,colors,mark,unit)
       },
       searchList(){
 
-    }
+      }
     }
   }
 </script>

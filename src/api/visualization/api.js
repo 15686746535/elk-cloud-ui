@@ -78,3 +78,10 @@ export function queryRate(params) {
   })
 }
 
+export function queryEnrolment(params) {
+  return request({
+    url: '/visualization/queryFactCount',
+    method: 'get',
+    params: params
+  })
+}

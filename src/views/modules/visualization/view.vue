@@ -40,7 +40,7 @@
           <el-main :style="{height: pageHeight-295+'px'}" style="scroll-behavior: smooth;" ref="view">
             <div class="view-list">
               <div :id="item.to" class="view-item" v-for="(item,i) in list" :style="{height:item.height}">
-                <view-enrolment  :params="listQuery" ></view-enrolment>
+                <view-enrolment :width="area[0] - 300"  :params="listQuery" ></view-enrolment>
               </div>
             </div>
           </el-main>
@@ -51,12 +51,10 @@
 </template>
 <script>
   import ViewEnrolment from '@/views/modules/visualization/view-enrolment.vue'
-  import ViewAaa from '@/views/modules/visualization/view-aaa.vue'
   export default {
     name: 'view',
     components: {
-      ViewEnrolment,
-      ViewAaa,
+      ViewEnrolment
     },
     props: {
       layerid: String,
@@ -66,7 +64,6 @@
       area: function(val) {
         console.log(val)
         this.pageHeight = val[1]
-        this.listQuery.winWidth = val[0] - 300
       }
     },
     computed: {
@@ -98,8 +95,7 @@
         ],
         listQuery: {
           campus: null,
-          year: null,
-          winWidth:this.area[0] - 300
+          year: null
         }
       }
     },

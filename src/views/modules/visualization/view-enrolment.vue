@@ -33,8 +33,8 @@
     </el-row>
 
     <div class="mini-card" >
-      <div class="topcard"><span style="position: relative;margin-left: 20px;top: 15px;color: #fff">招生人数</span></div>
-      <div class="botcard"><span style="position: relative;margin-left: 20px;top: 15px;text-align: center">72062人</span></div>
+      <div class="topcard">招生总人数</div>
+      <div class="botcard">72062人</div>
     </div>
     <div class="enrolment-rank" >
       <table>
@@ -106,59 +106,94 @@
     },
     methods: {
       getList(){
-        this.loading=true
+        // this.loading=true
         var _this = this
-        queryEnrolment(this.listQuery).then(res=>{
-          if(res.data.code==0){
-            _this.zsrslist=res.data.data.factStudent;
-            _this.loading=false;
-            _this.init();
-            console.log(this.seriesList)
-          }
-        })
+        _this.init();
+        // queryEnrolment(this.listQuery).then(res=>{
+        //   if(res.data.code==0){
+        //     _this.zsrslist=res.data.data.factStudent;
+        //     _this.loading=false;
+        //     _this.init();
+        //     console.log(this.seriesList)
+        //   }
+        // })
       },
       init(){
-        var  Ydata  = this.zsrslist //[15,25,40,67,80,88,91,80,99,100,102,130];
+        var  Ydata  = [15,25,40,67,80,88,91,80,99,100,102,130];
         var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
         var  colors  =  ['#7773ff'];
-        var  title  =  '';
-        var  subTitle  =  '';
-        var  mark  =  400;
+        var  mark  =  100;
         this.option = {
             color: colors,
+            legend:  {
+              data:['招生人数']
+            },
             tooltip : {
               trigger: 'axis',
               axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                type : 'cross'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+            toolbox:  {
+              feature:  {
+                magicType:{
+                  show: true,
+                  type: ['line',  'bar']
+                },
+                restore: {show: true},
+                saveAsImage: {show: true}
               }
             },
             grid: {
-              right:  '180px',
+              right:  '160px',
               top:'40px',
-              left: '30px',
+              left: '0',
+              bottom:'10px',
               containLabel: true
             },
-            xAxis : [
-              {
-                type : 'category',
-                data : Xdata,
-                axisTick: {
-                  alignWithLabel: true
+            xAxis : {
+              type : 'category',
+              data : Xdata,
+              axisTick: {alignWithLabel: true},
+              splitLine: {show: true},
+              axisLine: {
+                lineStyle: {
+                  color: '#666'
                 }
               }
-            ],
-            yAxis : [
-              {
-                type : 'value',
-                name:  '人数（人）'
+            },
+            yAxis : {
+              type : 'value',
+              name:  '人数（人）',
+              axisLine: {
+                lineStyle: {
+                  color: '#666'
+                }
               }
-            ],
+            },
             series : [
               {
                 name:'招生人数',
                 type:'bar',
-                barWidth: '30%',
+                barWidth: '40%',
                 data:Ydata,
+                label:  {
+                  normal:  {
+                    show:  true,
+                    position:  'insideTop',
+                    distance:  -10,
+                    align:  'center',
+                    verticalAlign:  'middle',
+                    formatter:  '{name|{c}人}',
+                    fontSize:  12,
+                    rich:  {
+                      name:  {
+                        color:'#000',
+                        textBorderColor:'#fff'
+                      }
+                    }
+                  }
+                },
                 markLine:  {  //  平均线
                   silent:  true,  //  显示
                   data:  [{
@@ -257,15 +292,21 @@
       top: 99px;
       .topcard {
         width: 100px;
-        height: 40px;
-        /*box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);*/
+        height: 32px;
+        font-size: 12px;
+        line-height: 32px;
+        color: #fff;
         border-radius: 15px 15px 0 0;
+        text-align: center;
         background: $Danger;
       }
 
       .botcard {
         width: 100px;
         height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: 600;
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
         border-radius: 0 0 15px 15px;
       }

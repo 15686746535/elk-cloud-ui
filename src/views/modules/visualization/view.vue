@@ -40,7 +40,7 @@
           <el-main :style="{height: pageHeight-295+'px'}" style="scroll-behavior: smooth;" ref="view">
             <div class="view-list">
               <div :id="item.to" class="view-item" v-for="(item,i) in list" :style="{height:item.height}">
-                <view-enrolment :width="area[0] - 300"  :params="listQuery" ></view-enrolment>
+                <view-enrolment :width="area[0] - 290"  :params="listQuery" ></view-enrolment>
               </div>
             </div>
           </el-main>

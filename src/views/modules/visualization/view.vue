@@ -105,7 +105,7 @@
     },
     created() {
     },
-    mounted() {
+    mounted() { // 监听
       var view = this.$refs.view.$el;
       view.addEventListener('scroll', () => {
         var current_offset_top = view.scrollTop;

@@ -1,10 +1,12 @@
 <template>
-  <div :id="id" :class="className" :style="{height:height,width:width,background:background}" ></div>
+  <div :id="id" :class="className" :style="{height:height,width:width,background:background}" >
+  </div>
 </template>
 
 <script>
   import echarts from 'echarts'
   require('echarts/theme/macarons') // echarts 主题
+  let mycharts = null;
 
   export default {
     props: {
@@ -30,11 +32,19 @@
     },
     watch: {
       option: function(val) {
-        console.log(val)
         if (val) {
-          this.initChart()
+          this.refresh()
+        }
+      },
+      width: function(val) {
+        this.$el.style.width = val
+        if (this.__resizeHanlder) {
+          this.__resizeHanlder()
         }
       }
+    },
+    update() {
+      this.refresh()
     },
     data() {
       return {
@@ -44,10 +54,8 @@
       }
     },
     created() {
-
     },
     mounted() {
-      console.log(this.option)
       if (this.option) {
         this.initChart()
       }
@@ -63,13 +71,22 @@
     methods: {
       initChart() {
         var _this = this
-        console.log(11,this.$el)
         _this.chart = echarts.init(_this.$el, 'macarons')
         _this.chart.setOption(_this.option)
         _this.__resizeHanlder = function () {
           _this.chart.resize()
         }
         window.addEventListener('resize', _this.__resizeHanlder)
+      },
+      refresh(){
+        if (this.chart) {
+          this.$el.style.width = this.width
+          this.chart.setOption(this.option)
+          this.chart.resize()
+        } else {
+          this.initChart()
+        }
+
       }
     }
   }

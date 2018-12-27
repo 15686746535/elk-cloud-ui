@@ -3,7 +3,7 @@
     <div style="height: 40px;">
       <el-radio class="my-view"></el-radio>招生人数
     </div>
-    <echarts :option="option" style="height: 280px;"></echarts>
+    <echarts :option="option" :width="params.winWidth+'px'" style="height: 280px;"></echarts>
     1111
   </div>
 </template>
@@ -45,13 +45,10 @@
             }
           },
           grid:  {
-            right:  '200px',
+            right:  '180px',
             top:'40px',
             left: '30px'
           },
-     //      dataZoom:[{
-     //     　　type:"inside"         //详细配置可见echarts官网
-     // 　　 }],
           toolbox:  {
             feature:  {
               magicType:{

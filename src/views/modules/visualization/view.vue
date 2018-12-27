@@ -37,11 +37,10 @@
               </div>
             </div>
           </el-aside>
-          <el-main :style="{height: pageHeight-295+'px'}">
+          <el-main :style="{height: pageHeight-295+'px'}" style="scroll-behavior: smooth;" ref="view">
             <div class="view-list">
               <div :id="item.to" class="view-item" v-for="(item,i) in list" :style="{height:item.height}">
-                <view-enrolment v-if="item.to=='view-enrolment'" :params="listQuery" ></view-enrolment>
-                <view-aaa v-else :params="listQuery"></view-aaa>
+                <view-enrolment  :params="listQuery" ></view-enrolment>
               </div>
             </div>
           </el-main>
@@ -65,7 +64,9 @@
     },
     watch: {
       area: function(val) {
+        console.log(val)
         this.pageHeight = val[1]
+        this.listQuery.winWidth = val[0] - 300
       }
     },
     computed: {
@@ -98,8 +99,19 @@
         listQuery: {
           campus: null,
           year: null,
+          winWidth:this.area[0] - 300
         }
       }
+    },
+    created() {
+    },
+    mounted() {
+      var view = this.$refs.view.$el;
+      view.addEventListener('scroll', () => {
+        var current_offset_top = view.scrollTop;
+        // 暂定方案
+        this.to = parseInt(current_offset_top/460);
+      })
     },
     methods: {
       categoryChange(i) {
@@ -107,7 +119,7 @@
       },
       GoTo(i) {
         this.to = i;
-        document.querySelector("#"+this.list[i].to).scrollIntoView();
+        document.querySelector("#"+this.list[i].to).scrollIntoView({behaviour: "smooth",block: "start"});
       },
     }
   }

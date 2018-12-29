@@ -13,6 +13,7 @@
     </el-row>
     <el-row class="enrolment-view">
       <div id="enrolmentChart">
+        <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
       </div>
     </el-row>
     <el-row class="enrolment-table">
@@ -25,21 +26,21 @@
         </thead>
         <tbody>
         <tr>
-          <td>同比增长率(%)</td>
+          <td title="同比增长率(%)" style="min-width: 105px;overflow: hidden;white-space:nowrap">招生增长率(%)</td>
           <td v-for='it in zsltbList'>{{it}}</td>
         </tr>
         <tr>
-          <td>招生额月度同比增长率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td title="金额增长率(%)">金额增长率(%)</td>
+          <td v-for='it in jeltbList'>{{it}}</td>
         </tr>
-        <tr>
-          <td>招生量年度同比增长率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
-        </tr>
-        <tr>
-          <td>招生额年度同比增长率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
-        </tr>
+        <!--<tr>-->
+          <!--<td>招生量年度同比增长率</td>-->
+          <!--<td v-for='it in zsrslist'>{{it}}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>招生额年度同比增长率</td>-->
+          <!--<td v-for='it in zsrslist'>{{it}}</td>-->
+        <!--</tr>-->
         </tbody>
 
       </table>
@@ -80,6 +81,7 @@
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsrslist: [350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350],
         zsltbList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        jeltbList:[0,0,0,0,0,0,0,0,0,0,0,0],
         lastYear:[0,0,0,0,0,0,0,0,0,0,0,0],
         thisYear:[0,0,0,0,0,0,0,0,0,0,0,0],
         campusList: [
@@ -97,64 +99,75 @@
       };
     },
     created() {
-      this.init();
+      this.getList();
     },
     methods: {
       getList(){
         let _this=this
         _this.queryList.orgId=_this.listQuery.orgId;
         _this.queryList.year=--_this.listQuery.year;
-        var lastYeat=[];
-        var thisYeat=[];
-        var lastTotal=0;
-        var thisTotal=0;
-        var tongbiTotal=[];
+        var lastYeatFactStudent=[];
+        var lastYeatFactMoney=[];
+        var thisYeatFactStudent=[];
+        var thisYeatFactMoney=[];
+        var lastYeatFactStudentTotal=0;
+        var lastYeatFactSFactMoneyToatal=0;
+        var thisYeatFactStudentTotal=0;
+        var thisYeatFactFactMoneyTotal=0;
+        var rstongbiTotal=[];
+        var jetongbiTotal=[];
         queryEnrolment (this.listQuery).then(res=>{
           if(res.data.code==0){
-            thisYeat=res.data.data.factStudent;
+            thisYeatFactStudent=res.data.data.factStudent;
+            thisYeatFactMoney=res.data.data.factMoney;
           }
         })
         queryEnrolment(_this.queryList).then(response=>{
           if(response.data.code==0){
-            lastYeat=response.data.data.factStudent;
-            thisYeat.forEach(function(v,i) {
-              thisTotal+=v;
-              lastTotal+=lastYeat[i];
-              tongbiTotal.push(((thisTotal/lastTotal)*100).toFixed(2));
+            lastYeatFactStudent=response.data.data.factStudent;
+            lastYeatFactMoney=response.data.data.factMoney;
+            thisYeatFactStudent.forEach(function(v,i) {
+              thisYeatFactStudentTotal+=v;
+              thisYeatFactFactMoneyTotal+=thisYeatFactMoney[i];
+              lastYeatFactStudentTotal+=lastYeatFactStudent[i];
+              lastYeatFactSFactMoneyToatal+=lastYeatFactMoney[i];
+              rstongbiTotal.push((((thisYeatFactStudentTotal-lastYeatFactStudentTotal)/lastYeatFactStudentTotal)*100).toFixed(2));
+              jetongbiTotal.push((((thisYeatFactFactMoneyTotal-lastYeatFactSFactMoneyToatal)/lastYeatFactSFactMoneyToatal)*100).toFixed(2));
             })
+            _this.zsltbList=rstongbiTotal;
+            _this.jeltbList=jetongbiTotal;
             _this.init();
           }
         })
-        _this.zsltbList=tongbiTotal;
 
       },
       init() {
-        var data = {
-          xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
-          yName:'百分比',            // Y轴名字
-          unit:'%',               // 单位
-          mark:88,                // 平均线
-          series:[                 // 图形集合
-            {
-              name:'今年招生人数',
-              type:'line',
-              smooth:true,
-              lineWidth:3,
-              color:'#7773ff',
-              data:this.zswclList
-            },
-            {
-              name:'去年招生人数',
-              type:'line',
-              smooth:true,
-              lineWidth:3,
-              color:'#7773ff',
-              data:this.zswclList
-            }
-          ]
+    var data = {
+      xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+      yName:'百分比',            // Y轴名字
+      unit:'%',               // 单位
+      mark:88,                // 平均线
+      series:[                 // 图形集合
+        {
+          name:'今年',
+          type:'line',
+          smooth:false,
+          lineWidth:3,
+          color:'#ffa351',
+          data:this.zsltbList
+        },
+        {
+          name:'今年',
+          type:'line',
+          smooth:false,
+          lineWidth:3,
+          color:'#7773ff',
+          data:this.jeltbList
         }
-        this.option = options.config(data)
-      },
+      ]
+    }
+    this.option = options.config(data)
+  },
     }
   };
 </script>
@@ -167,7 +180,7 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 420px;
+    height: 460px;
 .right-text{
   position: absolute;
   width: 200px;

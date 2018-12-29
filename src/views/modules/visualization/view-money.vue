@@ -9,9 +9,9 @@
       <el-date-picker v-model="listQuery.year" type="year" placeholder="年份" style="margin-right: 5px;width: 200px;"></el-date-picker>
       <el-button icon="el-icon-search" type="danger">确认搜索</el-button>
     </el-row>
-    <el-row class="totalmoney-view">
+    <el-row class="enrolment-view">
       <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
-    <div class="totalmoney-rank">
+    <div class="enrolment-rank">
       <table>
         <thead>
         <tr>
@@ -37,7 +37,6 @@
       </table>
     </div>
     </el-row>
-    <el-row class="totalmoney-table">
       <el-row class="enrolment-table">
         <table>
           <thead>
@@ -52,10 +51,8 @@
             <td v-for='it in zsjelist'>{{it}}</td>
           </tr>
           </tbody>
-
         </table>
       </el-row>
-    </el-row>
 
     <div class="rightcard">
     <div class="topcard">招生总金额
@@ -145,15 +142,24 @@
           }
         })
       },
-      init(){
-        var  Yname='金额'
-        var  Xname='招生总金额'
-        var  Ydata  =this.zsjelist //[15,25,40,67,80,88,91,80,99,100,102,130];
-        var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-        var  colors  =  ['#f976c6'];
-        var  mark  =  700000;
-        var  unit  =  '元';
-        this.option = options.bar(Yname,Xname,Ydata,Xdata,colors,mark,unit)
+      init() {
+        var data = {
+          xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+          yName:'百分比',            // Y轴名字
+          unit:'%',               // 单位
+          mark:88,                // 平均线
+          series:[                 // 图形集合
+            {
+              name:'今年',
+              type:'line',
+              smooth:false,
+              lineWidth:3,
+              color:'#f976c6',
+              data:this.zsjelist
+            },
+          ]
+        }
+        this.option = options.config(data)
       },
     }
   }

@@ -46,7 +46,7 @@
                 <view-average-output :width="area[0] - 300" v-else-if="item.to=='view-average-output'"  :params="listQuery" ></view-average-output>
                 <!--<view-enroll-numbers-rate :width="area[0] - 300" v-else-if="item.to=='view-enroll-numbers-rate'"  :params="listQuery" ></view-enroll-numbers-rate>-->
                 <view-forehead-completion-rate :width="area[0] - 300" v-else-if="item.to=='view-forehead-completion-rate'"  :params="listQuery" ></view-forehead-completion-rate>
-                <!--<view-amount-growth-rate :width="area[0] - 300" v-else-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-amount-growth-rate>-->
+                <view-amount-growth-rate :width="area[0] - 300" v-else-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-amount-growth-rate>
                 <view-money :width="area[0] - 300" v-else-if="item.to=='view-money'"  :params="listQuery" ></view-money>
                 <view-enrolment :width="area[0] - 300" v-else  :params="listQuery" ></view-enrolment>
 
@@ -60,19 +60,20 @@
 </template>
 <script>
   import ViewEnrolment from '@/views/modules/visualization/view-enrolment.vue'  //招生人数
-  import ViewAmountCompletionRate from '@/views/modules/visualization/view-amount-completion-rate.vue'  //招生完成率
-  import viewAverageOutput from '@/views/modules/visualization/view-average-output.vue'  // 人均产值
-  import viewEnrollNumbersRate from '@/views/modules/visualization/view-enroll-numbers-rate.vue'  //月度计划任务人数完成率
-  import viewForeheadCompletionRate from '@/views/modules/visualization/view-forehead-completion-rate.vue'  //招生金额完成率
-  import viewAmountGrowthRate from '@/views/modules/visualization/view-amount-growth-rate.vue'  //招生量同比增长率
   import viewMmoney from '@/views/modules/visualization/view-money.vue'  //招生金额
+  import viewAverageOutput from '@/views/modules/visualization/view-average-output.vue'  // 人均产值
+  import ViewAmountCompletionRate from '@/views/modules/visualization/view-amount-completion-rate.vue'  //招生完成率
+  import viewForeheadCompletionRate from '@/views/modules/visualization/view-forehead-completion-rate.vue'  //招生金额完成率
+  // import viewEnrollNumbersRate from '@/views/modules/visualization/view-enroll-numbers-rate.vue'  //月度计划任务人数完成率
+  import viewAmountGrowthRate from '@/views/modules/visualization/view-amount-growth-rate.vue'  //招生量同比增长率
+
   export default {
     name: 'view',
     components: {
       ViewEnrolment,
       ViewAmountCompletionRate,
       viewAverageOutput,
-      viewEnrollNumbersRate,
+      // viewEnrollNumbersRate,
       viewForeheadCompletionRate,
       viewAmountGrowthRate,
       viewMmoney

@@ -45,19 +45,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>第一</td>
-          <td>{{rankmonth[0]}}</td>
+        <tr v-for="(rank,i) in rankmonth">
+          <td>{{i==0?'第一':1==1?'第二':'第三'}}</td>
+          <td>{{rank}}</td>
         </tr>
-        <tr>
-          <td>第二</td>
-          <td>{{rankmonth[1]}}</td>
-        </tr>
-        <tr>
-          <td>第三</td>
-          <td>{{rankmonth[2]}}</td>
-        </tr>
-
         </tbody>
       </table>
     </div>
@@ -97,7 +88,7 @@
       return {
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsrslist: [0,0,0,0,0,0,0,0,0,0,0,0],
-        rankmonth: [],
+        rankmonth: ['1月','9月','11月'],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -112,7 +103,7 @@
       };
     },
     created() {
-      this.getList();
+      this.init();
     },
     methods: {
       getList(){
@@ -144,14 +135,23 @@
         })
       },
       init() {
-        var  Yname = '人数';
-        var  Xname = '招生人数';
-        var  Ydata  = this.zsrslist//[15,25,40,67,80,88,91,80,99,100,102,130];
-        var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-        var  colors  =  ['#7773ff'];
-        var  mark  =  100;
-        var  unit  =  '人';
-        this.option = options.bar(Yname,Xname,Ydata,Xdata,colors,mark,unit)
+
+        var data = {
+            xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+            yName:'人数',            // Y轴名字
+            unit:'人',               // 单位
+            mark:100,                // 平均线
+            series:[                 // 图形集合
+              {
+                name:'市场部',
+                type:'bar',
+                stack:'11',
+                color:'#7773ff',
+                data:[15,25,40,67,80,88,91,80,99,100,88,99],
+              }
+            ]
+        }
+        this.option = options.config(data)
       },
       searchList(){
 

@@ -2,7 +2,7 @@
   <div class="view-enrolment">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
-      <label>人均产值 &nbsp;&nbsp;&nbsp;</label>
+      <label>招生完成率 &nbsp;&nbsp;&nbsp;</label>
       <el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"
                  style="margin-right: 5px;width: 200px;">
         <el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>
@@ -12,33 +12,11 @@
       <el-button icon="el-icon-search" type="danger">确认搜索</el-button>
     </el-row>
     <el-row class="enrolment-view">
-      <div id="enrolmentChart">
-
+      <div >
+        <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
       </div>
-      <div class="enrolment-rank">
-        <table>
-          <thead>
-          <tr>
-            <th>排名</th>
-            <th>月份</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>第一名</td>
-            <td>三月份</td>
-          </tr>
-          <tr>
-            <td>第二名</td>
-            <td>七月份</td>
-          </tr>
-          <tr>
-            <td>第三名 </td>
-            <td>十一月份</td>
-          </tr>
-
-          </tbody>
-        </table>
+      <div class="enrolment-rate">
+        <el-progress type="circle" :percentage="75" stroke-width="12" color="#fe8888"  status="text"><b>75%</b><br>年度完成</el-progress>
       </div>
     </el-row>
     <el-row class="enrolment-table">
@@ -46,24 +24,20 @@
         <thead>
         <tr>
           <th>月份</th>
-          <th v-for='item in zsmonths'>{{item}}</th>
+          <th v-for='item in zsMonths'>{{item}}</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>招生量月度同比增长率</td>
+          <td>招生人数</td>
           <td v-for='it in zsrslist'>{{it}}</td>
         </tr>
         <tr>
-          <td>招生量月度同比增长率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td>招生目标</td>
+          <td v-for='it in zswclList'>{{it}}</td>
         </tr>
         <tr>
-          <td>招生量月度同比增长率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
-        </tr>
-        <tr>
-          <td>招生量月度同比增长率</td>
+          <td>月度完成率</td>
           <td v-for='it in zsrslist'>{{it}}</td>
         </tr>
         </tbody>
@@ -80,16 +54,26 @@
 
 <script>
   export default {
-    name: "view-enrolment",
+    name: "view-amount-completion-rate",
+    components: {
+      Echarts
+    },
     props: {
-      params: Object
+      params: {
+        type: Object,
+        default: {}
+      },
+      width: {
+        type: Number,
+        default: 600
+      },
     },
     data() {
       return {
-        zsmonths: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-        zsrslist: [350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350],
+        zsMonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+        zswclList: [350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350],
         ranks: ["第一", "第二", "第三"],
-        rankmonth: ["3月份", "7月份", "11月份"],
+        rankMonth: ["3月份", "7月份", "11月份"],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -97,10 +81,39 @@
         listQuery: {
           campus: null,
           year: null
-        }
+        },
+        option:null,
+        loading: false,
+        total:0
       };
     },
-    methods: {}
+    created() {
+      this.getList();
+    },
+    methods: {
+      getList(){
+        let _this=this
+        queryGDP(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            console.log(res)
+            let result=res.data.data.factEmployee
+            _this.percentList=result
+            _this.init();
+            console.log( _this.percentList)
+          }
+        })
+      },
+      init() {
+        var  Yname = '百分比';
+        var  Xname = '月份';
+        var  Ydata  = this.percentList//[15,25,40,67,80,88,91,80,99,100,102,130];
+        var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+        var  colors  =  ['#ffa351'];
+        var  mark  =  36;
+        var  unit  =  '%';
+        this.option = options.line(Yname,Xname,Ydata,Xdata,colors,mark,unit)
+      },
+    }
   };
 </script>
 
@@ -171,7 +184,7 @@
       }
     }
 
-    .enrolment-rank {
+    .enrolment-rate {
       position: absolute;
       top: 100px;
       right: 10px;

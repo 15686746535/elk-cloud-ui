@@ -85,3 +85,13 @@ export function queryEnrolment(params) {
     params: params
   })
 }
+
+export function queryGDP(params) {
+  return request({
+    url: '/visualization/queryAverageOutput',
+    method: 'get',
+    params: params
+  })
+}
+
+

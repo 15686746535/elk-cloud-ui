@@ -34,7 +34,7 @@
 
     <div class="mini-card" >
       <div class="topcard">招生总人数</div>
-      <div class="botcard">72062人</div>
+      <div class="botcard">{{total}}人</div>
     </div>
     <div class="enrolment-rank" >
       <table>
@@ -47,15 +47,15 @@
         <tbody>
         <tr>
           <td>第一</td>
-          <td>三</td>
+          <td>{{rankmonth[0]}}</td>
         </tr>
         <tr>
           <td>第二</td>
-          <td>七</td>
+          <td>{{rankmonth[1]}}</td>
         </tr>
         <tr>
           <td>第三</td>
-          <td>十一</td>
+          <td>{{rankmonth[2]}}</td>
         </tr>
 
         </tbody>
@@ -65,9 +65,13 @@
 </template>
 
 <script>
+  /*
+  * 招生人数统计
+  * 页面高度：420px
+  * */
   import Echarts from '@/components/Echarts';
   import {queryEnrolment} from '@/api/visualization/api'
-  import options from '@/utils/options'
+  import options from  '@/utils/options'
   export default {
     name: "view-enrolment",
     components: {
@@ -83,13 +87,17 @@
         default: 600
       },
     },
+    watch: {
+      params: function(val) {
+        this.listQuery = val
+        this.getList();
+      }
+    },
     data() {
       return {
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsrslist: [0,0,0,0,0,0,0,0,0,0,0,0],
-        ranks: ["第一", "第二", "第三"],
-        rankmonth: ["3月份", "7月份", "11月份"],
-        seriesList:[15,25,40,67,80,88,91,80,99,100,102,130],
+        rankmonth: [],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -100,6 +108,7 @@
         },
         option:null,
         loading: false,
+        total:0
       };
     },
     created() {
@@ -107,26 +116,41 @@
     },
     methods: {
       getList(){
-        // this.loading=true
+        this.loading=true
         var _this = this
-        _this.init();
-        // queryEnrolment(this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     _this.zsrslist=res.data.data.factStudent;
-        //     _this.loading=false;
-        //     _this.init();
-        //     console.log(this.seriesList)
-        //   }
-        // })
+        queryEnrolment(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            let result=res.data.data.factStudent;
+            var maxmonth=result[0];
+            var secondmonth=result[0];
+            var thirdmonth=result[0];
+            _this.zsrslist=result;
+            _this.loading=false;
+            _this.init();
+            result.forEach((v)=>{
+              _this.total+=v;
+              if(v>maxmonth){
+                secondmonth=maxmonth;
+                maxmonth=v;
+              }
+              if(v>thirdmonth&&v<secondmonth&&v<maxmonth){
+                thirdmonth=v;
+              }
+            }),
+              _this.rankmonth.push(maxmonth,secondmonth,thirdmonth)
+              console.log(maxmonth,secondmonth,thirdmonth)
+            console.log(this.seriesList)
+          }
+        })
       },
       init() {
-        var  Yname = '人数111';
-        var  Xname = '招生人数555';
-        var  Ydata  = [15,25,40,67,80,88,91,80,99,100,102,130];
+        var  Yname = '人数';
+        var  Xname = '招生人数';
+        var  Ydata  = this.zsrslist//[15,25,40,67,80,88,91,80,99,100,102,130];
         var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
         var  colors  =  ['#7773ff'];
         var  mark  =  100;
-        var  unit  =  '人22';
+        var  unit  =  '人';
 
         this.option = options.bar(Yname,Xname,Ydata,Xdata,colors,mark,unit)
       },

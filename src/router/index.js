@@ -101,7 +101,7 @@ export const appMap = [
   { id: 90100, desktop: '1', type: '9', pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('app_model'), msgCount: 0, childItem: [] },
   { id: 90400, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
   { id: 90401, desktop: '1', type: '9', pid: 99999, params: [], name: '接口文档', content: _import('modules/sys/swagger'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
-  { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-enrolment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-average-output'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', type: '9', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
 

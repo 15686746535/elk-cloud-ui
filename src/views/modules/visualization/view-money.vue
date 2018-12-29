@@ -10,6 +10,7 @@
       <el-button icon="el-icon-search" type="danger">确认搜索</el-button>
     </el-row>
     <el-row class="totalmoney-view">
+      <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
     <div class="totalmoney-rank">
       <table>
         <thead>
@@ -21,15 +22,15 @@
         <tbody>
         <tr>
           <td>第一名</td>
-          <td>三月份</td>
+          <td>{{rankmouth[0]}}</td>
         </tr>
         <tr>
           <td>第二名</td>
-          <td>七月份</td>
+          <td>{{rankmouth[1]}}</td>
         </tr>
         <tr>
           <td>第三名 </td>
-          <td>十一月份</td>
+          <td>{{rankmouth[2]}}</td>
         </tr>
 
         </tbody>
@@ -48,7 +49,7 @@
           <tbody>
           <tr>
             <td>招生人数</td>
-            <td v-for='it in zsrslist'>{{it}}</td>
+            <td v-for='it in zsjelist'>{{it}}</td>
           </tr>
           </tbody>
 
@@ -57,35 +58,103 @@
     </el-row>
 
     <div class="rightcard">
-    <div class="topcard"><span style="position: relative;margin: 10px;top: 15px;color: #fff">招生总金额</span>
+    <div class="topcard">招生总金额
     </div>
-    <div class="botcard"><span style="position: relative;margin: 18px;top: 15px">72062元</span></div>
+    <div class="botcard">{{total}}元</div>
     </div>
   </div>
 </template>
 
 <script>
+  /*
+  * 招生金额统计
+  * 页面高度：420px
+  * */
+  import Echarts from '@/components/Echarts';
+  import {queryEnrolment} from '@/api/visualization/api'
+  import options from  '@/utils/options'
   export default {
-    name: 'view-enrolment',
+    name: 'view-money',
+    components: {
+      Echarts
+    },
     props: {
-      params: Object
+      params: {
+        type: Object,
+        default: {}
+      },
+      width: {
+        type: Number,
+        default: 600
+      },
     },
     data (){
       return{
         zsmonths: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-        zsrslist: [350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350],
+        zsjelist: [0,0,0,0,0,0,0,0,0,0,0,0],
+        rankmouth:[],
         campusList:[
           { name:"壹路校区", id: 1 },
           { name:"华通校区", id: 2 }
         ],
         listQuery: {
-          campus: null,
-          year: null,
-        }
+          orgId: 4,
+          year: 2018
+        },
+        option:null,
+        loading: false,
+        total:0
       }
     },
+    created() {
+      this.getList();
+    },
     methods: {
-
+      getList(){
+        this.loading=true
+        var _this = this
+        queryEnrolment(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            let result=res.data.data.factMoney;
+            var fromindex1=0;
+            var fromindex2=0;
+            var fromindex3=0;
+            var maxmonth=result[0];
+            var secondmonth=result[0];
+            var thirdmonth=result[0];
+            _this.zsjelist=result;
+            _this.loading=false;
+            _this.init();
+            result.forEach((v)=>{
+              _this.total+=v;
+              if(v>=maxmonth){
+                maxmonth=v;
+                ++fromindex1;
+              }
+              if(v>=secondmonth&&v<maxmonth){
+                secondmonth=v;
+                ++fromindex2;
+              }
+              if(v>=thirdmonth&&v<secondmonth&&v<maxmonth){
+                thirdmonth=v;
+                ++fromindex3;
+              }
+            }),
+              _this.rankmouth.push(_this.zsmonths[fromindex1],_this.zsmonths[fromindex2],_this.zsmonths[fromindex3]);//
+            console.log(this.rankmouth)
+          }
+        })
+      },
+      init(){
+        var  Yname='金额'
+        var  Xname='招生总金额'
+        var  Ydata  =this.zsjelist //[15,25,40,67,80,88,91,80,99,100,102,130];
+        var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+        var  colors  =  ['#f976c6'];
+        var  mark  =  700000;
+        var  unit  =  '元';
+        this.option = options.bar(Yname,Xname,Ydata,Xdata,colors,mark,unit)
+      },
     }
   }
 </script>
@@ -94,7 +163,7 @@
   /*主体白色*/
   $White:#fff;
   /*主体红色*/
-  $Danger:red;
+  $Danger:#c50202;
   /*灰白色*/
   $DDD:#ddd;
   #view-totalmoney {
@@ -159,7 +228,7 @@
     }
     .totalmoney-rank {
       position: absolute;
-      top: 100px;
+      top: 130px;
       right: 0px;
       /*height: 75px;*/
       /*width: 100%;*/
@@ -190,18 +259,25 @@
     }
     .rightcard {
       position: absolute;
-      right: 10px;
-      top: 50px;
+      right: 0px;
+      top: 99px;
       .topcard {
         width: 100px;
-        height: 40px;
-        /*box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);*/
+        height: 32px;
+        font-size: 12px;
+        line-height: 32px;
+        color: #fff;
         border-radius: 15px 15px 0 0;
+        text-align: center;
         background: $Danger;
       }
+
       .botcard {
         width: 100px;
         height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: 600;
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
         border-radius: 0 0 15px 15px;
       }

@@ -4,7 +4,7 @@ var path = require('path')
 // const url = 'http://test.eluchn.com/' //测试环境
 //  const url = 'http://127.0.0.1:8003' //本地环境
 // const url = 'http://192.168.1.153:8003'
-const url = 'http://192.168.1.124:8003'
+const url = 'http://192.168.1.57:8003'
 
 
 module.exports = {

@@ -107,7 +107,7 @@
       };
     },
     created() {
-      this.getList();
+      this.init();
     },
     methods: {
       getList(){
@@ -175,6 +175,6 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 420px;
+    height: 530px;
   }
 </style>

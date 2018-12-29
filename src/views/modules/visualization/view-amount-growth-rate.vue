@@ -25,8 +25,8 @@
         </thead>
         <tbody>
         <tr>
-          <td>招生量月度同比增长率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td>同比增长率(%)</td>
+          <td v-for='it in zsltbList'>{{it}}</td>
         </tr>
         <tr>
           <td>招生额月度同比增长率</td>
@@ -53,28 +53,109 @@
 </template>
 
 <script>
+  /*
+ * 同比增长率
+ * 页面高度：420px
+ * */
+  import Echarts from '@/components/Echarts';
+  import {queryEnrolment } from '@/api/visualization/api'
+  import options from  '@/utils/options'
   export default {
-    name: "view-enrolment",
+    name: "view-amount-completion-rate",
+    components: {
+      Echarts
+    },
     props: {
-      params: Object
+      params: {
+        type: Object,
+        default: {}
+      },
+      width: {
+        type: Number,
+        default: 1200
+      },
     },
     data() {
       return {
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsrslist: [350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350],
-        ranks: ["第一", "第二", "第三"],
-        rankmonth: ["3月份", "7月份", "11月份"],
+        zsltbList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        lastYear:[0,0,0,0,0,0,0,0,0,0,0,0],
+        thisYear:[0,0,0,0,0,0,0,0,0,0,0,0],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
         ],
         listQuery: {
-          campus: null,
+          orgId: 4,
+          year: 2018
+        },
+        queryList:{
+          orgId:null,
           year: null
         }
       };
     },
-    methods: {}
+    created() {
+      this.init();
+    },
+    methods: {
+      getList(){
+        let _this=this
+        _this.queryList.orgId=_this.listQuery.orgId;
+        _this.queryList.year=--_this.listQuery.year;
+        var lastYeat=[];
+        var thisYeat=[];
+        var lastTotal=0;
+        var thisTotal=0;
+        var tongbiTotal=[];
+        queryEnrolment (this.listQuery).then(res=>{
+          if(res.data.code==0){
+            thisYeat=res.data.data.factStudent;
+          }
+        })
+        queryEnrolment(_this.queryList).then(response=>{
+          if(response.data.code==0){
+            lastYeat=response.data.data.factStudent;
+            thisYeat.forEach(function(v,i) {
+              thisTotal+=v;
+              lastTotal+=lastYeat[i];
+              tongbiTotal.push(((thisTotal/lastTotal)*100).toFixed(2));
+            })
+            _this.init();
+          }
+        })
+        _this.zsltbList=tongbiTotal;
+
+      },
+      init() {
+        var data = {
+          xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+          yName:'百分比',            // Y轴名字
+          unit:'%',               // 单位
+          mark:88,                // 平均线
+          series:[                 // 图形集合
+            {
+              name:'今年招生人数',
+              type:'line',
+              smooth:true,
+              lineWidth:3,
+              color:'#7773ff',
+              data:this.zswclList
+            },
+            {
+              name:'去年招生人数',
+              type:'line',
+              smooth:true,
+              lineWidth:3,
+              color:'#7773ff',
+              data:this.zswclList
+            }
+          ]
+        }
+        this.option = options.config(data)
+      },
+    }
   };
 </script>
 

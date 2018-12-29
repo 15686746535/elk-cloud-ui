@@ -41,12 +41,14 @@
             <div class="view-list">
               <div :id="item.to" class="view-item" v-for="(item,i) in list" :style="{height:item.height}">
                 <view-enrolment :width="area[0] - 300" v-if="item.to=='view-enrolment'"  :params="listQuery" ></view-enrolment>
+
                 <view-amount-completion-rate :width="area[0] - 300" v-if="item.to=='view-amount-completion-rate'"  :params="listQuery" ></view-amount-completion-rate>
-                <view-average-output :width="area[0] - 300" v-if="item.to=='view-average-output'"  :params="listQuery" ></view-average-output>
-                <view-enroll-numbers-rate :width="area[0] - 300" v-if="item.to=='view-enroll-numbers-rate'"  :params="listQuery" ></view-enroll-numbers-rate>
-                <view-forehead-completion-rate :width="area[0] - 300" v-if="item.to=='view-forehead-completion-rate'"  :params="listQuery" ></view-forehead-completion-rate>
-                <view-amount-growth-rate :width="area[0] - 300" v-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-amount-growth-rate>
-                <view-money :width="area[0] - 300" v-if="item.to=='vview-money'"  :params="listQuery" ></view-money>
+                <view-average-output :width="area[0] - 300" v-else-if="item.to=='view-average-output'"  :params="listQuery" ></view-average-output>
+                <!--<view-enroll-numbers-rate :width="area[0] - 300" v-else-if="item.to=='view-enroll-numbers-rate'"  :params="listQuery" ></view-enroll-numbers-rate>-->
+                <view-forehead-completion-rate :width="area[0] - 300" v-else-if="item.to=='view-forehead-completion-rate'"  :params="listQuery" ></view-forehead-completion-rate>
+                <!--<view-amount-growth-rate :width="area[0] - 300" v-else-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-amount-growth-rate>-->
+                <view-money :width="area[0] - 300" v-else-if="item.to=='view-money'"  :params="listQuery" ></view-money>
+                <view-enrolment :width="area[0] - 300" v-else  :params="listQuery" ></view-enrolment>
 
               </div>
             </div>

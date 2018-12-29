@@ -60,8 +60,8 @@
           <td>{{totalNum}}</td>
         </tr>
         <tr>
-          <td title="人均产值（万）" v-for='it in percentList' style="min-width: 105px;overflow: hidden;white-space:nowrap">人均产值（万）</td>
-          <td >{{it}}</td>
+          <td title="人均产值（万）"  style="min-width: 105px;overflow: hidden;white-space:nowrap">人均产值（万）</td>
+          <td v-for='it in percentList'>{{it}}</td>
           <td>{{totalAvg}}</td>
         </tr>
         </tbody>
@@ -103,9 +103,9 @@
       return {
         year:null,
         gdpMonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
-        percentList: [],
-        factEmployee:[],
-        factMoney:[],
+        percentList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        factEmployee:[0,0,0,0,0,0,0,0,0,0,0,0],
+        factMoney:[0,0,0,0,0,0,0,0,0,0,0,0],
         rankMonth: [],
         campusList: [
           { name: "壹路校区", id: 1 },
@@ -123,7 +123,7 @@
       };
     },
     created() {
-      this.getList();
+      this.init();
     },
     computed:{
       totalAvg(){
@@ -189,6 +189,6 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 500px;
+    height: 520px;
   }
 </style>

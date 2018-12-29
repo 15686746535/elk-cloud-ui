@@ -151,7 +151,6 @@
         var  colors  =  ['#7773ff'];
         var  mark  =  100;
         var  unit  =  '人';
-
         this.option = options.bar(Yname,Xname,Ydata,Xdata,colors,mark,unit)
       },
       searchList(){

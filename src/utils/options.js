@@ -161,7 +161,7 @@ const ooptions = {
         }
       },
       xAxis: {
-        boundaryGap: false,
+        // boundaryGap: false,
         type:  'category',
         axisTick:  {  //  设置X轴刻度表示点    为false时间隔表示
           alignWithLabel:  true
@@ -178,8 +178,6 @@ const ooptions = {
       yAxis: {
         type:  'value',
         name:  Yname+'('+unit+')',
-        min:  0,
-        max:  100,
         axisLine: {
           lineStyle: {
             color: '#666'

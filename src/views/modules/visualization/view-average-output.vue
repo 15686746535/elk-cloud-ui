@@ -23,16 +23,16 @@
           </thead>
           <tbody>
           <tr>
-            <td>第一名</td>
-            <td>三月份</td>
+            <td>第一</td>
+            <td>3月</td>
           </tr>
           <tr>
-            <td>第二名</td>
-            <td>七月份</td>
+            <td>第二</td>
+            <td>7月</td>
           </tr>
           <tr>
-            <td>第三名 </td>
-            <td>十一月份</td>
+            <td>第三 </td>
+            <td>11月</td>
           </tr>
 
           </tbody>
@@ -45,21 +45,24 @@
         <tr>
           <th>月份</th>
           <th v-for='item in gdpMonths'>{{item}}</th>
-          <th>总计</th>
+          <th>{{listQuery.year}}年</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>招生金额</td>
+          <td>招生金额（万）</td>
           <td v-for='it in factMoney'>{{it}}</td>
+          <td>{{totalMoney}}</td>
         </tr>
         <tr>
-          <td>当月员工数</td>
+          <td>员工数量（人）</td>
           <td v-for='it in factEmployee'>{{it}}</td>
+          <td>{{totalNum}}</td>
         </tr>
         <tr>
-          <td>人均产值</td>
+          <td>人均产值（万）</td>
           <td v-for='it in percentList'>{{it}}</td>
+          <td>{{totalAvg}}</td>
         </tr>
         </tbody>
 
@@ -93,7 +96,7 @@
       },
       width: {
         type: Number,
-        default: 600
+        default: 1200
       },
     },
     data() {
@@ -115,11 +118,18 @@
         // lastQuery:{},
         option:null,
         loading: false,
-        total:0
+        totalMoney:0,
+        totalNum:0,
       };
     },
     created() {
       this.getList();
+    },
+    computed:{
+      totalAvg(){
+        console.log('=================',this.totalMoney)
+        return (this.totalMoney/this.totalNum).toFixed(2);
+      }
     },
     methods: {
       getList(){
@@ -127,30 +137,43 @@
         queryGDP(this.listQuery).then(res=>{
           if(res.data.code==0){
             console.log("res",res)
-            _this.factEmployee=res.data.data.factEmployee
-            _this.factMoney=res.data.data.factMoney
-            console.log( _this.factEmployee,_this.factMoney)
-            let index=0;
-            _this.factEmployee.forEach(v=>{
-              let rate=(_this.factMoney[index]/v).toFixed(2)
-              _this.percentList.push(rate)
-              console.log("人均产值",v)
-              rate++;
+            var factMoney = [];
+            var percentList = [];
+            var totalNum = 0;
+            var totalMoney = 0;
 
+            _this.factEmployee=res.data.data.factEmployee;
+            // _this.factMoney=res.data.data.factMoney
+            // console.log( _this.factEmployee,_this.factMoney)
+            res.data.data.factMoney.forEach(function(v,i) {
+              totalMoney += v;
+              v = (v/10000).toFixed(2);
+              totalNum += _this.factEmployee[i];
+              percentList.push((v/_this.factEmployee[i]).toFixed(2));
+              factMoney.push(v);
+              // console.log("人均产值", _this.percentList)
             })
+            totalMoney = (totalMoney/10000).toFixed(2);
+            // percentList.push((totalMoney/totalNum).toFixed(2));
+            _this.factMoney = factMoney;
+            _this.totalMoney = totalMoney;
+            _this.totalNum = totalNum;
+            _this.percentList = percentList;
+            console.log("表格", _this.percentList)
             _this.init();
 
           }
         })
       },
       init() {
-        var  Yname = '百分比';
-        var  Xname = '月份';
+        var  Yname = '人均产值';
+        var  Xname = '人均产值';
         var  Ydata  = this.percentList//[15,25,40,67,80,88,91,80,99,100,102,130];
         var  Xdata  = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
         var  colors  =  ['#a2d27f'];
-        var  mark  =  36;
-        var  unit  =  '%';
+        var  mark  =  18000;
+        var  unit  =  '万';
+        console.log("初始化",Yname,Xname,Ydata,Xdata,colors,mark,unit)
         this.option = options.line(Yname,Xname,Ydata,Xdata,colors,mark,unit)
       },
 
@@ -215,6 +238,7 @@
           border-left: 1px solid #ccc;
           border-bottom: 1px solid #ccc;
           padding: 10px;
+          text-align: center;
         }
 
         tr:hover {

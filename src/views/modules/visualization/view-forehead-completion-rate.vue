@@ -1,8 +1,8 @@
 <template>
-  <div class="view-enrolment">
+  <div class="view-enrolment view-container">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
-      <label>月度计划任务金额完成率 &nbsp;&nbsp;&nbsp;</label>
+      <label>招生金额完成率 &nbsp;&nbsp;&nbsp;</label>
       <el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"
                  style="margin-right: 5px;width: 200px;">
         <el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>
@@ -12,74 +12,158 @@
       <el-button icon="el-icon-search" type="danger">确认搜索</el-button>
     </el-row>
     <el-row class="enrolment-view">
-      <div id="enrolmentChart">
-
+      <div >
+        <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
       </div>
-      <div class="enrolment-rate">
-        <el-progress type="circle" :percentage="75" stroke-width="12" color="#7773ff"  status="text" ><b>75%</b><br>年度完成</el-progress>
-      </div>
-      <p style="position: absolute;top: 230px;right: 10px;">年度招生金额完成率</p>
+      <!--<div class="enrolment-rate">-->
+      <!--<el-progress type="circle" :percentage="75" stroke-width="12" color="#fe8888"  status="text"><b>75%</b><br>年度完成</el-progress>-->
+      <!--</div>-->
     </el-row>
     <el-row class="enrolment-table">
       <table>
         <thead>
         <tr>
           <th>月份</th>
-          <th v-for='item in zsmonths'>{{item}}</th>
+          <th v-for='item in zsMonths'>{{item}}</th>
+          <th>总计</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>招生人数</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td>招生金额</td>
+          <td v-for='it in zsjeList'>{{it}}</td>
+          <td>{{zsjeTotal}}</td>
         </tr>
         <tr>
           <td>招生目标</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td v-for='it in zsjeTarget'>{{it}}</td>
+          <td>{{zsmbTotal}}</td>
         </tr>
         <tr>
-          <td>月度完成率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td>月度完成率(%)</td>
+          <td v-for='it in zsjewclList'>{{it}}</td>
+          <td ></td>
         </tr>
         <tr>
-          <td>累计完成率</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td>累计完成率(%)</td>
+          <td v-for='its in ljwclTotal'>{{its}}</td>
+          <td></td>
         </tr>
         </tbody>
-
       </table>
     </el-row>
 
     <div class="mini-card">
-      <div class="topcard"><span style="position: relative;margin-left: 10px;top: 15px;color: #fff">招生总金额</span></div>
-      <div class="botcard"><span style="position: relative;margin-left: 20px;top: 15px">72062元</span></div>
+      <div class="topcard">招生总金额</div>
+      <div class="botcard">{{zsjeTotal}}人</div>
     </div>
   </div>
 </template>
 
 <script>
+  /*
+  * 人均产值统计
+  * 页面高度：420px
+  * */
+  import Echarts from '@/components/Echarts';
+  import {moneyCompletRate } from '@/api/visualization/api'
+  import options from  '@/utils/options'
   export default {
-    name: "view-enrolment",
+    name: "view-amount-completion-rate",
+    components: {
+      Echarts
+    },
     props: {
-      params: Object
+      params: {
+        type: Object,
+        default: {}
+      },
+      width: {
+        type: Number,
+        default: 1200
+      },
     },
     data() {
       return {
-        zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
-        zsrslist: [350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350, 350],
-        ranks: ["第一", "第二", "第三"],
-        rankmonth: ["3月份", "7月份", "11月份"],
+        zsMonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+        zsjeList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        zsjeTarget:[0,0,0,0,0,0,0,0,0,0,0,0],
+        zsjewclList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        ljwclTotal:[0,0,0,0,0,0,0,0,0,0,0,0],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
         ],
         listQuery: {
-          campus: null,
-          year: null
-        }
+          orgId: 4,
+          year: 2018
+        },
+        option:null,
+        loading: false,
+        zsjeTotal:0,
+        zsmbTotal:0,
+        zswclTotal:0,
+
       };
     },
-    methods: {}
+    created() {
+      this.getList();
+    },
+    methods: {
+      getList(){
+        let _this=this
+        moneyCompletRate (this.listQuery).then(res=>{
+          if(res.data.code==0){
+            console.log("ress",res);
+            var factMoney=res.data.data.factMoney;
+            var targetMoney=res.data.data.targetMoney;
+            var zsjewclList=[];
+            var zsjeTotal=0;
+            var zsmbTotal=0;
+            var zswclTotal=0;
+            var ljwclTotal=[];
+            var zs=0;
+            factStudent.forEach(function(v,i) {
+              zsjeTotal+=v;
+              zsmbTotal+=targetStudent[i];
+              zs=((v/targetStudent[i])*100).toFixed(2);
+              if(targetStudent[i]==0){
+                zsjewclList.push(0);
+              }
+              else {zsjewclList.push((zs));}
+              ljwclTotal.push(((zsjeTotal/zsmbTotal)*100).toFixed(2))
+            })
+            // _this.zsrsList=factStudent;
+            // _this.zsrsTarget=targetStudent;
+            // _this.zsjewclList=zsjewclList;
+            // _this.zsjeTotal=zsjeTotal;
+            // _this.zsmbTotal=zsmbTotal;
+            // _this.zswclTotal=zswclTotal;
+            // _this.ljwclTotal=ljwclTotal;
+            _this.init();
+          }
+        })
+      },
+      init() {
+        var data = {
+          xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+          yName:'百分比',            // Y轴名字
+          unit:'%',               // 单位
+          mark:88,                // 平均线
+          series:[                 // 图形集合
+            {
+              name:'招生金额完成率',
+              type:'line',
+              smooth:true,
+              lineWidth:3,
+              color:'#7773ff',
+              data:this.zswclList
+            }
+          ]
+        }
+        this.option = options.config(data)
+      },
+    }
   };
 </script>
 
@@ -91,115 +175,6 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    background: $White;
-    position: relative;
     height: 420px;
-    width: 100%;
-
-    .enrolment-header {
-      position: absolute;
-      height: 40px;
-      width: 100%;
-      top: 0;
-      left: 0;
-
-      .el-button--danger {
-        color: #fff;
-        background-color: $Danger !important;
-        border-color: $Danger !important;
-      }
-    }
-
-    .enrolment-view {
-      position: absolute;
-      top: 50px;
-      left: 0;
-      width: 100%;
-      height: 285px;
-    }
-
-    .enrolment-table {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 75px;
-      width: 100%;
-
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        color: #444;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-
-        th, td {
-          border-left: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          padding: 10px;
-        }
-
-        tr:hover {
-          background-color: #fbf8e9;
-          transition: all 0.1s ease-in-out;
-        }
-
-      }
-    }
-
-    .enrolment-rate {
-      position: absolute;
-      top: 100px;
-      right: 10px;
-      /*height: 75px;*/
-      /*width: 100%;*/
-
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        color: #444;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-
-        th, td {
-          border-left: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          padding: 10px;
-        }
-
-        tr:hover {
-          background-color: #fbf8e9;
-          transition: all 0.1s ease-in-out;
-        }
-
-      }
-    }
-
-    .mini-card {
-      position: absolute;
-      right: 10px;
-      top:50px;
-      .topcard {
-        width: 100px;
-        height: 40px;
-        /*box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);*/
-        border-radius: 15px 15px 0 0;
-        background: $Danger;
-      }
-
-      .botcard {
-        width: 100px;
-        height: 40px;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 0 0 15px 15px;
-      }
-    }
   }
 </style>

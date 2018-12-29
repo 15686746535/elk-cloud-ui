@@ -1,5 +1,5 @@
 <template>
-  <div id="view-totalmoney">
+  <div id="view-totalmoney view-container">
     <el-row class="totalmoney-header">
       <el-radio class="my-view"></el-radio>
       <label>招生金额 &nbsp;&nbsp;&nbsp;</label>
@@ -167,121 +167,7 @@
   /*灰白色*/
   $DDD:#ddd;
   #view-totalmoney {
-    background: $White;
-    position: relative;
-    height: 420px;
-    width: 100%;
-
-    .totalmoney-header{
-      position: absolute;
-      height: 40px;
-      width: 100%;
-      top: 0;
-      left: 0;
-
-      .el-button--danger {
-        color: #fff;
-        background-color: $Danger !important;
-        border-color: $Danger !important;
-      }
-    }
-
-    .totalmoney-view{
-      position: absolute;
-      top: 50px;
-      left: 0;
-      width: 100%;
-      height: 285px;
-    }
-
-    .totalmoney-table{
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 75px;
-      width: 100%;
-
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        color: #444;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-
-        th, td {
-          border-left: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          padding: 10px;
-        }
-
-        tr:hover {
-          background-color: #fbf8e9;
-          transition: all 0.1s ease-in-out;
-        }
-
-      }
-
-    }
-    .totalmoney-rank {
-      position: absolute;
-      top: 130px;
-      right: 0px;
-      /*height: 75px;*/
-      /*width: 100%;*/
-
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        color: #444;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-
-        th, td {
-          border-left: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          padding: 10px;
-        }
-
-        tr:hover {
-          background-color: #fbf8e9;
-          transition: all 0.1s ease-in-out;
-        }
-
-      }
-    }
-    .rightcard {
-      position: absolute;
-      right: 0px;
-      top: 99px;
-      .topcard {
-        width: 100px;
-        height: 32px;
-        font-size: 12px;
-        line-height: 32px;
-        color: #fff;
-        border-radius: 15px 15px 0 0;
-        text-align: center;
-        background: $Danger;
-      }
-
-      .botcard {
-        width: 100px;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        font-weight: 600;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 0 0 15px 15px;
-      }
-    }
+    height: 570px;
   }
 
 </style>

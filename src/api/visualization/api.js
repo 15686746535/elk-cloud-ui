@@ -94,4 +94,20 @@ export function queryGDP(params) {
   })
 }
 
+export function queryAmountRate(params) {
+  return request({
+    url: '/visualization/queryFactAndTarget',
+    method: 'get',
+    params: params
+  })
+}
+
+export function moneyCompletRate(params) {
+  return request({
+    url: '/visualization/moneyFactAndTarget',
+    method: 'get',
+    params: params
+  })
+}
+
 

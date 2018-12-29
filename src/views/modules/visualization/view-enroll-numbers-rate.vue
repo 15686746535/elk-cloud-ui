@@ -1,5 +1,5 @@
 <template>
-  <div class="view-enrolment">
+  <div class="view-enrolment view-container">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
       <label>月度计划任务人数完成率 &nbsp;&nbsp;&nbsp;</label>
@@ -96,115 +96,6 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    background: $White;
-    position: relative;
     height: 420px;
-    width: 100%;
-
-    .enrolment-header {
-      position: absolute;
-      height: 40px;
-      width: 100%;
-      top: 0;
-      left: 0;
-
-      .el-button--danger {
-        color: #fff;
-        background-color: $Danger !important;
-        border-color: $Danger !important;
-      }
-    }
-
-    .enrolment-view {
-      position: absolute;
-      top: 50px;
-      left: 0;
-      width: 100%;
-      height: 285px;
-    }
-
-    .enrolment-table {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 75px;
-      width: 100%;
-
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        color: #444;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-
-        th, td {
-          border-left: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          padding: 10px;
-        }
-
-        tr:hover {
-          background-color: #fbf8e9;
-          transition: all 0.1s ease-in-out;
-        }
-
-      }
-    }
-
-    .enrolment-rate {
-      position: absolute;
-      top: 100px;
-      right: 10px;
-      /*height: 75px;*/
-      /*width: 100%;*/
-
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        color: #444;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-
-        th, td {
-          border-left: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          padding: 10px;
-        }
-
-        tr:hover {
-          background-color: #fbf8e9;
-          transition: all 0.1s ease-in-out;
-        }
-
-      }
-    }
-
-    .mini-card {
-      position: absolute;
-      right: 10px;
-      top:50px;
-      .topcard {
-        width: 100px;
-        height: 40px;
-        /*box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);*/
-        border-radius: 15px 15px 0 0;
-        background: $Danger;
-      }
-
-      .botcard {
-        width: 100px;
-        height: 40px;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 0 0 15px 15px;
-      }
-    }
   }
 </style>

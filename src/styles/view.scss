@@ -97,3 +97,8 @@ $DDD: #ddd;
     }
   }
 }
+
+.my-view .el-radio__inner {
+  border-color: $Danger!important;
+  background: $Danger!important;
+}

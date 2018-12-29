@@ -80,12 +80,12 @@
             name: '校区招生',
             ename: 'Campus enrollment',
             list: [
-              { name:'招生人数统计', to: 'view-enrolment', height: '460px' },
-              { name:'招生量完成率统计', to: 'view-amount-completion-rate', height: '460px' },
-              { name:'招生量增长率统计', to: 'view-amount-growth-rate', height: '460px' },
-              { name:'个人招生分析', to: 'view-individual-enrollment-analysis', height: '460px' },
-              { name:'个人招生详情', to: 'view-individual-enrollment-details', height: '460px' },
-              { name:'招生量车型统计', to: 'view-amount-motorcycle-type', height: '460px' }
+              { name:'招生人数统计', to: 'view-enrolment', height: 460 },
+              { name:'招生量完成率统计', to: 'view-amount-completion-rate', height: 460 },
+              { name:'招生量增长率统计', to: 'view-amount-growth-rate', height: 460 },
+              { name:'个人招生分析', to: 'view-individual-enrollment-analysis', height: 460 },
+              { name:'个人招生详情', to: 'view-individual-enrollment-details', height: 460 },
+              { name:'招生量车型统计', to: 'view-amount-motorcycle-type', height: 460 }
             ]
           },
           {
@@ -93,12 +93,11 @@
             name: '校区收入',
             ename:'Campus income',
             list:[
-              { name:'招生金额统计', to: 'view-money', height: '460px' },
-              { name:'人均产值统计', to: 'view-average-output', height: '460px' },
-              { name:'招生额完成率统计', to: 'view-forehead-completion-rate', height: '460px' },
-              { name:'招生额增长率统计', to: 'view-forehead-growth-rate', height: '460px' },
-              { name:'招生额车型统计', to: 'view-forehead-motorcycle-type', height: '460px' }
-
+              { name:'招生金额统计', to: 'view-money', height: 460 },
+              { name:'人均产值统计', to: 'view-average-output', height: 460 },
+              { name:'招生额完成率统计', to: 'view-forehead-completion-rate', height: 460 },
+              { name:'招生额增长率统计', to: 'view-forehead-growth-rate', height: 460 },
+              { name:'招生额车型统计', to: 'view-forehead-motorcycle-type', height: 460 }
             ]
           },
           {
@@ -106,8 +105,8 @@
             name: '部门业绩',
             ename:'Departmental performance',
             list:[
-              { name:'部门招生量统计', to: 'view-org-amount-enrolment', height: '460px' },
-              { name:'部门人均招生额统计', to: 'view-org-average-forehead', height: '460px' },
+              { name:'部门招生量统计', to: 'view-org-amount-enrolment', height: 460 },
+              { name:'部门人均招生额统计', to: 'view-org-average-forehead', height: 460 },
             ]
           },
           {
@@ -115,11 +114,11 @@
             name: '市场分析',
             ename:'Market analysis',
             list:[
-              { name:'招生市场占有率', to: 'view-market-share', height: '460px' },
-              { name:'招生累计市场占有率', to: 'view-cumulative-market-share', height: '460px' },
-              { name:'招生车管所占有率', to: 'view-vehicle-share', height: '460px' },
-              { name:'招生累计车管所占有率', to: 'view-cumulative-vehicle-share', height: '460px' },
-              { name:'意向转化率统计', to: 'view-visit-conversion', height: '460px' },
+              { name:'招生市场占有率', to: 'view-market-share', height: 460 },
+              { name:'招生累计市场占有率', to: 'view-cumulative-market-share', height: 460 },
+              { name:'招生车管所占有率', to: 'view-vehicle-share', height: 460 },
+              { name:'招生累计车管所占有率', to: 'view-cumulative-vehicle-share', height: 460 },
+              { name:'意向转化率统计', to: 'view-visit-conversion', height: 460 },
             ]
           }
         ],
@@ -142,9 +141,8 @@
     mounted() { // 监听
       var view = this.$refs.view.$el;
       view.addEventListener('scroll', () => {
-        var current_offset_top = view.scrollTop;
-        // 暂定方案
-        this.to = parseInt(current_offset_top/460);
+        var current_offset_top = view.scrollTop + 200;
+        this.to = parseInt(current_offset_top/470);
       })
     },
     methods: {
@@ -154,6 +152,7 @@
       },
       GoTo(i) {
         this.to = i;
+        // 滑动到指定位置
         document.querySelector("#"+this.list[i].to).scrollIntoView({behaviour: "smooth",block: "start"});
       },
     }

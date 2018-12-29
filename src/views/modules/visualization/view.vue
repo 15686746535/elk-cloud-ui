@@ -166,8 +166,9 @@
   /*主体红色*/
   $Danger:#c50202;
   $DDD:#ddd;
+  $PageBackground:#eee;
   #view {
-    background: #eee;
+    background: $PageBackground;
     height: 100%;
     padding: 0 20px;
     .box {
@@ -259,15 +260,17 @@
         overflow: inherit;
         .aside-position {
           width: 100%;
-          padding: 20px 0;
+          margin-top: 20px;
+          /*padding: 20px 0;*/
           .aside-item {
-            transition: color 0.5s ease-in-out;
+            transition: color 0.2s ease-in-out;
             padding: 0 20px;
-            height: 45px;
+            height: 36px;
             margin-bottom: 2px;
-            line-height: 45px;
+            line-height: 36px;
             position: relative;
             cursor: pointer;
+            font-size: 12px;
             .text {
               position: absolute;
               z-index: 66;
@@ -279,18 +282,17 @@
               height: 100%;
               top: 0;
               left: -220px;
-              transition: left 0.5s ease;
+              transition: left 0.2s ease;
               background-color: $Danger;
 
               .triangle {
                 position: absolute;
                 top: 0;
-                right: -31px;
-                /*display: none;*/
+                right: -25px;
                 width: 0;
                 height: 0;
-                border-width: 22.5px;
-                border-left-width: 8.5px;
+                border-width: 18px;
+                border-left-width: 7.5px;
                 border-style: solid;
                 border-color: transparent transparent transparent $Danger;
               }
@@ -298,6 +300,7 @@
 
             &:hover {
               color: $White;
+              /*background: #8c939d;*/
               .bg {
                 /*background-color: #f56c6c; */
                 left: 0;

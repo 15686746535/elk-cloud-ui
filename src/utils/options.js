@@ -142,9 +142,9 @@ var serie = function (yName,type,xData,smooth,lineWidth,lineType,stack,unit,mark
     },
     markPoint: {
       symbol: 'pin', // 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', path://m 0,0 h 48 v 20 h -30 l -6,10 l -6,-10 h -6 z,  path://m 0,0 h 48 v 20 h -34 l -6,10 l -6,-10 h -2 z
-      symbolSize: function(val){
-        return [50,40]
-      },
+      // symbolSize: function(val){
+      //   return [50,40]
+      // },
       symbolOffset: ['0', '-10%'],
       itemStyle:{
         normal:{
@@ -240,7 +240,7 @@ const options = {
       },
       grid:  {
         right:  '160px',
-        top:'40px',
+        top:'50px',
         left: '0',
         bottom:'10px',
         containLabel: true

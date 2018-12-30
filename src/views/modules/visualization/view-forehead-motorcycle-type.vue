@@ -2,7 +2,7 @@
   <div class="view-enrolment view-container">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
-      <label>招生人数统计 &nbsp;&nbsp;&nbsp;</label>
+      <label>车型招生额统计 &nbsp;&nbsp;&nbsp;</label>
       <!--<el-select v-model="listQuery.orgId" filterable remote clearable reserve-keyword placeholder="校区"-->
                  <!--style="margin-right: 5px;width: 200px;">-->
         <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
@@ -24,7 +24,11 @@
         </thead>
         <tbody>
         <tr>
-          <td>人数(人)</td>
+          <td>C1</td>
+          <td v-for='it in zsrslist'>{{it}}</td>
+        </tr>
+        <tr>
+          <td>C2</td>
           <td v-for='it in zsrslist'>{{it}}</td>
         </tr>
         </tbody>
@@ -32,11 +36,13 @@
       </table>
     </el-row>
 
-    <div class="mini-card" >
-      <div class="topcard">招生总人数</div>
-      <div class="botcard">{{total}}人</div>
-    </div>
-    <div class="enrolment-rank" >
+    <!--<div class="mini-card" >-->
+      <!--<div class="topcard">招生总人数</div>-->
+      <!--&lt;!&ndash;<div class="botcard">{{total}}人</div>&ndash;&gt;-->
+      <!--<div class="botcard">76208人</div>-->
+    <!--</div>-->
+
+    <div class="enrolment-rank" style="top: 99px">
       <table>
         <thead>
         <tr>
@@ -103,51 +109,34 @@
       };
     },
     created() {
-      this.init();
+      this.getList();
     },
     methods: {
       getList(){
-        // this.loading=true
-        // var _this = this
-        // queryEnrolment(this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     let result=res.data.data.factStudent;
-        //     var maxmonth=result[0];
-        //     var secondmonth=result[0];
-        //     var thirdmonth=result[0];
-        //     _this.zsrslist=result;
-        //     _this.loading=false;
-        //     _this.init();
-        //     result.forEach((v)=>{
-        //       _this.total+=v;
-        //       if(v>maxmonth){
-        //         secondmonth=maxmonth;
-        //         maxmonth=v;
-        //       }
-        //       if(v>thirdmonth&&v<secondmonth&&v<maxmonth){
-        //         thirdmonth=v;
-        //       }
-        //     }),
-        //       _this.rankmonth.push(maxmonth,secondmonth,thirdmonth)
-        //       console.log(maxmonth,secondmonth,thirdmonth)
-        //     console.log(this.seriesList)
-        //   }
-        // })
+        this.zsrslist=[15,25,40,67,80,88,91,80,99,100,88,99];
+        this.init();
       },
       init() {
 
         var data = {
             xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
-            yName:'人数',            // Y轴名字
-            unit:'人',               // 单位
+            yName:'金额',            // Y轴名字
+            unit:'万',               // 单位
             mark:100,                // 平均线
             series:[                 // 图形集合
               {
-                name:'市场部',
+                name:'C1',
                 type:'bar',
                 stack:'11',
                 color:'#7773ff',
                 data:[15,25,40,67,80,88,91,80,99,100,88,99],
+              },
+              {
+                name:'C2',
+                type:'bar',
+                stack:'11',
+                color:'#f976c6',
+                data:[17,65,80,27,45,88,21,38,72,42,22,41],
               }
             ]
         }
@@ -168,7 +157,7 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 440px;
+    height: 480px;
 
 
   }

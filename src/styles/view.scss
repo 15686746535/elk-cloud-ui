@@ -39,6 +39,9 @@ $DDD: #ddd;
     width: 100%;
     overflow-x: auto;
     //padding: 5px 0 10px 29px;
+    th, td {
+      min-width: 100px;
+    }
     /*滚动条样式 谷歌浏览器支持*/
     &::-webkit-scrollbar {/*滚动条整体样式*/
       width: 5px;     /*高宽分别对应横竖滚动条的尺寸*/
@@ -78,7 +81,6 @@ $DDD: #ddd;
       border-bottom: 1px solid #ccc;
       padding: 10px;
       text-align: center;
-      min-width: 100px;
       overflow: hidden;
       white-space: nowrap;
     }

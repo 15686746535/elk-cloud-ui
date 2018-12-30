@@ -30,12 +30,12 @@
         </thead>
         <tbody>
         <tr>
-          <td>招生人数</td>
+          <td>招生人数(人)</td>
           <td v-for='it in zsrsList'>{{it}}</td>
           <td>{{zsrsTotal}}</td>
         </tr>
         <tr>
-          <td>招生目标</td>
+          <td>招生目标(人)</td>
           <td v-for='it in zsrsTarget'>{{it}}</td>
           <td>{{zsmbTotal}}</td>
         </tr>

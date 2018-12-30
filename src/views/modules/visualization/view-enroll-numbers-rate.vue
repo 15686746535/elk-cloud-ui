@@ -13,7 +13,6 @@
     </el-row>
     <el-row class="enrolment-view">
       <div id="enrolmentChart">
-
       </div>
       <div class="enrolment-rate">
         <el-progress type="circle" :percentage="75" stroke-width="12" color="#7773ff"  status="text" ><b>75%</b><br>年度完成</el-progress>
@@ -25,28 +24,28 @@
         <thead>
         <tr>
           <th>月份</th>
-          <th v-for='item in zsmonths'>{{item}}</th>
+          <th v-for='item in zsmonths'>{{item}}月</th>
           <th>总计</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>招生人数</td>
+          <td>招生人数(人)</td>
           <td v-for='it in zsrslist'>{{it}}</td>
           <td>13999</td>
         </tr>
         <tr>
-          <td>招生目标</td>
+          <td>招生目标(人)</td>
           <td v-for='it in zsrslist'>{{it}}</td>
           <td>20000</td>
         </tr>
         <tr>
-          <td>月度完成率</td>
+          <td title="月度完成率(%)" style="min-width: 105px;overflow: hidden;white-space:nowrap">月度完成率</td>
           <td v-for='it in zsrslist'>{{it}}</td>
           <td>98%</td>
         </tr>
         <tr>
-          <td>累计完成率</td>
+          <td title="累计完成率(%)">累计完成率(%)</td>
           <td v-for='it in zsrslist'>{{it}}</td>
           <td>100%</td>
         </tr>

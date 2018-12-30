@@ -54,6 +54,28 @@
                 <view-forehead-growth-rate :width="area[0] - 300" v-if="item.to=='view-forehead-growth-rate'"  :params="listQuery" ></view-forehead-growth-rate>
                 <!--招生金额-->
                 <view-money :width="area[0] - 300" v-if="item.to=='view-money'"  :params="listQuery" ></view-money>
+                <!--车型招生-->
+                <view-amount-motorcycle-type :width="area[0] - 300" v-if="item.to=='view-amount-motorcycle-type'"  :params="listQuery"></view-amount-motorcycle-type>
+                <!--车型金额-->
+                <view-forehead-motorcycle-type :width="area[0] - 300" v-if="item.to=='view-forehead-motorcycle-type'"  :params="listQuery"></view-forehead-motorcycle-type>
+                <!--招生市场占有率-->
+                <view-market-share :width="area[0] - 300" v-if="item.to=='view-market-share'"  :params="listQuery"></view-market-share>
+                <!--车管所占有率-->
+                <view-vehicle-share :width="area[0] - 300" v-if="item.to=='view-vehicle-share'"  :params="listQuery"></view-vehicle-share>
+                <!--意向转化率-->
+                <view-visit-conversion :width="area[0] - 300" v-if="item.to=='view-visit-conversion'"  :params="listQuery"></view-visit-conversion>
+                <!--招生累计市场占有率-->
+                <view-cumulative-market-share :width="area[0] - 300" v-if="item.to=='view-cumulative-market-share'"  :params="listQuery"></view-cumulative-market-share>
+                <!--车管所累计市场占有率-->
+                <view-cumulative-vehicle-share :width="area[0] - 300" v-if="item.to=='view-cumulative-vehicle-share'"  :params="listQuery"></view-cumulative-vehicle-share>
+                <!--个人招生分析-->
+                <view-individual-enrollment-analysis :width="area[0] - 300" v-if="item.to=='view-individual-enrollment-analysis'"  :params="listQuery"></view-individual-enrollment-analysis>
+                <!--个人招生详情-->
+                <view-individual-enrollment-details :width="area[0] - 300" v-if="item.to=='view-individual-enrollment-details'"  :params="listQuery"></view-individual-enrollment-details>
+                <!--部门招生量统计-->
+                <view-org-amount-enrolment :width="area[0] - 300" v-if="item.to=='view-org-amount-enrolment'"  :params="listQuery"></view-org-amount-enrolment>
+                <!--部门人均招生额统计-->
+                <view-org-average-forehead :width="area[0] - 300" v-if="item.to=='view-org-average-forehead'"  :params="listQuery"></view-org-average-forehead>
 
               </div>
             </div>
@@ -71,7 +93,17 @@
   import ViewForeheadCompletionRate from '@/views/modules/visualization/view-forehead-completion-rate.vue'  //招生金额完成率
   import ViewForeheadGrowthRate from '@/views/modules/visualization/view-forehead-growth-rate.vue'  //招生额同比增长率
   import ViewAmountGrowthRate from '@/views/modules/visualization/view-amount-growth-rate.vue'  //招生量同比增长率
-
+  import ViewForeheadMotorcycleType from '@/views/modules/visualization/view-forehead-motorcycle-type.vue'  //车型招生额
+  import ViewAmountMotorcycleType from '@/views/modules/visualization/view-amount-motorcycle-type.vue'  //车型招生量
+  import ViewMarketShare from '@/views/modules/visualization/view-market-share.vue'  //月度招生市场占有率
+  import ViewCumulativeMarketShare from '@/views/modules/visualization/view-cumulative-market-share.vue'  //招生累计市场占有率
+  import ViewCumulativeVehicleShare from '@/views/modules/visualization/view-cumulative-vehicle-share.vue'  // 招生累计车管所占有率
+  import ViewVehicleShare from '@/views/modules/visualization/view-vehicle-share.vue'  //月度招生量车管所占有率
+  import ViewVisitConversion from '@/views/modules/visualization/view-visit-conversion.vue'  //意向转化率
+  import ViewIndividualEnrollmentAnalysis from '@/views/modules/visualization/view-individual-enrollment-analysis.vue'  //个人招生分析
+  import ViewIndividualEnrollmentDetails from '@/views/modules/visualization/view-individual-enrollment-details.vue'  //个人招生详情
+  import ViewOrgAmountEnrolment from '@/views/modules/visualization/view-org-amount-enrolment.vue'  //部门招生量统计
+  import ViewOrgAverageForehead from '@/views/modules/visualization/view-org-average-forehead.vue'  //部门人均招生额统计
   export default {
     name: 'view',
     components: {
@@ -82,7 +114,18 @@
       ViewForeheadCompletionRate,
       ViewForeheadGrowthRate,
       ViewAmountGrowthRate,
-      ViewMoney
+      ViewMoney,
+      ViewForeheadMotorcycleType,
+      ViewAmountMotorcycleType,
+      ViewMarketShare,
+      ViewVehicleShare,
+      ViewVisitConversion,
+      ViewCumulativeMarketShare,
+      ViewIndividualEnrollmentAnalysis,
+      ViewIndividualEnrollmentDetails,
+      ViewOrgAmountEnrolment,
+      ViewOrgAverageForehead,
+      ViewCumulativeVehicleShare
     },
     props: {
       layerid: String,

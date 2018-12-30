@@ -24,7 +24,7 @@
         <thead>
         <tr>
           <th>月份</th>
-          <th v-for='item in zsMonths'>{{item}}</th>
+          <th v-for='item in zsMonths'>{{item}}月</th>
           <th>总计</th>
         </tr>
         </thead>
@@ -45,7 +45,7 @@
           <td ></td>
         </tr>
         <tr>
-          <td>累计完成率(%)</td>
+          <td title="累计完成率(%)"  style="min-width: 105px;overflow: hidden;white-space:nowrap">累计完成率(%)</td>
           <td v-for='its in ljwclTotal'>{{its}}</td>
           <td></td>
         </tr>
@@ -88,7 +88,7 @@
         zsMonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsjeList:[0,0,0,0,0,0,0,0,0,0,0,0],
         zsjeTarget:[0,0,0,0,0,0,0,0,0,0,0,0],
-        zsjewclList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        zsjewclList: [35,14,51,87,62,47,99,24,62,82,68,49],
         ljwclTotal:[0,0,0,0,0,0,0,0,0,0,0,0],
         campusList: [
           { name: "壹路校区", id: 1 },
@@ -111,38 +111,38 @@
     },
     methods: {
       getList(){
-        let _this=this
-        moneyCompletRate (this.listQuery).then(res=>{
-          if(res.data.code==0){
-            console.log("ress",res);
-            var factMoney=res.data.data.factMoney;
-            var targetMoney=res.data.data.targetMoney;
-            var zsjewclList=[];
-            var zsjeTotal=0;
-            var zsmbTotal=0;
-            var zswclTotal=0;
-            var ljwclTotal=[];
-            var zs=0;
-            factStudent.forEach(function(v,i) {
-              zsjeTotal+=v;
-              zsmbTotal+=targetStudent[i];
-              zs=((v/targetStudent[i])*100).toFixed(2);
-              if(targetStudent[i]==0){
-                zsjewclList.push(0);
-              }
-              else {zsjewclList.push((zs));}
-              ljwclTotal.push(((zsjeTotal/zsmbTotal)*100).toFixed(2))
-            })
-            // _this.zsrsList=factStudent;
-            // _this.zsrsTarget=targetStudent;
-            // _this.zsjewclList=zsjewclList;
-            // _this.zsjeTotal=zsjeTotal;
-            // _this.zsmbTotal=zsmbTotal;
-            // _this.zswclTotal=zswclTotal;
-            // _this.ljwclTotal=ljwclTotal;
-            _this.init();
-          }
-        })
+        // let _this=this
+        // moneyCompletRate (this.listQuery).then(res=>{
+        //   if(res.data.code==0){
+        //     console.log("ress",res);
+        //     var factMoney=res.data.data.factMoney;
+        //     var targetMoney=res.data.data.targetMoney;
+        //     var zsjewclList=[];
+        //     var zsjeTotal=0;
+        //     var zsmbTotal=0;
+        //     var zswclTotal=0;
+        //     var ljwclTotal=[];
+        //     var zs=0;
+        //     factStudent.forEach(function(v,i) {
+        //       zsjeTotal+=v;
+        //       zsmbTotal+=targetStudent[i];
+        //       zs=((v/targetStudent[i])*100).toFixed(2);
+        //       if(targetStudent[i]==0){
+        //         zsjewclList.push(0);
+        //       }
+        //       else {zsjewclList.push((zs));}
+        //       ljwclTotal.push(((zsjeTotal/zsmbTotal)*100).toFixed(2))
+        //     })
+        //     // _this.zsrsList=factStudent;
+        //     // _this.zsrsTarget=targetStudent;
+        //     // _this.zsjewclList=zsjewclList;
+        //     // _this.zsjeTotal=zsjeTotal;
+        //     // _this.zsmbTotal=zsmbTotal;
+        //     // _this.zswclTotal=zswclTotal;
+        //     // _this.ljwclTotal=ljwclTotal;
+        //     _this.init();
+        //   }
+        // })
       },
       init() {
         var data = {
@@ -157,7 +157,7 @@
               smooth:true,
               lineWidth:3,
               color:'#7773ff',
-              data:this.zswclList
+              data:this.zsjewclList
             }
           ]
         }

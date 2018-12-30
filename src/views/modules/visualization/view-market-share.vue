@@ -2,7 +2,7 @@
   <div class="view-enrolment view-container">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
-      <label>人均产值 &nbsp;&nbsp;&nbsp;</label>
+      <label>招生市场占有率 &nbsp;&nbsp;&nbsp;</label>
       <!--<el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"-->
                  <!--style="margin-right: 5px;width: 200px;">-->
         <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
@@ -55,12 +55,12 @@
           <td>{{totalMoney}}</td>
         </tr>
         <tr>
-          <td>员工数量（人）</td>
+          <td>招生人数（人）</td>
           <td v-for='it in factEmployee'>{{it}}</td>
           <td>{{totalNum}}</td>
         </tr>
         <tr>
-          <td title="人均产值（万）"  style="min-width: 105px;overflow: hidden;white-space:nowrap">人均产值（万）</td>
+          <td title="市场总额"  style="min-width: 105px;overflow: hidden;white-space:nowrap">市场总额</td>
           <td v-for='it in percentList'>{{it}}</td>
           <td>{{totalAvg}}</td>
         </tr>
@@ -132,6 +132,8 @@
     },
     methods: {
       getList(){
+        this.percentList=[15,47,54,35,92,56,28,49,88,5,15,83];
+        this.init();
         // let _this=this
         // queryGDP(this.listQuery).then(res=>{
         //   if(res.data.code==0){
@@ -166,16 +168,16 @@
       },
       init() {
         var data = {
-          xData:["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"], // X轴数据
-          yName:'人均产值',            // Y轴名字
-          unit:'万',               // 单位
-          mark:100,                // 平均线
+          xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+          yName:'占有率',            // Y轴名字
+          unit:'%',               // 单位
+          mark:64,                // 平均线
           series:[                 // 图形集合
             {
-              name:'人均产值',
+              name:'市场占有率',
               type:'line',
               stack:'11',
-              color:'#a2d27f',
+              color:'#f976c6',
               data:[15,25,40,67,80,88,91,80,99,100,88,99],
             }
           ]

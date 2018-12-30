@@ -360,7 +360,6 @@ const options = {
       } else {
         // 同比增长率=（本期-往期）÷往期x100%
         rate = (growth/last*100).toFixed(2);
-        console.log(i,rate)
       }
 
       if (lastCount == 0) {
@@ -372,7 +371,6 @@ const options = {
       } else {
         // 同比累计增长率=（当年的指标值-去年同期的值）÷去年同期的值x100%
         cumulativeRate = (cumulativeGrowth/lastCount*100).toFixed(2);
-        console.log(i,cumulativeRate)
       }
       list.push(rate);
       cumulativeList.push(cumulativeRate);

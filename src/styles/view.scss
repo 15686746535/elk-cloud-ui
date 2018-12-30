@@ -78,6 +78,9 @@ $DDD: #ddd;
       border-bottom: 1px solid #ccc;
       padding: 10px;
       text-align: center;
+      min-width: 100px;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     tr:hover {

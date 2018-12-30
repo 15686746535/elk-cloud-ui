@@ -2,13 +2,13 @@
   <div class="view-enrolment view-container">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
-      <label style="margin-right: 10px">{{title}}</label>
+      <label style="margin-right: 10px">招生人数同比增长率统计</label>
       <!--<el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"-->
-                 <!--style="margin-right: 5px;width: 200px;">-->
-        <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
+      <!--style="margin-right: 5px;width: 200px;">-->
+      <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
       <!--</el-select>-->
       <!--&lt;!&ndash;<el-date-picker v-model="listQuery.year" type="year" placeholder="年份"&ndash;&gt;-->
-                      <!--&lt;!&ndash;style="margin-right: 5px;width: 200px;"></el-date-picker>&ndash;&gt;-->
+      <!--&lt;!&ndash;style="margin-right: 5px;width: 200px;"></el-date-picker>&ndash;&gt;-->
       <!--<el-button icon="el-icon-search" type="danger" @click="search">确认搜索</el-button>-->
     </el-row>
     <el-row class="enrolment-view">
@@ -21,26 +21,26 @@
         <thead>
         <tr>
           <th>月份</th>
-          <th v-for='item in zsmonths'>{{item}}</th>
+          <th v-for='item in months'>{{item}}月</th>
+          <th>合计</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td title="同比增长率(%)" style="min-width: 105px;overflow: hidden;white-space:nowrap">招生增长率(%)</td>
-          <td v-for='it in zsltbList'>{{it}}</td>
+          <td title="去年招生额(万)" style="min-width: 105px;overflow: hidden;white-space:nowrap">去年招生额(万)</td>
+          <td v-for='it in lastList'>{{it}}万</td>
+          <th>{{sum(lastList)}}</th>
         </tr>
         <tr>
-          <td title="金额增长率(%)">金额增长率(%)</td>
-          <td v-for='it in jeltbList'>{{it}}</td>
+          <td title="今年招生额(万)" style="min-width: 105px;overflow: hidden;white-space:nowrap">今年招生额(万)</td>
+          <td v-for='it in currList'>{{it}}万</td>
+          <th>{{sum(currList)}}</th>
         </tr>
-        <!--<tr>-->
-          <!--<td>招生量年度同比增长率</td>-->
-          <!--<td v-for='it in zsrslist'>{{it}}</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>招生额年度同比增长率</td>-->
-          <!--<td v-for='it in zsrslist'>{{it}}</td>-->
-        <!--</tr>-->
+        <tr>
+          <td title="同比增长率(%)">同比增长率(%)</td>
+          <td v-for='it in list'>{{it}}%</td>
+          <th></th>
+        </tr>
         </tbody>
 
       </table>
@@ -50,14 +50,14 @@
 
 <script>
   /*
- * 同比增长率
- * 页面高度：420px
- * */
+   * 招生人数同比增长率统计
+   * 页面高度：420px
+   */
   import Echarts from '@/components/Echarts';
   import {queryEnrolment } from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
-    name: "view-amount-completion-rate",
+    name: "view-amount-growth-rate",
     components: {
       Echarts
     },
@@ -66,10 +66,6 @@
         type: Object,
         default: {}
       },
-      id: {
-        type: String,
-        default: ''
-      },
       width: {
         type: Number,
         default: 1200
@@ -77,47 +73,42 @@
     },
     data() {
       return {
-        title:this.id=='view-amount-growth-rate'?'招生量同比增长率统计':'招生金额同比增长率统计',
-        zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
-        list: [],
-        zsltbList:[0,0,0,0,0,0,0,0,0,0,0,0],
-        jeltbList:[0,0,0,0,0,0,0,0,0,0,0,0],
-        lastYear:[0,0,0,0,0,0,0,0,0,0,0,0],
-        thisYear:[0,0,0,0,0,0,0,0,0,0,0,0],
+        months: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+        list: [], // 同比增长率
+        cumulativeList: [], // 累计同比增长率
+        currList:[], // 今年 招生人数
+        lastList:[], // 去年年 招生人数
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
         ],
-        listQuery: {
-          orgId: 4
-        },
         queryList:{
-          orgId:null,
-          year: null
+          orgId:null
         }
       };
     },
     created() {
-      if (this.id=='view-amount-growth-rate') {
-        this.getCountList();
-      } else {
-        this.getMoneyList();
-      }
+      this.getList();
     },
     methods: {
-      //招生金额同比增长率统计
-      getMoneyList(){
-        this.list = [0, 0, 34, 33, 56, 77, 99, 69, 76, 44, 56, 69];
-        this.init();
+      sum(list){
+        var count = 0;
+        list.forEach(function (v,i) {
+          count += v;
+        })
+        return count;
       },
-      //招生量同比增长率统计
-      getCountList(){
+      getList(){
         let _this=this
-        this.list = [0, 0, 24, 26, 46, 57, 35, 66, 76, 34, 90, 65];
+        this.currList = [2.01,3.03,4.12,5.00,3.11,5.23,2.11,4.00,1.45,3.78,2.99,2.00];
+        this.lastList = [2.01,2.11,4.12,2.00,4.00,1.45,5.00,3.03,5.23,2.99,3.11,3.78];
+        // 计算
+        var growthRate = options.growthRate(this.currList,this.lastList);
+        console.log(growthRate)
+        this.list = growthRate.list;
+        this.cumulativeList = growthRate.cumulativeList;
         this.init();
         // 第一步 查询去年每月/人数集合
-
-
         // _this.queryList.orgId=_this.listQuery.orgId;
         // _this.queryList.year=--_this.listQuery.year;
         // var lastYeatFactStudent=[];
@@ -155,23 +146,31 @@
         // })
       },
       init() {
-          var data = {
-            xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
-            yName:'增长率',            // Y轴名字
-            unit:'%',               // 单位
-            mark:66,                // 平均线
-            series:[                 // 图形集合
-              {
-                name: this.title,
-                type:'line',
-                smooth:false,
-                lineWidth:3,
-                color:'#ffa351',
-                data:this.list
-              }
-            ]
-          }
-          this.option = options.config(data)
+        var data = {
+          xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+          yName:'增长率',            // Y轴名字
+          unit:'%',               // 单位
+          mark:66,                // 平均线
+          series:[                 // 图形集合
+            {
+              name: '增长率',
+              type:'line',
+              smooth:false,
+              lineWidth:3,
+              color:'#A4D482',
+              data:this.list
+            },
+            {
+              name: '累计增长率',
+              type:'line',
+              smooth:false,
+              lineWidth:3,
+              color:'#fe8888',
+              data:this.cumulativeList
+            }
+          ]
+        }
+        this.option = options.config(data)
       },
       search(){
         console.log(111)
@@ -195,7 +194,7 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 460px;
+    height: 525px;
 
   }
 </style>

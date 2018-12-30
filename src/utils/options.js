@@ -320,7 +320,76 @@ const options = {
                  mark   = 0,
                  unit   = '个') {
     return option('line',Yname, Xname, Ydata, Xdata, colors, mark, unit);
-  }
+  },
+  /**
+   * 计算同比增长率
+   * @param currList
+   * @param lastList
+   * @param list
+   * @param cumulativeList
+   */
+  growthRate:function (currList,lastList) {
+    // 同比增长率
+    var list = [];
+    // 累计同比增长率
+    var cumulativeList = [];
+    // 今年累计
+    var currCount = 0;
+    // 去年累计
+    var lastCount = 0;
+    // 循环今年
+    var last,growth,cumulativeGrowth,rate,cumulativeRate;
+    currList.forEach(function (curr,i) {
+      // 往期
+      last = lastList[i];
+      // 本期累计
+      currCount += curr;
+      // 往期累计
+      lastCount += last;
+      // 增长量 = 本期-往期
+      growth = curr - last;
+      // 累计增长量 = 本期累计 - 往期累计
+      cumulativeGrowth = currCount - lastCount;
+
+      if (last == 0) {
+        // 往期0处理 同比增长率 = 本期 * 100
+        rate = (curr*100).toFixed(2);
+      } else if (curr == 0){
+        // 本期0处理    同比增长率 = -(往期 * 100)
+        rate = -(last*100).toFixed(2);
+      } else {
+        // 同比增长率=（本期-往期）÷往期x100%
+        rate = (growth/last*100).toFixed(2);
+        console.log(i,rate)
+      }
+
+      if (lastCount == 0) {
+        // 往期累计0处理 同比累计增长率 = 本期累计 * 100%
+        cumulativeRate = (currCount*100).toFixed(2);
+      } else if (currCount == 0){
+        // 本期累计0处理    同比累计增长率 = -(往期累计 * 100%)
+        cumulativeRate = -(lastCount*100).toFixed(2);
+      } else {
+        // 同比累计增长率=（当年的指标值-去年同期的值）÷去年同期的值x100%
+        cumulativeRate = (cumulativeGrowth/lastCount*100).toFixed(2);
+        console.log(i,cumulativeRate)
+      }
+      list.push(rate);
+      cumulativeList.push(cumulativeRate);
+    });
+    return {
+      list:list,
+      cumulativeList:cumulativeList
+    }
+  },
+  _SUM:function (list){
+    var count = 0;
+    list.forEach(function (v,i) {
+      count += v;
+    })
+    return count;
+  },
+
 
 }
 

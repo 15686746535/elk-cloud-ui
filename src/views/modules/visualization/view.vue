@@ -47,11 +47,11 @@
                 <!--人均产值-->
                 <view-average-output :width="area[0] - 300" v-if="item.to=='view-average-output'"  :params="listQuery" ></view-average-output>
                 <!--招生额完成率统计-->
-                <view-forehead-completion-rate :width="area[0] - 300" v-if="item.to=='view-forehead-completion-rate'"  :params="listQuery" ></view-forehead-completion-rate>
+                <view-forehead-completion-rate :width="area[0] - 300"  v-if="item.to=='view-forehead-completion-rate'"  :params="listQuery" ></view-forehead-completion-rate>
                 <!--招生量同比增长率统计-->
-                <view-growth-rate :width="area[0] - 300" :id="item.to" v-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-growth-rate>
+                <view-amount-growth-rate :width="area[0] - 300" v-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-amount-growth-rate>
                 <!--招生金额同比增长率统计-->
-                <view-growth-rate :width="area[0] - 300" :id="item.to" v-if="item.to=='view-forehead-growth-rate'"  :params="listQuery" ></view-growth-rate>
+                <view-forehead-growth-rate :width="area[0] - 300" v-if="item.to=='view-forehead-growth-rate'"  :params="listQuery" ></view-forehead-growth-rate>
                 <!--招生金额-->
                 <view-money :width="area[0] - 300" v-if="item.to=='view-money'"  :params="listQuery" ></view-money>
 
@@ -69,7 +69,8 @@
   import ViewAverageOutput from '@/views/modules/visualization/view-average-output.vue'  // 人均产值
   import ViewAmountCompletionRate from '@/views/modules/visualization/view-amount-completion-rate.vue'  //招生完成率
   import ViewForeheadCompletionRate from '@/views/modules/visualization/view-forehead-completion-rate.vue'  //招生金额完成率
-  import ViewGrowthRate from '@/views/modules/visualization/view-growth-rate.vue'  //招生量同比增长率
+  import ViewForeheadGrowthRate from '@/views/modules/visualization/view-forehead-growth-rate.vue'  //招生额同比增长率
+  import ViewAmountGrowthRate from '@/views/modules/visualization/view-amount-growth-rate.vue'  //招生量同比增长率
 
   export default {
     name: 'view',
@@ -79,7 +80,8 @@
       ViewAverageOutput,
       // viewEnrollNumbersRate,
       ViewForeheadCompletionRate,
-      ViewGrowthRate,
+      ViewForeheadGrowthRate,
+      ViewAmountGrowthRate,
       ViewMoney
     },
     props: {

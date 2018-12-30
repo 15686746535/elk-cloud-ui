@@ -1,0 +1,201 @@
+<template>
+  <div class="view-enrolment view-container">
+    <el-row class="enrolment-header">
+      <el-radio class="my-view"></el-radio>
+      <label style="margin-right: 10px">{{title}}</label>
+      <!--<el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"-->
+                 <!--style="margin-right: 5px;width: 200px;">-->
+        <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
+      <!--</el-select>-->
+      <!--&lt;!&ndash;<el-date-picker v-model="listQuery.year" type="year" placeholder="年份"&ndash;&gt;-->
+                      <!--&lt;!&ndash;style="margin-right: 5px;width: 200px;"></el-date-picker>&ndash;&gt;-->
+      <!--<el-button icon="el-icon-search" type="danger" @click="search">确认搜索</el-button>-->
+    </el-row>
+    <el-row class="enrolment-view">
+      <div id="enrolmentChart">
+        <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
+      </div>
+    </el-row>
+    <el-row class="enrolment-table">
+      <table>
+        <thead>
+        <tr>
+          <th>月份</th>
+          <th v-for='item in zsmonths'>{{item}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td title="同比增长率(%)" style="min-width: 105px;overflow: hidden;white-space:nowrap">招生增长率(%)</td>
+          <td v-for='it in zsltbList'>{{it}}</td>
+        </tr>
+        <tr>
+          <td title="金额增长率(%)">金额增长率(%)</td>
+          <td v-for='it in jeltbList'>{{it}}</td>
+        </tr>
+        <!--<tr>-->
+          <!--<td>招生量年度同比增长率</td>-->
+          <!--<td v-for='it in zsrslist'>{{it}}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>招生额年度同比增长率</td>-->
+          <!--<td v-for='it in zsrslist'>{{it}}</td>-->
+        <!--</tr>-->
+        </tbody>
+
+      </table>
+    </el-row>
+  </div>
+</template>
+
+<script>
+  /*
+ * 同比增长率
+ * 页面高度：420px
+ * */
+  import Echarts from '@/components/Echarts';
+  import {queryEnrolment } from '@/api/visualization/api'
+  import options from  '@/utils/options'
+  export default {
+    name: "view-amount-completion-rate",
+    components: {
+      Echarts
+    },
+    props: {
+      params: {
+        type: Object,
+        default: {}
+      },
+      id: {
+        type: String,
+        default: ''
+      },
+      width: {
+        type: Number,
+        default: 1200
+      },
+    },
+    data() {
+      return {
+        title:this.id=='view-amount-growth-rate'?'招生量同比增长率统计':'招生金额同比增长率统计',
+        zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+        list: [],
+        zsltbList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        jeltbList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        lastYear:[0,0,0,0,0,0,0,0,0,0,0,0],
+        thisYear:[0,0,0,0,0,0,0,0,0,0,0,0],
+        campusList: [
+          { name: "壹路校区", id: 1 },
+          { name: "华通校区", id: 2 }
+        ],
+        listQuery: {
+          orgId: 4
+        },
+        queryList:{
+          orgId:null,
+          year: null
+        }
+      };
+    },
+    created() {
+      if (this.id=='view-amount-growth-rate') {
+        this.getCountList();
+      } else {
+        this.getMoneyList();
+      }
+    },
+    methods: {
+      //招生金额同比增长率统计
+      getMoneyList(){
+        this.list = [0, 0, 34, 33, 56, 77, 99, 69, 76, 44, 56, 69];
+        this.init();
+      },
+      //招生量同比增长率统计
+      getCountList(){
+        let _this=this
+        this.list = [0, 0, 24, 26, 46, 57, 35, 66, 76, 34, 90, 65];
+        this.init();
+        // 第一步 查询去年每月/人数集合
+
+
+        // _this.queryList.orgId=_this.listQuery.orgId;
+        // _this.queryList.year=--_this.listQuery.year;
+        // var lastYeatFactStudent=[];
+        // var lastYeatFactMoney=[];
+        // var thisYeatFactStudent=[];
+        // var thisYeatFactMoney=[];
+        // var lastYeatFactStudentTotal=0;
+        // var lastYeatFactSFactMoneyToatal=0;
+        // var thisYeatFactStudentTotal=0;
+        // var thisYeatFactFactMoneyTotal=0;
+        // var rstongbiTotal=[];
+        // var jetongbiTotal=[];
+        // queryEnrolment (this.listQuery).then(res=>{
+        //   if(res.data.code==0){
+        //     thisYeatFactStudent=res.data.data.factStudent;
+        //     thisYeatFactMoney=res.data.data.factMoney;
+        //   }
+        // })
+        // queryEnrolment(_this.queryList).then(response=>{
+        //   if(response.data.code==0){
+        //     lastYeatFactStudent=response.data.data.factStudent;
+        //     lastYeatFactMoney=response.data.data.factMoney;
+        //     thisYeatFactStudent.forEach(function(v,i) {
+        //       thisYeatFactStudentTotal+=v;
+        //       thisYeatFactFactMoneyTotal+=thisYeatFactMoney[i];
+        //       lastYeatFactStudentTotal+=lastYeatFactStudent[i];
+        //       lastYeatFactSFactMoneyToatal+=lastYeatFactMoney[i];
+        //       rstongbiTotal.push((((thisYeatFactStudentTotal-lastYeatFactStudentTotal)/lastYeatFactStudentTotal)*100).toFixed(2));
+        //       jetongbiTotal.push((((thisYeatFactFactMoneyTotal-lastYeatFactSFactMoneyToatal)/lastYeatFactSFactMoneyToatal)*100).toFixed(2));
+        //     })
+        //     _this.zsltbList=rstongbiTotal;
+        //     _this.jeltbList=jetongbiTotal;
+        //     _this.init();
+        //   }
+        // })
+      },
+      init() {
+          var data = {
+            xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+            yName:'增长率',            // Y轴名字
+            unit:'%',               // 单位
+            mark:66,                // 平均线
+            series:[                 // 图形集合
+              {
+                name: this.title,
+                type:'line',
+                smooth:false,
+                lineWidth:3,
+                color:'#ffa351',
+                data:this.list
+              }
+            ]
+          }
+          this.option = options.config(data)
+      },
+      search(){
+        console.log(111)
+        // 根据当前条件
+        // 1、查询 今年每月/招生人数/额
+        // 2、查询去年每月/招生人数/额
+        // 3、计算人数/额  同比
+        // 4、init
+        this.list = [1, 0, 4, 66, 45, 66, 35, 69, 78, 99, 24, 6];
+        this.init();
+      }
+    }
+  };
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+  /*主体白色*/
+  $White: #fff;
+  /*主体红色*/
+  $Danger: #c50202;
+  /*灰白色*/
+  $DDD: #ddd;
+  .view-enrolment {
+    height: 460px;
+
+  }
+</style>

@@ -2,14 +2,14 @@
   <div class="view-enrolment view-container">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
-      <label>招生人数 &nbsp;&nbsp;&nbsp;</label>
-      <el-select v-model="listQuery.orgId" filterable remote clearable reserve-keyword placeholder="校区"
-                 style="margin-right: 5px;width: 200px;">
-        <el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>
-      </el-select>
-      <el-date-picker v-model="listQuery.year" type="year" placeholder="年份"
-                      style="margin-right: 5px;width: 200px;"></el-date-picker>
-      <el-button icon="el-icon-search" type="danger" @click="searchList" :loading="loading">确认搜索</el-button>
+      <label>招生人数统计 &nbsp;&nbsp;&nbsp;</label>
+      <!--<el-select v-model="listQuery.orgId" filterable remote clearable reserve-keyword placeholder="校区"-->
+                 <!--style="margin-right: 5px;width: 200px;">-->
+        <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
+      <!--</el-select>-->
+      <!--<el-date-picker v-model="listQuery.year" type="year" placeholder="年份"-->
+                      <!--style="margin-right: 5px;width: 200px;"></el-date-picker>-->
+      <!--<el-button icon="el-icon-search" type="danger" @click="searchList" :loading="loading">确认搜索</el-button>-->
     </el-row>
     <el-row class="enrolment-view">
         <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
@@ -168,7 +168,7 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 420px;
+    height: 440px;
 
 
   }

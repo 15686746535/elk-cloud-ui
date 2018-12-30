@@ -2,14 +2,14 @@
   <div class="view-enrolment view-container">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
-      <label>招生完成率 &nbsp;&nbsp;&nbsp;</label>
-      <el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"
-                 style="margin-right: 5px;width: 200px;">
-        <el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>
-      </el-select>
-      <el-date-picker v-model="listQuery.year" type="year" placeholder="年份"
-                      style="margin-right: 5px;width: 200px;"></el-date-picker>
-      <el-button icon="el-icon-search" type="danger">确认搜索</el-button>
+      <label>招生量完成率统计 &nbsp;&nbsp;&nbsp;</label>
+      <!--<el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"-->
+                 <!--style="margin-right: 5px;width: 200px;">-->
+        <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
+      <!--</el-select>-->
+      <!--<el-date-picker v-model="listQuery.year" type="year" placeholder="年份"-->
+                      <!--style="margin-right: 5px;width: 200px;"></el-date-picker>-->
+      <!--<el-button icon="el-icon-search" type="danger">确认搜索</el-button>-->
     </el-row>
     <el-row class="enrolment-view">
       <div >
@@ -24,7 +24,7 @@
         <thead>
         <tr>
           <th>月份</th>
-          <th v-for='item in zsMonths'>{{item}}</th>
+          <th v-for='item in zsMonths'>{{item}}<span >月</span></th>
           <th>总计</th>
         </tr>
         </thead>
@@ -88,7 +88,7 @@
         zsMonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsrsList:[0,0,0,0,0,0,0,0,0,0,0,0],
         zsrsTarget:[0,0,0,0,0,0,0,0,0,0,0,0],
-        zswclList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        zswclList: [0,0,0,0,0,0,80,94,34,55,34,20],
         ljwclTotal:[0,0,0,0,0,0,0,0,0,0,0,0],
         ranks: ["第一", "第二", "第三"],
         rankMonth: ["3月", "7月", "11月"],
@@ -116,7 +116,6 @@
         let _this=this
         queryAmountRate(this.listQuery).then(res=>{
           if(res.data.code==0){
-            console.log("ress",res);
             var factStudent=res.data.data.factStudent;
             var targetStudent=res.data.data.targetStudent;
             var zswclList=[];

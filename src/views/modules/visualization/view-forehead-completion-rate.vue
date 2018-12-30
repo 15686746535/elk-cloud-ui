@@ -3,13 +3,13 @@
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
       <label>招生金额完成率 &nbsp;&nbsp;&nbsp;</label>
-      <el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"
-                 style="margin-right: 5px;width: 200px;">
-        <el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>
-      </el-select>
-      <el-date-picker v-model="listQuery.year" type="year" placeholder="年份"
-                      style="margin-right: 5px;width: 200px;"></el-date-picker>
-      <el-button icon="el-icon-search" type="danger">确认搜索</el-button>
+      <!--<el-select v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区"-->
+                 <!--style="margin-right: 5px;width: 200px;">-->
+        <!--<el-option v-for="campus in campusList" :key="campus.id" :label="campus.name" :value="campus.id"></el-option>-->
+      <!--</el-select>-->
+      <!--<el-date-picker v-model="listQuery.year" type="year" placeholder="年份"-->
+                      <!--style="margin-right: 5px;width: 200px;"></el-date-picker>-->
+      <!--<el-button icon="el-icon-search" type="danger">确认搜索</el-button>-->
     </el-row>
     <el-row class="enrolment-view">
       <div >

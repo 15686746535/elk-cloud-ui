@@ -242,7 +242,7 @@ const options = {
         right:  '160px',
         top:'50px',
         left: '0',
-        bottom:'10px',
+        bottom:'0px',
         containLabel: true
       },
       toolbox:  {

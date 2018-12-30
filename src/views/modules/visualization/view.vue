@@ -40,15 +40,20 @@
           <el-main :style="{height: pageHeight-295+'px'}" style="scroll-behavior: smooth;" ref="view">
             <div class="view-list">
               <div :id="item.to" class="view-item" v-for="(item,i) in list" :style="{height:item.height}">
+                <!--招生人数-->
                 <view-enrolment :width="area[0] - 300" v-if="item.to=='view-enrolment'"  :params="listQuery" ></view-enrolment>
-
+                <!--招生量完成率统计-->
                 <view-amount-completion-rate :width="area[0] - 300" v-if="item.to=='view-amount-completion-rate'"  :params="listQuery" ></view-amount-completion-rate>
-                <view-average-output :width="area[0] - 300" v-else-if="item.to=='view-average-output'"  :params="listQuery" ></view-average-output>
-                <!--<view-enroll-numbers-rate :width="area[0] - 300" v-else-if="item.to=='view-enroll-numbers-rate'"  :params="listQuery" ></view-enroll-numbers-rate>-->
-                <view-forehead-completion-rate :width="area[0] - 300" v-else-if="item.to=='view-forehead-completion-rate'"  :params="listQuery" ></view-forehead-completion-rate>
-                <view-amount-growth-rate :width="area[0] - 300" v-else-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-amount-growth-rate>
-                <view-money :width="area[0] - 300" v-else-if="item.to=='view-money'"  :params="listQuery" ></view-money>
-                <view-enrolment :width="area[0] - 300" v-else  :params="listQuery" ></view-enrolment>
+                <!--人均产值-->
+                <view-average-output :width="area[0] - 300" v-if="item.to=='view-average-output'"  :params="listQuery" ></view-average-output>
+                <!--招生额完成率统计-->
+                <view-forehead-completion-rate :width="area[0] - 300" v-if="item.to=='view-forehead-completion-rate'"  :params="listQuery" ></view-forehead-completion-rate>
+                <!--招生量同比增长率统计-->
+                <view-growth-rate :width="area[0] - 300" :id="item.to" v-if="item.to=='view-amount-growth-rate'"  :params="listQuery" ></view-growth-rate>
+                <!--招生金额同比增长率统计-->
+                <view-growth-rate :width="area[0] - 300" :id="item.to" v-if="item.to=='view-forehead-growth-rate'"  :params="listQuery" ></view-growth-rate>
+                <!--招生金额-->
+                <view-money :width="area[0] - 300" v-if="item.to=='view-money'"  :params="listQuery" ></view-money>
 
               </div>
             </div>
@@ -60,23 +65,22 @@
 </template>
 <script>
   import ViewEnrolment from '@/views/modules/visualization/view-enrolment.vue'  //招生人数
-  import viewMmoney from '@/views/modules/visualization/view-money.vue'  //招生金额
-  import viewAverageOutput from '@/views/modules/visualization/view-average-output.vue'  // 人均产值
+  import ViewMoney from '@/views/modules/visualization/view-money.vue'  //招生金额
+  import ViewAverageOutput from '@/views/modules/visualization/view-average-output.vue'  // 人均产值
   import ViewAmountCompletionRate from '@/views/modules/visualization/view-amount-completion-rate.vue'  //招生完成率
-  import viewForeheadCompletionRate from '@/views/modules/visualization/view-forehead-completion-rate.vue'  //招生金额完成率
-  // import viewEnrollNumbersRate from '@/views/modules/visualization/view-enroll-numbers-rate.vue'  //月度计划任务人数完成率
-  import viewAmountGrowthRate from '@/views/modules/visualization/view-amount-growth-rate.vue'  //招生量同比增长率
+  import ViewForeheadCompletionRate from '@/views/modules/visualization/view-forehead-completion-rate.vue'  //招生金额完成率
+  import ViewGrowthRate from '@/views/modules/visualization/view-growth-rate.vue'  //招生量同比增长率
 
   export default {
     name: 'view',
     components: {
       ViewEnrolment,
       ViewAmountCompletionRate,
-      viewAverageOutput,
+      ViewAverageOutput,
       // viewEnrollNumbersRate,
-      viewForeheadCompletionRate,
-      viewAmountGrowthRate,
-      viewMmoney
+      ViewForeheadCompletionRate,
+      ViewGrowthRate,
+      ViewMoney
     },
     props: {
       layerid: String,
@@ -104,10 +108,10 @@
             list: [
               { name:'招生人数统计', to: 'view-enrolment', height: 460 },
               { name:'招生量完成率统计', to: 'view-amount-completion-rate', height: 460 },
-              { name:'招生量增长率统计', to: 'view-amount-growth-rate', height: 460 },
+              { name:'招生量同比增长率统计', to: 'view-amount-growth-rate', height: 460 },
               { name:'个人招生分析', to: 'view-individual-enrollment-analysis', height: 460 },
               { name:'个人招生详情', to: 'view-individual-enrollment-details', height: 460 },
-              { name:'招生量车型统计', to: 'view-amount-motorcycle-type', height: 460 }
+              { name:'车型招生量统计', to: 'view-amount-motorcycle-type', height: 460 }
             ]
           },
           {
@@ -118,8 +122,8 @@
               { name:'招生金额统计', to: 'view-money', height: 460 },
               { name:'人均产值统计', to: 'view-average-output', height: 460 },
               { name:'招生额完成率统计', to: 'view-forehead-completion-rate', height: 460 },
-              { name:'招生额增长率统计', to: 'view-forehead-growth-rate', height: 460 },
-              { name:'招生额车型统计', to: 'view-forehead-motorcycle-type', height: 460 }
+              { name:'招生额同比增长率统计', to: 'view-forehead-growth-rate', height: 460 },
+              { name:'车型招生额统计', to: 'view-forehead-motorcycle-type', height: 460 }
             ]
           },
           {

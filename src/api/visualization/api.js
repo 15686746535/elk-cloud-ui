@@ -78,9 +78,18 @@ export function queryRate(params) {
   })
 }
 
-export function queryEnrolment(params) {
+//统计招生人数
+export function queryFactStuCount(params) {
   return request({
-    url: '/visualization/queryFactCount',
+    url: '/visualization/queryFactStuCount',
+    method: 'get',
+    params: params
+  })
+}
+//统计招生金额
+export function queryFactMoneyCount(params) {
+  return request({
+    url: '/visualization/queryFactMoneyCount',
     method: 'get',
     params: params
   })
@@ -94,6 +103,7 @@ export function queryGDP(params) {
   })
 }
 
+//招生同比增长率
 export function queryAmountRate(params) {
   return request({
     url: '/visualization/queryFactAndTarget',
@@ -101,10 +111,26 @@ export function queryAmountRate(params) {
     params: params
   })
 }
-
+//招生金额完成率
 export function moneyCompletRate(params) {
   return request({
     url: '/visualization/moneyFactAndTarget',
+    method: 'get',
+    params: params
+  })
+}
+//车型招生
+export function queryCarTypeStatistics(params) {
+  return request({
+    url: '/visualization/queryCarTypeStatistics',
+    method: 'get',
+    params: params
+  })
+}
+//市场占有率
+export function queryFactAndMarket(params) {
+  return request({
+    url: '/visualization/queryFactAndMarket',
     method: 'get',
     params: params
   })

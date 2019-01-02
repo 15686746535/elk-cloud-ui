@@ -13,7 +13,7 @@
     </el-row>
     <el-row class="enrolment-view">
       <echarts :option="option" :width="width+'px'" style="height: 280px;"></echarts>
-      <div class="enrolment-rank" style="top: 80px">
+      <div class="enrolment-rank" style="top: 80px" >
         <table>
           <thead>
           <tr>
@@ -22,19 +22,10 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>第一</td>
-            <td>3月</td>
+          <tr v-for="(rank,i) in rankMonth">
+            <td>{{i==0?'第一':1==1?'第二':'第三'}}</td>
+            <td>{{rank}}</td>
           </tr>
-          <tr>
-            <td>第二</td>
-            <td>7月</td>
-          </tr>
-          <tr>
-            <td>第三 </td>
-            <td>11月</td>
-          </tr>
-
           </tbody>
         </table>
       </div>
@@ -106,7 +97,7 @@
         percentList: [0,0,0,0,0,0,0,0,0,0,0,0],
         factEmployee:[0,0,0,0,0,0,0,0,0,0,0,0],
         factMoney:[0,0,0,0,0,0,0,0,0,0,0,0],
-        rankMonth: [],
+        rankMonth: ["","",""],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -123,7 +114,7 @@
       };
     },
     created() {
-      this.init();
+      this.getList();
     },
     computed:{
       totalAvg(){
@@ -132,37 +123,50 @@
     },
     methods: {
       getList(){
-        // let _this=this
-        // queryGDP(this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     console.log("res",res)
-        //     var factMoney = [];
-        //     var percentList = [];
-        //     var totalNum = 0;
-        //     var totalMoney = 0;
-        //
-        //     _this.factEmployee=res.data.data.factEmployee;
-        //     // _this.factMoney=res.data.data.factMoney
-        //     // console.log( _this.factEmployee,_this.factMoney)
-        //     res.data.data.factMoney.forEach(function(v,i) {
-        //       totalMoney += v;
-        //       v = (v/10000).toFixed(2);
-        //       totalNum += _this.factEmployee[i];
-        //       percentList.push((v/_this.factEmployee[i]).toFixed(2));
-        //       factMoney.push(v);
-        //       // console.log("人均产值", _this.percentList)
-        //     })
-        //     totalMoney = (totalMoney/10000).toFixed(2);
-        //     // percentList.push((totalMoney/totalNum).toFixed(2));
-        //     _this.factMoney = factMoney;
-        //     _this.totalMoney = totalMoney;
-        //     _this.totalNum = totalNum;
-        //     _this.percentList = percentList;
-        //     console.log("表格", _this.percentList)
-        //     _this.init();
-        //
-        //   }
-        // })
+        let _this=this
+        queryGDP(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            console.log("res",res)
+            var factMoney = [];
+            var percentList = [];
+            var totalNum = 0;
+            var totalMoney = 0;
+            var index=[0,0,0];
+            var plist=[];
+            var rank=[];
+            _this.factEmployee=res.data.data.factEmployee;
+            _this.factMoney=res.data.data.factMoney;
+            res.data.data.factMoney.forEach(function(v,i) {
+              totalMoney += v;
+              v = (v/10000).toFixed(2);
+              totalNum += _this.factEmployee[i];
+              percentList.push((v/_this.factEmployee[i]).toFixed(2));
+              plist.push((v/_this.factEmployee[i]).toFixed(2));
+              factMoney.push(v);
+              // console.log("人均产值", _this.percentList)
+            })
+            totalMoney = (totalMoney/10000).toFixed(2);
+            _this.factMoney = factMoney;
+            _this.totalMoney = totalMoney;
+            _this.totalNum = totalNum;
+            _this.percentList = percentList;
+            _this.init();
+            index.forEach(function(a,b) {
+              var maxmonth=0;
+              plist.forEach(function(v,i) {
+                if(v-maxmonth>0)
+                {
+                  maxmonth=v;
+                  index[b]=i;
+                }
+              })
+              plist[index[b]]=0;
+              rank.push(_this.gdpMonths[index[b]])
+            })
+            _this.rankMonth=rank;
+
+          }
+        })
       },
       init() {
         var data = {
@@ -174,9 +178,10 @@
             {
               name:'人均产值',
               type:'line',
+              smooth:true,
               stack:'11',
               color:'#a2d27f',
-              data:[15,25,40,67,80,88,91,80,99,100,88,99],
+              data:this.percentList//[15,25,40,67,80,88,91,80,99,100,88,99],
             }
           ]
         }

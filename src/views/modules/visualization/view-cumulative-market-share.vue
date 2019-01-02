@@ -30,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(rank,i) in rankmonth">
+        <tr v-for="(rank,i) in rankMonth">
           <td>{{i==0?'第一':1==1?'第二':'第三'}}</td>
           <td>{{rank}}</td>
         </tr>
@@ -50,11 +50,15 @@
         <tr>
           <td>招生人数（人）</td>
           <td v-for='it in zsrslist'>{{it}}</td>
-          <!--<td>{{totalNum}}</td>-->
-          <td>8547</td>
+         <td>{{zsrsTotal}}</td>
         </tr>
         <tr>
-          <td title="市场总额(%)"  style="min-width: 105px;overflow: hidden;white-space:nowrap">市场总额(%)</td>
+          <td title="市场总人数（人）"  style="min-width: 105px;overflow: hidden;white-space:nowrap">市场总人数（人）</td>
+          <td v-for='it in marketList'>{{it}}</td>
+          <td>{{marketTotal}}</td>
+        </tr>
+        <tr>
+          <td >累计占有率(%)</td>
           <td v-for='it in percentList'>{{it}}</td>
           <!--<td>{{totalAvg}}</td>-->
           <td>574</td>
@@ -72,7 +76,7 @@
   * 页面高度：420px
   * */
   import Echarts from '@/components/Echarts';
-  import {queryEnrolment} from '@/api/visualization/api'
+  import {queryFactAndMarket} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: "view-enrolment",
@@ -99,8 +103,10 @@
       return {
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsrslist: [0,0,0,0,0,0,0,0,0,0,0,0],
-        percentList:[74,14,26,84,26,95,31,54,61,81,27,62],
-        rankmonth: ['1月','9月','11月'],
+        marketList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        percentList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        zszylList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        rankMonth: ['','',''],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -111,7 +117,8 @@
         },
         option:null,
         loading: false,
-        total:0
+        zsrsTotal:0,
+        marketTotal:0
       };
     },
     created() {
@@ -119,8 +126,54 @@
     },
     methods: {
       getList(){
-        this.zsrslist=[15,25,40,67,80,88,91,80,99,100,88,99];
-        this.init();
+        let _this=this
+        queryFactAndMarket(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            var zsrsTotal=0;  //招生总人数
+            var marketTotal=0;  //市场总人数
+            var martketzyTotal=[]; //市场占有率
+            var ljwclTotal=[]; //累计完成率
+            var targetStudent=[]; //累计完成率
+            var zs=0;
+            var index=[0,0,0];
+            var rank=[];
+            var fStudent=[];
+            var factStudent=res.data.data.factStudent;
+            targetStudent=res.data.data.targetStudent;
+            fStudent=res.data.data.factStudent;
+            factStudent.forEach(function(v,i) {
+              zsrsTotal+=v;
+              marketTotal+=targetStudent[i];
+              zs=((v/targetStudent[i])*100).toFixed(2);
+              if(targetStudent[i]==0){
+                martketzyTotal.push(0);
+              }
+              else {martketzyTotal.push((zs));}
+              ljwclTotal.push(((zsrsTotal/marketTotal)*100).toFixed(2))
+            })
+            _this.zsrslist=factStudent;
+            _this.marketList=targetStudent;
+            _this.zszylList=martketzyTotal;
+            _this.zsrsTotal=zsrsTotal;
+            _this.marketTotal=marketTotal;
+            _this.percentList=ljwclTotal;
+            _this.init();
+
+            index.forEach(function(a,b) {
+              var maxmonth=0;
+              fStudent.forEach(function(v,i) {
+                if(v-maxmonth>0)
+                {
+                  maxmonth=v;
+                  index[b]=i;
+                }
+              })
+              fStudent[index[b]]=0;
+              rank.push(_this.zsmonths[index[b]])
+            })
+            _this.rankMonth=rank;
+          }
+        })
       },
       init() {
 
@@ -135,14 +188,14 @@
                 type:'bar',
                 stack:'11',
                 color:'#7773ff',
-                data:[15,25,40,67,80,88,91,80,99,100,88,99],
+                data:this.zszylList//[15,25,40,67,80,88,91,80,99,100,88,99],
               },
               {
                 name:'总占有',
                 type:'bar',
                 stack:'11',
                 color:'#f976c6',
-                data:[15,65,80,27,45,88,21,38,72,42,22,41],
+                data:this.percentList//[15,65,80,27,45,88,21,38,72,42,22,41],
               }
             ]
         }
@@ -163,7 +216,7 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 460px;
+    height: 520px;
 
 
   }

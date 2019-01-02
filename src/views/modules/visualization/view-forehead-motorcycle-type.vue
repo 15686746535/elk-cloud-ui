@@ -20,16 +20,19 @@
         <tr>
           <th>月份</th>
           <th v-for='item in zsmonths'>{{item}}<span >月</span></th>
+          <th>总计</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           <td>C1</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td v-for='it in c1stList'>{{it}}</td>
+          <td>{{c1total}}</td>
         </tr>
         <tr>
           <td>C2</td>
-          <td v-for='it in zsrslist'>{{it}}</td>
+          <td v-for='it in c2stList'>{{it}}</td>
+          <td>{{c2total}}</td>
         </tr>
         </tbody>
 
@@ -42,32 +45,32 @@
       <!--<div class="botcard">76208人</div>-->
     <!--</div>-->
 
-    <div class="enrolment-rank" style="top: 99px">
-      <table>
-        <thead>
-        <tr>
-          <th>排名</th>
-          <th>月份</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(rank,i) in rankmonth">
-          <td>{{i==0?'第一':1==1?'第二':'第三'}}</td>
-          <td>{{rank}}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <!--<div class="enrolment-rank" style="top: 99px">-->
+      <!--<table>-->
+        <!--<thead>-->
+        <!--<tr>-->
+          <!--<th>排名</th>-->
+          <!--<th>月份</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr v-for="(rank,i) in rankmonth">-->
+          <!--<td>{{i==0?'第一':1==1?'第二':'第三'}}</td>-->
+          <!--<td>{{rank}}</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+      <!--</table>-->
+    <!--</div>-->
   </div>
 </template>
 
 <script>
   /*
-  * 招生人数统计
-  * 页面高度：420px
+  * 车型招生金额统计
+  * 页面高度：480px
   * */
   import Echarts from '@/components/Echarts';
-  import {queryEnrolment} from '@/api/visualization/api'
+  import {queryCarTypeStatistics} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: "view-enrolment",
@@ -93,8 +96,9 @@
     data() {
       return {
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
-        zsrslist: [0,0,0,0,0,0,0,0,0,0,0,0],
-        rankmonth: ['1月','9月','11月'],
+        c1stList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        c2stList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        rankmonth: ['','',''],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -105,16 +109,43 @@
         },
         option:null,
         loading: false,
-        total:0
+        total:0,
+        c1total:0,
+        c2total:0
       };
     },
     created() {
       this.getList();
     },
     methods: {
-      getList(){
-        this.zsrslist=[15,25,40,67,80,88,91,80,99,100,88,99];
-        this.init();
+        getList(){
+          let _this=this
+          var c1=[];  //C1招生额
+          var c1Money=[];  //C1招生额
+          var c2Money=[];  //C1招生额
+          var c2=[]; //C2招生额
+          var total=0;
+          var c1total=0; //C1招生总金额
+          var c2total=0; //C2招生总金额
+          queryCarTypeStatistics(this.listQuery).then(res=>{
+            if(res.data.code==0){
+              c1Money=res.data.data.c1Money;
+              c2Money=res.data.data.c2Money;
+            }
+            c1Money.forEach(function(v,i) {
+              c1.push((v/10000).toFixed(2));
+              c2.push(((c2Money[i])/10000).toFixed(2));
+              total+=parseFloat(((v+c2Money[i])/10000).toFixed(2));
+              c1total+=parseFloat((v/10000).toFixed(2));
+              c2total+=parseFloat((c2Money[i]/10000).toFixed(2));
+            })
+            _this.total=total;
+            _this.c1total=c1total.toFixed(2);
+            _this.c2total=c2total.toFixed(2);
+            _this.c1stList=c1;
+            _this.c2stList=c2;
+            this.init();
+          })
       },
       init() {
 
@@ -129,14 +160,14 @@
                 type:'bar',
                 stack:'11',
                 color:'#7773ff',
-                data:[15,25,40,67,80,88,91,80,99,100,88,99],
+                data:this.c1stList//[15,25,40,67,80,88,91,80,99,100,88,99],
               },
               {
                 name:'C2',
                 type:'bar',
                 stack:'11',
                 color:'#f976c6',
-                data:[17,65,80,27,45,88,21,38,72,42,22,41],
+                data:this.c2stList//[17,65,80,27,45,88,21,38,72,42,22,41],
               }
             ]
         }

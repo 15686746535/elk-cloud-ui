@@ -22,19 +22,10 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>第一</td>
-            <td>3月</td>
+          <tr v-for="(rank,i) in rankMonth">
+            <td>{{i==0?'第一':i==1?'第二':'第三'}}</td>
+            <td>{{rank}}</td>
           </tr>
-          <tr>
-            <td>第二</td>
-            <td>7月</td>
-          </tr>
-          <tr>
-            <td>第三 </td>
-            <td>11月</td>
-          </tr>
-
           </tbody>
         </table>
       </div>
@@ -50,17 +41,17 @@
         </thead>
         <tbody>
         <tr>
-          <td>招生金额（万）</td>
-          <td v-for='it in factMoney'>{{it}}</td>
-          <td>{{totalMoney}}</td>
-        </tr>
-        <tr>
           <td>招生人数（人）</td>
-          <td v-for='it in factEmployee'>{{it}}</td>
+          <td v-for='it in factStudent'>{{it}}</td>
           <td>{{totalNum}}</td>
         </tr>
         <tr>
-          <td title="市场总额"  style="min-width: 105px;overflow: hidden;white-space:nowrap">市场总额</td>
+          <td title="市场总人数(人)"  style="min-width: 105px;overflow: hidden;white-space:nowrap">市场总人数(人)</td>
+          <td v-for='it in marketStudent'>{{it}}</td>
+          <td>{{totalNum}}</td>
+        </tr>
+        <tr>
+          <td >市场占有率(%)</td>
           <td v-for='it in percentList'>{{it}}</td>
           <td>{{totalAvg}}</td>
         </tr>
@@ -78,11 +69,11 @@
 
 <script>
   /*
-  * 人均产值统计
+  * 市场占有率统计
   * 页面高度：420px
   * */
   import Echarts from '@/components/Echarts';
-  import {queryGDP} from '@/api/visualization/api'
+  import {queryFactAndMarket} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: "view-enrolment",
@@ -104,9 +95,9 @@
         year:null,
         gdpMonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         percentList: [0,0,0,0,0,0,0,0,0,0,0,0],
-        factEmployee:[0,0,0,0,0,0,0,0,0,0,0,0],
-        factMoney:[0,0,0,0,0,0,0,0,0,0,0,0],
-        rankMonth: [],
+        marketStudent:[0,0,0,0,0,0,0,0,0,0,0,0],
+        factStudent:[0,0,0,0,0,0,0,0,0,0,0,0],
+        rankMonth: ['','',''],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -118,12 +109,12 @@
         // lastQuery:{},
         option:null,
         loading: false,
-        totalMoney:0,
+        totalMarket:0,
         totalNum:0,
       };
     },
     created() {
-      this.init();
+      this.getList();
     },
     computed:{
       totalAvg(){
@@ -132,39 +123,54 @@
     },
     methods: {
       getList(){
-        this.percentList=[15,47,54,35,92,56,28,49,88,5,15,83];
-        this.init();
-        // let _this=this
-        // queryGDP(this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     console.log("res",res)
-        //     var factMoney = [];
-        //     var percentList = [];
-        //     var totalNum = 0;
-        //     var totalMoney = 0;
-        //
-        //     _this.factEmployee=res.data.data.factEmployee;
-        //     // _this.factMoney=res.data.data.factMoney
-        //     // console.log( _this.factEmployee,_this.factMoney)
-        //     res.data.data.factMoney.forEach(function(v,i) {
-        //       totalMoney += v;
-        //       v = (v/10000).toFixed(2);
-        //       totalNum += _this.factEmployee[i];
-        //       percentList.push((v/_this.factEmployee[i]).toFixed(2));
-        //       factMoney.push(v);
-        //       // console.log("人均产值", _this.percentList)
-        //     })
-        //     totalMoney = (totalMoney/10000).toFixed(2);
-        //     // percentList.push((totalMoney/totalNum).toFixed(2));
-        //     _this.factMoney = factMoney;
-        //     _this.totalMoney = totalMoney;
-        //     _this.totalNum = totalNum;
-        //     _this.percentList = percentList;
-        //     console.log("表格", _this.percentList)
-        //     _this.init();
-        //
-        //   }
-        // })
+        let _this=this
+        queryFactAndMarket(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            console.log("res",res)
+            var factStudent = [];  //招生人数
+            var fStudent = [];  //招生人数
+            var market = [];  //市场总招生人数
+            var percentList = []; //占有率
+            var totalNum = 0;  //招生总人数
+            var totalMarket = 0; //市场总人数
+            var index=[0,0,0];
+            var rank=[];
+            factStudent=res.data.data.factStudent;
+            market=res.data.data.targetStudent;
+            factStudent.forEach(function(v,i) {
+              totalNum+=v;
+              totalMarket+=market[i];
+              // console.log("^*********^^",v,market[i])
+              if(market[i]!=0){
+              percentList.push(((v/market[i])*100).toFixed(2));
+              console.log("^^^^^^^^^^^",v,market[i],percentList)
+              }
+              else {percentList.push(0);}
+            })
+            _this.factStudent=res.data.data.factStudent;
+            _this.marketStudent=res.data.data.targetStudent;
+            fStudent=res.data.data.factStudent;
+            _this.totalMarket=totalMarket;
+            _this.totalNum=totalNum;
+            _this.percentList=percentList;
+            _this.init();
+
+            index.forEach(function(a,b) {
+              var maxmonth=0;
+              fStudent.forEach(function(v,i) {
+                if(v-maxmonth>0)
+                {
+                  maxmonth=v;
+                  index[b]=i;
+                }
+              })
+              fStudent[index[b]]=0;
+              rank.push(_this.gdpMonths[index[b]])
+            })
+            _this.rankMonth=rank;
+
+          }
+        })
       },
       init() {
         var data = {
@@ -176,9 +182,10 @@
             {
               name:'市场占有率',
               type:'line',
+              smooth:true,
               stack:'11',
               color:'#f976c6',
-              data:[15,25,40,67,80,88,91,80,99,100,88,99],
+              data:this.percentList//[15,25,40,67,80,88,91,80,99,100,88,99],
             }
           ]
         }
@@ -197,6 +204,6 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 520px;
+    height: 530px;
   }
 </style>

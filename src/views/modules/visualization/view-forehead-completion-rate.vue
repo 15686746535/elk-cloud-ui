@@ -30,12 +30,12 @@
         </thead>
         <tbody>
         <tr>
-          <td>招生金额</td>
+          <td>招生金额(万)</td>
           <td v-for='it in zsjeList'>{{it}}</td>
           <td>{{zsjeTotal}}</td>
         </tr>
         <tr>
-          <td>招生目标</td>
+          <td>目标金额(万)</td>
           <td v-for='it in zsjeTarget'>{{it}}</td>
           <td>{{zsmbTotal}}</td>
         </tr>
@@ -55,7 +55,7 @@
 
     <div class="mini-card">
       <div class="topcard">招生总金额</div>
-      <div class="botcard">{{zsjeTotal}}人</div>
+      <div class="botcard">{{zsjeTotal}}万</div>
     </div>
   </div>
 </template>
@@ -107,42 +107,46 @@
       };
     },
     created() {
-      this.init();
+      this.getList();
     },
     methods: {
       getList(){
-        // let _this=this
-        // moneyCompletRate (this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     console.log("ress",res);
-        //     var factMoney=res.data.data.factMoney;
-        //     var targetMoney=res.data.data.targetMoney;
-        //     var zsjewclList=[];
-        //     var zsjeTotal=0;
-        //     var zsmbTotal=0;
-        //     var zswclTotal=0;
-        //     var ljwclTotal=[];
-        //     var zs=0;
-        //     factStudent.forEach(function(v,i) {
-        //       zsjeTotal+=v;
-        //       zsmbTotal+=targetStudent[i];
-        //       zs=((v/targetStudent[i])*100).toFixed(2);
-        //       if(targetStudent[i]==0){
-        //         zsjewclList.push(0);
-        //       }
-        //       else {zsjewclList.push((zs));}
-        //       ljwclTotal.push(((zsjeTotal/zsmbTotal)*100).toFixed(2))
-        //     })
-        //     // _this.zsrsList=factStudent;
-        //     // _this.zsrsTarget=targetStudent;
-        //     // _this.zsjewclList=zsjewclList;
-        //     // _this.zsjeTotal=zsjeTotal;
-        //     // _this.zsmbTotal=zsmbTotal;
-        //     // _this.zswclTotal=zswclTotal;
-        //     // _this.ljwclTotal=ljwclTotal;
-        //     _this.init();
-        //   }
-        // })
+        let _this=this
+        moneyCompletRate (this.listQuery).then(res=>{
+          if(res.data.code==0){
+            console.log("ress",res);
+            var factMoney=res.data.data.factMoney;
+            var targetMoney=res.data.data.targetMoney;
+            var zsjewclList=[];  //招生金额完成率
+            var zsjemblList=[];  //招生金额目标
+            var zsjeList=[];  //招生金额
+            var zsjeTotal=0;  //招生金额总数
+            var zsmbTotal=0;   //招生目标总金额
+            var zswclTotal=0;  //招生金额完成率总数
+            var ljwclTotal=[];  //累计完成率
+            var zs=0;
+            factMoney.forEach(function(v,i) {
+              zsjemblList.push(parseFloat((targetMoney[i]/10000).toFixed(2)));
+              zsjeList.push(parseFloat((v/10000).toFixed(2)));
+              zsjeTotal+=parseFloat((v/10000).toFixed(2));
+              zsmbTotal+=parseFloat((targetMoney[i]/10000).toFixed(2));
+              zs=((v/targetMoney[i])*100).toFixed(2);
+              if(targetMoney[i]==0){
+                zsjewclList.push(0);
+              }
+              else {zsjewclList.push((zs));}
+              ljwclTotal.push(((zsjeTotal/zsmbTotal)*100).toFixed(2))
+            })
+            _this.zsjeList=zsjeList;
+            _this.zsjeTarget=zsjeList;
+            _this.zsjewclList=zsjewclList;
+            _this.zsjeTotal=zsjeTotal;
+            _this.zsmbTotal=zsmbTotal;
+            _this.zswclTotal=zswclTotal;
+            _this.ljwclTotal=ljwclTotal;
+            _this.init();
+          }
+        })
       },
       init() {
         var data = {

@@ -61,7 +61,7 @@
   * 页面高度：420px
   * */
   import Echarts from '@/components/Echarts';
-  import {queryEnrolment} from '@/api/visualization/api'
+  import {queryFactStuCount} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: "view-enrolment",
@@ -103,36 +103,42 @@
       };
     },
     created() {
-      this.init();
+      this.getList();
     },
     methods: {
       getList(){
-        // this.loading=true
-        // var _this = this
-        // queryEnrolment(this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     let result=res.data.data.factStudent;
-        //     var maxmonth=result[0];
-        //     var secondmonth=result[0];
-        //     var thirdmonth=result[0];
-        //     _this.zsrslist=result;
-        //     _this.loading=false;
-        //     _this.init();
-        //     result.forEach((v)=>{
-        //       _this.total+=v;
-        //       if(v>maxmonth){
-        //         secondmonth=maxmonth;
-        //         maxmonth=v;
-        //       }
-        //       if(v>thirdmonth&&v<secondmonth&&v<maxmonth){
-        //         thirdmonth=v;
-        //       }
-        //     }),
-        //       _this.rankmonth.push(maxmonth,secondmonth,thirdmonth)
-        //       console.log(maxmonth,secondmonth,thirdmonth)
-        //     console.log(this.seriesList)
-        //   }
-        // })
+        this.loading=true
+        var _this = this
+        queryFactStuCount(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            var factStudent=res.data.data.factStudent;
+            let result=res.data.data.factStudent;
+            var fstudent=[]
+            var index=[0,0,0];
+            var rank=[];
+            _this.loading=false;
+            factStudent.forEach( v=> {
+              fstudent.push(v);
+              _this.total+=v;
+            })
+            index.forEach(function(a,b) {
+              var maxmonth=0;
+              result.forEach(function(v,i) {
+                if(v>maxmonth)
+                {
+                  maxmonth=v;
+                  index[b]=i;
+                }
+              })
+              result[index[b]]=0;
+              rank.push(_this.zsmonths[index[b]])
+
+            })
+            _this.zsrslist=fstudent;
+            _this.rankmonth=rank;
+            _this.init();
+          }
+        })
       },
       init() {
 
@@ -143,11 +149,11 @@
             mark:100,                // 平均线
             series:[                 // 图形集合
               {
-                name:'市场部',
+                name:'招生人数',
                 type:'bar',
                 stack:'11',
                 color:'#7773ff',
-                data:[15,25,40,67,80,88,91,80,99,100,88,99],
+                data:this.zsrslist//[15,25,40,67,80,88,91,80,99,100,88,99],
               }
             ]
         }

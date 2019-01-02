@@ -54,7 +54,7 @@
    * 页面高度：420px
    */
   import Echarts from '@/components/Echarts';
-  import {queryEnrolment } from '@/api/visualization/api'
+  import {queryFactStuCount} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: "view-amount-growth-rate",
@@ -83,8 +83,13 @@
           { name: "华通校区", id: 2 }
         ],
         queryList:{
-          orgId:null
-        }
+          orgId:4,
+          year:2018
+        },
+        listQuery:{
+          orgId:4,
+        },
+        option:null
       };
     },
     created() {
@@ -100,14 +105,30 @@
       },
       getList(){
         let _this=this
-        this.currList = [2.01,3.03,4.12,5.00,3.11,5.23,2.11,4.00,1.45,3.78,2.99,2.00];
-        this.lastList = [2.01,2.11,4.12,2.00,4.00,1.45,5.00,3.03,5.23,2.99,3.11,3.78];
+        // this.currList = [2.01,3.03,4.12,5.00,3.11,5.23,2.11,4.00,1.45,3.78,2.99,2.00];
+        // this.lastList = [2.01,2.11,4.12,2.00,4.00,1.45,5.00,3.03,5.23,2.99,3.11,3.78];
+        // this.currList =[] ;
+        // this.lastList =[] ;
         // 计算
-        var growthRate = options.growthRate(this.currList,this.lastList);
-        console.log(growthRate)
-        this.list = growthRate.list;
-        this.cumulativeList = growthRate.cumulativeList;
-        this.init();
+        // var growthRate = options.growthRate(this.currList,this.lastList);
+
+
+        queryFactStuCount(this.listQuery).then(res=>{
+          if(res.data.code==0)
+          {
+            _this.currList=res.data.data.factStudent;
+            queryFactStuCount(this.queryList).then(re=>{
+              if(res.data.code==0) {
+                _this.lastList = re.data.data.factStudent;
+              }
+            })
+            let growthRate = options.growthRate(this.currList,this.lastList);
+            console.log("*********",growthRate)
+            this.list = growthRate.list;
+            this.cumulativeList = growthRate.cumulativeList;
+            this.init();
+          }
+        })
         // 第一步 查询去年每月/人数集合
         // _this.queryList.orgId=_this.listQuery.orgId;
         // _this.queryList.year=--_this.listQuery.year;

@@ -24,7 +24,7 @@
         </thead>
         <tbody>
         <tr>
-          <td>人数</td>
+          <td title="金额(万)">金额(万)</td>
           <td v-for='it in zsjelist'>{{it}}</td>
         </tr>
         </tbody>
@@ -33,9 +33,9 @@
     </el-row>
 
     <div class="mini-card" >
-      <div class="topcard">招生总人数</div>
-      <!--<div class="botcard">{{total}}人</div>-->
-      <div class="botcard">44851人</div>
+      <div class="topcard">招生总金额</div>
+      <div class="botcard">{{total}}元</div>
+      <!--<div class="botcard">{{// options._SUM(zsjelist)}}元</div>-->
     </div>
     <div class="enrolment-rank" >
       <table>
@@ -62,7 +62,7 @@
   * 页面高度：420px
   * */
   import Echarts from '@/components/Echarts';
-  import {queryEnrolment} from '@/api/visualization/api'
+  import {queryFactMoneyCount} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: 'view-money',
@@ -83,7 +83,7 @@
       return{
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsjelist: [0,0,0,0,0,0,0,0,0,0,0,0],
-        rankmouth:["1","5","11"],
+        rankmouth:["","",""],
         campusList:[
           { name:"壹路校区", id: 1 },
           { name:"华通校区", id: 2 }
@@ -102,41 +102,50 @@
     },
     methods: {
       getList(){
-        this.zsjelist=[85,47,12,68,29,94,114,75,64,19,34,55];
+        var _this = this
+        queryFactMoneyCount(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            var factMoney=res.data.data.factMoney;
+            let result=res.data.data.factMoney;
+            var fmoney=[]
+            var index=[0,0,0];
+            var rank=[];
+            var totalmoney=0.0;
+            _this.loading=false;
+            factMoney.forEach( v=> {
+              if(v!=0)
+              {
+                v=(v/10000).toFixed(2);
+              }
+              else {
+                fmoney.push(v);
+
+              }
+              totalmoney+=v;
+
+              // console.log("==========",totalmoney)
+            })
+            index.forEach(function(a,b) {
+              var maxmonth=0;
+              result.forEach(function(v,i) {
+                if(v>maxmonth)
+                {
+                  maxmonth=v;
+                  index[b]=i;
+                }
+              })
+              result[index[b]]=0;
+              rank.push(_this.zsmonths[index[b]])
+
+            })
+            _this.zsjelist=fmoney;
+            _this.rankmouth=rank;
+            _this.total=totalmoney;
+            _this.init();
+          }
+        })
         this.init();
-        // this.loading=true
-        // var _this = this
-        // queryEnrolment(this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     let result=res.data.data.factMoney;
-        //     var fromindex1=0;
-        //     var fromindex2=0;
-        //     var fromindex3=0;
-        //     var maxmonth=result[0];
-        //     var secondmonth=result[0];
-        //     var thirdmonth=result[0];
-        //     _this.zsjelist=result;
-        //     _this.loading=false;
-        //     _this.init();
-        //     result.forEach((v)=>{
-        //       _this.total+=v;
-        //       if(v>=maxmonth){
-        //         maxmonth=v;
-        //         ++fromindex1;
-        //       }
-        //       if(v>=secondmonth&&v<maxmonth){
-        //         secondmonth=v;
-        //         ++fromindex2;
-        //       }
-        //       if(v>=thirdmonth&&v<secondmonth&&v<maxmonth){
-        //         thirdmonth=v;
-        //         ++fromindex3;
-        //       }
-        //     }),
-        //       _this.rankmouth.push(_this.zsmonths[fromindex1],_this.zsmonths[fromindex2],_this.zsmonths[fromindex3]);//
-        //     console.log(this.rankmouth)
-        //   }
-        // })
+
       },
       init() {
         var data = {

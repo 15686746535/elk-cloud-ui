@@ -109,7 +109,7 @@
       };
     },
     created() {
-      this.init();
+      this.getList();
     },
     methods: {
       getList(){

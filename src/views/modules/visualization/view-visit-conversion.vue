@@ -174,6 +174,7 @@
             {
               name:'意向转化率',
               type:'line',
+              smooth:true,
               stack:'11',
               color:'#a2d27f',
               data:[15,25,40,67,80,88,91,80,99,100,88,99],

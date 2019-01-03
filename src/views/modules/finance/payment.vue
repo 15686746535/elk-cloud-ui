@@ -26,7 +26,7 @@
         <el-table-column type="selection" width="35" fixed></el-table-column>
         <el-table-column align="center"  label="流水号" prop="serialNumber" width="130" fixed>
           <template slot-scope="scope">
-            <a href="javascript:void(0);" v-if="scope.row.serialNumber" style="color: -webkit-link;cursor: pointer;text-decoration: underline;" @click="info(scope.row.payId)">
+            <a href="javascript:void(0);" v-if="scope.row.serialNumber" style="color: -webkit-link;cursor: pointer;text-decoration: underline;" @click="openPayment(scope.row,'info')">
               {{scope.row.serialPrefix}}{{scope.row.paytime | parseTime('{y}{m}')}}{{scope.row.serialNumber | parseSerial}}
             </a>
           </template>
@@ -193,12 +193,12 @@
           title: '付费详情', // title
           shadeClose: false, // 点击遮罩关闭
           prohibit: this.$store.state.app.prohibit,
-          tabIcon: '../../../static/icon/app/app_stu_service.png', // 应用图标 任务栏显示
+          tabIcon: '../../../static/icon/app/app_default.png', // 应用图标 任务栏显示
           shade: false, // 遮罩 默认不显示
           content: {
             content: paymentAdd,
             parent: this, // 当前的vue对象
-            data: { payment: payment }// props
+            data: { payOrder: payment }// props
           }
         })
       },

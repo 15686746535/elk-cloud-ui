@@ -8,9 +8,9 @@
         <!--<el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&finance.type==='1'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>-->
         <!--<el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>-->
       <!--</el-button-group>-->
-      <el-button-group ><!--v-if="pageLevel === 'info'&&pageShow==='bill'"-->
-        <!--<el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>-->
-        <!--<el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon&#45;&#45;right"></i></el-button>-->
+      <el-button-group v-if="pageLevel === 'info'">
+        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
+        <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon&#45;&#45;right"></i></el-button>
       </el-button-group>
       <div class="add-header">
         <!--支付类型  日期  流水-->
@@ -149,8 +149,8 @@
         </el-table-column>
         <el-table-column align="center" prop="money" label="金额" width="50">
           <template slot-scope="scope">
-            <span><input v-model="scope.row.money" v-if="scope.row.money" @keyup.right="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
-            <span v-if="!scope.row.showMoney">{{scope.row.money}}</span>
+            <span><input v-model="scope.row.money" v-if="!this.flag" @keyup.right="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
+            <span v-if="this.flag">{{scope.row.money}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="remark" label="备注" width="120">
@@ -168,40 +168,52 @@
     </el-card>
 
 
-    <el-dialog :modal="false"  title="数据引用" width="950px" :visible.sync="quoteOpen">
-      <el-row :gutter="10">
-        <el-col :span="6">
-          <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
-            <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
-            <div style="margin: 20px 0 10px 0;overflow: auto;height: 400px" >
-              <div v-for="batch in batchList">
-                <div class="batchCss" @click="batchClick($event,batch)" :title="batch.examField" style="overflow: hidden;">
-                  {{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField}}
+    <el-dialog :modal="false"  title="数据引用" width="950px"  :visible.sync="quoteOpen">
+      <div style="height: 300px;width:930px;overflow: auto">
+
+
+        <el-row :gutter="10" v-if="source<=4" style="margin: 0">
+          <el-col :span="6">
+            <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
+              <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
+              <div style="margin: 20px 0 10px 0;overflow: auto;height: 400px" >
+                <div v-for="batch in batchList">
+                  <div class="batchCss" @click="batchClick($event,batch)" :title="batch.examField" style="overflow: hidden;">
+                    {{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField}}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="loading-more">
-              <span v-if="batchTotalPage > batchListQuery.page" @click="batchHandleCurrentChange"><i class="el-icon-fa-angle-double-down"></i></span>
-              <span v-else>到底了</span>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="18">
-          <el-card >
-            <el-table :data="examBespeak" :height="440" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
-              <el-table-column type="selection" width="35" fixed></el-table-column>
-              <el-table-column align="center" prop="name" label="学员"></el-table-column>
-              <el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>
-              <el-table-column align="center" prop="motorcycleType" label="车型"></el-table-column>
-            </el-table>
-          </el-card>
-        </el-col>
-      </el-row>
+              <div class="loading-more">
+                <span v-if="batchTotalPage > batchListQuery.page" @click="batchHandleCurrentChange"><i class="el-icon-fa-angle-double-down"></i></span>
+                <span v-else>到底了</span>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="18">
+            <el-card >
+              <el-table :data="examBespeak" :height="440" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
+                <el-table-column type="selection" width="35" fixed></el-table-column>
+                <el-table-column align="center" prop="name" label="学员"></el-table-column>
+                <el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>
+                <el-table-column align="center" prop="motorcycleType" label="车型"></el-table-column>
+              </el-table>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row v-if="source === 6">
+          <el-table :data="examBespeak" :height="420" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
+            <el-table-column type="selection" width="35" fixed></el-table-column>
+            <el-table-column align="center" prop="name" label="学员"></el-table-column>
+            <el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>
+            <el-table-column align="center" prop="motorcycleType" label="车型"></el-table-column>
+          </el-table>
+        </el-row>
+
+      </div>
       <div style="padding: 10px 20px;">
-        <el-button size="mini" type="primary" style="float: right" @click="quoteExam"  icon="el-icon-share">引用</el-button>
+        <el-button size="mini" type="primary" style="float: right" @click="quoteExam()"  icon="el-icon-share">引用</el-button>
       </div>
     </el-dialog>
-
 
   </div>
 </template>
@@ -218,6 +230,7 @@
   export default {
     name: 'payment-add',
     props: {
+      payOrder: Object,
       layerid: String,
       area: Array
     },
@@ -286,6 +299,7 @@
           endTime: null,
           condition: ''
         },
+        flag: false,
         studentListQuery: {
           page: 1,
           limit: 0,
@@ -325,6 +339,12 @@
     filters: {
     },
     created() {
+      if (this.payOrder) {
+        this.flag = true
+        this.payment.payId = this.payOrder.payId
+        this.pageLevel = this.payOrder.pageLevel
+        console.log(this.payOrder)
+      }
     },
     methods: {
       payCodeChange(code) {
@@ -429,7 +449,12 @@
       // 打开引用窗口
       openQuote() {
         this.quoteOpen = true
-        this.getBatchList()
+        if (this.source <= 4) {
+          this.getBatchList()
+        } else if (this.source === 6) {
+          this.getStudentList()
+          this.quoteOpen = true
+        }
       },
       moneyRight(row) {
         // row.showRemark = true
@@ -560,9 +585,9 @@
           this.payment.studentList = list
           console.log(this.payment)
           if (this.payment.payId) {
-            // this.update()
+            this.update()
           } else {
-            // this.create()
+            this.create()
           }
         }
       },
@@ -578,10 +603,16 @@
       },
       // 创建
       create() {
-        this.btnLoading = true
-        addObj(this.payment).then(() => {
-          this.btnLoading = false
-        })
+        // this.btnLoading = true
+        // addObj(this.payment).then(() => {
+        //   this.btnLoading = false
+        //   this.payment = {}
+        //   this.addList = []
+        // })
+        this.payment = {}
+        this.addList = []
+        this.source = null
+        this.quoteSource = null
       },
       // 修改
       update() {

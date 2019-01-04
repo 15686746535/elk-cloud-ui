@@ -140,10 +140,8 @@
             factStudent.forEach(function(v,i) {
               totalNum+=v;
               totalMarket+=market[i];
-              // console.log("^*********^^",v,market[i])
               if(market[i]!=0){
               percentList.push(((v/market[i])*100).toFixed(2));
-              console.log("^^^^^^^^^^^",v,market[i],percentList)
               }
               else {percentList.push(0);}
             })

@@ -35,7 +35,7 @@
               <!-- 个人信息 -->
               <el-col style="line-height: 25px">
                 <el-row>
-                  <el-col class="table_text">姓名：<saan style="font-weight: 600;">{{scope.row.name}}&nbsp;&nbsp; <{{getcompany(scope.row.companyId)}}></saan></el-col>
+                  <el-col class="table_text">姓名：<span style="font-weight: 600;">{{scope.row.name}}&nbsp;&nbsp; <{{getcompany(scope.row.companyId)}}></span></el-col>
                 </el-row>
                 <el-row :gutter="10">
                   <el-col class="table_text">性别：{{scope.row.sex | sexFilter}}</el-col>

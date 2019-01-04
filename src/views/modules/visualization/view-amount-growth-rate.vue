@@ -74,10 +74,10 @@
     data() {
       return {
         months: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
-        list: [], // 同比增长率
-        cumulativeList: [], // 累计同比增长率
-        currList:[], // 今年 招生人数
-        lastList:[], // 去年年 招生人数
+        list: [0,0,0,0,0,0,0,0,0,0,0,0], // 同比增长率
+        cumulativeList: [0,0,0,0,0,0,0,0,0,0,0,0], // 累计同比增长率
+        currList:[0,0,0,0,0,0,0,0,0,0,0,0], // 今年 招生人数
+        lastList:[0,0,0,0,0,0,0,0,0,0,0,0], // 去年年 招生人数
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -104,67 +104,22 @@
         return count;
       },
       getList(){
-        let _this=this
-        // this.currList = [2.01,3.03,4.12,5.00,3.11,5.23,2.11,4.00,1.45,3.78,2.99,2.00];
-        // this.lastList = [2.01,2.11,4.12,2.00,4.00,1.45,5.00,3.03,5.23,2.99,3.11,3.78];
-        // this.currList =[] ;
-        // this.lastList =[] ;
-        // 计算
-        // var growthRate = options.growthRate(this.currList,this.lastList);
-
-
+        let _this=this;
         queryFactStuCount(this.listQuery).then(res=>{
           if(res.data.code==0)
           {
             _this.currList=res.data.data.factStudent;
             queryFactStuCount(this.queryList).then(re=>{
-              if(res.data.code==0) {
+              if(re.data.code==0) {
                 _this.lastList = re.data.data.factStudent;
               }
             })
             let growthRate = options.growthRate(this.currList,this.lastList);
-            console.log("*********",growthRate)
             this.list = growthRate.list;
             this.cumulativeList = growthRate.cumulativeList;
             this.init();
           }
         })
-        // 第一步 查询去年每月/人数集合
-        // _this.queryList.orgId=_this.listQuery.orgId;
-        // _this.queryList.year=--_this.listQuery.year;
-        // var lastYeatFactStudent=[];
-        // var lastYeatFactMoney=[];
-        // var thisYeatFactStudent=[];
-        // var thisYeatFactMoney=[];
-        // var lastYeatFactStudentTotal=0;
-        // var lastYeatFactSFactMoneyToatal=0;
-        // var thisYeatFactStudentTotal=0;
-        // var thisYeatFactFactMoneyTotal=0;
-        // var rstongbiTotal=[];
-        // var jetongbiTotal=[];
-        // queryEnrolment (this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //     thisYeatFactStudent=res.data.data.factStudent;
-        //     thisYeatFactMoney=res.data.data.factMoney;
-        //   }
-        // })
-        // queryEnrolment(_this.queryList).then(response=>{
-        //   if(response.data.code==0){
-        //     lastYeatFactStudent=response.data.data.factStudent;
-        //     lastYeatFactMoney=response.data.data.factMoney;
-        //     thisYeatFactStudent.forEach(function(v,i) {
-        //       thisYeatFactStudentTotal+=v;
-        //       thisYeatFactFactMoneyTotal+=thisYeatFactMoney[i];
-        //       lastYeatFactStudentTotal+=lastYeatFactStudent[i];
-        //       lastYeatFactSFactMoneyToatal+=lastYeatFactMoney[i];
-        //       rstongbiTotal.push((((thisYeatFactStudentTotal-lastYeatFactStudentTotal)/lastYeatFactStudentTotal)*100).toFixed(2));
-        //       jetongbiTotal.push((((thisYeatFactFactMoneyTotal-lastYeatFactSFactMoneyToatal)/lastYeatFactSFactMoneyToatal)*100).toFixed(2));
-        //     })
-        //     _this.zsltbList=rstongbiTotal;
-        //     _this.jeltbList=jetongbiTotal;
-        //     _this.init();
-        //   }
-        // })
       },
       init() {
         var data = {

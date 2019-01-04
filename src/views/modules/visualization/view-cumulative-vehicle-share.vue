@@ -18,7 +18,7 @@
     <div class="mini-card" >
       <div class="topcard">招生总人数</div>
       <!--<div class="botcard">{{total}}人</div>-->
-      <div class="botcard">76208人</div>
+      <div class="botcard">{{zsrsTotal}}人</div>
     </div>
 
     <div class="enrolment-rank" >
@@ -30,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(rank,i) in rankmonth">
+        <tr v-for="(rank,i) in rankMonth">
           <td>{{i==0?'第一':1==1?'第二':'第三'}}</td>
           <td>{{rank}}</td>
         </tr>
@@ -50,14 +50,17 @@
         <tr>
           <td>招生人数（人）</td>
           <td v-for='it in zsrslist'>{{it}}</td>
-          <!--<td>{{totalNum}}</td>-->
-          <td>8547</td>
+          <td>{{zsrsTotal}}</td>
         </tr>
         <tr>
-          <td title="车管所总额(%)"  style="min-width: 105px;overflow: hidden;white-space:nowrap">车管所总额(%)</td>
+          <td title="车管所总额(人)"  style="min-width: 105px;overflow: hidden;white-space:nowrap">车管所总额(人)</td>
+          <td v-for='it in vehicleList'>{{it}}</td>
+          <td>{{vehicleTotal}}</td>
+        </tr>
+        <tr>
+          <td title="累计占有率(%)"  style="min-width: 105px;overflow: hidden;white-space:nowrap">累计占有率(%)</td>
           <td v-for='it in percentList'>{{it}}</td>
-          <!--<td>{{totalAvg}}</td>-->
-          <td>574</td>
+          <td></td>
         </tr>
         </tbody>
 
@@ -72,7 +75,7 @@
   * 页面高度：420px
   * */
   import Echarts from '@/components/Echarts';
-  import {queryEnrolment} from '@/api/visualization/api'
+  import {queryFactAndOffice} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: "view-enrolment",
@@ -99,8 +102,10 @@
       return {
         zsmonths: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         zsrslist: [0,0,0,0,0,0,0,0,0,0,0,0],
-        percentList:[51,47,24,36,81,64,27,51,26,95,14,88],
-        rankmonth: ['1月','9月','11月'],
+        vehicleList: [0,0,0,0,0,0,0,0,0,0,0,0],
+        percentList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        zszylList:[0,0,0,0,0,0,0,0,0,0,0,0],
+        rankMonth: ['','',''],
         campusList: [
           { name: "壹路校区", id: 1 },
           { name: "华通校区", id: 2 }
@@ -111,7 +116,8 @@
         },
         option:null,
         loading: false,
-        total:0
+        zsrsTotal:0,
+        vehicleTotal:0
       };
     },
     created() {
@@ -119,32 +125,95 @@
     },
     methods: {
       getList(){
-        this.zsrslist=[15,25,40,67,80,88,91,80,99,100,88,99];
-        this.init();
+        let _this=this
+        queryFactAndOffice(this.listQuery).then(res=>{
+          if(res.data.code==0){
+            var zsrsTotal=0;  //招生总人数
+            var vehicleTotal=0;  //车管所总人数
+            var vehiclezyTotal=[]; //车管所占有率
+            var ljwclTotal=[]; //累计完成率
+            var targetStudent=[];
+            var zs=0;
+            var index=[0,0,0];
+            var rank=[];
+            var fStudent=[];
+            var factStudent=res.data.data.factStudent;
+            targetStudent=res.data.data.targetStudent;
+            factStudent.forEach(function(v,i) {
+              fStudent.push(v);
+              zsrsTotal+=v;
+              vehicleTotal+=targetStudent[i];
+              zs=((v/targetStudent[i])*100).toFixed(2);
+              if(targetStudent[i]==0){
+                vehiclezyTotal.push(0);
+              }
+              else {vehiclezyTotal.push((zs));}
+              ljwclTotal.push(((zsrsTotal/vehicleTotal)*100).toFixed(2))
+            })
+            _this.zsrslist=fStudent;
+            _this.vehicleList=targetStudent;
+            _this.zszylList=vehiclezyTotal;
+            _this.zsrsTotal=zsrsTotal;
+            _this.vehicleTotal=vehicleTotal;
+            _this.percentList=ljwclTotal;
+            _this.init();
+
+            index.forEach(function(a,b) {
+              var maxmonth=0;
+              factStudent.forEach(function(v,i) {
+                if(v-maxmonth>0)
+                {
+                  maxmonth=v;
+                  index[b]=i;
+                }
+              })
+              factStudent[index[b]]=0;
+              rank.push(_this.zsmonths[index[b]])
+            })
+            _this.rankMonth=rank;
+          }
+        })
       },
       init() {
-
-        var data = {
-            xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
-            yName:'占有率',            // Y轴名字
-            unit:'%',               // 单位
-            mark:60,                // 平均线
-            series:[                 // 图形集合
-              {
-                name:'占有率',
-                type:'bar',
-                stack:'11',
-                color:'#7773ff',
-                data:[15,25,40,67,80,88,91,80,99,100,88,99],
-              },
-              {
-                name:'总占有',
-                type:'bar',
-                stack:'11',
-                color:'#f976c6',
-                data:[15,65,80,27,45,88,21,38,72,42,22,41],
+        var label={
+          normal: {
+            show: true,
+            position: 'insideBottom',
+            distance: 15,
+            align: 'left',
+            verticalAlign: 'middle',
+            rotate:  90,
+            formatter:  '{name|{c}'+'%'+'}',
+            rich: {
+              name: {
+                textBorderColor: '#fff'
               }
-            ]
+            }
+          }
+        }
+        var data = {
+          xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
+          yName:'占有率',            // Y轴名字
+          unit:'%',               // 单位
+          mark:60,                // 平均线
+          series:[                 // 图形集合
+            {
+              name:'占有率',
+              type:'bar',
+              stack:'11',
+              label:label,
+              color:'#fe8888',
+              data:this.zszylList//[15,25,40,67,80,88,91,80,99,100,88,99],
+            },
+            {
+              name:'总占有',
+              type:'bar',
+              stack:'11',
+              label:label,
+              color:'#7773ff',
+              data:this.percentList//[15,65,80,27,45,88,21,38,72,42,22,41],
+            }
+          ]
         }
         this.option = options.config(data)
       },
@@ -163,7 +232,7 @@
   /*灰白色*/
   $DDD: #ddd;
   .view-enrolment {
-    height: 460px;
+    height: 520px;
 
 
   }

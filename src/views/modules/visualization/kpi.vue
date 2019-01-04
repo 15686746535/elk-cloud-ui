@@ -95,6 +95,7 @@
     methods: {
       /* 获取数据 */
       getPageList() {
+        console.log("########",this.query)
         this.loading = true
         queryIntroducer(this.query).then(res => {
           this.list = res.data.data.list

@@ -34,7 +34,7 @@
 
     <div class="mini-card" >
       <div class="topcard">招生总金额</div>
-      <div class="botcard">{{total}}元</div>
+      <div class="botcard">{{total}}万</div>
       <!--<div class="botcard">{{// options._SUM(zsjelist)}}元</div>-->
     </div>
     <div class="enrolment-rank" >
@@ -115,15 +115,12 @@
             factMoney.forEach( v=> {
               if(v!=0)
               {
-                v=(v/10000).toFixed(2);
+                fmoney.push(v/10000).toFixed(2);
               }
               else {
                 fmoney.push(v);
-
               }
-              totalmoney+=v;
-
-              // console.log("==========",totalmoney)
+              totalmoney+=parseFloat((v/10000).toFixed(2));
             })
             index.forEach(function(a,b) {
               var maxmonth=0;

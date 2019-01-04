@@ -8,6 +8,14 @@ export function getPage(query) {
   })
 }
 
+export function getPayment(query) {
+  return request({
+    url: '/finance/payment/getObject',
+    method: 'get',
+    params: query
+  })
+}
+
 export function getNum(query) {
   return request({
     url: '/finance/payment/queryNum',

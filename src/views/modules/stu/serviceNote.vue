@@ -1,7 +1,7 @@
 <template>
   <div class="app-container1 calendar-list-container" id="service-note" style="height: 100%;">
     <div class="btn-group">
-      <el-button-group v-if="pageLevel === 'info'&&pageShow==='bill'">
+      <el-button-group v-if=" pageLevel === 'info'&&pageShow==='bill'">
         <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
         <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
       </el-button-group>

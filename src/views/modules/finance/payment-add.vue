@@ -371,8 +371,8 @@
     computed: {
       getExamineIcon() {
         console.log(this.payment.state)
-        if (this.payment.state === '-2') return '/static/icon/icon-writeoff.png'
-        if (this.payment.state === '-1') return '/static/icon/icon-fail.png'
+        // if (this.payment.state === '-2') return '/static/icon/icon-writeoff.png'
+        // if (this.payment.state === '-1') return '/static/icon/icon-fail.png'
         if (this.payment.state === '1') return '/static/icon/icon-adopt.png'
         return ''
       },

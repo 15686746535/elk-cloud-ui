@@ -11,7 +11,7 @@ export function getPage(query) {
 export function getPayment(query) {
   return request({
     url: '/finance/payment/getObject',
-    method: ' get ',
+    method: 'get',
     params: query
   })
 }

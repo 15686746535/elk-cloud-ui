@@ -7,6 +7,7 @@
       </el-button-group>
       <el-button type="primary" size="mini" :loading="btnLoading" @click="save" :disabled="saveDisabled" icon="el-icon-fa-save">保存</el-button>
       <el-button-group>
+        <el-button type="info" size="mini" v-if="pageLevel === 'info'&&payment.state==='0'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
         <el-button size="mini" type="warning" v-if="payment&&payment.state==0&&permissions.finance_payment_auditor" @click="auditorHandle(payment.payId,1)" icon="el-icon-share">审核</el-button>
         <el-button size="mini" type="info" v-if="payment&&payment.state==1&&permissions.finance_payment_auditor_contrary" @click="auditorHandle(payment.payId,0)"  icon="el-icon-refresh">反审核</el-button>
         <el-button size="mini" type="danger" v-if="payment&&payment.state==0&&permissions.finance_payment_delete" @click="auditorHandle(payment.payId,-1)" icon="el-icon-delete">作废</el-button>
@@ -21,11 +22,14 @@
                 支付类型(*):
               </el-col>
               <el-col :span="17">
-                <el-select class="select-lines" v-model="payment.code" size="mini" filterable remote reserve-keyword placeholder=""
-                           :remote-method="getPayCodeList" :loading="selectLoading">
-                  <el-option v-for="code in codeList" :key="code.code" :label="code.content" :value="code.code">
-                  </el-option>
-                </el-select>
+                <div v-if="pageLevel === 'info'" class="time-lines">{{payment.code}}</div>
+                <div v-else>
+                  <el-select @change="dataChange" class="select-lines" v-model="payment.code" size="mini" filterable remote reserve-keyword placeholder=""
+                             :remote-method="getPayCodeList" :loading="selectLoading">
+                    <el-option v-for="code in codeList" :key="code.code" :label="code.content" :value="code.code">
+                    </el-option>
+                  </el-select>
+                </div>
               </el-col>
             </el-row>
           </el-col>
@@ -35,11 +39,11 @@
                 日期(*):
               </el-col>
               <el-col :span="20">
-                <div v-if="pageLevel === 'info'||pageLevel === 'edit'" class="time-lines">
+                <div v-if="pageLevel === 'info'">
                   {{payment.paytime | parseTime('{y}-{m}')}}
                 </div>
                 <div v-else>
-                  <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" class="date-lines" size="mini" type="date" placeholder=""  style="width: 100%" v-model="payment.paytime"></el-date-picker>
+                  <el-date-picker @change="dataChange" format="yyyy-MM-dd" value-format="timestamp" class="date-lines" size="mini" type="date" placeholder=""  style="width: 100%" v-model="payment.paytime"></el-date-picker>
                 </div>
               </el-col>
             </el-row>
@@ -50,13 +54,17 @@
                 流水号:
               </el-col>
               <el-col :span="20">
-                <div  class="input-lines" style="height: 30px;">
+                <div v-if="pageLevel === 'info'||pageLevel === 'edit'" class="input-lines" style="height: 30px;">
                   {{payment.serialPrefix}}{{payment.paytime | parseTime('{y}{m}')}}{{payment.serialNumber | parseSerial}}
                 </div>
+                <div v-else class="time-lines" style="height: 30px;"></div>
               </el-col>
 
             </el-row>
-            <img class="pay-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
+            <div class="seal" v-if="payment.state === '1'||payment.state === '-1'">
+              {{payment.auditor}}<div v-if="payment.state === '-1'" class="state">废</div>
+            </div>
+            <!--<img class="pay-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>-->
           </el-col>
         </el-row>
         <!--源单类型  引用  支付方式-->
@@ -66,11 +74,12 @@
               <el-col :span="7">
                 源单类型:
               </el-col>
-              <el-col :span="17">
-                <el-select v-model="source" class="select-lines"  size="mini"  placeholder="">
-                  <el-option v-for="so in sourceList" :key="so.value" :label="so.label" :value="so.value"> </el-option>
-                </el-select>
-              </el-col>
+                <el-col :span="17">
+                  <div v-if="pageLevel === 'info'" style="border-bottom:#dcdfe6 1px solid;height: 28px"></div>
+                  <el-select @change="dataChange" v-else v-model="source" class="select-lines"  size="mini"  placeholder="">
+                    <el-option v-for="so in sourceList" :key="so.value" :label="so.label" :value="so.value"> </el-option>
+                  </el-select>
+                </el-col>
             </el-row>
           </el-col>
           <el-col :span="8">
@@ -79,7 +88,8 @@
                 引用:
               </el-col>
               <el-col :span="20">
-                <div class="input-lines hover" @click="openQuote" style="height: 30px;padding-left: 30px;">{{quoteSource}}</div>
+                <div v-if="pageLevel === 'info'" class="time-lines"></div>
+                <div v-else class="input-lines hover" @click="openQuote" style="height: 30px;padding-left: 30px;">{{quoteSource}}</div>
               </el-col>
             </el-row>
           </el-col>
@@ -89,7 +99,8 @@
                 支付方式:
               </el-col>
               <el-col :span="17">
-                <dict v-model="payment.mode" class="select-lines" size="mini" dictType="dict_mode" style="height: 28px" placeholder=""></dict>
+                <div v-if="pageLevel === 'info'">{{payment.mode}}</div>
+                <dict v-else v-model="payment.mode" class="select-lines" size="mini" dictType="dict_mode" style="height: 28px" placeholder=""></dict>
               </el-col>
             </el-row>
           </el-col>
@@ -102,7 +113,8 @@
                 收款单位(*):
               </el-col>
               <el-col :span="17">
-                <dict v-model="payment.payee" class="select-lines" size="mini" dictType="dict_company" style="height: 28px" placeholder=""></dict>
+                <p v-if="pageLevel === 'info'" class="time-lines" style="margin-top: -10px">{{payment.payee}}</p>
+                <dict @change="dataChange" v-else v-model="payment.payee" class="select-lines" size="mini" dictType="dict_company" style="height: 28px" placeholder=""></dict>
               </el-col>
             </el-row>
           </el-col>
@@ -112,6 +124,7 @@
                 摘要:
               </el-col>
               <el-col :span="22">
+                <div v-if="pageLevel === 'info'" class="time-lines">{{payment.remark}}</div>
                 <input v-model="payment.remark" class="input-lines" style="padding-left: 30px;"/>
               </el-col>
             </el-row>
@@ -164,8 +177,8 @@
         </el-table-column>
         <el-table-column align="center" prop="remark" label="备注" width="120">
           <template slot-scope="scope" >
-            <span><input v-model="scope.row.remark"  @keyup.enter="remarkEnter(scope.row)" @keyup.left="remarkLeft(scope.row)" class="remark-input" style="padding-left: 10px;width: 100%;height: 25px;"/></span>
-            <!--<span v-if="!scope.row.showRemark">{{scope.row.remark}}</span>-->
+            <span><input v-model="scope.row.remark" v-if="flag" @keyup.enter="remarkEnter(scope.row)" @keyup.left="remarkLeft(scope.row)" class="remark-input" style="padding-left: 10px;width: 100%;height: 25px;"/></span>
+            <span v-if="!flag">{{scope.row.money}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="remark"  label="操作"  width="50">
@@ -218,7 +231,7 @@
             <el-table-column align="center" prop="motorcycleType" label="车型"></el-table-column>
           </el-table>
             <el-button type="text" @click="nextPage" style="margin: 10px 390px 0" icon="el-icon-arrow-down">显示更多</el-button>
-            <div style="margin: -20px 10px;">
+            <div style="margin: -36px 10px;">
               <el-button size="mini" type="primary" style="float: right;" @click="quoteExam()"  icon="el-icon-share">引用</el-button>
             </div>
         </el-row>
@@ -359,20 +372,18 @@
         }
         this.payment.payId = this.payOrder.payId
         this.pageLevel = this.payOrder.pageLevel
-        if (this.pageLevel === 'info') {
+        if (this.pageLevel === 'info' || this.pageLevel === 'edit') {
           this.saveDisabled = true
           this.getPaymentByPayId(payment)
           this.flag = false
-        } else if (this.pageLevel === 'edit') {
-          this.getPaymentByPayId(payment)
         }
       }
     },
     computed: {
       getExamineIcon() {
         console.log(this.payment.state)
-        // if (this.payment.state === '-2') return '/static/icon/icon-writeoff.png'
-        // if (this.payment.state === '-1') return '/static/icon/icon-fail.png'
+        if (this.payment.state === '-2') return '/static/icon/icon-writeoff.png'
+        if (this.payment.state === '-1') return '/static/icon/icon-fail.png'
         if (this.payment.state === '1') return '/static/icon/icon-adopt.png'
         return ''
       },
@@ -383,26 +394,37 @@
       ])
     },
     methods: {
+      dataChange() {
+        this.saveDisabled = false
+      },
+      // 点击修改
+      updateFinace() {
+        this.pageLevel = 'edit'
+        // 校订者 修改人
+        this.payment.reviser = this.name
+        this.flag = true
+      },
       // 上一单  下一单
       page(chargeId, direction) {
-        // var pageList = this.studentList
         var payment = {
           payId: chargeId,
           direction: direction
         }
         this.getPaymentByPayId(payment)
-        // if (pageList === this.studentList) {
-        //   var msg = direction === 'down' ? '没有下一单了' : '没有上一单了'
-        //   this.$message.error(msg)
-        // }
       },
       // 通过支付id到支付信息
       getPaymentByPayId(query) {
         getPayment(query).then(response => {
-          this.addList = response.data.data.studentList
-          this.payment = response.data.data
-          this.payment.code = response.data.data.content
-          console.log(response)
+          if (response.data.data) {
+            console.log(response)
+            this.addList = response.data.data.studentList
+            this.payment = response.data.data
+            this.payment.code = response.data.data.content
+            console.log(this.payment)
+          } else {
+            var msg = query.direction === 'down' ? '没有下一单了' : '没有上一单了'
+            this.$message.error(msg)
+          }
         })
       },
       payCodeChange(code) {
@@ -685,8 +707,8 @@
       create() {
         this.btnLoading = true
         addObj(this.payment).then(() => {
-          this.btnLoading = false
         })
+        this.btnLoading = false
         this.payment = {}
         this.addList = []
         this.source = null
@@ -704,6 +726,42 @@
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
   #payment {
+    .seal{
+      width: 160px;
+      height: 60px;
+      line-height: 40px;
+      border: rgb(216,30,6) solid 6px;
+      border-radius: 10px;
+      color: rgb(216,30,6);
+      font-size: 25px;
+      font-weight: 900;
+      padding-left: 13px;
+      letter-spacing:8px;
+      position: absolute;
+      z-index: 100;
+      top: 9px;
+      right: 88px;
+      transform:rotate(-23deg);
+      -ms-transform:rotate(-23deg); 	/* IE 9 */
+      -moz-transform:rotate(-23deg); 	/* Firefox */
+      -webkit-transform:rotate(-23deg); /* Safari 和 Chrome */
+      -o-transform:rotate(-23deg); 	/* Opera */
+    }
+    .state{
+      border: #d81e06 solid 2px;
+      width: 35px;
+      height: 34px;
+      font-size: 22px;
+      font-weight: 800;
+      display: block;
+      float: right;
+      margin-top: 5px;
+      line-height: 27px;
+      margin-right: 2px;
+      border-radius: 50%;
+      padding-left: 4px;
+      text-align: center;
+    }
     .time-lines{
       border-bottom: #dcdfe6 1px solid;
     }

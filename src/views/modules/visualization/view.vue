@@ -154,8 +154,8 @@
               { name:'招生人数统计', to: 'view-enrolment', height: 460 },
               { name:'招生量完成率统计', to: 'view-amount-completion-rate', height: 460 },
               { name:'招生量同比增长率统计', to: 'view-amount-growth-rate', height: 460 },
-              // { name:'个人招生分析', to: 'view-individual-enrollment-analysis', height: 460 },
-              // { name:'个人招生详情', to: 'view-individual-enrollment-details', height: 460 },
+              { name:'个人招生分析', to: 'view-individual-enrollment-analysis', height: 460 },
+              { name:'个人招生详情', to: 'view-individual-enrollment-details', height: 460 },
               { name:'车型招生量统计', to: 'view-amount-motorcycle-type', height: 460 }
             ]
           },

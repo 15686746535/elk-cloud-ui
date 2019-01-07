@@ -1,18 +1,17 @@
 <template>
-  <div class="view-enrolment view-container">
+  <div class="view-enrolment view-container view-individual-enrollment-analysis">
     <el-row class="enrolment-header">
       <el-radio class="my-view"></el-radio>
       <label style="margin-right: 10px">个人招生分析</label>
     </el-row>
 
     <div>
-      <el-row class="enrolment-table" style="top: 30px;height: 355px">
+      <el-row class="enrolment-table" style="top: 30px;height: 365px">
         <table>
-
           <thead>
           <tr>
             <th>姓名</th>
-            <th v-for='item in months'>{{item}}月</th>
+            <th v-for='item in dataMonth'>{{item}}月</th>
           </tr>
           </thead>
           <tbody>
@@ -30,22 +29,10 @@
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                          :current-page.sync="listQuery.page" background style="float: left"
                          :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                         layout="total, sizes, prev, pager, next, jumper" :total="total">
+                         layout="total, sizes, prev, pager, next, jumper" :total="total" :pager-count="5">
           </el-pagination>
         </div>
       </el-row>
-      <div class="echart">
-        <echarts :option="option"></echarts>
-      </div>
-      <div style="margin-left: 800px">
-        <el-table :data="detailList" class="table-detail">
-          <el-table-column type="index" label="编号" align="center" width="70"></el-table-column>
-          <el-table-column prop="name" label="姓名" show-overflow-tooltip width="70"></el-table-column>
-          <el-table-column prop="mobile" label="电话" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="enrolTime" label="入学日期" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="motorcycleType" label="车型" show-overflow-tooltip width="50"></el-table-column>
-        </el-table>
-      </div>
     </div>
     <div class="bottom-rank">
       <div class="enrolment-table" style="bottom: 81px;">
@@ -86,7 +73,23 @@
         </table>
       </div>
     </div>
-  </div>
+
+    <div  class="echart">
+      <echarts :option="option"></echarts>
+    </div>
+    <div v-if="hasClick" style="min-height: 500px">
+      <el-table :data="detailList" height="370" class="table-detail" >
+        <el-table-column type="index" label="编号" align="center" width="70"></el-table-column>
+        <el-table-column prop="name" label="姓名" show-overflow-tooltip width="70"></el-table-column>
+        <el-table-column prop="mobile" label="电话" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="enrolTime" label="入学日期" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="motorcycleType" label="车型" show-overflow-tooltip width="50"></el-table-column>
+      </el-table>
+    </div>
+    </div>
+
+
+
 </template>
 
 <script>
@@ -119,13 +122,16 @@
     data() {
       return {
         months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+        dataMonth:[],
         // tableHeight: this.area[1],
         datas: [15, 20, 10, 13, 9, 20, 8, 12, 21, 4, 6, 26],
         detailList: [],
         dataList: [],
+        list:[],
         zsList: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         loading: false,
         option: null,
+        hasClick:false,
         total: 0,
         listQuery: {
           orgId: 4,
@@ -145,16 +151,20 @@
         }
       };
     },
+    filters: {
+      changeToDate(value) {        
+        return new Date(value).toISOString().substring(0,10)
+      }
+    },
     created() {
       this.getList();
       //this.getDetail();
-      //this.getCurrentMonth();
+      this.getCurrentMonth();
       this.getRank();
     },
     methods: {
       getList() {
         getUserRecruit(this.listQuery).then(res => {
-          console.log("@@@@@@@@@", res.data.data);
           if (res.data.code == 0) {
             this.total = res.data.data.data.totalCount;
             var num = [];
@@ -162,7 +172,20 @@
             var minrank = [];
             var list = [];
             var index = [];
+            var dmLength=this.dataMonth.length;
             this.dataList = res.data.data.data.list;
+            // this.list = res.data.data.data.list.slice(0,dmLength?dmLength:11);
+            // console.log("listlistlistlist",this.dataList)
+
+            this.dataList.forEach(function(e,v) {
+              // console.log("&&&&&&",v)
+              e.num=e.num.slice(0,dmLength?dmLength:11);
+               // console.log("***********",e.num);
+              // this.list.push(e);
+            })
+            // var dmLength=this.dataMonth.length;
+            //
+
           }
         });
       },
@@ -173,6 +196,10 @@
         queryRecruitByUser(this.userDetail).then(response => {
           if (response.data.code == 0) {
             this.detailList = response.data.data;
+            this.detailList.forEach(v=>{
+             v.enrolTime=new Date(v.enrolTime).toISOString().substring(0,10);
+            })
+            this.hasClick=true;
           }
         });
       },
@@ -182,6 +209,7 @@
           yName: "人数",            // Y轴名字
           unit: "人",               // 单位
           mark: 6,                // 平均线
+          hid:true,
           series: [                 // 图形集合
             {
               name: "人数",
@@ -189,7 +217,8 @@
               smooth: false,
               lineWidth: 3,
               color: "#A4D482",
-              data: this.zsList//[15, 20, 10, 13, 9, 20, 8, 12, 21, 4, 6, 26]  //this.detailList[this.ids].num||
+              data: this.zsList,//[15, 20, 10, 13, 9, 20, 8, 12, 21, 4, 6, 26]  //this.detailList[this.ids].num||
+
             }
           ]
         };
@@ -208,14 +237,19 @@
         var data = new Date();
         var year = data.getFullYear();
         data.setMonth(data.getMonth() + 1, 1);//获取到当前月份,设置月份
-        for (var i = 0; i < 12; i++) {
-          data.setMonth(data.getMonth() - 1);//每次循环一次 月份值减1
-          var m = data.getMonth() + 1;
-          m = m < 10 ? "0" + m : m;
-          dataArr.push(m);
-        }
+        var m=data.getMonth()+11;
+        for(var i=1;i<=m;i++){
+          dataArr.push(i);
+          this.dataMonth.push(i)
+        }        
+        // for (var i = 0; i < 12; i++) {
+        //   data.setMonth(data.getMonth() - 1);//每次循环一次 月份值减1
+        //   var m = data.getMonth() + 1;
+        //   m = m < 10 ? "0" + m : m;
+        //   dataArr.push(m);
+        // }
 
-        console.log("dataArrdataArr", dataArr);
+        // console.log("dataArrdataArr", dataArr);
 
       },
       getRank() {
@@ -228,10 +262,10 @@
               for (var n = 0; n <= 11; n++) {
                 ranklist.forEach(function(v, i) {
                   var max = ranklist[0].num[n];
-                  console.log("@@@@@@@@",max)
+                  // console.log("@@@@@@@@",max)
                   if (v.num[n] - max > 0) {
                     max = v.num[n];
-                    index[b] = i;
+                    // index[b] = i;
                   }
 
 
@@ -240,7 +274,8 @@
             //});
           }
         });
-      }
+      },
+
     }
   };
 </script>
@@ -254,7 +289,7 @@
   $DDD: #ddd;
   .view-enrolment {
     height: 700px;
-
+    overflow: hidden;
     .enrolment-table {
       position: absolute;
       bottom: 0;
@@ -315,31 +350,40 @@
     }
 
     .half-right {
-      position: relative;
-      right: 5px;
-
-      .detial-table {
-        position: absolute;
-        width: 100px;
-        top: 200px;
-        right: 220px;
-      }
+      height: 650px;
+      width: 130px;
+      overflow: hidden;
 
 
     }
-
     .echart {
-      position: absolute;
-      overflow: hidden;
+      /*position: absolute;*/
+      /*overflow: hidden;*/
       width: 330px;
       height: 180px;
+      overflow: hidden;
       /*padding: 0px;*/
       /*margin: 0px;*/
-      border-width: 0px;
-      margin-left: 10px;
-      right: 0;
+      /*border-width: 0px;*/
+      margin-left: 550px;
+      /*right: 0;*/
       top: 0;
-      /*overflow-x:auto;*/
+      display: flex;
+      overflow-x:hidden;
+    }
+
+    .table-detail {
+      .table-detail.el-table th {
+        background-color: #3f5c6d2c!important;
+      }
+      position: relative;
+      overflow: hidden;
+      max-width: 380px;
+      border-width: 0px;
+      left: 550px;
+      top: 10px;
+      height: 370px;
+      overflow-y: auto;
     }
 
     .bottom-rank {
@@ -350,19 +394,6 @@
       /*overflow: auto;*/
       overflow-x: auto;
     }
-
-    .table-detail {
-
-      position: absolute;
-      overflow: hidden;
-      width: 380px;
-      border-width: 0px;
-      margin-left: 10px;
-      right: 0;
-      top: 240px;
-      overflow-y: paged-y;
-    }
-
 
   }
 </style>

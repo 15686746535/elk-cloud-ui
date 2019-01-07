@@ -126,7 +126,6 @@
         let _this=this
         queryGDP(this.listQuery).then(res=>{
           if(res.data.code==0){
-            console.log("res",res)
             var factMoney = [];
             var percentList = [];
             var totalNum = 0;

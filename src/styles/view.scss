@@ -123,3 +123,16 @@ $DDD: #ddd;
   border-color: $Danger!important;
   background: $Danger!important;
 }
+
+.view-individual-enrollment-analysis {
+  .el-table td, .el-table th.is-leaf {
+    padding: 0px!important;
+  }
+  .el-table__empty-block {
+    min-height: 25px!important;
+    border-left: solid 1px #ccc!important;
+  }
+  .el-table th>.cell{
+    color: #222!important;
+  }
+}

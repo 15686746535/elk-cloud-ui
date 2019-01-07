@@ -112,12 +112,13 @@
             queryFactStuCount(this.queryList).then(re=>{
               if(re.data.code==0) {
                 _this.lastList = re.data.data.factStudent;
+
+                let growthRate = options.growthRate(this.currList,this.lastList);
+                this.list = growthRate.list;
+                this.cumulativeList = growthRate.cumulativeList;
+                this.init();
               }
             })
-            let growthRate = options.growthRate(this.currList,this.lastList);
-            this.list = growthRate.list;
-            this.cumulativeList = growthRate.cumulativeList;
-            this.init();
           }
         })
       },

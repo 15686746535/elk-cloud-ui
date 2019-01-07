@@ -52,7 +52,7 @@
           <td v-for='it in zsrslist'>{{it}}</td>
          <td>{{zsrsTotal}}</td>
         </tr>
-        <tr>
+        <tr>.
           <td title="市场总人数（人）"  style="min-width: 105px;overflow: hidden;white-space:nowrap">市场总人数（人）</td>
           <td v-for='it in marketList'>{{it}}</td>
           <td>{{marketTotal}}</td>

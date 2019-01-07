@@ -150,7 +150,22 @@
 
       },
       init() {
-
+        var label={
+          normal: {
+            show: true,
+            position: 'insideBottom',
+            distance: 15,
+            align: 'left',
+            verticalAlign: 'middle',
+            rotate:  90,
+            formatter:  '{name|{c}'+'人'+'}',
+            rich: {
+              name: {
+                textBorderColor: '#fff'
+              }
+            }
+          }
+        }
         var data = {
             xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
             yName:'人数',            // Y轴名字
@@ -161,6 +176,7 @@
                 name:'C1',
                 type:'bar',
                 stack:'11',
+                label:label,
                 color:'#7773ff',
                 data:this.c1stList//[15,25,40,67,80,88,91,80,99,100,88,99],
               },
@@ -168,6 +184,7 @@
                 name:'C2',
                 type:'bar',
                 stack:'11',
+                label:label,
                 color:'#f976c6',
                 data:this.c2stList//[17,65,80,27,45,88,21,38,72,42,22,41],
               }

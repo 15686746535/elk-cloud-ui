@@ -129,7 +129,7 @@
               zsjemblList.push(parseFloat((targetMoney[i]/10000).toFixed(2)));
               zsjeList.push(parseFloat((v/10000).toFixed(2)));
               zsjeTotal+=parseFloat((v/10000).toFixed(2));
-              zsmbTotal+=parseFloat((targetMoney[i]/10000).toFixed(2));
+              zsmbTotal+=parseFloat((targetMoney[i]/10000));
               zs=((v/targetMoney[i])*100).toFixed(2);
               if(targetMoney[i]==0){
                 zsjewclList.push(0);

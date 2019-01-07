@@ -124,7 +124,7 @@ var option = function (type, Yname, Xname, Ydata, Xdata, colors, mark, unit) {
  * @param lineStyle
  * @returns {{name: *, type: *, barWidth: string, data: *, markPoint: {symbol: string, symbolSize: markPoint.symbolSize, symbolOffset: string[], itemStyle: {normal: {label: {distance: number, formatter: markPoint.itemStyle.normal.label.formatter}}}, data: *[]}, label: {normal: {show: boolean, position: string, distance: number, align: string, verticalAlign: string, formatter: string, fontSize: number, rich: {name: {color: string, textBorderColor: string}}}}, markLine: {silent: boolean, data: *[]}}}
  */
-var serie = function (yName,type,xData,smooth,lineWidth,lineType,stack,unit,mark) {
+var serie = function (yName,type,xData,smooth,lineWidth,lineType,stack,unit,mark,label) {
 
   return {
     name:yName || '',
@@ -156,11 +156,11 @@ var serie = function (yName,type,xData,smooth,lineWidth,lineType,stack,unit,mark
           },
         }
       },
-      data: [{type: 'max', name: '最大值'}]
+      data: []
     },
-    label:  {
+    label:  label|| {
       normal:  {
-        show:  false,
+        show:  true,
         position:  'insideTop',
         distance:  -10,
         align:  'center',
@@ -222,7 +222,7 @@ const options = {
     var legend = [];
     var colors = [];
     data.series.forEach(function (v,i) {
-      series.push(serie(v.name,v.type,v.data,v.smooth,v.lineWidth,v.lineType,v.stack,data.unit,data.mark));
+      series.push(serie(v.name,v.type,v.data,v.smooth,v.lineWidth,v.lineType,v.stack,data.unit,data.mark,v.label));
       legend.push(v.name);
       colors.push(v.color);
     })

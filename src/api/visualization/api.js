@@ -135,5 +135,38 @@ export function queryFactAndMarket(params) {
     params: params
   })
 }
+//车管所占有率
+export function queryFactAndOffice(params) {
+  return request({
+    url: '/visualization/queryFactAndOffice',
+    method: 'get',
+    params: params
+  })
+}
+//意向转化率
+export function queryIntentionConversion(params) {
+  return request({
+    url: '/visualization/queryIntentionConversion',
+    method: 'get',
+    params: params
+  })
+}
+//个人招生详情
+export function getUserRecruit(params) {
+  return request({
+    url: '/visualization/getUserRecruit',
+    method: 'get',
+    params: params
+  })
+}
+//个人招生详情
+export function queryRecruitByUser(params) {
+  return request({
+    url: '/visualization/queryRecruitByUser',
+    method: 'get',
+    params: params
+  })
+}
+
 
 

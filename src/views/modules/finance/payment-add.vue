@@ -1,16 +1,16 @@
 <template>
   <div style="height: 100%" class="cost-note" id="payment">
     <el-card style="height: 100%;background-color: #f5f7fa;" class="add-payment">
+      <el-button-group v-if="pageLevel === 'info'||pageLevel === 'edit'">
+        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="page(payment.payId,'up')">上一单</el-button>
+        <el-button type="primary" size="mini" @click="page(payment.payId,'down')">下一单<i class="el-icon-arrow-right el-icon&#45;&#45;right"></i></el-button>
+      </el-button-group>
       <el-button type="primary" size="mini" :loading="btnLoading" @click="save" :disabled="saveDisabled" icon="el-icon-fa-save">保存</el-button>
-      <!--<el-button-group >&lt;!&ndash;v-if="pageShow==='bill'"&ndash;&gt;-->
-        <!--<el-button type="warning" size="mini"  v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>-->
-        <!--<el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>-->
-        <!--<el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&finance.type==='1'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>-->
-        <!--<el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>-->
-      <!--</el-button-group>-->
-      <el-button-group v-if="pageLevel === 'info'">
-        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
-        <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon&#45;&#45;right"></i></el-button>
+      <el-button-group>
+        <el-button size="mini" type="warning" v-if="payment&&payment.state==0&&permissions.finance_payment_auditor" @click="auditorHandle(payment.payId,1)" icon="el-icon-share">审核</el-button>
+        <el-button size="mini" type="info" v-if="payment&&payment.state==1&&permissions.finance_payment_auditor_contrary" @click="auditorHandle(payment.payId,0)"  icon="el-icon-refresh">反审核</el-button>
+        <el-button size="mini" type="danger" v-if="payment&&payment.state==0&&permissions.finance_payment_delete" @click="auditorHandle(payment.payId,-1)" icon="el-icon-delete">作废</el-button>
+        <!--<el-button size="mini" type="primary" @click="download" :loading="downloadLading"  icon="el-icon-download">导出</el-button>-->
       </el-button-group>
       <div class="add-header">
         <!--支付类型  日期  流水-->
@@ -35,7 +35,12 @@
                 日期(*):
               </el-col>
               <el-col :span="20">
-                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" class="date-lines" size="mini" type="date" placeholder=""  style="width: 100%" v-model="payment.paytime"></el-date-picker>
+                <div v-if="pageLevel === 'info'||pageLevel === 'edit'" class="time-lines">
+                  {{payment.paytime | parseTime('{y}-{m}')}}
+                </div>
+                <div v-else>
+                  <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" class="date-lines" size="mini" type="date" placeholder=""  style="width: 100%" v-model="payment.paytime"></el-date-picker>
+                </div>
               </el-col>
             </el-row>
           </el-col>
@@ -45,9 +50,13 @@
                 流水号:
               </el-col>
               <el-col :span="20">
-                <div  class="input-lines" style="height: 30px;"></div>
+                <div  class="input-lines" style="height: 30px;">
+                  {{payment.serialPrefix}}{{payment.paytime | parseTime('{y}{m}')}}{{payment.serialNumber | parseSerial}}
+                </div>
               </el-col>
+
             </el-row>
+            <img class="pay-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>
           </el-col>
         </el-row>
         <!--源单类型  引用  支付方式-->
@@ -139,7 +148,7 @@
         </el-table-column>
         <el-table-column align="center" prop="num" label="收费次数" width="80">
           <template slot-scope="scope">
-            <span>{{ scope.row.num}}</span><!---->
+            <span>{{ scope.row.payNo}}</span><!---->
           </template>
         </el-table-column>
         <el-table-column align="center" prop="num" label="参考次数" width="80">
@@ -149,8 +158,8 @@
         </el-table-column>
         <el-table-column align="center" prop="money" label="金额" width="50">
           <template slot-scope="scope">
-            <span><input v-model="scope.row.money" v-if="!this.flag" @keyup.right="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
-            <span v-if="this.flag">{{scope.row.money}}</span>
+            <span><input v-model="scope.row.money" v-if="flag" @keyup.right="moneyRight(scope.row)" v-focus class="money-input" style="padding-left: 3px;width: 100%;height: 25px;"/></span>
+            <span v-if="!flag">{{scope.row.money}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="remark" label="备注" width="120">
@@ -169,9 +178,7 @@
 
 
     <el-dialog :modal="false"  title="数据引用" width="950px"  :visible.sync="quoteOpen">
-      <div style="height: 300px;width:930px;overflow: auto">
-
-
+      <div style="height: 300px;width:930px;">
         <el-row :gutter="10" v-if="source<=4" style="margin: 0">
           <el-col :span="6">
             <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
@@ -191,28 +198,33 @@
           </el-col>
           <el-col :span="18">
             <el-card >
-              <el-table :data="examBespeak" :height="440" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
+              <el-table :data="examBespeak" :height="380" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
                 <el-table-column type="selection" width="35" fixed></el-table-column>
                 <el-table-column align="center" prop="name" label="学员"></el-table-column>
                 <el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>
                 <el-table-column align="center" prop="motorcycleType" label="车型"></el-table-column>
               </el-table>
             </el-card>
+            <div style="margin: 10px 10px;">
+              <el-button size="mini" type="primary" style="float: right;" @click="quoteExam()"  icon="el-icon-share">引用</el-button>
+            </div>
           </el-col>
         </el-row>
         <el-row v-if="source === 6">
-          <el-table :data="examBespeak" :height="420" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
+          <el-table :data="stuList" :height="320"  @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="studentListLoading" element-loading-text="给我一点时间">
             <el-table-column type="selection" width="35" fixed></el-table-column>
             <el-table-column align="center" prop="name" label="学员"></el-table-column>
             <el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>
             <el-table-column align="center" prop="motorcycleType" label="车型"></el-table-column>
           </el-table>
+            <el-button type="text" @click="nextPage" style="margin: 10px 390px 0" icon="el-icon-arrow-down">显示更多</el-button>
+            <div style="margin: -20px 10px;">
+              <el-button size="mini" type="primary" style="float: right;" @click="quoteExam()"  icon="el-icon-share">引用</el-button>
+            </div>
         </el-row>
 
       </div>
-      <div style="padding: 10px 20px;">
-        <el-button size="mini" type="primary" style="float: right" @click="quoteExam()"  icon="el-icon-share">引用</el-button>
-      </div>
+
     </el-dialog>
 
   </div>
@@ -221,11 +233,12 @@
 <script>
   import { mapGetters } from 'vuex'
   import { fetchStudentList } from '@/api/student/student'
-  import { addObj, putObj, getNum, auditor } from '@/api/finance/payment'
+  import { addObj, putObj, getNum, auditor, getPayment } from '@/api/finance/payment'
   import { getList } from '@/api/finance/payment-code'
   import { parseTime } from '@/utils/index'
   import { examFetchList } from '@/api/student/examnote'
   import { getBatchs } from '@/api/student/batch'
+  import { Message } from 'element-ui'
 
   export default {
     name: 'payment-add',
@@ -299,7 +312,7 @@
           endTime: null,
           condition: ''
         },
-        flag: false,
+        flag: true,
         studentListQuery: {
           page: 1,
           limit: 0,
@@ -326,27 +339,72 @@
           page: 1,
           limit: 0,
           condition: null
+        },
+        stuQuery: {
+          page: 1,
+          limit: 10,
+          totalPage: 1,
+          condition: null
+        },
+        stuList: [],
+        studentListLoading: false
+      }
+    },
+    filters: {
+    },
+    created() {
+      if (this.payOrder) {
+        var payment = {
+          payId: this.payOrder.payId
+        }
+        this.payment.payId = this.payOrder.payId
+        this.pageLevel = this.payOrder.pageLevel
+        if (this.pageLevel === 'info') {
+          this.saveDisabled = true
+          this.getPaymentByPayId(payment)
+          this.flag = false
+        } else if (this.pageLevel === 'edit') {
+          this.getPaymentByPayId(payment)
         }
       }
     },
     computed: {
+      getExamineIcon() {
+        console.log(this.payment.state)
+        // if (this.payment.state === '-2') return '/static/icon/icon-writeoff.png'
+        // if (this.payment.state === '-1') return '/static/icon/icon-fail.png'
+        if (this.payment.state === '1') return '/static/icon/icon-adopt.png'
+        return ''
+      },
       ...mapGetters([
         'permissions',
         'prohibit',
         'client'
       ])
     },
-    filters: {
-    },
-    created() {
-      if (this.payOrder) {
-        this.flag = true
-        this.payment.payId = this.payOrder.payId
-        this.pageLevel = this.payOrder.pageLevel
-        console.log(this.payOrder)
-      }
-    },
     methods: {
+      // 上一单  下一单
+      page(chargeId, direction) {
+        // var pageList = this.studentList
+        var payment = {
+          payId: chargeId,
+          direction: direction
+        }
+        this.getPaymentByPayId(payment)
+        // if (pageList === this.studentList) {
+        //   var msg = direction === 'down' ? '没有下一单了' : '没有上一单了'
+        //   this.$message.error(msg)
+        // }
+      },
+      // 通过支付id到支付信息
+      getPaymentByPayId(query) {
+        getPayment(query).then(response => {
+          this.addList = response.data.data.studentList
+          this.payment = response.data.data
+          this.payment.code = response.data.data.content
+          console.log(response)
+        })
+      },
       payCodeChange(code) {
         if (code) {
           this.payment.money = code.money
@@ -452,9 +510,25 @@
         if (this.source <= 4) {
           this.getBatchList()
         } else if (this.source === 6) {
-          this.getStudentList()
-          this.quoteOpen = true
+          this.getAllStudentList()
         }
+      },
+      nextPage() {
+        if (this.stuQuery.page < this.stuQuery.totalPage) {
+          this.stuQuery.page += 1
+          this.getAllStudentList()
+        } else {
+          Message.error("没有更多了")
+        }
+      },
+      getAllStudentList() {
+        this.studentListLoading = true
+        fetchStudentList(this.stuQuery).then(response => {
+          console.log(response)
+          this.stuQuery.totalPage = response.data.data.totalPage
+          this.stuList = this.stuList.concat(response.data.data.list)
+          this.studentListLoading = false
+        })
       },
       moneyRight(row) {
         // row.showRemark = true
@@ -503,6 +577,7 @@
       },
       // 引用
       quoteExam() {
+        console.log(this.source)
         if (this.quoteStudentList && this.quoteStudentList.length > 0) {
           if (this.payment.code) {
             var that = this
@@ -521,7 +596,11 @@
               })
               addList.push({})
               this.addList = addList
-              this.quoteSource = parseTime(this.batch.examTime, '{y}/{m}/{d}') + this.batch.examField
+              if (this.source === 6) {
+                this.quoteSource = '学员列表'
+              } else if (this.source < 5) {
+                this.quoteSource = parseTime(this.batch.examTime, '{y}/{m}/{d}') + this.batch.examField
+              }
             })
           } else {
             this.addList = [{}]
@@ -542,6 +621,7 @@
           dat.auditor = 'null'
         }
         auditor(dat).then(() => {
+          this.getPaymentByPayId(dat)
           // 刷新当前单据
         })
       },
@@ -603,12 +683,10 @@
       },
       // 创建
       create() {
-        // this.btnLoading = true
-        // addObj(this.payment).then(() => {
-        //   this.btnLoading = false
-        //   this.payment = {}
-        //   this.addList = []
-        // })
+        this.btnLoading = true
+        addObj(this.payment).then(() => {
+          this.btnLoading = false
+        })
         this.payment = {}
         this.addList = []
         this.source = null
@@ -625,65 +703,72 @@
   }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-#payment {
-  .add-header{
-    height: 60px;
-    font-size: 14px;
-    color: #606266;
-    line-height: 34px;
-  }
-  .input-lines{
-    border: none;
-    outline:none;
-    border-bottom: #dcdfe6 1px solid;
-    font-size: 12px;
-    color: #606266;
-    width: 100%;
-    background-color: #f5f7fa;
-  }
+  #payment {
+    .time-lines{
+      border-bottom: #dcdfe6 1px solid;
+    }
+    .add-header{
+      height: 60px;
+      font-size: 14px;
+      color: #606266;
+      line-height: 34px;
+    }
+    .pay-state{
+      width: 150px;
+      position: absolute;
+      top: -60px
+    }
+    .input-lines{
+      border: none;
+      outline:none;
+      border-bottom: #dcdfe6 1px solid;
+      font-size: 12px;
+      color: #606266;
+      width: 100%;
+      background-color: #f5f7fa;
+    }
 
-  .batchCss{
-    background-color: rgba(64,158,255,.1);
-    /*display: inline-block;*/
-    width: 100%;
-    margin: 5px auto;
-    padding: 0 10px;
-    height: 32px;
-    line-height: 30px;
-    font-size: 12px;
-    color: #409eff;
-    border-radius: 4px;
-    box-sizing: border-box;
-    border: 1px solid rgba(64,158,255,.2);
-    white-space: nowrap;
-    cursor: pointer;
-    transition: .1s;
-    box-shadow:3px 3px 10px #f6f6f6;
-  }
-  .batchCss_selected{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
-  }
-  .batchCss:hover{
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
-  }
-  .loading-more{
-    margin-top: 10px;
-    text-align: center;
-    font-size: 12px;
-    i{
+    .batchCss{
+      background-color: rgba(64,158,255,.1);
+      /*display: inline-block;*/
+      width: 100%;
+      margin: 5px auto;
+      padding: 0 10px;
+      height: 32px;
+      line-height: 30px;
+      font-size: 12px;
+      color: #409eff;
+      border-radius: 4px;
+      box-sizing: border-box;
+      border: 1px solid rgba(64,158,255,.2);
+      white-space: nowrap;
       cursor: pointer;
+      transition: .1s;
+      box-shadow:3px 3px 10px #f6f6f6;
     }
-  }
-  .loading-more:hover{
-    i{
-      color: #909399;
+    .batchCss_selected{
+      color: #fff;
+      background-color: #409eff;
+      border-color: #409eff;
     }
+    .batchCss:hover{
+      color: #fff;
+      background-color: #409eff;
+      border-color: #409eff;
+    }
+    .loading-more{
+      margin-top: 10px;
+      text-align: center;
+      font-size: 12px;
+      i{
+        cursor: pointer;
+      }
+    }
+    .loading-more:hover{
+      i{
+        color: #909399;
+      }
+    }
+
   }
-
-
-}
 </style>

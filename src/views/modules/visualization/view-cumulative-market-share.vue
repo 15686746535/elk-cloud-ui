@@ -18,7 +18,7 @@
     <div class="mini-card" >
       <div class="topcard">招生总人数</div>
       <!--<div class="botcard">{{total}}人</div>-->
-      <div class="botcard">76208人</div>
+      <div class="botcard">{{zsrsTotal}}人</div>
     </div>
 
     <div class="enrolment-rank" >
@@ -61,7 +61,7 @@
           <td >累计占有率(%)</td>
           <td v-for='it in percentList'>{{it}}</td>
           <!--<td>{{totalAvg}}</td>-->
-          <td>574</td>
+          <td></td>
         </tr>
         </tbody>
 
@@ -140,8 +140,8 @@
             var fStudent=[];
             var factStudent=res.data.data.factStudent;
             targetStudent=res.data.data.targetStudent;
-            fStudent=res.data.data.factStudent;
             factStudent.forEach(function(v,i) {
+              fStudent.push(v);
               zsrsTotal+=v;
               marketTotal+=targetStudent[i];
               zs=((v/targetStudent[i])*100).toFixed(2);
@@ -151,7 +151,7 @@
               else {martketzyTotal.push((zs));}
               ljwclTotal.push(((zsrsTotal/marketTotal)*100).toFixed(2))
             })
-            _this.zsrslist=factStudent;
+            _this.zsrslist=fStudent;
             _this.marketList=targetStudent;
             _this.zszylList=martketzyTotal;
             _this.zsrsTotal=zsrsTotal;
@@ -161,14 +161,14 @@
 
             index.forEach(function(a,b) {
               var maxmonth=0;
-              fStudent.forEach(function(v,i) {
+              factStudent.forEach(function(v,i) {
                 if(v-maxmonth>0)
                 {
                   maxmonth=v;
                   index[b]=i;
                 }
               })
-              fStudent[index[b]]=0;
+              factStudent[index[b]]=0;
               rank.push(_this.zsmonths[index[b]])
             })
             _this.rankMonth=rank;
@@ -176,7 +176,22 @@
         })
       },
       init() {
-
+        var label={
+          normal: {
+            show: true,
+            position: 'insideBottom',
+            distance: 15,
+            align: 'left',
+            verticalAlign: 'middle',
+            rotate:  90,
+            formatter:  '{name|{c}'+'%'+'}',
+            rich: {
+              name: {
+                textBorderColor: '#fff'
+              }
+            }
+          }
+        }
         var data = {
             xData:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // X轴数据
             yName:'占有率',            // Y轴名字
@@ -187,14 +202,16 @@
                 name:'占有率',
                 type:'bar',
                 stack:'11',
-                color:'#7773ff',
+                label:label,
+                color:'#ffa351',
                 data:this.zszylList//[15,25,40,67,80,88,91,80,99,100,88,99],
               },
               {
                 name:'总占有',
                 type:'bar',
                 stack:'11',
-                color:'#f976c6',
+                label:label,
+                color:'#a2d27f',
                 data:this.percentList//[15,65,80,27,45,88,21,38,72,42,22,41],
               }
             ]

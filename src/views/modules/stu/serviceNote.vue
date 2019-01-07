@@ -1,17 +1,16 @@
 <template>
   <div class="app-container1 calendar-list-container" id="service-note" style="height: 100%;">
     <div class="btn-group">
+      <el-button-group v-if=" pageLevel === 'info'&&pageShow==='bill'">
+        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
+        <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+      </el-button-group>
       <el-button type="primary" size="mini" v-if="pageLevel !== 'info'&&pageShow==='bill'" :loading="btnLoading" @click="saveServiceNote" :disabled="btnDisabled" icon="el-icon-fa-save">保存</el-button>
       <el-button-group v-if="pageShow==='bill'">
         <el-button type="warning" size="mini"  v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine" @click="updateFinaceState(finance.chargeId,'1')" icon="el-icon-share">审核</el-button>
         <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='1'&&permissions.cost_info_examine_back" @click="updateFinaceState(finance.chargeId,'0')" icon="el-icon-refresh">反审核</el-button>
         <el-button type="info" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&finance.type==='1'&&permissions.cost_info_edit" @click="updateFinace" icon="el-icon-edit">修改</el-button>
         <el-button type="danger" size="mini" v-if="pageLevel === 'info'&&finance.state==='0'&&permissions.cost_info_examine_delete" @click="updateFinaceState(finance.chargeId,'-1')" icon="el-icon-delete">作废</el-button>
-      </el-button-group>
-
-      <el-button-group v-if="pageLevel === 'info'&&pageShow==='bill'">
-        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="paging(finance.chargeId,-1)">上一单</el-button>
-        <el-button type="primary" size="mini" @click="paging(finance.chargeId,1)">下一单<i class="el-icon-arrow-right el-icon--right"></i></el-button>
       </el-button-group>
 
       <el-button-group>

@@ -109,7 +109,7 @@ export function subTime(time, cFormat) {
 }
 
 export function parseSerial(value) {
-  var number = '0000'
+  var number = ' '
   if (value) {
     number = '0000' + value
   }

@@ -167,6 +167,14 @@ export function queryRecruitByUser(params) {
     params: params
   })
 }
+//部门人均招生金额
+export function queryOrgIncreseMoney(params) {
+  return request({
+    url: '/visualization/queryOrgIncreseMoney',
+    method: 'get',
+    params: params
+  })
+}
 
 
 

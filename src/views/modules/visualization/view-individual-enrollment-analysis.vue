@@ -25,13 +25,13 @@
           </tbody>
 
         </table>
-        <div v-show="!loading" class="pagination-container" style="margin-top: 20px">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="listQuery.page" background style="float: left"
-                         :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                         layout="total, sizes, prev, pager, next, jumper" :total="total" :pager-count="5">
-          </el-pagination>
-        </div>
+        <!--<div v-show="!loading" class="pagination-container" style="margin-top: 20px">-->
+          <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
+                         <!--:current-page.sync="listQuery.page" background style="float: left"-->
+                         <!--:page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"-->
+                         <!--layout="total, sizes, prev, pager, next, jumper" :total="total" :pager-count="5">-->
+          <!--</el-pagination>-->
+        <!--</div>-->
       </el-row>
     </div>
     <div class="bottom-rank">
@@ -78,7 +78,7 @@
       <echarts :option="option"></echarts>
     </div>
     <div v-if="hasClick" style="min-height: 500px">
-      <el-table :data="detailList" height="370" class="table-detail" >
+      <el-table :data="detailList"  class="table-detail" >
         <el-table-column type="index" label="编号" align="center" width="70"></el-table-column>
         <el-table-column prop="name" label="姓名" show-overflow-tooltip width="70"></el-table-column>
         <el-table-column prop="mobile" label="电话" show-overflow-tooltip></el-table-column>
@@ -97,9 +97,9 @@
   *个人招生分析
   * 页面高度：420px
   * */
-  import Echarts from "@/components/Echarts";
   import { getUserRecruit, queryRecruitByUser } from "@/api/visualization/api";
-  import options from "@/utils/options";
+  import options from "@/utils/options";import Echarts from "@/components/Echarts";
+
 
   export default {
     name: "view-individual-enrollment-analysis",
@@ -137,7 +137,7 @@
           orgId: 4,
           year: 2018,
           page: 1,
-          limit: 10
+          limit: 0
         },
         rankQuery: {
           orgId: 4,
@@ -365,7 +365,7 @@
       /*padding: 0px;*/
       /*margin: 0px;*/
       /*border-width: 0px;*/
-      margin-left: 550px;
+      margin-left: 595px;
       /*right: 0;*/
       top: 0;
       display: flex;
@@ -380,7 +380,7 @@
       overflow: hidden;
       max-width: 380px;
       border-width: 0px;
-      left: 550px;
+      left: 605px;
       top: 10px;
       height: 370px;
       overflow-y: auto;
@@ -388,7 +388,7 @@
 
     .bottom-rank {
       position: absolute;
-      bottom: 10px;
+      bottom: 0;
       width: 600px;
       height: 295px;
       /*overflow: auto;*/

@@ -49,6 +49,7 @@ export const appMap = [
   { id: 20800, desktop: '1', type: '1', pid: 20000, params: [], name: '回访信息', content: _import('modules/stu/revisited'), icon: getIcon('app_stu_revisited'), msgCount: 0, childItem: [] },
   // { id: 80100, desktop: '1', type: '1', pid: 20000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehicle_period'), msgCount: 0, childItem: [] },
   { id: 21000, desktop: '1', type: '1', pid: 20000, params: [], name: '投诉建议', content: _import('modules/stu/complaint'), icon: getIcon('app_stu_complaint'), msgCount: 0, childItem: [] },
+  { id: 22000, desktop: '1', type: '1', pid: 20000, params: [], name: '约车详情', content: _import('modules/stu/bookingcar'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   // 客户公客
   // { id: 30200, desktop: '1', type: '2', pid: 30000, params: { display: 'list' }, name: '意向信息', content: _import('modules/visit/intention'), icon: getIcon('app_visit_intention'), msgCount: 0, childItem: [] },
   // { id: 30201, desktop: '1', type: '2', pid: 30200, params: { display: 'add' }, name: '意向添加', content: _import('modules/visit/intention'), icon: getIcon('app_visit_add'), msgCount: 0, childItem: [] },
@@ -101,7 +102,7 @@ export const appMap = [
   { id: 90100, desktop: '1', type: '9', pid: 99999, params: [], name: '流程设置', content: _import('modules/activiti/model'), icon: getIcon('app_model'), msgCount: 0, childItem: [] },
   { id: 90400, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
   { id: 90401, desktop: '1', type: '9', pid: 99999, params: [], name: '接口文档', content: _import('modules/sys/swagger'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
-  { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-individual-enrollment-analysis'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-org-amount-enrolment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', type: '9', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
 
@@ -109,7 +110,7 @@ export const appMap = [
  * 应用 白名单
  * @type {Array}
  */
-export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801]
+export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801,22000]
 /**
  * 添加
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}

@@ -15,3 +15,4 @@ export function saveBg(bg) {
     data: { bg: bg }
   })
 }
+

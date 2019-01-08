@@ -327,6 +327,12 @@ const options = {
     return option('line',Yname, Xname, Ydata, Xdata, colors, mark, unit);
   },
   /**
+   * 饼状统计图
+   * */
+  pie:function(
+
+  ){},
+  /**
    * 计算同比增长率
    * @param currList
    * @param lastList
@@ -392,8 +398,6 @@ const options = {
     })
     return count;
   },
-
-
 }
 
 export default options

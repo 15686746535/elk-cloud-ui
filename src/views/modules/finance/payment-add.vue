@@ -61,8 +61,11 @@
               </el-col>
 
             </el-row>
-            <div class="seal" v-if="payment.state === '1'||payment.state === '-1'">
-              {{payment.auditor}}<div v-if="payment.state === '-1'" class="state">废</div>
+            <div class="seal" v-if="payment.state === '1'||payment.state === '-1'||payment.state === '-2'">
+              {{payment.auditor}}
+              <div v-if="payment.state === '-1'" class="state">废</div>
+              <div v-if="payment.state === '1'" class="state">审</div>
+              <div v-if="payment.state === '-2'" class="state">冲</div>
             </div>
             <!--<img class="pay-state" v-if="pageLevel === 'info'" :src="getExamineIcon"/>-->
           </el-col>
@@ -100,7 +103,7 @@
               </el-col>
               <el-col :span="17">
                 <div v-if="pageLevel === 'info'">{{payment.mode}}</div>
-                <dict v-else v-model="payment.mode" class="select-lines" size="mini" dictType="dict_mode" style="height: 28px" placeholder=""></dict>
+                <dict v-else @change="dataChange" v-model="payment.mode" class="select-lines" size="mini" dictType="dict_mode" style="height: 28px" placeholder=""></dict>
               </el-col>
             </el-row>
           </el-col>
@@ -131,7 +134,7 @@
           </el-col>
         </el-row>
       </div>
-      <el-table :data="addList" :height="(tableHeight-190)" id="student-table" :cell-class-name="addcellcb"  border highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
+      <el-table :data="addList" :height="(tableHeight-190)" @current-change="rowChange" id="student-table" :cell-class-name="addcellcb"  border highlight-current-row stripe fit v-loading="listLoading" element-loading-text="给我一点时间">
         <el-table-column type="index" align="center" label="行号" width="50"></el-table-column>
 
         <el-table-column align="center" prop="name" label="学员姓名" width="100">
@@ -394,6 +397,9 @@
       ])
     },
     methods: {
+      rowChange() {
+        this.saveDisabled = false
+      },
       dataChange() {
         this.saveDisabled = false
       },
@@ -623,6 +629,7 @@
               } else if (this.source < 5) {
                 this.quoteSource = parseTime(this.batch.examTime, '{y}/{m}/{d}') + this.batch.examField
               }
+              this.saveDisabled = false
             })
           } else {
             this.addList = [{}]
@@ -736,9 +743,10 @@
       font-size: 25px;
       font-weight: 900;
       padding-left: 13px;
-      letter-spacing:8px;
+      letter-spacing:6px;
       position: absolute;
       z-index: 100;
+      text-align: center;
       top: 9px;
       right: 88px;
       transform:rotate(-23deg);
@@ -751,7 +759,7 @@
       border: #d81e06 solid 2px;
       width: 35px;
       height: 34px;
-      font-size: 22px;
+      font-size: 25px;
       font-weight: 800;
       display: block;
       float: right;
@@ -759,7 +767,7 @@
       line-height: 27px;
       margin-right: 2px;
       border-radius: 50%;
-      padding-left: 4px;
+      padding-left: 3px;
       text-align: center;
     }
     .time-lines{

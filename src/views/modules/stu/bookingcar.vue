@@ -1,42 +1,41 @@
 <template>
   <div class="" style="height: 100%;padding: 5px" >
     <el-card style="height: 100%;">
-      <el-table border :data="stuList" empty-text="暂无数据" v-loading="studentListLoading"  @select="selectRow" @select-all="selectRow"
-                :height="pageHeight - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">
-        <el-table-column type="index" fixed label="序号"  align="center" width="50"></el-table-column>
-
-
-        <el-table-column align="center"  fixed  label="教练" width="100">
-          <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="日期" width="100">
-          <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="时间" width="100">
-          <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column type="expand"  label="已约学员" width="auto">
+      <el-table border :data="list" empty-text="暂无数据" v-loading="studentListLoading"  @select="selectRow" @select-all="selectRow"
+                :height="pageHeight - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;" >
+        <el-table-column type="index" fixed label="序号"  align="center" width="100"></el-table-column>
+        <el-table-column type="expand" fixed label="已约学员" width="auto" >
           <template slot-scope="props">
-            <el-table>
+            <el-table border :data="props.row.stu">
+              <el-table-column align="center"  fixed  label="时间" width="auto" >
+                <template slot-scope="scope">
+                  <span>{{scope.row.begin}}-{{scope.row.end}}</span>
+                </template>
+              </el-table-column>
               <el-table-column align="center"  fixed  label="姓名" width="auto" >
                 <template slot-scope="scope">
-                  <span>1234</span>
+                  <span>{{scope.row.name}}</span>
                 </template>
               </el-table-column>
               <el-table-column align="center" label="电话" width="auto">
                 <template slot-scope="scope">
-                  <span>123</span>
+                  <span>{{scope.row.mobile}}</span>
                 </template>
               </el-table-column>
             </el-table>
           </template>
         </el-table-column>
+        <el-table-column align="center"  fixed  label="教练" width="auto" >
+          <template slot-scope="scope">
+            <span>{{scope.row.coach.name}}</span>
+          </template>
+        </el-table-column >
+        <el-table-column align="center"  fixed  label="日期" width="auto">
+          <template slot-scope="scope">
+            <span>{{scope.row.coach.t}}</span>
+          </template>
+        </el-table-column>
+
       </el-table>
       <div class="pagination-container" style="margin-top: 15px;">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -52,42 +51,30 @@
 </template>
 
 <script>
-  import { updateCoach } from '@/api/student/examnote'
+  import { getAllTrainList } from '@/api/student/examnote'
   import { mapGetters } from 'vuex'
-  import Coach from '@/components/Coach'
-  import { fetchStudentList } from '@/api/student/student'
+  // import Coach from '@/components/Coach'
+  // import { fetchStudentList } from '@/api/student/student'
 
   export default {
     name: 'table_batch',
     components: {
-      Coach
+      // Coach
     },
     data() {
       return {
+        list:[],
+        coachList: [],
         stuList: [],
         studentTotal: 0,
         studentListLoading: false,
         studentListQuery: {
           page: 1,
           limit: 20,
-          fieldCoach: null,
-          roadCoach: null,
-          subject: null,
-          condition: null,
-          motorcycleType:null
         },
-        motorcycleType: [
-          { value: 1, label: 'C1' },
-          { value: 2, label: 'C2' },
-        ],
         open: false,
         pageHeight: this.area[1],
         pageWidth: this.area[0],
-        stuCoach: {
-          roadCoach: null,
-          fieldCoach: null,
-          stuList: []
-        },
         btnLoading: false
       }
     },
@@ -112,39 +99,21 @@
     },
     methods: {
       getList() {
-        this.studentListLoading = true
-        var query = this.studentListQuery
-        if (query.subject === '') {
-          query.subject = null
-        }
-        if (query.condition === '') {
-          query.condition = null
-        }
-        fetchStudentList(query).then(response => {
+
+        getAllTrainList(this.studentListQuery).then(response => {
           if (response.data.code === 0) {
-            this.stuList = response.data.data.list
-            this.studentTotal = response.data.data.totalCount
+            console.log("********",response)
+            var sutList=[];
+            this.list = response.data.data.data.list;
+            this.studentTotal = response.data.data.data.totalCount;
+            // this.list.forEach(function(v,i) {
+            //   console.log("%%%%%%",v.stu);
+            //   sutList.push(v.stu);
+            // })
+            // this.stuList=sutList;
             this.studentListLoading = false
           }
         })
-      },
-      openCoach() {
-        if (this.stuCoach.stuList && this.stuCoach.stuList.length > 0) {
-          this.open = true
-        } else {
-          this.$message.error('请选择学员!')
-        }
-      },
-      updateCoach() {
-        if (this.stuCoach.roadCoach || this.stuCoach.fieldCoach) {
-          updateCoach(this.stuCoach).then(() => {
-            this.getList()
-            this.open = false
-            this.btnLoading = false
-          })
-        } else {
-          this.$message.error('请选择教练!')
-        }
       },
       selectRow(selection) {
         var stuList = []
@@ -154,6 +123,10 @@
           })
         }
         this.stuCoach.stuList = stuList
+      },
+      viewStudent(row, event, column){
+        // console.log("qweqweq")
+        console.log("@@@",row, event, column)
       },
       /* 分页插件方法 */
       handleSizeChange(val) {

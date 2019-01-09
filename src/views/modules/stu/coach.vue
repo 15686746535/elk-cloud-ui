@@ -13,12 +13,21 @@
           </el-option>
         </el-select>
         <el-input @keyup.enter.native="searchClick" size="mini" placeholder="姓名/电话/身份证" v-model="studentListQuery.condition" style="width: 150px;"></el-input>
-        <el-select size="mini" style="width: 150px" v-model="studentListQuery.subject" clearable filterable placeholder="车型">
+        <!--<el-select size="mini" style="width: 150px" v-model="studentListQuery.subject" clearable filterable placeholder="车型">-->
+          <!--<el-option-->
+            <!--v-for="item in motorcycleType"-->
+            <!--:key="item.value"-->
+            <!--:label="item.label"-->
+            <!--:value="item.value">-->
+          <!--</el-option>-->
+        <!--</el-select>-->
+        <el-select style="width: 150px" size="mini" v-model="studentListQuery.motorcycleType" clearable filterable
+                   placeholder="车型">
           <el-option
-            v-for="item in motorcycleType"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in $store.state.app.motorcycleType"
+            :key="item"
+            :label="item"
+            :value="item">
           </el-option>
         </el-select>
         <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>

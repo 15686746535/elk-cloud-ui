@@ -175,6 +175,14 @@ export function queryOrgIncreseMoney(params) {
     params: params
   })
 }
+//部门招生人数
+export function queryDeptRecuritByOrgId(params) {
+  return request({
+    url: '/visualization/queryDeptRecuritByOrgId',
+    method: 'get',
+    params: params
+  })
+}
 
 
 

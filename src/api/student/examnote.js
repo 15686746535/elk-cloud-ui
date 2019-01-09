@@ -81,3 +81,12 @@ export function exportAchievement(query) {
     responseType: 'arraybuffer'
   })
 }
+
+/* 获取教练的学员约车记录 */
+  export function getAllTrainList(params) {
+    return request({
+      url: '/visualization/getAllTrainList',
+      method: 'get',
+      params: params
+    })
+  }

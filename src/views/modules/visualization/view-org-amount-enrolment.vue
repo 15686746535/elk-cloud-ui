@@ -9,6 +9,10 @@
         </div>
       </el-row>
 
+      <div  style="position: absolute;right: 0;top:100px; width: 120px;height: 115px;" >
+        <pie-chart :data="pieData" width="100px" height="120px" ></pie-chart>
+      </div>
+
       <el-row class="main-table">
         <table>
           <thead>
@@ -115,12 +119,13 @@
   * 页面高度：520px
   * */
   import Echarts from '@/components/Echarts';
-  import {queryAmountRate} from '@/api/visualization/api'
+  import PieChart from '@/components/PieChart'
+  import {queryDeptRecuritByOrgId} from '@/api/visualization/api'
   import options from  '@/utils/options'
   export default {
     name: "view-org-amount-enrolment",
     components: {
-      Echarts
+      Echarts,PieChart
     },
     props: {
       params: {
@@ -138,13 +143,38 @@
         list:[34,12,56,78,36.98,45,11,4,78,45,66],
         ranks:["","",""],
         option:null,
+        pieData: {
+          name: '',
+          legend: [],
+          value: []
+        },
+        listQuery:{
+          orgId:4,
+          year:2018
+        }
       };
     },
     created() {
       this.init();
+      this.getList();
     },
     methods: {
       getList(){
+        // queryDeptRecuritByOrgId(this.listQuery).then(res=>{
+        //   if(res.data.code==0){
+        //
+        //   }
+        // })
+
+
+        this.pieData = {
+          name: '通过率',
+          legend: ['通过人数', '失败人数'],
+          value: [
+            { name: '通过人数', value: 1, selected: true },
+            { name: '失败人数', value: 2 }
+          ]
+        }
       },
       init() {
         var label={
@@ -158,6 +188,7 @@
             formatter:  '{name|{c}'+'人'+'}',
             rich: {
               name: {
+                // color:'#000',
                 textBorderColor: '#fff'
               }
             }

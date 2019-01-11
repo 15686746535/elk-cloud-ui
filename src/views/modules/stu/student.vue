@@ -561,6 +561,9 @@
                 </el-button>
               </div>
               <div v-if="!edit" style="float: right;margin-bottom: 10px;">
+                 <el-button type="primary" size="mini" @click="cancelBindMobile"  
+                           v-if="permissions.stu_student_update" icon="el-icon-mobile-phone">修改小程序绑定
+                </el-button>
                 <el-button type="primary" size="mini" @click="dialogFormVisible  = true"
                            v-if="permissions.stu_student_update" icon="el-icon-edit">状态修改
                 </el-button>
@@ -1276,7 +1279,7 @@
   import { mapGetters } from "vuex";
   import {
     fetchStudentList, getStudent, saveStudent, putStudent, isExistence, exportStudent, getIntention, push122,
-    getFinanceByStudentId, quaryCourseList, supervisePush, superviseInfo, editSubState
+    getFinanceByStudentId, quaryCourseList, supervisePush, superviseInfo, editSubState,bindWechartUser
   } from "@/api/student/student";
   import { examFetchList, batchSave } from "@/api/student/examnote";
   import { getBatchList } from "@/api/student/batch";
@@ -2481,6 +2484,30 @@
             this.$store.dispatch("removeProhibit", this.layerid);
           });
         }
+      },
+      cancelBindMobile(){
+        this.$prompt('修改手机号', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern:  /^1\d{10}$/,
+          inputValue:this.student.mobile,
+          inputErrorMessage: '手机号码格式不正确'
+        }).then(({ value }) => {
+          bindWechartUser(value).then(res=>{
+            if(res.data.code==0){
+              this.$message({
+            type: 'success',
+            message: '修改成功！'
+          });
+            }
+          })          
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });       
+        });
+       
       }
     }
   };

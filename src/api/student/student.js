@@ -119,3 +119,11 @@ export function quaryCourseList(id) {
   })
 }
 
+/* 修改学员微信绑定的手机号 */
+export function bindWechartUser(id) {
+  return request({
+    url: '/stu/student/bindWechartUser/' + id,
+    method: 'get'
+  })
+}
+

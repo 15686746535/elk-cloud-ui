@@ -83,10 +83,10 @@ export function exportAchievement(query) {
 }
 
 /* 获取教练的学员约车记录 */
-  export function getAllTrainList(params) {
-    return request({
-      url: '/visualization/getAllTrainList',
-      method: 'get',
-      params: params
-    })
-  }
+export function getAllTrainList(params) {
+  return request({
+    url: '/visualization/getAllTrainList',
+    method: 'get',
+    params: params
+  })
+}

@@ -19,43 +19,43 @@
           <tr>
             <th>部门招生量</th>
             <th v-for='item in months'>{{item}}月</th>
-            <th>累计占比</th>
+            <!--<th>累计占比</th>-->
           </tr>
           </thead>
           <tbody>
           <tr>
-            <td title="市场部(人)" >市场部(人)</td>
-            <td v-for='it in months'>{{it}}</td>
+            <td title="市场部(人)" >培训部(人)</td>
+            <td v-for='it in shichangbu'>{{it}}</td>
             <!--<th>{{sum(lastList)}}</th>-->
-            <td>1</td>
+            <!--<td>1</td>-->
           </tr>
           <tr>
-            <td title="培训部(人)" >培训部(人)</td>
-            <td v-for='it in months'>{{it}}</td>
+            <td title="培训部(人)" >市场部(人)</td>
+            <td v-for='it in peixunbu'>{{it}}</td>
             <!--<th>{{sum(lastList)}}</th>-->
-            <td>1</td>
+            <!--<td>1</td>-->
           </tr>
           <tr>
-            <td title="信息中心(人)" style="min-width: 105px;overflow: hidden;white-space:nowrap">信息中心(人)</td>
-            <td v-for='it in months'>{{it}}</td>
+            <td title="办公室(人)" style="min-width: 105px;overflow: hidden;white-space:nowrap">办公室(人)</td>
+            <td v-for='it in bangongshi'>{{it}}</td>
             <!--<th>{{sum(lastList)}}</th>-->
-            <td>1</td>
+            <!--<td>1</td>-->
           </tr>
           <tr>
-            <td title="网销部(人)" >网销部(人)</td>
-            <td v-for='it in months'>{{it}}</td>
+            <td title="财务部(人)" >财务部(人)</td>
+            <td v-for='it in caiwubu'>{{it}}</td>
             <!--<th>{{sum(currList)}}</th>-->
-            <td>1</td>
+            <!--<td>1</td>-->
           </tr>
           <tr>
-            <td title="其他校区(人)">其他校区(人)</td>
-            <td v-for='it in months'>{{it}}</td>
-            <td>1</td>
+            <td title="校区人事(人)">校区人事(人)</td>
+            <td v-for='it in xiaoqurenshi'>{{it}}</td>
+            <!--<td>1</td>-->
           </tr>
           <tr>
-            <td title="其他来源(人)">其他来源(人)</td>
-            <td v-for='it in months'>{{it}}</td>
-            <td>1</td>
+            <td title="校区负责(人)">校区负责(人)</td>
+            <td v-for='it in xiaoqufuze'>{{it}}</td>
+            <!--<td>1</td>-->
           </tr>
           </tbody>
 
@@ -142,6 +142,13 @@
         months: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
         list:[34,12,56,78,36.98,45,11,4,78,45,66],
         ranks:["","",""],
+       peixunbu:[],
+       shichangbu:[],
+       bangongshi:[],
+       caiwubu:[],
+       xiaoqurenshi:[],
+       xiaoqufuze:[],
+        totalnum:0,
         option:null,
         pieData: {
           name: '',
@@ -160,21 +167,75 @@
     },
     methods: {
       getList(){
-        // queryDeptRecuritByOrgId(this.listQuery).then(res=>{
-        //   if(res.data.code==0){
-        //
-        //   }
-        // })
+        let _this=this;
+        queryDeptRecuritByOrgId(this.listQuery).then(res=>{
+          if(res.data.code==0){
+           var peixunbu=[];
+            var  shichangbu=[];
+             var bangongshi=[];
+            var  caiwubu=[];
+             var xiaoqurenshi=[];
+             var xiaoqufuze=[];
+             var total=0;
+             var totalarr=[];
+            console.log("!!!!!!!!!",res.data.data)
+            res.data.data.forEach(function(e,v) {
+              if(e.name=="培训部"){
+               peixunbu=e.deptRecutitList;
+                e.deptRecutitList.forEach(i=>{
+                  total+=i;
+                })
+
+              }
+               if(e.name=="市场部"){
+                 shichangbu=e.deptRecutitList;
+                 e.deptRecutitList.forEach(i=>{
+                   total+=i;
+                 })
+                 console.log("peixunbu",shichangbu)
+              } if(e.name=="办公室"){
+                 bangongshi=e.deptRecutitList;
+                e.deptRecutitList.forEach(i=>{
+                  total+=i;
+                })
+              }if(e.name=="财务部"){
+                caiwubu=e.deptRecutitList;
+                e.deptRecutitList.forEach(i=>{
+                  total+=i;
+                })
+              }if(e.name=="校区人事"){
+                xiaoqurenshi=e.deptRecutitList;
+                e.deptRecutitList.forEach(i=>{
+                  total+=i;
+                })
+              }if(e.name=="校区负责"){
+                xiaoqufuze=e.deptRecutitList;
+                e.deptRecutitList.forEach(i=>{
+                  total+=i;
+                })
+              }
+            })
+            _this.peixunbu=peixunbu;
+            this.shichangbu=shichangbu;
+            this.bangongshi=bangongshi;
+            this.caiwubu=caiwubu;
+            this.xiaoqurenshi=xiaoqurenshi;
+            this.xiaoqufuze=xiaoqufuze;
+            this.totalnum=total
+            console.log("$$$$",_this.totalnum)
+            this.init();
+          }
+        })
 
 
-        this.pieData = {
-          name: '通过率',
-          legend: ['通过人数', '失败人数'],
-          value: [
-            { name: '通过人数', value: 1, selected: true },
-            { name: '失败人数', value: 2 }
-          ]
-        }
+        // this.pieData = {
+        //   name: '通过率',
+        //   legend: ['通过人数', '失败人数'],
+        //   value: [
+        //     { name: '通过人数', value: 1, selected: true },
+        //     { name: '失败人数', value: 2 }
+        //   ]
+        // }
       },
       init() {
         var label={
@@ -206,7 +267,7 @@
               stack:'11',
               label:label,
               color:'#7773ff',
-              data:this.list//[15,25,40,67,80,88,91,80,99,100,88,99],
+              data:this.shichangbu//[15,25,40,67,80,88,91,80,99,100,88,99],
             },
             {
               name:'培训部',
@@ -214,7 +275,7 @@
               stack:'11',
               label:label,
               color:'#f976c6',
-              data:this.list//[17,65,80,27,45,88,21,38,72,42,22,41],
+              data:this.peixunbu//[17,65,80,27,45,88,21,38,72,42,22,41],
             },
             {
               name:'服务中心',
@@ -222,7 +283,7 @@
               stack:'11',
               label:label,
               color:'#ffa351',
-              data:this.list//[17,65,80,27,45,88,21,38,72,42,22,41],
+              data:this.bangongshi//[17,65,80,27,45,88,21,38,72,42,22,41],
             },
             {
               name:'网销部',
@@ -230,7 +291,7 @@
               stack:'11',
               label:label,
               color:'#fe8888',
-              data:this.list//[17,65,80,27,45,88,21,38,72,42,22,41],
+              data:this.caiwubu//[17,65,80,27,45,88,21,38,72,42,22,41],
             },
             {
               name:'其他校区',
@@ -238,7 +299,7 @@
               stack:'11',
               label:label,
               color:'#7773ff',
-              data:this.list//[17,65,80,27,45,88,21,38,72,42,22,41],
+              data:this.xiaoqurenshi//[17,65,80,27,45,88,21,38,72,42,22,41],
             },
             {
               name:'其他来源',
@@ -246,7 +307,7 @@
               stack:'11',
               label:label,
               color:'#a2d27f',
-              data:this.list//[17,65,80,27,45,88,21,38,72,42,22,41],
+              data:this.xiaoqufuze//[17,65,80,27,45,88,21,38,72,42,22,41],
             }
           ]
         }

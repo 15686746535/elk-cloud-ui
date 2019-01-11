@@ -1,7 +1,7 @@
 <template>
   <div class="" style="height: 100%;padding: 5px" >
     <el-card style="height: 100%;">
-      <el-table border :data="list" empty-text="暂无数据" v-loading="studentListLoading"  @select="selectRow" @select-all="selectRow"
+      <el-table  :data="list" empty-text="暂无数据" v-loading="studentListLoading"  @select="selectRow" @select-all="selectRow"
                 :height="pageHeight - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;" >
         <el-table-column type="index" fixed label="序号"  align="center" width="100"></el-table-column>
         <el-table-column type="expand" fixed label="已约学员" width="auto" >
@@ -102,7 +102,6 @@
 
         getAllTrainList(this.studentListQuery).then(response => {
           if (response.data.code === 0) {
-            console.log("********",response)
             var sutList=[];
             this.list = response.data.data.data.list;
             this.studentTotal = response.data.data.data.totalCount;

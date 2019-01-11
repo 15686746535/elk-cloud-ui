@@ -73,3 +73,11 @@ export function fetchRoleTree(roleName) {
     method: 'get'
   })
 }
+
+export function findWorkMobile(params) {
+  return request({
+    url: '/upms/user/findWorkMobile',
+    method: 'get',
+    params: params
+  })
+}

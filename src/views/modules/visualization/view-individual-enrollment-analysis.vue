@@ -15,7 +15,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for='(it,i) in dataList'>
+          <tr v-for='(it,i) in dataList '>
             <td title="员工姓名" style="min-width: 105px;overflow: hidden;white-space:nowrap"
                 @click="getDetail(it.userId,i)">{{it.name}}
             </td>
@@ -25,14 +25,26 @@
           </tbody>
 
         </table>
-        <!--<div v-show="!loading" class="pagination-container" style="margin-top: 20px">-->
-          <!--<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
-                         <!--:current-page.sync="listQuery.page" background style="float: left"-->
-                         <!--:page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"-->
-                         <!--layout="total, sizes, prev, pager, next, jumper" :total="total" :pager-count="5">-->
-          <!--</el-pagination>-->
-        <!--</div>-->
+        <div v-show="!loading" class="pagination-container" style="margin-top: 20px">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                         :current-page.sync="listQuery.page" background style="float: left"
+                         :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                         layout="total, sizes, prev, pager, next, jumper" :total="total">
+          </el-pagination>
+        </div>
       </el-row>
+      <div  class="echart">
+        <echarts :option="option"></echarts>
+      </div>
+      <div v-if="hasClick" style="margin-left: 800px;">
+        <el-table :data="detailList" class="table-detail" >
+          <el-table-column type="index" label="编号" align="center" width="70"></el-table-column>
+          <el-table-column prop="name" label="姓名" show-overflow-tooltip width="70"></el-table-column>
+          <el-table-column prop="mobile" label="电话" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="enrolTime" label="入学日期" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="motorcycleType" label="车型" show-overflow-tooltip width="50"></el-table-column>
+        </el-table>
+      </div>
     </div>
     <div class="bottom-rank">
       <div class="enrolment-table" style="bottom: 81px;">
@@ -73,23 +85,7 @@
         </table>
       </div>
     </div>
-
-    <div  class="echart">
-      <echarts :option="option"></echarts>
-    </div>
-    <div v-if="hasClick" style="min-height: 500px">
-      <el-table :data="detailList"  class="table-detail" >
-        <el-table-column type="index" label="编号" align="center" width="70"></el-table-column>
-        <el-table-column prop="name" label="姓名" show-overflow-tooltip width="70"></el-table-column>
-        <el-table-column prop="mobile" label="电话" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="enrolTime" label="入学日期" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="motorcycleType" label="车型" show-overflow-tooltip width="50"></el-table-column>
-      </el-table>
-    </div>
-    </div>
-
-
-
+  </div>
 </template>
 
 <script>
@@ -97,9 +93,9 @@
   *个人招生分析
   * 页面高度：420px
   * */
+  import Echarts from "@/components/Echarts";
   import { getUserRecruit, queryRecruitByUser } from "@/api/visualization/api";
-  import options from "@/utils/options";import Echarts from "@/components/Echarts";
-
+  import options from "@/utils/options";
 
   export default {
     name: "view-individual-enrollment-analysis",
@@ -137,7 +133,7 @@
           orgId: 4,
           year: 2018,
           page: 1,
-          limit: 0
+          limit: 10
         },
         rankQuery: {
           orgId: 4,
@@ -209,7 +205,6 @@
           yName: "人数",            // Y轴名字
           unit: "人",               // 单位
           mark: 6,                // 平均线
-          hid:true,
           series: [                 // 图形集合
             {
               name: "人数",
@@ -217,8 +212,7 @@
               smooth: false,
               lineWidth: 3,
               color: "#A4D482",
-              data: this.zsList,//[15, 20, 10, 13, 9, 20, 8, 12, 21, 4, 6, 26]  //this.detailList[this.ids].num||
-
+              data: this.zsList//[15, 20, 10, 13, 9, 20, 8, 12, 21, 4, 6, 26]  //this.detailList[this.ids].num||
             }
           ]
         };
@@ -237,7 +231,7 @@
         var data = new Date();
         var year = data.getFullYear();
         data.setMonth(data.getMonth() + 1, 1);//获取到当前月份,设置月份
-        var m=data.getMonth()+11;
+        var m=data.getMonth();
         for(var i=1;i<=m;i++){
           dataArr.push(i);
           this.dataMonth.push(i)
@@ -289,7 +283,7 @@
   $DDD: #ddd;
   .view-enrolment {
     height: 700px;
-    overflow: hidden;
+
     .enrolment-table {
       position: absolute;
       bottom: 0;
@@ -350,50 +344,56 @@
     }
 
     .half-right {
-      height: 650px;
-      width: 130px;
-      overflow: hidden;
+      position: relative;
+      right: 5px;
+
+      .detial-table {
+        position: absolute;
+        width: 100px;
+        top: 200px;
+        right: 220px;
+      }
 
 
     }
+
     .echart {
-      /*position: absolute;*/
-      /*overflow: hidden;*/
+      position: absolute;
+      overflow: hidden;
       width: 330px;
       height: 180px;
-      overflow: hidden;
       /*padding: 0px;*/
       /*margin: 0px;*/
-      /*border-width: 0px;*/
-      margin-left: 595px;
-      /*right: 0;*/
+      border-width: 0px;
+      margin-left: 10px;
+      right: 0;
       top: 0;
-      display: flex;
-      overflow-x:hidden;
+      /*overflow-x:auto;*/
+    }
+
+    .bottom-rank {
+      position: absolute;
+      bottom: 10px;
+      width: 600px;
+      height: 295px;
+      /*overflow: auto;*/
+      overflow-x: auto;
     }
 
     .table-detail {
       .table-detail.el-table th {
         background-color: #3f5c6d2c!important;
       }
-      position: relative;
+      position: absolute;
       overflow: hidden;
-      max-width: 380px;
+      width: 380px;
       border-width: 0px;
-      left: 605px;
-      top: 10px;
-      height: 370px;
-      overflow-y: auto;
+      margin-left: 10px;
+      right: 0;
+      top: 240px;
+      overflow-y: paged-y;
     }
 
-    .bottom-rank {
-      position: absolute;
-      bottom: 0;
-      width: 600px;
-      height: 295px;
-      /*overflow: auto;*/
-      overflow-x: auto;
-    }
 
   }
 </style>

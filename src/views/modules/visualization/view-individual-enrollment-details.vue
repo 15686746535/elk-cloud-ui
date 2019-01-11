@@ -12,7 +12,7 @@
         <!--</div>-->
       </div>
       <!-- 表格 -->
-      <el-table :data="list" v-loading="loading" border=""  show-summary fit highlight-current-row element-loading-text="给我一点时间"style="width: 100%">
+      <el-table :data="list" v-loading="loading" border=""  show-summary fit highlight-current-row element-loading-text="给我一点时间" style="width: 100%">
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
         <el-table-column prop="name"  label="销售员姓名" width="70">
         </el-table-column>

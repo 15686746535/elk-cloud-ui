@@ -61,6 +61,7 @@ export const appMap = [
   { id: 50100, desktop: '1', type: '3', pid: 50000, params: [], name: '车辆信息', content: _import('modules/vehicle/car'), icon: getIcon('app_car'), msgCount: 0, childItem: [] },
   // 人力资源
   { id: 60100, desktop: '1', type: '4', pid: 60000, params: [], name: '同事信息', content: _import('modules/upms/user'), icon: getIcon('app_user'), msgCount: 0, childItem: [] },
+  { id: 60500, desktop: '1', type: '4', pid: 60000, params: [], name: '工作号管理', content: _import('modules/upms/phonebook'), icon: getIcon('app_user'), msgCount: 0, childItem: [] },
   { id: 60400, desktop: '1', type: '4', pid: 60000, params: [], name: '离职同事', content: _import('modules/upms/quitUser'), icon: getIcon('app_quit_user'), msgCount: 0, childItem: [] },
   { id: 60200, desktop: '1', type: '4', pid: 60000, params: [], name: '部门设置', content: _import('modules/upms/org'), icon: getIcon('app_org'), msgCount: 0, childItem: [] },
   { id: 60300, desktop: '1', type: '4', pid: 60000, params: [], name: '职位设置', content: _import('modules/upms/role'), icon: getIcon('app_role'), msgCount: 0, childItem: [] },
@@ -103,6 +104,7 @@ export const appMap = [
   { id: 90400, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
   { id: 90401, desktop: '1', type: '9', pid: 99999, params: [], name: '接口文档', content: _import('modules/sys/swagger'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-org-amount-enrolment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90403, desktop: '1', type: '9', pid: 99999, params: [], name: '学员管理测试', content: _import('modules/newMenu/studentMange'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', type: '9', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
 
@@ -110,7 +112,7 @@ export const appMap = [
  * 应用 白名单
  * @type {Array}
  */
-export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801,22000]
+export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801, 22000, 90403, 60500]
 /**
  * 添加
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}

@@ -97,10 +97,10 @@ export function deleteWorkMobile(obj) {
     data: obj
   })
 }
-export function saveWorkMobile(obj) {
+export function saveWorkMobile(phonenum) {
   return request({
-    url: '/upms/user/saveWorkMobile',
-    method: 'post',
-    data: obj
+    url: '/upms/user/saveWorkMobile/'+phonenum,
+    method: 'get',
+    // data: params
   })
 }

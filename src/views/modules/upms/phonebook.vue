@@ -141,8 +141,10 @@
           inputPattern:  /^1\d{10}$/,
           inputErrorMessage: '号码格式不正确'
         }).then(({ value }) => {
+          console.log("手机号码",typeof(value),value)
           saveWorkMobile(value).then(res=>{
             if(res.data.code==0){
+              this.getMobileList();
               this.$message({
                 type: 'success',
                 message: '添加成功！'

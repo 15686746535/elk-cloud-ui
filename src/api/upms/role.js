@@ -81,3 +81,26 @@ export function findWorkMobile(params) {
     params: params
   })
 }
+
+export function batchAddMoblie(obj) {
+  return request({
+    url: '/upms/user/batchAddMobile',
+    method: 'post',
+    data: obj
+  })
+}
+
+export function deleteWorkMobile(obj) {
+  return request({
+    url: '/upms/user/deleteWorkMobile',
+    method: 'post',
+    data: obj
+  })
+}
+export function saveWorkMobile(obj) {
+  return request({
+    url: '/upms/user/saveWorkMobile',
+    method: 'post',
+    data: obj
+  })
+}

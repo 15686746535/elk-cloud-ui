@@ -1,8 +1,8 @@
 <template>
   <el-card>
     <input type="file" @change="getFile" ref="fileInput"/>
-    <el-button type="primary" icon="el-icon-circle-plus" @click="pushPhoneNumList">导入</el-button>
-    <el-button type="primary" icon="el-icon-circle-plus" @click="addPhoneNum">单条添加</el-button>
+    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="pushPhoneNumList">导入</el-button>
+    <el-button type="primary" icon="el-icon-plus" @click="addPhoneNum">单条添加</el-button>
     <el-button type="primary" icon="el-icon-delete" @click="deleteNumList">删除号码</el-button>
     <el-table :data="list" empty-text="暂无数据" v-loading="listLoading" :height="pageHeight - 190" :stripe="true"
               @selection-change="deletePhoneNumList"

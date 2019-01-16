@@ -40,7 +40,7 @@
 
               <el-form-item>
                 <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-                  登陆
+                  登录
                 </el-button>
               </el-form-item>
             </el-form>

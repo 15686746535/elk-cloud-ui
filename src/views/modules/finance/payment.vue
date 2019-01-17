@@ -18,6 +18,7 @@
           <el-button size="mini" type="info" v-if="payment&&payment.state==1&&permissions.finance_payment_auditor_contrary" @click="auditorHandle(payment.payId,0)"  icon="el-icon-refresh">反审核</el-button>
           <el-button size="mini" type="info" v-if="payment&&payment.state==0&&permissions.finance_payment_edit" @click="openPayment(payment,'edit')" icon="el-icon-edit">修改</el-button>
           <el-button size="mini" type="danger" v-if="payment&&payment.state==0&&permissions.finance_payment_delete" @click="auditorHandle(payment.payId,-1)" icon="el-icon-delete">作废</el-button>
+          <el-button size="mini" type="primary" v-if="payment&&payment.state==0&&permissions.finance_payment_delete"  @click="copyData(payment,'copy')" icon="el-icon-tickets">复制</el-button>
           <!--<el-button size="mini" type="primary" @click="download" :loading="downloadLading"  icon="el-icon-download">导出</el-button>-->
         </el-button-group>
       </div>
@@ -230,6 +231,27 @@
       handleCurrentChange(val) {
         this.listQuery.page = val
         this.getList()
+      },
+      //复制单据
+      copyData(row, copy){
+        var payment = {
+          payId: row.payId,
+          pageLevel: copy
+        }
+        this.$layer.open({
+          type: 2,
+          id: row.payId + '_cost', // title
+          title: '付费详情', // title
+          shadeClose: false, // 点击遮罩关闭
+          prohibit: this.$store.state.app.prohibit,
+          tabIcon: '../../../static/icon/app/app_default.png', // 应用图标 任务栏显示
+          shade: false, // 遮罩 默认不显示
+          content: {
+            content: paymentAdd,
+            parent: this, // 当前的vue对象
+            data: { payOrder: payment }// props
+          }
+        })
       }
     }
   }

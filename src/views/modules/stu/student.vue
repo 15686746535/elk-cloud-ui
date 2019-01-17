@@ -2172,6 +2172,7 @@
         this.listQuery.page = 1;
         this.examTimeBlur();
         this.listQuery.condition = removeAllSpace(this.listQuery.condition);
+        console.log("listquery",this.listQuery.condition)
         this.getList();
       },
       generateInfo() {

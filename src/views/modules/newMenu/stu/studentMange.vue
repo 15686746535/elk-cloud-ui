@@ -36,39 +36,48 @@
       <!--</el-row>-->
 
     <!--</div>-->
+    <div class="top-bar">
+    <div style="position: relative;width: 100%">
+      <div style="position: absolute;left: 0;top: 0;width: 80%;height: 50px;margin-top: 10px">
+        <el-date-picker value-format="timestamp" type="daterange" align="left" range-separator="-"
+                        start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+        </el-date-picker>
+        <el-select v-model="testvalue" placeholder="科目" style="width:150px;margin-left: 15px;">
+          <el-option
+            v-for="item in kemu"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-select v-model="testvalue" placeholder="入学校区" style="width:150px;margin-left: 15px">
+          <el-option
+            v-for="item in camps"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
+          <el-option
+            v-for="item in camps"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button type="text" style="float: right">展开</el-button>
+        <!--<a data-toggle="collapse" href="#collapseOne">展开</a>-->
+
+      </div>
+      <div style="position: absolute;right: 0;top: 0;width: 10%;height: 50px;">
+        <el-button icon="el-icon-search" type="danger" @click="serachbt">搜索</el-button>
+      </div>
+
+    </div>
     <el-collapse accordion>
       <el-collapse-item>
         <template slot="title">
-          <el-date-picker value-format="timestamp" type="daterange" align="left" range-separator="-"
-                          start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
-          </el-date-picker>
-          <el-select v-model="testvalue" placeholder="科目" style="width:150px;margin-left: 15px;">
-            <el-option
-              v-for="item in kemu"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <el-select v-model="testvalue" placeholder="入学校区" style="width:150px;margin-left: 15px">
-            <el-option
-              v-for="item in camps"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
-            <el-option
-              v-for="item in camps"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <el-button type="text">展开</el-button>
-          <!--<a data-toggle="collapse" href="#collapseOne">展开</a>-->
-          <el-button icon="el-icon-search" type="danger" @click="serachbt">搜索</el-button>
         </template>
         <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
           <el-option
@@ -97,6 +106,7 @@
       </el-collapse-item>
 
     </el-collapse>
+    </div>
     <!--<el-card style="height: 270px" id="info-card">-->
     <div class="page-bar">
       <span class="page-txt">共8553条</span>
@@ -230,7 +240,8 @@
     },
     methods: {
       daying(){
-        console.log("12312312",this.$r)
+
+        console.log("12312312")
       },
       serachbt(){
         console.log("232")
@@ -246,7 +257,9 @@
     /*margin-top: 10px;   */
     position: relative;
     height: 100%;
-
+    .el-collapse-item__header{
+      height: 70px!important;
+    }
     .top-bar {
       position: relative;
       top: 10px;
@@ -254,6 +267,8 @@
       height: 60px;
 
     }
+
+
 
     .page-bar {
       position: absolute;
@@ -328,13 +343,9 @@
 
       .stu-info {
         position: absolute;
-        /*width: 750px;*/
         height: 136px;
-        /*background-color: aqua;*/
-
         float: left;
         margin-left: 250px;
-        /*<!--margin-top: -58px;-->*/
         .stu-info-right {
           height: 136px;
           margin-left: 20px;

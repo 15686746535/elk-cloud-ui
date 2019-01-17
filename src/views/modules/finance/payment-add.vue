@@ -195,24 +195,32 @@
 
     <el-dialog :modal="false"  title="数据引用" width="950px"  :visible.sync="quoteOpen">
       <div style="height: 300px;width:930px;">
+        <el-row style="margin-left: 35px;margin-bottom: 10px">
+          <el-date-picker value-format="timestamp" style="width: 35%" size="mini" v-model="stuQuery.interval"
+                          type="daterange" align="left"
+                          unlink-panels range-separator="—" start-placeholder="开始日期" end-placeholder="结束日期"
+                          :picker-options="pickerOptions">
+          </el-date-picker>
+          <el-button type="primary" size="mini" icon="el-icon-search" @click="searchDate">检索</el-button>
+        </el-row>
         <el-row :gutter="10" v-if="source<=4" style="margin: 0">
-          <el-col :span="6">
-            <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
-              <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
-              <div style="margin: 20px 0 10px 0;overflow: auto;height: 400px" >
-                <div v-for="batch in batchList">
-                  <div class="batchCss" @click="batchClick($event,batch)" :title="batch.examField" style="overflow: hidden;">
-                    {{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField}}
-                  </div>
-                </div>
-              </div>
-              <div class="loading-more">
-                <span v-if="batchTotalPage > batchListQuery.page" @click="batchHandleCurrentChange"><i class="el-icon-fa-angle-double-down"></i></span>
-                <span v-else>到底了</span>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="18">
+          <!--<el-col :span="6">-->
+            <!--<el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">-->
+              <!--<span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>-->
+              <!--<div style="margin: 20px 0 10px 0;overflow: auto;height: 400px" >-->
+                <!--<div v-for="batch in batchList">-->
+                  <!--<div class="batchCss" @click="batchClick($event,batch)" :title="batch.examField" style="overflow: hidden;">-->
+                    <!--{{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField}}-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="loading-more">-->
+                <!--<span v-if="batchTotalPage > batchListQuery.page" @click="batchHandleCurrentChange"><i class="el-icon-fa-angle-double-down"></i></span>-->
+                <!--<span v-else>到底了</span>-->
+              <!--</div>-->
+            <!--</el-card>-->
+          <!--</el-col>-->
+          <el-col :span="24">
             <el-card >
               <el-table :data="examBespeak" :height="380" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
                 <el-table-column type="selection" width="35" fixed></el-table-column>
@@ -326,7 +334,7 @@
           state: null,
           beginTime: null,
           endTime: null,
-          condition: ''
+          condition: '',
         },
         flag: true,
         studentListQuery: {
@@ -360,10 +368,49 @@
           page: 1,
           limit: 10,
           totalPage: 1,
-          condition: null
+          condition: null,
+          interval: [],
         },
         stuList: [],
-        studentListLoading: false
+        studentListLoading: false,
+        pickerOptions: {
+          shortcuts: [{
+            text: "昨天",
+            onClick(picker) {
+              const end = new Date(new Date().setHours(0, 0, 0, 0));
+              const start = new Date(new Date().setHours(0, 0, 0, 0));
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+              picker.$emit("pick", [start, end]);
+            }
+          }, {
+            text: "近三天",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
+              picker.$emit("pick", [start, end]);
+            }
+          }, {
+            text: "本周",
+            onClick(picker) {
+              const end = new Date();
+              const day = new Date(new Date().setHours(0, 0, 0, 0));
+              var week = day.getDay();
+              if (week === 0) week = 7;
+              const start = day;
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * (week - 1));
+              picker.$emit("pick", [start, end]);
+            }
+          }, {
+            text: "本月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date(new Date().setHours(0, 0, 0, 0));
+              start.setDate(1);
+              picker.$emit("pick", [start, end]);
+            }
+          }]
+        },
       }
     },
     filters: {
@@ -378,6 +425,19 @@
         if (this.pageLevel === 'info' || this.pageLevel === 'edit') {
           this.saveDisabled = true
           this.getPaymentByPayId(payment)
+          this.flag = false
+        }
+        else if(this.pageLevel === 'copy'){
+          let _this=this;
+
+          //   var newpayment={
+          //   code:null,
+          //   paytime:null,
+          //   code:null,
+          // }
+          // _this.payment=newpayment;
+          console.log("copy",_this.payment)
+          this.getNwmPayment(payment);
           this.flag = false
         }
       }
@@ -426,6 +486,26 @@
             this.addList = response.data.data.studentList
             this.payment = response.data.data
             this.payment.code = response.data.data.content
+            console.log(this.payment)
+          } else {
+            var msg = query.direction === 'down' ? '没有下一单了' : '没有上一单了'
+            this.$message.error(msg)
+          }
+        })
+      },
+      getNwmPayment(query) {
+        getPayment(query).then(response => {
+          if (response.data.data) {
+            console.log("response",response)
+           var newlist=[];
+            var list = response.data.data.studentList
+            list.forEach(v=>{
+              v.money=null
+              newlist.push(v)
+            })
+            this.addList=newlist
+            this.payment ={}
+            this.payment.code = null;
             console.log(this.payment)
           } else {
             var msg = query.direction === 'down' ? '没有下一单了' : '没有上一单了'
@@ -727,6 +807,22 @@
         putObj(this.payment).then(() => {
           this.btnLoading = false
         })
+      },
+      examTimeBlur() {
+        if (this.stuQuery.interval === null) {
+          this.stuQuery.interval = [];
+          this.stuQuery.beginTime = null;
+          this.stuQuery.endTime = null;
+        }
+        if (this.stuQuery.interval.length !== 0) {
+          this.stuQuery.beginTime = this.stuQuery.interval[0];
+          this.stuQuery.endTime = this.stuQuery.interval[1];
+        }
+      },
+      //引用下搜索日期
+      searchDate(){
+        this.examTimeBlur();
+        this.getAllStudentList();
       }
     }
   }

@@ -164,12 +164,22 @@
         </el-table-column>
         <el-table-column align="center" prop="num" label="收费次数" width="80">
           <template slot-scope="scope">
-            <span>{{ scope.row.payNo}}</span><!---->
+            <span>{{ scope.row.num}}</span><!---->
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="num" label="参考次数" width="80">
+        <el-table-column align="center" prop="examCount" label="参考次数" width="80">
           <template slot-scope="scope">
-            <span>{{ scope.row.num}}</span>
+            <span>{{ scope.row.examCount}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="pageLevel!='edit'&&pageLevel!='info'&&pageLevel!='copy'" align="center" prop="examTime" label="考试时间" width="80">
+          <template slot-scope="scope">
+            <span>{{ scope.row.examTime| subTime}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="pageLevel!='edit'&&pageLevel!='info'&&pageLevel!='copy'" align="center" prop="examField" label="考试地点" width="80">
+          <template slot-scope="scope">
+            <span>{{ scope.row.examField}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="money" label="金额" width="50">
@@ -194,7 +204,7 @@
 
 
     <el-dialog :modal="false"  title="数据引用" width="950px"  :visible.sync="quoteOpen">
-      <div style="height: 300px;width:930px;">
+      <div style="height: 480px;width:930px;">
         <el-row style="margin-left: 35px;margin-bottom: 10px">
           <el-date-picker value-format="timestamp" style="width: 35%" size="mini" v-model="stuQuery.interval"
                           type="daterange" align="left"
@@ -222,7 +232,7 @@
           <!--</el-col>-->
           <el-col :span="24">
             <el-card >
-              <el-table :data="examBespeak" :height="380" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
+              <el-table :data="baokaolist" :height="380" @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="examBespeakLoading" element-loading-text="给我一点时间">
                 <el-table-column type="selection" width="35" fixed></el-table-column>
                 <el-table-column align="center" prop="name" label="学员"></el-table-column>
                 <el-table-column align="center" prop="idNumber" label="身份证"></el-table-column>
@@ -234,7 +244,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row v-if="source === 6">
+        <el-row v-if="source===6">
           <el-table :data="stuList" :height="320"  @select="selectListHandle" @select-all="selectListHandle" border highlight-current-row stripe fit v-loading="studentListLoading" element-loading-text="给我一点时间">
             <el-table-column type="selection" width="35" fixed></el-table-column>
             <el-table-column align="center" prop="name" label="学员"></el-table-column>
@@ -260,7 +270,7 @@
   import { addObj, putObj, getNum, auditor, getPayment } from '@/api/finance/payment'
   import { getList } from '@/api/finance/payment-code'
   import { parseTime } from '@/utils/index'
-  import { examFetchList } from '@/api/student/examnote'
+  import { examFetchList,getOrderPage } from '@/api/student/examnote'
   import { getBatchs } from '@/api/student/batch'
   import { Message } from 'element-ui'
 
@@ -305,6 +315,7 @@
         tableHeight: this.area[1],
         saveDisabled: false,
         addList: [],
+        baokaolist:[],
         list: [],
         studentList: {},
         batch: {},
@@ -347,7 +358,8 @@
         batchListQuery: {
           page: 1,
           limit: 16,
-          subject: '1'
+          subject: '1',
+          interval:[]
         },
         payment: {},
         total: null,
@@ -370,6 +382,7 @@
           totalPage: 1,
           condition: null,
           interval: [],
+          subject:null
         },
         stuList: [],
         studentListLoading: false,
@@ -429,15 +442,8 @@
         }
         else if(this.pageLevel === 'copy'){
           let _this=this;
-
-          //   var newpayment={
-          //   code:null,
-          //   paytime:null,
-          //   code:null,
-          // }
-          // _this.payment=newpayment;
           console.log("copy",_this.payment)
-          this.getNwmPayment(payment);
+          this.getNewPayment(payment);
           this.flag = false
         }
       }
@@ -486,17 +492,17 @@
             this.addList = response.data.data.studentList
             this.payment = response.data.data
             this.payment.code = response.data.data.content
-            console.log(this.payment)
+            // console.log(this.payment)
           } else {
             var msg = query.direction === 'down' ? '没有下一单了' : '没有上一单了'
             this.$message.error(msg)
           }
         })
       },
-      getNwmPayment(query) {
+      getNewPayment(query) {
         getPayment(query).then(response => {
           if (response.data.data) {
-            console.log("response",response)
+            // console.log("response",response)
            var newlist=[];
             var list = response.data.data.studentList
             list.forEach(v=>{
@@ -505,8 +511,8 @@
             })
             this.addList=newlist
             this.payment ={}
-            this.payment.code = null;
-            console.log(this.payment)
+            // this.payment.code = null;
+            // console.log(this.payment)
           } else {
             var msg = query.direction === 'down' ? '没有下一单了' : '没有上一单了'
             this.$message.error(msg)
@@ -557,10 +563,17 @@
       },
       getBatchList() {
         this.batchListLoading = true
-        console.log(this.batchListQuery)
+        console.log("日期",this.batchListQuery)
         getBatchs(this.batchListQuery).then(response => {
-          this.batchList = this.batchList.concat(response.data.data.list)
-          this.batchTotalPage = response.data.data.totalPage
+          if(this.stuQuery.interval.length){
+            this.batchList=response.data.data.list;
+            this.batchTotalPage = response.data.data.totalPage
+          }
+          else {
+            this.batchList = this.batchList.concat(response.data.data.list)
+            this.batchTotalPage = response.data.data.totalPage
+          }
+
           this.batchListLoading = false
         })
       },
@@ -614,12 +627,20 @@
       },
       // 打开引用窗口
       openQuote() {
-        this.quoteOpen = true
-        if (this.source <= 4) {
-          this.getBatchList()
-        } else if (this.source === 6) {
-          this.getAllStudentList()
+        if(!this.source)
+        {
+          this.quoteOpen = false;
+          this.$message.warning("请选择源单类型")
         }
+        else {
+          this.quoteOpen = true
+          if (this.source <= 4) {
+            console.log("获取报考名单")
+            this.getBaoKaoList();
+          } else if (this.source === 6) {
+            this.getAllStudentList()
+          }}
+
       },
       nextPage() {
         if (this.stuQuery.page < this.stuQuery.totalPage) {
@@ -630,11 +651,18 @@
         }
       },
       getAllStudentList() {
-        this.studentListLoading = true
+        this.stuQuery.subject=null;
+        this.studentListLoading = true;
         fetchStudentList(this.stuQuery).then(response => {
-          console.log(response)
-          this.stuQuery.totalPage = response.data.data.totalPage
-          this.stuList = this.stuList.concat(response.data.data.list)
+          // console.log(response)
+          this.stuQuery.totalPage = response.data.data.totalPage;
+          if(this.stuQuery.interval.length){
+            this.stuList=response.data.data.list;
+          }
+          else{
+            this.stuList = this.stuList.concat(response.data.data.list);
+          }
+          console.log("#$^%!#",this.stuList)
           this.studentListLoading = false
         })
       },
@@ -694,16 +722,17 @@
               item.money = that.payment.money
               studentIds += item.studentId + ','
             })
-            console.log(this.quoteStudentList)
+            
             getNum({ studentIds: studentIds, code: that.payment.code }).then(response => {
               var addList = []
               this.quoteStudentList.forEach(function(item) {
                 item.num = response.data.data['stu_' + item.studentId]
-                item.money = that.payment.money
+                item.money = that.payment.money;
                 addList.push(item)
               })
               addList.push({})
-              this.addList = addList
+              this.addList = addList;
+              console.log("BBBBBBBBBBBBBB",this.addList)
               if (this.source === 6) {
                 this.quoteSource = '学员列表'
               } else if (this.source < 5) {
@@ -815,15 +844,37 @@
           this.stuQuery.endTime = null;
         }
         if (this.stuQuery.interval.length !== 0) {
-          this.stuQuery.beginTime = this.stuQuery.interval[0];
+          this.stuQuery.beginTime = this.stuQuery.interval[0];    
           this.stuQuery.endTime = this.stuQuery.interval[1];
         }
       },
+
+      //获取报考名单
+      getBaoKaoList(){
+        console.log("!@#@!#",this.stuQuery)
+        this.stuQuery.subject=this.batchListQuery.subject;
+        getOrderPage(this.stuQuery).then(res=>{
+          if(res.data.code==0){
+
+            this.baokaolist=res.data.data.list;
+            console.log("报考",this.baokaolist)
+          }
+        })
+      },
       //引用下搜索日期
       searchDate(){
-        this.examTimeBlur();
-        this.getAllStudentList();
-      }
+
+        if(this.source<=4){
+          this.stuQuery.subject=this.batchListQuery.subject;
+          this.examTimeBlur();
+          this.getBaoKaoList()
+        }
+        else {
+          this.stuQuery.subject=null;
+          this.examTimeBlur();
+          this.getAllStudentList();
+        }
+      },
     }
   }
 </script>

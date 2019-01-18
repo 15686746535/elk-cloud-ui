@@ -90,3 +90,12 @@ export function getAllTrainList(params) {
     params: params
   })
 }
+
+// 获取报考名单
+export function getOrderPage(params) {
+  return request({
+    url: '/stu/exam/note/getOrderPage',
+    method: 'get',
+    params: params
+  })
+}

@@ -37,82 +37,53 @@
 
     <!--</div>-->
     <div class="top-bar">
-    <div style="position: relative;width: 100%">
-      <div style="position: absolute;left: 0;top: 0;width: 80%;height: 50px;margin-top: 10px">
-        <el-date-picker value-format="timestamp" type="daterange" align="left" range-separator="-"
-                        start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
-        </el-date-picker>
-        <el-select v-model="testvalue" placeholder="科目" style="width:150px;margin-left: 15px;">
-          <el-option
-            v-for="item in kemu"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="testvalue" placeholder="入学校区" style="width:150px;margin-left: 15px">
-          <el-option
-            v-for="item in camps"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
-          <el-option
-            v-for="item in camps"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-button type="text" style="float: right">展开</el-button>
-        <!--<a data-toggle="collapse" href="#collapseOne">展开</a>-->
+      <div style="position: relative;width: 100%">
+        <div style="position: absolute;left: 0;top: 0;width: 88%;height: 50px;margin-top: 10px">
+          <el-date-picker value-format="timestamp" type="daterange" align="left" range-separator="-"
+                          start-placeholder="开始日期" end-placeholder="结束日期" >
+          </el-date-picker>
+          <el-select  placeholder="科目" style="width:150px;margin-left: 15px;">
+
+          </el-select>
+          <el-select  placeholder="入学校区" style="width:150px;margin-left: 15px">
+
+          </el-select>
+          <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
+
+          </el-select>
+          <el-button type="text" style="float: right">展开</el-button>
+          <!--<a data-toggle="collapse" href="#collapseOne">展开</a>-->
+
+        </div>
+        <div style="position: absolute;right: 0;top: 0;width: 10%;height: 50px;">
+          <el-button icon="el-icon-search" type="danger" @click="serachbt">搜索</el-button>
+        </div>
 
       </div>
-      <div style="position: absolute;right: 0;top: 0;width: 10%;height: 50px;">
-        <el-button icon="el-icon-search" type="danger" @click="serachbt">搜索</el-button>
-      </div>
+      <el-collapse accordion>
+        <el-collapse-item>
+          <template slot="title">
+            <div style="width: 80%">
+            </div>
+          </template>
+          <div style="margin-top: 10px">
+            <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
 
-    </div>
-    <el-collapse accordion>
-      <el-collapse-item>
-        <template slot="title">
-        </template>
-        <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
-          <el-option
-            v-for="item in camps"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
-          <el-option
-            v-for="item in camps"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
-          <el-option
-            v-for="item in camps"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-collapse-item>
+            </el-select>
+            <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
 
-    </el-collapse>
+            </el-select>
+            <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
+
+            </el-select>
+          </div>
+        </el-collapse-item>
+
+      </el-collapse>
     </div>
-    <!--<el-card style="height: 270px" id="info-card">-->
+
     <div class="page-bar">
       <span class="page-txt">共8553条</span>
-      <!--<span class="page-txt">上一页</span>-->
-
-      <!--<span class="page-txt">下一页</span>-->
       <el-button type="text">上一页</el-button>
       <span class="page-txt">第25页</span>
       <el-button type="text">下一页</el-button>

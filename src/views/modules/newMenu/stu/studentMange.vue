@@ -38,7 +38,7 @@
     <!--</div>-->
     <div class="top-bar">
       <div style="position: relative;width: 100%">
-        <div style="position: absolute;left: 0;top: 0;width: 88%;height: 50px;margin-top: 10px">
+        <div style="position: absolute;left: 0;top: 0;width: 88%;height: 50px;margin-top: 15px;margin-left:10px;">
           <el-date-picker value-format="timestamp" type="daterange" align="left" range-separator="-"
                           start-placeholder="开始日期" end-placeholder="结束日期" >
           </el-date-picker>
@@ -51,13 +51,19 @@
           <el-select v-model="testvalue" placeholder="介绍人" style="width:150px;margin-left: 15px">
 
           </el-select>
-          <el-button type="text" style="float: right">展开</el-button>
+          <el-button type="text" style="float: right" @click="openCollapse">展开</el-button>
           <!--<a data-toggle="collapse" href="#collapseOne">展开</a>-->
+          <!-- <div class="arrow-bottom arrow-box ">
+            <b class="bottom" ><i class="arrow1"></i><i class="arrow2"></i></b>
+          </div> -->
+          <div class="arrow-right arrow-box" >
+            <b class="right"><i class="arrow1"></i><i class="arrow2"></i></b>
+          </div>
 
         </div>
-        <div style="position: absolute;right: 0;top: 0;width: 10%;height: 50px;">
+        <!-- <div style="position: absolute;right: 0;top: 15px;width: 10%;height: 50px;">
           <el-button icon="el-icon-search" type="danger" @click="serachbt">搜索</el-button>
-        </div>
+        </div> -->
 
       </div>
       <el-collapse accordion>
@@ -178,6 +184,7 @@
     data() {
       return {
         testvalue:null,
+        isSelect:false,
         kemu: [{ value: 1, label: "科目一" }, { value: 2, label: "科目二" }, { value: 3, label: "科目三" }, {
           value: 4,
           label: "科目四"
@@ -216,12 +223,15 @@
       },
       serachbt(){
         console.log("232")
+      },
+      openCollapse(){
+          this.isSelect=!this.isSelect;
       }
     }
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" >
   .stu-container {
     background-color: #eee;
     $Danger: #c50202;
@@ -235,8 +245,76 @@
       position: relative;
       top: 10px;
       background-color: #fff;
-      height: 60px;
+      height: 75px;
+      .el-collapse-item__header{
+        border-bottom: 0px solid #ebeef5!important;
+      }
+      .el-collapse-item__arrow{
+        display:none;
+      }
+      /*向下箭头*/
+      .bottom{
+            width:20px;
+            height:20px;
+            position:absolute;
+            // left:0;
+            top:12px;
+            right: -3%;
+            z-index: 2;/*兼容ie8-*/
+            // border:1px solid blue;
+        }
+        .arrow1,.arrow2{
+            width:0;
+            height:0;
+            display:block;
+            position:absolute;
+            left:0;
+            top:0;
+            z-index: 5;/*兼容ie8-*/
+            border-bottom:10px transparent dashed;
+            border-left:6px transparent dashed;
+            border-right:6px transparent dashed;
+            border-top:10px white solid;
+            overflow:hidden;
+        }
+        .arrow1{
+            top:1px;/*重要*/
+            border-top:10px #999 solid;
+        }
+        .arrow2{
+            border-top:10px white solid;
+        }
 
+        /*向右箭头*/
+        .right{
+            width:20px;
+            height:20px;
+            position:absolute;
+            // left:0;
+            top:12px;
+            right: -3%;
+            // border:1px solid #999;
+        }
+        .arrow1,.arrow2{
+            width:0;
+            height:0;
+            display:block;
+            position:absolute;
+            left:0;
+            top:0;
+            border-top:10px transparent dashed;
+            border-right:6px transparent dashed;
+            border-bottom:6px transparent dashed;
+            border-left:10px white solid;
+            overflow:hidden;
+        }
+        .arrow1{
+            left:1px;/*重要*/
+            border-left:10px #999 solid;
+        }
+        .arrow2{
+            border-left:10px white solid;
+        }
     }
 
 

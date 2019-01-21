@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <input type="file" @change="getFile" ref="fileInput"/>
-    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="pushPhoneNumList">导入</el-button>
+    <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="pushPhoneNumList">导入</el-button> -->
     <el-button type="primary" icon="el-icon-plus" @click="addPhoneNum">单条添加</el-button>
     <el-button type="primary" icon="el-icon-delete" @click="deleteNumList">删除号码</el-button>
     <el-table :data="list" empty-text="暂无数据" v-loading="listLoading" :height="pageHeight - 190" :stripe="true"
@@ -39,7 +39,7 @@
 
 <script>
   import { findWorkMobile ,batchAddMoblie,deleteWorkMobile,saveWorkMobile} from "@/api/upms/role";
-
+  
   export default {
     data() {
       return {
@@ -103,6 +103,7 @@
         };
         setTimeout(function timer() {
           _this.phoneNumList.mobiles=JSON.parse(JSON.stringify(phoneNumList));
+          _this.pushPhoneNumList();
         },300)
       },
       pushPhoneNumList(){

@@ -1,61 +1,36 @@
 <template>
-  <div>
-    <table border="0" stripe="true" cellpadding="0" cellspacing="0">
-      <thead>
-      <td width="120" align="center">1</td>
-      <td width="120" align="center">2</td>
-      <td width="120" align="center">3</td>
-      <td width="120" align="center">4</td>
-      </thead>
-      <tbody>
-      <tr >
-        <td align="center">萨达萨达大阿萨</td>
-        <td  align="center">萨达是大所</td>
-        <td align="center">大萨达撒多</td>
-        <td align="center">萨达是大所</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="考试情况" name="first">考试情况</el-tab-pane>
+    <el-tab-pane label="费用情况" name="second">费用情况</el-tab-pane>
+    <el-tab-pane label="来访跟进" name="third">来访跟进</el-tab-pane>
+    <el-tab-pane label="约车日志" name="fourth">约车日志</el-tab-pane>
+    <el-tab-pane label="课时信息" name="fifth">课时信息</el-tab-pane>
+  </el-tabs>
 </template>
 
+<script>
+  export default {
+    data() {
+      return {
+        activeName: 'first'
+      };
+    },
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab, event);
+      }
+    }
+  };
+</script>
 
-<style ref="stylesheet/scss" lang="scss">
-
-  .data-table {
-    margin: 10px 0;
-  }
-  .data-table table {
-    width: 100%;
-    border-collapse: collapse; //设置表格边框合并为单一边框
-  }
-  .data-table caption {
-    height: 30px;
-    line-height: 30px;
-    font-weight: 700;
-  }
-  .data-table thead th,
-  .data-table tbody td {
-    padding:8px;
-    height: 19px;
-    line-height: 19px;
-    font-weight: 400;
-  }
-  .data-table thead th {
-    text-align: left;
-    color:#fff;
-    background-color: #353535;
-  }
-  .data-table tbody tr {
-    background-color: #fefefe;
-    color: #686868;
-  }
-  .data-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  /* 复选框的列宽 */
-  .row-selected {
-    width: 15px;
-  }
+<style >
+.el-tabs__active-bar{
+  background-color: #c50202;
+}
+.el-tabs__item.is-active {
+    color: #c50202;
+}
+.el-tabs__item:hover {
+    color: #c50202;    
+}
 </style>

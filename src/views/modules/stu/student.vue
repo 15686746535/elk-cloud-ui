@@ -561,7 +561,7 @@
                 </el-button>
               </div>
               <div v-if="!edit" style="float: right;margin-bottom: 10px;">
-                 <el-button type="primary" size="mini" @click="cancelBindMobile"  
+                 <el-button type="primary" size="mini" @click="cancelBindMobile"
                            v-if="permissions.stu_student_update" icon="el-icon-mobile-phone">修改小程序绑定
                 </el-button>
                 <el-button type="primary" size="mini" @click="dialogFormVisible  = true"
@@ -2501,14 +2501,14 @@
             message: '修改成功！'
           });
             }
-          })          
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '取消输入'
-          });       
+          });
         });
-       
+
       }
     }
   };

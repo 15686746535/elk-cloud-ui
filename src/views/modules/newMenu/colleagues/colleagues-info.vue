@@ -29,22 +29,20 @@
       </div>
       <div class="base-info-right">
         <div class="base-detail">
-          <span class="base-detail-txt-title">校区</span>
+          <span class="base-detail-txt-title">校区：</span>
           <span class="base-detail-txt">华通校区</span><br>
-          <span class="base-detail-txt-title">身份证</span>
+          <span class="base-detail-txt-title">身份证：</span>
           <span class="base-detail-txt">500104199409052023</span>
         </div>
         <div class="base-detail">
-          <span class="base-detail-txt-title">校区</span>
-          <span class="base-detail-txt">华通校区</span><br>
-          <span class="base-detail-txt-title">身份证</span>
-          <span class="base-detail-txt">500104199409052023</span>
+          <span class="base-detail-txt-title">出生：</span>
+          <span class="base-detail-txt">1995.09.05</span><br>
+          <span class="base-detail-txt-title">公号：</span>
+          <span class="base-detail-txt">20191217np3</span>
         </div>
         <div class="base-detail">
-          <span class="base-detail-txt-title">校区</span>
+          <span class="base-detail-txt-title">联系地址：</span>
           <span class="base-detail-txt">华通校区</span><br>
-          <span class="base-detail-txt-title">身份证</span>
-          <span class="base-detail-txt">500104199409052023</span>
         </div>
       </div>
 
@@ -72,11 +70,11 @@
         </div>
         <div class="induction-detail">
           <div class="induction-detail-txt-title">
-            <span>工作电话：</span><br>
-            <span>所属部门：</span><br>
-            <span>学历：</span><br>
-            <span>入职日期：</span><br>
-            <span>QQ：</span>
+            <span>紧急联系人：</span><br>
+            <span>公积金购买：</span><br>
+            <span>五险购买：</span><br>
+            <span>是否教练：</span><br>
+            <span>邮箱：</span>
           </div>
           <div class="induction-detail-txt">
             <span>15862354758</span><br>
@@ -88,11 +86,11 @@
         </div>
         <div class="induction-detail">
           <div class="induction-detail-txt-title">
-            <span>工作电话：</span><br>
-            <span>所属部门：</span><br>
-            <span>学历：</span><br>
-            <span>入职日期：</span><br>
-            <span>QQ：</span>
+            <span>微信：</span><br>
+            <span>职位：</span><br>
+            <span>专业：</span><br>
+            <span>转正日期：</span><br>
+            <span>紧急电话：</span>
           </div>
           <div class="induction-detail-txt">
             <span>15862354758</span><br>
@@ -104,18 +102,14 @@
         </div>
         <div class="induction-detail">
           <div class="induction-detail-txt-title">
-            <span>工作电话：</span><br>
-            <span>所属部门：</span><br>
-            <span>学历：</span><br>
-            <span>入职日期：</span><br>
-            <span>QQ：</span>
+            <span>介绍人：</span><br>
+            <span>联系地址：</span><br>
+            <span>家庭住址：</span><br>
           </div>
           <div class="induction-detail-txt">
             <span>15862354758</span><br>
             <span>信息部</span><br>
             <span>本科</span><br>
-            <span>2018-9-8</span><br>
-            <span>1157894470</span>
           </div>
         </div>
       </div>
@@ -208,7 +202,7 @@
             overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
             text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
             line-height: 50px;
-            margin-left: 15px;
+            margin-left: 5px;
           }
 
           .base-detail-txt {

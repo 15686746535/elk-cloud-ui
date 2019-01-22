@@ -104,6 +104,8 @@ export const appMap = [
   { id: 90400, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
   { id: 90401, desktop: '1', type: '9', pid: 99999, params: [], name: '接口文档', content: _import('modules/sys/swagger'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-org-amount-enrolment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90403, desktop: '1', type: '9', pid: 99999, params: [], name: '学员管理测试', content: _import('modules/newMenu/stu/studentMange'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90404, desktop: '1', type: '9', pid: 99999, params: [], name: '欢迎来到', content: _import('modules/newMenu/colleagues/dept-framework'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 90403, desktop: '1', type: '9', pid: 99999, params: [], name: '考试情况', content: _import('modules/newMenu/stu/examinfo'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', type: '9', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
@@ -112,7 +114,7 @@ export const appMap = [
  * 应用 白名单
  * @type {Array}
  */
-export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801, 22000, 90403, 60500]
+export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801, 22000, 90403, 60500, 90404]
 /**
  * 添加
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}

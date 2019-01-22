@@ -122,103 +122,165 @@
       </div>
     </div>
     <div class="tabs">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs @tab-click="handleClick">
         <el-tab-pane label="考试情况" name="first">
-             <el-table ref="multipleTable" :stripe="true" :data="tableData3" tooltip-effect="dark" style="width: 100%;border-bottom:0">
-          <el-table-column type="index" width="55" label="序号"></el-table-column>
-          <el-table-column prop="name" align="center" label="考试日期" width="auto">
-          </el-table-column>
-          <el-table-column label="科目" align="center" width="auto">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
-          </el-table-column>
-          <el-table-column prop="state" align="center" label="考试批次" show-overflow-tooltip width="auto">              
-          </el-table-column>
-          <el-table-column prop="state" align="center" label="考试结果" show-overflow-tooltip width="auto">              
-          </el-table-column>
-          
-        </el-table>
-        </el-tab-pane>
-        <el-tab-pane label="费用情况" name="second"><el-table  :data="list" empty-text="暂无数据" v-loading="studentListLoading"  @select="selectRow" @select-all="selectRow"
-                :height="pageHeight - 190" :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;" >
-        <!-- <el-table-column type="index" fixed label="序号"  align="center" width="100"></el-table-column> -->
-        <el-table-column type="expand" fixed  width="auto" >
-          <template slot-scope="props">
-            <el-table border :data="props.row.stu">
-              <el-table-column align="center"  fixed  label="编号" width="auto" >
-                <template slot-scope="scope">
-                  <span>{{scope.row.begin}}-{{scope.row.end}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center"  fixed  label="金额" width="auto" >
-                <template slot-scope="scope">
-                  <span>{{scope.row.name}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="项目" width="auto">
-                <template slot-scope="scope">
-                  <span>{{scope.row.mobile}}</span>
-                </template>
-              </el-table-column>
-               <el-table-column align="center" label="数量" width="auto">
-                <template slot-scope="scope">
-                  <span>{{scope.row.mobile}}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="单号" width="auto" >
-          <template slot-scope="scope">
-            <span>{{scope.row.coach.name}}</span>
-          </template>
-        </el-table-column >
-        <el-table-column align="center"  fixed  label="缴费金额" width="auto">
-          <template slot-scope="scope">
-            <span>{{scope.row.coach.t}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="缴费时间" width="auto">
-          <template slot-scope="scope">
-            <span>{{scope.row.coach.t}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="缴费类型" width="auto">
-          <template slot-scope="scope">
-            <span>{{scope.row.coach.t}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="缴费方式" width="auto">
-          <template slot-scope="scope">
-            <span>{{scope.row.coach.t}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="状态" width="auto">
-          <template slot-scope="scope">
-            <span>{{scope.row.coach.t}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center"  fixed  label="操作" width="auto">
-          <template slot-scope="scope">
-            <span>{{scope.row.coach.t}}</span>
-          </template>
-        </el-table-column>
+          <el-table ref="multipleTable" :stripe="true" tooltip-effect="dark" style="width: 100%;border-bottom:0">
+            <el-table-column type="index" width="55" label="序号"></el-table-column>
+            <el-table-column prop="name" align="center" label="考试日期" width="auto">
+            </el-table-column>
+            <el-table-column label="科目" align="center" width="auto">
+              <template slot-scope="scope">{{ scope.row.date }}</template>
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="考试批次" show-overflow-tooltip width="auto">
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="考试结果" show-overflow-tooltip width="auto">
+            </el-table-column>
 
-      </el-table></el-tab-pane>
-        <el-tab-pane label="来访跟进" name="third">来访跟进</el-tab-pane>
-        <el-tab-pane label="约车日志" name="fourth">约车日志</el-tab-pane>
-        <el-tab-pane label="课时信息" name="fifth">课时信息</el-tab-pane>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="费用情况" name="second">
+          <el-table empty-text="暂无数据" @select="selectRow" @select-all="selectRow" :stripe="true" element-loading-text="给我一点时间"
+            fit highlight-current-row style="width: 100%;text-align: center;">
+            <!-- <el-table-column type="index" fixed label="序号"  align="center" width="100"></el-table-column> -->
+            <el-table-column type="expand" fixed width="auto">
+              <template slot-scope="props">
+                <el-table :data="props.row.stu">
+                  <el-table-column align="center" fixed label="编号" width="auto">
+                    <template slot-scope="scope">
+                      <span>{{scope.row.begin}}-{{scope.row.end}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" fixed label="金额" width="auto">
+                    <template slot-scope="scope">
+                      <span>{{scope.row.name}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" label="项目" width="auto">
+                    <template slot-scope="scope">
+                      <span>{{scope.row.mobile}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" label="数量" width="auto">
+                    <template slot-scope="scope">
+                      <span>{{scope.row.mobile}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed label="单号" width="auto">
+              <template slot-scope="scope">
+                <span>{{scope.row.coach.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed label="缴费金额" width="auto">
+              <template slot-scope="scope">
+                <span>{{scope.row.coach.t}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed label="缴费时间" width="auto">
+              <template slot-scope="scope">
+                <span>{{scope.row.coach.t}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed label="缴费类型" width="auto">
+              <template slot-scope="scope">
+                <span>{{scope.row.coach.t}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed label="缴费方式" width="auto">
+              <template slot-scope="scope">
+                <span>{{scope.row.coach.t}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed label="状态" width="auto">
+              <template slot-scope="scope">
+                <span>{{scope.row.coach.t}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed label="操作" width="auto">
+              <template slot-scope="scope">
+                <span>{{scope.row.coach.t}}</span>
+              </template>
+            </el-table-column>
+
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="来访跟进" name="third">
+          <p style="line-height:100px;text-align:center">暂无跟进信息</p>
+        </el-tab-pane>
+        <el-tab-pane label="约车日志" name="fourth">
+          <el-table ref="multipleTable" :stripe="true" tooltip-effect="dark" style="width: 100%;border-bottom:0">
+            <el-table-column type="index" width="55" label="序号"></el-table-column>
+            <el-table-column prop="name" align="center" label="科目" width="auto">
+            </el-table-column>
+            <el-table-column  align="center" label="签到" width="auto">
+              <template slot-scope="scope">{{ scope.row.date }}</template>
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="车牌" show-overflow-tooltip width="auto">
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="场地" show-overflow-tooltip width="auto">
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="时间" show-overflow-tooltip width="auto">
+            </el-table-column>            
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="课时信息" name="fifth"><el-table ref="multipleTable" :stripe="true" tooltip-effect="dark" style="width: 100%;border-bottom:0">
+            <!-- <el-table-column type="index" width="55" label="序号"></el-table-column> -->
+            <el-table-column prop="name" align="center" label="ID" width="auto">
+            </el-table-column>
+            <el-table-column label="培训部分" align="center" width="auto">
+              <template slot-scope="scope">{{ scope.row.date }}</template>
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="不合格原因" show-overflow-tooltip width="auto">
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="上报培训学时" show-overflow-tooltip width="auto">
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="审核有效学时" show-overflow-tooltip width="auto">
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="需补学时" show-overflow-tooltip width="auto">
+            </el-table-column>
+            <el-table-column prop="state" align="center" label="传输运营商名称" show-overflow-tooltip width="auto">
+            </el-table-column>
+          </el-table></el-tab-pane>
       </el-tabs>
     </div>
   </div>
 </template>
 <script>
-export default {
-    data(){
-        return{
-            
-        }
+  export default {
+    data() {
+      return {
+        activeName: '',
+        studentListLoading: false,
+        list: [],
+        // pageHeight: this.area[1],
+        // pageWidth: this.area[0],
+        tableData3: [{
+          date: "2016-05-03",
+          name: "王小虎",
+          state: 1
+        }, {
+          date: "2016-05-02",
+          name: "王小虎",
+          state: 1
+        }, {
+          date: "2016-05-04",
+          name: "王小虎",
+          state: 1
+        }],
+      }
+    },
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab, event);
+      },
+      selectRow() {
+
+      },
     }
-}
+  }
+
 </script>
 
 
@@ -335,7 +397,7 @@ export default {
     }
 
     .induction-info {
-      background-color:$White;
+      background-color: $White;
       width: 96%;
       min-height: 380px;
       margin-top: 15px;
@@ -398,10 +460,11 @@ export default {
     }
 
     .tabs {
-         background-color: $White;
+      background-color: $White;
       width: 96%;
       min-height: 380px;
       margin-top: 15px;
+
       .el-tabs__active-bar {
         background-color: #c50202;
       }
@@ -413,30 +476,39 @@ export default {
       .el-tabs__item:hover {
         color: #c50202;
       }
+      .el-tabs__nav-wrap::after{
+        height: 1px;
+      }
+
       .el-table td,
-        .el-table th.is-leaf {
-          border-bottom: 0 !important;
-        }
+      .el-table th.is-leaf {
+        border-bottom: 0 !important;
+      }
 
-        .el-table--striped .el-table__body tr.el-table__row--striped td {
-          background: #eee !important;
-        }
+      .el-table--striped .el-table__body tr.el-table__row--striped td {
+        background: #eee !important;
+      }
 
-        .el-table {
-          color: #666 !important;
-          font-size: 14px !important;
-        }
+      .el-table {
+        color: #666 !important;
+        font-size: 14px !important;
+      }
 
-        .el-radio,
-        .el-table th {
-          color: #999;
-          font-weight: lighter;
-          font-size: 16px;
-        }
-        .el-table .cell{
-            line-height: 35px!important;
-        }
-       
+      .el-radio,
+      .el-table th {
+        color: #999;
+        font-weight: lighter;
+        font-size: 14px;
+      }
+
+      .el-table td, .el-table th{
+        padding: 4px 0!important;
+      }
+
+      .el-table .cell {
+        line-height: 20px !important;
+      }
+
     }
   }
 

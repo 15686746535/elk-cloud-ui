@@ -1713,7 +1713,11 @@
           TICKET: "", // 秘钥
           SFZC2: "2" // 2
         },
-        financeList: []
+        financeList: [],
+        bindList:{
+          studentId:0,
+          mobile:''
+        }
       };
     },
     filters: {
@@ -1987,6 +1991,7 @@
         this.activeName = "1";
         this.financeList = []; // el-table__body-wrapper
         this.infoLoading = true;
+        this.bindList.studentId=val.studentId;
         getStudent(val.studentId).then(response => {
           var student = response.data.data;
           if (student.introducerIdList && student.introducerIdList.length > 0) {
@@ -2494,7 +2499,8 @@
           inputValue:this.student.mobile,
           inputErrorMessage: '手机号码格式不正确'
         }).then(({ value }) => {
-          bindWechartUser(value).then(res=>{
+          this.bindList.mobile=value;          
+          bindWechartUser(this.bindList).then(res=>{
             if(res.data.code==0){
               this.$message({
             type: 'success',

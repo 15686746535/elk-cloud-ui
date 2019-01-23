@@ -1,6 +1,6 @@
 <template>
-  <div class="returnvist-view">
-    <div class="returnvist-pane">
+  <div class="returnvist-info-view">
+    <div class="returnvist-info-pane">
       <div class="select-bar">
         <div class="btgroup">
           <el-button-group>
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="main-body">
-        <el-table ref="multipleTable" :stripe="true" :data="tableData3" tooltip-effect="dark" style="width: 100%;border-bottom:0">
+        <el-table ref="multipleTable" :stripe="true"  tooltip-effect="dark" style="width: 100%;border-bottom:0">
           <el-table-column type="index" label="序号" align="center" width="60"></el-table-column>
           <el-table-column prop="name" align="center" label="姓名" width="120">
           </el-table-column>
@@ -39,15 +39,18 @@
           </el-table-column>
           <el-table-column label="车型" prop="name" align="center" width="50">
             <!--<template slot-scope="scope">{{ scope.row.name }}</template>-->
-          </el-table-column>
-          <el-table-column label="期数" align="center" width="auto">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
-          </el-table-column>
+          </el-table-column>         
           <el-table-column label="通过时间" align="center" width="auto">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="auto">
+          <el-table-column label="备注" align="center" width="auto">
             <template slot-scope="scope">{{ scope.row.date }}</template>
+          </el-table-column>
+          <el-table-column label="接待评价" align="center" width="auto">
+            <template slot-scope="scope">{{ scope.row.date }}</template>
+          </el-table-column>
+          <el-table-column label="操作" align="center" width="auto">
+            <el-button type="warning">撤销</el-button>
           </el-table-column>
         </el-table>
       </div>
@@ -64,13 +67,13 @@
   /*灰白色*/
   $BgColor: #eee;
 
-  .returnvist-view {
+  .returnvist-info-view {
     width: 100%;
     height: 100%;
     background-color: $BgColor;
     position: relative;
 
-    .returnvist-pane {
+    .returnvist-info-pane {
       width: 98%;
       height: 100%;
       background-color: $White;

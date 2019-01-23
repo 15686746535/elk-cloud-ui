@@ -57,7 +57,7 @@
                        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                        layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
-        <el-button v-if="menu_add" class="filter-item" style="margin-left: 10px;float: right" @click="createClick" type="primary" icon="edit">添加</el-button>
+        <!-- <el-button v-if="menu_add" class="filter-item" style="margin-left: 10px;float: right" @click="createClick" type="primary" icon="edit">添加</el-button> -->
       </div>
 
     </el-card>

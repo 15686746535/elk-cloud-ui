@@ -7,12 +7,19 @@
             <el-button type="info">科一</el-button>
             <el-button type="info">科二</el-button>
             <el-button type="info">科三</el-button>
+            <el-button type="info">科四</el-button>
           </el-button-group>
-          <el-select placeholder="姓名/电话/身份证" style="width:300px;margin-left:20px;"></el-select>
+          <el-date-picker style="width:200px;margin-left:10px;" value-format="timestamp"  type="daterange" align="left" range-separator="-"
+                          start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+          </el-date-picker>
+          <el-select placeholder="科目一考试场地" style="width:150px;margin-left:10px;"></el-select>
+          <el-select placeholder="姓名/电话/身份证" style="width:170px;margin-left:10px;"></el-select>
           <el-button type="warning" icon="el-icon-search">搜索</el-button>
         </div>
         <div class="left-bt">
           <el-button type="text">导出</el-button>
+          <el-button type="text">添加</el-button>
+          <el-button type="text">批量添加</el-button>
         </div>
         <div class="page-bar">
           <span class="page-txt">共8553条</span>
@@ -25,35 +32,71 @@
         </div>
       </div>
       <div class="main-body">
-        <el-table ref="multipleTable" :stripe="true" :data="tableData3" tooltip-effect="dark" style="width: 100%;border-bottom:0">
+        <el-table ref="multipleTable" :stripe="true"  tooltip-effect="dark" style="width: 100%;border-bottom:0">
           <el-table-column type="index" label="序号" align="center" width="60"></el-table-column>
-          <el-table-column prop="name" align="center" label="姓名" width="120">
+          <el-table-column prop="name" align="center" label="科目" width="120">
           </el-table-column>
-          <el-table-column label="身份证" align="center" width="120">
+          <el-table-column label="考试时间" align="center" width="120">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column prop="address" align="center" label="电话" show-overflow-tooltip width="150">
+          <el-table-column prop="address" align="center" label="预约至日期" show-overflow-tooltip width="150">
           </el-table-column>
-          <el-table-column label="性别" align="center" width="50">
+          <el-table-column label="考试场地" align="center" width="150">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column label="车型" prop="name" align="center" width="50">
+          <el-table-column label="申请名单" prop="name" align="center" width="100">
             <!--<template slot-scope="scope">{{ scope.row.name }}</template>-->
           </el-table-column>
-          <el-table-column label="期数" align="center" width="auto">
+          <el-table-column label="待审核" align="center" width="auto">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column label="通过时间" align="center" width="auto">
+          <el-table-column label="待约考" align="center" width="auto">
+            <template slot-scope="scope">{{ scope.row.date }}</template>
+          </el-table-column>
+          <el-table-column label="已约考" align="center" width="auto">
+            <template slot-scope="scope">{{ scope.row.date }}</template>
+          </el-table-column>
+          <el-table-column label="考试名单" align="center" width="auto">
+            <template slot-scope="scope">{{ scope.row.date }}</template>
+          </el-table-column>
+          <el-table-column label="已取消" align="center" width="auto">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="auto">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+            <el-tag color='#f976c6'>查看</el-tag>
+            <el-tag color='#ffa351'>编辑</el-tag>
+            <el-tag color='#c50202'>删除</el-tag>
           </el-table-column>
         </el-table>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+    data(){
+        return{
+            pickerOptions: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              const time = new Date(new Date().setHours(0, 0, 0, 0))
+              picker.$emit('pick', [time, time])
+            }
+          }, {
+            text: '明天',
+            onClick(picker) {
+              const time = new Date(new Date().setHours(0, 0, 0, 0))
+              time.setTime(time.getTime() + 3600 * 1000 * 24 * 1)
+              picker.$emit('pick', [time, time])
+            }
+          }]
+        }
+        }
+    }
+}
+</script>
 
 
 <style rel="stylesheet/scss" lang="scss">

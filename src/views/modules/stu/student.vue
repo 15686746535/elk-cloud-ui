@@ -499,7 +499,7 @@
                   </el-row>
                   <!-- 介绍人 -->
                   <el-row style="margin: 0 10px">
-                    <el-form-item prop="introducerNameList">
+                    <el-form-item prop="introducer">
                       <span slot="label" class="text_css">* 介绍人:</span>
 
                       <el-select v-show="edit" v-model="student.introducerId" filterable placeholder="请选择介绍人"
@@ -1061,9 +1061,9 @@
 
               <!-- 介绍人 -->
               <el-row>
-                <el-form-item prop="introducerList">
+                <el-form-item prop="introducer">
                   <span slot="label" class="text_css">介绍人</span>
-                  <el-select v-model="studentEntity.introducerId" filterable placeholder="请选择介绍人" style="width: 100%">
+                  <el-select v-model="studentEntity.introducerId" filterable clearable placeholder="请选择介绍人" style="width: 100%">
                     <el-option v-for="user in userList" :key="user.userId" :label="user.name" :value="user.userId">
                     </el-option>
                   </el-select>
@@ -1496,6 +1496,9 @@
           ],
           introducer: [
             { required: true, message: "请选择介绍人", trigger: ["blur", "change"] }
+          ],
+          serviceType: [
+            { required: true, message: "请选择练车类型", trigger: ["blur", "change"] }
           ]
         },
         studentRules: {
@@ -1560,7 +1563,10 @@
             { required: true, message: "请选择报名点", trigger: ["blur", "change"] }
           ],
           introducer: [
-            { required: true, message: "请选择介绍人", trigger: ["blur", "change"] }
+           { required: true, message: "请选择介绍人", trigger: ["blur", "change"] }
+          ],
+          serviceType: [
+            { required: true, message: "请选择练车类型", trigger: ["blur", "change"] }
           ]
         },
         stuList: [],

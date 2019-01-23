@@ -56,7 +56,7 @@
         </el-table-column>
         <el-table-column align="left"  label="考试场地"  show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{scope.row.examField}}</span>
+            <span>{{scope.row.examField|examCode}}</span>
           </template>
         </el-table-column>
 
@@ -582,10 +582,18 @@
     <el-dialog :modal="false" @close="cancel('batch')" title="考试设置" :show-close="false" width="550px" :visible.sync="batchOption">
       <el-form :model="batch" :rules="batchRules" ref="batch" label-width="120px">
         <el-form-item label="考试场地" prop="examField">
-          <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
+          <!-- <span v-show="'1' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field1" style="width: 100%;"  placeholder="科目一考试场地"></dict></span>
           <span v-show="'2' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field2" style="width: 100%;"  placeholder="科目二考试场地"></dict></span>
           <span v-show="'3' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field3" style="width: 100%;"  placeholder="科目三考试场地"></dict></span>
-          <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span>
+          <span v-show="'4' === batch.subject"><dict v-model="batch.examField" dictType="dict_exam_field4" style="width: 100%;"  placeholder="科目四考试场地"></dict></span> -->
+        <span v-show="'1' === batch.subject"><el-select v-model="batch.examField" style="width: 100%;" placeholder="科目一考试场地">
+          <el-option v-for="item in subject1" :key="item.value" :label="item.label" :value="item.value" ></el-option></el-select></span>
+          <span v-show="'2' === batch.subject"><el-select v-model="batch.examField" style="width: 100%;" placeholder="科目二考试场地">
+          <el-option v-for="item in subject2" :key="item.value" :label="item.label" :value="item.value" ></el-option></el-select></span>
+          <span v-show="'3' === batch.subject"><el-select v-model="batch.examField" style="width: 100%;" placeholder="科目三考试场地">
+          <el-option v-for="item in subject3" :key="item.value" :label="item.label" :value="item.value" ></el-option></el-select></span>
+          <span v-show="'4' === batch.subject"><el-select v-model="batch.examField" style="width: 100%;" placeholder="科目四考试场地">
+          <el-option v-for="item in subject4" :key="item.value" :label="item.label" :value="item.value" ></el-option></el-select></span>
         </el-form-item>
         <!--<el-form-item label="人数"  prop="stuCount">-->
           <!--<el-input v-model.number="batch.stuCount" placeholder="人数" ></el-input>-->
@@ -791,6 +799,15 @@
           { value: '3', label: '科目三' },
           { value: '4', label: '科目四' }
         ],
+        // fieldList: [
+        //   {value: '1',label:'科目一',options:[{value:5000368,label:'科目一大渡口双山考场'},{value:5000400,label:'科目一巴南李家沱考场'},{value:5000028,label:'科目一汽博考场'}]},
+        //   {value: '2',label:'科目二',options:[{value:5000144,label:'科目二江津双福考场'},{value:5000346,label:'科目二九龙坡区西彭考场'}]},
+        //   {value: '3',label:'科目三',options:[{value:5000373,label:'科目三九龙坡西彭考场'},{value:5000448,label:'科目三南岸迎龙考场'}]},
+        // ],
+        subject1:[{value:5000368,label:'科目一大渡口双山考场'},{value:5000400,label:'科目一巴南李家沱考场'},{value:5000028,label:'科目一汽博考场'}],
+        subject2:[{value:5000144,label:'科目二江津双福考场'},{value:5000346,label:'科目二九龙坡区西彭考场'},{value:5000364,label:'科目二沙坪坝大学城考场'},{value:5000370,label:'科目二南岸迎龙考场'}],
+        subject3:[{value:5000372,label:'科目三沙坪坝土主考场'},{value:5000373,label:'科目三九龙坡西彭考场'},{value:5000448,label:'科目三南岸迎龙考场'}],
+        subject4:[{value:5000415,label:'科目三土主安全文明常识考场'},{value:5000416,label:'科目三西彭安全文明常识考场'},{value:5000455,label:'科目三南岸迎龙安全文明考场'}],
         batchListQuery: {
           page: 1,
           limit: 0,
@@ -860,6 +877,27 @@
           type_5: '明日约考（科目三理论部分需和科目三道路驾驶一起上报公安方可考试）'
         }
         return statusMap[type] || type
+      },
+      examCode(code){
+        const typeMap = {
+          '5000368': '科目一大渡口双山考场',
+          '5000400': '科目一巴南李家沱考场',
+          '5000028': '科目一汽博考场',
+
+          '5000144': '科目二江津双福考场',
+          '5000346': '科目二九龙坡区西彭考场',
+          '5000364': '科目二沙坪坝大学城考场',
+          '5000370': '科目二南岸迎龙考场',
+          
+          '5000372': '科目三沙坪坝土主考场',
+          '5000373': '科目三九龙坡西彭考场',
+          '5000448': '科目三南岸迎龙考场',      
+
+          '5000415': '科目三土主安全文明常识考场',   
+          '5000416': '科目三西彭安全文明常识考场',      
+          '5000455': '科目三南岸迎龙安全文明考场', 
+        }
+        return typeMap[code]
       }
     },
     created() {

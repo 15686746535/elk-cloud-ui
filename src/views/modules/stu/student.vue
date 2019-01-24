@@ -1494,7 +1494,7 @@
           enrolSite: [
             { required: true, message: "请选择报名点", trigger: ["blur", "change"] }
           ],
-          introducer: [
+          introducerId: [
              { required: true, message: "请选择介绍人", trigger: ["blur", "change"] }
           ],
           serviceType: [
@@ -1562,7 +1562,7 @@
           enrolSite: [
             { required: true, message: "请选择报名点", trigger: ["blur", "change"] }
           ],
-          introducer: [
+          introducerId: [
             { required: true, message: "请选择练介绍人", trigger: ["blur", "change"] }
           ],
           serviceType: [

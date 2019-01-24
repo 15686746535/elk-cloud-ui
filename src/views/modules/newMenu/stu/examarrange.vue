@@ -3,11 +3,11 @@
     <div class="returnvist-pane">
       <div class="select-bar">
         <div class="btgroup">
-          <el-button-group>
-            <el-button type="info">科一</el-button>
-            <el-button type="info">科二</el-button>
-            <el-button type="info">科三</el-button>
-            <el-button type="info">科四</el-button>
+          <el-button-group @change="handleSubject" v-model="listQuery.subject">
+            <el-button type="info" label="1">科一</el-button>
+            <el-button type="info" label="2">科二</el-button>
+            <el-button type="info" label="3">科三</el-button>
+            <el-button type="info" label="4">科四</el-button>
           </el-button-group>
           <el-date-picker style="width:200px;margin-left:10px;" value-format="timestamp"  type="daterange" align="left" range-separator="-"
                           start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
@@ -77,6 +77,15 @@
 export default {
     data(){
         return{
+          batch:{
+            subject:'1',
+            examTime: null,
+            expiryTime: null,
+            examField: null
+          },
+          listQuery:{
+            subject:'1'
+          },
             pickerOptions: {
           shortcuts: [{
             text: '今天',
@@ -94,8 +103,19 @@ export default {
           }]
         }
         }
+    },
+    methods:{
+      handleSubject() {
+        this.batch = {
+          subject: '1',
+          examTime: null,
+          expiryTime: null,
+          examField: null
+        }
     }
-}
+    }
+    }
+    
 </script>
 
 

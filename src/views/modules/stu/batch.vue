@@ -116,7 +116,7 @@
             </el-table-column>
             <el-table-column  align="center" label="考试次数" width="60">
               <template slot-scope="scope">
-                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="color:red">{{scope.row.examCount}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.examCount}}</span>
                 <span v-else>{{scope.row.examCount}}</span>
               </template>
             </el-table-column>
@@ -128,13 +128,13 @@
             <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
                 <!-- <span>{{scope.row.hasService}}</span> -->
-                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="color:red">{{scope.row.hasService}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.hasService}}</span>
                 <span v-else>{{scope.row.hasService}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="考场" width="120"  show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.examField}}</span>
+                <span>{{scope.row.examField|examFiledCode}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="入学时间" width="100">
@@ -205,7 +205,8 @@
             </el-table-column>
             <el-table-column  align="center" label="考试次数" width="60">
               <template slot-scope="scope">
-                <span>{{scope.row.examCount}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.examCount}}</span>
+                <span v-else>{{scope.row.examCount}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="欠费" width="60">
@@ -215,12 +216,13 @@
             </el-table-column>
             <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.hasService}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.hasService}}</span>
+                <span v-else>{{scope.row.hasService}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="考场" width="120"  show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.examField}}</span>
+                <span>{{scope.row.examField |examFiledCode}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="入学时间" width="100">
@@ -279,7 +281,8 @@
             </el-table-column>
             <el-table-column  align="center" label="考试次数" width="60">
               <template slot-scope="scope">
-                <span>{{scope.row.examCount}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.examCount}}</span>
+                <span v-else>{{scope.row.examCount}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="欠费" width="60">
@@ -289,12 +292,13 @@
             </el-table-column>
             <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.hasService}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.hasService}}</span>
+                <span v-else>{{scope.row.hasService}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="考场" width="130"  show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.examField}}</span>
+                <span>{{scope.row.examField |examFiledCode}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="入学时间" width="100">
@@ -350,7 +354,8 @@
             </el-table-column>
             <el-table-column  align="center" label="考试次数" width="60">
               <template slot-scope="scope">
-                <span>{{scope.row.examCount}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.examCount}}</span>
+                <span v-else>{{scope.row.examCount}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="欠费" width="60">
@@ -360,12 +365,13 @@
             </el-table-column>
             <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.hasService}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.hasService}}</span>
+                <span v-else>{{scope.row.hasService}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="考场" width="130"  show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.examField}}</span>
+                <span>{{scope.row.examField |examFiledCode}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="入学时间" width="100">
@@ -421,7 +427,8 @@
             </el-table-column>
             <el-table-column  align="center" label="考试次数" width="60">
               <template slot-scope="scope">
-                <span>{{scope.row.examCount}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.examCount}}</span>
+                <span v-else>{{scope.row.examCount}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="欠费" width="60">
@@ -431,7 +438,8 @@
             </el-table-column>
             <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.hasService}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.hasService}}</span>
+                <span v-else>{{scope.row.hasService}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="考场" min-width="120" show-overflow-tooltip>
@@ -486,7 +494,8 @@
             </el-table-column>
             <el-table-column  align="center" label="考试次数" width="60">
               <template slot-scope="scope">
-                <span>{{scope.row.examCount}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.examCount}}</span>
+                <span v-else>{{scope.row.examCount}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="欠费" width="60">
@@ -496,12 +505,13 @@
             </el-table-column>
             <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.hasService}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.hasService}}</span>
+                <span v-else>{{scope.row.hasService}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="考场" width="120"  show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.examField}}</span>
+                <span>{{scope.row.examField|examFiledCode}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="入学时间" width="100">
@@ -1335,6 +1345,9 @@
     background-color: rgba(103,194,58,.1);
     border-color: rgba(103,194,58,.2);
     color: #67c23a;
+  }
+  .el-table th, .el-table tr{
+    background-color: #c50202!important;
   }
 }
 </style>

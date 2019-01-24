@@ -128,7 +128,7 @@
             <el-table-column  v-if="service.show" align="center" :label="service.name" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
                 <!-- <span>{{scope.row.hasService}}</span> -->
-                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:170px">{{scope.row.hasService}}</span>
+                <span v-if="scope.row.examCount!=scope.row.hasService&&(studentListQuery.categoryId>=16&&studentListQuery.categoryId<=18)" style="background:#ff9fa6;display: table-cell;width:200px;text-align:center">{{scope.row.hasService}}</span>
                 <span v-else>{{scope.row.hasService}}</span>
               </template>
             </el-table-column>

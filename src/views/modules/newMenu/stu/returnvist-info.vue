@@ -27,12 +27,12 @@
       <div class="main-body">
         <el-table ref="multipleTable" :stripe="true"  tooltip-effect="dark" style="width: 100%;border-bottom:0">
           <el-table-column type="index" label="序号" align="center" width="60"></el-table-column>
-          <el-table-column prop="name" align="center" label="姓名" width="120">
+          <el-table-column prop="name" align="center" label="姓名" width="80">
           </el-table-column>
           <el-table-column label="身份证" align="center" width="120">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column prop="address" align="center" label="电话" show-overflow-tooltip width="150">
+          <el-table-column prop="address" align="center" label="电话" show-overflow-tooltip width="90">
           </el-table-column>
           <el-table-column label="性别" align="center" width="50">
             <template slot-scope="scope">{{ scope.row.date }}</template>
@@ -40,7 +40,7 @@
           <el-table-column label="车型" prop="name" align="center" width="50">
             <!--<template slot-scope="scope">{{ scope.row.name }}</template>-->
           </el-table-column>         
-          <el-table-column label="通过时间" align="center" width="auto">
+          <el-table-column label="通过时间" align="center" width="120">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
           <el-table-column label="备注" align="center" width="auto">
@@ -49,7 +49,7 @@
           <el-table-column label="接待评价" align="center" width="auto">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="auto">
+          <el-table-column label="操作" align="center" width="80">
             <el-button type="warning">撤销</el-button>
           </el-table-column>
         </el-table>
@@ -158,6 +158,11 @@
           color: #666 !important;
           font-size: 14px !important;
         }
+        .el-button--warning {
+            color: #fff;
+            background-color: $Danger !important;
+            border-color: $Danger !important;           
+          }
       }
     }
   }

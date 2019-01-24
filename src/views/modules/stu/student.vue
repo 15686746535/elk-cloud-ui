@@ -597,7 +597,7 @@
                 </el-table-column>
                 <el-table-column align="center" label="考试批次">
                   <template slot-scope="scope">
-                    <span class="a" @click="batchInfo(scope.row)"><{{scope.row.examTime | subTime}}> {{scope.row.examField}}</span>
+                    <span class="a" @click="batchInfo(scope.row)"><{{scope.row.examTime | subTime}}> {{scope.row.examField | examFiledCode}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center" label="考试结果" width="100">
@@ -1098,7 +1098,7 @@
         </div>
         <div v-else v-for="batch in batchList" style="float: left;margin: 5px">
           <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
-            <{{batch.examTime | subTime}}> {{batch.examField}}
+            <{{batch.examTime | subTime}}> {{batch.examField|examFiledCode}}
             <span>（已约{{batch.stuCount}}人）</span>
           </div>
 

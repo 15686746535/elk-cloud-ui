@@ -56,7 +56,7 @@
         </el-table-column>
         <el-table-column align="left"  label="考试场地"  show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{scope.row.examField|examCode}}</span>
+            <span>{{scope.row.examField | examFiledCode}}</span>
           </template>
         </el-table-column>
 
@@ -878,27 +878,7 @@
         }
         return statusMap[type] || type
       },
-      examCode(code){
-        const typeMap = {
-          '5000368': '科目一大渡口双山考场',
-          '5000400': '科目一巴南李家沱考场',
-          '5000028': '科目一汽博考场',
-
-          '5000144': '科目二江津双福考场',
-          '5000346': '科目二九龙坡区西彭考场',
-          '5000364': '科目二沙坪坝大学城考场',
-          '5000370': '科目二南岸迎龙考场',
-          
-          '5000372': '科目三沙坪坝土主考场',
-          '5000373': '科目三九龙坡西彭考场',
-          '5000448': '科目三南岸迎龙考场',      
-
-          '5000415': '科目三土主安全文明常识考场',   
-          '5000416': '科目三西彭安全文明常识考场',      
-          '5000455': '科目三南岸迎龙安全文明考场', 
-        }
-        return typeMap[code]
-      }
+      
     },
     created() {
       this.getList()

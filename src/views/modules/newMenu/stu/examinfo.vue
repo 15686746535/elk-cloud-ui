@@ -323,7 +323,7 @@
 
     .base-info {
       background-color: $White;
-      width: 96%;
+      width: 100%;
       height: 200px;
       margin-top: 15px;
 
@@ -398,7 +398,7 @@
 
     .induction-info {
       background-color: $White;
-      width: 96%;
+      width: 100%;
       min-height: 380px;
       margin-top: 15px;
 
@@ -461,8 +461,9 @@
 
     .tabs {
       background-color: $White;
-      width: 96%;
-      min-height: 380px;
+      width: 100;
+      height: auto;
+      min-height: 150px;
       margin-top: 15px;
 
       .el-tabs__active-bar {

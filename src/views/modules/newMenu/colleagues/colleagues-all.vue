@@ -138,7 +138,7 @@
     background-color: $BgColor;
 
     .colleagues-select-bar {
-      width: 98%;
+      width: 100%;
       height: 70px;
       background-color: $White;
       .selected{
@@ -152,7 +152,7 @@
       }
     }
     .midddle-bar{
-        width: 98%;
+        width: 100%;
         height: 30px;
         .left-bt {
           position: absolute;
@@ -168,7 +168,7 @@
 
         .page-bar {
           position: absolute;
-          right: 50px;
+          right: 25px;
           top: 105px;
 
           .page-txt {

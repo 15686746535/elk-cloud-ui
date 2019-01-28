@@ -135,7 +135,7 @@ export default {
 
     .returnvist-pane {
       width: 98%;
-      height: 100%;
+      height: auto;
       background-color: $White;
 
       .select-bar {
@@ -210,7 +210,7 @@ export default {
       }
       .main-body{
         width: 96%;
-        height: 100%;
+        height: auto;
         /*background-color: #20a0ff;*/
         margin-top: 20px;
         margin-left: 25px;

@@ -151,7 +151,7 @@
     }
 
     .panel-title {
-      width: 98%;
+      width: 100%;
       height: 75px;
       background-color: $White;
 
@@ -182,8 +182,8 @@
     }
 
     .panel-body {
-      width: 98%;
-      height: 600px;
+      width: 100%;
+      height: auto;
       margin-top: 10px;
       background-color: $White;
 

@@ -67,7 +67,6 @@
 
   .vist-view {
     width: 98%;
-    height: 100%;
     background-color: #fff;
     position: relative;
 

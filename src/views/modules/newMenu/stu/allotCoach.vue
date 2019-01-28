@@ -181,8 +181,7 @@
     }
 
     .info-table {
-      width: 96%;
-      height: 100%;
+      width: 100%;
       /*background-color: #20a0ff;*/
       margin-top: 20px;
       margin-left: 25px;

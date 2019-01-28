@@ -104,9 +104,23 @@ export const appMap = [
   { id: 90400, desktop: '1', type: '9', pid: 99999, params: [], name: '待办配置', content: _import('modules/activiti/business'), icon: getIcon('app_business'), msgCount: 0, childItem: [] },
   { id: 90401, desktop: '1', type: '9', pid: 99999, params: [], name: '接口文档', content: _import('modules/sys/swagger'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 90402, desktop: '1', type: '9', pid: 99999, params: [], name: '统计测试', content: _import('modules/visualization/view-org-amount-enrolment'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
-  { id: 90403, desktop: '1', type: '9', pid: 99999, params: [], name: '学员管理测试', content: _import('modules/newMenu/vehiclemanagement/vehicle-info'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90407, desktop: '1', type: '9', pid: 99999, params: [], name: '学员管理测试', content: _import('modules/newMenu/stu/allotCoach'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 90404, desktop: '1', type: '9', pid: 99999, params: [], name: '欢迎来到', content: _import('modules/newMenu/colleagues/dept-framework'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
-  { id: 90403, desktop: '1', type: '9', pid: 99999, params: [], name: '考试情况', content: _import('modules/newMenu/test'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90408, desktop: '1', type: '9', pid: 99999, params: [], name: '同事信息', content: _import('modules/newMenu/colleagues/colleagues-all'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90409, desktop: '1', type: '9', pid: 99999, params: [], name: '服务管理', content: _import('modules/newMenu/servicemanagement/storesoptions'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90410, desktop: '1', type: '9', pid: 99999, params: [], name: '车辆管理', content: _import('modules/newMenu/vehiclemanagement/vehicle-info'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90411, desktop: '1', type: '9', pid: 99999, params: [], name: '同事信息1', content: _import('modules/newMenu/colleagues/colleagues-detial'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90405, desktop: '1', type: '9', pid: 99999, params: [], name: '同事信息2', content: _import('modules/newMenu/colleagues/departure'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90406, desktop: '1', type: '9', pid: 99999, params: [], name: '同事信息3', content: _import('modules/newMenu/colleagues/workmobile'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90412, desktop: '1', type: '9', pid: 99999, params: [], name: '分配教练', content: _import('modules/newMenu/stu/allotCoach'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90413, desktop: '1', type: '9', pid: 99999, params: [], name: '考试安排', content: _import('modules/newMenu/stu/examarrange'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90414, desktop: '1', type: '9', pid: 99999, params: [], name: '成绩登记', content: _import('modules/newMenu/stu/recordregistration'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90415, desktop: '1', type: '9', pid: 99999, params: [], name: '回访信息', content: _import('modules/newMenu/stu/returnvist-info'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90416, desktop: '1', type: '9', pid: 99999, params: [], name: '投诉建议', content: _import('modules/newMenu/stu/suggestions'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90417, desktop: '1', type: '9', pid: 99999, params: [], name: '回访', content: _import('modules/newMenu/stu/returnvist'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90418, desktop: '1', type: '9', pid: 99999, params: [], name: '考试信息', content: _import('modules/newMenu/stu/examinfo'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90419, desktop: '1', type: '9', pid: 99999, params: [], name: '车辆详情', content: _import('modules/newMenu/vehiclemanagement/vehicle-info-detail'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 90420, desktop: '1', type: '9', pid: 99999, params: [], name: '学员管理', content: _import('modules/newMenu/stu/studentMange'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 10008, desktop: '1', type: '9', pid: 99999, params: ['out'], name: '退出系统', content: null, icon: getIcon('app_out'), msgCount: 0, childItem: [] }
 ]
 
@@ -114,7 +128,7 @@ export const appMap = [
  * 应用 白名单
  * @type {Array}
  */
-export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801, 22000, 90403, 60500, 90404]
+export const anonList = [-1086, 10008, 10001, 30100, 21000, 70202, 70203, 90402, 120801, 22000, 90403, 60500, 90404, 90405, 90406, 90407, 90408, 90409, 90410, 90411, 90412, 90413, 90414, 90415, 90416, 90417, 90418, 90419, 90420]
 /**
  * 添加
  * @type {{id: number, desktop: string, pid: number, params: Array, name: string, content: *, icon: *, msgCount: number, childItem: Array}}

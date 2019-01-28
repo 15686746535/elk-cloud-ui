@@ -18,18 +18,18 @@
           <el-button type="text">下一页</el-button>
         </div>
         <div class="info-card">
-      <div class="item-top">
+      <!-- <div class="item-top">
         <p>20191217nP2</p>
         <div class="operation-button">
           <el-button type="text">办理离职</el-button>
           <el-button type="text">重置密码</el-button>
           <el-button type="text" icon="el-icon-edit-outline">编辑</el-button>
         </div>
-      </div>
+      </div> -->
       <div class="item-bottom">
         <div class="stu-left">
           <div class="stu-overview">
-            <div style="width:80px;height:80px;border:solid 1px #999;margin: 17px;border-radius: 15px"></div>
+            <div style="width:80px;height:80px;border:solid 1px #999;margin: 17px;border-radius: 15px;position: relative;top: 30px;"></div>
             
             <!-- <el-row>
               <el-col style="color: #333;text-align: center;font-size: 15px;margin-top: -90px;margin-left: 25px;">车牌牌照：渝B6692学
@@ -54,36 +54,40 @@
               <el-col style="color: #333;font-size: 15px;;margin-left: 30px;">华通校区</el-col>
             </el-row> -->
             <div class="car-main-info">
-                <el-row></el-row>
-                <el-row></el-row>
-                <el-row></el-row>
-                <el-row></el-row>
+                <el-row>
+                  <span class="info-txt">车辆牌照：</span><span class="info-txt">渝B6692学</span>
+                </el-row>
+                <el-row><span class="info-txt">责任人：</span><span class="info-txt">某某</span></el-row>
+                <el-row><span class="info-txt">所属机构：</span><span class="info-txt">重庆华通汽车驾驶培训学校</span></el-row>
+                <el-row><span class="info-txt">车辆状态：</span><span class="info-txt">外部转入</span></el-row>
             </div>
           </div>
         </div>
         <div class="stu-info">
           <div class="stu-info-right">
             <div class="info-detail">
-              <span class="table_text_title">部门：</span>
-              <span class="table_text">市场部</span><br>
-              <span class="table_text_title">微信：</span>
-              <span class="table_text">4855878999</span><br>
-              <span class="table_text_title">QQ：</span>
-              <span class="table_text">115562566</span>
+              <span class="table_text_title">标示卡到期日期：</span>
+              <span class="table_text">2018-10-06</span><br>
+              <span class="table_text_title">评定日期：</span>
+              <span class="table_text">2018-10-06</span><br>
+              <span class="table_text_title">强制保险日期：</span>
+              <span class="table_text">2018-10-06</span>
             </div>
             <div class="info-detail">
-              <span class="table_text_title">联系地址：</span>
-              <span class="table_text">重庆市大渡口区</span><br>
-              <span class="table_text_title">工作电话：</span>
-              <span class="table_text">13858454587</span><br>
-              <span class="table_text_title">所属职位：</span>
-              <span class="table_text">办公室</span>
+              <span class="table_text_title">排量/功率：</span>
+              <span class="table_text">1.4T</span><br>
+              <span class="table_text_title">总质量：</span>
+              <span class="table_text">2051KG</span><br>
+              <span class="table_text_title">制造厂商：</span>
+              <span class="table_text">北京现代</span>
             </div>
             <div class="info-detail">
-              <span class="table_text_title">入职日期：</span>
-              <span class="table_text">2018-08-20</span><br>
-              <span class="table_text_title">转正日期：</span>
-              <span class="table_text">2018-10-20</span><br>              
+              <span class="table_text_title">安装GPS：</span>
+              <span class="table_text">是</span><br>
+              <span class="table_text_title">三角架：</span>
+              <span class="table_text">是</span><br>      
+               <span class="table_text_title">发动机灭火器：</span>
+              <span class="table_text">1</span><br>          
             </div>
           </div>          
         </div>
@@ -140,7 +144,7 @@
     background-color: $BgColor;
 
     .colleagues-select-bar {
-      width: 98%;
+      width: 100%;
       height: 70px;
       background-color: $White;
       .selected{
@@ -154,7 +158,7 @@
       }
     }
     .midddle-bar{
-        width: 98%;
+        width: 100%;
         height: 30px;
         .left-bt {
           position: absolute;
@@ -170,7 +174,7 @@
 
         .page-bar {
           position: absolute;
-          right: 50px;
+          right: 27px;
           top: 105px;
 
           .page-txt {
@@ -231,6 +235,8 @@
         height: 180px;
         float: left;
         margin-top: -18px;
+        position: relative;
+        top: 35px;
 
       }
 
@@ -240,10 +246,15 @@
         .car-main-info{
             width: 185px;
             height: 110px;
-            background-color: #c50202;
+            // background-color: #c50202;
             margin-left: 125px;
-            margin-top: -95px;
+            margin-top: -100px;
+            .info-txt{
+              color: #333;
+              line-height: 29px;
+            }
         }
+        
       }
 
       .stu-info {
@@ -256,6 +267,7 @@
           margin-left: 80px;
             width: 100%;
           min-width: 710px;
+          margin-top: 17px;
         }
 
         .dynamic {

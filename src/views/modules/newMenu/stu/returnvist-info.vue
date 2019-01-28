@@ -74,7 +74,7 @@
     position: relative;
 
     .returnvist-info-pane {
-      width: 98%;
+      width: 100%;
       height: 100%;
       background-color: $White;
 
@@ -150,7 +150,6 @@
       }
       .main-body{
         width: 96%;
-        height: 100%;
         /*background-color: #20a0ff;*/
         margin-top: 20px;
         margin-left: 25px;

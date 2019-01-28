@@ -71,8 +71,9 @@
     position: relative;
 
     .returnvist-pane {
-      width: 98%;
-      height: 100%;
+      width: 100%;
+      height: auto;
+      min-height: 500px;
       background-color: $White;
 
       .select-bar {

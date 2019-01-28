@@ -30,7 +30,7 @@
           <el-table-column label="操作" align="center" width="auto">
             <!-- <el-button @click="dialogFormVisible=true" type="warning">编辑</el-button>
              <el-button  type="warning">删除</el-button> -->
-            <template  slot-scope="scope">
+            <template >
               <!-- <el-button @click="dialogFormVisible=true" type="warning">编辑</el-button>
               <el-button type="warning">删除</el-button> -->
               <button class="btstyle1" @click="dialogFormVisible=true">编辑</button>
@@ -137,7 +137,7 @@
     background-color: $BgColor;
 
     .stores-panel {
-      width: 96%;
+      width: 100%;
       height: 100%;
       background-color: $White;
 

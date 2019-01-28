@@ -77,7 +77,7 @@
     background-color: #eee;
 
     .departure-card {
-      width: 96%;
+      width: 100%;
       height: auto;
       background-color: #fff;
 

@@ -137,7 +137,7 @@
             })
             _this.zsjelist=fmoney;
             _this.rankmouth=rank;
-            _this.total=totalmoney;
+            _this.total=totalmoney.toFixed(2);
             _this.init();
           }
         })

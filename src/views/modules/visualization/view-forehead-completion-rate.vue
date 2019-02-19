@@ -140,7 +140,7 @@
             _this.zsjeList=zsjeList;
             _this.zsjeTarget=zsjeList;
             _this.zsjewclList=zsjewclList;
-            _this.zsjeTotal=zsjeTotal;
+            _this.zsjeTotal=zsjeTotal.toFixed(2);
             _this.zsmbTotal=zsmbTotal;
             _this.zswclTotal=zswclTotal;
             _this.ljwclTotal=ljwclTotal;

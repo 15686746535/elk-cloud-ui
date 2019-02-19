@@ -14,13 +14,13 @@
       <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
     </el-card>
     <el-row :gutter="5"  >
-      <el-col style="width:230px;">
+      <el-col style="width:280px;">
         <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (pageHeight - 190) + 'px'}">
             <div v-for="batch in batchList">
               <div class="batchCss" @click="batchClick($event,batch)" :class="gradeInfo?'batchCss_selected':''" :title="batch.examField" style="overflow: hidden;text-overflow:ellipsis;">
-                {{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField}}
+                {{batch.examTime | parseTime('{y}/{m}/{d}')}}{{batch.examField | examFiledCode}}
               </div>
             </div>
           </div>

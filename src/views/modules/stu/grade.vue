@@ -14,7 +14,7 @@
       <el-button type="primary" size="mini" @click="searchClick" ><i class="el-icon-search"></i> 搜 索</el-button>
     </el-card>
     <el-row :gutter="5"  >
-      <el-col style="width:280px;">
+      <el-col style="width:270px;">
         <el-card v-loading="batchListLoading" body-style="padding-bottom: 0px;" element-loading-text="我已经全速加载了...">
           <span style="font-size: 16px;font-family: '微软雅黑 Light';color:rgb(145,145,145)">┃ 批次总览</span>
           <div style="margin: 20px 0 10px 0;overflow: auto;" :style="{height: (pageHeight - 190) + 'px'}">
@@ -30,7 +30,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :style="{width: (pageWidth-238) + 'px'}">
+      <el-col :style="{width: (pageWidth-278) + 'px'}">
         <el-card body-style="padding-bottom: 10px;">
           <el-table :data="gradeStudentList" empty-text="暂无数据" v-loading="studentListLoading" @select="selectRow" @select-all="selectRow"  :height="pageHeight - 190"
                     :stripe="true" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align: center;">

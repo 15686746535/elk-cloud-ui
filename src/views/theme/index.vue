@@ -10,14 +10,17 @@
           <img src="../../../static/bg/01/1.jpg" width="200" height="84" border="0" @click="imgSelected('01/1')"/>
         </td>
         <td align="center" style="height: 105px">
+          <img src="../../../static/bg/01/21.jpg" width="200" height="84" border="0" @click="imgSelected('01/21')"/>
+        </td>
+        <td align="center" style="height: 105px">
           <img src="../../../static/bg/01/2.jpg" width="200" height="84" border="0" @click="imgSelected('01/2')"/>
         </td>
         <td align="center" style="height: 105px">
           <img src="../../../static/bg/01/3.jpg" width="200" height="84" border="0" @click="imgSelected('01/3')"/>
         </td>
-        <td align="center" style="height: 105px">
-          <img src="../../../static/bg/01/4.jpg" width="200" height="84" border="0" @click="imgSelected('01/4')"/>
-        </td>
+        <!--<td align="center" style="height: 105px">-->
+          <!--<img src="../../../static/bg/01/4.jpg" width="200" height="84" border="0" @click="imgSelected('01/4')"/>-->
+        <!--</td>-->
       </tr>
       <tr>
         <td align="center" style="height: 105px">

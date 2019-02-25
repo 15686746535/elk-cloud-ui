@@ -444,7 +444,7 @@
             </el-table-column>
             <el-table-column  align="center" label="考场" min-width="120" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{scope.row.examField}}</span>
+                <span>{{scope.row.examField | examFiledCode}}</span>
               </template>
             </el-table-column>
             <el-table-column  align="center" label="入学时间" width="100">
@@ -651,7 +651,7 @@
         </div>
         <div v-else v-for="batch in batchList"  style="float: left;margin: 5px">
           <div class="batchCss" @click="batchClick($event,batch)" style="float: left;">
-            <{{batch.examTime | subTime}}> {{batch.examField}}
+            <{{batch.examTime | subTime}}> {{batch.examField | examFiledCode}}
             <span>（已约{{batch.stuCount}}人）</span>
           </div>
         </div>

@@ -381,6 +381,8 @@
                       </div>
                     </el-form-item>
                   </el-row>
+                  <el-button type="primary" size="mini" @click="dialogFormVisible  = true"
+                             v-if="permissions.stu_student_update" icon="el-icon-edit">状态修改</el-button>
                 </el-col>
               </el-row>
             </el-card>
@@ -559,6 +561,20 @@
         </el-col>
       </el-row>
     </el-card>
+
+    <el-dialog title="修改科目状态" :modal="false" :close-on-click-modal="false" :visible.sync="dialogFormVisible">
+      <el-radio-group v-model="student.state">
+        <el-radio label="1">科目一</el-radio>
+        <el-radio label="2">科目二</el-radio>
+        <el-radio label="3">科目三</el-radio>
+        <el-radio label="4">科目四</el-radio>
+        <el-radio label="5">毕业</el-radio>
+      </el-radio-group>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editState">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -567,7 +583,7 @@
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent, getFinanceByStudentId } from '@/api/student/student'
+  import { fetchStudentList, getStudent,  editSubState,getFinanceByStudentId } from '@/api/student/student'
   import { examFetchList } from '@/api/student/examnote'
   import finance from '@/views/modules/stu/serviceNote.vue'
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
@@ -589,6 +605,7 @@
     },
     data() {
       return {
+        dialogFormVisible: false,
         student: {
           studentId: null,
           orgId: null,
@@ -738,6 +755,12 @@
       ])
     },
     methods: {
+      editState() { // 科目状态修改
+        if (this.student.state > 5 || this.student.state < 0) this.dialogFormVisible = false;
+        editSubState(this.student).then(response => {
+          this.dialogFormVisible = false;
+        });
+      },
       // 根据部门id查询学员信息
       searchByOrg(data) {
         this.listQuery.page = 1

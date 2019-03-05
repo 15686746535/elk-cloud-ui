@@ -2417,7 +2417,8 @@
           content: batch,
           data: { batchInfo: { examId: row.examId } } // props
         });
-      }, openService(row) { // openFinace
+      },
+      openService(row) { // openFinace
         var id = this.student.studentId + "_stu";
         var title = "￥" + this.student.name + " 学费收取";
         var data = { student: this.student };

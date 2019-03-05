@@ -583,7 +583,7 @@
   import { removeAllSpace } from '@/utils/validate'
   import { mapGetters } from 'vuex'
 
-  import { fetchStudentList, getStudent,  editSubState,getFinanceByStudentId } from '@/api/student/student'
+  import { fetchStudentList, getStudent,  putStudent,getFinanceByStudentId } from '@/api/student/student'
   import { examFetchList } from '@/api/student/examnote'
   import finance from '@/views/modules/stu/serviceNote.vue'
   import { getVehiclePeriodByStudentId } from '@/api/bespeak/vehicleperiod'
@@ -757,7 +757,7 @@
     methods: {
       editState() { // 科目状态修改
         if (this.student.state > 5 || this.student.state < 0) this.dialogFormVisible = false;
-        editSubState(this.student).then(response => {
+        putStudent(this.student).then(response => {
           this.dialogFormVisible = false;
         });
       },

@@ -1285,7 +1285,7 @@
   import { getBatchList } from "@/api/student/batch";
   import { writeoff } from "@/api/finance/service-charge";
 
-  import { getUserList } from "@/api/upms/user";
+  import { userList } from "@/api/upms/user";
   import { getVehiclePeriodByStudentId, getClassByCoachId, bespeakVehiclePeriod } from "@/api/bespeak/vehicleperiod";
   import { getShuttleLogByStudentId } from "@/api/bespeak/shuttlestudent";
   import { followUpList } from "@/api/visit/followup";
@@ -2123,8 +2123,9 @@
       },
       /* 获取介绍人列表 */
       getIntroducerList() {
-        getUserList().then(response => {
+        userList({t:new Date()}).then(response => {
           this.userList = response.data.data;
+          console.log(response.data);
         });
       },
       // 修改
@@ -2435,7 +2436,7 @@
       },
       editState() { // 科目状态修改
         if (this.student.state > 5 || this.student.state < 0) this.dialogFormVisible = false;
-        editSubState(this.student).then(response => {
+        putStudent(this.student).then(response => {
           console.log(response);
           this.dialogFormVisible = false;
         });
@@ -2505,7 +2506,7 @@
           inputValue:this.student.mobile,
           inputErrorMessage: '手机号码格式不正确'
         }).then(({ value }) => {
-          this.bindList.mobile=value;          
+          this.bindList.mobile=value;
           bindWechartUser(this.bindList).then(res=>{
             if(res.data.code==0){
               this.$message({

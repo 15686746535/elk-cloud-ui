@@ -1285,7 +1285,7 @@
   import { getBatchList } from "@/api/student/batch";
   import { writeoff } from "@/api/finance/service-charge";
 
-  import { userList } from "@/api/upms/user";
+  import { getUserList } from "@/api/upms/user";
   import { getVehiclePeriodByStudentId, getClassByCoachId, bespeakVehiclePeriod } from "@/api/bespeak/vehicleperiod";
   import { getShuttleLogByStudentId } from "@/api/bespeak/shuttlestudent";
   import { followUpList } from "@/api/visit/followup";
@@ -2123,7 +2123,7 @@
       },
       /* 获取介绍人列表 */
       getIntroducerList() {
-        userList({t:new Date()}).then(response => {
+        getUserList({t:new Date()}).then(response => {
           this.userList = response.data.data;
           console.log(response.data);
         });

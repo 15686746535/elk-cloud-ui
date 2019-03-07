@@ -59,7 +59,8 @@ export function chargeStateFilter(state) {
 export function serviceTypeFilter(subject) {
   const typeMap = {
     '1': '一人一车',
-    '2': '两人一车'
+    '2': '两人一车',
+    '3': '四人一车'
   }
   return typeMap[subject]
 }

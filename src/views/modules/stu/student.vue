@@ -497,6 +497,18 @@
                       <div style="padding-left: 16px;font-size: 12px;" v-else>{{student.addDrive === "1"?"是":"否"}}</div>
                     </el-form-item>
                   </el-row>
+
+                  <!-- 是否周末约车 -->
+                  <el-row>
+                    <el-form-item prop="weekend">
+                      <span slot="label" class="text_css">是否周末约车:</span>
+                      <el-radio-group v-if="edit" v-model="student.weekend">
+                        <el-radio label="1">是</el-radio>
+                        <el-radio label="2">否</el-radio>
+                      </el-radio-group>
+                      <div style="padding-left: 18px;font-size: 12px;" v-else>{{student.weekend === "1"?"是":"否"}}</div>
+                    </el-form-item>
+                  </el-row>
                   <!-- 介绍人 -->
                   <el-row style="margin: 0 10px">
                     <el-form-item prop="introducerId" >
@@ -1022,6 +1034,17 @@
                 </el-form-item>
               </el-row>
 
+              <!-- 是否周末约车 -->
+              <el-row>
+                <el-form-item prop="weekend">
+                  <span slot="label" class="text_css">是否周末约车</span>
+                  <el-radio-group v-model="studentEntity.weekend">
+                    <el-radio label="1">是</el-radio>
+                    <el-radio label="2">否</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-row>
+
               <!-- 电子邮箱 -->
               <el-row>
                 <el-form-item prop="email">
@@ -1069,6 +1092,7 @@
                   </el-select>
                 </el-form-item>
               </el-row>
+
 
 
             </el-col>
@@ -1388,7 +1412,8 @@
           remark: null,
           operator: null,
           createTime: null,
-          updateTime: null
+          updateTime: null,
+          weekend:null
         },
         studentEntity: {
           intentionId: null,
@@ -1426,7 +1451,9 @@
           enrolSite: null,
           source: null,
           motorcycleType: null,
-          idType: "1"
+          idType: "1",
+          weekend:null,
+          remark: null
         },
         studentEntityRules: {
           mobile: [
@@ -1481,6 +1508,9 @@
           ],
           haveCar: [
             { required: true, message: "请选择是否有车", trigger: ["blur", "change"] }
+          ],
+          weekend: [
+            { required: true, message: "请选择是否允许周末约车", trigger: ["blur", "change"] }
           ],
           email: [
             {
@@ -1549,6 +1579,9 @@
           ],
           haveCar: [
             { required: true, message: "请选择是否有车", trigger: ["blur", "change"] }
+          ],
+          weekend: [
+            { required: true, message: "请选择是否允许周末约车", trigger: ["blur", "change"] }
           ],
           email: [
             {

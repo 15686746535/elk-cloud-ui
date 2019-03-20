@@ -128,3 +128,31 @@ export function bindWechartUser(params) {
   })
 }
 
+/* 获取补考险管理 */
+
+export function getInsurance(params) {
+  return request({
+    url: '/stu/insurance/getPage',
+    ethod: 'get',
+    params: params
+  })
+}
+
+/* 补考险管理-查询 */
+
+export function waitInsurance(params) {
+  return request({
+    url: '/stu/insurance/getList',
+    ethod: 'get',
+    params: params
+  })
+}
+
+/* 补考险管理-添加*/
+export function addInsurance(obj) {
+  return request({
+    url: '/stu/insurance/save',
+    ethod: 'POST',
+    params: obj
+  })
+}

@@ -140,7 +140,7 @@ export function getInsurance(params) {
 
 /* 补考险管理-查询 */
 
-export function waitInsurance(params) {
+export function searchInsurance(params) {
   return request({
     url: '/stu/insurance/getList',
     ethod: 'get',
@@ -152,7 +152,15 @@ export function waitInsurance(params) {
 export function addInsurance(obj) {
   return request({
     url: '/stu/insurance/save',
-    ethod: 'POST',
-    params: obj
+    method: 'post',
+    data: obj
+  })
+}
+/* 补考险管理-添加*/
+export function editInsurance(obj) {
+  return request({
+    url: '/stu/insurance/update',
+    method: 'put',
+    data: obj
   })
 }

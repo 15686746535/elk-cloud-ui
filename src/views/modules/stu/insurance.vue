@@ -87,8 +87,8 @@
 
       </el-table>         
           <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float: left"
-                           :current-page.sync="listQuery.page" background
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+                           :current-page.sync="listQuery.page" background style="float: left"
                            :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
@@ -113,20 +113,20 @@
           <el-input v-else v-model="saveList.idcard" style="width: 80%" :min="3" :max="15" label="投保人身份证号码"></el-input>
         </el-form-item>
 
-        <el-form-item label="保险单号：" prop="policy_number">
+        <el-form-item label="保险单号：" >
           <el-input v-model="saveList.policy_number" style="width: 80%" :min="3" :max="15" label="保险单号"></el-input>
         </el-form-item>
 
-        <el-form-item label="保险公司：" prop="policy_company">
+        <el-form-item label="保险公司：" >
           <el-input v-model="saveList.policy_company" style="width: 80%" :min="3" :max="15" label="保险公司"></el-input>
         </el-form-item>
 
-        <el-form-item label="投保时间：" prop="buydate">
+        <el-form-item label="投保时间：" >
           <!-- <el-date-picker value-format="yyyy-MM-dd" style="width: 80%;" type="date" placeholder="选择日期" v-model="saveList.buydate" :picker-options="pickerOptions"></el-date-picker> -->
           <el-date-picker v-model="saveList.buydate" type="date" style="width: 80%"  placeholder="选择日期" format="yyyy-MM-dd"  value-format="timestamp"></el-date-picker>
         </el-form-item>
 
-         <el-form-item label="有效期限：" prop="expiryyear">
+         <el-form-item label="有效期限：" >
           <!-- <el-date-picker value-format="yyyy-MM-dd" style="width: 100%;" type="dates" placeholder="选择一个或多个日期" v-model="saveList.expirydate" :picker-options="pickerOptions"></el-date-picker> -->
           <el-select v-model="saveList.expiryyear" style="width: 80%" placeholder="失效时间">
             <el-option v-for="year in yearList" :key="year.value" :label="year.label" :value="year.value"></el-option>
@@ -243,7 +243,7 @@ export default {
        saveRules: {
           name:[{ required: true, message: '请输入投保人姓名', trigger: 'blur' }],
           idcard:[ { required: true,  message: '请输入投保人身份证号', trigger: ['blur'] }],
-          policy_number:[ { required: true,  message: '请输入保险单号', trigger: ['blur'] }],
+          // policy_number:[ { required: true,  message: '请输入保险单号', trigger: ['blur'] }],
           policy_company:[{ required: true, message: '请输入投保公司', trigger: 'blur' }],
           buydate:[{ type: 'date', required: true, message: '请选择投保日期', trigger: 'change' }],
           expiryyear: [ { required: true, message: '请选择有效期', trigger: 'change' } ],
@@ -258,7 +258,6 @@ export default {
   methods:{
     getList(){
       getInsurance(this.listQuery).then(res=>{
-        console.log("2312312",res)
         this.list=res.data.data.list;
         this.total=res.data.totalCount;
       })
@@ -267,9 +266,8 @@ export default {
       this.getList()
     },
     searchData(){
-      // this.listQuery.condition=val
+      console.log("re",this.listQuery)
       searchInsurance(this.listQuery).then(re=>{
-        console.log("rerere",re)
         this.listQuery.page = 1
         this.list=re.data.data.list;
         this.total=re.data.totalCount;
@@ -284,7 +282,6 @@ export default {
       }else{        
        this.saveList.expiryyear=valueDate.toString();
       }
-       console.log("eeee",valueDate)
       this.batchOption = true;   
       
       
@@ -301,10 +298,6 @@ export default {
         remarks:'',
         state:''
         }
-
-        
-        // this.batch.subject = this.listQuery.subject
-        // this.dialogStatus = 'create'
         this.batchOption = true
     },
     handleSizeChange(val) {
@@ -317,9 +310,12 @@ export default {
       },
       addsInsurance(formName) {
         console.log("^^^^",formName)
-        var date=new Date(this.saveList.buydate);
-        var r=365*24*60*60*1000*Number(this.saveList.expiryyear);
-        this.saveList.expirydate=this.saveList.buydate+r;
+        if(this.saveList.buydate){
+          var date=new Date(this.saveList.buydate);
+          var r=365*24*60*60*1000*Number(this.saveList.expiryyear);
+          this.saveList.expirydate=this.saveList.buydate+r;
+        }
+        
         const set = this.$refs
         this.$refs[formName].validate((valid) => {
           if (valid) {

@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="header-row">
-            <label>全局范围设置 &nbsp;&nbsp;&nbsp;</label>
+            <label>全局范围设置 &nbsp;&nbsp</label>
             <!--<el-select  v-model="payment.code" size="mini" filterable remote reserve-keyword placeholder=""-->
             <!--:remote-method="getPayCodeList" :loading="selectLoading">-->
             <el-select  v-model="listQuery.campus" filterable remote clearable reserve-keyword placeholder="校区" style="margin-right: 5px;width: 200px;">

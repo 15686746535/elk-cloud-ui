@@ -1,6 +1,6 @@
 <template>
-  <div :id="id" :class="className" :style="{height:height,width:width,background:background}" >
-  </div>
+<div :id="id" :class="className" :style="{height:height,width:width,background:background}" >
+</div>
 </template>
 
 <script>

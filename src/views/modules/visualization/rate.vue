@@ -25,7 +25,7 @@
         <!--<tree-select  style="font-size: 12px;display: inline-block;" v-show="true" url="/upms/org/tree" v-model="query.org" placeholder="所属部门1"></tree-select>-->
         <!--</el-col>-->
         <el-button type="primary"  size="mini" @click="getData">搜索</el-button>
-      </div>
+    </div>
       <div align="center" style="width: 100%;overflow: hidden;line-height: 100%;" :style="{height: tableHeight-80+ 'px'}">
         <pie-chart :data="pieData" width="800px" height="600px" @callback="down"></pie-chart>
       </div>

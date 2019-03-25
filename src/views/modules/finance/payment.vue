@@ -59,6 +59,7 @@
         <el-table-column align="center" prop="auditor" label="审核人" width="100"></el-table-column>
         <el-table-column align="center" prop="remark" label="摘要" show-overflow-tooltip width="100"></el-table-column>
       </el-table>
+
       <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page.sync="listQuery.page"

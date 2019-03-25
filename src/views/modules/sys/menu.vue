@@ -91,7 +91,7 @@
           <span slot="label"><i class="el-icon-more"></i> 补充</span>
           <div class="icon-container">
             <span v-if="menu%2" class="icon-span" v-for="(icon,index) in icons" @click="iconSelected(icon)">
-              <svg-icon :icon-class="icon"  />
+              <svg-icon :icon-class="icon" />
             </span>
           </div>
         </el-tab-pane>

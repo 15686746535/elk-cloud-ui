@@ -33,7 +33,7 @@ export function querySubject(params) {
     url: '/visualization/querySubject',
     method: 'get',
     params: params
-  })
+})
 }
 
 // 招生点数据统计

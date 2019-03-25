@@ -42,10 +42,10 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
-            <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"></dict>
-          </el-col>
-          <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
+            <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
+              <dict v-model="listQuery.source" size="mini" dictType="dict_source" placeholder="来源渠道"></dict>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4">
 
             <el-select style="width: 100%" size="mini" v-model="listQuery.motorcycleType" clearable filterable
                        placeholder="车型">

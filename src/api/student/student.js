@@ -164,3 +164,21 @@ export function editInsurance(obj) {
     data: obj
   })
 }
+
+/* 学员约车反馈获取列表 */
+export function getFeedBack(params) {
+  return request({
+    url: '/stu/student/queryFeedbackList',
+    ethod: 'get',
+    params: params
+  })
+}
+
+/* 学员约车反馈标记 */
+export function setFeedback(obj) {
+  return request({
+    url: '/stu/student/setFeedback',
+    method: 'put',
+    data: obj
+  })
+}

@@ -8,8 +8,9 @@
         :gutter="6"
         style="height: 50px"
       >
-        <el-col :span="10">
+        <el-col :span="11">
           <el-radio-group size="mini" @change="handleInsurance" v-model="listQuery.state">
+            <el-radio-button label="-2">应投保</el-radio-button>
             <el-radio-button label="0">待投保</el-radio-button>
             <el-radio-button label="1">待生效</el-radio-button>
             <el-radio-button label="2">生效中</el-radio-button>
@@ -22,10 +23,16 @@
           </el-date-picker>
         </el-col> -->
 
-        <el-col :span="4"> 
-          <el-input size="mini" @keyup.enter.native="searchData"  placeholder="学员姓名/身份证" v-model="listQuery.condition"></el-input>
-          <!-- @keyup.enter.native="" -->
+        <!-- <el-col :span="3">  -->
+         <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="3">
+            <dict v-model="listQuery.condition" size="mini" dictType="dict_enrolSite" placeholder="投保校区"></dict>
+          <!-- </el-col> -->
         </el-col>
+        <el-col :xs="6" :sm="6" :md="8" :lg="7" :xl="5">
+            <el-date-picker style="width: 100%" size="mini"  v-model="listQuery.condition"  type="daterange"  range-separator="-"  start-placeholder="开始日期"   end-placeholder="结束日期">
+    </el-date-picker>
+          </el-col>
+        <el-col :span="3"><el-input size="mini" @keyup.enter.native="searchData"  placeholder="学员姓名/身份证" v-model="listQuery.condition"></el-input></el-col>
         <el-col :span="1">
           <el-button type="primary" size="mini" @click="searchData"><i class="el-icon-search"></i> 搜 索</el-button>
         </el-col>

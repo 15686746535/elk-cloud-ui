@@ -11,6 +11,8 @@
         </el-option>
       </el-select>
 
+      <tree-select url="/upms/org/tree" id="serch" v-model="listQuery.orgId" style="width: 150px;float: left;margin-right: 5px;" placeholder="所属部门"></tree-select>
+
       <el-button class="filter-item" type="primary"  icon="el-icon-search" style="margin-bottom: 15px" @click="searchClick">搜索</el-button>
       <el-table :key='tableKey'  :height="tableHeight-220" @sort-change="sortable" :data="list" v-loading="listLoading" :stripe="true" :fit="false" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" >
         <el-table-column type="index" label="序号"  align="center" width="50"></el-table-column>
@@ -86,7 +88,8 @@
           plan: null,
           sidx: null, // plan 2未设置  1已设置   排序字段 sidx  排序方式 order
           order: null,
-          condition: null
+          condition: null,
+          orgId:null
         },
         tableKey: 0
       }

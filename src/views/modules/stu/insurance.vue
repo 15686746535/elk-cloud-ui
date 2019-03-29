@@ -10,7 +10,7 @@
       >
         <el-col :span="11" style="margin-bottom:10px;">
           <el-radio-group size="mini" @change="handleInsurance" v-model="listQuery.state">
-            <el-radio-button label="">应投保</el-radio-button>
+            <el-radio-button label="-2">应投保</el-radio-button>
             <el-radio-button label="0">待投保</el-radio-button>
             <el-radio-button label="1">待生效</el-radio-button>
             <el-radio-button label="2">生效中</el-radio-button>
@@ -51,18 +51,18 @@
           </template>
         </el-table-column>
 
-        <el-table-column v-if="listQuery.state==0" align="center"  label="入学日期"  width="100">
+        <el-table-column v-if="listQuery.state==0||listQuery.state==-2" align="center"  label="入学日期"  width="100">
           <template slot-scope="scope">
             <span>{{scope.row.enrol_time | subTime}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="保险公司" width="120">
+        <el-table-column v-if="listQuery.state!=-2" align="center" label="保险公司" width="120">
           <template slot-scope="scope">
             {{scope.row.policy_company }}
           </template>
         </el-table-column>
-        <el-table-column align="center"  label="保险单号" width="auto">
+        <el-table-column v-if="listQuery.state!=-2" align="center"  label="保险单号" width="auto">
           <template slot-scope="scope">
             <span>{{scope.row.policy_number}}  </span>                     
           </template>

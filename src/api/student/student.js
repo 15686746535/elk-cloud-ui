@@ -182,3 +182,21 @@ export function setFeedback(obj) {
     data: obj
   })
 }
+
+/* 量子保导出 */
+export function lzbExportExcel(obj) {
+  return request({
+    url: '/exportService/api/export/lianzibao',
+    method: 'put',
+    data: obj
+  })
+}
+
+/* 人寿保险导出 */
+export function rsbExportExcel(obj) {
+  return request({
+    url: '/exportService/api/export/lianzibao',
+    method: 'put',
+    data: obj
+  })
+}

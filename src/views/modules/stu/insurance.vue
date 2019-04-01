@@ -24,10 +24,9 @@
         </el-col> -->
 
         <!-- <el-col :span="3">  -->
-         <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="3" style="margin-bottom:10px;">
-            <dict v-model="enrolSite" size="mini" dictType="dict_enrolSite" clearable placeholder="投保校区"></dict>
-          <!-- </el-col> -->
-        </el-col>
+         <!-- <el-col class="hidden-md-and-down" :xs="6" :sm="6" :md="6" :lg="4" :xl="3" style="margin-bottom:10px;">
+            <dict v-model="enrolSite" size="mini" dictType="dict_enrolSite" clearable placeholder="投保校区"></dict>          
+        </el-col> -->
         <el-col :xs="6" :sm="6" :md="8" :lg="7" :xl="5" style="margin-bottom:10px;">
             <el-date-picker style="width: 100%" size="mini"  v-model="queryDate"  type="daterange"  range-separator="-"  start-placeholder="开始日期"   end-placeholder="结束日期">
     </el-date-picker>
@@ -100,9 +99,12 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
 
-       <el-button size="small" style="float:right;margin: 0 30px 10px" type="primary" @click="add">
+          <el-button size="small" style="float:right;margin: 0 30px 10px" type="primary" @click="add">
            <i class="el-icon-plus"></i>添加
           </el-button>
+
+          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="btnLoading" type="primary" @click="lzbExport" icon="el-icon-download">量子保导出</el-button>
+          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="btnLoading" type="primary" @click="rsExport" icon="el-icon-download">人寿导出</el-button>
       </div>
       </el-row>      
     </el-card>
@@ -151,10 +153,11 @@
           </el-select>
         </el-form-item>
 
-        <div class="dialog-footer" align="right">
+        <div class="dialog-footer" align="right">          
           <el-button @click="cancel('batch')"><i class="el-icon-fa-undo"></i> 取 消</el-button>
           <el-button v-if="edited"  :loading="btnLoading" type="primary" @click="editInsurance('saveList')">保存修改</el-button>
-          <el-button v-else  :loading="btnLoading" type="primary" @click="addsInsurance('saveList')">添加</el-button>
+          <el-button v-else  :loading="btnLoading" type="primary" @click="addsInsurance('saveList')">添1加</el-button>
+         
         </div>
       </el-form>
     </el-dialog>
@@ -164,7 +167,7 @@
 
 <script>
 
-import { getInsurance,searchInsurance,addInsurance,editInsurance} from '@/api/student/student'
+import { getInsurance,searchInsurance,addInsurance,editInsurance,lzbExportExcel,rsbExportExcel} from '@/api/student/student'
 export default {
   
    watch: {
@@ -378,6 +381,43 @@ export default {
         this.getList()
       },
 
+      lzbExport(){
+            this.$store.dispatch('pushProhibit', this.layerid)
+            this.expLoading = true
+            lzbExportExcel(this.listQuery).then(response => {
+            var time = new Date()
+            var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
+            var downloadElement = document.createElement('a')
+            var href = window.URL.createObjectURL(blob) // 创建下载的链接
+            downloadElement.href = href
+            downloadElement.download = '量子保(' + time.toLocaleString() + ').xls' // 下载后文件名
+            document.body.appendChild(downloadElement)
+            downloadElement.click() // 点击下载
+            document.body.removeChild(downloadElement) // 下载完成移除元素
+            window.URL.revokeObjectURL(href) // 释放掉blob对象
+            this.expLoading = false
+            this.$store.dispatch('removeProhibit', this.layerid)
+          })
+      },
+
+      rsExport(){
+            this.$store.dispatch('pushProhibit', this.layerid)
+            this.expLoading = true
+            lzbExportExcel(this.listQuery).then(response => {
+            var time = new Date()
+            var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
+            var downloadElement = document.createElement('a')
+            var href = window.URL.createObjectURL(blob) // 创建下载的链接
+            downloadElement.href = href
+            downloadElement.download = '人寿保(' + time.toLocaleString() + ').xls' // 下载后文件名
+            document.body.appendChild(downloadElement)
+            downloadElement.click() // 点击下载
+            document.body.removeChild(downloadElement) // 下载完成移除元素
+            window.URL.revokeObjectURL(href) // 释放掉blob对象
+            this.expLoading = false
+            this.$store.dispatch('removeProhibit', this.layerid)
+          })
+      }
   }
   
 };

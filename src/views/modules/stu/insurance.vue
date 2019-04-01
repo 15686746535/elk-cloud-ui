@@ -103,8 +103,8 @@
            <i class="el-icon-plus"></i>添加
           </el-button>
 
-          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="btnLoading" type="primary" @click="lzbExport" icon="el-icon-download">量子保导出</el-button>
-          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="btnLoading" type="primary" @click="rsExport" icon="el-icon-download">人寿导出</el-button>
+          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="lzbloding" type="primary" @click="lzbExport" icon="el-icon-download">量子保导出</el-button>
+          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="rsbloding" type="primary" @click="rsExport" icon="el-icon-download">人寿导出</el-button>
       </div>
       </el-row>      
     </el-card>
@@ -200,6 +200,8 @@ export default {
       enrolSite:'',
       edited:false,
       btnLoading:false,
+      lzbloding:false,
+      rsbloding:false,
       batchOption: false,
       listQuery:{
         state:'0',
@@ -265,6 +267,8 @@ export default {
   }
   
   },
+  props: {
+      layerid: String,    },
   created() {
     this.getList();
   },
@@ -383,7 +387,7 @@ export default {
 
       lzbExport(){
             this.$store.dispatch('pushProhibit', this.layerid)
-            this.expLoading = true
+            this.lzbloding = true
             lzbExportExcel(this.listQuery).then(response => {
             var time = new Date()
             var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
@@ -395,14 +399,14 @@ export default {
             downloadElement.click() // 点击下载
             document.body.removeChild(downloadElement) // 下载完成移除元素
             window.URL.revokeObjectURL(href) // 释放掉blob对象
-            this.expLoading = false
+            this.lzbloding = false
             this.$store.dispatch('removeProhibit', this.layerid)
           })
       },
 
       rsExport(){
             this.$store.dispatch('pushProhibit', this.layerid)
-            this.expLoading = true
+            this.rsbloding = true
             rsbExportExcel(this.listQuery).then(response => {
             var time = new Date()
             var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
@@ -414,7 +418,7 @@ export default {
             downloadElement.click() // 点击下载
             document.body.removeChild(downloadElement) // 下载完成移除元素
             window.URL.revokeObjectURL(href) // 释放掉blob对象
-            this.expLoading = false
+            this.rsbloding = false
             this.$store.dispatch('removeProhibit', this.layerid)
           })
       }

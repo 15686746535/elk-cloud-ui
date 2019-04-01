@@ -148,7 +148,7 @@
       };
     },
     filters: {
-      changeToDate(value) {        
+      changeToDate(value) {
         return new Date(value).toISOString().substring(0,10)
       }
     },
@@ -235,7 +235,7 @@
         for(var i=1;i<=m;i++){
           dataArr.push(i);
           this.dataMonth.push(i)
-        }        
+        }
         // for (var i = 0; i < 12; i++) {
         //   data.setMonth(data.getMonth() - 1);//每次循环一次 月份值减1
         //   var m = data.getMonth() + 1;
@@ -382,7 +382,7 @@
 
     .table-detail {
       .table-detail.el-table th {
-        background-color: #3f5c6d2c!important;
+        background-color: #fff!important;
       }
       position: absolute;
       overflow: hidden;

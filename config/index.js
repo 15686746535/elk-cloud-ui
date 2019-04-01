@@ -105,14 +105,14 @@ module.exports = {
         }
       },
       '/export': {
-        target: 'http://www.eluchn.com/:8103',
+        target: 'http://www.eluchn.com:8103',
         changeOrigin: true,
         pathRewrite: {
           '^/export' : '/export'
         }
       },
       '/import': {
-        target: 'http://www.eluchn.com/:8103',
+        target: 'http://www.eluchn.com:8103',
         changeOrigin: true,
         pathRewrite: {
           '^/import' : '/import'
@@ -144,6 +144,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/supervise' : '/supervise'
+        }
+      },
+      '/excelport': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/excelport' : '/excelport'
         }
       }
     }, // http://xueshi.6655.la/supervise/stuInfo

@@ -186,7 +186,7 @@ export function setFeedback(obj) {
 /* 量子保导出 */
 export function lzbExportExcel(params) {
   return request({
-    url: '/excelport/api/export/lianzibao',
+    url: '/excel/api/export/lianzibao',
     method: 'get',
     params: params,
     responseType: 'arraybuffer'
@@ -196,7 +196,7 @@ export function lzbExportExcel(params) {
 /* 人寿保险导出 */
 export function rsbExportExcel(params) {
   return request({
-    url: '/excelport/api/export/renshou',
+    url: '/excel/api/export/renshou',
     method: 'get',
     params: params,
     responseType: 'arraybuffer'

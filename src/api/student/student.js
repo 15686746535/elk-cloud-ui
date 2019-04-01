@@ -169,7 +169,7 @@ export function editInsurance(obj) {
 export function getFeedBack(params) {
   return request({
     url: '/stu/student/queryFeedbackList',
-    ethod: 'get',
+    method: 'get',
     params: params
   })
 }
@@ -184,19 +184,21 @@ export function setFeedback(obj) {
 }
 
 /* 量子保导出 */
-export function lzbExportExcel(obj) {
+export function lzbExportExcel(params) {
   return request({
     url: '/exportService/api/export/lianzibao',
-    method: 'put',
-    data: obj
+    method: 'get',
+    params: params,
+    responseType: 'arraybuffer'
   })
 }
 
 /* 人寿保险导出 */
-export function rsbExportExcel(obj) {
+export function rsbExportExcel(params) {
   return request({
-    url: '/exportService/api/export/lianzibao',
-    method: 'put',
-    data: obj
+    url: '/exportService/api/export/renshou',
+    method: 'get',
+    params: params,
+    responseType: 'arraybuffer'
   })
 }

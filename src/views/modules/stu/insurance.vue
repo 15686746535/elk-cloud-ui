@@ -403,7 +403,7 @@ export default {
       rsExport(){
             this.$store.dispatch('pushProhibit', this.layerid)
             this.expLoading = true
-            lzbExportExcel(this.listQuery).then(response => {
+            rsbExportExcel(this.listQuery).then(response => {
             var time = new Date()
             var blob = new Blob([response.data], { type: 'application/x-xls;charset=utf-8' })
             var downloadElement = document.createElement('a')

@@ -146,11 +146,11 @@ module.exports = {
           '^/supervise' : '/supervise'
         }
       },
-      '/excelport': {
+      '/excel': {
         target: url,
         changeOrigin: true,
         pathRewrite: {
-          '^/excelport' : '/excelport'
+          '^/excel' : '/excel'
         }
       }
     }, // http://xueshi.6655.la/supervise/stuInfo

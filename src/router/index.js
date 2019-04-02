@@ -50,7 +50,7 @@ export const appMap = [
   // { id: 80100, desktop: '1', type: '1', pid: 20000, params: [], name: '约车信息', content: _import('modules/bespeak/vehiclePeriod'), icon: getIcon('app_vehicle_period'), msgCount: 0, childItem: [] },
   { id: 21000, desktop: '1', type: '1', pid: 20000, params: [], name: '投诉建议', content: _import('modules/stu/complaint'), icon: getIcon('app_stu_complaint'), msgCount: 0, childItem: [] },
   { id: 22000, desktop: '1', type: '1', pid: 20000, params: [], name: '约车详情', content: _import('modules/stu/bookingcar'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
-  { id: 23000, desktop: '1', type: '1', pid: 20000, params: [], name: '补考险管理', content: _import('modules/stu/insurance'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
+  { id: 23000, desktop: '1', type: '1', pid: 20000, params: [], name: '补考险管理', content: _import('modules/stu/insurance1'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   { id: 24000, desktop: '1', type: '1', pid: 20000, params: [], name: '反馈信息', content: _import('modules/stu/feedback'), icon: getIcon('app_default'), msgCount: 0, childItem: [] },
   // 客户公客
   // { id: 30200, desktop: '1', type: '2', pid: 30000, params: { display: 'list' }, name: '意向信息', content: _import('modules/visit/intention'), icon: getIcon('app_visit_intention'), msgCount: 0, childItem: [] },

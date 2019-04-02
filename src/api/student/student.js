@@ -202,3 +202,43 @@ export function rsbExportExcel(params) {
     responseType: 'arraybuffer'
   })
 }
+
+
+/* 保险导出 */
+export function ExportExcel(params) {
+  return request({
+    url: '/excel/api/export/insured',
+    method: 'get',
+    params: params,
+    responseType: 'arraybuffer'
+  })
+}
+
+/* 再次导出保险 */
+export function exportAgain(params) {
+  return request({
+    url: '/excel/api/export/insured',
+    method: 'get',
+    params: params,
+    responseType: 'arraybuffer'
+  })
+}
+/* 导出模板 */
+export function exportMoble(params) {
+  return request({
+    url: '/excel/api/export/model',
+    method: 'get',
+    params: params,
+    responseType: 'arraybuffer'
+  })
+}
+
+/* 导入保险 */
+export function importExcel(obj) {
+  return request({
+    url: '/excel/api/import/lianzibao',
+    method: 'POST',
+    data: obj,
+    responseType: 'arraybuffer'
+  })
+}

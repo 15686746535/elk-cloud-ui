@@ -44,13 +44,25 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center"  label="姓名"  width="80">
+        <el-table-column align="center"  label="姓名"  width="90">
           <template slot-scope="scope">
             <span>{{scope.row.name | subTime}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column v-if="listQuery.state==0||listQuery.state==-2" align="center"  label="入学日期"  width="100">
+          <el-table-column align="center"  label="手机"  width="120">
+            <template slot-scope="scope">
+              <span>{{scope.row.mobile}}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center"  label="校区"  width="120">
+            <template slot-scope="scope">
+              <span>{{scope.row.campus}}</span>
+            </template>
+          </el-table-column>
+
+        <el-table-column v-if="listQuery.state==0||listQuery.state==-2" align="center"  label="入学日期"  width="120">
           <template slot-scope="scope">
             <span>{{scope.row.enrol_time | subTime}}</span>
           </template>
@@ -67,29 +79,29 @@
           </template>
         </el-table-column>        
 
-        <el-table-column align="center" label="投保时间" width="100">
+        <el-table-column v-if="listQuery.state!=-2" align="center" label="投保时间" width="100">
           <template slot-scope="scope">          
           <span>{{scope.row.buydate | subTime}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column align="center"  label="失效时间" width="100">
+        <el-table-column v-if="listQuery.state!=-2"  align="center"  label="失效时间" width="100">
           <template slot-scope="scope">
             <span>{{scope.row.expirydate | subTime}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column align="center"  label="备注"  width="auto">
+        <el-table-column v-if="listQuery.state!=-2" align="center"  label="备注"  width="auto">
           <template slot-scope="scope">
             <span>{{scope.row.remarks}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column align="left" label="操作" width="80">
-        <template slot-scope="scope">
-          <el-button type="primary" @click="edit(scope.$index, scope.row)" size="mini">编辑</el-button>
-        </template>
-      </el-table-column>
+        <!--<el-table-column align="left" label="操作" width="80">-->
+        <!--<template slot-scope="scope">-->
+          <!--<el-button type="primary" @click="edit(scope.$index, scope.row)" size="mini">编辑</el-button>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
 
       </el-table>         
           <div v-show="!listLoading" class="pagination-container" style="margin-top: 20px;">
@@ -99,12 +111,12 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
 
-          <el-button size="small" style="float:right;margin: 0 30px 10px" type="primary" @click="add">
-           <i class="el-icon-plus"></i>添加
-          </el-button>
+          <!--<el-button size="small" style="float:right;margin: 0 30px 10px" type="primary" @click="add">-->
+           <!--<i class="el-icon-plus"></i>添加-->
+          <!--</el-button>-->
 
-          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="lzbloding" type="primary" @click="lzbExport" icon="el-icon-download">量子保导出</el-button>
-          <el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="rsbloding" type="primary" @click="rsExport" icon="el-icon-download">人寿导出</el-button>
+          <!--<el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="lzbloding" type="primary" @click="lzbExport" icon="el-icon-download">量子保导出</el-button>-->
+          <!--<el-button size="small" style="float:right;margin: 0 10px 10px" v-if="listQuery.state==0"  :loading="rsbloding" type="primary" @click="rsExport" icon="el-icon-download">人寿导出</el-button>-->
       </div>
       </el-row>      
     </el-card>

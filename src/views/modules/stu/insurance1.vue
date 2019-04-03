@@ -103,7 +103,8 @@
           <!--</el-table-column>-->
 
         </el-table>
-        <el-button size="small" style="float:right;margin: 20px 10px 10px"  :loading="dcloding" type="primary" @click="showExport" icon="el-icon-download" >导出</el-button>
+        <el-button size="small" style="float:right;margin: 20px 10px 10px"  :loading="dcloding" type="primary" @click="kmOneExport" icon="el-icon-download" >科目一导出</el-button>
+        <el-button size="small" style="float:right;margin: 20px 10px 10px"  :loading="dcloding" type="primary" @click="kmTwoExport" icon="el-icon-download" >科目二导出</el-button>
       </el-tab-pane>
 
       <el-tab-pane label="待生效" name="1">
@@ -408,13 +409,13 @@
 
         <el-form :model="saveList" :rules="saveRules" ref="saveList" label-width="120px">
 
-          <el-form-item label="保险公司：" >
+          <el-form-item label="保险公司：">
             <el-select v-model="exportData.policyCompany" style="width: 80%" placeholder="选择保险公司">
               <el-option v-for="item in policyCompany" :key="item.value" :label="item.lable" :value="item.lable"></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="投保时间：" >
+          <el-form-item label="投保时间：">
             <!--<el-date-picker v-model="exportData.buydate" type="date" style="width: 80%"  placeholder="选择日期" format="yyyy-MM-dd"  value-format="timestamp"></el-date-picker>-->
             <el-date-picker  v-model="exportData.buydate" type="date" style="width: 80%"  placeholder="选择日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -520,7 +521,8 @@
           expirydate:'',//期效
           state:'', //状态
           remarks:'',//备注
-          condition:''
+          condition:'',
+          node:''  // 1科目一报考，2科目一通过
         },
         saveList:{
           idcard:'',
@@ -583,9 +585,9 @@
           }
         },
         saveRules: {
-          policy_company:[{ required: true, message: '请输入投保公司', trigger: 'blur' }],
+          policyCompany:[{ required: true, message: '请输入投保公司', trigger: 'blur' }],
           buydate:[{ type: 'date', required: true, message: '请选择投保日期', trigger: 'change' }],
-          expiryyear: [ { required: true, message: '请选择有效期', trigger: 'change' } ],
+          expirydate: [ { type: 'date',required: true, message: '请选择有效期', trigger: 'change' } ],
         },
       }
 
@@ -753,7 +755,7 @@
             {
               this.exportData.condition=this.queryCondition;
             }
-
+            console.log("@@@@@@@@",this.exportData)
             this.$store.dispatch('pushProhibit', this.layerid)
             this.dcloding = true;
             this.batchOption=false;
@@ -778,8 +780,15 @@
           }
         })
       },
-      showExport(){
+      kmOneExport(){
+        this.exportData.node=1;
         this.batchOption=true;
+        console.log("科目一",this.exportData)
+      },
+      kmTwoExport(){
+        this.exportData.node=2;
+        this.batchOption=true;
+        console.log("科目二",this.exportData)
       },
       exportAgain(){
         this.dcloding = true;
